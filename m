@@ -1,45 +1,45 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC483D964
-	for <netfs@lists.linux.dev>; Mon, 22 Jan 2024 12:39:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24AF63E461
+	for <netfs@lists.linux.dev>; Mon, 22 Jan 2024 12:39:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705927151; cv=none; b=Syu/kPoUEbHaIZiQZ1utcZYxR6zs6xIMYS/S7wWLM2vTMp/pHldyr1EkHaUrnpW45HpUCtZ95TTDqV02ATh8j0swxI4EJlx+R856SgtoWB6OfsVTMUqERk1OEWvv0r27pEUnFZup9GbOOJLdT3FY+932WjBhWi6asatS5TWdt1U=
+	t=1705927154; cv=none; b=aHXiLGrvtQtj/t0HyL/zC0Lvx/XcP0KZZI5Q9NM11O3uc/YFvz2DxYNGfQ1oRwm7r8qKqln2o7KOU25I+/6bz182j4gxH3QEc67DISWE/W8GqgWhjw/USgzpjGosYZelr0dDVQ/0YGybIjJmY/FkLzobpGty61VJP2M8/0Vh6Yw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705927151; c=relaxed/simple;
-	bh=OfIzfUBOegY/aA+DNYcmnKkvNEOiMv9jvlr290zr5sA=;
+	s=arc-20240116; t=1705927154; c=relaxed/simple;
+	bh=8G3yBj9g+dso7iEfMFsKAhuhaGEPop9JL1MTx/cr1WY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QlJ8aoaEwIn7nLDobiLYjSXON4diS/OO5TmBj2TeOQp+kw0JnXLgNiBCVtud43cOuXpLYlwpA0lVz/DMeKt6qkItRJvpXiniHO+ryx51VybvZ9/lqDgoRvqJmer5+NcwNY36WoltsKifD1TMbR9YCeNvUXZXrue7ecqiVJYEDvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QjprFEXr; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=jgNnvt3s5H1djVBSJLTmn3TKjd9H7ujmADguQB3Bz5/Og21U15BXpI815bhOT1NSCTYwPwCtA7SD8QK2if9pAHTUbCZxxXVHinqqWyBaf0Nv/4pO6vVCZSefDI6+t01o9lDS2gNd2M3uCmRY74HjHAaAUM1N+uhJvxApo1aK2VQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T4RO/W+t; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QjprFEXr"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T4RO/W+t"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1705927149;
+	s=mimecast20190719; t=1705927152;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8CJ3I/7LDGs8hexTud6zRTfvlS0atGDHH81M3ADEHcQ=;
-	b=QjprFEXr4BAEP9/Iwyq9tHLSPdIBH0MUN4pMNkbhkdpeaYOIxPWi8zsDlgfeLySdlcZiEq
-	BmFndltbX1gMv9nC9HucbGTVIjuVndPukMRqHRnRJbYawQylLPeCUlWSPMQlpNrYFg2VuE
-	TiTv7NCXONupRXeUmWa98wvhaEdcsLI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-277-IYJ33U9IOce8J_5Yad4F5w-1; Mon, 22 Jan 2024 07:39:03 -0500
-X-MC-Unique: IYJ33U9IOce8J_5Yad4F5w-1
+	bh=iici4CcialH0lyfTdSLWnoYWTya5IEpmfmLuwHkca5Y=;
+	b=T4RO/W+tlHh/6oGzcEYvxXqe++IOJleYxhKelCSF0jXgULfRSE8F0/WqJZCrJRNPA7MWB3
+	J3X8zm14XwzYNTHnHln2YTTQ4//15Y2TCxkUMjp47bW6HUjtZj4En3Ti2mzjiiskR/Ufz6
+	CQuNLK2SR/SNNu9GihSSJGeO+G4792k=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-304-nqfuXrHZNCS78rn85yiyNQ-1; Mon,
+ 22 Jan 2024 07:39:09 -0500
+X-MC-Unique: nqfuXrHZNCS78rn85yiyNQ-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6003885A58B;
-	Mon, 22 Jan 2024 12:39:02 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0A9D51C05ABA;
+	Mon, 22 Jan 2024 12:39:08 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.42.28.67])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 7DE802026D66;
-	Mon, 22 Jan 2024 12:39:00 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 9CA3E2026D66;
+	Mon, 22 Jan 2024 12:39:05 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>
 Cc: David Howells <dhowells@redhat.com>,
@@ -55,10 +55,14 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH 04/10] netfs, fscache: Prevent Oops in fscache_put_cache()
-Date: Mon, 22 Jan 2024 12:38:37 +0000
-Message-ID: <20240122123845.3822570-5-dhowells@redhat.com>
+	Marc Dionne <marc.dionne@auristor.com>,
+	Gao Xiang <xiang@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Yue Hu <huyue2@coolpad.com>,
+	Jeffle Xu <jefflexu@linux.alibaba.com>
+Subject: [PATCH 06/10] cachefiles, erofs: Fix NULL deref in when cachefiles is not doing ondemand-mode
+Date: Mon, 22 Jan 2024 12:38:39 +0000
+Message-ID: <20240122123845.3822570-7-dhowells@redhat.com>
 In-Reply-To: <20240122123845.3822570-1-dhowells@redhat.com>
 References: <20240122123845.3822570-1-dhowells@redhat.com>
 Precedence: bulk
@@ -70,37 +74,73 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+cachefiles_ondemand_init_object() as called from cachefiles_open_file() and
+cachefiles_create_tmpfile() does not check if object->ondemand is set
+before dereferencing it, leading to an oops something like:
 
-This function dereferences "cache" and then checks if it's
-IS_ERR_OR_NULL().  Check first, then dereference.
+	RIP: 0010:cachefiles_ondemand_init_object+0x9/0x41
+	...
+	Call Trace:
+	 <TASK>
+	 cachefiles_open_file+0xc9/0x187
+	 cachefiles_lookup_cookie+0x122/0x2be
+	 fscache_cookie_state_machine+0xbe/0x32b
+	 fscache_cookie_worker+0x1f/0x2d
+	 process_one_work+0x136/0x208
+	 process_scheduled_works+0x3a/0x41
+	 worker_thread+0x1a2/0x1f6
+	 kthread+0xca/0xd2
+	 ret_from_fork+0x21/0x33
 
-Fixes: 9549332df4ed ("fscache: Implement cache registration")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fix this by making the calls to cachefiles_ondemand_init_object()
+conditional.
+
+Fixes: 3c5ecfe16e76 ("cachefiles: extract ondemand info field from cachefiles_object")
+Reported-by: Marc Dionne <marc.dionne@auristor.com>
 Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/e84bc740-3502-4f16-982a-a40d5676615c@moroto.mountain/ # v2
+cc: Gao Xiang <xiang@kernel.org>
+cc: Chao Yu <chao@kernel.org>
+cc: Yue Hu <huyue2@coolpad.com>
+cc: Jeffle Xu <jefflexu@linux.alibaba.com>
+cc: linux-erofs@lists.ozlabs.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
 ---
- fs/netfs/fscache_cache.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/cachefiles/namei.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/fs/netfs/fscache_cache.c b/fs/netfs/fscache_cache.c
-index d645f8b302a2..9397ed39b0b4 100644
---- a/fs/netfs/fscache_cache.c
-+++ b/fs/netfs/fscache_cache.c
-@@ -179,13 +179,14 @@ EXPORT_SYMBOL(fscache_acquire_cache);
- void fscache_put_cache(struct fscache_cache *cache,
- 		       enum fscache_cache_trace where)
- {
--	unsigned int debug_id = cache->debug_id;
-+	unsigned int debug_id;
- 	bool zero;
- 	int ref;
+diff --git a/fs/cachefiles/namei.c b/fs/cachefiles/namei.c
+index 7ade836beb58..180594d24c44 100644
+--- a/fs/cachefiles/namei.c
++++ b/fs/cachefiles/namei.c
+@@ -473,9 +473,11 @@ struct file *cachefiles_create_tmpfile(struct cachefiles_object *object)
+ 	if (!cachefiles_mark_inode_in_use(object, file_inode(file)))
+ 		WARN_ON(1);
  
- 	if (IS_ERR_OR_NULL(cache))
- 		return;
+-	ret = cachefiles_ondemand_init_object(object);
+-	if (ret < 0)
+-		goto err_unuse;
++	if (object->ondemand) {
++		ret = cachefiles_ondemand_init_object(object);
++		if (ret < 0)
++			goto err_unuse;
++	}
  
-+	debug_id = cache->debug_id;
- 	zero = __refcount_dec_and_test(&cache->ref, &ref);
- 	trace_fscache_cache(debug_id, ref - 1, where);
+ 	ni_size = object->cookie->object_size;
+ 	ni_size = round_up(ni_size, CACHEFILES_DIO_BLOCK_SIZE);
+@@ -579,9 +581,11 @@ static bool cachefiles_open_file(struct cachefiles_object *object,
+ 	}
+ 	_debug("file -> %pd positive", dentry);
  
+-	ret = cachefiles_ondemand_init_object(object);
+-	if (ret < 0)
+-		goto error_fput;
++	if (object->ondemand) {
++		ret = cachefiles_ondemand_init_object(object);
++		if (ret < 0)
++			goto error_fput;
++	}
+ 
+ 	ret = cachefiles_check_auxdata(object, file);
+ 	if (ret < 0)
 
