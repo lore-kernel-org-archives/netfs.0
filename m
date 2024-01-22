@@ -1,43 +1,45 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3693212E62
-	for <netfs@lists.linux.dev>; Mon, 22 Jan 2024 22:32:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D65538FB3
+	for <netfs@lists.linux.dev>; Mon, 22 Jan 2024 22:32:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705962761; cv=none; b=XOmRABGEKTOUT8qAKrV69j/VJBNdJvyRVBmQ8/sKdgJmzloo3VdhXqtBoIM6z4vUPp7MnvBgAgCfnCyq7OIM/Ti6zOy/Bf9KuhUsIqii0GkaDl/G8LyycCLlaTJMf4QSeJDgGK+PDZ0X4rnEpP42JETLz0OrKLaa8rmKXWvZQZc=
+	t=1705962771; cv=none; b=hFkvxYV9mN2Z8SMcCAz0moqET7cgENC0MjwMaVeGrc7BBs2RNd2JA85H3QT1yfW/kPrvAQFcypmTW5IiHlfApbT2A5kliOQMbKrHHococGjrMC/B3RUXHPbv+sQM7dpVUFTVmz/HzTNQM3l/vGqT4K+qfwONyQCdbuu0N0GXzVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705962761; c=relaxed/simple;
-	bh=daZFC62S3UR5/eYOj7P2J+CoCIGhjBE2E3ZrLE+pFjQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YU9CIdm2dn5W2JG3kssrbxemvnfNHaB3a5OY/W3NKW4og4CsHVntv+/ckBoQcBynjI+v80aIEd9JUnJvjmTjcDwv79179qBkNyShpSIiKblqsVrgQlatAZR2VWBbkk0H1CniJontYOeLBrFu1oNQ9gkOWZu0VReSmT8ymvXQ+k0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eKU3HnG/; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1705962771; c=relaxed/simple;
+	bh=dBNU2+LVkE55FYFG/WjTfMApHZmROR3sCYtSv/humlQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=uMeNFKh1fOoa2q8rHaLJZGvM6yJgduMkLFa+DZmHet8zLl/KepN4RGFqtjswA/Plr2DCvj5/suEvlfX/Z9dCPW/FjI5c431yOn7FCdX0Whb12Eqo3ehge1Xu49RCHj2EfW/Ka8/SIwu2RvJhSoNv/pCVbIT6kLvNfW/vR1fjcE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OMtH8mAR; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eKU3HnG/"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OMtH8mAR"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1705962758;
+	s=mimecast20190719; t=1705962768;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=6rMqtCN9Nns9gicLLQn3euoOj3eY7rsKvUOdFV5pAfA=;
-	b=eKU3HnG/G3v6dgfryRu4P2BOhEutBoNu/++OwmyqXzbMrhbrXNyx8TZdxmIcf1Qz+qRGy8
-	2kC7ALMtFjdLTguOKr05Dt+FYDnq0ffFU93fwYwuLdO2R/2k9Lz89H7fIK2M8lhixm5/dK
-	s+CCt+neT6d6LJZW5VnaRKHmt2KG0/Y=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-101-xVA4GeBNMjm4A_25AiODpA-1; Mon, 22 Jan 2024 17:32:35 -0500
-X-MC-Unique: xVA4GeBNMjm4A_25AiODpA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+7nRZBtb5KDB8wnGQb/hos72IWYUGI+6olZnmjBvpQE=;
+	b=OMtH8mARUbRsQh9mqRxr/WSxUJbCh1mT7IMbyaqmuyYFRa4TGPN57OvUUztYQHA5qOaGOW
+	jOFYxz7MCuSfYf0oeGlNHwh+9OYaM2UxPLaQxAxVxdpllHJBtfF6Gp5f09G3lXYwHFa1yO
+	9D4UX0J44nya4kSlLlLlt3XwpWJJ4TE=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-212-Tq0oefjDMG-ND3l08DWx1w-1; Mon,
+ 22 Jan 2024 17:32:43 -0500
+X-MC-Unique: Tq0oefjDMG-ND3l08DWx1w-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 03AE785A589;
-	Mon, 22 Jan 2024 22:32:34 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 419341C04181;
+	Mon, 22 Jan 2024 22:32:42 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.42.28.67])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 48FAB5012;
-	Mon, 22 Jan 2024 22:32:32 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id C03651121312;
+	Mon, 22 Jan 2024 22:32:39 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>
 Cc: David Howells <dhowells@redhat.com>,
@@ -52,10 +54,17 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-erofs@lists.ozlabs.org,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 00/10] netfs, afs, cifs, cachefiles, erofs: Miscellaneous fixes
-Date: Mon, 22 Jan 2024 22:32:13 +0000
-Message-ID: <20240122223230.4000595-1-dhowells@redhat.com>
+	linux-kernel@vger.kernel.org,
+	Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Ronnie Sahlberg <lsahlber@redhat.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Tom Talpey <tom@talpey.com>
+Subject: [PATCH v2 03/10] cifs: Don't use certain unnecessary folio_*() functions
+Date: Mon, 22 Jan 2024 22:32:16 +0000
+Message-ID: <20240122223230.4000595-4-dhowells@redhat.com>
+In-Reply-To: <20240122223230.4000595-1-dhowells@redhat.com>
+References: <20240122223230.4000595-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -63,70 +72,79 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 
-Hi Christian,
+Filesystems should use folio->index and folio->mapping, instead of
+folio_index(folio), folio_mapping() and folio_file_mapping() since
+they know that it's in the pagecache.
 
-Here are some miscellaneous fixes for netfslib and a number of filesystems:
+Change this automagically with:
 
- (1) Replace folio_index() with folio->index in netfs, afs and cifs.
+perl -p -i -e 's/folio_mapping[(]([^)]*)[)]/\1->mapping/g' fs/smb/client/*.c
+perl -p -i -e 's/folio_file_mapping[(]([^)]*)[)]/\1->mapping/g' fs/smb/client/*.c
+perl -p -i -e 's/folio_index[(]([^)]*)[)]/\1->index/g' fs/smb/client/*.c
 
- (2) Fix an oops in fscache_put_cache().
+Reported-by: Matthew Wilcox <willy@infradead.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: Steve French <sfrench@samba.org>
+cc: Paulo Alcantara <pc@manguebit.com>
+cc: Ronnie Sahlberg <lsahlber@redhat.com>
+cc: Shyam Prasad N <sprasad@microsoft.com>
+cc: Tom Talpey <tom@talpey.com>
+cc: linux-cifs@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
+---
+ fs/smb/client/file.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
- (3) Fix error handling in netfs_perform_write().
-
- (4) Fix an oops in cachefiles when not using erofs ondemand mode.
-
- (5) In afs, hide silly-rename files from getdents() to avoid problems with
-     tar and suchlike.
-
- (6) In afs, fix error handling in lookup with a bulk status fetch.
-
- (7) In afs, afs_dynroot_d_revalidate() is redundant, so remove it.
-
- (8) In afs, fix the RCU unlocking in afs_proc_addr_prefs_show().
-
-The patches can also be found here:
-
-	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-fixes
-
-Thanks,
-David
-
-Changes
-=======
-ver #2)
- - Update the commit messages of the don't-use-folio_index patches.
- - Move check of object->ondemand into cachefiles_ondemand_init_object().
-
-
-Link: https://lore.kernel.org/r/20240122123845.3822570-1-dhowells@redhat.com/ # v1
-
-Dan Carpenter (2):
-  netfs, fscache: Prevent Oops in fscache_put_cache()
-  netfs: Fix a NULL vs IS_ERR() check in netfs_perform_write()
-
-David Howells (8):
-  netfs: Don't use certain unnecessary folio_*() functions
-  afs: Don't use certain unnecessary folio_*() functions
-  cifs: Don't use certain unnecessary folio_*() functions
-  cachefiles, erofs: Fix NULL deref in when cachefiles is not doing
-    ondemand-mode
-  afs: Hide silly-rename files from userspace
-  afs: Fix error handling with lookup via FS.InlineBulkStatus
-  afs: Remove afs_dynroot_d_revalidate() as it is redundant
-  afs: Fix missing/incorrect unlocking of RCU read lock
-
- fs/afs/dir.c               | 30 ++++++++++++++++++++++--------
- fs/afs/dynroot.c           |  9 ---------
- fs/afs/proc.c              |  5 +++--
- fs/cachefiles/ondemand.c   |  3 +++
- fs/netfs/buffered_read.c   | 12 ++++++------
- fs/netfs/buffered_write.c  | 15 ++++++++-------
- fs/netfs/fscache_cache.c   |  3 ++-
- fs/netfs/io.c              |  2 +-
- fs/netfs/misc.c            |  2 +-
- fs/smb/client/file.c       | 10 +++++-----
- include/trace/events/afs.h | 25 +++++++++++++++++++++++++
- 11 files changed, 76 insertions(+), 40 deletions(-)
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index 3a213432775b..90da81d0372a 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -87,7 +87,7 @@ void cifs_pages_written_back(struct inode *inode, loff_t start, unsigned int len
+ 			continue;
+ 		if (!folio_test_writeback(folio)) {
+ 			WARN_ONCE(1, "bad %x @%llx page %lx %lx\n",
+-				  len, start, folio_index(folio), end);
++				  len, start, folio->index, end);
+ 			continue;
+ 		}
+ 
+@@ -120,7 +120,7 @@ void cifs_pages_write_failed(struct inode *inode, loff_t start, unsigned int len
+ 			continue;
+ 		if (!folio_test_writeback(folio)) {
+ 			WARN_ONCE(1, "bad %x @%llx page %lx %lx\n",
+-				  len, start, folio_index(folio), end);
++				  len, start, folio->index, end);
+ 			continue;
+ 		}
+ 
+@@ -151,7 +151,7 @@ void cifs_pages_write_redirty(struct inode *inode, loff_t start, unsigned int le
+ 	xas_for_each(&xas, folio, end) {
+ 		if (!folio_test_writeback(folio)) {
+ 			WARN_ONCE(1, "bad %x @%llx page %lx %lx\n",
+-				  len, start, folio_index(folio), end);
++				  len, start, folio->index, end);
+ 			continue;
+ 		}
+ 
+@@ -2651,7 +2651,7 @@ static void cifs_extend_writeback(struct address_space *mapping,
+ 				continue;
+ 			if (xa_is_value(folio))
+ 				break;
+-			if (folio_index(folio) != index)
++			if (folio->index != index)
+ 				break;
+ 			if (!folio_try_get_rcu(folio)) {
+ 				xas_reset(&xas);
+@@ -2899,7 +2899,7 @@ static int cifs_writepages_region(struct address_space *mapping,
+ 					goto skip_write;
+ 			}
+ 
+-			if (folio_mapping(folio) != mapping ||
++			if (folio->mapping != mapping ||
+ 			    !folio_test_dirty(folio)) {
+ 				start += folio_size(folio);
+ 				folio_unlock(folio);
 
