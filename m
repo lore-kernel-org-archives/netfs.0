@@ -1,45 +1,45 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFD148CEB
-	for <netfs@lists.linux.dev>; Mon, 22 Jan 2024 22:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9121748CFF
+	for <netfs@lists.linux.dev>; Mon, 22 Jan 2024 22:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705962772; cv=none; b=o3g7rA8loXZJEVJuEMe305KwrTNFXCPbetqZaguQ4l0J2kjbbH0I8oqzFtLe9K3d8fCXRm0GHu9ZDRq5buyO9mDgf2icbm5CQmjoyXq80l2hfzeTH3w0h/ILh+N6YJurJhWUccEw73fgQq04muvu35Q9IU+VEwSIBojEkt+knCY=
+	t=1705962773; cv=none; b=nRVKdIkeGKCJYTE2ejhw4GM5AJfF3Lc1mBGD9iJPpIr5W7dXid00A1UMuJJNVZQtC+aNFGBGPEXT+KFpzwdg6QDB9gWbjgmi7xnyx5Z1XrklT632CpV5RoBPF14gTgLuOHVtrbMzSCNuPhsFzY2EAibV6H2n8b5k8gwo3T6fjVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705962772; c=relaxed/simple;
-	bh=/cvksSSZmxrtzmRzMtQyJ29qGFgkxxbGXyOn+BgtGh0=;
+	s=arc-20240116; t=1705962773; c=relaxed/simple;
+	bh=OfIzfUBOegY/aA+DNYcmnKkvNEOiMv9jvlr290zr5sA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nU0nirgzkJZzuN6OcgGMIPWwEl7F2ptwZPA2E+k6/SB86foME44QENX2SovosfIBwzwPQt8N1eB0SW4+HMXg+nBnhKPQelKyzXYk+Sg8SYHIR9X3/fltVkE+f5E35B4sNikvz8rg8VFjpxUkv3pwuvKUyAQ1ZDnZn5J2ZZljC2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LM02zxQS; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=Df0eRbug4+5aapcyhEAxXDD2J0Gmhj1LebUPw2D9uC8DL1+fA1xfjWT5UC8iuU2uNRxKFp+sHZooxFyfiNTTxnXJqpQdOgy5MgdKOlP8zHlo+iefiMWPNwKDMtmPAHayb0K58CA4rs8HH1WaWalafDLEITtk9aRZFIyyF43FPZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ad8o9wV9; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LM02zxQS"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ad8o9wV9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1705962770;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=x1zKGT6uFapv0Zv34dL5cckA4sfK0obP1h5qgfcrNJU=;
-	b=LM02zxQSyEFtGSRWCwWRwTKVIkk4sg5oQl6uXQOfZdAysCN20MzDly3O/TydUpk83qodMW
-	x2UAdsPrkg+jA0LGzK5TN1wG7jc//sxuuho7qjkottXxsPxQaOjTaHS7hjAk2pzv3dG52R
-	MLZ+7+Kb5yJgqZrsuhmHSKR81MDAT6Q=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-677-D55WZ7cLO0uVwnEeCzBXJA-1; Mon,
- 22 Jan 2024 17:32:39 -0500
-X-MC-Unique: D55WZ7cLO0uVwnEeCzBXJA-1
+	bh=8CJ3I/7LDGs8hexTud6zRTfvlS0atGDHH81M3ADEHcQ=;
+	b=Ad8o9wV9ht4mFlJgkxsLVWWwRDT16Qrnao9z+VscOCDVXtTF/bH++0tW383CrDnwtVP3Pf
+	LdRBfXWiotNnyKuKQN9DzpciXiUUE5zdPwv2oJS3uCrZf5oSRVoDY3DhCL+IjDI08K4ix7
+	DcBolSkAr2ObDEvkwjbCQ+rAGsj7MSE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-635-kqQQMgafNgqLwRACAr_1zQ-1; Mon, 22 Jan 2024 17:32:45 -0500
+X-MC-Unique: kqQQMgafNgqLwRACAr_1zQ-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 233F61C04181;
-	Mon, 22 Jan 2024 22:32:39 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D92CC106CFE2;
+	Mon, 22 Jan 2024 22:32:44 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.42.28.67])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 4C0FC2026D66;
-	Mon, 22 Jan 2024 22:32:37 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 040A32026D66;
+	Mon, 22 Jan 2024 22:32:42 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>
 Cc: David Howells <dhowells@redhat.com>,
@@ -55,10 +55,10 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Marc Dionne <marc.dionne@auristor.com>
-Subject: [PATCH v2 02/10] afs: Don't use certain unnecessary folio_*() functions
-Date: Mon, 22 Jan 2024 22:32:15 +0000
-Message-ID: <20240122223230.4000595-3-dhowells@redhat.com>
+	Dan Carpenter <dan.carpenter@linaro.org>
+Subject: [PATCH v2 04/10] netfs, fscache: Prevent Oops in fscache_put_cache()
+Date: Mon, 22 Jan 2024 22:32:17 +0000
+Message-ID: <20240122223230.4000595-5-dhowells@redhat.com>
 In-Reply-To: <20240122223230.4000595-1-dhowells@redhat.com>
 References: <20240122223230.4000595-1-dhowells@redhat.com>
 Precedence: bulk
@@ -70,69 +70,37 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 
-Filesystems should use folio->index and folio->mapping, instead of
-folio_index(folio), folio_mapping() and folio_file_mapping() since
-they know that it's in the pagecache.
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-Change this automagically with:
+This function dereferences "cache" and then checks if it's
+IS_ERR_OR_NULL().  Check first, then dereference.
 
-perl -p -i -e 's/folio_mapping[(]([^)]*)[)]/\1->mapping/g' fs/afs/*.c
-perl -p -i -e 's/folio_file_mapping[(]([^)]*)[)]/\1->mapping/g' fs/afs/*.c
-perl -p -i -e 's/folio_index[(]([^)]*)[)]/\1->index/g' fs/afs/*.c
-
-Reported-by: Matthew Wilcox <willy@infradead.org>
+Fixes: 9549332df4ed ("fscache: Implement cache registration")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-cc: linux-fsdevel@vger.kernel.org
+Link: https://lore.kernel.org/r/e84bc740-3502-4f16-982a-a40d5676615c@moroto.mountain/ # v2
 ---
- fs/afs/dir.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/netfs/fscache_cache.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/afs/dir.c b/fs/afs/dir.c
-index c14533ef108f..3f73d61f7c8a 100644
---- a/fs/afs/dir.c
-+++ b/fs/afs/dir.c
-@@ -124,7 +124,7 @@ static void afs_dir_read_cleanup(struct afs_read *req)
- 		if (xas_retry(&xas, folio))
- 			continue;
- 		BUG_ON(xa_is_value(folio));
--		ASSERTCMP(folio_file_mapping(folio), ==, mapping);
-+		ASSERTCMP(folio->mapping, ==, mapping);
- 
- 		folio_put(folio);
- 	}
-@@ -202,12 +202,12 @@ static void afs_dir_dump(struct afs_vnode *dvnode, struct afs_read *req)
- 		if (xas_retry(&xas, folio))
- 			continue;
- 
--		BUG_ON(folio_file_mapping(folio) != mapping);
-+		BUG_ON(folio->mapping != mapping);
- 
- 		size = min_t(loff_t, folio_size(folio), req->actual_len - folio_pos(folio));
- 		for (offset = 0; offset < size; offset += sizeof(*block)) {
- 			block = kmap_local_folio(folio, offset);
--			pr_warn("[%02lx] %32phN\n", folio_index(folio) + offset, block);
-+			pr_warn("[%02lx] %32phN\n", folio->index + offset, block);
- 			kunmap_local(block);
- 		}
- 	}
-@@ -233,7 +233,7 @@ static int afs_dir_check(struct afs_vnode *dvnode, struct afs_read *req)
- 		if (xas_retry(&xas, folio))
- 			continue;
- 
--		BUG_ON(folio_file_mapping(folio) != mapping);
-+		BUG_ON(folio->mapping != mapping);
- 
- 		if (!afs_dir_check_folio(dvnode, folio, req->actual_len)) {
- 			afs_dir_dump(dvnode, req);
-@@ -2022,7 +2022,7 @@ static bool afs_dir_release_folio(struct folio *folio, gfp_t gfp_flags)
+diff --git a/fs/netfs/fscache_cache.c b/fs/netfs/fscache_cache.c
+index d645f8b302a2..9397ed39b0b4 100644
+--- a/fs/netfs/fscache_cache.c
++++ b/fs/netfs/fscache_cache.c
+@@ -179,13 +179,14 @@ EXPORT_SYMBOL(fscache_acquire_cache);
+ void fscache_put_cache(struct fscache_cache *cache,
+ 		       enum fscache_cache_trace where)
  {
- 	struct afs_vnode *dvnode = AFS_FS_I(folio_inode(folio));
+-	unsigned int debug_id = cache->debug_id;
++	unsigned int debug_id;
+ 	bool zero;
+ 	int ref;
  
--	_enter("{{%llx:%llu}[%lu]}", dvnode->fid.vid, dvnode->fid.vnode, folio_index(folio));
-+	_enter("{{%llx:%llu}[%lu]}", dvnode->fid.vid, dvnode->fid.vnode, folio->index);
+ 	if (IS_ERR_OR_NULL(cache))
+ 		return;
  
- 	folio_detach_private(folio);
++	debug_id = cache->debug_id;
+ 	zero = __refcount_dec_and_test(&cache->ref, &ref);
+ 	trace_fscache_cache(debug_id, ref - 1, where);
  
 
