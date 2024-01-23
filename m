@@ -1,115 +1,88 @@
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EAC74F5E9;
-	Tue, 23 Jan 2024 01:33:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C14604B4;
+	Tue, 23 Jan 2024 15:03:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705973584; cv=none; b=K9prCu8P3iBYz7e/MRNm2Z0lEAGOST3Zq6eM57I+4UHszDwLlxtRT/i3wQo/+iPJVXyXZJmPE3EnOXSTIJzGgU549/EX9AARUxmRiNpleTV0iv+1BKxuoqH8G8K9Q5v0ZGxEORbQcGqnKX7bcGnHEbYdGXlG729/0uuU9n6vUnk=
+	t=1706022207; cv=none; b=smo7uUoxnfhU9ZOeEu/1k5zZW2V2UGGVRdiB/tP6oQ1Swg/9Hk2J3HK0C8fEt5ABo5Po89UXzzQFNqcmQy021PQc3b8+Oo2pwYfHKn/lOFvpOi2Po1YtQbVYUpmxn58EVErL/yflXQBxCAn7Z7yO2EyVxEyixlwPYcAhW/YQN4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705973584; c=relaxed/simple;
-	bh=2JHya8zw5vfik3Fy0mpAMmr+pW0n5iF6d2DFfFJs8JY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LWVdfws+UeIh541YKZExU8P4Y+EWiIWSNzwC9uwolsuNkhWkuw7A7ptjrXZxlR45OraAc+3BCZCCPkRh/dyAZoyzmc0AQ8Jcv+BRDGLPlOKWiCVgOKOtiXdwPUBiNfzQ0p5c8FYk1jRYwVMjEz8s9lJ8xJ2Zn97S9oSyi9+KomE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; arc=none smtp.client-ip=115.124.30.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045170;MF=jefflexu@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0W.Avp97_1705973576;
-Received: from 30.221.145.142(mailfrom:jefflexu@linux.alibaba.com fp:SMTPD_---0W.Avp97_1705973576)
-          by smtp.aliyun-inc.com;
-          Tue, 23 Jan 2024 09:32:57 +0800
-Message-ID: <9bbf3d38-71bd-49c0-9148-6066420d1d91@linux.alibaba.com>
-Date: Tue, 23 Jan 2024 09:32:56 +0800
+	s=arc-20240116; t=1706022207; c=relaxed/simple;
+	bh=q1ehO0VlSRjlEkZix2Yv8UwXgVbsdNerufMonTt1Rvk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Tclm3PQBJ+ZrKMw+OQGz/I6oZ7NE/05hp0Lc4mix8MNGJES2hU9ov0AjbAaMKOMmtS33ubcS7ozWeEWQFjQASJ21amqPEKGEza6DfvF3zoxeRlLNP3b+ugUvdprzlBhePslWHbOk3UlYmj0llqFTP7UJLDWfzR24PeOdipjTY1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NT+M63By; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NT+M63By"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AA8EC433F1;
+	Tue, 23 Jan 2024 15:03:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706022207;
+	bh=q1ehO0VlSRjlEkZix2Yv8UwXgVbsdNerufMonTt1Rvk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NT+M63By3JOLNSB6AfRX73VOAsajcGYOLYmUwI6BJW9eea/qDVp8ui4HATBCbLqta
+	 aJQRALleSXScyEPXdbsBTanNjgZhs5cuisIvevP5qQSUpcJMMvxkf5B1QIdLZrx7sn
+	 dhwfse1OScXIKVs1lftoY+0nBQuSgIuJX/0pusRP9AfbsTwOWd8h9S2PB0/FYX4yLu
+	 qPqYiuCqQSUwKWgbhwu7L+RW3btUfwvRYmIwNtTw1dnRXIrCsaTFVOeCpzVxZE665K
+	 xPr1coTGmxKiax9/xI02gl6qO/vbiH9Z8bjog6KaunCNC0RlXaVp87Q9mb8c3l0amc
+	 5MpTdGsFq5EjQ==
+Date: Tue, 23 Jan 2024 16:03:20 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <christian@brauner.io>, 
+	Jeff Layton <jlayton@kernel.org>, Matthew Wilcox <willy@infradead.org>, netfs@lists.linux.dev, 
+	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org, 
+	ceph-devel@vger.kernel.org, v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 00/10] netfs, afs, cifs, cachefiles, erofs: Miscellaneous
+ fixes
+Message-ID: <20240123-malheur-fahrrad-9d7c2ce2e757@brauner>
+References: <20240122123845.3822570-1-dhowells@redhat.com>
+ <20240122-bezwingen-kanister-b56f5bc1bc84@brauner>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 06/10] cachefiles, erofs: Fix NULL deref in when
- cachefiles is not doing ondemand-mode
-Content-Language: en-US
-To: David Howells <dhowells@redhat.com>,
- Christian Brauner <christian@brauner.io>
-Cc: Jeff Layton <jlayton@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- netfs@lists.linux.dev, linux-afs@lists.infradead.org,
- linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
- ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
- linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Marc Dionne <marc.dionne@auristor.com>, Gao Xiang <xiang@kernel.org>,
- Chao Yu <chao@kernel.org>, Yue Hu <huyue2@coolpad.com>
-References: <20240122223230.4000595-1-dhowells@redhat.com>
- <20240122223230.4000595-7-dhowells@redhat.com>
-From: Jingbo Xu <jefflexu@linux.alibaba.com>
-In-Reply-To: <20240122223230.4000595-7-dhowells@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240122-bezwingen-kanister-b56f5bc1bc84@brauner>
 
+On Mon, Jan 22, 2024 at 04:18:08PM +0100, Christian Brauner wrote:
+> On Mon, Jan 22, 2024 at 12:38:33PM +0000, David Howells wrote:
+> > Hi Christian,
+> > 
+> > Here are some miscellaneous fixes for netfslib and a number of filesystems:
+> > 
+> >  (1) Replace folio_index() with folio->index in netfs, afs and cifs.
+> > 
+> >  (2) Fix an oops in fscache_put_cache().
+> > 
+> >  (3) Fix error handling in netfs_perform_write().
+> > 
+> >  (4) Fix an oops in cachefiles when not using erofs ondemand mode.
+> > 
+> >  (5) In afs, hide silly-rename files from getdents() to avoid problems with
+> >      tar and suchlike.
+> > 
+> >  (6) In afs, fix error handling in lookup with a bulk status fetch.
+> > 
+> >  (7) In afs, afs_dynroot_d_revalidate() is redundant, so remove it.
+> > 
+> >  (8) In afs, fix the RCU unlocking in afs_proc_addr_prefs_show().
+> > 
+> > The patches can also be found here:
+> > 
+> > 	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-fixes
+> 
+> Thank you! I can pull this in right and will send a pr together with the
+> other changes around Wednesday/Thursday for -rc2. So reviews before that
+> would be nice.
 
+Pulled and pushed:
 
-On 1/23/24 6:32 AM, David Howells wrote:
-> cachefiles_ondemand_init_object() as called from cachefiles_open_file() and
-> cachefiles_create_tmpfile() does not check if object->ondemand is set
-> before dereferencing it, leading to an oops something like:
-> 
-> 	RIP: 0010:cachefiles_ondemand_init_object+0x9/0x41
-> 	...
-> 	Call Trace:
-> 	 <TASK>
-> 	 cachefiles_open_file+0xc9/0x187
-> 	 cachefiles_lookup_cookie+0x122/0x2be
-> 	 fscache_cookie_state_machine+0xbe/0x32b
-> 	 fscache_cookie_worker+0x1f/0x2d
-> 	 process_one_work+0x136/0x208
-> 	 process_scheduled_works+0x3a/0x41
-> 	 worker_thread+0x1a2/0x1f6
-> 	 kthread+0xca/0xd2
-> 	 ret_from_fork+0x21/0x33
-> 
-> Fix this by making cachefiles_ondemand_init_object() return immediately if
-> cachefiles->ondemand is NULL.
-> 
-> Fixes: 3c5ecfe16e76 ("cachefiles: extract ondemand info field from cachefiles_object")
-> Reported-by: Marc Dionne <marc.dionne@auristor.com>
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> cc: Gao Xiang <xiang@kernel.org>
-> cc: Chao Yu <chao@kernel.org>
-> cc: Yue Hu <huyue2@coolpad.com>
-> cc: Jeffle Xu <jefflexu@linux.alibaba.com>
-> cc: linux-erofs@lists.ozlabs.org
-> cc: netfs@lists.linux.dev
-> cc: linux-fsdevel@vger.kernel.org
-> ---
-> 
-> Notes:
->     Changes
->     =======
->     ver #2)
->      - Move check of object->ondemand into cachefiles_ondemand_init_object()
-> 
->  fs/cachefiles/ondemand.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-> index 5fd74ec60bef..4ba42f1fa3b4 100644
-> --- a/fs/cachefiles/ondemand.c
-> +++ b/fs/cachefiles/ondemand.c
-> @@ -539,6 +539,9 @@ int cachefiles_ondemand_init_object(struct cachefiles_object *object)
->  	struct fscache_volume *volume = object->volume->vcookie;
->  	size_t volume_key_size, cookie_key_size, data_len;
->  
-> +	if (!object->ondemand)
-> +		return 0;
-> +
->  	/*
->  	 * CacheFiles will firstly check the cache file under the root cache
->  	 * directory. If the coherency check failed, it will fallback to
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.netfs
 
-
-Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
-
--- 
-Thanks,
-Jingbo
+Timeline still the same.
