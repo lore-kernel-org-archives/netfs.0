@@ -1,68 +1,59 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4E357899
-	for <netfs@lists.linux.dev>; Mon, 29 Jan 2024 09:49:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470395D8F7
+	for <netfs@lists.linux.dev>; Mon, 29 Jan 2024 11:55:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706521784; cv=none; b=hHIvgE1XkzSn/S5/jsBgQUoLmCFftqB90wuWlYrSty41/KXp9I6R6D100DRbt88qaUfOa3l0jTT3KRQEUeJp0ILtUtO79I0VxCcWXnQav9sC7rKai1KG+zpluANyd1x2ZKiLdNb/PoSbiTNrKLMG8XYr5CcuXnjXIZRg+O89u/4=
+	t=1706529324; cv=none; b=ugHT5oHJkwz5TLhg7UksBWp1pqKn8z5fDsTwifyq3CmhXawHCgVmoKsYRdWjgRepR+pdTfDE6E/cuX7PGoT+n66llKleuIngfPNcvhtp5F4aW1dPZLs5BpNMENjsWOIeFiNOg81pGliAqiIseKa6gJVnedItGAKzHOuMK/Hh5R8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706521784; c=relaxed/simple;
-	bh=GNEZC7jukHLtUekXJTCkBRDymlNX9cTfVheqMT+wF+4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ceh8CAze+mXR6MwTfH/HKETs5DaW+LC0BdS12fpu1rVTNd3WY/rWlNlP+cAHNTfCOJC035En+8Gfc1yzUbCYVqohIO6XwEYOmhDenDDdPkdoWoEFSRzrCMPTgxRSCbtkLWlDZg5ttA6M92NKcFO0Mla71O7Aoo0RqM8jHdGgSAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RisgDQk/; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1706529324; c=relaxed/simple;
+	bh=PMrkwWNf0Ov30HBPXASH7CkKvXggMgrqzxgN3NrV/VY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X2Rff82YPlO982/KxWYIxd0ldYJZUaJYx3sdvoCOq7S1zLSPkA3Xn4n7NtqNZ7FwWnu4sfatcBjof7AnsfbQ8EkAX8NdeZk//zHmTXR7l3NysafNXLFtnQXjDIEObHKhU471TW1JMPs8RKIk6ohbYwBegJBUwAmPuk8zK64y8YQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=igw5lcxN; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RisgDQk/"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="igw5lcxN"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706521782;
+	s=mimecast20190719; t=1706529322;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ty0Sx4Ua+2bn5g9HXUfTFpOpeFYCT/PUmNHnpETf4uo=;
-	b=RisgDQk/Kuhb52G294FYLA9YgLqnUrQgXUyduXMW2f8B3XEGCID1CgGgXS5YSNbPAMjXas
-	TPe1B0OP0q/mlZxDsiO2gegWoIOgncTanrWPwXVLYkbvNjvUpVcWApuvso+2ggpfFfQYSF
-	GBMZjpWAj6v9Dj+016oCGtXvhDbuXaM=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-605-X_1LCiW7OoeQwPj1VhB6fQ-1; Mon, 29 Jan 2024 04:49:35 -0500
-X-MC-Unique: X_1LCiW7OoeQwPj1VhB6fQ-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ywApO59Mwrb0F3WdOnI+RuaKXV32Yr1moSFyFDBVZS8=;
+	b=igw5lcxNsqD6Reidyq514XVVxx81MmjwXO9T0D4DlkNsE/q8GDAfL+ZGA1grw5sC05jtbV
+	uvP4BI8q2KoAvuet/F+xvEyqflj7HTJGn9uugSY+fGLkIFWwROjiMDvrcYM8ZVeg/aJ3j7
+	Bdinq8qYFVUbrxooxmV4xFUnyVTTpg0=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-500-_hvLZoDIM-y0hjc_RyKfow-1; Mon,
+ 29 Jan 2024 06:55:18 -0500
+X-MC-Unique: _hvLZoDIM-y0hjc_RyKfow-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8808688B7A3;
-	Mon, 29 Jan 2024 09:49:34 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 348C929AA3AC;
+	Mon, 29 Jan 2024 11:55:18 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.42.28.245])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 79BAB492BE2;
-	Mon, 29 Jan 2024 09:49:32 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 967671121306;
+	Mon, 29 Jan 2024 11:55:16 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>
-Cc: David Howells <dhowells@redhat.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
+To: Eric Van Hensbergen <ericvh@kernel.org>,
 	Dominique Martinet <asmadeus@codewreck.org>,
-	Jeff Layton <jlayton@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>
+Cc: David Howells <dhowells@redhat.com>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
 	Matthew Wilcox <willy@infradead.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Christian Brauner <christian@brauner.io>,
 	netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
 	v9fs@lists.linux.dev,
-	linux-erofs@lists.ozlabs.org,
 	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux_oss@crudebyte.com
-Subject: [PATCH 2/2] netfs: Fix missing zero-length check in unbuffered write
-Date: Mon, 29 Jan 2024 09:49:19 +0000
-Message-ID: <20240129094924.1221977-3-dhowells@redhat.com>
-In-Reply-To: <20240129094924.1221977-1-dhowells@redhat.com>
-References: <20240129094924.1221977-1-dhowells@redhat.com>
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH 0/3] 9p: Further netfslib-related changes
+Date: Mon, 29 Jan 2024 11:54:34 +0000
+Message-ID: <20240129115512.1281624-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -70,78 +61,43 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 
-Fix netfs_unbuffered_write_iter() to return immediately if
-generic_write_checks() returns 0, indicating there's nothing to write.
-Note that netfs_file_write_iter() already does this.
+Hi Eric, Dominique,
 
-Also, whilst we're at it, put in checks for the size being zero before we
-even take the locks.  Note that generic_write_checks() can still reduce the
-size to zero, so we still need that check.
+Here are some netfslib-related changes we might want to consider applying
+to 9p:
 
-Without this, a warning similar to the following is logged to dmesg:
+ (1) Enable large folio support for 9p.  This is handled entirely by
+     netfslib and is already supported in afs.  I wonder if we should limit
+     the maximum folio size to 1MiB to match the maximum I/O size in the 9p
+     protocol.
 
-	netfs: Zero-sized write [R=1b6da]
+ (2) Make better use of netfslib's writethrough caching support by not
+     disabling caching for O_DSYNC.  netfs_perform_write() will set up
+     and dispatch write requests as it copies data into the pagecache.
 
-and the syscall fails with EIO, e.g.:
+ (3) Always update netfs_inode::remote_size to reflect what we think the
+     server's idea of the file size is.  This is separate from
+     inode::i_size which is our idea of what it should be if all of our
+     outstanding dirty data is committed.
 
-	/sbin/ldconfig.real: Writing of cache extension data failed: Input/output error
+The patches can also be found here:
 
-This can be reproduced on 9p by:
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-9p
 
-	xfs_io -f -c 'pwrite 0 0' /xfstest.test/foo
+Thanks,
+David
 
-Fixes: 153a9961b551 ("netfs: Implement unbuffered/DIO write support")
-Reported-by: Eric Van Hensbergen <ericvh@kernel.org>
-Link: https://lore.kernel.org/r/ZbQUU6QKmIftKsmo@FV7GG9FTHL/
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Dominique Martinet <asmadeus@codewreck.org>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: v9fs@lists.linux.dev
-cc: linux_oss@crudebyte.com
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
----
- fs/netfs/buffered_write.c | 3 +++
- fs/netfs/direct_write.c   | 5 ++++-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+David Howells (2):
+  9p: Make better use of netfslib's writethrough caching
+  9p: Always update remote_i_size in stat2inode
 
-diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
-index a3059b3168fd..9a0d32e4b422 100644
---- a/fs/netfs/buffered_write.c
-+++ b/fs/netfs/buffered_write.c
-@@ -477,6 +477,9 @@ ssize_t netfs_file_write_iter(struct kiocb *iocb, struct iov_iter *from)
- 
- 	_enter("%llx,%zx,%llx", iocb->ki_pos, iov_iter_count(from), i_size_read(inode));
- 
-+	if (!iov_iter_count(from))
-+		return 0;
-+
- 	if ((iocb->ki_flags & IOCB_DIRECT) ||
- 	    test_bit(NETFS_ICTX_UNBUFFERED, &ictx->flags))
- 		return netfs_unbuffered_write_iter(iocb, from);
-diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
-index 60a40d293c87..bee047e20f5d 100644
---- a/fs/netfs/direct_write.c
-+++ b/fs/netfs/direct_write.c
-@@ -139,6 +139,9 @@ ssize_t netfs_unbuffered_write_iter(struct kiocb *iocb, struct iov_iter *from)
- 
- 	_enter("%llx,%zx,%llx", iocb->ki_pos, iov_iter_count(from), i_size_read(inode));
- 
-+	if (!iov_iter_count(from))
-+		return 0;
-+
- 	trace_netfs_write_iter(iocb, from);
- 	netfs_stat(&netfs_n_rh_dio_write);
- 
-@@ -146,7 +149,7 @@ ssize_t netfs_unbuffered_write_iter(struct kiocb *iocb, struct iov_iter *from)
- 	if (ret < 0)
- 		return ret;
- 	ret = generic_write_checks(iocb, from);
--	if (ret < 0)
-+	if (ret <= 0)
- 		goto out;
- 	ret = file_remove_privs(file);
- 	if (ret < 0)
+Dominique Martinet (1):
+  9p: Enable large folio support
+
+ fs/9p/fid.h            | 3 +--
+ fs/9p/vfs_inode.c      | 1 +
+ fs/9p/vfs_inode_dotl.c | 6 +++---
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
