@@ -1,45 +1,45 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8E3604C0
-	for <netfs@lists.linux.dev>; Mon, 29 Jan 2024 11:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FAD0605A8
+	for <netfs@lists.linux.dev>; Mon, 29 Jan 2024 11:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706529331; cv=none; b=ftfrCi9AkW9J1VAFmUjz99WBcpKoJq5ylL916KX/gajNLF45ArTFmu+eo/5NbLB0lAThwOsiaDW8YAFlKc/QIXe8zLckak/qB6daHbMYEcVY5z2anmCWMWoL6K3DW/JhSQIyTu8pNpUDp2vnsdBmB7CuKJ6qIYh5VQker6WT5Ww=
+	t=1706529331; cv=none; b=dn6XuVshI9j8KmgRkA/ExLiDWfg7MjlHSc1zEXwqH8qTWPy4t4UXSsusxW6HBGP1QZpNmvBAgis9X/lEFb/gWdDDR7JXJ4XqSj7BBoUH7wjobY8dJduIYk5Yv/8XkMStSHqBiqyluvjUuXQ99K8hZFkFVUTwUqQXgEDdUvWm/FA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1706529331; c=relaxed/simple;
-	bh=1byjLmjT6ZOpcnDHKbSQxLlzmYce9B40FvFh6bkgVOc=;
+	bh=8IPI0i4AIUbrhnIiq1QZ8oL6smmFsdTdPo6Or4XKuYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FXrjvk85AUhUuYP2zF5uQPjsbmObKoQppr8aV7fQBYoB7yyzfz1NfpPGZsVu83XtkvLgVZYJphHYnJy4AaVZ01kkTBIqoGZVRq5GVm1YggK0k6K/s/dT/yDvQv3G16FoWfhIFtJAU6y4SKjUrm+UH8qUats0Oq7XKTTkOyZWqL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PoQLYHBC; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=Q3IEDwzuvlI2jYk+iVYPTbyZyFmE2OVsJ6RD4QIOL33b4tiuvJvd87tH4LuKHUTDvQGiivcY0poDR0jIkcKMyaJLUAJgGn8n/Vt+B6HcjlwF/uUX5FEkkFeQEjtYTkWEA8RMcmh+YH+fQfRDf3n1yi6gBXKpU7HZPDBfVuBYYww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZINRdtY3; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PoQLYHBC"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZINRdtY3"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706529328;
+	s=mimecast20190719; t=1706529329;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=l/klC/ghutWIOc1+EVzXLrxXcGHqt0/sieVr6S5RVKE=;
-	b=PoQLYHBCBwd7orH+JsGCpdf27fqQp8Wm9CKFvAKkbC2ggvoPAK/oemBi5pdtEJ2evyukQD
-	yMEE9C+71o+fNc9LHhHwmB8sHdRkvwwprRsRsLxo1ng6d5vaHVSVveHNqB4PHLB6qSLFef
-	D0eXgMr/fC/IAnXkNYhmSJKabztPi1M=
+	bh=dSmN7QyWcycaQv80GOOzAGn7oioEgCdIaauNWX6x3RI=;
+	b=ZINRdtY3+I5WdS36s8qCQDtZxY01fax30h0qeqrLD3EdqGn1PsctcCUq/XwlwGnk7LpUNA
+	YYNKYIIr60BDLJ3yE0k2+Vk8tUJWEefLG08AyhoFBB3cOLHS33ZHZuOnUGwjtEL3dpd1e5
+	JFkewv9+q+sLVntxkadoq2rhhVSV7bM=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-221-d1lzjPdMMbCmhQXLAPqJfA-1; Mon, 29 Jan 2024 06:55:25 -0500
-X-MC-Unique: d1lzjPdMMbCmhQXLAPqJfA-1
+ us-mta-1-J2RsO0QYPT-EtJNyg6lBzA-1; Mon, 29 Jan 2024 06:55:22 -0500
+X-MC-Unique: J2RsO0QYPT-EtJNyg6lBzA-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ADC73185A782;
-	Mon, 29 Jan 2024 11:55:24 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.42.28.245])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 013882166B31;
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4919785A58E;
 	Mon, 29 Jan 2024 11:55:22 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.42.28.245])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id D36022166B31;
+	Mon, 29 Jan 2024 11:55:20 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Eric Van Hensbergen <ericvh@kernel.org>,
 	Dominique Martinet <asmadeus@codewreck.org>,
@@ -52,11 +52,10 @@ Cc: David Howells <dhowells@redhat.com>,
 	netfs@lists.linux.dev,
 	v9fs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-cachefs@redhat.com
-Subject: [RFC PATCH 3/3] 9p: Always update remote_i_size in stat2inode
-Date: Mon, 29 Jan 2024 11:54:37 +0000
-Message-ID: <20240129115512.1281624-4-dhowells@redhat.com>
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH 2/3] 9p: Make better use of netfslib's writethrough caching
+Date: Mon, 29 Jan 2024 11:54:36 +0000
+Message-ID: <20240129115512.1281624-3-dhowells@redhat.com>
 In-Reply-To: <20240129115512.1281624-1-dhowells@redhat.com>
 References: <20240129115512.1281624-1-dhowells@redhat.com>
 Precedence: bulk
@@ -68,38 +67,44 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 
-Always update remote_i_size in v9fs_stat2inode*() if the size is available,
-even if we are asked not to update i_isize
+netfslib offers the opportunity to do a form of writethrough caching on the
+pagecache, whereby netfs_perform_write() will set up and dispatch writes to
+the network as it copies data into the cache, falling back to the ordinary
+writeback path for the dirty data if this fails.  This is selected if the
+user sets O_DSYNC, O_SYNC, RWF_DSYNC or RWF_SYNC or if the filesystem sets
+NETFS_ICTX_WRITETHROUGH.
 
-Suggested-by: Dominique Martinet <asmadeus@codewreck.org>
-Link: https://lore.kernel.org/r/ZZVctju5TEjS218p@codewreck.org/
+Change v9fs_fid_add_modes() to use this if O_DSYNC is set - and assuming
+that CACHE_WRITEBACK is set and V9FS_SYNC is not set.
+
+[?] Does it make sense to add an additional caching mode that uses
+    write-through for all non-DIO writes?
+
 Signed-off-by: David Howells <dhowells@redhat.com>
 cc: Eric Van Hensbergen <ericvh@kernel.org>
 cc: Latchesar Ionkov <lucho@ionkov.net>
+cc: Dominique Martinet <asmadeus@codewreck.org>
 cc: Christian Schoenebeck <linux_oss@crudebyte.com>
+cc: Jeff Layton <jlayton@kernel.org>
 cc: v9fs@lists.linux.dev
-cc: linux-cachefs@redhat.com
+cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
 ---
- fs/9p/vfs_inode_dotl.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/9p/fid.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
-index 3505227e1704..aa3a77bb5e86 100644
---- a/fs/9p/vfs_inode_dotl.c
-+++ b/fs/9p/vfs_inode_dotl.c
-@@ -684,10 +684,10 @@ v9fs_stat2inode_dotl(struct p9_stat_dotl *stat, struct inode *inode,
- 			mode |= inode->i_mode & ~S_IALLUGO;
- 			inode->i_mode = mode;
- 		}
--		if (!(flags & V9FS_STAT2INODE_KEEP_ISIZE) &&
--		    stat->st_result_mask & P9_STATS_SIZE) {
-+		if (stat->st_result_mask & P9_STATS_SIZE) {
- 			v9inode->netfs.remote_i_size = stat->st_size;
--			v9fs_i_size_write(inode, stat->st_size);
-+			if (!(flags & V9FS_STAT2INODE_KEEP_ISIZE))
-+				v9fs_i_size_write(inode, stat->st_size);
- 		}
- 		if (stat->st_result_mask & P9_STATS_BLOCKS)
- 			inode->i_blocks = stat->st_blocks;
+diff --git a/fs/9p/fid.h b/fs/9p/fid.h
+index 29281b7c3887..0b25b4c9781d 100644
+--- a/fs/9p/fid.h
++++ b/fs/9p/fid.h
+@@ -56,8 +56,7 @@ static inline void v9fs_fid_add_modes(struct p9_fid *fid, unsigned int s_flags,
+ 	   ((fid->qid.version == 0) && !(s_flags & V9FS_IGNORE_QV)) ||
+ 	   (s_flags & V9FS_DIRECT_IO) || (f_flags & O_DIRECT)) {
+ 		fid->mode |= P9L_DIRECT; /* no read or write cache */
+-	} else if ((!(s_cache & CACHE_WRITEBACK)) ||
+-				(f_flags & O_DSYNC) || (s_flags & V9FS_SYNC)) {
++	} else if ((!(s_cache & CACHE_WRITEBACK)) || (s_flags & V9FS_SYNC)) {
+ 		fid->mode |= P9L_NOWRITECACHE;
+ 	}
+ }
 
