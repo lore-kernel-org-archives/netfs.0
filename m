@@ -1,91 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A054657AD;
-	Mon, 29 Jan 2024 13:54:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C8B65BC9
+	for <netfs@lists.linux.dev>; Mon, 29 Jan 2024 14:22:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706536443; cv=none; b=a2J8VqtI3Pw0L9i2tVu8F8WftHNlNua1K71xkd/kANSN8KKaLNxJpv7mirTyR9Pr/jm24uAIgaD76r+zAcmGRQD0WPX2/J/i6BokX3ANyh4hKumneWHi6KpBjj5oKV0ErnA8q1W155GzBhGMHxdzWmFY3oUx7Dn2NzzaIYjfqbI=
+	t=1706538149; cv=none; b=RoYwCDJ4Q7Nw7hhAokOSIBbcpES0pbhiv2DDICyBeWtqBczKS0YAMEJGq8Chl2SnO1qgrhgRRPuhw7JYTaTAm4A03j9l2ekViN4A/+wAr9qEOUY9qufC90WFsrhvut48yURSV9rwbs1kk7+V5GFdJT5ty30jVxy8ANksLIsF2kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706536443; c=relaxed/simple;
-	bh=oxnQVHjK16c3SXNOAjdh150De7InleBILFnsJkuVb2I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SyfOTvJiPSUUPF1FonLytpPq8j73SvECMQiy3hbP19ewcpM8NUVTsJthajV4qloOigMd7GjUOl3S6f0urOZq+VIGuQUz3mcDsG2VVzceLU2OU0uNxIlDbVQCbf0YoeeckfZfSJGBD88iXJiBQdq6a1V2jKWzfO4BVOfO0YpbNn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dyd1SJm/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1706538149; c=relaxed/simple;
+	bh=tCWWZomfJcyxHGHphvF07Z+awA1I576ll6ppz1EFzEw=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=uKmJlTuSJhznVsHQmpAQq4r/BofsertjdCHeZTgWVL9yYgD3e9WTFs0ZZqOUuIVtRlXtgtYOyn7Zk0fvuW8m7XmCQu40M0dBek+flbPovXN3VK7s1Pk8A3jUBRLJli90170VYKx9moQ/r66FA0MzdvwicAe+drh7/6zzK19AM4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=W3ndYjg3; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dyd1SJm/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9078C433C7;
-	Mon, 29 Jan 2024 13:53:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706536442;
-	bh=oxnQVHjK16c3SXNOAjdh150De7InleBILFnsJkuVb2I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dyd1SJm/k5kdkc6EEeyiavgicku+98LjoK4Bq483kWInYTN9cx40JwhTkLVAgaYP2
-	 it+C/nBcfpr3NRzOTgOWBWkIM13Yek41pmj5bH773MkKRsrN/NwOSOyi9J/t8yYO25
-	 i/SQ1Yi7STfs8DutbEAX5joK9MGXOj1Jr122hEa1ZA8Ud6h2f0jOeRoW//73dkNuVi
-	 H2EZQZf5OPmvyzK9fwrBZkIgOF05TdjGf10I2yJ/yq6VBycQJ3qF48QJRUePqyToC9
-	 PCGX6rur5i6MdaWmVjP2Q1uysyuDBBo8TA4ydzdvlzUi/7jAXsG/LejmP7K1YLj8/q
-	 u7jG606WZF6jA==
-From: Christian Brauner <brauner@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	v9fs@lists.linux.dev,
-	linux-erofs@lists.ozlabs.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/2] netfs: Miscellaneous fixes
-Date: Mon, 29 Jan 2024 14:53:39 +0100
-Message-ID: <20240129-kleeblatt-rosig-a28c8042fb2a@brauner>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129094924.1221977-1-dhowells@redhat.com>
-References: <20240129094924.1221977-1-dhowells@redhat.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="W3ndYjg3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1706538144;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JY6BkJiBfGvFZHOyLdscqIayyamnbMR5+XLPiL0Fn18=;
+	b=W3ndYjg31rj1pJEu1zXs47/ZdjG9Xp3fGnqlJLgDCCGS7mtmQUFY0VglhsQ1RtPG9eNf3t
+	2aN7vwa/+DrFKbGSJnj2ylrClOJCPBhgneKb01Br53ecguN9sLvsvttF2KgducZ6qqNElz
+	2hk+fThudKEe2y82jyHG0QVWERrfg1Y=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-484-G4-T2WGhNT-FuUxip56YNA-1; Mon,
+ 29 Jan 2024 09:22:19 -0500
+X-MC-Unique: G4-T2WGhNT-FuUxip56YNA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 521DE1C0432A;
+	Mon, 29 Jan 2024 14:22:18 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.245])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 8D63B2166B31;
+	Mon, 29 Jan 2024 14:22:16 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <1726980.McBZPkGeyK@silver>
+References: <1726980.McBZPkGeyK@silver> <20240129115512.1281624-1-dhowells@redhat.com>
+To: Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: dhowells@redhat.com, Eric Van Hensbergen <ericvh@kernel.org>,
+    Dominique Martinet <asmadeus@codewreck.org>,
+    Latchesar Ionkov <lucho@ionkov.net>,
+    Matthew Wilcox <willy@infradead.org>,
+    Jeff Layton <jlayton@kernel.org>,
+    Christian Brauner <christian@brauner.io>, netfs@lists.linux.dev,
+    v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 0/3] 9p: Further netfslib-related changes
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1172; i=brauner@kernel.org; h=from:subject:message-id; bh=oxnQVHjK16c3SXNOAjdh150De7InleBILFnsJkuVb2I=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaRuX/vRz8V965um1m91CsbZ9wV2fJ18fZNu8T3XE+d8D xR7/fw5v6OUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAiKosY/pd1JPw3fzjxoP/G tS3fF8337FxYV/7w+G4zxcllZzuPveNl+MM788oSjU/qfNop+4+JHuhOX9S+rLtf7cDSszOc1zR +PMkMAA==
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1400270.1706538135.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 29 Jan 2024 14:22:15 +0000
+Message-ID: <1400271.1706538135@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 
-On Mon, 29 Jan 2024 09:49:17 +0000, David Howells wrote:
-> Here are a couple of fixes for netfslib:
-> 
->  (1) Fix an i_dio_count leak on a DIO read starting beyond EOF.
-> 
->  (2) Fix a missing zero-length check in an unbuffered write causing 9p to
->      indicate EIO.
-> 
-> [...]
+Christian Schoenebeck <linux_oss@crudebyte.com> wrote:
 
-Applied to the vfs.netfs branch of the vfs/vfs.git tree.
-Patches in the vfs.netfs branch should appear in linux-next soon.
+> >  (1) Enable large folio support for 9p.  This is handled entirely by
+> >      netfslib and is already supported in afs.  I wonder if we should =
+limit
+> >      the maximum folio size to 1MiB to match the maximum I/O size in t=
+he 9p
+> >      protocol.
+> =
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+> The limit depends on user's 'msize' 9p client option and on the 9p trans=
+port
+> implementation. The hard limit with virtio transport for instance is cur=
+rently
+> just 500k (patches for virtio 4MB limit fetching dust unfortunately).
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+Okay.  Is that 500KiB or 512Kib?
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+> Would you see an advantage to limit folio size? I mean p9_client_read() =
+etc.
+> are automatically limiting the read/write chunk size accordingly.
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.netfs
+For reads not so much, but for writes it would mean that a dirty folio is
+either entirely written or entirely failed.  I don't know how important th=
+is
+would be for the 9p usecases.
 
-[1/2] netfs: Fix i_dio_count leak on DIO read past i_size
-      https://git.kernel.org/vfs/vfs/c/a4bb694db189
-[2/2] netfs: Fix missing zero-length check in unbuffered write
-      https://git.kernel.org/vfs/vfs/c/2d6e065e2431
+David
+
