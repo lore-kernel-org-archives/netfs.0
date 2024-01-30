@@ -1,92 +1,106 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5641629D03;
-	Mon, 29 Jan 2024 20:53:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA347D3FD;
+	Tue, 30 Jan 2024 21:57:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.121.71.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706561604; cv=none; b=X22E8Xxa1nUJsYlqO3mf4P+CoS5I7Qs5sLk8z5e3jevhvBZFygqMsnSeHRXeTlnOqikWfidU4vPk3CGP6x+6PbZafU/q4Vy94d94hBCyOMspcL5tmzo3QIwcDMnIFdo0OJ7p7i+yuxP1urTSfVm1a0zkqgAKUyAaZL/sfhdtmCg=
+	t=1706651878; cv=none; b=XtabcM7/OvCk1ym9b032rJm8OCPmZ9QNCV+V2n8a0CJNo98IMdE1hKuSxQyK0m6vdhpH7BIf6d4Uribwn4oiiBKpUXoPCvZAOnZT2WAlzE5FsPNH6id42pKivcycvYZs1HDPgxRmha9WKynX9grkr5PIDF/IQEvELtvAxUMKsE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706561604; c=relaxed/simple;
-	bh=7shu1kQp5hKe9agoMH9qJo8QtYjjAUCVX1MLlx22v1s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ugpHnhI4KGp3hoOH7d80b3fsllh1b+BLq6RtP1SoEGy0aYefmWiDkIviUrvz4Fl65kWKTd+6u6yj/ry4Ia+FnsjWT5Zq0P7+BGa0T6OqXhd27usIwW2ujUiH1calD7rc/TGmOf1PEvR2/dvAr0dhC/imPd7nt9xWQSpf1nvu4cQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=a45d4hFm; arc=none smtp.client-ip=5.189.157.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
+	s=arc-20240116; t=1706651878; c=relaxed/simple;
+	bh=LhastNy1vEGEXwl9qsykeN3HvyBhGxId+V1bFptNfuI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G+GIcRbPx1KAeo294IwOZSEPaVhAtaMkwfS1aiQKRRBhxiVXL5H2M3Un+9mMKeiNZDZT5H11zp14M+IftPaAjDRddM6UJJXXFdObItLlVLRAl9l8NYuyjuJHaubXOgFb+7J1v+YQk4vvvdRLgJCl//G6gg5lPKqrURs2QA1/vyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=f/lTyC7A; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=Jz95UDCB; arc=none smtp.client-ip=91.121.71.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="a45d4hFm"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=2dTEyjtteeuqOs2PRClBfhfMNIS8T9MNH+TgboxuqbY=; b=a45d4hFmybCdijy4TXhiCFFbFs
-	NWL/Y7lkUWm58OqzeLEYiUTCBAtp5Sr8kyOIuyiKIwZ0mLIUqgucQRoZzy5dOUyN9iTy1Bq/kSkgY
-	9P3gHx44UdxOLI6qodRvssAYO2nZFe/FMU0SKlmCONjNmS+kR33o+5Nopw+SZljmhme5zH1Iw4yQK
-	Pj85DoPO0i95fpuEohClOsrBVgEO4xM6yOckL5nuIZciCidzLCs/Wy7Z5OKY6zXHIXUxYwuXnep3g
-	GOPKlRPwxAXe/umGjGi4SOVXW9HWm7Brp/MedqI89RRZ0b8LLUo0e1LJxndDOQ75AdulrvBpnYbuX
-	izXrrKTdYCofr60bEqe3Gh2MeOxui8Hdtu7lVxeHtLprFrYdgvQ/HIPRdSQuFncWGE+6VyQoPTNQ6
-	kk3cpHwmNX1Wo8cfhrO4QYV8Fe8LhPxwIHZGiRwsyAJ4D4ZgfJ5Csc4fn15+UXdMMK0qeFCIlfuMJ
-	OxrlC1cpbDMpGVusfhNKoTsYj6eZumqAXQArpszJXmlwmUAo7tPrZ8hPa/ZXD3+MpgiyOTDvUd//I
-	xpyxSo/JMpX3HExjDwhCQldsKf1WFrv3DyjHv1L2ZDBTdnR7dvRiLrLwoKoBaR+0vqJYggqCgl9s/
-	zvf+SagYnHCxVsKxc24z5tOE8T9g0ZWakGfvQeZks=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="f/lTyC7A";
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="Jz95UDCB"
+Received: by nautica.notk.org (Postfix, from userid 108)
+	id 83F23C020; Tue, 30 Jan 2024 22:57:48 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1706651868; bh=3OM4TbWQ6erHco16GZP6eiXbolJmb1FVgvE2iI59oRQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=f/lTyC7AylluE9U/rrb+EqMMb08YeAv56CHHe1zQ15EqWYC2qNjDv9qB8JyKcrcDi
+	 qo+Su4xRp1/QH2BIlOO9yb1sQmzrZDBFiJYn22LcRnLm1jWO3hlouD0PgkXU4htvng
+	 V7l1OLr86QG6KCKzFLIrWaXrAR79KCo8Etpqnuvwxvi1v2U3X/G02BaOvDgW/Khphr
+	 88j5Z5iqSj+/DNp9D0RLw4ZXfMDZbh0/P9qUDcknOvaIPuLk4S+YgxfK7HjqdxrL1r
+	 ZUDUsrWqCVK6ONeNFP1mL470dFi7654rmnqSCC8U1IL9GcUlEUOaAVHM+0fIaQlepN
+	 Aa6V/YaBN9fGg==
+X-Spam-Level: 
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by nautica.notk.org (Postfix) with ESMTPS id 1F1A9C009;
+	Tue, 30 Jan 2024 22:57:42 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1706651867; bh=3OM4TbWQ6erHco16GZP6eiXbolJmb1FVgvE2iI59oRQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Jz95UDCBaCc7DNbBv88Y6UtPW8uWNycCk6cHz5RjFY/3zlaTuCtTXG9Rt3/uY0uG5
+	 5TNOGUBtkKibEUm+xkwQt/w1KbKcI8teuo9q4z4hcv1gQpDXQu3sPlKtdi4t9NBtrH
+	 8hWZlXkK6p3tF+iLckxAh3vygIMPNOTVSuPOqudJjBmw6OiMkqHk5OCcl2WcxvHU/E
+	 +GS0FLMkD8Z+632TihN4Q/JR2fW2x351vGu4dw7Hc7cTA4cBIFIXw61BAOcHBYYp8Y
+	 U1yfe1icLInyDTUSSeQ9f+RBg8KbXPYx62fbcRiQ1mEjyt+wrKr6hYWqFX34wlPxGo
+	 EPGrBHtPIhA8Q==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id c6e1a942;
+	Tue, 30 Jan 2024 21:57:38 +0000 (UTC)
+Date: Wed, 31 Jan 2024 06:57:23 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
 To: David Howells <dhowells@redhat.com>
-Cc: dhowells@redhat.com, Eric Van Hensbergen <ericvh@kernel.org>,
- Dominique Martinet <asmadeus@codewreck.org>,
- Latchesar Ionkov <lucho@ionkov.net>, Matthew Wilcox <willy@infradead.org>,
- Jeff Layton <jlayton@kernel.org>, Christian Brauner <christian@brauner.io>,
- netfs@lists.linux.dev, v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 0/3] 9p: Further netfslib-related changes
-Date: Mon, 29 Jan 2024 21:53:09 +0100
-Message-ID: <5747464.0Q8nNhgPvr@silver>
-In-Reply-To: <1400271.1706538135@warthog.procyon.org.uk>
-References:
- <1726980.McBZPkGeyK@silver> <20240129115512.1281624-1-dhowells@redhat.com>
- <1400271.1706538135@warthog.procyon.org.uk>
+Cc: Christian Brauner <christian@brauner.io>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>, netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux_oss@crudebyte.com
+Subject: Re: [PATCH 2/2] netfs: Fix missing zero-length check in unbuffered
+ write
+Message-ID: <Zblww5O_bRvKx36g@codewreck.org>
+References: <20240129094924.1221977-1-dhowells@redhat.com>
+ <20240129094924.1221977-3-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240129094924.1221977-3-dhowells@redhat.com>
 
-On Monday, January 29, 2024 3:22:15 PM CET David Howells wrote:
-> Christian Schoenebeck <linux_oss@crudebyte.com> wrote:
+David Howells wrote on Mon, Jan 29, 2024 at 09:49:19AM +0000:
+> Fix netfs_unbuffered_write_iter() to return immediately if
+> generic_write_checks() returns 0, indicating there's nothing to write.
+> Note that netfs_file_write_iter() already does this.
 > 
-> > >  (1) Enable large folio support for 9p.  This is handled entirely by
-> > >      netfslib and is already supported in afs.  I wonder if we should limit
-> > >      the maximum folio size to 1MiB to match the maximum I/O size in the 9p
-> > >      protocol.
-> > 
-> > The limit depends on user's 'msize' 9p client option and on the 9p transport
-> > implementation. The hard limit with virtio transport for instance is currently
-> > just 500k (patches for virtio 4MB limit fetching dust unfortunately).
+> Also, whilst we're at it, put in checks for the size being zero before we
+> even take the locks.  Note that generic_write_checks() can still reduce the
+> size to zero, so we still need that check.
 > 
-> Okay.  Is that 500KiB or 512Kib?
+> Without this, a warning similar to the following is logged to dmesg:
+> 
+> 	netfs: Zero-sized write [R=1b6da]
+> 
+> and the syscall fails with EIO, e.g.:
+> 
+> 	/sbin/ldconfig.real: Writing of cache extension data failed: Input/output error
+> 
+> This can be reproduced on 9p by:
+> 
+> 	xfs_io -f -c 'pwrite 0 0' /xfstest.test/foo
+> 
+> Fixes: 153a9961b551 ("netfs: Implement unbuffered/DIO write support")
+> Reported-by: Eric Van Hensbergen <ericvh@kernel.org>
+> Link: https://lore.kernel.org/r/ZbQUU6QKmIftKsmo@FV7GG9FTHL/
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> cc: Dominique Martinet <asmadeus@codewreck.org>
 
-'msize' is currently hard limited by virtio transport to exactly 512000. For
-rdma and fd transports it's both exactly 1MiB. For xen transport it should be
-exactly 524288 (could be lowered though depending on configured xen ring
-size). You find the individual transports to fill the field 'maxsize'
-accordingly (in net/9p/trans_*.c).
+Thanks!
 
-So that's the maximum message size. Then the individual 9p message header
-size needs to be subtracted. For Twrite request that's -23, for Rread
-response that's -11.
+Tested-by: Dominique Martinet <asmadeus@codewreck.org>
 
-> > Would you see an advantage to limit folio size? I mean p9_client_read() etc.
-> > are automatically limiting the read/write chunk size accordingly.
-> 
-> For reads not so much, but for writes it would mean that a dirty folio is
-> either entirely written or entirely failed.  I don't know how important this
-> would be for the 9p usecases.
-> 
-> David
-> 
-> 
-
-
+-- 
+Dominique Martinet | Asmadeus
