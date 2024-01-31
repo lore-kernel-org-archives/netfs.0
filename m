@@ -1,106 +1,105 @@
-Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA347D3FD;
-	Tue, 30 Jan 2024 21:57:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.121.71.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2899E6773D
+	for <netfs@lists.linux.dev>; Wed, 31 Jan 2024 09:14:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706651878; cv=none; b=XtabcM7/OvCk1ym9b032rJm8OCPmZ9QNCV+V2n8a0CJNo98IMdE1hKuSxQyK0m6vdhpH7BIf6d4Uribwn4oiiBKpUXoPCvZAOnZT2WAlzE5FsPNH6id42pKivcycvYZs1HDPgxRmha9WKynX9grkr5PIDF/IQEvELtvAxUMKsE8=
+	t=1706692501; cv=none; b=oGGj7VyMfnIaisLJRSfyUB/M49M0YNevx5MYqLYDy1hXVCWGFKig3UHkH1fj9ubYPggDnpI/yAXdLLm3DmjbPrAEqKICjPwQKCk5qQP3x0HTU5kgOefxhK9b6nsGLqdLO6HXuEzNsp+A5Vq3M+3H8ldZUeuOeh1mhkVqRfRoToo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706651878; c=relaxed/simple;
-	bh=LhastNy1vEGEXwl9qsykeN3HvyBhGxId+V1bFptNfuI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G+GIcRbPx1KAeo294IwOZSEPaVhAtaMkwfS1aiQKRRBhxiVXL5H2M3Un+9mMKeiNZDZT5H11zp14M+IftPaAjDRddM6UJJXXFdObItLlVLRAl9l8NYuyjuJHaubXOgFb+7J1v+YQk4vvvdRLgJCl//G6gg5lPKqrURs2QA1/vyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=f/lTyC7A; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=Jz95UDCB; arc=none smtp.client-ip=91.121.71.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="f/lTyC7A";
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="Jz95UDCB"
-Received: by nautica.notk.org (Postfix, from userid 108)
-	id 83F23C020; Tue, 30 Jan 2024 22:57:48 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1706651868; bh=3OM4TbWQ6erHco16GZP6eiXbolJmb1FVgvE2iI59oRQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=f/lTyC7AylluE9U/rrb+EqMMb08YeAv56CHHe1zQ15EqWYC2qNjDv9qB8JyKcrcDi
-	 qo+Su4xRp1/QH2BIlOO9yb1sQmzrZDBFiJYn22LcRnLm1jWO3hlouD0PgkXU4htvng
-	 V7l1OLr86QG6KCKzFLIrWaXrAR79KCo8Etpqnuvwxvi1v2U3X/G02BaOvDgW/Khphr
-	 88j5Z5iqSj+/DNp9D0RLw4ZXfMDZbh0/P9qUDcknOvaIPuLk4S+YgxfK7HjqdxrL1r
-	 ZUDUsrWqCVK6ONeNFP1mL470dFi7654rmnqSCC8U1IL9GcUlEUOaAVHM+0fIaQlepN
-	 Aa6V/YaBN9fGg==
-X-Spam-Level: 
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by nautica.notk.org (Postfix) with ESMTPS id 1F1A9C009;
-	Tue, 30 Jan 2024 22:57:42 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1706651867; bh=3OM4TbWQ6erHco16GZP6eiXbolJmb1FVgvE2iI59oRQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Jz95UDCBaCc7DNbBv88Y6UtPW8uWNycCk6cHz5RjFY/3zlaTuCtTXG9Rt3/uY0uG5
-	 5TNOGUBtkKibEUm+xkwQt/w1KbKcI8teuo9q4z4hcv1gQpDXQu3sPlKtdi4t9NBtrH
-	 8hWZlXkK6p3tF+iLckxAh3vygIMPNOTVSuPOqudJjBmw6OiMkqHk5OCcl2WcxvHU/E
-	 +GS0FLMkD8Z+632TihN4Q/JR2fW2x351vGu4dw7Hc7cTA4cBIFIXw61BAOcHBYYp8Y
-	 U1yfe1icLInyDTUSSeQ9f+RBg8KbXPYx62fbcRiQ1mEjyt+wrKr6hYWqFX34wlPxGo
-	 EPGrBHtPIhA8Q==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id c6e1a942;
-	Tue, 30 Jan 2024 21:57:38 +0000 (UTC)
-Date: Wed, 31 Jan 2024 06:57:23 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <christian@brauner.io>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>, netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-	v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux_oss@crudebyte.com
-Subject: Re: [PATCH 2/2] netfs: Fix missing zero-length check in unbuffered
- write
-Message-ID: <Zblww5O_bRvKx36g@codewreck.org>
-References: <20240129094924.1221977-1-dhowells@redhat.com>
- <20240129094924.1221977-3-dhowells@redhat.com>
+	s=arc-20240116; t=1706692501; c=relaxed/simple;
+	bh=76RXlR/msdWs4e9OX1WpKtSooLAmtPygvVwdSqDyayY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BRMgt17UBrH4MEYVJSZw8PAEoh9DIvKf5c/SmBL6tR+CMSJGF/TV+PdFnuijcwDenanbcBe5kE55cajibAsWLN7MDuy7wnwmwo8wcz2emCQZYgXA9Nu2f6eceJ5O9U4O/Qvw9sqKp2pI+mbcsC8Nz6wpI3UfWF9GVhgk8agbbdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4TPxDL2B49z1xmtd;
+	Wed, 31 Jan 2024 17:13:54 +0800 (CST)
+Received: from dggpeml500021.china.huawei.com (unknown [7.185.36.21])
+	by mail.maildlp.com (Postfix) with ESMTPS id 347B71404D8;
+	Wed, 31 Jan 2024 17:14:54 +0800 (CST)
+Received: from huawei.com (10.175.127.227) by dggpeml500021.china.huawei.com
+ (7.185.36.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 31 Jan
+ 2024 17:14:53 +0800
+From: Baokun Li <libaokun1@huawei.com>
+To: <netfs@lists.linux.dev>
+CC: <dhowells@redhat.com>, <jlayton@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <libaokun1@huawei.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH] cachefiles: fix memory leak in cachefiles_add_cache()
+Date: Wed, 31 Jan 2024 17:17:17 +0800
+Message-ID: <20240131091717.1277013-1-libaokun1@huawei.com>
+X-Mailer: git-send-email 2.31.1
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240129094924.1221977-3-dhowells@redhat.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpeml500021.china.huawei.com (7.185.36.21)
 
-David Howells wrote on Mon, Jan 29, 2024 at 09:49:19AM +0000:
-> Fix netfs_unbuffered_write_iter() to return immediately if
-> generic_write_checks() returns 0, indicating there's nothing to write.
-> Note that netfs_file_write_iter() already does this.
-> 
-> Also, whilst we're at it, put in checks for the size being zero before we
-> even take the locks.  Note that generic_write_checks() can still reduce the
-> size to zero, so we still need that check.
-> 
-> Without this, a warning similar to the following is logged to dmesg:
-> 
-> 	netfs: Zero-sized write [R=1b6da]
-> 
-> and the syscall fails with EIO, e.g.:
-> 
-> 	/sbin/ldconfig.real: Writing of cache extension data failed: Input/output error
-> 
-> This can be reproduced on 9p by:
-> 
-> 	xfs_io -f -c 'pwrite 0 0' /xfstest.test/foo
-> 
-> Fixes: 153a9961b551 ("netfs: Implement unbuffered/DIO write support")
-> Reported-by: Eric Van Hensbergen <ericvh@kernel.org>
-> Link: https://lore.kernel.org/r/ZbQUU6QKmIftKsmo@FV7GG9FTHL/
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> cc: Dominique Martinet <asmadeus@codewreck.org>
+The following memory leak was reported after unbinding /dev/cachefiles:
 
-Thanks!
+==================================================================
+unreferenced object 0xffff9b674176e3c0 (size 192):
+  comm "cachefilesd2", pid 680, jiffies 4294881224
+  hex dump (first 32 bytes):
+    01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace (crc ea38a44b):
+    [<ffffffff8eb8a1a5>] kmem_cache_alloc+0x2d5/0x370
+    [<ffffffff8e917f86>] prepare_creds+0x26/0x2e0
+    [<ffffffffc002eeef>] cachefiles_determine_cache_security+0x1f/0x120
+    [<ffffffffc00243ec>] cachefiles_add_cache+0x13c/0x3a0
+    [<ffffffffc0025216>] cachefiles_daemon_write+0x146/0x1c0
+    [<ffffffff8ebc4a3b>] vfs_write+0xcb/0x520
+    [<ffffffff8ebc5069>] ksys_write+0x69/0xf0
+    [<ffffffff8f6d4662>] do_syscall_64+0x72/0x140
+    [<ffffffff8f8000aa>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
+==================================================================
 
-Tested-by: Dominique Martinet <asmadeus@codewreck.org>
+Put the reference count of cache_cred in cachefiles_daemon_unbind() to
+fix the problem. And also put cache_cred in cachefiles_add_cache() error
+branch to avoid memory leaks.
 
+Fixes: 9ae326a69004 ("CacheFiles: A cache that backs onto a mounted filesystem")
+CC: stable@vger.kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+---
+ fs/cachefiles/cache.c  | 2 ++
+ fs/cachefiles/daemon.c | 1 +
+ 2 files changed, 3 insertions(+)
+
+diff --git a/fs/cachefiles/cache.c b/fs/cachefiles/cache.c
+index 7077f72e6f47..f449f7340aad 100644
+--- a/fs/cachefiles/cache.c
++++ b/fs/cachefiles/cache.c
+@@ -168,6 +168,8 @@ int cachefiles_add_cache(struct cachefiles_cache *cache)
+ 	dput(root);
+ error_open_root:
+ 	cachefiles_end_secure(cache, saved_cred);
++	put_cred(cache->cache_cred);
++	cache->cache_cred = NULL;
+ error_getsec:
+ 	fscache_relinquish_cache(cache_cookie);
+ 	cache->cache = NULL;
+diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
+index 3f24905f4066..6465e2574230 100644
+--- a/fs/cachefiles/daemon.c
++++ b/fs/cachefiles/daemon.c
+@@ -816,6 +816,7 @@ static void cachefiles_daemon_unbind(struct cachefiles_cache *cache)
+ 	cachefiles_put_directory(cache->graveyard);
+ 	cachefiles_put_directory(cache->store);
+ 	mntput(cache->mnt);
++	put_cred(cache->cache_cred);
+ 
+ 	kfree(cache->rootdirname);
+ 	kfree(cache->secctx);
 -- 
-Dominique Martinet | Asmadeus
+2.31.1
+
