@@ -1,95 +1,97 @@
-Received: from out203-205-221-202.mail.qq.com (out203-205-221-202.mail.qq.com [203.205.221.202])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69E44779F
-	for <netfs@lists.linux.dev>; Fri,  2 Feb 2024 14:03:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2094C17C77;
+	Fri,  2 Feb 2024 14:29:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706882624; cv=none; b=W7+UBWLR8KGjV+foFSp9UBfrOfRMh1zUMgrWc9iSlOhLxoIQZ75OZ94Aa8xk35NiCGTyoQJstsqO5xXtEMrE2PhqyGAp/ftxPO/7oCuhFvNDWEEHxK/tCuCoJT+5RvcBa8zcVCiF8WiXBAAJ2te5N5L0YnrdNGhHxIr6nz/PSiI=
+	t=1706884188; cv=none; b=dS4ks10DMhLgFSVtNZXkKEFK9MU5Rgbn5JVw0fLuLQINPpmzs9Vom9z7de9RilSpOZqEWBF3PTwtXrJHCsrO/blxs04aqh+UBek90L2aZASGUCN9IieYQIBQruVUNBW8y1/oPmBzFFqAprO6iAE3yA0n/gHuD+9IKNGvyRsjjag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706882624; c=relaxed/simple;
-	bh=BJQfplmaSyBDDhVs/RstyS/GWbcJ/Hf09yPAoLpwVRQ=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=QOFeaAM6eGCmN/x5RvygVr7epbAfOXEQTaVY7k5zw8GQLtIzIgy6bnQnm4MgTuB9huHg5z99vvyoAhY55Wgu8uRh7gtlT3xxvOle0t2Kqb2GWRosuuY3IvjO6ZNJs8yYylaAmxY8e9dtxZFynkcUdizmAY9UpYSP3DxrMgMmDbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=Ul8PGbrB; arc=none smtp.client-ip=203.205.221.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1706884188; c=relaxed/simple;
+	bh=yQnFMwUPqT1dwV3rgVOzcOu8uxmqyURzCAvr1lxck9M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iU00dFkw+1VYkfTKy1WO29h99JWlocKEG+M1CPoK3aPyczmTJP6F2qax8TxGl+hz1AV+/o1DIpKj5f4dFHXETcFx0Snv3/Z90FMSPaw5rQSMt/xWA4hR1IpHoUJJ0nJAKpy6tyNFFba9W882ybgR72UWqtGXhuAKyqT3cgrxwhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=XKYE+x3u; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="Ul8PGbrB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1706882604; bh=utGP6OZSBLpmJu+9Td/7txs00XIiQw4x9gVWwrER68U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ul8PGbrBt4kxtka1rYm7pmMCzyeTUOVMV2bI48+Enws+A7SuNn/yKZZ3c6C1lzEmK
-	 fQ24VcB3yfVSoOXixi6NXY5XoKGubwZoX0jkrc4cw2tnRP8sdKgtS/8FrKVK+ZM2tE
-	 nbQdiT7D4mTSXoyzSDgC68DLCZjbQKwD+D70WSG4=
-Received: from pek-lxu-l1.wrs.com ([111.198.228.140])
-	by newxmesmtplogicsvrsza1-0.qq.com (NewEsmtp) with SMTP
-	id D329E61; Fri, 02 Feb 2024 22:03:19 +0800
-X-QQ-mid: xmsmtpt1706882599tcbkviljv
-Message-ID: <tencent_2975FB767367603CED3622962437524A8C09@qq.com>
-X-QQ-XMAILINFO: NyTsQ4JOu2J2VwOlPHaW7j2tsaSYtv5nx4xX96Q8K3YFvj37RAaq+YBf17GGzv
-	 ArWxQSrW//mfyCBLhKljL6oRifpo4iGAx8GJ/Bea5/efYq0zN4jXPfZsSyxeFzr7xqc98q7KOh2E
-	 JfG6AWuktRJq8mIlhX6jVhtE3VuMLnq8FEAKm7q+65dvDwLAQVoRh1xAq52WRbgJFFoQ/32YlcD6
-	 eJGFtNUJ7B4WMD2ESJSn9ifhCHkuB22E5pm2jmS19XBqcDyq9ZGK4hZ1W8xhdwWabgYXcvwR0qSZ
-	 W57mVLGvJ5/ub9VBlvex/ONfMZ53lJl/w0NdRaur+SERaZ5J3P7MSKu73wqh0UCECZJnPf8vgfUD
-	 LnGg+VnpYeZyIXsGjrDjbfwouY+A5p/Fh8g7UK3szkmFdwKiAYLo2waBt6ALnY/WwFevedbzPIUX
-	 z8EHR+ADf3DrbkmXf6H51uoiu0z2mH4CA+/SjVpLQGsDqmR1OfATo0WfX70lyo4YluhwXpFUeTry
-	 40uq6W8XD0vzTw2JnFiTKEn9Bna/CL2GpqMHL5HKZWFMX9tjXKUq7RHhU+2LNs73HOTCK6s6Mcut
-	 3BhElnjH9JPhFPOMKJN3YxHkD/fAbyAB3JMg6XE8+N7i6iHxw+ei6MpsoW51Ct+8PD+dVeH6efdU
-	 NmJtJb+UxiQMPyCcnAcNPCN7v8rFwZ8YPGmTbTwCU+bpA/SM2qdw+Qpryif0X2IcIDs54Vhlhwr+
-	 F3f1i+0LqiAzzVV8t5K3f8tiMvrG5VqdREWgwzI/7mxQZ8sHTHxgkWOEaRTIgfrNA8wgR9I0CPWj
-	 Shi2zr51gKhzx8E2Gaw2IMoLSEmEzuzX+LtAePqOQAI7Gur5m0V1QVIuYztVnNEPBB3F07XUOuBP
-	 DLA7Bs2cTpxPFOlOpur+IfFcTsqOPQ94sNawXvT70qIIuuV+0igsmTTlupsGk1j0xs+lFnWr4i
-X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
-From: Edward Adam Davis <eadavis@qq.com>
-To: syzbot+a4c1a7875b2babd9e359@syzkaller.appspotmail.com
-Cc: dhowells@redhat.com,
-	jlayton@kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netfs@lists.linux.dev,
-	syzkaller-bugs@googlegroups.com
-Subject: [PATCH next] fs/9p: fix uaf in in __fscache_relinquish_cookie
-Date: Fri,  2 Feb 2024 22:03:19 +0800
-X-OQ-MSGID: <20240202140318.4147829-2-eadavis@qq.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <0000000000007e7a63061062fcd9@google.com>
-References: <0000000000007e7a63061062fcd9@google.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="XKYE+x3u"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=wP7ap7SwTE6cJeEes3sVUH/vFnz+eX+KSdmLVr5C1To=; b=XKYE+x3u9bB0tuGI/mGQ4xi5Sv
+	pdMjLTE0LcFX2TLHGnBe6u6ld6fp8xdUYT0+pYZBK9H+Ts0IqvFc2YVlUFPdS0GywD8jSR95Chxhs
+	+jzef2Fo+TiyloyChnxnsUD1lS7DSh2FpDgvK7nsYIZjDuK76U+nMANLkyc6REeD2V9d27s6aPooh
+	4Ij8FkFzkZzF2B0uZZ5PKGJiSouTJfBuuiytuTgAzAI+mwjo5+HHM6YKRd4PuBj6UrpxwFRi91T11
+	sWpFpcGUQYcytmMgC6K+mfFbjGvWxwBKi05OkRm3F9cfkikh8HAH2icgpi0+r4Vj7CbGwgTSI3XXB
+	3G5SRSUQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rVuY0-00000001H82-3gby;
+	Fri, 02 Feb 2024 14:29:40 +0000
+Date: Fri, 2 Feb 2024 14:29:40 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: David Howells <dhowells@redhat.com>
+Cc: lsf-pc@lists.linux-foundation.org, netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [LSF/MM/BPF TOPIC] Large folios, swap and fscache
+Message-ID: <Zbz8VAKcO56rBh6b@casper.infradead.org>
+References: <2701740.1706864989@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2701740.1706864989@warthog.procyon.org.uk>
 
-In v9fs_fid_get_dotl(), if p9_client_getattr_dotl() or v9fs_init_inode() fails,
-the cookie will not be properly initialized and will result in accessing improperly
-allocated cookies.
+On Fri, Feb 02, 2024 at 09:09:49AM +0000, David Howells wrote:
+> The topic came up in a recent discussion about how to deal with large folios
+> when it comes to swap as a swap device is normally considered a simple array
+> of PAGE_SIZE-sized elements that can be indexed by a single integer.
+> 
+> With the advent of large folios, however, we might need to change this in
+> order to be better able to swap out a compound page efficiently.  Swap
+> fragmentation raises its head, as does the need to potentially save multiple
+> indices per folio.  Does swap need to grow more filesystem features?
 
-When the cookie is not initialized, exit the subsequent cookie recycling process
-to avoid this issue.
+I didn't mention this during the meeting, but there are more reasons
+to do something like this.  For example, even with large folios, it
+doesn't make sense to drive writing to swap on a per-folio basis.  We
+should be writing out large chunks of virtual address space in a single
+write to the swap device, just like we do large chunks of files in
+->writepages.
 
-Reported-and-tested-by: syzbot+a4c1a7875b2babd9e359@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
----
- fs/9p/vfs_inode.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Another reason to do something different is that we're starting to see
+block devices with bs>PS.  That means we'll _have_ to write out larger
+chunks than a single page.  For reads, we can discard the extra data,
+but it'd be better to swap back in the entire block rather than
+individual pages.
 
-diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
-index 360a5304ec03..d27b7ecf7163 100644
---- a/fs/9p/vfs_inode.c
-+++ b/fs/9p/vfs_inode.c
-@@ -353,7 +353,8 @@ void v9fs_evict_inode(struct inode *inode)
- 	filemap_fdatawrite(&inode->i_data);
- 
- #ifdef CONFIG_9P_FSCACHE
--	fscache_relinquish_cookie(v9fs_inode_cookie(v9inode), false);
-+	if (mapping_release_always(inode->i_mapping))
-+		fscache_relinquish_cookie(v9fs_inode_cookie(v9inode), false);
- #endif
- }
- 
--- 
-2.43.0
+So my modest proposal is that we completely rearchitect how we handle
+swap.  Instead of putting swp entries in the page tables (and in shmem's
+case in the page cache), we turn swap into an (object, offset) lookup
+(just like a filesystem).  That means that each anon_vma becomes its
+own swap object and each shmem inode becomes its own swap object.
+The swap system can then borrow techniques from whichever filesystem
+it likes to do (object, offset, length) -> n x (device, block) mappings.
 
+> Further to this, we have at least two ways to cache data on disk/flash/etc. -
+> swap and fscache - and both want to set aside disk space for their operation.
+> Might it be possible to combine the two?
+> 
+> One thing I want to look at for fscache is the possibility of switching from a
+> file-per-object-based approach to a tagged cache more akin to the way OpenAFS
+> does things.  In OpenAFS, you have a whole bunch of small files, each
+> containing a single block (e.g. 256K) of data, and an index that maps a
+> particular {volume,file,version,block} to one of these files in the cache.
+
+I think my proposal above works for you?  For each file you want to cache,
+create a swap object, and then tell swap when you want to read/write to
+the local swap object.  What you do need is to persist the objects over
+a power cycle.  That shouldn't be too hard ... after all, filesystems
+manage to do it.  All we need to do is figure out how to name the
+lookup (I don't think we need to use strings to name the swap object,
+but obviously we could).  Maybe it's just a stream of bytes.
