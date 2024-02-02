@@ -1,105 +1,88 @@
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2899E6773D
-	for <netfs@lists.linux.dev>; Wed, 31 Jan 2024 09:14:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19786A002
+	for <netfs@lists.linux.dev>; Fri,  2 Feb 2024 09:09:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706692501; cv=none; b=oGGj7VyMfnIaisLJRSfyUB/M49M0YNevx5MYqLYDy1hXVCWGFKig3UHkH1fj9ubYPggDnpI/yAXdLLm3DmjbPrAEqKICjPwQKCk5qQP3x0HTU5kgOefxhK9b6nsGLqdLO6HXuEzNsp+A5Vq3M+3H8ldZUeuOeh1mhkVqRfRoToo=
+	t=1706865001; cv=none; b=YN/ZiXynwUIpQmwA9fcU0yZJkvIlC/uvljaJUzxYtp1oMF+kqa0RImlEq5lhPzImv/DHSm0Q7uMcnJPMYZqS9rUrC5ySM5HFgNyCuaRMY+rj/SvKAfvZwbUJuYXiB6tPi7VwlywubyR9H6Zqm5oYcATvjCTTzlVOLZQpB03shuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706692501; c=relaxed/simple;
-	bh=76RXlR/msdWs4e9OX1WpKtSooLAmtPygvVwdSqDyayY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BRMgt17UBrH4MEYVJSZw8PAEoh9DIvKf5c/SmBL6tR+CMSJGF/TV+PdFnuijcwDenanbcBe5kE55cajibAsWLN7MDuy7wnwmwo8wcz2emCQZYgXA9Nu2f6eceJ5O9U4O/Qvw9sqKp2pI+mbcsC8Nz6wpI3UfWF9GVhgk8agbbdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4TPxDL2B49z1xmtd;
-	Wed, 31 Jan 2024 17:13:54 +0800 (CST)
-Received: from dggpeml500021.china.huawei.com (unknown [7.185.36.21])
-	by mail.maildlp.com (Postfix) with ESMTPS id 347B71404D8;
-	Wed, 31 Jan 2024 17:14:54 +0800 (CST)
-Received: from huawei.com (10.175.127.227) by dggpeml500021.china.huawei.com
- (7.185.36.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 31 Jan
- 2024 17:14:53 +0800
-From: Baokun Li <libaokun1@huawei.com>
-To: <netfs@lists.linux.dev>
-CC: <dhowells@redhat.com>, <jlayton@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <libaokun1@huawei.com>,
-	<stable@vger.kernel.org>
-Subject: [PATCH] cachefiles: fix memory leak in cachefiles_add_cache()
-Date: Wed, 31 Jan 2024 17:17:17 +0800
-Message-ID: <20240131091717.1277013-1-libaokun1@huawei.com>
-X-Mailer: git-send-email 2.31.1
+	s=arc-20240116; t=1706865001; c=relaxed/simple;
+	bh=CsuUIB9BGEhPpq82AnSmPqKa7q1L7vczo0Qa7uKk6HI=;
+	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=RdYGFy6aAfiJLAmae7iO5v6e//tuJU++jfxSrOChwXBmrtXuM71SrWTtR9d1TxDtJo2x0Eh5+uuTwhOZ/vwd+TxMN63a5CsnjJ4fK4SsPCJk5BVrki5dzt9ZU3riLQRfQj0r/VpdM1qH0bCTm2s5PmKkK6k03dpfAvVqU299XOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NwevYL1y; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NwevYL1y"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1706864998;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=wR/xEWsoc/qcVUxpsQwiYXMTwgRl2K/SGjKuYsI30Fw=;
+	b=NwevYL1yK4oPkl1Mp4MQDooYio9+3c2l+oT0YOtnJ6QTiK/rUkxgZxVUt16KeZl92pU7LY
+	7bBh14+7HdGCOTOU3kGG2nSSG+uZ/75zaCofmmoqbm+AMaTQY2uZiRjw4569hMK1zZF0Ok
+	TlS/OOahUTVmCuFiyd60u85E5gcoWSc=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-461-uL2SUc8LORqDEysyTOZeOw-1; Fri,
+ 02 Feb 2024 04:09:55 -0500
+X-MC-Unique: uL2SUc8LORqDEysyTOZeOw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 288581C05194;
+	Fri,  2 Feb 2024 09:09:55 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.245])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 682D21C060B2;
+	Fri,  2 Feb 2024 09:09:54 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: lsf-pc@lists.linux-foundation.org
+cc: dhowells@redhat.com, Matthew Wilcox <willy@infradead.org>,
+    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+    linux-mm@kvack.org
+Subject: [LSF/MM/BPF TOPIC] Large folios, swap and fscache
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpeml500021.china.huawei.com (7.185.36.21)
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2701739.1706864989.1@warthog.procyon.org.uk>
+Date: Fri, 02 Feb 2024 09:09:49 +0000
+Message-ID: <2701740.1706864989@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
 
-The following memory leak was reported after unbinding /dev/cachefiles:
+Hi,
 
-==================================================================
-unreferenced object 0xffff9b674176e3c0 (size 192):
-  comm "cachefilesd2", pid 680, jiffies 4294881224
-  hex dump (first 32 bytes):
-    01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace (crc ea38a44b):
-    [<ffffffff8eb8a1a5>] kmem_cache_alloc+0x2d5/0x370
-    [<ffffffff8e917f86>] prepare_creds+0x26/0x2e0
-    [<ffffffffc002eeef>] cachefiles_determine_cache_security+0x1f/0x120
-    [<ffffffffc00243ec>] cachefiles_add_cache+0x13c/0x3a0
-    [<ffffffffc0025216>] cachefiles_daemon_write+0x146/0x1c0
-    [<ffffffff8ebc4a3b>] vfs_write+0xcb/0x520
-    [<ffffffff8ebc5069>] ksys_write+0x69/0xf0
-    [<ffffffff8f6d4662>] do_syscall_64+0x72/0x140
-    [<ffffffff8f8000aa>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
-==================================================================
+The topic came up in a recent discussion about how to deal with large folios
+when it comes to swap as a swap device is normally considered a simple array
+of PAGE_SIZE-sized elements that can be indexed by a single integer.
 
-Put the reference count of cache_cred in cachefiles_daemon_unbind() to
-fix the problem. And also put cache_cred in cachefiles_add_cache() error
-branch to avoid memory leaks.
+With the advent of large folios, however, we might need to change this in
+order to be better able to swap out a compound page efficiently.  Swap
+fragmentation raises its head, as does the need to potentially save multiple
+indices per folio.  Does swap need to grow more filesystem features?
 
-Fixes: 9ae326a69004 ("CacheFiles: A cache that backs onto a mounted filesystem")
-CC: stable@vger.kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
----
- fs/cachefiles/cache.c  | 2 ++
- fs/cachefiles/daemon.c | 1 +
- 2 files changed, 3 insertions(+)
+Further to this, we have at least two ways to cache data on disk/flash/etc. -
+swap and fscache - and both want to set aside disk space for their operation.
+Might it be possible to combine the two?
 
-diff --git a/fs/cachefiles/cache.c b/fs/cachefiles/cache.c
-index 7077f72e6f47..f449f7340aad 100644
---- a/fs/cachefiles/cache.c
-+++ b/fs/cachefiles/cache.c
-@@ -168,6 +168,8 @@ int cachefiles_add_cache(struct cachefiles_cache *cache)
- 	dput(root);
- error_open_root:
- 	cachefiles_end_secure(cache, saved_cred);
-+	put_cred(cache->cache_cred);
-+	cache->cache_cred = NULL;
- error_getsec:
- 	fscache_relinquish_cache(cache_cookie);
- 	cache->cache = NULL;
-diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
-index 3f24905f4066..6465e2574230 100644
---- a/fs/cachefiles/daemon.c
-+++ b/fs/cachefiles/daemon.c
-@@ -816,6 +816,7 @@ static void cachefiles_daemon_unbind(struct cachefiles_cache *cache)
- 	cachefiles_put_directory(cache->graveyard);
- 	cachefiles_put_directory(cache->store);
- 	mntput(cache->mnt);
-+	put_cred(cache->cache_cred);
- 
- 	kfree(cache->rootdirname);
- 	kfree(cache->secctx);
--- 
-2.31.1
+One thing I want to look at for fscache is the possibility of switching from a
+file-per-object-based approach to a tagged cache more akin to the way OpenAFS
+does things.  In OpenAFS, you have a whole bunch of small files, each
+containing a single block (e.g. 256K) of data, and an index that maps a
+particular {volume,file,version,block} to one of these files in the cache.
+
+Now, I could also consider holding all the data blocks in a single file (or
+blockdev) - and this might work for swap.  For fscache, I do, however, need to
+have some sort of integrity across reboots that swap does not require.
+
+David
 
