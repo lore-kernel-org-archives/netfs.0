@@ -1,112 +1,102 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2F715E5AF;
-	Fri,  2 Feb 2024 19:22:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A29110A09;
+	Sat,  3 Feb 2024 05:14:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706901738; cv=none; b=q/3EQGNaVKcZs+avTQvSLweA+fMX0edtEt/OJjXZbePRFyHtd07XI1PZRgQAGKuVKqBsPXIAiCi0IvpxKwPugGh4BfQbEXmYvipmOgWhyvA5PCSCNprnmmKgMHu82fIJw8Os6413fIZIhKG/evldQTNT6+HXAC6rnBEi5Nn5Xx4=
+	t=1706937248; cv=none; b=t30Q4YJJx6b99ox3Ke0WJZrPxzYo9KJeIN8oEizac1pVU6jS4GtGcRFTZ1dCnEci3oKFlUijKLEIM6IVlZrubsgmm6hz++Z70boyaQ9s/lYiF5IxUrZr9R5m4a+8qwzqv7Y/7rTVzYvHFCJcFVAjj9O2Ha3c5ZP3GmuKJdbhMtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706901738; c=relaxed/simple;
-	bh=it57iC0Igo2jLKJwB8vC8jU7CPpKri8373gtvCysQz8=;
+	s=arc-20240116; t=1706937248; c=relaxed/simple;
+	bh=v25sxvay8N5e2/0Wwh7sc0SdxRqWAPgUZnyU+HdR1PE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hTrYKjYgS2aPdATOaK/0vlbHbRY3dQ1Bz/bD0w2y9NCPbzCLgyB0XksDxj1MAI0DlNtYEfp+J9KGKcOidA7Ns3TpkkLWm4mApA3MFoaFBVD5NzS6eRYuHUGmhTtAVpNES+B6uwGyHvYGbAf55/eSJ6Xp4rkageC2Dx5XyFaQjcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=nW/FA4Uy; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=LEzOI1si00nrnwAcvwqENIDApmRkz18q49Py+KN39UHGqf7F1LrJT7+eXiRT3AK+ty4busA97J8C+AAnl9D8cg9y11qw8a7mCqkOl6/JJyNZXqQcpYoYdNGkO8zEacf0mhT/CciMAXs+2YolwmUy6Z25YmufENJorjf1L0RZwt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uxo97TB4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="nW/FA4Uy"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=eL4LwatgR0k7zkyz5LeWPxwi/V/nQ0lFnAvigMlFZ0s=; b=nW/FA4Uyt8zdHwT6NLbAYLGz2g
-	EdNmZ0RFlDFl6Cg3+HLSqSutlQAX42Vhdo0i2vUU5fW7g99ur14g9H8dTRDy539219y7agQyqrXNY
-	fJnTi6fZTy9kNmzOWDyG08Up16q8ByCJQZzu9BSQhYbad2yl3rINCQoUgcUoBUskUMdPFZS9q6n7/
-	V/iaawGVobY3BzdAsGmL4xFiG4EjMo4zYGf9fEPMsnQpKcxdCjEUBpyVw2piZWJWUa82tBHEWmbgS
-	aMDTHT1feqgXxG2839cruejVUfnXorPLiZLTWwkQh1V43t9FzWQzzNJrod3ZCmqs4Bi/NlsPTC3Rr
-	wU5HANeA==;
-Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rVz75-00000001sSe-3iYR;
-	Fri, 02 Feb 2024 19:22:11 +0000
-Date: Fri, 2 Feb 2024 19:22:11 +0000
-From: Matthew Wilcox <willy@infradead.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uxo97TB4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8D1CC433C7;
+	Sat,  3 Feb 2024 05:14:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706937247;
+	bh=v25sxvay8N5e2/0Wwh7sc0SdxRqWAPgUZnyU+HdR1PE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Uxo97TB4tOt7X3Yk1UgLdnbvOvrzeWM3tu68rXKSOpcvkED8g9GQ995duk/A6H2tc
+	 NCBVXsXDlwURcMA89UfEEwq/lAaxhjlvnvW9y1yOF9GePdk8Y4k7rXGwbtgpTE14+z
+	 xaX3haOxI/48bPdPKDo1h2JSHFDncyJHajKTJD094l20F8fo3k094kIErDHD9LSZ2k
+	 2sBvAwRtYJw1R9g/aESi6ILszrP6Qc+a8AIcUJOXFeobFsyoyOWUoQ4td/t9ZOQhyp
+	 Ac0tJdTYJazT03uGnoNoex39SOY9riBigfiL/2u6jB0DxPN9TxPfugSPVhtFjKrD/A
+	 DQaJ2WSlUTl1g==
+Date: Sat, 3 Feb 2024 13:13:57 +0800
+From: Gao Xiang <xiang@kernel.org>
 To: David Howells <dhowells@redhat.com>
-Cc: lsf-pc@lists.linux-foundation.org, netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Cc: lsf-pc@lists.linux-foundation.org, Matthew Wilcox <willy@infradead.org>,
+	netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org
 Subject: Re: [LSF/MM/BPF TOPIC] Large folios, swap and fscache
-Message-ID: <Zb1A44esSQVJOezg@casper.infradead.org>
-References: <Zbz8VAKcO56rBh6b@casper.infradead.org>
- <2701740.1706864989@warthog.procyon.org.uk>
- <2761655.1706889464@warthog.procyon.org.uk>
+Message-ID: <Zb3Llc+dHxu4eggS@debian>
+Mail-Followup-To: David Howells <dhowells@redhat.com>,
+	lsf-pc@lists.linux-foundation.org,
+	Matthew Wilcox <willy@infradead.org>, netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+References: <2701740.1706864989@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <2761655.1706889464@warthog.procyon.org.uk>
+In-Reply-To: <2701740.1706864989@warthog.procyon.org.uk>
 
-On Fri, Feb 02, 2024 at 03:57:44PM +0000, David Howells wrote:
-> Matthew Wilcox <willy@infradead.org> wrote:
-> 
-> > So my modest proposal is that we completely rearchitect how we handle
-> > swap.  Instead of putting swp entries in the page tables (and in shmem's
-> > case in the page cache), we turn swap into an (object, offset) lookup
-> > (just like a filesystem).  That means that each anon_vma becomes its
-> > own swap object and each shmem inode becomes its own swap object.
-> > The swap system can then borrow techniques from whichever filesystem
-> > it likes to do (object, offset, length) -> n x (device, block) mappings.
-> 
-> That's basically what I'm suggesting, I think, but offloading the mechanics
-> down to a filesystem.  That would be fine with me.  bcachefs is an {key,val}
-> store right?
+Hi David,
 
-Hmm.  That's not a bad idea.  So instead of having a swapfile, we
-could create a swap directory on an existing filesystem.  Or if we
-want to partition the drive and have a swap partition we just
-mkfs.favourite that and tell it that root is the swap directory.
-
-I think this means we do away with the swap cache?  If the page has been
-brought back in, we'd be able to find it in the anon_vma's page cache
-rather than having to search the global swap cache.
-
-> > I think my proposal above works for you?  For each file you want to cache,
-> > create a swap object, and then tell swap when you want to read/write to
-> > the local swap object.  What you do need is to persist the objects over
-> > a power cycle.  That shouldn't be too hard ... after all, filesystems
-> > manage to do it.
+On Fri, Feb 02, 2024 at 09:09:49AM +0000, David Howells wrote:
+> Hi,
 > 
-> Sure - but there is an integrity constraint that doesn't exist with swap.
+> The topic came up in a recent discussion about how to deal with large folios
+> when it comes to swap as a swap device is normally considered a simple array
+> of PAGE_SIZE-sized elements that can be indexed by a single integer.
 > 
-> There is also an additional feature of fscache: unless the cache entry is
-> locked in the cache (e.g. we're doing diconnected operation), we can throw
-> away an object from fscache and recycle it if we need space.  In fact, this is
-> the way OpenAFS works: every write transaction done on a file/dir on the
-> server is done atomically and is given a monotonically increasing data version
-> number that is then used as part of the index key in the cache.  So old
-> versions of the data get recycled as the cache needs to make space.
+> With the advent of large folios, however, we might need to change this in
+> order to be better able to swap out a compound page efficiently.  Swap
+> fragmentation raises its head, as does the need to potentially save multiple
+> indices per folio.  Does swap need to grow more filesystem features?
 > 
-> Which also means that if swap needs more space, it can just kick stuff out of
-> fscache if it is not locked in.
+> Further to this, we have at least two ways to cache data on disk/flash/etc. -
+> swap and fscache - and both want to set aside disk space for their operation.
+> Might it be possible to combine the two?
+> 
+> One thing I want to look at for fscache is the possibility of switching from a
+> file-per-object-based approach to a tagged cache more akin to the way OpenAFS
+> does things.  In OpenAFS, you have a whole bunch of small files, each
+> containing a single block (e.g. 256K) of data, and an index that maps a
+> particular {volume,file,version,block} to one of these files in the cache.
+> 
+> Now, I could also consider holding all the data blocks in a single file (or
+> blockdev) - and this might work for swap.  For fscache, I do, however, need to
+> have some sort of integrity across reboots that swap does not require.
 
-Ah, more requirements ;-)
+If my understanding is correct, I think the old swapfile approach just
+works with pinned local fs extents, which means it looks up extents in
+advance and it doesn't expect these extents will be moved so the real
+swap data I/O paths always work without fses involved.  I don't look
+into the new SWP_FS_OPS/.swap_rw way and it seems only some network
+fses use it but IMHO it might have some deadlock risk if swapout
+triggers local fs block allocation.  But overall I think it's a good
+idea to combine the two.
 
-> > All we need to do is figure out how to name the lookup (I don't think we
-> > need to use strings to name the swap object, but obviously we could).  Maybe
-> > it's just a stream of bytes.
-> 
-> A binary blob would probably be better.
-> 
-> I would use a separate index to map higher level organisations, such as
-> cell+volume in afs or the server address + share name in cifs to an index
-> number that can be used in the cache.
-> 
-> Further, I could do with a way to invalidate all objects matching a particular
-> subkey.
+Just slight off the topic: Recently I had another rough thought. As
+you said, even a single fscache block or called a single fscache chunk is like
+256K or whatever.
 
-That seems to map to a directory hierarchy?
+Is it possible to implement an _optional_ partial cached data uptodate
+like fscache chunk vs fsblock?  For example a bitmap can be attached to
+each 256K or 1M chunk. That would be much helpful.
 
-So, named swap objects for fscache; anonymous ones for anon memory?
+Thanks,
+Gao Xiang
+
+> 
+> David
+> 
