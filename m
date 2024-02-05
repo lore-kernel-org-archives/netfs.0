@@ -1,103 +1,196 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9F410799
-	for <netfs@lists.linux.dev>; Sun,  4 Feb 2024 23:45:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FFD248799
+	for <netfs@lists.linux.dev>; Mon,  5 Feb 2024 22:57:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707090346; cv=none; b=FD8HuFZG9f4PVppS/AOdw8tLe2fD61JFL//m1YsWQtQ2zErZRtau+Agyk9+BE/bW5nDIXIQVm2qndr3vUETBty+b5eZD9uVPj3K33egy6Fkg/TrA21mwHElf73KEYm2q9nmzFLyoC6OHbEl96hRjsPx2H2V75jpatt7cP85n5Aw=
+	t=1707173856; cv=none; b=Ub4XDviSffnGpRCNPrOmRSfjgs2AWPMUS5DgCezRRQvOPo36pRNDO/yRv3rouo8F64ngFMtHQI62SI3rnjFt1gu0g3ZhSUqIRQkN9kmhk6GMTmc+dQYXO8tOBlXDPOS002IPWBa/KT2dRbNf6a4O86Y6RLCqID6IqsIhP+6y2vE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707090346; c=relaxed/simple;
-	bh=ZWrAYkEObX8RJzVDe3A4PJku6DRjgp+Pzb2LMv636KU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JqXY1qrhWFRg4syH09YNfFJwGsFCdQoa3xS9AKKFp5EMR8Xud9f5OQsnwmrlPAcrwXk8ZPFXuQHwgrcY13fZHIgG3OvvfaUs6/vciP2br/o9NHLSg5CmbJd08txJ40Ug2D3TzKUfxKvb1yrtSbUCMKiW2PPEWnrnOmUSjNS1S6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com; spf=pass smtp.mailfrom=fromorbit.com; dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b=aMc95SnV; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fromorbit.com
+	s=arc-20240116; t=1707173856; c=relaxed/simple;
+	bh=cOQGLVhiiObfyloDgcZhWjtXBhQA9sfsF7RZwDC1qa4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=twNyvG4vsHV1rfzoFdyhZdZUUv1SyVdzb+PtK0JUsNfJJ/V+7dbGCmV34n1ZW6gRNfUaRa2d3X5SPAl0YDHqYuzkMvjnFF4dQ2TCuETn5VlaulIoOllYnNE9BZ4tRw/vNCL9vA30npS+2SHMlVVwAkZyOeJRzMB7zIyHkkeZNKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UTkeFn96; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b="aMc95SnV"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1d99c5f6bfeso4732855ad.1
-        for <netfs@lists.linux.dev>; Sun, 04 Feb 2024 15:45:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1707090344; x=1707695144; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pvV2EpIUxaX7NT7kLqul2ISaFb45XQHzr81IwPkRSMw=;
-        b=aMc95SnVSF6WvrAMEA84xUKN5GIJjvnBCvyDPFSvnqLDIZH011HECmZJWEqzSHfs7n
-         xLNCHnoiE1+E3PmUyoL9yRk5N/J9eyDPO8CQA9aQWutSP3pyFuXrj/Qc4MFXOLEX/8Jr
-         E1Q3fSP8N8nhhdQt6yQmlVBSj/wQfHLIQmGJVGUye0nuki2vaew89z5G/czHLmGG85av
-         wT06WJLPj1VOEu5RWLBiiDfAiQPIELXLHuP+tjWnYivzf0VUNFLVs4SQoPbur4N2OzNP
-         T0OOt6iHKAK9EezkryK87kcbOqngmUSPFQXQjqxKPFLAz+Agssspuz4jEbftErAMhXoC
-         /fKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707090344; x=1707695144;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pvV2EpIUxaX7NT7kLqul2ISaFb45XQHzr81IwPkRSMw=;
-        b=h0R26v+y7wnWmMsxRq2OJIB/ko4Ssn7mR8FJfV23RuVHsl11Oz7XhiRX72MiKhtMiq
-         8ts83w8wnP1M+9YGPllOOADi5SWO0XZaYmVhJHEGRSwa6R7qpRNRqy6zlR2A6raOKi0i
-         WQwQctCO+XGSW/7WjINYyzfvvUGXwdXg9hIE34gHuctrLSge1ZZfyrT2x5nDR2un30AO
-         lG4iuuLZkhxmR4ui/kvVXPQ4zbjY6S8vyczcqLGKwfcSSQjIqdMvj6P7ZZI0Cyh5S3Ud
-         bfgfe8tPihEkN19DgKMVTxywwED/HEDgAU2C8T0KHMobd/movkUkokiNMAcmZpmq87I6
-         IEww==
-X-Gm-Message-State: AOJu0Yz/KRNXI9ZHJ4dnb4Tn+N8JDdkWh0yuY4Njbr+LzTbxPE95S0MO
-	zv0l1alO//f6nX9cOAXOkeETeyH/F8iQKy7iAG7cpHhF0fX3PvusjKeIHFeGtFM=
-X-Google-Smtp-Source: AGHT+IEgPuKAB4wPTf1zcjRLNfL97sIjLpYWWHuGJD3cM/33XdDSLK6OD/xjovQ9r+CU32P944mdSg==
-X-Received: by 2002:a17:902:d4c7:b0:1d6:f17b:ecfc with SMTP id o7-20020a170902d4c700b001d6f17becfcmr6355888plg.15.1707090343975;
-        Sun, 04 Feb 2024 15:45:43 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCXv058kBTv74LvoPUADWwMn0wYajYRcRQIS/3H9ZLZO04+7JLzQ1H5IKF3thDY/LNJRyBHFuDK9eghvhVB/JQn/O5o0GAkm1izdGtDbIEAeMRcSwV743SoZ9QZFfxmau5rLX+ptSG+6elg8wqlCKClvSnyoCQKhI7E6twx23283M/jFfQwcWNWpOqFGQlI=
-Received: from dread.disaster.area (pa49-181-38-249.pa.nsw.optusnet.com.au. [49.181.38.249])
-        by smtp.gmail.com with ESMTPSA id w18-20020a170902d11200b001d8ee19ab34sm5084689plw.29.2024.02.04.15.45.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Feb 2024 15:45:43 -0800 (PST)
-Received: from dave by dread.disaster.area with local (Exim 4.96)
-	(envelope-from <david@fromorbit.com>)
-	id 1rWmBA-0029Bi-0S;
-	Mon, 05 Feb 2024 10:45:40 +1100
-Date: Mon, 5 Feb 2024 10:45:40 +1100
-From: Dave Chinner <david@fromorbit.com>
-To: David Howells <dhowells@redhat.com>
-Cc: lsf-pc@lists.linux-foundation.org, Matthew Wilcox <willy@infradead.org>,
-	netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [LSF/MM/BPF TOPIC] Large folios, swap and fscache
-Message-ID: <ZcAhpOi0UpMhtLYT@dread.disaster.area>
-References: <2701740.1706864989@warthog.procyon.org.uk>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UTkeFn96"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1707173853;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=m84d7QF2RHzKEpc2iYUiWaNTbg9vVp06SyHcrHDZtG0=;
+	b=UTkeFn96c4q9ln9Src+h2O6mH2LZUhXQpSF+mqMmFZc5pppdM6lcKwF+qr6Az9/c/LhTN9
+	1ZrqQpQUCtWXbtlyIbatVbTnUW9bxHMS42uh2BrHrcHYtg9Qg041fH3juim9iXnah3SiNJ
+	16iemHJvNVWRaba0vB4iJHhosPJAYMc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-287-kn07yk8aMjSd8XV0XktC_Q-1; Mon, 05 Feb 2024 17:57:31 -0500
+X-MC-Unique: kn07yk8aMjSd8XV0XktC_Q-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 35A77845DC0;
+	Mon,  5 Feb 2024 22:57:31 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.42.28.245])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 19C7B1121312;
+	Mon,  5 Feb 2024 22:57:29 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Steve French <smfrench@gmail.com>
+Cc: David Howells <dhowells@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Tom Talpey <tom@talpey.com>,
+	Christian Brauner <christian@brauner.io>,
+	netfs@lists.linux.dev,
+	linux-cifs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v5 00/12] netfs, cifs: Delegate high-level I/O to netfslib
+Date: Mon,  5 Feb 2024 22:57:12 +0000
+Message-ID: <20240205225726.3104808-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2701740.1706864989@warthog.procyon.org.uk>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 
-On Fri, Feb 02, 2024 at 09:09:49AM +0000, David Howells wrote:
-> Hi,
-> 
-> The topic came up in a recent discussion about how to deal with large folios
-> when it comes to swap as a swap device is normally considered a simple array
-> of PAGE_SIZE-sized elements that can be indexed by a single integer.
-> 
-> With the advent of large folios, however, we might need to change this in
-> order to be better able to swap out a compound page efficiently.  Swap
-> fragmentation raises its head, as does the need to potentially save multiple
-> indices per folio.  Does swap need to grow more filesystem features?
+Hi Steve,
 
-The "file-based swap" infrastructure needs to be converted to use
-filesystem direct IO methods. It should not cache the extent list
-and do raw direct-to-device IO itself, it should just build an
-iov that points to the pages and submit that to the filesystem
-DIO read/write path to do the mapping and submission to disk.
+Here are patches to convert cifs to use the netfslib library.  With this I
+can run a certain amount of xfstests on CIFS, though not all the tests work
+correctly because of fallocate issues.
 
-If we tell the dio subsystem that it is IOCB_SWAP IO, then we can
-do things like ignore unwritten bits in the extent mappings so
-we don't have to do transactions to avoid unwritten conversion on
-write or do timestamp updates on the inode...
+The patches remove around 2000 lines from CIFS
 
--Dave.
--- 
-Dave Chinner
-david@fromorbit.com
+To do:
+
+ (*) Implement write-retry.  Currently, netfslib errors out on a failed DIO
+     write and relies on the VM to drive writepages again on a failed
+     buffered write.  This needs some retry logic adding into
+     fs/netfs/output.c.
+
+     I'm not sure what the best way to handle this is.  One way is to
+     resend each failing subreq as it fails, offloading this to a kernel
+     thread that re-splits the subreq, calling out to a rreq->op to do the
+     splitting, thereby allowing cifs to renegotiate credits.  If a subreq
+     is split, the two parts need to be adjacent in the rreq->subrequests
+     list.
+
+     An alternative way might be to try and combine failing tests and then
+     split them.
+
+     Yet a third way might be to try each failing subreq a smaller bit at a
+     time and keep track of what has been sent in
+     wdata->subreq.transferred.
+
+     Whichever way is chosen, NETFS_SREQ_RETRYING should be set in
+     wdata->subreq.flags instead of setting wdata->replay.
+
+Notes:
+
+ (1) CIFS is made to use unbuffered I/O for unbuffered caching modes and
+     write-through caching for cache=strict.
+
+ (2) Various cifs fallocate() function implementations have issues that
+     aren't easily fixed without enhanced protocol support.
+
+ (3) It should be possible to turn on multipage folio support in CIFS now.
+
+ (4) The then-unused CIFS code is removed in three patches, not one, to
+     avoid the git patch generator from producing confusing patches in
+     which it thinks code is being moved around rather than just being
+     removed.
+
+The patches can be found here also:
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=cifs-netfs
+
+Changes
+=======
+ver #5)
+ - Rebased to -rc3 plus SteveF's for-next branch as netfslib is now
+   upstream, as are a couple of patches from this series.
+ - Replace the ->replay bool Shyam added with a flag on the netfs
+   subrequest.  This is tested by the code, but not currently set (see
+   above).
+
+ver #4)
+ - Slimmed down the branch:
+   - Split the cifs-related patches off to a separate branch (cifs-netfs)
+   - Deferred the content-encryption to the in-progress ceph changes.
+   - Deferred the use-PG_writeback rather than PG_fscache patch
+ - Rebased on a later linux-next with afs-rotation patches.
+
+ver #3)
+ - Moved the fscache module into netfslib to avoid export cycles.
+ - Fixed a bunch of bugs.
+ - Got CIFS to pass as much of xfstests as possible.
+ - Added a patch to make 9P use all the helpers.
+ - Added a patch to stop using PG_fscache, but rather dirty pages on
+   reading and have writepages write to the cache.
+
+ver #2)
+ - Folded the addition of NETFS_RREQ_NONBLOCK/BLOCKED into first patch that
+   uses them.
+ - Folded addition of rsize member into first user.
+ - Don't set rsize in ceph (yet) and set it in kafs to 256KiB.  cifs sets
+   it dynamically.
+ - Moved direct_bv next to direct_bv_count in struct netfs_io_request and
+   labelled it with a __counted_by().
+ - Passed flags into netfs_xa_store_and_mark() rather than two bools.
+ - Removed netfs_set_up_buffer() as it wasn't used.
+
+David
+
+Link: https://lore.kernel.org/r/20231213152350.431591-1-dhowells@redhat.com/ [1]
+Link: https://lore.kernel.org/r/20231013160423.2218093-1-dhowells@redhat.com/ # v1
+Link: https://lore.kernel.org/r/20231117211544.1740466-1-dhowells@redhat.com/ # v2
+Link: https://lore.kernel.org/r/20231207212206.1379128-1-dhowells@redhat.com/ # v3
+Link: https://lore.kernel.org/r/20231213154139.432922-1-dhowells@redhat.com/ # v4
+
+David Howells (12):
+  cifs: Replace cifs_readdata with a wrapper around netfs_io_subrequest
+  cifs: Set zero_point in the copy_file_range() and remap_file_range()
+  cifs: Replace cifs_writedata with a wrapper around netfs_io_subrequest
+  cifs: Use more fields from netfs_io_subrequest
+  cifs: Make wait_mtu_credits take size_t args
+  cifs: Implement netfslib hooks
+  cifs: Replace the writedata replay bool with a netfs sreq flag
+  cifs: Move cifs_loose_read_iter() and cifs_file_write_iter() to file.c
+  cifs: Cut over to using netfslib
+  cifs: Remove some code that's no longer used, part 1
+  cifs: Remove some code that's no longer used, part 2
+  cifs: Remove some code that's no longer used, part 3
+
+ fs/netfs/buffered_write.c    |    3 +
+ fs/netfs/io.c                |    7 +-
+ fs/smb/client/Kconfig        |    1 +
+ fs/smb/client/cifsfs.c       |   69 +-
+ fs/smb/client/cifsfs.h       |   10 +-
+ fs/smb/client/cifsglob.h     |   59 +-
+ fs/smb/client/cifsproto.h    |   14 +-
+ fs/smb/client/cifssmb.c      |  111 +-
+ fs/smb/client/file.c         | 2911 ++++++----------------------------
+ fs/smb/client/fscache.c      |  109 --
+ fs/smb/client/fscache.h      |   54 -
+ fs/smb/client/inode.c        |   19 +-
+ fs/smb/client/smb2ops.c      |   10 +-
+ fs/smb/client/smb2pdu.c      |  169 +-
+ fs/smb/client/smb2proto.h    |    5 +-
+ fs/smb/client/trace.h        |  144 +-
+ fs/smb/client/transport.c    |   17 +-
+ include/linux/netfs.h        |    2 +
+ include/trace/events/netfs.h |    1 +
+ 19 files changed, 852 insertions(+), 2863 deletions(-)
+
