@@ -1,328 +1,107 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635762C6B5
-	for <netfs@lists.linux.dev>; Thu,  8 Feb 2024 03:55:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC821D549;
+	Fri,  9 Feb 2024 10:52:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707364532; cv=none; b=Ot8DxdVB+ssu38IrjVY9Z4uogbmaY5VP/JVmxuz5kRkMvzQuNTAnMRS0J4awe565YDfE1zqolPtuq0EYeIzZYGIpOn36H/raOle4zHjyqnYyPA0XFRUAPkPW60q0aGfiH4DiGbXzdzNRmkuVDK+cCLPFldSahVZWBxkd9aEy+iY=
+	t=1707475977; cv=none; b=J5YPNI3bx9MS38G3utwuWxWXyG5jZLSlt0jA7DmthshpPj43fR7gBVNIrNql//Iw79MzfPCOEHLkS2U1U+ZuNrr7ZuV5uoCGG2y9KzYjsVOzjiY3BfYRQ4ImnfQnxZ2ngzeJmZnnGzSb3CnirHDdoDag0iYsPfZEeep+MUwZx7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707364532; c=relaxed/simple;
-	bh=O0Onsj1Nvy7tmPso6s/pGpLSoDca5eyq1mY93iRcjhA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TG0FX2C4SwqJJ6AaDdq5O98W0hMSnh/qvlbZrbyYs4VGZMo7EaGEOQF+Wzwui3i93VA9Gh2Tj3wEbwQ5VCdX6fsgYOZ7v71kDSKfpPnwSFEQ+pz7ResiYSDOFQEPec6pAez2jvSHast1UpGwmudT+xcloUaOiMkZNyhDKrVk1YI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GyWhmv90; arc=none smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1707475977; c=relaxed/simple;
+	bh=6dwnkyROxGZ2SBXY1Zy0Ne8yjBZ4UXuUgvnfXsanGsQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ea3AmzFlrWIIab7lg3H0RTvHqgiMaa38Jw6UJZFsEK+ODsEH2PFvpJ41MfUfw6YwVU2f8UZBkklhKlCVeHdyDHCJvyuY/rCFphHx6KJxDVLHXwitZQUuYAv+nBgL67eBPE0mBMYldtFah7gz9isHjKHDG2RzFnHLHCEmjpnWino=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EXECrLG1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GyWhmv90"
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5114b1e8819so2135138e87.1
-        for <netfs@lists.linux.dev>; Wed, 07 Feb 2024 19:55:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707364526; x=1707969326; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RXErrAfTv+p6kb7R4C6uEJnvctDLGBoxQSLw/PRqP0g=;
-        b=GyWhmv90pwVW2dujYe7Z8qhwZhmo/QYCj9VzV0h6fe2zR1J8RUGZvHDxWJYGB11u2O
-         cIieKD0Z4BZFT40eJ3PTx8a995r5at2M449GHkuvv+80vtC2XvkYhz/2IqbIKIIWFRH+
-         Qaafoszb3oylx+Sx6zFBTux8TtJeMejGPixDCoueINZk9NEgElTfIQKS24FFfCnBkcu8
-         KP9493hwS0LkeeCaZbhDkrPcGGAtQSXaSnw7Lx6N7bnjM9000yz8/Iy+h6qFNilDRrEW
-         00DqxM64G+CIQeOfLIRq7BAeQC9H2s6KeXrMQpqQBlplGJD64YedobsGX7cPWNzKNLIE
-         W4WA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707364526; x=1707969326;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RXErrAfTv+p6kb7R4C6uEJnvctDLGBoxQSLw/PRqP0g=;
-        b=eXfgikbuICjgqBzqskonWri1j9NLH4sSU/ib/DtI+izP2XkGcMwcplS9avTMHWuZKe
-         f80Bms8yx1EtGnN25m9XmW4BFX+gyxYYP7kwjbQwvksylvJpD5P+rqO0fs5dh+nrisP0
-         9U6WhNPf42gMfvqUn+xKNt3d+IClhSQFUliXWyv+R+Q8BF0WNbbLpW8y3oigqjNCG3id
-         KZZ3Fjinl/toNbtSbK410HVGNELY+okqTIdf3TRpbsHvEXVZSqA7t22KORm7CaGhzxWi
-         HOWO7gJriCMpXShzl3Rl/Smtc5JjKOtb3s2IFVAgxe17gfBlE9Vw5mB5CpRQzrXA76sS
-         1+sQ==
-X-Gm-Message-State: AOJu0Yx85MsDpUiQyypUMV63QwG8Ddb/krAC2yDw6zLHv1XvZ8ReeMcS
-	ro8ucBXlfSo2aerC3Azvv/5+Qwb6KdBpW18vimh8Kck41qAbKhKymVDZA3W/e6+0hJ6QjL+Vf3P
-	BvIJT+/ZQDYQqHLkBMRKDGxmgiLY=
-X-Google-Smtp-Source: AGHT+IHMpehn1qdvHBgKMn5tBamIL609b3PihsXeEEtCvsSXBv5c/L/yQRTDOTGp0meJ/ZLFf/6GsJcmNL4o1rl28qg=
-X-Received: by 2002:a05:6512:313c:b0:511:4465:3e21 with SMTP id
- p28-20020a056512313c00b0051144653e21mr6557636lfd.25.1707364525877; Wed, 07
- Feb 2024 19:55:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EXECrLG1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 639B6C433C7;
+	Fri,  9 Feb 2024 10:52:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707475976;
+	bh=6dwnkyROxGZ2SBXY1Zy0Ne8yjBZ4UXuUgvnfXsanGsQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EXECrLG1KqQf6D1VRtpPf0wmtjc9PzW9ElAmQMSqXLAzHQKbzULSUnUOE3Bby2xlp
+	 GK7ieqInVtLdUUSYzlGAcRaW0rv6cfSTNYvOmKWKkk3lXyh8IF6+7uNzHyUdUcPj6t
+	 NrxJJnPLsb66NeenDW6S2qSV0Klh/g4oECelQu6sXppSXmP8rS9g/2ErRO/+8IPFzF
+	 LQCMwdSk4qJx/skt/SzOs/nexEbRBThp96JwWg4DAbDaf57O4lNB2Ryg1HNYrcKzAL
+	 3P/2VVnO4+ivMyhapwruu/QIZR7iTGesCy5u4DjniEHH5m5l9yRYlgdoTr+0aCv7oF
+	 AiBrIDrSfsCPQ==
+Date: Fri, 9 Feb 2024 10:52:51 +0000
+From: Simon Horman <horms@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Steve French <smfrench@gmail.com>, Jeff Layton <jlayton@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+	Christian Brauner <christian@brauner.io>, netfs@lists.linux.dev,
+	linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Steve French <sfrench@samba.org>,
+	Shyam Prasad N <nspmangalore@gmail.com>,
+	Rohith Surabattula <rohiths.msft@gmail.com>
+Subject: Re: [PATCH v5 09/12] cifs: Cut over to using netfslib
+Message-ID: <20240209105251.GE1516992@kernel.org>
+References: <20240205225726.3104808-1-dhowells@redhat.com>
+ <20240205225726.3104808-10-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240205225726.3104808-1-dhowells@redhat.com>
-In-Reply-To: <20240205225726.3104808-1-dhowells@redhat.com>
-From: Steve French <smfrench@gmail.com>
-Date: Wed, 7 Feb 2024 21:55:13 -0600
-Message-ID: <CAH2r5mu0Dw7jVHFaz4cYCNjWj9RFa76pRTyQOEenDACHDgNfyg@mail.gmail.com>
-Subject: Re: [PATCH v5 00/12] netfs, cifs: Delegate high-level I/O to netfslib
-To: David Howells <dhowells@redhat.com>
-Cc: Jeff Layton <jlayton@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Paulo Alcantara <pc@manguebit.com>, Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>, 
-	Christian Brauner <christian@brauner.io>, netfs@lists.linux.dev, linux-cifs@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240205225726.3104808-10-dhowells@redhat.com>
 
-This looks promising but I do hit an oops fairly early in xfstest runs
-with the 12 patches in your series (on 6.8-rc3)
+On Mon, Feb 05, 2024 at 10:57:21PM +0000, David Howells wrote:
 
-[  228.136056] run fstests generic/306 at 2024-02-07 21:32:16
+...
 
-[  228.573734] ------------[ cut here ]------------
-[  228.573737] kernel BUG at lib/iov_iter.c:582!
-[  228.573744] invalid opcode: 0000 [#1] PREEMPT SMP PTI
-[  228.573748] CPU: 2 PID: 4033 Comm: cifsd Tainted: G            E
-  6.8.0-rc3+ #2
-[  228.573751] Hardware name: Microsoft Corporation Virtual
-Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 11/28/2023
-[  228.573752] RIP: 0010:iov_iter_revert+0x114/0x120
-[  228.573758] Code: 48 89 78 08 31 c0 31 d2 31 c9 31 f6 31 ff 45 31
-c0 c3 cc cc cc cc 0f 0b 31 c0 31 d2 31 c9 31 f6 31 ff 45 31 c0 c3 cc
-cc cc cc <0f> 0b 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90
-90 90
-[  228.573760] RSP: 0018:ffffb8d005c27d68 EFLAGS: 00010246
-[  228.573763] RAX: ffffb8d005c27d98 RBX: ffff99934d039b00 RCX: 00000000000=
-00000
-[  228.573764] RDX: 0000000000000000 RSI: 0000000000000200 RDI: 00000000000=
-00004
-[  228.573766] RBP: ffffb8d005c27e00 R08: 0000000000000000 R09: 00000000000=
-00000
-[  228.573767] R10: 0000000000000000 R11: 0000000000000000 R12: ffff9993427=
-36900
-[  228.573769] R13: ffff9993a7fd4800 R14: ffff9993a7fd2000 R15: 00000000000=
-00001
-[  228.573770] FS:  0000000000000000(0000) GS:ffff9994f2b00000(0000)
-knlGS:0000000000000000
-[  228.573772] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  228.573774] CR2: 00007fe530dffe38 CR3: 0000000103fc8001 CR4: 00000000003=
-706f0
-[  228.573777] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 00000000000=
-00000
-[  228.573778] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 00000000000=
-00400
-[  228.573779] Call Trace:
-[  228.573781]  <TASK>
-[  228.573783]  ? show_regs+0x6d/0x80
-[  228.573787]  ? die+0x37/0xa0
-[  228.573789]  ? do_trap+0xd4/0xf0
-[  228.573793]  ? do_error_trap+0x71/0xb0
-[  228.573795]  ? iov_iter_revert+0x114/0x120
-[  228.573798]  ? exc_invalid_op+0x52/0x80
-[  228.573801]  ? iov_iter_revert+0x114/0x120
-[  228.573803]  ? asm_exc_invalid_op+0x1b/0x20
-[  228.573808]  ? iov_iter_revert+0x114/0x120
-[  228.573813]  ? smb2_readv_callback+0x50f/0x5b0 [cifs]
-[  228.573874]  cifs_demultiplex_thread+0x46e/0xe40 [cifs]
-[  228.573920]  ? __pfx_cifs_demultiplex_thread+0x10/0x10 [cifs]
-[  228.573962]  kthread+0xef/0x120
-[  228.573966]  ? __pfx_kthread+0x10/0x10
-[  228.573969]  ret_from_fork+0x44/0x70
-[  228.573972]  ? __pfx_kthread+0x10/0x10
-[  228.573975]  ret_from_fork_asm+0x1b/0x30
-[  228.573979]  </TASK>
-[  228.573980] Modules linked in: cmac(E) nls_utf8(E) cifs(E)
-cifs_arc4(E) nls_ucs2_utils(E) cifs_md4(E) netfs(E) snd_seq_dummy(E)
-snd_hrtimer(E) snd_seq_midi(E) snd_seq_midi_event(E) snd_rawmidi(E)
-snd_seq(E) snd_seq_device(E) snd_timer(E) snd(E) soundcore(E)
-sunrpc(E) binfmt_misc(E) intel_rapl_msr(E) intel_rapl_common(E)
-intel_uncore_frequency_common(E) intel_pmc_core(E) intel_vsec(E)
-pmt_telemetry(E) pmt_class(E) crct10dif_pclmul(E) polyval_clmulni(E)
-polyval_generic(E) ghash_clmulni_intel(E) sha512_ssse3(E)
-sha256_ssse3(E) sha1_ssse3(E) aesni_intel(E) crypto_simd(E) cryptd(E)
-rapl(E) hyperv_drm(E) drm_shmem_helper(E) drm_kms_helper(E)
-hv_balloon(E) hyperv_fb(E) vmgenid(E) joydev(E) mac_hid(E)
-serio_raw(E) msr(E) parport_pc(E) ppdev(E) lp(E) drm(E) parport(E)
-efi_pstore(E) dmi_sysfs(E) ip_tables(E) x_tables(E) autofs4(E)
-btrfs(E) blake2b_generic(E) xor(E) raid6_pq(E) libcrc32c(E)
-hid_generic(E) hid_hyperv(E) hv_storvsc(E) hv_netvsc(E) hid(E)
-hyperv_keyboard(E) scsi_transport_fc(E) hv_utils(E) crc32_pclmul(E)
-[  228.574031]  hv_vmbus(E)
-[  228.574035] ---[ end trace 0000000000000000 ]---
-[  228.636462] RIP: 0010:iov_iter_revert+0x114/0x120
-[  228.636471] Code: 48 89 78 08 31 c0 31 d2 31 c9 31 f6 31 ff 45 31
-c0 c3 cc cc cc cc 0f 0b 31 c0 31 d2 31 c9 31 f6 31 ff 45 31 c0 c3 cc
-cc cc cc <0f> 0b 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90
-90 90
-[  228.636474] RSP: 0018:ffffb8d005c27d68 EFLAGS: 00010246
-[  228.636477] RAX: ffffb8d005c27d98 RBX: ffff99934d039b00 RCX: 00000000000=
-00000
-[  228.636479] RDX: 0000000000000000 RSI: 0000000000000200 RDI: 00000000000=
-00004
-[  228.636481] RBP: ffffb8d005c27e00 R08: 0000000000000000 R09: 00000000000=
-00000
-[  228.636482] R10: 0000000000000000 R11: 0000000000000000 R12: ffff9993427=
-36900
-[  228.636484] R13: ffff9993a7fd4800 R14: ffff9993a7fd2000 R15: 00000000000=
-00001
-[  228.636485] FS:  0000000000000000(0000) GS:ffff9994f2b00000(0000)
-knlGS:0000000000000000
-[  228.636487] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  228.636489] CR2: 00007fe530dffe38 CR3: 0000000103fc8001 CR4: 00000000003=
-706f0
-[  228.636492] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 00000000000=
-00000
-[  228.636494] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 00000000000=
-00400
+> diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+> index 84e3675eb41e..b58fdee40755 100644
+> --- a/fs/smb/client/smb2pdu.c
+> +++ b/fs/smb/client/smb2pdu.c
+> @@ -4386,10 +4386,12 @@ smb2_new_read_req(void **buf, unsigned int *total_len,
+>  	req->Length = cpu_to_le32(io_parms->length);
+>  	req->Offset = cpu_to_le64(io_parms->offset);
+>  
+> -	trace_smb3_read_enter(0 /* xid */,
+> -			io_parms->persistent_fid,
+> -			io_parms->tcon->tid, io_parms->tcon->ses->Suid,
+> -			io_parms->offset, io_parms->length);
+> +	trace_smb3_read_enter(rdata ? rdata->rreq->debug_id : 0,
+> +			      rdata ? rdata->subreq.debug_index : 0,
+> +			      rdata ? rdata->xid : 0,
+> +			      io_parms->persistent_fid,
+> +			      io_parms->tcon->tid, io_parms->tcon->ses->Suid,
+> +			      io_parms->offset, io_parms->length);
+>  #ifdef CONFIG_CIFS_SMB_DIRECT
+
+Hi David,
+
+above some care is taken to handle the case where rdata might be NULL.
+
+However, the code below this hunk, other than being guarded by
+smb3_use_rdma_offload(io_parms), uses rdata unconditionally.
+
+Perhaps the guard makes this ok. But Smatch flags this inconsistency.
+And I thought I should bring it to your attention.
+
+For reference the code I am referring to looks like this:
+
+#ifdef CONFIG_CIFS_SMB_DIRECT
+	/*
+	 * If we want to do a RDMA write, fill in and append
+	 * smbd_buffer_descriptor_v1 to the end of read request
+	 */
+	if (smb3_use_rdma_offload(io_parms)) {
+		struct smbd_buffer_descriptor_v1 *v1;
+		bool need_invalidate = server->dialect == SMB30_PROT_ID;
+
+		rdata->mr = smbd_register_mr(server->smbd_conn, &rdata->subreq.io_iter,
+					     true, need_invalidate);
+		if (!rdata->mr)
+			return -EAGAIN;
 
 
-On Mon, Feb 5, 2024 at 4:57=E2=80=AFPM David Howells <dhowells@redhat.com> =
-wrote:
->
-> Hi Steve,
->
-> Here are patches to convert cifs to use the netfslib library.  With this =
-I
-> can run a certain amount of xfstests on CIFS, though not all the tests wo=
-rk
-> correctly because of fallocate issues.
->
-> The patches remove around 2000 lines from CIFS
->
-> To do:
->
->  (*) Implement write-retry.  Currently, netfslib errors out on a failed D=
-IO
->      write and relies on the VM to drive writepages again on a failed
->      buffered write.  This needs some retry logic adding into
->      fs/netfs/output.c.
->
->      I'm not sure what the best way to handle this is.  One way is to
->      resend each failing subreq as it fails, offloading this to a kernel
->      thread that re-splits the subreq, calling out to a rreq->op to do th=
-e
->      splitting, thereby allowing cifs to renegotiate credits.  If a subre=
-q
->      is split, the two parts need to be adjacent in the rreq->subrequests
->      list.
->
->      An alternative way might be to try and combine failing tests and the=
-n
->      split them.
->
->      Yet a third way might be to try each failing subreq a smaller bit at=
- a
->      time and keep track of what has been sent in
->      wdata->subreq.transferred.
->
->      Whichever way is chosen, NETFS_SREQ_RETRYING should be set in
->      wdata->subreq.flags instead of setting wdata->replay.
->
-> Notes:
->
->  (1) CIFS is made to use unbuffered I/O for unbuffered caching modes and
->      write-through caching for cache=3Dstrict.
->
->  (2) Various cifs fallocate() function implementations have issues that
->      aren't easily fixed without enhanced protocol support.
->
->  (3) It should be possible to turn on multipage folio support in CIFS now=
-.
->
->  (4) The then-unused CIFS code is removed in three patches, not one, to
->      avoid the git patch generator from producing confusing patches in
->      which it thinks code is being moved around rather than just being
->      removed.
->
-> The patches can be found here also:
->
->         https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs=
-.git/log/?h=3Dcifs-netfs
->
-> Changes
-> =3D=3D=3D=3D=3D=3D=3D
-> ver #5)
->  - Rebased to -rc3 plus SteveF's for-next branch as netfslib is now
->    upstream, as are a couple of patches from this series.
->  - Replace the ->replay bool Shyam added with a flag on the netfs
->    subrequest.  This is tested by the code, but not currently set (see
->    above).
->
-> ver #4)
->  - Slimmed down the branch:
->    - Split the cifs-related patches off to a separate branch (cifs-netfs)
->    - Deferred the content-encryption to the in-progress ceph changes.
->    - Deferred the use-PG_writeback rather than PG_fscache patch
->  - Rebased on a later linux-next with afs-rotation patches.
->
-> ver #3)
->  - Moved the fscache module into netfslib to avoid export cycles.
->  - Fixed a bunch of bugs.
->  - Got CIFS to pass as much of xfstests as possible.
->  - Added a patch to make 9P use all the helpers.
->  - Added a patch to stop using PG_fscache, but rather dirty pages on
->    reading and have writepages write to the cache.
->
-> ver #2)
->  - Folded the addition of NETFS_RREQ_NONBLOCK/BLOCKED into first patch th=
-at
->    uses them.
->  - Folded addition of rsize member into first user.
->  - Don't set rsize in ceph (yet) and set it in kafs to 256KiB.  cifs sets
->    it dynamically.
->  - Moved direct_bv next to direct_bv_count in struct netfs_io_request and
->    labelled it with a __counted_by().
->  - Passed flags into netfs_xa_store_and_mark() rather than two bools.
->  - Removed netfs_set_up_buffer() as it wasn't used.
->
-> David
->
-> Link: https://lore.kernel.org/r/20231213152350.431591-1-dhowells@redhat.c=
-om/ [1]
-> Link: https://lore.kernel.org/r/20231013160423.2218093-1-dhowells@redhat.=
-com/ # v1
-> Link: https://lore.kernel.org/r/20231117211544.1740466-1-dhowells@redhat.=
-com/ # v2
-> Link: https://lore.kernel.org/r/20231207212206.1379128-1-dhowells@redhat.=
-com/ # v3
-> Link: https://lore.kernel.org/r/20231213154139.432922-1-dhowells@redhat.c=
-om/ # v4
->
-> David Howells (12):
->   cifs: Replace cifs_readdata with a wrapper around netfs_io_subrequest
->   cifs: Set zero_point in the copy_file_range() and remap_file_range()
->   cifs: Replace cifs_writedata with a wrapper around netfs_io_subrequest
->   cifs: Use more fields from netfs_io_subrequest
->   cifs: Make wait_mtu_credits take size_t args
->   cifs: Implement netfslib hooks
->   cifs: Replace the writedata replay bool with a netfs sreq flag
->   cifs: Move cifs_loose_read_iter() and cifs_file_write_iter() to file.c
->   cifs: Cut over to using netfslib
->   cifs: Remove some code that's no longer used, part 1
->   cifs: Remove some code that's no longer used, part 2
->   cifs: Remove some code that's no longer used, part 3
->
->  fs/netfs/buffered_write.c    |    3 +
->  fs/netfs/io.c                |    7 +-
->  fs/smb/client/Kconfig        |    1 +
->  fs/smb/client/cifsfs.c       |   69 +-
->  fs/smb/client/cifsfs.h       |   10 +-
->  fs/smb/client/cifsglob.h     |   59 +-
->  fs/smb/client/cifsproto.h    |   14 +-
->  fs/smb/client/cifssmb.c      |  111 +-
->  fs/smb/client/file.c         | 2911 ++++++----------------------------
->  fs/smb/client/fscache.c      |  109 --
->  fs/smb/client/fscache.h      |   54 -
->  fs/smb/client/inode.c        |   19 +-
->  fs/smb/client/smb2ops.c      |   10 +-
->  fs/smb/client/smb2pdu.c      |  169 +-
->  fs/smb/client/smb2proto.h    |    5 +-
->  fs/smb/client/trace.h        |  144 +-
->  fs/smb/client/transport.c    |   17 +-
->  include/linux/netfs.h        |    2 +
->  include/trace/events/netfs.h |    1 +
->  19 files changed, 852 insertions(+), 2863 deletions(-)
->
->
-
-
---
-Thanks,
-
-Steve
+...
