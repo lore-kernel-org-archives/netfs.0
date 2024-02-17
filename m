@@ -1,76 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7423025630;
-	Fri,  9 Feb 2024 10:59:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318411CF8F
+	for <netfs@lists.linux.dev>; Sat, 17 Feb 2024 08:12:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707476393; cv=none; b=b3JeSbvsy5WTKB5XI7LyXgPBg4OLeaN2FNOh9FQTYetyITuKzITpnUnUUXESe/E6peJMbtrXOX8JLlU06LSTsD7I6qi23R3fu+P+HcLRe+JHy5KAITfJKJlizRhayqaiLaIg4Ib0t2lg/zhRuQl/ADPM99vgU88ItSYQpSbWPbI=
+	t=1708157559; cv=none; b=aK2pPwTyGgVez/Loi3ngkpdrrv1QKzADH/QdQ++nlka5EtkpWi6YBr/FRu3uSJqjOQmoWaAFxZMYCkSnwTfDCwANCiKZN/1BpQb8S4JrJV3kGGFFlK+xC/7IjuS3OnfBmYeF2rseMZz9MpNIEWHhD9YofpB8ya2xIjYobe2j5RM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707476393; c=relaxed/simple;
-	bh=FFLWrgG2VHp3uRF0u3LiE7N3T26kky9+Tfd1oSmlI0I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h9q7WjOOD1dXLFsDOdvaCihYbUDqeMevDEG34g+nDgr7Yf40DM83wkQgvo9tAr197E+NDrJQ5sMMtmQBVcy2TH2uDJpFp+2RqXq5BoFt3sIiSveEhqQRMG2CJVHeHeAvVuaTtuK7cYxh8zk0tkyFB6c9ZyuDo0JP1+wTV8L24r8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=crw86jVZ; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="crw86jVZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E54C433F1;
-	Fri,  9 Feb 2024 10:59:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707476393;
-	bh=FFLWrgG2VHp3uRF0u3LiE7N3T26kky9+Tfd1oSmlI0I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=crw86jVZNx+OjqvNSgKMiIlh1/TuyaFkxQgr4lOvuHwA7ZCHOLYVT+QyTXRvtr8E8
-	 /s7GrX5Ss4XUbblkURa43fzs05SGNFZ7inrSJ4HeSd7L7bmwXAhbd1w1yhaWt7NOpw
-	 f5z1Zc6CZuPHLeBzs8rCrvIz4U8M2Jnm/Mj4JBKe8k9/KgN/uOtWTgEkjW+JqYw8IV
-	 4SpzXjCDYQzlg94S1xkIFeFlgcqxu0I7gds9B/lmVVkgBqZuhMYxN5ARWrTr2xVB+9
-	 XrSObopVoHJQlZGsPJkEBgToDVIebtPdh4CWv87vmMkSMXFS8QXJ2lyKZwbtNoKocc
-	 TIa6PF8//FkEw==
-Date: Fri, 9 Feb 2024 10:59:47 +0000
-From: Simon Horman <horms@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Steve French <smfrench@gmail.com>, Jeff Layton <jlayton@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-	Christian Brauner <christian@brauner.io>, netfs@lists.linux.dev,
-	linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Steve French <sfrench@samba.org>,
-	Shyam Prasad N <nspmangalore@gmail.com>,
-	Rohith Surabattula <rohiths.msft@gmail.com>
-Subject: Re: [PATCH v5 09/12] cifs: Cut over to using netfslib
-Message-ID: <20240209105947.GF1516992@kernel.org>
-References: <20240205225726.3104808-1-dhowells@redhat.com>
- <20240205225726.3104808-10-dhowells@redhat.com>
+	s=arc-20240116; t=1708157559; c=relaxed/simple;
+	bh=76RXlR/msdWs4e9OX1WpKtSooLAmtPygvVwdSqDyayY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HN0JeeQaKl3Osrv43WiGyRW/9NNbuofw+SSsbMpqQbpqPTUNGSUnEdsuDGgGBO2TokqPtX5FWjFlVci827zGKfOiVtDe6TRB/LaS77kHxuDE5RhYpMKYaLIHnq53fO6vRBuLSZg8JBN8D12sUOVMuuw3QkfNgLG/Gu8Qv+U/VbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4TcM2D44glz1xnkR;
+	Sat, 17 Feb 2024 16:11:16 +0800 (CST)
+Received: from dggpeml500021.china.huawei.com (unknown [7.185.36.21])
+	by mail.maildlp.com (Postfix) with ESMTPS id BC3AA18001B;
+	Sat, 17 Feb 2024 16:12:34 +0800 (CST)
+Received: from huawei.com (10.175.127.227) by dggpeml500021.china.huawei.com
+ (7.185.36.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Sat, 17 Feb
+ 2024 16:12:34 +0800
+From: Baokun Li <libaokun1@huawei.com>
+To: <netfs@lists.linux.dev>
+CC: <dhowells@redhat.com>, <jlayton@kernel.org>, <linux-cachefs@redhat.com>,
+	<linux-erofs@lists.ozlabs.org>, <linux-fsdevel@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <libaokun1@huawei.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH RESEND] cachefiles: fix memory leak in cachefiles_add_cache()
+Date: Sat, 17 Feb 2024 16:14:31 +0800
+Message-ID: <20240217081431.796809-1-libaokun1@huawei.com>
+X-Mailer: git-send-email 2.31.1
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240205225726.3104808-10-dhowells@redhat.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpeml500021.china.huawei.com (7.185.36.21)
 
-On Mon, Feb 05, 2024 at 10:57:21PM +0000, David Howells wrote:
+The following memory leak was reported after unbinding /dev/cachefiles:
 
-...
+==================================================================
+unreferenced object 0xffff9b674176e3c0 (size 192):
+  comm "cachefilesd2", pid 680, jiffies 4294881224
+  hex dump (first 32 bytes):
+    01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace (crc ea38a44b):
+    [<ffffffff8eb8a1a5>] kmem_cache_alloc+0x2d5/0x370
+    [<ffffffff8e917f86>] prepare_creds+0x26/0x2e0
+    [<ffffffffc002eeef>] cachefiles_determine_cache_security+0x1f/0x120
+    [<ffffffffc00243ec>] cachefiles_add_cache+0x13c/0x3a0
+    [<ffffffffc0025216>] cachefiles_daemon_write+0x146/0x1c0
+    [<ffffffff8ebc4a3b>] vfs_write+0xcb/0x520
+    [<ffffffff8ebc5069>] ksys_write+0x69/0xf0
+    [<ffffffff8f6d4662>] do_syscall_64+0x72/0x140
+    [<ffffffff8f8000aa>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
+==================================================================
 
-> diff --git a/fs/smb/client/cifsfs.h b/fs/smb/client/cifsfs.h
-> index e8e0f863e935..5cd547b7b5ea 100644
-> --- a/fs/smb/client/cifsfs.h
-> +++ b/fs/smb/client/cifsfs.h
-> @@ -85,6 +85,7 @@ extern const struct inode_operations cifs_namespace_inode_operations;
->  
->  
->  /* Functions related to files and directories */
-> +extern const struct netfs_request_ops cifs_req_ops;
->  extern const struct file_operations cifs_file_ops;
->  extern const struct file_operations cifs_file_direct_ops; /* if directio mnt */
->  extern const struct file_operations cifs_file_strict_ops; /* if strictio mnt */
+Put the reference count of cache_cred in cachefiles_daemon_unbind() to
+fix the problem. And also put cache_cred in cachefiles_add_cache() error
+branch to avoid memory leaks.
 
-Nit: this hunk would probably be better placed in the
-     patch at adds cifs_req_ops to fs/smb/client/file.c
+Fixes: 9ae326a69004 ("CacheFiles: A cache that backs onto a mounted filesystem")
+CC: stable@vger.kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+---
+ fs/cachefiles/cache.c  | 2 ++
+ fs/cachefiles/daemon.c | 1 +
+ 2 files changed, 3 insertions(+)
 
-...
+diff --git a/fs/cachefiles/cache.c b/fs/cachefiles/cache.c
+index 7077f72e6f47..f449f7340aad 100644
+--- a/fs/cachefiles/cache.c
++++ b/fs/cachefiles/cache.c
+@@ -168,6 +168,8 @@ int cachefiles_add_cache(struct cachefiles_cache *cache)
+ 	dput(root);
+ error_open_root:
+ 	cachefiles_end_secure(cache, saved_cred);
++	put_cred(cache->cache_cred);
++	cache->cache_cred = NULL;
+ error_getsec:
+ 	fscache_relinquish_cache(cache_cookie);
+ 	cache->cache = NULL;
+diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
+index 3f24905f4066..6465e2574230 100644
+--- a/fs/cachefiles/daemon.c
++++ b/fs/cachefiles/daemon.c
+@@ -816,6 +816,7 @@ static void cachefiles_daemon_unbind(struct cachefiles_cache *cache)
+ 	cachefiles_put_directory(cache->graveyard);
+ 	cachefiles_put_directory(cache->store);
+ 	mntput(cache->mnt);
++	put_cred(cache->cache_cred);
+ 
+ 	kfree(cache->rootdirname);
+ 	kfree(cache->secctx);
+-- 
+2.31.1
+
