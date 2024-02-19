@@ -1,58 +1,64 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C301232182
-	for <netfs@lists.linux.dev>; Mon, 19 Feb 2024 13:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E7941C73
+	for <netfs@lists.linux.dev>; Mon, 19 Feb 2024 15:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708347656; cv=none; b=IsdA+fTl6d9+Ab8N1QvjwFBnQHg5VZY8uY9xIZvdMIWNt78IJuSAs+N9MS+J7ZmWv/8hVneKIvGNm77aIoI5o8UTrCKOBqwUksVrbSE0vn2BthKgvoBrlKBidwWRcGpeYF88o4nlToKbqdTLqt6o+mfM8pnHKv4XtE7SSI9ON7k=
+	t=1708355208; cv=none; b=UHaQkCPwe86UDQz8LKIGmS5sQ/b+rbkuOy26kvpQS3aAPQFKgXHHuHANLp5lNW728VP1u2xB8IRON2co/rzlgVwD7ULE3cJ7jHh0+YeZns0JN53WAj0sNIOcuQlEbS7rnenVB13HEFncJr2cyvUNSnIe9gS6PP1bWkV8RZWx+zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708347656; c=relaxed/simple;
-	bh=dHWiwi/4MsahdbBRvdAXd0W5GApiDgwNTSRWlu2vpSE=;
+	s=arc-20240116; t=1708355208; c=relaxed/simple;
+	bh=wugezZjVe6UgAzwGzvshOR+TV29UxTPSM7V6CCpV2WY=;
 	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=VUKNqpc6+zlKoUuNlcEJiFo25oc22md5pA7vqiUH6uhkfNKkod8qQ3Us5wSYJzo6c2lx935nw17nvWi8KGv0RKeUXc62CU3kHYUNRkoCdJfgZzleqqkLBCRMn4wnG7pfKTGP2UZSc2m3TlLwbDjNfPXjItcUJfP4Z2+i+MjDc4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WHTKpei2; arc=none smtp.client-ip=170.10.129.124
+	 Content-Type:Date:Message-ID; b=t5IrzyIRhcH38QtvaqPFnQu/GuNkgrVhQrpowGMFlOG9N4gu0lBfnQ+du0QMXZryoQOOx79cKsW/uwF8GWy6mB28gxDqfLtAeD6LQ6EkqGb1dMVopH4RlOkKAT65eRcHPyU/iJAD/gUz/ELEddpM/jfg+uL3Kvn7WJlLKnFbaDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PCzLdHA7; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WHTKpei2"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PCzLdHA7"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1708347653;
+	s=mimecast20190719; t=1708355205;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TwNcCYcnKDEqL3qwv8hEJSNKkkqFQa2yy0ZaFvuYG/I=;
-	b=WHTKpei2dDzPv87YFnrLdAD4IuLXDSN31x9SSJE5z9ETXQfJBbfzycTFWDI5FDYRlv5aL3
-	vwH+qw6ercpeWaT2LCEXJhs1fF26ggREOtNJnVnyV7a+Mh8sP7AnGyNvvKDB5jSQ0N2dGs
-	ZR+Dey+LO0/v9AAYN+JyQ4/5Okd38Jk=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-401-EKdDHX6EOFScijXKBRs-bg-1; Mon,
- 19 Feb 2024 08:00:48 -0500
-X-MC-Unique: EKdDHX6EOFScijXKBRs-bg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
+	bh=vFCiJ6818JOoFEUYfbT4Q/AOpM96O17V3Tb55o233+4=;
+	b=PCzLdHA7nPr3RQfY/ecMk56B6/+AL77OoCaw8b3pDz/cx6+FRG6d/08QAs9htnpwVFEaxw
+	4+RW/asXjKWamnJs6fGuHj1VkYpL1UyAIkpNWcoHGr1r8eN2DGRbyl4j/GvSbG0NmoX++Z
+	4xulmkZQ7074WUPs0wkhYW79vspN2vo=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-675-eNmBTw3xMj6jNyDE7RWv_g-1; Mon, 19 Feb 2024 10:06:41 -0500
+X-MC-Unique: eNmBTw3xMj6jNyDE7RWv_g-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 937BD1C05AA6;
-	Mon, 19 Feb 2024 13:00:47 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3D214886460;
+	Mon, 19 Feb 2024 15:06:40 +0000 (UTC)
 Received: from warthog.procyon.org.uk (unknown [10.42.28.15])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 14603AC0C;
-	Mon, 19 Feb 2024 13:00:45 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 319C0492BE2;
+	Mon, 19 Feb 2024 15:06:38 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
 	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
 	Kingdom.
 	Registered in England and Wales under Company Registration No. 3798903
 From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20240217081431.796809-1-libaokun1@huawei.com>
-References: <20240217081431.796809-1-libaokun1@huawei.com>
-To: Christian Brauner <christian@brauner.io>
-Cc: dhowells@redhat.com, netfs@lists.linux.dev, jlayton@kernel.org,
-    Baokun Li <libaokun1@huawei.com>, linux-cachefs@redhat.com,
-    linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH RESEND] cachefiles: fix memory leak in cachefiles_add_cache()
+In-Reply-To: <20240209105251.GE1516992@kernel.org>
+References: <20240209105251.GE1516992@kernel.org> <20240205225726.3104808-1-dhowells@redhat.com> <20240205225726.3104808-10-dhowells@redhat.com>
+To: Simon Horman <horms@kernel.org>
+Cc: dhowells@redhat.com, Steve French <smfrench@gmail.com>,
+    Jeff Layton <jlayton@kernel.org>,
+    Matthew Wilcox <willy@infradead.org>,
+    Paulo Alcantara <pc@manguebit.com>,
+    Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+    Christian Brauner <christian@brauner.io>, netfs@lists.linux.dev,
+    linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+    linux-mm@kvack.org, netdev@vger.kernel.org,
+    linux-kernel@vger.kernel.org, Steve French <sfrench@samba.org>,
+    Shyam Prasad N <nspmangalore@gmail.com>,
+    Rohith Surabattula <rohiths.msft@gmail.com>
+Subject: Re: [PATCH v5 09/12] cifs: Cut over to using netfslib
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -60,55 +66,20 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <131232.1708347645.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 19 Feb 2024 13:00:45 +0000
-Message-ID: <131233.1708347645@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Content-ID: <140404.1708355197.1@warthog.procyon.org.uk>
+Date: Mon, 19 Feb 2024 15:06:37 +0000
+Message-ID: <140405.1708355197@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
 
-Hi Christian,
+Simon Horman <horms@kernel.org> wrote:
 
-Could you take this through your VFS tree please?
+> However, the code below this hunk, other than being guarded by
+> smb3_use_rdma_offload(io_parms), uses rdata unconditionally.
 
-> The following memory leak was reported after unbinding /dev/cachefiles:
-> =
+Yeah - it does that even without my patches.  SMB2_read() can call the
+function with rdata == NULL, but I'm unsure as to whether the RDMA branch will
+ever be used except for actual reads - in which case rdata will not be NULL at
+the "rdata->mr" point.
 
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> unreferenced object 0xffff9b674176e3c0 (size 192):
->   comm "cachefilesd2", pid 680, jiffies 4294881224
->   hex dump (first 32 bytes):
->     01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->   backtrace (crc ea38a44b):
->     [<ffffffff8eb8a1a5>] kmem_cache_alloc+0x2d5/0x370
->     [<ffffffff8e917f86>] prepare_creds+0x26/0x2e0
->     [<ffffffffc002eeef>] cachefiles_determine_cache_security+0x1f/0x120
->     [<ffffffffc00243ec>] cachefiles_add_cache+0x13c/0x3a0
->     [<ffffffffc0025216>] cachefiles_daemon_write+0x146/0x1c0
->     [<ffffffff8ebc4a3b>] vfs_write+0xcb/0x520
->     [<ffffffff8ebc5069>] ksys_write+0x69/0xf0
->     [<ffffffff8f6d4662>] do_syscall_64+0x72/0x140
->     [<ffffffff8f8000aa>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> =
-
-> Put the reference count of cache_cred in cachefiles_daemon_unbind() to
-> fix the problem. And also put cache_cred in cachefiles_add_cache() error
-> branch to avoid memory leaks.
-> =
-
-> Fixes: 9ae326a69004 ("CacheFiles: A cache that backs onto a mounted file=
-system")
-> CC: stable@vger.kernel.org
-> Signed-off-by: Baokun Li <libaokun1@huawei.com>
-
-and add:
-
-Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Acked-by: David Howells <dhowells@redhat.com>
+David
 
