@@ -1,100 +1,88 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C7C2E3E5;
-	Tue, 20 Feb 2024 08:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0DF66168D;
+	Tue, 20 Feb 2024 09:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708418821; cv=none; b=m7zbDyGuUUOK8VlgG4v6tDyq1A8Ebdrzu4fUjVK6bSDdWHJk/FtYZelBMfBTwSIeFjBA1mbR0uLuJsgunD0ut7u32cRyCbvYQk4CWeoCcMT9y7TyJ3Q5kaFQAxSeTFDY054vWCJU8+hF3izpbAPi8YweU8MVQFqJjaozVUntQYE=
+	t=1708422693; cv=none; b=QUqvfM8XEmLxNGErxZCGJhs2pSPgJtRjqf2g1wKSrrMUjdWPH4MNmYIPjmOxy+m0rg/6oPcfR6cOZTVwQWdHOIYG4L19x81ark7KS/NRSLOd1zBx6Jeckt6UocBzP6m6xdA/YBGMvJDerIJkcK3DOcTAPF6JaXR7rcaISdOePCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708418821; c=relaxed/simple;
-	bh=GZ+HcFFNIzj0fwynEx3VW22XthB/JF29Bnq/DjlKiCM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DJcZs4n7sIGvTrDyB3knPo4CkM9XIMqkLEDTcRQr7VYa9mTd9a94SjyqaWxutSE2ePo5gRcLOPQTIggTOKnuf9W26htBKL/MXYYINFomYtZYqx9DxMdush3YPQW7zAROOxFgP9knHrq+h5DMgf+4+maghA5NaiVeeMOfuTuj8k8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XcBcYY5I; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1708422693; c=relaxed/simple;
+	bh=TPGKN24CaFtGRIE0VeP5mwAzn+ZOxDeAL3aTzRUirss=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FErqkJetXFh+M/h1XCdH+ftOQKwZ47nKLsA1TszeJ3lrI55+/ZybXEZIum3repOOiyiIR7XMJ8beCe6Tf/IO5nbU6Zl0137JULHwtTz8+qlRrFtPDvVYQ1Ao//HAYWXTHi9pXLeXm7VFPeOZbSpfUSniDolafooP7qotdAkkzIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HdGmA/T8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XcBcYY5I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2086BC433C7;
-	Tue, 20 Feb 2024 08:46:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HdGmA/T8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02F3C433F1;
+	Tue, 20 Feb 2024 09:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708418820;
-	bh=GZ+HcFFNIzj0fwynEx3VW22XthB/JF29Bnq/DjlKiCM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XcBcYY5IgpVk3q4imoW0XKzb7mrMtt9TcenPFnl0dHvFc+JSDIGyIshkMRYvW9ryP
-	 HSbgN7UYyJbzpRFj0hytz83QXfN3DWERvWR9B1/I0LHn8VxD+lcr/HrF1B0GdnV9GJ
-	 dUEwe2bWRpegbYDqjrLCRls6A/p/VWNE65OoGtc49j1/WJAad3PaVW0ACAeyUTSckJ
-	 lwsO4+cU7Ggp6ht3N37JN/OzXvqJEjEu67RVrgofo+6yrDvYI35tW19+uI6GRyhqt/
-	 aJWUTjVcmqB20VE9u6o6VV9KbjS6WEyeNaO37cLjkRFkaU88HrDxSkVvltc1vYRR9L
-	 MawQCvi5G96cA==
+	s=k20201202; t=1708422692;
+	bh=TPGKN24CaFtGRIE0VeP5mwAzn+ZOxDeAL3aTzRUirss=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HdGmA/T8Yh36xJUAh9kQ4QRKg7xEAQSuwUEa0iQfBV+TmOCP9i2ysDi55lCEigAVt
+	 iMT8PDu6Rsb3s5qii2+KygzOb/oCQ9TYhW7beSNZoJsCyQepfzdtxrVNl6qdJpDfM9
+	 ENot3D+ATZi+xZnx9fTxI67SE5FeCahLHb/4spD+As4ZJA9cprBz+57uYMwVLGHLxo
+	 dUoQEOj3B16cNb7kuh8ze8i6nhjOtYUO6nOlEpyjUfRbKUX24e7uigjhU/IF3uPzzV
+	 3e6/jprnSqfIlqBk7V1r9K0s6hbEbuvieS7jIy8VvBS7T/S/8Pa9u5ZtLGfGibQ3us
+	 f9XfJxph4bz1g==
+Date: Tue, 20 Feb 2024 10:51:26 +0100
 From: Christian Brauner <brauner@kernel.org>
-To: netfs@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	dhowells@redhat.com
-Cc: Christian Brauner <brauner@kernel.org>,
-	jlayton@kernel.org,
-	linux-cachefs@redhat.com,
-	linux-erofs@lists.ozlabs.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH RESEND] cachefiles: fix memory leak in cachefiles_add_cache()
-Date: Tue, 20 Feb 2024 09:46:28 +0100
-Message-ID: <20240220-lasst-hemden-8ab6d7d2e9ee@brauner>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240217081431.796809-1-libaokun1@huawei.com>
-References: <20240217081431.796809-1-libaokun1@huawei.com>
+To: Linux regressions mailing list <regressions@lists.linux.dev>
+Cc: David Howells <dhowells@redhat.com>, 
+	Christian Brauner <christian@brauner.io>, Eric Van Hensbergen <ericvh@kernel.org>, 
+	Dominique Martinet <asmadeus@codewreck.org>, Jeff Layton <jlayton@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, netfs@lists.linux.dev, linux-afs@lists.infradead.org, 
+	linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, 
+	v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux_oss@crudebyte.com
+Subject: Re: [PATCH 2/2] netfs: Fix missing zero-length check in unbuffered
+ write
+Message-ID: <20240220-autoteile-enthoben-a9a16739b2b9@brauner>
+References: <20240129094924.1221977-1-dhowells@redhat.com>
+ <20240129094924.1221977-3-dhowells@redhat.com>
+ <960e015a-ec2e-42c2-bd9e-4aa47ab4ef2a@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1939; i=brauner@kernel.org; h=from:subject:message-id; bh=GZ+HcFFNIzj0fwynEx3VW22XthB/JF29Bnq/DjlKiCM=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaReSftzfxlfFb/gguUSEwRX+NxMdpaN2+MmY367w4WDf xKfl+n9jlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIko7GRkuOhnJjtRN+W609ft Z2amV0QXZfxvVEst8RZ8G/f6lmCbOiPDs00/RMO7///JEuPMfFB8t/4Kn3zquytd/AGxd/RfKP7 hBgA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <960e015a-ec2e-42c2-bd9e-4aa47ab4ef2a@leemhuis.info>
 
-On Sat, 17 Feb 2024 16:14:31 +0800, Baokun Li wrote:
-> The following memory leak was reported after unbinding /dev/cachefiles:
+On Mon, Feb 19, 2024 at 09:38:33AM +0100, Linux regression tracking (Thorsten Leemhuis) wrote:
+> On 29.01.24 10:49, David Howells wrote:
+> > Fix netfs_unbuffered_write_iter() to return immediately if
+> > generic_write_checks() returns 0, indicating there's nothing to write.
+> > Note that netfs_file_write_iter() already does this.
+> > 
+> > Also, whilst we're at it, put in checks for the size being zero before we
+> > even take the locks.  Note that generic_write_checks() can still reduce the
+> > size to zero, so we still need that check.
+> > 
+> > Without this, a warning similar to the following is logged to dmesg:
+> > 
+> > 	netfs: Zero-sized write [R=1b6da]
+> > 
+> > and the syscall fails with EIO, e.g.:
+> > 
+> > 	/sbin/ldconfig.real: Writing of cache extension data failed: Input/output error
+> > 
+> > This can be reproduced on 9p by:
+> > 
+> > 	xfs_io -f -c 'pwrite 0 0' /xfstest.test/foo
+> > 
+> > Fixes: 153a9961b551 ("netfs: Implement unbuffered/DIO write support")
+> > Reported-by: Eric Van Hensbergen <ericvh@kernel.org>
+> > Link: https://lore.kernel.org/r/ZbQUU6QKmIftKsmo@FV7GG9FTHL/
 > 
-> ==================================================================
-> unreferenced object 0xffff9b674176e3c0 (size 192):
->   comm "cachefilesd2", pid 680, jiffies 4294881224
->   hex dump (first 32 bytes):
->     01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->   backtrace (crc ea38a44b):
->     [<ffffffff8eb8a1a5>] kmem_cache_alloc+0x2d5/0x370
->     [<ffffffff8e917f86>] prepare_creds+0x26/0x2e0
->     [<ffffffffc002eeef>] cachefiles_determine_cache_security+0x1f/0x120
->     [<ffffffffc00243ec>] cachefiles_add_cache+0x13c/0x3a0
->     [<ffffffffc0025216>] cachefiles_daemon_write+0x146/0x1c0
->     [<ffffffff8ebc4a3b>] vfs_write+0xcb/0x520
->     [<ffffffff8ebc5069>] ksys_write+0x69/0xf0
->     [<ffffffff8f6d4662>] do_syscall_64+0x72/0x140
->     [<ffffffff8f8000aa>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
-> ==================================================================
+> David, thx for fixing Eric's regression, which I'm tracking.
 > 
-> [...]
+> Christian, just wondering: that patch afaics is sitting in vfs.netfs for
+> about three weeks now -- is that intentional or did it maybe fell
+> through the cracks somehow?
 
-Sorry for the delay, David.
-
----
-
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
-
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
-
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
-
-[1/1] cachefiles: fix memory leak in cachefiles_add_cache()
-      https://git.kernel.org/vfs/vfs/c/e21a2f17566c
+I've moved it to vfs.fixes now and will send later this week. Thanks for
+the reminder!
