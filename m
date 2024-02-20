@@ -1,82 +1,100 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787473C49E
-	for <netfs@lists.linux.dev>; Mon, 19 Feb 2024 16:12:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C7C2E3E5;
+	Tue, 20 Feb 2024 08:47:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708359178; cv=none; b=qn1Ndo1jiRWwLCkhAvXI8FDu6EmCKUGc/IdkbTbMmLz1wTrZB+zq9IRO3SB8K3QLs58zZwFyN0WTD5dfzp2hrKHF0G5VI+auDbjV3GbMKXQtD1i8xqx8u46eQG7vP99+V193NexIc8p+VjKzkyZ6jJky1s/ubb5/KFNQcHrRL0U=
+	t=1708418821; cv=none; b=m7zbDyGuUUOK8VlgG4v6tDyq1A8Ebdrzu4fUjVK6bSDdWHJk/FtYZelBMfBTwSIeFjBA1mbR0uLuJsgunD0ut7u32cRyCbvYQk4CWeoCcMT9y7TyJ3Q5kaFQAxSeTFDY054vWCJU8+hF3izpbAPi8YweU8MVQFqJjaozVUntQYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708359178; c=relaxed/simple;
-	bh=TEbeuKi1D4WwK34OueQCHICSRhZ5+jaTYtBPp4NOkog=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=cXVpRfrVk+U6ROqgINZ8nItOLqQACfdGiD1l2+LLNQ3FEp5MPpvHRl3qluIz01fKEwk1nT2DP7NicYyBXPfDvNw0g+/doiDWQSD1AlVKVwbkZHeD1f9oUzlO0794Vq1O5UqIySAbwwohl+iQfSIZUD8r0fUIGfhH+H+qN/oE/Ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LYHqNiE2; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1708418821; c=relaxed/simple;
+	bh=GZ+HcFFNIzj0fwynEx3VW22XthB/JF29Bnq/DjlKiCM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DJcZs4n7sIGvTrDyB3knPo4CkM9XIMqkLEDTcRQr7VYa9mTd9a94SjyqaWxutSE2ePo5gRcLOPQTIggTOKnuf9W26htBKL/MXYYINFomYtZYqx9DxMdush3YPQW7zAROOxFgP9knHrq+h5DMgf+4+maghA5NaiVeeMOfuTuj8k8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XcBcYY5I; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LYHqNiE2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1708359176;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Qw1Zo0E33/fdGs8X8g9v7Lf2Wcxxz6qcLyaGW55/s6Y=;
-	b=LYHqNiE2/BMrF+3EVe4nctYc9Ew6wIgEPhNxECy/AmTqB/GaVfxLkA4p/yf8wjDkp9HmUz
-	TdF69HoOyN/G8SQ4V+8Lj+dbJSuftXbIjKnl1kM6qKWhKrew9yZFox/0nCnOAchQH14kia
-	I78TQkJZjYfuodgO+S+LsfWcdqNpHAA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-468-3bJK7h8bOYeO_1GkDHJOeg-1; Mon, 19 Feb 2024 11:12:52 -0500
-X-MC-Unique: 3bJK7h8bOYeO_1GkDHJOeg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B26D2882087;
-	Mon, 19 Feb 2024 16:12:51 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.15])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 0EFA71121306;
-	Mon, 19 Feb 2024 16:12:48 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20240209105947.GF1516992@kernel.org>
-References: <20240209105947.GF1516992@kernel.org> <20240205225726.3104808-1-dhowells@redhat.com> <20240205225726.3104808-10-dhowells@redhat.com>
-To: Simon Horman <horms@kernel.org>
-Cc: dhowells@redhat.com, Steve French <smfrench@gmail.com>,
-    Jeff Layton <jlayton@kernel.org>,
-    Matthew Wilcox <willy@infradead.org>,
-    Paulo Alcantara <pc@manguebit.com>,
-    Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-    Christian Brauner <christian@brauner.io>, netfs@lists.linux.dev,
-    linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-    linux-mm@kvack.org, netdev@vger.kernel.org,
-    linux-kernel@vger.kernel.org, Steve French <sfrench@samba.org>,
-    Shyam Prasad N <nspmangalore@gmail.com>,
-    Rohith Surabattula <rohiths.msft@gmail.com>
-Subject: Re: [PATCH v5 09/12] cifs: Cut over to using netfslib
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XcBcYY5I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2086BC433C7;
+	Tue, 20 Feb 2024 08:46:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708418820;
+	bh=GZ+HcFFNIzj0fwynEx3VW22XthB/JF29Bnq/DjlKiCM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=XcBcYY5IgpVk3q4imoW0XKzb7mrMtt9TcenPFnl0dHvFc+JSDIGyIshkMRYvW9ryP
+	 HSbgN7UYyJbzpRFj0hytz83QXfN3DWERvWR9B1/I0LHn8VxD+lcr/HrF1B0GdnV9GJ
+	 dUEwe2bWRpegbYDqjrLCRls6A/p/VWNE65OoGtc49j1/WJAad3PaVW0ACAeyUTSckJ
+	 lwsO4+cU7Ggp6ht3N37JN/OzXvqJEjEu67RVrgofo+6yrDvYI35tW19+uI6GRyhqt/
+	 aJWUTjVcmqB20VE9u6o6VV9KbjS6WEyeNaO37cLjkRFkaU88HrDxSkVvltc1vYRR9L
+	 MawQCvi5G96cA==
+From: Christian Brauner <brauner@kernel.org>
+To: netfs@lists.linux.dev,
+	Baokun Li <libaokun1@huawei.com>,
+	dhowells@redhat.com
+Cc: Christian Brauner <brauner@kernel.org>,
+	jlayton@kernel.org,
+	linux-cachefs@redhat.com,
+	linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH RESEND] cachefiles: fix memory leak in cachefiles_add_cache()
+Date: Tue, 20 Feb 2024 09:46:28 +0100
+Message-ID: <20240220-lasst-hemden-8ab6d7d2e9ee@brauner>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240217081431.796809-1-libaokun1@huawei.com>
+References: <20240217081431.796809-1-libaokun1@huawei.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <229304.1708359168.1@warthog.procyon.org.uk>
-Date: Mon, 19 Feb 2024 16:12:48 +0000
-Message-ID: <229305.1708359168@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1939; i=brauner@kernel.org; h=from:subject:message-id; bh=GZ+HcFFNIzj0fwynEx3VW22XthB/JF29Bnq/DjlKiCM=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaReSftzfxlfFb/gguUSEwRX+NxMdpaN2+MmY367w4WDf xKfl+n9jlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIko7GRkuOhnJjtRN+W609ft Z2amV0QXZfxvVEst8RZ8G/f6lmCbOiPDs00/RMO7///JEuPMfFB8t/4Kn3zquytd/AGxd/RfKP7 hBgA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-Simon Horman <horms@kernel.org> wrote:
+On Sat, 17 Feb 2024 16:14:31 +0800, Baokun Li wrote:
+> The following memory leak was reported after unbinding /dev/cachefiles:
+> 
+> ==================================================================
+> unreferenced object 0xffff9b674176e3c0 (size 192):
+>   comm "cachefilesd2", pid 680, jiffies 4294881224
+>   hex dump (first 32 bytes):
+>     01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+>     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+>   backtrace (crc ea38a44b):
+>     [<ffffffff8eb8a1a5>] kmem_cache_alloc+0x2d5/0x370
+>     [<ffffffff8e917f86>] prepare_creds+0x26/0x2e0
+>     [<ffffffffc002eeef>] cachefiles_determine_cache_security+0x1f/0x120
+>     [<ffffffffc00243ec>] cachefiles_add_cache+0x13c/0x3a0
+>     [<ffffffffc0025216>] cachefiles_daemon_write+0x146/0x1c0
+>     [<ffffffff8ebc4a3b>] vfs_write+0xcb/0x520
+>     [<ffffffff8ebc5069>] ksys_write+0x69/0xf0
+>     [<ffffffff8f6d4662>] do_syscall_64+0x72/0x140
+>     [<ffffffff8f8000aa>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
+> ==================================================================
+> 
+> [...]
 
-> Nit: this hunk would probably be better placed in the
->      patch at adds cifs_req_ops to fs/smb/client/file.c
+Sorry for the delay, David.
 
-I've moved that to the patch that adds cifs_req_ops.
+---
 
-David
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
+
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[1/1] cachefiles: fix memory leak in cachefiles_add_cache()
+      https://git.kernel.org/vfs/vfs/c/e21a2f17566c
