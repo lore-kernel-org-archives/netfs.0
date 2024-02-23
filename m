@@ -1,205 +1,121 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F66DDB1
-	for <netfs@lists.linux.dev>; Fri, 23 Feb 2024 03:03:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018EFCA73
+	for <netfs@lists.linux.dev>; Fri, 23 Feb 2024 03:46:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708657398; cv=none; b=W0M54Raf9dq4F0sSrLMkTZb9sbk62y97e3ZWqmGACGDb8O2XdsiTbQF2FExUc9VzncSYUXLEbUcOgQhItSwT5KYw2paXt170/zcvdjVF2uODoqKKVmCKV30z5YKI5fWI7H0sQjK0AfRGRW+FBw5J/WXoFyLygJl+AJL9j3e2QGw=
+	t=1708659999; cv=none; b=jcNN9H4VRY9sI5rYIIR4OMZ+TmzojJeCYwweUIIRKvqNqWhOr6oAOJfNy/+KFubkxdcmuG9BA/oYzzUQSDC6SJgywHLOuJ3gO6TNUsKCf4U8oMK+IFLt169XzdObZxziBjj0W+MGQU0p//54bxHSFu5eam0m4xi+j0EUOMt73/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708657398; c=relaxed/simple;
-	bh=IdyE98yA+G44f4aEGVaTuKR+9kGIFzoy8Z9sqTMdNm4=;
-	h=From:Message-Id:Content-Type:Mime-Version:Subject:Date:
-	 In-Reply-To:Cc:To:References; b=fDcSh6m/ezA/MmdVXM9lN/+tNTPKdMh3MFSrslKl+c4qZqYUFTSRsIkeznQr4TOPlLWYVh6duzkrFHWLJoJ7aGWYKfgY2Lym2yhmRZA4ZillFrUAoq6t0/BIswkAZQJ8UHuhbns7MrNjhokyBn5S4FDieTo7GAAi2d5cTI8Gr7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dilger.ca; spf=pass smtp.mailfrom=dilger.ca; dkim=pass (2048-bit key) header.d=dilger-ca.20230601.gappssmtp.com header.i=@dilger-ca.20230601.gappssmtp.com header.b=LeV7a46L; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dilger.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dilger.ca
+	s=arc-20240116; t=1708659999; c=relaxed/simple;
+	bh=iGul607Cp7rDkfZ94qKL6w4xt1f9nX9iQReaI0swLc0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uMS9oADX4oB2GVaGS9lSH7W/QgbuCTkvGddVd0gujcyHqeCngZSbYDfMXAWCZuQ1Fr+Jh5EimAjaHeafarFGG0oroK47VfCSBH3QTPYyXZVXNilvVeSZAxJZNH8KQxwA7ng6chfAnXw0toixhK1Ir/nnOr1yRhatO/sCj1XNb00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ss5+OnXO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dilger-ca.20230601.gappssmtp.com header.i=@dilger-ca.20230601.gappssmtp.com header.b="LeV7a46L"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-29a2545a1e7so362926a91.2
-        for <netfs@lists.linux.dev>; Thu, 22 Feb 2024 19:03:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dilger-ca.20230601.gappssmtp.com; s=20230601; t=1708657396; x=1709262196; darn=lists.linux.dev;
-        h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gRbla0f/Hl6rGJ+ONURsPxKzzUMpoaT/YVrejYpQIh8=;
-        b=LeV7a46LdVCGyHEN40zBZaHqXBuDSVIqkZsInfC0h9QWS5hbsDjvtBSFdUWxvYUYXU
-         1NkGPM8iEHZ7UrmwJ1oXVJ9x7+ZOkOezQdTurWRyuXEPwvBGhwex6XoY+TmDsDjR91+Q
-         MR2rdaKaw+NYmB7zyysjs+cTFW0dp1pfu9leKDdMJgY5hiyImuK6UCemY2xXCsQp5+UZ
-         MY9EStY/A7YSU1QZrqUINjP9iwo4zuB9VMtT3xPAC/PmBZZkicNsE462JeLC1KQ+kbdW
-         naTIwXd1tau/f93Gd5HLeX+516N1J9ZUBJ1KSjX2yW5eQQzRcItFj1B27Nh3Vh/4thFY
-         ZNcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708657396; x=1709262196;
-        h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gRbla0f/Hl6rGJ+ONURsPxKzzUMpoaT/YVrejYpQIh8=;
-        b=pMrqcHxrlDpr7wzEmjJ9IxzbKcQIjv/XuL9iIXgLPZbQfs7ymLGyQzx1VMUBAzd3kY
-         WNDk7nqGvd3C/IIAaDhjjcEJrOwFqGOfWVUeGdltMt9y5mqiq4xozce0DDU1jDgV1BG/
-         aolrAWHzjMfk6Uv3Tv4nnYDSmLFTlIJFSVoeO/myy4pQucwMQtWrF67uFIxk0siK6eOI
-         jhevhOo10eB+kmaD+105RTgsNa2LLsniZ7cFLubYfY3ghYQEUdXn2PA/w0x9cgYFW4A1
-         y44Cr1rJ+k8DRLNSIXXt9i/f/RjQy9CzHH4bWlFKTN+UeLjWHY9E5Df8NGU8vb1lsptB
-         0z9g==
-X-Forwarded-Encrypted: i=1; AJvYcCWeHBiOS3UU7jkASdG7kWVT/Zurou4JIZVeaXrs2aIUXuCmvfg0lUYDdn/D+JupzAWpvKMQG73fYIREnEDN1iRDuGgizFQ=
-X-Gm-Message-State: AOJu0YydpNcJjx8OdGR+y+W718ypWdwtEI4a+c7ViI0Q/VPdGjO1RnzW
-	Diwp/dYFg2x1EyJw53nbZ5eXxiSfweKsXX9uBj2rJ+x8fcDz6uRDuohGJtiUW7k=
-X-Google-Smtp-Source: AGHT+IGJqnlYOapYN19RR+kXIGIG4wNS531YY06c5pt+RcA/HoLkHhJLwaHFhA7xa4Mgo19sRY5rxw==
-X-Received: by 2002:a17:90b:2394:b0:29a:6d80:364 with SMTP id mr20-20020a17090b239400b0029a6d800364mr597656pjb.39.1708657395659;
-        Thu, 22 Feb 2024 19:03:15 -0800 (PST)
-Received: from cabot.adilger.int (S01068c763f81ca4b.cg.shawcable.net. [70.77.200.158])
-        by smtp.gmail.com with ESMTPSA id nr5-20020a17090b240500b00299fe9c395asm238960pjb.4.2024.02.22.19.03.14
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 22 Feb 2024 19:03:15 -0800 (PST)
-From: Andreas Dilger <adilger@dilger.ca>
-Message-Id: <1B53E6AF-0EFA-4290-A4CF-CFA7F3BF0E51@dilger.ca>
-Content-Type: multipart/signed;
- boundary="Apple-Mail=_8E84EA68-A783-46F7-8DB7-9FF3874ABA36";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ss5+OnXO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E13AC43390
+	for <netfs@lists.linux.dev>; Fri, 23 Feb 2024 03:46:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708659998;
+	bh=iGul607Cp7rDkfZ94qKL6w4xt1f9nX9iQReaI0swLc0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Ss5+OnXOHt9v6JYmfkpOwLkMePy0RI5IUBZyKFkwQDo1YwbYgU1EPqpM0ZD/HXCNS
+	 IoTBgqy113G4J1q7SDG/rNCRJf0RXKJHcQeVPrqHd8pTPBcnv/xipLjuKR7uMK9F+j
+	 9EJpZYqP7ymdhvha5Eod9pabF6n4NOYSa2MFIzx67GGmVGr9iQduTUlakqgLGsyxhi
+	 0XilYrgtCNI2bGZecbsmu/dGLvdnsp3LQXlzYSmWH+JmlyZQypJsrLuETJ2NnObS5v
+	 MA9Lck+1zAvGT8xXa43WUAaA16ccrxt2VWS73h6mabAb1uao6881k8/mYW5CgDyens
+	 /I3G+VmVXaMGQ==
+Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-36576488976so1586645ab.0
+        for <netfs@lists.linux.dev>; Thu, 22 Feb 2024 19:46:38 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVyAulCDNZAQxQzZp5St/xauKBGE7YVPMeWg0mQFW6mMIbIhd9skVg2e9lxGPLhqD+iH+IWqyltP6ubA4M2J5NWacbXP3A=
+X-Gm-Message-State: AOJu0Yxp9SbgtKz+r5xm4upa4VOOW2FknIliijJoxv2slHNVTpDHeT0U
+	gylagg3oqW+2oxWgzlk1jaX9C0S+rijQJHpudsiT7Y+ceZJKz+BRaZOEhGRdF9WhhXHMW+CW6/Y
+	LtyXWnfz11SA0cr5D+PJdoB+HdLwK9cETdhxQ
+X-Google-Smtp-Source: AGHT+IFsxTZLAPCkD0TH5XAL1lgftVp9VE5z8c865bPRirAR/yXtuKuQ6IawvGKBD9vlftWjblFJjx5+nNwDQPOuMaY=
+X-Received: by 2002:a05:6e02:12c7:b0:364:fffe:44c5 with SMTP id
+ i7-20020a056e0212c700b00364fffe44c5mr1130416ilm.1.1708659997924; Thu, 22 Feb
+ 2024 19:46:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0 (Mac OS X Mail 10.3 \(3273\))
+MIME-Version: 1.0
+References: <2701740.1706864989@warthog.procyon.org.uk> <CAF8kJuNt2Vqk0yGkuz7qHAui7tb9B1W6U+SLyTmc6N2ngCU53A@mail.gmail.com>
+ <1B53E6AF-0EFA-4290-A4CF-CFA7F3BF0E51@dilger.ca>
+In-Reply-To: <1B53E6AF-0EFA-4290-A4CF-CFA7F3BF0E51@dilger.ca>
+From: Chris Li <chrisl@kernel.org>
+Date: Thu, 22 Feb 2024 19:46:24 -0800
+X-Gmail-Original-Message-ID: <CAF8kJuOFKTuepSheBa1Uhdm-a+pOVKUORjOPSDhTfxFydRTN_A@mail.gmail.com>
+Message-ID: <CAF8kJuOFKTuepSheBa1Uhdm-a+pOVKUORjOPSDhTfxFydRTN_A@mail.gmail.com>
 Subject: Re: [LSF/MM/BPF TOPIC] Large folios, swap and fscache
-Date: Thu, 22 Feb 2024 20:00:46 -0700
-In-Reply-To: <CAF8kJuNt2Vqk0yGkuz7qHAui7tb9B1W6U+SLyTmc6N2ngCU53A@mail.gmail.com>
-Cc: David Howells <dhowells@redhat.com>,
- lsf-pc@lists.linux-foundation.org,
- Matthew Wilcox <willy@infradead.org>,
- netfs@lists.linux.dev,
- linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org
-To: Chris Li <chrisl@kernel.org>
-References: <2701740.1706864989@warthog.procyon.org.uk>
- <CAF8kJuNt2Vqk0yGkuz7qHAui7tb9B1W6U+SLyTmc6N2ngCU53A@mail.gmail.com>
-X-Mailer: Apple Mail (2.3273)
-
-
---Apple-Mail=_8E84EA68-A783-46F7-8DB7-9FF3874ABA36
+To: Andreas Dilger <adilger@dilger.ca>
+Cc: David Howells <dhowells@redhat.com>, lsf-pc@lists.linux-foundation.org, 
+	Matthew Wilcox <willy@infradead.org>, netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=utf-8
 
-On Feb 22, 2024, at 3:45 PM, Chris Li <chrisl@kernel.org> wrote:
->=20
-> Hi David,
->=20
-> On Fri, Feb 2, 2024 at 1:10=E2=80=AFAM David Howells =
-<dhowells@redhat.com> wrote:
->>=20
->> Hi,
->>=20
->> The topic came up in a recent discussion about how to deal with large =
+Hi Andreas,
+
+On Thu, Feb 22, 2024 at 7:03=E2=80=AFPM Andreas Dilger <adilger@dilger.ca> =
+wrote:
+>
+> On Feb 22, 2024, at 3:45 PM, Chris Li <chrisl@kernel.org> wrote:
+> >
+> > Hi David,
+> >
+> > On Fri, Feb 2, 2024 at 1:10=E2=80=AFAM David Howells <dhowells@redhat.c=
+om> wrote:
+> >>
+> >> Hi,
+> >>
+> >> The topic came up in a recent discussion about how to deal with large =
 folios
->> when it comes to swap as a swap device is normally considered a =
-simple array
->> of PAGE_SIZE-sized elements that can be indexed by a single integer.
->=20
-> Sorry for being late for the party. I think I was the one that brought
-> this topic up in the online discussion with Will and You. Let me know
-> if you are referring to a different discussion.
->=20
->>=20
->> With the advent of large folios, however, we might need to change =
-this in
->> order to be better able to swap out a compound page efficiently.  =
-Swap
->> fragmentation raises its head, as does the need to potentially save =
-multiple
->> indices per folio.  Does swap need to grow more filesystem features?
->=20
-> Yes, with a large folio, it is harder to allocate continuous swap
-> entries where 4K swap entries are allocated and free all the time. The
-> fragmentation will likely make the swap file have very little
-> continuous swap entries.
+> >> when it comes to swap as a swap device is normally considered a simple=
+ array
+> >> of PAGE_SIZE-sized elements that can be indexed by a single integer.
+> >
+> > Sorry for being late for the party. I think I was the one that brought
+> > this topic up in the online discussion with Will and You. Let me know
+> > if you are referring to a different discussion.
+> >
+> >>
+> >> With the advent of large folios, however, we might need to change this=
+ in
+> >> order to be better able to swap out a compound page efficiently.  Swap
+> >> fragmentation raises its head, as does the need to potentially save mu=
+ltiple
+> >> indices per folio.  Does swap need to grow more filesystem features?
+> >
+> > Yes, with a large folio, it is harder to allocate continuous swap
+> > entries where 4K swap entries are allocated and free all the time. The
+> > fragmentation will likely make the swap file have very little
+> > continuous swap entries.
+>
+> One option would be to reuse the multi-block allocator (mballoc) from
+> ext4, which has quite efficient power-of-two buddy allocation.  That
+> would naturally aggregate contiguous pages as they are freed.  Since
+> the swap partition is not containing anything useful across a remount
+> there is no need to save allocation bitmaps persistently.
 
-One option would be to reuse the multi-block allocator (mballoc) from
-ext4, which has quite efficient power-of-two buddy allocation.  That
-would naturally aggregate contiguous pages as they are freed.  Since
-the swap partition is not containing anything useful across a remount
-there is no need to save allocation bitmaps persistently.
+That is a very interesting idea. I saw two ways to solve this problem,
+buddy allocation system is one of them. The buddy allocation system
+can keep the assumption that swap entries will be contiguous within
+the same folio. The buddy system also has its own limits due to
+external fragmentations. For one there is no easy way to relocate the
+swap entry to other locations. We don't have the rmap for swap
+entries. That makes the swap entries hard to compact. I do expect the
+buddy allocator can help reduce the fragmentation greatly.
 
-Cheers, Andreas
+The other way is just to have an indirection for mapping a folio's
+swap entry to discontiguous swap entries. It will break more
+assumptions of the current code about contiguous swap entries.
 
-> We can change that assumption, allow large folio reading and writing
-> of discontinued blocks on the block device level. We will likely need
-> a file system like kind of the indirection layer to store the location
-> of those blocks. In other words, the folio needs to read/write a list
-> of io vectors, not just one block.
->=20
->>=20
->> Further to this, we have at least two ways to cache data on =
-disk/flash/etc. -
->> swap and fscache - and both want to set aside disk space for their =
-operation.
->> Might it be possible to combine the two?
->>=20
->> One thing I want to look at for fscache is the possibility of =
-switching from a
->> file-per-object-based approach to a tagged cache more akin to the way =
-OpenAFS
->> does things.  In OpenAFS, you have a whole bunch of small files, each
->> containing a single block (e.g. 256K) of data, and an index that maps =
-a
->> particular {volume,file,version,block} to one of these files in the =
-cache.
->>=20
->> Now, I could also consider holding all the data blocks in a single =
-file (or
->> blockdev) - and this might work for swap.  For fscache, I do, =
-however, need to
->> have some sort of integrity across reboots that swap does not =
-require.
->=20
-> The main trade off is the memory usage for the meta data and latency
-> of reading and writing.
-> The file system has typically a different IO pattern than swap, e.g.
-> file reads can be batched and have good locality.
-> Where swap is a lot of random location read/write.
->=20
-> Current swap using array like swap entry, one of the pros of that is
-> just one IO required for one folio.
-> The performance gets worse when swap needs to read the metadata first
-> to locate the block, then read the block of data in.
-> Page fault latency will get longer. That is one of the trade-offs we
-> need to consider.
->=20
-> Chris
->=20
+If we can reuse the ext4 mballoc for swap entries, that would be
+great. I will take a look at that and report back.
 
+Thanks for the great suggestion.
 
-Cheers, Andreas
-
-
-
-
-
-
---Apple-Mail=_8E84EA68-A783-46F7-8DB7-9FF3874ABA36
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment;
-	filename=signature.asc
-Content-Type: application/pgp-signature;
-	name=signature.asc
-Content-Description: Message signed with OpenPGP
-
------BEGIN PGP SIGNATURE-----
-Comment: GPGTools - http://gpgtools.org
-
-iQIzBAEBCAAdFiEEDb73u6ZejP5ZMprvcqXauRfMH+AFAmXYCl4ACgkQcqXauRfM
-H+DDDA/9G6tcCC1/Oa1ddLtr9tEvfJ58H2FNe6ZEBrNm16Kavw7WtfDnsXek+Z2Z
-AebkBz8PmrXfoSypAwqjH5PnCnU9q65UN0xCBEbPZyi1OnHLorK8X0tGzEkPtJRd
-o1f+MQw2poZTPrJYYZIrvWGtk+ifoL1nb0NyjWc4/NHeS6PZHID79wFXtvLudRTJ
-itQUPARFM6gQ10uRy44d08KlBQtRBKPPaT34+Ov502+iJxsrs6Abpr03ol9sIsK6
-/Dw31dqLgkP1Dg/hiFHQpkDAEsYjn2QIPZZQ/889E++yMYtRxNqp4MQ7bdsnjiRW
-gWKtU8EPx3z6PHN0u7s0RipDQmmWT1l3KyfT+meunJvkHNRkGfBSURjUDroAG8yl
-lZnK/w9y6GHIp9s0Ho8byn9osgEyoW68HDdgr3Ubfqtw2T/yL0fZtuhcooShmDDL
-udyEn4VFlaOsdeF6F2YM9m3ERXsGvzu4Il34rDH4iYWc6Bd5zuCBkCWwpK+Hw9na
-li2ykVgDedJzTVmGGITn/FslxmnemMI+btkfX9g+pBqXY3ZgN7d4ud3EUl0u4tyA
-BtJSa51D9JXP2e7rRxXTw7MZITOA8O2QODfAquNj9/2oUsH5GTmEfh1Xbda0Ux+T
-1wO/SoXrtFx3Cp9QPbroluMe3XeXTNSeTNrxtcM6p21pgmqea8U=
-=DMhO
------END PGP SIGNATURE-----
-
---Apple-Mail=_8E84EA68-A783-46F7-8DB7-9FF3874ABA36--
+Chris
