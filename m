@@ -1,113 +1,77 @@
-Received: from hr2.samba.org (hr2.samba.org [144.76.82.148])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E299723767
-	for <netfs@lists.linux.dev>; Mon, 18 Mar 2024 08:25:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.82.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F037428DAE;
+	Mon, 18 Mar 2024 08:48:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710750343; cv=none; b=MunQ5zmG+qKXfXLAZVEt+aW0QR+p5afF2QGXBm6WnfV61VKpIYcGIdVa3Zt4NZvtj8+aDMZ+b124WembNEJMqn4JIqj0pR/8bmGt74E8Qn12S7N7/G6YXLOxz2QO9atQGXjTJ6nuYLCh7zfrrg5lG4ewYCorzFWDe3uozkpx8Eg=
+	t=1710751738; cv=none; b=gtrWnbsBkpYglaPN9bfHwg0/bsN0Tf9AGV+6Te1x6DUfnKshqzOLDpMD/kwaT14aftLYB0odvd1qAhrX5VCTBba7Qn3AudvUqpFNJL3Wy1xUD+WVB7Q7DhECSr5gshvCOe/HLDqUqq2boyWb0L5j3CAlIbEGL7kU2+Dg0I0qLWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710750343; c=relaxed/simple;
-	bh=9Gox6nr4Yw3nX20mUWVTq/8pONnShOOhZz4ItxTrQSo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=O+s9CMtcdr+ZDF1yuS3jOlKNHO1AfBioM2gzscBGavcSYPhYC+z8vCzV3x5L9PY/eDOJ565KvklCWFWX0Wam9zLzNe8mVLcFlSmsKmCeEwitCt6pUGsP4ymWrli5gtQfUNYXr8A6mLrZvYd5YKCMN7/l749OeSCpKxkSCyTw4XU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org; spf=pass smtp.mailfrom=samba.org; dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b=oBxflvDV; arc=none smtp.client-ip=144.76.82.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samba.org
+	s=arc-20240116; t=1710751738; c=relaxed/simple;
+	bh=zr+WT/cxm5GWLn0il6aBrpvjRoQPdhKSPnO50VXsi9E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tFeBFKbKP1r/OuLJbQQFViRQwS3saO/MFFcZBJEU8J+Nk9GlZ8PB387DHoBdpPqU5yHrfNwlWCDdmuIDwm+9Jd3L4ZKIUMHxShBNG8m4xJekVaItt+RVY2Iw6ob7trK1VrRnMhuh+O+1VlZt1Ym6JRaXcS48LRq1EUPOUtOxV98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mn4Dn00K; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b="oBxflvDV"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=samba.org;
-	s=42; h=From:Cc:To:Date:Message-ID;
-	bh=5lYBvG/HYr+nZZA7Ycz+u5VrES4YL7MUIS//0G2Ymss=; b=oBxflvDVpm9F7x3AVIgIprIZjM
-	D7jw1p3vzgwchZMSbqw7iBA0n6s8OElUrgZUo4gO6ntkWIBjwIYrPglb5noNTeb6Wsvuqjl0vZjkt
-	sgAAKesQmGWPo8wkagDWUYzif6v+Fd5WQmvqKLiYqrx6lJHaUosRUyTMPqGkHpqmyv/9M73in9eXl
-	5ZJB98fh7FOB83SGxT1f1UL1LeuUDdL1KAzt+tC5BwQhwIw/Kfv2FJiERCmCer4K/tg2qzn2LxuD6
-	FCU3HoaFyb6aBISmUu/LRWDmOZydZ8FfpH276W4qvrsA2jBgvSnu/VT/EzntvUv0wOCLiHwHk+V9Y
-	uDmBmiBiMH84b8hrhizZflbIgoW1BxiVI6HSOZxp+FMi0sQqD+DttRTiN6RMZzkTL7Z9qdCtaFqy6
-	o2SUNzb7Go93OB1GHrEl+TH4kL9pL5EcMT1eWLCFrfODM7EJRORXDGUSvKJgprDBtdpGnTFdBDigA
-	ESG8nh0AYk6H7STsYJQKmXyS;
-Received: from [127.0.0.2] (localhost [127.0.0.1])
-	by hr2.samba.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__ECDSA_SECP256R1_SHA256__CHACHA20_POLY1305:256)
-	(Exim)
-	id 1rm8JD-001XmP-1R;
-	Mon, 18 Mar 2024 08:25:27 +0000
-Message-ID: <0583f4be-4c34-44de-99f2-891d673b53a9@samba.org>
-Date: Mon, 18 Mar 2024 09:25:25 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mn4Dn00K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78021C433C7;
+	Mon, 18 Mar 2024 08:48:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710751737;
+	bh=zr+WT/cxm5GWLn0il6aBrpvjRoQPdhKSPnO50VXsi9E=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=mn4Dn00KlXtFXHmQRfyzLRGZWoOvE9KofFoxfx8tvqqlFABwWiQHHQJ1P0UMEwjnY
+	 jSplxwo8MgxDtYrsovBTOn0Kn8J7BSu2Lp3kbAELXbBnyUuoYI0ZrBDjtlVxpe1Vry
+	 JP3Ikh/blRLspuQVcPXHNbMZsYj8JCPxgRjSl71+BwyWUsgNt91CQJckfr+fSv5ucE
+	 MSUd9a5KKBojL45c/i9APrcjRo6VhgwnyN8Uj5Ugm9Xong5ntnztw+ZHX356pZtlkx
+	 KomX9Wo1NfIrEI7GWKoU6Mm0dokdZ8IbN6O0gOF88k7gvtNcC0NWZ4yPdVepeIfBZT
+	 mwBxA7hksGpMQ==
+From: Christian Brauner <brauner@kernel.org>
+To: Jeff Layton <jlayton@kernel.org>,
+	David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] fscache: Fix error handling in fscache_begin_operation()
+Date: Mon, 18 Mar 2024 09:48:49 +0100
+Message-ID: <20240318-pfund-hitzig-d677830c953a@brauner>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <3933237.1710514106@warthog.procyon.org.uk>
+References: <3933237.1710514106@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 06/24] vfs: break parent dir delegations in open(...,
- O_CREAT) codepath
-To: Jeff Layton <jlayton@kernel.org>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
- Jan Kara <jack@suse.cz>, Chuck Lever <chuck.lever@oracle.com>,
- Alexander Aring <alex.aring@gmail.com>,
- Trond Myklebust <trond.myklebust@hammerspace.com>,
- Anna Schumaker <anna@kernel.org>, Steve French <sfrench@samba.org>,
- Paulo Alcantara <pc@manguebit.com>,
- Ronnie Sahlberg <ronniesahlberg@gmail.com>,
- Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, David Howells
- <dhowells@redhat.com>, Tyler Hicks <code@tyhicks.com>,
- Neil Brown <neilb@suse.de>, Olga Kornievskaia <kolga@netapp.com>,
- Dai Ngo <Dai.Ngo@oracle.com>, Miklos Szeredi <miklos@szeredi.hu>,
- Amir Goldstein <amir73il@gmail.com>, Namjae Jeon <linkinjeon@kernel.org>,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
- samba-technical@lists.samba.org, netfs@lists.linux.dev,
- ecryptfs@vger.kernel.org, linux-unionfs@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20240315-dir-deleg-v1-0-a1d6209a3654@kernel.org>
- <20240315-dir-deleg-v1-6-a1d6209a3654@kernel.org>
-Content-Language: en-US
-From: Stefan Metzmacher <metze@samba.org>
-In-Reply-To: <20240315-dir-deleg-v1-6-a1d6209a3654@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=980; i=brauner@kernel.org; h=from:subject:message-id; bh=zr+WT/cxm5GWLn0il6aBrpvjRoQPdhKSPnO50VXsi9E=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaR+///JecHqV85pn6VmzX5bbzo7TocntiFCWfzVvofrm uOWJd4/1FHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjAR5QhGhmUSMiwne5XulERu Z7g2+5/FU47ws3+nbNv90vf5m5Yp7McY/qnp5H1flaaZ4GxSszHwln1xq/QywQiHz5u/m7905DP 8wA8A
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-Hi Jeff,
-
-> In order to add directory delegation support, we need to break
-> delegations on the parent whenever there is going to be a change in the
-> directory.
+On Fri, 15 Mar 2024 14:48:26 +0000, David Howells wrote:
 > 
-> Add a delegated_inode parameter to lookup_open and have it break the
-> delegation. Then, open_last_lookups can wait for the delegation break
-> and retry the call to lookup_open once it's done.
+> Fix fscache_begin_operation() to clear cres->cache_priv on error, otherwise
+> fscache_resources_valid() will report it as being valid.
 > 
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
-> ---
->   fs/namei.c | 22 ++++++++++++++++++----
->   1 file changed, 18 insertions(+), 4 deletions(-)
 > 
-> diff --git a/fs/namei.c b/fs/namei.c
-> index f00d8d708001..88598a62ec64 100644
-> --- a/fs/namei.c
-> +++ b/fs/namei.c
-> @@ -3404,7 +3404,7 @@ static struct dentry *atomic_open(struct nameidata *nd, struct dentry *dentry,
->    */
->   static struct dentry *lookup_open(struct nameidata *nd, struct file *file,
->   				  const struct open_flags *op,
-> -				  bool got_write)
-> +				  bool got_write, struct inode **delegated_inode)
 
-Does NFS has a concept of lease keys and parent lease keys?
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-In SMB it's possible that the client passes a lease key (16 client chosen bytes) to a directory open,
-when asking for a directory lease.
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-Then operations on files within that directory, take that lease key from the directory as
-'parent lease keys' in addition to a unique lease key for the file.
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-That way a client can avoid breaking its own directory leases when creating/move/delete... files
-in the directory.
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
-metze
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[1/1] fscache: Fix error handling in fscache_begin_operation()
+      https://git.kernel.org/vfs/vfs/c/d86f1160d819
