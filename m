@@ -1,99 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327E047F41;
-	Fri, 22 Mar 2024 14:14:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072D8611A
+	for <netfs@lists.linux.dev>; Sat, 23 Mar 2024 09:30:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711116841; cv=none; b=mkcXTODEShvPT4ClQohkuYPXBpLLXPBDfH2gRJd2j7662xBuXEmxDTvIJ8Tnt/CUlYVDloTVU+tAvpCFDt3EY7HPCUldXCx87xdW5bPaf+FuUZlDZT6rDOlaIvTi+PNSh/7lJPlt0r7jy5o7wICr41ERaE6fqhg3YF+fgtfRHwA=
+	t=1711186250; cv=none; b=sJ5mISv+MbGjbLZ13SqwRAr2WW6lleojJdd6A5vPAQ4KNiMQ738ZR3NbBpz6Evoc4Vr60ObZDV+D3F3aUO4s5HT0nllf9idpqxyCn8WV79l0rHyYtSbse37kNuOagtWJhoThvJu0bdQyMnfDxMb7alkas6AP0JznWuub6zc+cvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711116841; c=relaxed/simple;
-	bh=SUDjNJPFhmAni//UFuk6ejixrIl+KvydT+avjE5yPXk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cmj5QM0oobGNMbW2DzC8hZGIdbAnGJm1Xg5Vbcbw/ONa3f+rKjcjJlWeo4n9PiGNSKBJ1cxtsRWHMk3F6tdEs+yIYVWFBTDXPJmJuzK9svRcc83nCt7APF2SXmJQVmAxkU1fNuumHlRUkilHR3YCss1YH1YxISMiQJeflho1uJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KeMF9jho; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KeMF9jho"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7E46C433F1;
-	Fri, 22 Mar 2024 14:13:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711116840;
-	bh=SUDjNJPFhmAni//UFuk6ejixrIl+KvydT+avjE5yPXk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KeMF9jho3Zpr5om0OFiOLl9KpzEzOaTtk4rmviui6eKtaIeHS2GaiAnDBikdvN1dg
-	 PuNe6dc6VvndWjiFZvMcdgJWvRG87lKektQkFeKPhqv0nMnD0uxG8mbiPWYKYWjkiK
-	 l5M51M81gYo1MmhSljC6G3LoNk6P1qOqIpHWiiiEHzlSGPt2XCfH23vSkf35B5mjiC
-	 hmBSi4SDc4noVEbhfSrQd7Jmp3qK5owiZEdDDQq9bECFdLebLhkdDP5XZaGgyjqC7K
-	 DpAouu4DyEai6cbIaE/cPVjw2HMGrzV1cXMMCdzPhH5mNsS3jzG1p3YGat+F93bppe
-	 u1MPy/83AH2ow==
-Date: Fri, 22 Mar 2024 15:13:49 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
-	Chuck Lever <chuck.lever@oracle.com>, Alexander Aring <alex.aring@gmail.com>, 
-	Trond Myklebust <trond.myklebust@hammerspace.com>, Anna Schumaker <anna@kernel.org>, 
-	Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.com>, 
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>, Shyam Prasad N <sprasad@microsoft.com>, 
-	Tom Talpey <tom@talpey.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, David Howells <dhowells@redhat.com>, 
-	Tyler Hicks <code@tyhicks.com>, Neil Brown <neilb@suse.de>, Olga Kornievskaia <kolga@netapp.com>, 
-	Dai Ngo <Dai.Ngo@oracle.com>, Miklos Szeredi <miklos@szeredi.hu>, 
-	Amir Goldstein <amir73il@gmail.com>, Namjae Jeon <linkinjeon@kernel.org>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, samba-technical@lists.samba.org, 
-	netfs@lists.linux.dev, ecryptfs@vger.kernel.org, linux-unionfs@vger.kernel.org, 
-	netdev@vger.kernel.org
-Subject: Re: [PATCH RFC 08/24] vfs: make vfs_mknod break delegations on
- parent directory
-Message-ID: <20240322-laienhaft-lastwagen-63b3ef508466@brauner>
-References: <20240315-dir-deleg-v1-0-a1d6209a3654@kernel.org>
- <20240315-dir-deleg-v1-8-a1d6209a3654@kernel.org>
- <20240320-jaguar-bildband-699e7ef5dc64@brauner>
- <ca81387b31025198808df6c55f411b00d74cb047.camel@kernel.org>
+	s=arc-20240116; t=1711186250; c=relaxed/simple;
+	bh=lLyw+W3Wu5j9LxVmGBPdDrxGgyjBpaROIerB7u4wGXY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mqQAauYFuo1bBmFk0V0AcZfEujYjiWoG9VjpWbw6Zy53Sq2iCcv11a/caQYVBgDE7iH+Xfj6KACC9CGGnIJ2FlRrG0kbe8etQNNJY5My8+etbheC9o44WcMcB78sw4hbC4ggS+xNoArL1W6wWQAeLvAlKHNnUSCaUSTc6C4dQto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.93.142])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4V1v7S0LsHz4f3lfY
+	for <netfs@lists.linux.dev>; Sat, 23 Mar 2024 17:30:28 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.112])
+	by mail.maildlp.com (Postfix) with ESMTP id 123831A0172
+	for <netfs@lists.linux.dev>; Sat, 23 Mar 2024 17:30:36 +0800 (CST)
+Received: from huaweicloud.com (unknown [10.175.104.67])
+	by APP1 (Coremail) with SMTP id cCh0CgAn+RE3of5lWWlNHw--.24449S4;
+	Sat, 23 Mar 2024 17:30:35 +0800 (CST)
+From: yangerkun <yangerkun@huawei.com>
+To: dhowells@redhat.com,
+	jlayton@kernel.org,
+	hsiangkao@linux.alibaba.com,
+	netfs@lists.linux.dev
+Cc: yangerkun@huawei.com
+Subject: [PATCH] netfs: fix the mismatch used for CONFIG_FSCACHE_DEBUG
+Date: Sat, 23 Mar 2024 17:23:12 +0800
+Message-Id: <20240323092312.1643320-1-yangerkun@huawei.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ca81387b31025198808df6c55f411b00d74cb047.camel@kernel.org>
+X-CM-TRANSID:cCh0CgAn+RE3of5lWWlNHw--.24449S4
+X-Coremail-Antispam: 1UD129KBjvdXoWrtw18KFykuF1fAw1kWw4UJwb_yoW3urg_t3
+	WxAF18Wrs8tFnYqrWSk3y0kFy5W3ykKa18uw13trZ3trZ09F98CFsagrZ3AwsxXr45Wr9x
+	twnYqrs8Zry7GjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbIxYFVCjjxCrM7AC8VAFwI0_Gr0_Xr1l1xkIjI8I6I8E6xAIw20E
+	Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwV
+	A0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x02
+	67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
+	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+	x7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+	0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij
+	64vIr41l42xK82IY64kExVAvwVAq07x20xyl4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxV
+	Aqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r12
+	6r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6x
+	kF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVW3JVWrJr1lIxAIcVC2z280aVAF
+	wI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa
+	7IU1nYFJUUUUU==
+Sender: yangerkun@huaweicloud.com
+X-CM-SenderInfo: 51dqwvhunx0q5kxd4v5lfo033gof0z/
 
-On Wed, Mar 20, 2024 at 04:12:29PM -0400, Jeff Layton wrote:
-> On Wed, 2024-03-20 at 14:42 +0100, Christian Brauner wrote:
-> > >  int vfs_mknod(struct mnt_idmap *, struct inode *, struct dentry *,
-> > > -              umode_t, dev_t);
-> > > +              umode_t, dev_t, struct inode **);
-> > 
-> > So we will have at least the following helpers with an additional
-> > delegated inode argument.
-> > 
-> > vfs_unlink()
-> > vfs_link()
-> > notify_change()
-> > vfs_create()
-> > vfs_mknod()
-> > vfs_mkdir()
-> > vfs_rmdir()
-> > 
-> > From looking at callers all these helpers will be called with non-NULL
-> > delegated inode argument in vfs only. Unless it is generally conceivable
-> > that other callers will want to pass a non-NULL inode argument over time
-> > it might make more sense to add vfs_<operation>_delegated() or
-> > __vfs_<operation>() and make vfs_mknod() and friends exported wrappers
-> > around it.
-> > 
-> > I mean it's a matter of preference ultimately but this seems cleaner to
-> > me. So at least for the new ones we should consider it. Would also make
-> > the patch smaller.
-> > 
-> 
-> Good suggestion. I just respun along those lines and it's a lot cleaner.
-> I'm still testing it but here is the new diffstat. It's a little larger
-> actually, but it keeps the changes more confined to namei.c:
+The name of debug config used in fs/netfs/internal.h has a mismatch
+compared to the define in fs/netfs/Kconfig, which lead to that debug for
+netfs won't work.
 
-Sounds good to me!
+Signed-off-by: yangerkun <yangerkun@huawei.com>
+---
+ fs/netfs/internal.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
+index ec7045d24400..53d61ead35fd 100644
+--- a/fs/netfs/internal.h
++++ b/fs/netfs/internal.h
+@@ -349,7 +349,7 @@ void fscache_create_volume(struct fscache_volume *volume, bool wait);
+ #define _leave(FMT, ...) kleave(FMT, ##__VA_ARGS__)
+ #define _debug(FMT, ...) kdebug(FMT, ##__VA_ARGS__)
+ 
+-#elif defined(CONFIG_NETFS_DEBUG)
++#elif defined(CONFIG_FSCACHE_DEBUG)
+ #define _enter(FMT, ...)			\
+ do {						\
+ 	if (netfs_debug)			\
+-- 
+2.39.2
+
