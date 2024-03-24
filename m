@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D541A9F48;
-	Sun, 24 Mar 2024 22:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C82C71ED72A;
+	Sun, 24 Mar 2024 22:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711320231; cv=none; b=rgSZmvl6/awBf+kLOTUEvdOCJKn0xjKBEaAQ46YTQAJx13qtLohlGLMZftlDZjEr5LRD3Y20xRpjPrTaqyLCOqChxcn7MbUNWf/t2IuBAiBzG5i+4WeHwSTPTBQPuEdeLxqSEV9ZWjCF1QkksoMU9anAxePlRoYPYP6x6xz0LUQ=
+	t=1711320993; cv=none; b=BS1lymt1LVWx07Od0rWnhMloVLhWx6m6eJtdAOpMYvU0QujUol1hldi3L9VT7RTitoyzpSAAH6ZtaEI18AkugEWBfTbydXpcLGENP4UYMsmvMuO9RSxNC6Wy12IocQ6dtWPZGIvvYhuijOVMeQvO3mmhEDgToD6HyfaZj36lk0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711320231; c=relaxed/simple;
-	bh=GAVXf9YXxEUZ/lbuVjAGJeaAdXVYPo2oppfNF8GcC5k=;
+	s=arc-20240116; t=1711320993; c=relaxed/simple;
+	bh=Fce2uAMlEnrqUcEAnjpgsiZXj803UTDlk5q8XPPatnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kWxGHTKW5XekEiMtbkdBSNRwoG56EynmB53ujRMbgNGpPUeVrSsZXgmF8U8j2/ItDjN6jRlH+AJa5vJ8ukzW+cLh382P8XcxpRNfP6ykvBpEFwPdBRpOFAWdsAeVNFgXSjZRUokWHQiWe0ia1ryN3gUzXybL4OotiKzvG7OiR3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a/M8XC5V; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=Wsbrka+9Wh5hB6KxSt8e6rTydqdtltu/lsk2TXk1656sSPD8qadjZRBS2Lk8NjhOaCY9bJ/iYWynu7TaTMZRIrA0Amx4BoMAARGR9OEXqQtiBelQyzbb0RfagUhTQOrcNQ3eGOODdNmyfqWYMyH0tYpJVZgXrDnA2zRCfN94Lt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SsN2yjC7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a/M8XC5V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96B17C433F1;
-	Sun, 24 Mar 2024 22:43:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SsN2yjC7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24802C433F1;
+	Sun, 24 Mar 2024 22:56:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711320231;
-	bh=GAVXf9YXxEUZ/lbuVjAGJeaAdXVYPo2oppfNF8GcC5k=;
+	s=k20201202; t=1711320992;
+	bh=Fce2uAMlEnrqUcEAnjpgsiZXj803UTDlk5q8XPPatnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a/M8XC5Ve1samqsVyjaAo91rFQ+vazQmIUV0MFUwf0yE3D6gH4pxSWOstmD5NuBR1
-	 ClLomEJBXkEUV6ODxrw9NnjZNrXuhG1XisaZvJS2z4hFByjclw9ADSqLTU4TT95h7m
-	 kH7V0Cjm87dsbD9sPl99rc8qiwI8pkCamSGlx+ftBRD8n5pm2WpPhm5xKAmq8sq6HM
-	 NWWq3NSUb7bNkQrWY/J8dH1ZRQxKoIOYXdi/EBFDAYrv//Mm102htXuqQeC5HHaG/l
-	 +FkF3+gSdwQwNqP+3gkdgHlxzR8K+YV+RLvnCZh6JDCxu0+DsfQrHXd4SmChMI7Hr8
-	 6pQKxCen+GF5w==
+	b=SsN2yjC7sFmPp5o1h2DRaLPsqchbC3cNYAfedtyh6va97zq0Xx8K1xLuz7FLWVoP5
+	 I/jkIVQ4esMlvcLUctpq5M6P0Aop7JMZct5jubLirawguvOQ66baZG+s3n28kdBA0v
+	 zvbcbb5ZPBU9nqIN+wP7OwVSS74CT4lEUDFW1rK7iCxWvonE00yTAihpWGwiAzxwNX
+	 FLqPFUkOcpbmE1usnuDdpK9y95e4wbKuq2POYkVywEZpGY8fZWS+A93Z5nLQuLhSXN
+	 Nl3bBm4d9hpXDAx7aGomBdPOz2SreHjQSGHv/8hr5By68fVMEyEIpGmQVDYJEsS4yK
+	 VO1pJbXUOn0Pg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -42,12 +42,12 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-fsdevel@vger.kernel.org,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 537/715] cifs: Fix writeback data corruption
-Date: Sun, 24 Mar 2024 18:31:56 -0400
-Message-ID: <20240324223455.1342824-538-sashal@kernel.org>
+Subject: [PATCH 6.7 554/713] cifs: Fix writeback data corruption
+Date: Sun, 24 Mar 2024 18:44:40 -0400
+Message-ID: <20240324224720.1345309-555-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240324223455.1342824-1-sashal@kernel.org>
-References: <20240324223455.1342824-1-sashal@kernel.org>
+In-Reply-To: <20240324224720.1345309-1-sashal@kernel.org>
+References: <20240324224720.1345309-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -110,10 +110,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 157 insertions(+), 126 deletions(-)
 
 diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index f391c9b803d84..98514f2f2d7b1 100644
+index 7320272ef0074..c156460eb5587 100644
 --- a/fs/smb/client/file.c
 +++ b/fs/smb/client/file.c
-@@ -2624,20 +2624,20 @@ static int cifs_partialpagewrite(struct page *page, unsigned from, unsigned to)
+@@ -2622,20 +2622,20 @@ static int cifs_partialpagewrite(struct page *page, unsigned from, unsigned to)
   * dirty pages if possible, but don't sleep while doing so.
   */
  static void cifs_extend_writeback(struct address_space *mapping,
@@ -140,7 +140,7 @@ index f391c9b803d84..98514f2f2d7b1 100644
  
  	folio_batch_init(&batch);
  
-@@ -2648,54 +2648,64 @@ static void cifs_extend_writeback(struct address_space *mapping,
+@@ -2646,54 +2646,64 @@ static void cifs_extend_writeback(struct address_space *mapping,
  		 */
  		rcu_read_lock();
  
@@ -218,7 +218,7 @@ index f391c9b803d84..98514f2f2d7b1 100644
  		rcu_read_unlock();
  
  		/* Now, if we obtained any pages, we can shift them to being
-@@ -2712,16 +2722,12 @@ static void cifs_extend_writeback(struct address_space *mapping,
+@@ -2710,16 +2720,12 @@ static void cifs_extend_writeback(struct address_space *mapping,
  			if (!folio_clear_dirty_for_io(folio))
  				WARN_ON(1);
  			folio_start_writeback(folio);
@@ -235,7 +235,7 @@ index f391c9b803d84..98514f2f2d7b1 100644
  }
  
  /*
-@@ -2729,8 +2735,10 @@ static void cifs_extend_writeback(struct address_space *mapping,
+@@ -2727,8 +2733,10 @@ static void cifs_extend_writeback(struct address_space *mapping,
   */
  static ssize_t cifs_write_back_from_locked_folio(struct address_space *mapping,
  						 struct writeback_control *wbc,
@@ -247,7 +247,7 @@ index f391c9b803d84..98514f2f2d7b1 100644
  {
  	struct inode *inode = mapping->host;
  	struct TCP_Server_Info *server;
-@@ -2739,17 +2747,18 @@ static ssize_t cifs_write_back_from_locked_folio(struct address_space *mapping,
+@@ -2737,17 +2745,18 @@ static ssize_t cifs_write_back_from_locked_folio(struct address_space *mapping,
  	struct cifs_credits credits_on_stack;
  	struct cifs_credits *credits = &credits_on_stack;
  	struct cifsFileInfo *cfile = NULL;
@@ -270,7 +270,7 @@ index f391c9b803d84..98514f2f2d7b1 100644
  
  	xid = get_xid();
  	server = cifs_pick_channel(cifs_sb_master_tcon(cifs_sb)->ses);
-@@ -2779,9 +2788,10 @@ static ssize_t cifs_write_back_from_locked_folio(struct address_space *mapping,
+@@ -2777,9 +2786,10 @@ static ssize_t cifs_write_back_from_locked_folio(struct address_space *mapping,
  	wdata->server = server;
  	cfile = NULL;
  
@@ -284,7 +284,7 @@ index f391c9b803d84..98514f2f2d7b1 100644
  	 */
  	if (start < i_size) {
  		/* Trim the write to the EOF; the extra data is ignored.  Also
-@@ -2801,19 +2811,18 @@ static ssize_t cifs_write_back_from_locked_folio(struct address_space *mapping,
+@@ -2799,19 +2809,18 @@ static ssize_t cifs_write_back_from_locked_folio(struct address_space *mapping,
  			max_pages -= folio_nr_pages(folio);
  
  			if (max_pages > 0)
@@ -307,7 +307,7 @@ index f391c9b803d84..98514f2f2d7b1 100644
  
  	if (start < i_size) {
  		iov_iter_xarray(&wdata->iter, ITER_SOURCE, &mapping->i_pages,
-@@ -2864,102 +2873,118 @@ static ssize_t cifs_write_back_from_locked_folio(struct address_space *mapping,
+@@ -2862,102 +2871,118 @@ static ssize_t cifs_write_back_from_locked_folio(struct address_space *mapping,
  /*
   * write a region of pages back to the server
   */
@@ -501,7 +501,7 @@ index f391c9b803d84..98514f2f2d7b1 100644
  }
  
  /*
-@@ -2968,7 +2993,7 @@ static int cifs_writepages_region(struct address_space *mapping,
+@@ -2966,7 +2991,7 @@ static int cifs_writepages_region(struct address_space *mapping,
  static int cifs_writepages(struct address_space *mapping,
  			   struct writeback_control *wbc)
  {
@@ -510,7 +510,7 @@ index f391c9b803d84..98514f2f2d7b1 100644
  	int ret;
  
  	/* We have to be careful as we can end up racing with setattr()
-@@ -2976,28 +3001,34 @@ static int cifs_writepages(struct address_space *mapping,
+@@ -2974,28 +2999,34 @@ static int cifs_writepages(struct address_space *mapping,
  	 * to prevent it.
  	 */
  
