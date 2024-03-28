@@ -1,45 +1,45 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D8C3CF73
-	for <netfs@lists.linux.dev>; Thu, 28 Mar 2024 16:34:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE7F4436B
+	for <netfs@lists.linux.dev>; Thu, 28 Mar 2024 16:35:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711643695; cv=none; b=pmDw4j3aurGAQpitrul04S4Gw/5x5n0LYXUzyJuLZ/7d6I/fLRE5U5gm+Ejj76xh15++yyJU6H1ylB9lGvBGwpT9JzvTrmkNnMtXPiwLExUW/FltKmf7xe685er+VVzv7vKBOhSYsqp5CPiw9EAqwqIF0jWG2eMf6oZYUyd+pEA=
+	t=1711643702; cv=none; b=nHdUypBrJdoNY01E+lhEPwi23VNeVYUByExa0P6K2RpspIfcoBQqRdTLwqjAut94qrbRajcIvejrZ6HbVx/aPOxLxtaW8N8XbRSB2TZPinv6uQ4wZD+NdG1UZMGom6kmYl9Bz+L8SyNuXjUp4d4TS6J1M+Q87dFoJxp2W5uQJP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711643695; c=relaxed/simple;
-	bh=+8ZDgsWPyPdZyeuS7QhzhZ8T1ds652XhSpy7jeivk6U=;
+	s=arc-20240116; t=1711643702; c=relaxed/simple;
+	bh=jdfIqeGx7iuHgqcMFhxtu5WAhVw5xPnhsJo7b6P/XKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uLSZ3u2fBGUaZslpa0qPv+/HBfuFwXE+a6EVyr028/338eqQzSyqmv9yd5t094LzGEy1tn75OGhWSuDmG2rh5dJC/2uF+FSH0XFLUNaqYmA5zXoQ9f5S+NbY780Na1xrPhew12RSLTMN8PwvbyPe8btyg+MWCn+PkzmzfxOe6cY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PAPKzxai; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=WVmSEvUzIBXai1sNu2L8Qju5C65hLyV6bbuE1++ffwKiJfiM4u+BLBQ6v0wY7ItMKruf5aisXjZVFHvHaS1kYGihs0HAiPoenOdeLagfgeIlmLZd4G1XO6LKgH4RWbYFQuPwXuhpNaye64uZhCTzIn60gbBFdfQed1dYsC8ff8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fuAnMgkC; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PAPKzxai"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fuAnMgkC"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711643693;
+	s=mimecast20190719; t=1711643699;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UGun0xTYAiYXpHAgnS9fdzLLkhmr8x7z9WYy+PlL9DM=;
-	b=PAPKzxaikiqjoDT/jYKupBQ/j+Df0RKoYk+yylwTGhRmWH99jL6TvLL6gStRYIi2laLhuD
-	7J50AeYYvNW/hXdG8+iZ5QxTVvYre4kp+scqJ8X+lrymX02ZINvhnT/89H1miy+VL7kWop
-	dE9XTrPbIA9JCp/hA9p9Q22e2t+PVUg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-267-6uNN7mfqOreex-w6B3hmWQ-1; Thu, 28 Mar 2024 12:34:44 -0400
-X-MC-Unique: 6uNN7mfqOreex-w6B3hmWQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+	bh=hDfAk4YAlKNdLmSwUMxTH3zTc83Y1JZRxoVOBJSESsg=;
+	b=fuAnMgkCAwwTWzoeaFIorqjIIc2gLpSIF782b/V24CXBfgSPn6Ca7pMw0uRT6XYOBNEbqU
+	S+Z/ZeijMYBoc+TDwSAc6SyZi5OHy7+ayrqSj3ui2903ihsKqg6jpQhlLs5/5YdE4EaPCi
+	JStfcKq02rcrv7xlqmoJwqBAtc/kLL8=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-696-HdMk_3MKM8CSF0IznLHt6w-1; Thu,
+ 28 Mar 2024 12:34:53 -0400
+X-MC-Unique: HdMk_3MKM8CSF0IznLHt6w-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0C30E185A781;
-	Thu, 28 Mar 2024 16:34:43 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1060F3C0BE45;
+	Thu, 28 Mar 2024 16:34:51 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.42.28.146])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id CA93D17AAE;
-	Thu, 28 Mar 2024 16:34:39 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id BA9EB492BC6;
+	Thu, 28 Mar 2024 16:34:47 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>,
 	Jeff Layton <jlayton@kernel.org>,
@@ -66,12 +66,11 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-mm@kvack.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Steve French <sfrench@samba.org>,
-	Shyam Prasad N <nspmangalore@gmail.com>,
-	Rohith Surabattula <rohiths.msft@gmail.com>
-Subject: [PATCH 01/26] cifs: Fix duplicate fscache cookie warnings
-Date: Thu, 28 Mar 2024 16:33:53 +0000
-Message-ID: <20240328163424.2781320-2-dhowells@redhat.com>
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>
+Subject: [PATCH 02/26] 9p: Clean up some kdoc and unused var warnings.
+Date: Thu, 28 Mar 2024 16:33:54 +0000
+Message-ID: <20240328163424.2781320-3-dhowells@redhat.com>
 In-Reply-To: <20240328163424.2781320-1-dhowells@redhat.com>
 References: <20240328163424.2781320-1-dhowells@redhat.com>
 Precedence: bulk
@@ -81,85 +80,69 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 
-fscache emits a lot of duplicate cookie warnings with cifs because the
-index key for the fscache cookies does not include everything that the
-cifs_find_inode() function does.  The latter is used with iget5_locked() to
-distinguish between inodes in the local inode cache.
+Remove the kdoc for the removed 'req' member of the 9p_conn struct.
 
-Fix this by adding the creation time and file type to the fscache cookie
-key.
-
-Additionally, add a couple of comments to note that if one is changed the
-other must be also.
+Remove a pair of set-but-not-used v9ses variables.
 
 Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Steve French <sfrench@samba.org>
-cc: Shyam Prasad N <nspmangalore@gmail.com>
-cc: Rohith Surabattula <rohiths.msft@gmail.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
+cc: Eric Van Hensbergen <ericvh@kernel.org>
+cc: Latchesar Ionkov <lucho@ionkov.net>
+cc: Dominique Martinet <asmadeus@codewreck.org>
+cc: Christian Schoenebeck <linux_oss@crudebyte.com>
+cc: v9fs@lists.linux.dev
 ---
- fs/smb/client/fscache.c | 16 +++++++++++++++-
- fs/smb/client/inode.c   |  2 ++
- 2 files changed, 17 insertions(+), 1 deletion(-)
+ fs/9p/vfs_inode_dotl.c | 4 ----
+ net/9p/trans_fd.c      | 1 -
+ 2 files changed, 5 deletions(-)
 
-diff --git a/fs/smb/client/fscache.c b/fs/smb/client/fscache.c
-index c4a3cb736881..340efce8f052 100644
---- a/fs/smb/client/fscache.c
-+++ b/fs/smb/client/fscache.c
-@@ -12,6 +12,16 @@
- #include "cifs_fs_sb.h"
- #include "cifsproto.h"
- 
-+/*
-+ * Key for fscache inode.  [!] Contents must match comparisons in cifs_find_inode().
-+ */
-+struct cifs_fscache_inode_key {
-+
-+	__le64  uniqueid;	/* server inode number */
-+	__le64  createtime;	/* creation time on server */
-+	u8	type;		/* S_IFMT file type */
-+} __packed;
-+
- static void cifs_fscache_fill_volume_coherency(
- 	struct cifs_tcon *tcon,
- 	struct cifs_fscache_volume_coherency_data *cd)
-@@ -97,15 +107,19 @@ void cifs_fscache_release_super_cookie(struct cifs_tcon *tcon)
- void cifs_fscache_get_inode_cookie(struct inode *inode)
+diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
+index ef9db3e03506..7af27ba1c25d 100644
+--- a/fs/9p/vfs_inode_dotl.c
++++ b/fs/9p/vfs_inode_dotl.c
+@@ -297,7 +297,6 @@ static int v9fs_vfs_mkdir_dotl(struct mnt_idmap *idmap,
+ 			       umode_t omode)
  {
- 	struct cifs_fscache_inode_coherency_data cd;
-+	struct cifs_fscache_inode_key key;
- 	struct cifsInodeInfo *cifsi = CIFS_I(inode);
- 	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
- 	struct cifs_tcon *tcon = cifs_sb_master_tcon(cifs_sb);
+ 	int err;
+-	struct v9fs_session_info *v9ses;
+ 	struct p9_fid *fid = NULL, *dfid = NULL;
+ 	kgid_t gid;
+ 	const unsigned char *name;
+@@ -307,7 +306,6 @@ static int v9fs_vfs_mkdir_dotl(struct mnt_idmap *idmap,
+ 	struct posix_acl *dacl = NULL, *pacl = NULL;
  
-+	key.uniqueid	= cpu_to_le64(cifsi->uniqueid);
-+	key.createtime	= cpu_to_le64(cifsi->createtime);
-+	key.type	= (inode->i_mode & S_IFMT) >> 12;
- 	cifs_fscache_fill_coherency(&cifsi->netfs.inode, &cd);
+ 	p9_debug(P9_DEBUG_VFS, "name %pd\n", dentry);
+-	v9ses = v9fs_inode2v9ses(dir);
  
- 	cifsi->netfs.cache =
- 		fscache_acquire_cookie(tcon->fscache, 0,
--				       &cifsi->uniqueid, sizeof(cifsi->uniqueid),
-+				       &key, sizeof(key),
- 				       &cd, sizeof(cd),
- 				       i_size_read(&cifsi->netfs.inode));
- 	if (cifsi->netfs.cache)
-diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-index d28ab0af6049..91b07ef9e25c 100644
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -1351,6 +1351,8 @@ cifs_find_inode(struct inode *inode, void *opaque)
- {
- 	struct cifs_fattr *fattr = opaque;
+ 	omode |= S_IFDIR;
+ 	if (dir->i_mode & S_ISGID)
+@@ -739,7 +737,6 @@ v9fs_vfs_mknod_dotl(struct mnt_idmap *idmap, struct inode *dir,
+ 	kgid_t gid;
+ 	const unsigned char *name;
+ 	umode_t mode;
+-	struct v9fs_session_info *v9ses;
+ 	struct p9_fid *fid = NULL, *dfid = NULL;
+ 	struct inode *inode;
+ 	struct p9_qid qid;
+@@ -749,7 +746,6 @@ v9fs_vfs_mknod_dotl(struct mnt_idmap *idmap, struct inode *dir,
+ 		 dir->i_ino, dentry, omode,
+ 		 MAJOR(rdev), MINOR(rdev));
  
-+	/* [!] The compared values must be the same in struct cifs_fscache_inode_key. */
-+
- 	/* don't match inode with different uniqueid */
- 	if (CIFS_I(inode)->uniqueid != fattr->cf_uniqueid)
- 		return 0;
+-	v9ses = v9fs_inode2v9ses(dir);
+ 	dfid = v9fs_parent_fid(dentry);
+ 	if (IS_ERR(dfid)) {
+ 		err = PTR_ERR(dfid);
+diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
+index 1a3948b8c493..196060dc6138 100644
+--- a/net/9p/trans_fd.c
++++ b/net/9p/trans_fd.c
+@@ -95,7 +95,6 @@ struct p9_poll_wait {
+  * @unsent_req_list: accounting for requests that haven't been sent
+  * @rreq: read request
+  * @wreq: write request
+- * @req: current request being processed (if any)
+  * @tmp_buf: temporary buffer to read in header
+  * @rc: temporary fcall for reading current frame
+  * @wpos: write position for current frame
 
