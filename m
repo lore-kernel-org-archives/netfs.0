@@ -1,1121 +1,454 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1BE13A258
-	for <netfs@lists.linux.dev>; Thu, 28 Mar 2024 17:01:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711645271; cv=none; b=cQGmy7DaWrwsSt73UQzpI9cfNPvin/8hOfJ2hp6YCuHWPCb3qibYrSyDLaZwNQl0JtaW8n+PsiIp55Uinxx4gyRQuwl9IQ/84nehspo2u2dxwt+SjfWCw2y6n+/TlaOlad8Jwh3+EEV+VR5Dn4Wqna+j1oF4sNVl+wFWv6aaP8w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711645271; c=relaxed/simple;
-	bh=VGs8ja5GwjxmZ5EVi44FlS6TBLZZNOUfZ6RA35KHVV8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UV8QcwcwNw8jrYzzPOEggRrrlORVAYotRr+yfWppAAZ7XqOyilYAvqIZQ4YGhT6LMMIgd5kUELVWLqXQBhYK6lEs+y/U+M8nZXDL6tBs4QMD7IHjfiBEdDc2nDqbAzXJXXocVa4Oar/YpZqAwSGu8FwmTkbW4QA8YTSrCYQNEu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fX0fbIqM; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E45535D7
+	for <netfs@lists.linux.dev>; Fri, 29 Mar 2024 09:58:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.156.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711706328; cv=fail; b=dG0gOBZf8AqtR+rnnjsmitfVR30WdFPh3Olazw+ZTEJqNYRkcbHnlp/KKA1GSp6T82lSrQWS+flv+bC18JCM0fV1Vem4FH6j6hTorjcSpeQLnYQluzejjXj3IXy4p78Yo4kO89wTNElai8gxzc5An+NeCHYff9OCPIyevqAD/zA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711706328; c=relaxed/simple;
+	bh=uFeS/mJIXe4RjkQ/g4YstaSAoLb9JH9qeCiwuATBAn8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=fDDtT+48K+L9U4y5AQagUboJmyY/USwvbwKLTzdSxZpP3Wu0rFzfs62eDQGhEbfre5h0/azqp3lnWYvHQfH79hJegV6cUYGn8VVccN5VVz1wI8Y8nuqIDSpYL9Lx0idG3G9/GytSTqeCagedQie8+4TKSsAIALYOQ81svLNu8lU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (1024-bit key) header.d=marvell.com header.i=@marvell.com header.b=K+5GaPC5; arc=fail smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fX0fbIqM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711645267;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jo7uYCFZb0k9CRxsF6IJiNp1HzqNyAx2CaunUXnKfyQ=;
-	b=fX0fbIqMq1opRfZyF1wUxgCGqYQJpb5Zrh87Ict4o1JXtTDwliOOh8YLSGV1yEs2A/Asca
-	uDs2TeN1LcZ3FtChW6VQ7nXbWgndowggDPx1/4ueetIvRQ0U42Y/elylbGOwGvtxrvZKKT
-	yb6GNXVYPHsppRx9Lt61I/uOY19CHb4=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-641-O1K_Lw_WOpC6SLdlZzga_A-1; Thu,
- 28 Mar 2024 13:01:03 -0400
-X-MC-Unique: O1K_Lw_WOpC6SLdlZzga_A-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 41C483815EF7;
-	Thu, 28 Mar 2024 17:01:02 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.42.28.146])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 2460CC4C7A6;
-	Thu, 28 Mar 2024 17:01:00 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Steve French <smfrench@gmail.com>
-Cc: David Howells <dhowells@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	Christian Brauner <christian@brauner.io>,
-	netfs@lists.linux.dev,
-	linux-cifs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Steve French <sfrench@samba.org>,
-	Shyam Prasad N <nspmangalore@gmail.com>,
-	Rohith Surabattula <rohiths.msft@gmail.com>
-Subject: [PATCH v6 15/15] cifs: Remove some code that's no longer used, part 3
-Date: Thu, 28 Mar 2024 16:58:06 +0000
-Message-ID: <20240328165845.2782259-16-dhowells@redhat.com>
-In-Reply-To: <20240328165845.2782259-1-dhowells@redhat.com>
+	dkim=pass (1024-bit key) header.d=marvell.com header.i=@marvell.com header.b="K+5GaPC5"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42T0QgVJ006367;
+	Fri, 29 Mar 2024 02:58:31 -0700
+Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2100.outbound.protection.outlook.com [104.47.70.100])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 3x5gm3hxbw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 29 Mar 2024 02:58:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=A5PXrjpJmoSQqQhIFJhUvjdjVUS9Qfi2vHAgJT4FjLNMSCFK9C1OkALiea3Toj3f1SVRWI9bmvG/bUdhNXr7M07hadEzZAxUMjU+qAkjD8X1vU8G0qrsO+MOpX+ie+frZLToQDao7CrC3/nwl6IWomoBP3pEc/1/EQzzfxpSKyJBYGgNIM5MOcq3l/R8ZBC8BOVVBwjR4qIJD/4GVjdi+D4FG1pg7QbIePYAwyVYuPuhwvDpUwcTyzEFD6eciuBlZxnFMtvvgsawn42gF2EgGZmjWW8fJBU/3n8Mo/prNM4MKZxPxuhRrVUPQCqapw6vmWMWDaO53sVDuAcA7JJIMA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9JhUqML4zjS2Q2eHYvoKkfAMPHpawo6RXrDJhvddxNs=;
+ b=dcC49zfR/cbde0EWWkT39Ulb/VCgRXn4SOmH6Rq4Ms6b/njVjd+7PYzX0/mECcW0CbSDPu/d4OsQ8w9b4068AEgdtoDsbmRVICbvAm1QENQt2Oty/Oj8HA2gxk/oR+tW/KqRHl4zS57fbF6MrEFkki0Lt+8GsZkG/s8SfaRAgkh6tekTc2zI8p8ui/DUjTJKz6wu/6XRc9VJumD86gIn5qTYznEG49RHc1/HFrh8Tv1b3avDxMLEM41ri5+TJeIXlgTQzgiIAeypFysM/XZM4xctK3cEADDykQGZ1PjT2A9E2diMe/RW1kzyZfzoNHQf9cx9RSh/dum5upE2FiDBWg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=marvell.com; dmarc=pass action=none header.from=marvell.com;
+ dkim=pass header.d=marvell.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9JhUqML4zjS2Q2eHYvoKkfAMPHpawo6RXrDJhvddxNs=;
+ b=K+5GaPC5u+aRA5LaVfUFrhzQ3lHbe4HOESma9mdtkaI7oTLe63oCqOu0Q3P7y0bMRYgW2EZBWfgFP+EI1Z1t1v91L2NnP5Uihm+XLg5TzhmKRlLrDrSalF+3Yg8cAq1USx0t6ILMuEdXqLJlF3MNfSCzReBiaB/JuRDOWXeMCbM=
+Received: from SJ2PR18MB5635.namprd18.prod.outlook.com (2603:10b6:a03:55a::21)
+ by BY1PR18MB5350.namprd18.prod.outlook.com (2603:10b6:a03:524::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.32; Fri, 29 Mar
+ 2024 09:58:29 +0000
+Received: from SJ2PR18MB5635.namprd18.prod.outlook.com
+ ([fe80::317:8d8c:2585:2f58]) by SJ2PR18MB5635.namprd18.prod.outlook.com
+ ([fe80::317:8d8c:2585:2f58%3]) with mapi id 15.20.7409.031; Fri, 29 Mar 2024
+ 09:58:29 +0000
+From: Naveen Mamindlapalli <naveenm@marvell.com>
+To: David Howells <dhowells@redhat.com>, Steve French <smfrench@gmail.com>
+CC: Jeff Layton <jlayton@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+        Paulo Alcantara <pc@manguebit.com>,
+        Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+        Christian Brauner <christian@brauner.io>,
+        "netfs@lists.linux.dev" <netfs@lists.linux.dev>,
+        "linux-cifs@vger.kernel.org"
+	<linux-cifs@vger.kernel.org>,
+        "linux-fsdevel@vger.kernel.org"
+	<linux-fsdevel@vger.kernel.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Steve French
+	<sfrench@samba.org>,
+        Shyam Prasad N <nspmangalore@gmail.com>,
+        Rohith
+ Surabattula <rohiths.msft@gmail.com>
+Subject: RE: [PATCH v6 11/15] cifs: When caching, try to open O_WRONLY file
+ rdwr on server
+Thread-Topic: [PATCH v6 11/15] cifs: When caching, try to open O_WRONLY file
+ rdwr on server
+Thread-Index: AQHagb+muX0JMo5O+UG0te/3gFUHIQ==
+Date: Fri, 29 Mar 2024 09:58:28 +0000
+Message-ID: 
+ <SJ2PR18MB5635CA3F5A382FC12D6CE58FA23A2@SJ2PR18MB5635.namprd18.prod.outlook.com>
 References: <20240328165845.2782259-1-dhowells@redhat.com>
+ <20240328165845.2782259-12-dhowells@redhat.com>
+In-Reply-To: <20240328165845.2782259-12-dhowells@redhat.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ2PR18MB5635:EE_|BY1PR18MB5350:EE_
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 
+ t82/4/zxg+/xKf/hvL3P7VxYR19CuJCqe6Mr2E2odSu3LqV7TUsGVcqihxd6BB0KjltlMUITUc5IJK3K/q+D2b9n1Y0xC3agqwilBIaTz9C5M3Mk53UVz+ea+4/fyfR/Zfww9ny4Yz78Vqb9EKkqrK7yHRHqJg0RXU5AaZP8OrEbtJqx6ROBEDeuEIJdMYGYWNi+56K3OSNXqQSu7WH+VITcrGpkPoNFp4fLtojz6+Z7Te4dMH3z2jqWMIqAfmXYmYSM1IBH74LhkEfjWQtdMBeAaHBC4jjudYcx9s9bN8vsGyuIEqQ8fhHMuf7GAAXFejD6n5RrMquoHKfVjPEk/NVyqHiOnBmesi+8vZhxmxIPhKnvvjSZSLRlTvHUi8FQIgvvwpDa8a7rCdQ/MCMKZuAPUYkP86aZbNqAc9i6MjzIUPuC+ijfJzQCn0WDbcO5P5p6D2ZHF6HXAzreuqezfVo9alZq+cfV33ij84zt/CdlkVQUuP/HwWo0APJ1dyZVkLn6t13uUuv69LruwHcTIqcnm1gCkMD0pgeUIkLXxQzsxY8nTb5ysW3GBzsagtAc6PeIYDb5R03KfJeSQMNMZDp7fjolF1BlqtrPoonvqxeF3ljFb9oLp2Y6BQBZ8CS+8zb1nmt8/LOIZA915Alk1pZ074BZSVnBOFAP5P/Hk+w=
+x-forefront-antispam-report: 
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR18MB5635.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(7416005)(366007);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: 
+ =?us-ascii?Q?vbhtN7JR14V+hdJyscv9SrrZkYawzfLNKFoMKbBXn5sILSc/MmpUnZvkiJEr?=
+ =?us-ascii?Q?uLYfLbZwwXpLHApKPQMrvcABnKv4YR9bpz6myNiPWvBd54DaRsgj1WrZ59wz?=
+ =?us-ascii?Q?upbbTfDS+3JjVF6NX9PPCPp4NdmnL3+T7vRjCFe0Hq3R0RhwGGMkZ1zOqXrV?=
+ =?us-ascii?Q?4UqMordjxUMRp4vc08VOsekxn3LCPqYkBy53s71PncT0RXUAxpaDEJzY54c6?=
+ =?us-ascii?Q?rBrgQuduMUpBoy1XNGC/7sD56gBRUQEEhvleIKbzN8AlA/lBm6H1ukBBQTLB?=
+ =?us-ascii?Q?fkV3fw1i21LzKX3WOuJSflxycdDC7z4HfOYtYcTAyzWWWnXyqKu5jt8AgDxk?=
+ =?us-ascii?Q?ejOw0b9eK1JIbEZT/klunNAA1Km+zbe5ZN6v3RtjKGfdS6BJ+Mdw+sZpwJcs?=
+ =?us-ascii?Q?ryBQ1kwX8uUqFyLSoDBvN0yrAA8rTb4cF/gcbyiiFrfh6MdlDSRf2v1F2EVJ?=
+ =?us-ascii?Q?j8BYoKbTG/3WrvJfTQCp3UlhSL8I/iz4EQXVEYx6NI6Jg7xFPAUyc468CCX7?=
+ =?us-ascii?Q?vrHrFh9fPHbdbUivhUwgDhYb6hmF/pN6dGKCcTZ+lITsqqqrpTbvFAMvN08k?=
+ =?us-ascii?Q?bWFuTStL4HAMq0DIvXuU4sz7jjSjyyHf3eyUSJBNMK5hO1pCstr6Vvq6MZGV?=
+ =?us-ascii?Q?qmPRU1SpYTSzJWXuJwaEr0smXjZk968hYPFpSEmdSaEqUZ+fBGRWovU6xYDJ?=
+ =?us-ascii?Q?5/t9ZU6fF0OPolE0BG8LtEsynFPOa7EwV2iSYN+F8WwX19/hmw/z1kG3qoCT?=
+ =?us-ascii?Q?22fKL7GgqyGYfEtB1wpRZk2v/H6khrJELk1CJcci7f4vkoiHNdvajoeeIkhF?=
+ =?us-ascii?Q?EcSHJIMOdmJ4OqP5D+LyuWJ4QlWcfOUMZS0gyNZtWVM7XPFtsZrpmFRT5iAQ?=
+ =?us-ascii?Q?45sRr4OeFBjRwAA1m2MXfrDDXsi1mmUNHhJWFeL3QN+V3r+bAQ2KZcXmiL2e?=
+ =?us-ascii?Q?ncZt5XwIFOC2NJK11U8gRnDF9YGHx01CM2ngihFaxJU42gaesC7u4HAJIu3X?=
+ =?us-ascii?Q?zeVFOebPBLVLLWuNkR77H/jcw06Eiv2cpNOpcIOCs3bd6J1V+5VHg/q84FAL?=
+ =?us-ascii?Q?XSZLNFVpHP9yICgGVvFWakN2OjCMUgiXPLgpeqnDMpxWPDXy+VA84BSp67oU?=
+ =?us-ascii?Q?3EU84jKiOnU237uuQvhngs3bCQsO3gYucod0ZYPsvIAKs98Wk9Y0PtkLKy5d?=
+ =?us-ascii?Q?0JB057Zn3IjG1Xpr9ar1SuvrJWAizf0prcPzN7KgksJS53J/5JD2lMxyANkI?=
+ =?us-ascii?Q?PlHZW2P4tXwjWDotX9y4zm9S+i2hNQJ7x27XgFjwKZL0fCiXsXBJATVb9o/s?=
+ =?us-ascii?Q?yfDcD7vGhsqTflTbMuP+QUi4iYCPMdl3lxK1137gCK/xIC4nWl8acWZHDDGP?=
+ =?us-ascii?Q?0jk4RSjYQSiylTwZPkxKnziUF/U+zm0zZ80LgEiQ6lSK4dxjEDaygFWKnNw8?=
+ =?us-ascii?Q?KQ1kbkC+vVTAfHPYzKa/hvEVfYT4SNEIITipIj3JqF5XGXl4zsqryUTtgctR?=
+ =?us-ascii?Q?Nv/BKVc1/x/UmI+bj+wel/7uDEOaiNWAVP5HRzV2CuZeebvSoGpSHnXcHTHi?=
+ =?us-ascii?Q?Af8Qa5KDzx/jKGA+Ijw6F9A3qR//lBGnq3ozNU5U?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+X-OriginatorOrg: marvell.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR18MB5635.namprd18.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2cd9aa64-52e0-4f33-b94e-08dc4fd6c8cb
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Mar 2024 09:58:28.9945
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: g2DWz+KC0UmvoIX0LpuUhwNX6toyBuowDDYKsxAGx/zTiHvfxOT+f0WjQc9VntxzcXLh6HoXpXwlaxJHyga3JA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY1PR18MB5350
+X-Proofpoint-GUID: lH4i3t_xW62ZspnC561E08_TcugXwosJ
+X-Proofpoint-ORIG-GUID: lH4i3t_xW62ZspnC561E08_TcugXwosJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-29_09,2024-03-28_01,2023-05-22_02
 
-Remove some code that was #if'd out with the netfslib conversion.  This is
-split into parts for file.c as the diff generator otherwise produces a hard
-to read diff for part of it where a big chunk is cut out.
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Steve French <sfrench@samba.org>
-cc: Shyam Prasad N <nspmangalore@gmail.com>
-cc: Rohith Surabattula <rohiths.msft@gmail.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-cc: linux-mm@kvack.org
----
- fs/smb/client/file.c | 1004 ------------------------------------------
- 1 file changed, 1004 deletions(-)
+> -----Original Message-----
+> From: David Howells <dhowells@redhat.com>
+> Sent: Thursday, March 28, 2024 10:28 PM
+> To: Steve French <smfrench@gmail.com>
+> Cc: David Howells <dhowells@redhat.com>; Jeff Layton <jlayton@kernel.org>=
+;
+> Matthew Wilcox <willy@infradead.org>; Paulo Alcantara <pc@manguebit.com>;
+> Shyam Prasad N <sprasad@microsoft.com>; Tom Talpey <tom@talpey.com>;
+> Christian Brauner <christian@brauner.io>; netfs@lists.linux.dev; linux-
+> cifs@vger.kernel.org; linux-fsdevel@vger.kernel.org; linux-mm@kvack.org;
+> netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Steve French
+> <sfrench@samba.org>; Shyam Prasad N <nspmangalore@gmail.com>; Rohith
+> Surabattula <rohiths.msft@gmail.com>
+> Subject: [PATCH v6 11/15] cifs: When caching, try to open
+> O_WRONLY file rdwr on server
+>=20
+> When we're engaged in local caching of a cifs filesystem, we cannot perfo=
+rm
+> caching of a partially written cache granule unless we can read the rest =
+of the
+> granule.  To deal with this, if a file is opened O_WRONLY locally, but th=
+e mount
+> was given the "-o fsc" flag, try first opening the remote file with
+> GENERIC_READ|GENERIC_WRITE and if that returns -EACCES, try dropping
+> the GENERIC_READ and doing the open again.  If that last succeeds, invali=
+date
+> the cache for that file as for O_DIRECT.
+>=20
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> cc: Steve French <sfrench@samba.org>
+> cc: Shyam Prasad N <nspmangalore@gmail.com>
+> cc: Rohith Surabattula <rohiths.msft@gmail.com>
+> cc: Jeff Layton <jlayton@kernel.org>
+> cc: linux-cifs@vger.kernel.org
+> cc: netfs@lists.linux.dev
+> cc: linux-fsdevel@vger.kernel.org
+> cc: linux-mm@kvack.org
+> ---
+>  fs/smb/client/dir.c     | 15 ++++++++++++
+>  fs/smb/client/file.c    | 51 +++++++++++++++++++++++++++++++++--------
+>  fs/smb/client/fscache.h |  6 +++++
+>  3 files changed, 62 insertions(+), 10 deletions(-)
+>=20
+> diff --git a/fs/smb/client/dir.c b/fs/smb/client/dir.c index
+> 89333d9bce36..37897b919dd5 100644
+> --- a/fs/smb/client/dir.c
+> +++ b/fs/smb/client/dir.c
+> @@ -189,6 +189,7 @@ static int cifs_do_create(struct inode *inode, struct=
+ dentry
+> *direntry, unsigned
+>  	int disposition;
+>  	struct TCP_Server_Info *server =3D tcon->ses->server;
+>  	struct cifs_open_parms oparms;
+> +	int rdwr_for_fscache =3D 0;
+>=20
+>  	*oplock =3D 0;
+>  	if (tcon->ses->server->oplocks)
+> @@ -200,6 +201,10 @@ static int cifs_do_create(struct inode *inode, struc=
+t
+> dentry *direntry, unsigned
+>  		return PTR_ERR(full_path);
+>  	}
+>=20
+> +	/* If we're caching, we need to be able to fill in around partial write=
+s. */
+> +	if (cifs_fscache_enabled(inode) && (oflags & O_ACCMODE) =3D=3D
+> O_WRONLY)
+> +		rdwr_for_fscache =3D 1;
+> +
+>  #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
+>  	if (tcon->unix_ext && cap_unix(tcon->ses) && !tcon->broken_posix_open
+> &&
+>  	    (CIFS_UNIX_POSIX_PATH_OPS_CAP &
+> @@ -276,6 +281,8 @@ static int cifs_do_create(struct inode *inode, struct=
+ dentry
+> *direntry, unsigned
+>  		desired_access |=3D GENERIC_READ; /* is this too little? */
+>  	if (OPEN_FMODE(oflags) & FMODE_WRITE)
+>  		desired_access |=3D GENERIC_WRITE;
+> +	if (rdwr_for_fscache =3D=3D 1)
+> +		desired_access |=3D GENERIC_READ;
+>=20
+>  	disposition =3D FILE_OVERWRITE_IF;
+>  	if ((oflags & (O_CREAT | O_EXCL)) =3D=3D (O_CREAT | O_EXCL)) @@ -
+> 304,6 +311,7 @@ static int cifs_do_create(struct inode *inode, struct den=
+try
+> *direntry, unsigned
+>  	if (!tcon->unix_ext && (mode & S_IWUGO) =3D=3D 0)
+>  		create_options |=3D CREATE_OPTION_READONLY;
+>=20
+> +retry_open:
+>  	oparms =3D (struct cifs_open_parms) {
+>  		.tcon =3D tcon,
+>  		.cifs_sb =3D cifs_sb,
+> @@ -317,8 +325,15 @@ static int cifs_do_create(struct inode *inode, struc=
+t
+> dentry *direntry, unsigned
+>  	rc =3D server->ops->open(xid, &oparms, oplock, buf);
+>  	if (rc) {
+>  		cifs_dbg(FYI, "cifs_create returned 0x%x\n", rc);
+> +		if (rc =3D=3D -EACCES && rdwr_for_fscache =3D=3D 1) {
+> +			desired_access &=3D ~GENERIC_READ;
+> +			rdwr_for_fscache =3D 2;
+> +			goto retry_open;
+> +		}
+>  		goto out;
+>  	}
+> +	if (rdwr_for_fscache =3D=3D 2)
+> +		cifs_invalidate_cache(inode, FSCACHE_INVAL_DIO_WRITE);
+>=20
+>  #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
+>  	/*
+> diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c index
+> 73573dadf90e..761a80963f76 100644
+> --- a/fs/smb/client/file.c
+> +++ b/fs/smb/client/file.c
+> @@ -521,12 +521,12 @@ cifs_mark_open_files_invalid(struct cifs_tcon *tcon=
+)
+>  	 */
+>  }
+>=20
+> -static inline int cifs_convert_flags(unsigned int flags)
+> +static inline int cifs_convert_flags(unsigned int flags, int
+> +rdwr_for_fscache)
+>  {
+>  	if ((flags & O_ACCMODE) =3D=3D O_RDONLY)
+>  		return GENERIC_READ;
+>  	else if ((flags & O_ACCMODE) =3D=3D O_WRONLY)
+> -		return GENERIC_WRITE;
+> +		return rdwr_for_fscache =3D=3D 1 ? (GENERIC_READ |
+> GENERIC_WRITE) :
+> +GENERIC_WRITE;
+>  	else if ((flags & O_ACCMODE) =3D=3D O_RDWR) {
+>  		/* GENERIC_ALL is too much permission to request
+>  		   can cause unnecessary access denied on create */ @@ -
+> 663,11 +663,16 @@ static int cifs_nt_open(const char *full_path, struct i=
+node
+> *inode, struct cifs_
+>  	int create_options =3D CREATE_NOT_DIR;
+>  	struct TCP_Server_Info *server =3D tcon->ses->server;
+>  	struct cifs_open_parms oparms;
+> +	int rdwr_for_fscache =3D 0;
+>=20
+>  	if (!server->ops->open)
+>  		return -ENOSYS;
+>=20
+> -	desired_access =3D cifs_convert_flags(f_flags);
+> +	/* If we're caching, we need to be able to fill in around partial write=
+s. */
+> +	if (cifs_fscache_enabled(inode) && (f_flags & O_ACCMODE) =3D=3D
+> O_WRONLY)
+> +		rdwr_for_fscache =3D 1;
+> +
+> +	desired_access =3D cifs_convert_flags(f_flags, rdwr_for_fscache);
+>=20
+>  /*********************************************************************
+>   *  open flag mapping table:
+> @@ -704,6 +709,7 @@ static int cifs_nt_open(const char *full_path, struct=
+ inode
+> *inode, struct cifs_
+>  	if (f_flags & O_DIRECT)
+>  		create_options |=3D CREATE_NO_BUFFER;
+>=20
+> +retry_open:
+>  	oparms =3D (struct cifs_open_parms) {
+>  		.tcon =3D tcon,
+>  		.cifs_sb =3D cifs_sb,
+> @@ -715,8 +721,16 @@ static int cifs_nt_open(const char *full_path, struc=
+t inode
+> *inode, struct cifs_
+>  	};
+>=20
+>  	rc =3D server->ops->open(xid, &oparms, oplock, buf);
+> -	if (rc)
+> +	if (rc) {
+> +		if (rc =3D=3D -EACCES && rdwr_for_fscache =3D=3D 1) {
+> +			desired_access =3D cifs_convert_flags(f_flags, 0);
+> +			rdwr_for_fscache =3D 2;
+> +			goto retry_open;
+> +		}
+>  		return rc;
+> +	}
+> +	if (rdwr_for_fscache =3D=3D 2)
+> +		cifs_invalidate_cache(inode, FSCACHE_INVAL_DIO_WRITE);
+>=20
+>  	/* TODO: Add support for calling posix query info but with passing in f=
+id */
+>  	if (tcon->unix_ext)
+> @@ -1149,11 +1163,14 @@ int cifs_open(struct inode *inode, struct file *f=
+ile)
+>  use_cache:
+>  	fscache_use_cookie(cifs_inode_cookie(file_inode(file)),
+>  			   file->f_mode & FMODE_WRITE);
+> -	if (file->f_flags & O_DIRECT &&
+> -	    (!((file->f_flags & O_ACCMODE) !=3D O_RDONLY) ||
+> -	     file->f_flags & O_APPEND))
+> -		cifs_invalidate_cache(file_inode(file),
+> -				      FSCACHE_INVAL_DIO_WRITE);
+> +	//if ((file->f_flags & O_ACCMODE) =3D=3D O_WRONLY)
+> +	//	goto inval;
 
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index f45a830154d5..0b43fae0a96e 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -2695,471 +2695,6 @@ int cifs_flush(struct file *file, fl_owner_t id)
- 	return rc;
- }
- 
--#if 0 // TODO remove 3594
--static void collect_uncached_write_data(struct cifs_aio_ctx *ctx);
--
--static void
--cifs_uncached_writev_complete(struct work_struct *work)
--{
--	struct cifs_io_subrequest *wdata = container_of(work,
--					struct cifs_io_subrequest, work);
--	struct inode *inode = d_inode(wdata->cfile->dentry);
--	struct cifsInodeInfo *cifsi = CIFS_I(inode);
--
--	spin_lock(&inode->i_lock);
--	cifs_update_eof(cifsi, wdata->subreq.start, wdata->subreq.len);
--	if (cifsi->netfs.remote_i_size > inode->i_size)
--		i_size_write(inode, cifsi->netfs.remote_i_size);
--	spin_unlock(&inode->i_lock);
--
--	complete(&wdata->done);
--	collect_uncached_write_data(wdata->ctx);
--	/* the below call can possibly free the last ref to aio ctx */
--	cifs_put_writedata(wdata);
--}
--
--static int
--cifs_resend_wdata(struct cifs_io_subrequest *wdata, struct list_head *wdata_list,
--	struct cifs_aio_ctx *ctx)
--{
--	size_t wsize;
--	struct cifs_credits credits;
--	int rc;
--	struct TCP_Server_Info *server = wdata->server;
--
--	do {
--		if (wdata->cfile->invalidHandle) {
--			rc = cifs_reopen_file(wdata->cfile, false);
--			if (rc == -EAGAIN)
--				continue;
--			else if (rc)
--				break;
--		}
--
--
--		/*
--		 * Wait for credits to resend this wdata.
--		 * Note: we are attempting to resend the whole wdata not in
--		 * segments
--		 */
--		do {
--			rc = server->ops->wait_mtu_credits(server, wdata->subreq.len,
--						&wsize, &credits);
--			if (rc)
--				goto fail;
--
--			if (wsize < wdata->subreq.len) {
--				add_credits_and_wake_if(server, &credits, 0);
--				msleep(1000);
--			}
--		} while (wsize < wdata->subreq.len);
--		wdata->credits = credits;
--
--		rc = adjust_credits(server, &wdata->credits, wdata->subreq.len);
--
--		if (!rc) {
--			if (wdata->cfile->invalidHandle)
--				rc = -EAGAIN;
--			else {
--				set_bit(NETFS_SREQ_RETRYING, &wdata->subreq.flags);
--#ifdef CONFIG_CIFS_SMB_DIRECT
--				if (wdata->mr) {
--					wdata->mr->need_invalidate = true;
--					smbd_deregister_mr(wdata->mr);
--					wdata->mr = NULL;
--				}
--#endif
--				rc = server->ops->async_writev(wdata);
--			}
--		}
--
--		/* If the write was successfully sent, we are done */
--		if (!rc) {
--			list_add_tail(&wdata->list, wdata_list);
--			return 0;
--		}
--
--		/* Roll back credits and retry if needed */
--		add_credits_and_wake_if(server, &wdata->credits, 0);
--	} while (rc == -EAGAIN);
--
--fail:
--	cifs_put_writedata(wdata);
--	return rc;
--}
--
--/*
-- * Select span of a bvec iterator we're going to use.  Limit it by both maximum
-- * size and maximum number of segments.
-- */
--static size_t cifs_limit_bvec_subset(const struct iov_iter *iter, size_t max_size,
--				     size_t max_segs, unsigned int *_nsegs)
--{
--	const struct bio_vec *bvecs = iter->bvec;
--	unsigned int nbv = iter->nr_segs, ix = 0, nsegs = 0;
--	size_t len, span = 0, n = iter->count;
--	size_t skip = iter->iov_offset;
--
--	if (WARN_ON(!iov_iter_is_bvec(iter)) || n == 0)
--		return 0;
--
--	while (n && ix < nbv && skip) {
--		len = bvecs[ix].bv_len;
--		if (skip < len)
--			break;
--		skip -= len;
--		n -= len;
--		ix++;
--	}
--
--	while (n && ix < nbv) {
--		len = min3(n, bvecs[ix].bv_len - skip, max_size);
--		span += len;
--		max_size -= len;
--		nsegs++;
--		ix++;
--		if (max_size == 0 || nsegs >= max_segs)
--			break;
--		skip = 0;
--		n -= len;
--	}
--
--	*_nsegs = nsegs;
--	return span;
--}
--
--static int
--cifs_write_from_iter(loff_t fpos, size_t len, struct iov_iter *from,
--		     struct cifsFileInfo *open_file,
--		     struct cifs_sb_info *cifs_sb, struct list_head *wdata_list,
--		     struct cifs_aio_ctx *ctx)
--{
--	int rc = 0;
--	size_t cur_len, max_len;
--	struct cifs_io_subrequest *wdata;
--	pid_t pid;
--	struct TCP_Server_Info *server;
--	unsigned int xid, max_segs = INT_MAX;
--
--	if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_RWPIDFORWARD)
--		pid = open_file->pid;
--	else
--		pid = current->tgid;
--
--	server = cifs_pick_channel(tlink_tcon(open_file->tlink)->ses);
--	xid = get_xid();
--
--#ifdef CONFIG_CIFS_SMB_DIRECT
--	if (server->smbd_conn)
--		max_segs = server->smbd_conn->max_frmr_depth;
--#endif
--
--	do {
--		struct cifs_credits credits_on_stack;
--		struct cifs_credits *credits = &credits_on_stack;
--		unsigned int nsegs = 0;
--		size_t wsize;
--
--		if (signal_pending(current)) {
--			rc = -EINTR;
--			break;
--		}
--
--		if (open_file->invalidHandle) {
--			rc = cifs_reopen_file(open_file, false);
--			if (rc == -EAGAIN)
--				continue;
--			else if (rc)
--				break;
--		}
--
--		rc = server->ops->wait_mtu_credits(server, cifs_sb->ctx->wsize,
--						   &wsize, credits);
--		if (rc)
--			break;
--
--		max_len = min_t(const size_t, len, wsize);
--		if (!max_len) {
--			rc = -EAGAIN;
--			add_credits_and_wake_if(server, credits, 0);
--			break;
--		}
--
--		cur_len = cifs_limit_bvec_subset(from, max_len, max_segs, &nsegs);
--		cifs_dbg(FYI, "write_from_iter len=%zx/%zx nsegs=%u/%lu/%u\n",
--			 cur_len, max_len, nsegs, from->nr_segs, max_segs);
--		if (cur_len == 0) {
--			rc = -EIO;
--			add_credits_and_wake_if(server, credits, 0);
--			break;
--		}
--
--		wdata = cifs_writedata_alloc(cifs_uncached_writev_complete);
--		if (!wdata) {
--			rc = -ENOMEM;
--			add_credits_and_wake_if(server, credits, 0);
--			break;
--		}
--
--		wdata->uncached	= true;
--		wdata->sync_mode = WB_SYNC_ALL;
--		wdata->subreq.start	= (__u64)fpos;
--		wdata->cfile	= cifsFileInfo_get(open_file);
--		wdata->server	= server;
--		wdata->pid	= pid;
--		wdata->subreq.len	= cur_len;
--		wdata->credits	= credits_on_stack;
--		wdata->subreq.io_iter	= *from;
--		wdata->ctx	= ctx;
--		kref_get(&ctx->refcount);
--
--		iov_iter_truncate(&wdata->subreq.io_iter, cur_len);
--
--		rc = adjust_credits(server, &wdata->credits, wdata->subreq.len);
--
--		if (!rc) {
--			if (wdata->cfile->invalidHandle)
--				rc = -EAGAIN;
--			else
--				rc = server->ops->async_writev(wdata);
--		}
--
--		if (rc) {
--			add_credits_and_wake_if(server, &wdata->credits, 0);
--			cifs_put_writedata(wdata);
--			if (rc == -EAGAIN)
--				continue;
--			break;
--		}
--
--		list_add_tail(&wdata->list, wdata_list);
--		iov_iter_advance(from, cur_len);
--		fpos += cur_len;
--		len -= cur_len;
--	} while (len > 0);
--
--	free_xid(xid);
--	return rc;
--}
--
--static void collect_uncached_write_data(struct cifs_aio_ctx *ctx)
--{
--	struct cifs_io_subrequest *wdata, *tmp;
--	struct cifs_tcon *tcon;
--	struct cifs_sb_info *cifs_sb;
--	struct dentry *dentry = ctx->cfile->dentry;
--	ssize_t rc;
--
--	tcon = tlink_tcon(ctx->cfile->tlink);
--	cifs_sb = CIFS_SB(dentry->d_sb);
--
--	mutex_lock(&ctx->aio_mutex);
--
--	if (list_empty(&ctx->list)) {
--		mutex_unlock(&ctx->aio_mutex);
--		return;
--	}
--
--	rc = ctx->rc;
--	/*
--	 * Wait for and collect replies for any successful sends in order of
--	 * increasing offset. Once an error is hit, then return without waiting
--	 * for any more replies.
--	 */
--restart_loop:
--	list_for_each_entry_safe(wdata, tmp, &ctx->list, list) {
--		if (!rc) {
--			if (!try_wait_for_completion(&wdata->done)) {
--				mutex_unlock(&ctx->aio_mutex);
--				return;
--			}
--
--			if (wdata->result)
--				rc = wdata->result;
--			else
--				ctx->total_len += wdata->subreq.len;
--
--			/* resend call if it's a retryable error */
--			if (rc == -EAGAIN) {
--				struct list_head tmp_list;
--				struct iov_iter tmp_from = ctx->iter;
--
--				INIT_LIST_HEAD(&tmp_list);
--				list_del_init(&wdata->list);
--
--				if (ctx->direct_io)
--					rc = cifs_resend_wdata(
--						wdata, &tmp_list, ctx);
--				else {
--					iov_iter_advance(&tmp_from,
--						 wdata->subreq.start - ctx->pos);
--
--					rc = cifs_write_from_iter(wdata->subreq.start,
--						wdata->subreq.len, &tmp_from,
--						ctx->cfile, cifs_sb, &tmp_list,
--						ctx);
--
--					cifs_put_writedata(wdata);
--				}
--
--				list_splice(&tmp_list, &ctx->list);
--				goto restart_loop;
--			}
--		}
--		list_del_init(&wdata->list);
--		cifs_put_writedata(wdata);
--	}
--
--	cifs_stats_bytes_written(tcon, ctx->total_len);
--	set_bit(CIFS_INO_INVALID_MAPPING, &CIFS_I(dentry->d_inode)->flags);
--
--	ctx->rc = (rc == 0) ? ctx->total_len : rc;
--
--	mutex_unlock(&ctx->aio_mutex);
--
--	if (ctx->iocb && ctx->iocb->ki_complete)
--		ctx->iocb->ki_complete(ctx->iocb, ctx->rc);
--	else
--		complete(&ctx->done);
--}
--
--static ssize_t __cifs_writev(
--	struct kiocb *iocb, struct iov_iter *from, bool direct)
--{
--	struct file *file = iocb->ki_filp;
--	ssize_t total_written = 0;
--	struct cifsFileInfo *cfile;
--	struct cifs_tcon *tcon;
--	struct cifs_sb_info *cifs_sb;
--	struct cifs_aio_ctx *ctx;
--	int rc;
--
--	rc = generic_write_checks(iocb, from);
--	if (rc <= 0)
--		return rc;
--
--	cifs_sb = CIFS_FILE_SB(file);
--	cfile = file->private_data;
--	tcon = tlink_tcon(cfile->tlink);
--
--	if (!tcon->ses->server->ops->async_writev)
--		return -ENOSYS;
--
--	ctx = cifs_aio_ctx_alloc();
--	if (!ctx)
--		return -ENOMEM;
--
--	ctx->cfile = cifsFileInfo_get(cfile);
--
--	if (!is_sync_kiocb(iocb))
--		ctx->iocb = iocb;
--
--	ctx->pos = iocb->ki_pos;
--	ctx->direct_io = direct;
--	ctx->nr_pinned_pages = 0;
--
--	if (user_backed_iter(from)) {
--		/*
--		 * Extract IOVEC/UBUF-type iterators to a BVEC-type iterator as
--		 * they contain references to the calling process's virtual
--		 * memory layout which won't be available in an async worker
--		 * thread.  This also takes a pin on every folio involved.
--		 */
--		rc = netfs_extract_user_iter(from, iov_iter_count(from),
--					     &ctx->iter, 0);
--		if (rc < 0) {
--			kref_put(&ctx->refcount, cifs_aio_ctx_release);
--			return rc;
--		}
--
--		ctx->nr_pinned_pages = rc;
--		ctx->bv = (void *)ctx->iter.bvec;
--		ctx->bv_need_unpin = iov_iter_extract_will_pin(from);
--	} else if ((iov_iter_is_bvec(from) || iov_iter_is_kvec(from)) &&
--		   !is_sync_kiocb(iocb)) {
--		/*
--		 * If the op is asynchronous, we need to copy the list attached
--		 * to a BVEC/KVEC-type iterator, but we assume that the storage
--		 * will be pinned by the caller; in any case, we may or may not
--		 * be able to pin the pages, so we don't try.
--		 */
--		ctx->bv = (void *)dup_iter(&ctx->iter, from, GFP_KERNEL);
--		if (!ctx->bv) {
--			kref_put(&ctx->refcount, cifs_aio_ctx_release);
--			return -ENOMEM;
--		}
--	} else {
--		/*
--		 * Otherwise, we just pass the iterator down as-is and rely on
--		 * the caller to make sure the pages referred to by the
--		 * iterator don't evaporate.
--		 */
--		ctx->iter = *from;
--	}
--
--	ctx->len = iov_iter_count(&ctx->iter);
--
--	/* grab a lock here due to read response handlers can access ctx */
--	mutex_lock(&ctx->aio_mutex);
--
--	rc = cifs_write_from_iter(iocb->ki_pos, ctx->len, &ctx->iter,
--				  cfile, cifs_sb, &ctx->list, ctx);
--
--	/*
--	 * If at least one write was successfully sent, then discard any rc
--	 * value from the later writes. If the other write succeeds, then
--	 * we'll end up returning whatever was written. If it fails, then
--	 * we'll get a new rc value from that.
--	 */
--	if (!list_empty(&ctx->list))
--		rc = 0;
--
--	mutex_unlock(&ctx->aio_mutex);
--
--	if (rc) {
--		kref_put(&ctx->refcount, cifs_aio_ctx_release);
--		return rc;
--	}
--
--	if (!is_sync_kiocb(iocb)) {
--		kref_put(&ctx->refcount, cifs_aio_ctx_release);
--		return -EIOCBQUEUED;
--	}
--
--	rc = wait_for_completion_killable(&ctx->done);
--	if (rc) {
--		mutex_lock(&ctx->aio_mutex);
--		ctx->rc = rc = -EINTR;
--		total_written = ctx->total_len;
--		mutex_unlock(&ctx->aio_mutex);
--	} else {
--		rc = ctx->rc;
--		total_written = ctx->total_len;
--	}
--
--	kref_put(&ctx->refcount, cifs_aio_ctx_release);
--
--	if (unlikely(!total_written))
--		return rc;
--
--	iocb->ki_pos += total_written;
--	return total_written;
--}
--
--ssize_t cifs_direct_writev(struct kiocb *iocb, struct iov_iter *from)
--{
--	struct file *file = iocb->ki_filp;
--
--	cifs_revalidate_mapping(file->f_inode);
--	return __cifs_writev(iocb, from, true);
--}
--
--ssize_t cifs_user_writev(struct kiocb *iocb, struct iov_iter *from)
--{
--	return __cifs_writev(iocb, from, false);
--}
--#endif // TODO remove 3594
--
- static ssize_t
- cifs_writev(struct kiocb *iocb, struct iov_iter *from)
- {
-@@ -3248,450 +2783,6 @@ cifs_strict_writev(struct kiocb *iocb, struct iov_iter *from)
- 	return written;
- }
- 
--#if 0 // TODO remove 4143
--static struct cifs_io_subrequest *cifs_readdata_alloc(work_func_t complete)
--{
--	struct cifs_io_subrequest *rdata;
--
--	rdata = kzalloc(sizeof(*rdata), GFP_KERNEL);
--	if (rdata) {
--		refcount_set(&rdata->subreq.ref, 1);
--		INIT_LIST_HEAD(&rdata->list);
--		init_completion(&rdata->done);
--		INIT_WORK(&rdata->work, complete);
--	}
--
--	return rdata;
--}
--
--void
--cifs_readdata_release(struct cifs_io_subrequest *rdata)
--{
--	if (rdata->ctx)
--		kref_put(&rdata->ctx->refcount, cifs_aio_ctx_release);
--#ifdef CONFIG_CIFS_SMB_DIRECT
--	if (rdata->mr) {
--		smbd_deregister_mr(rdata->mr);
--		rdata->mr = NULL;
--	}
--#endif
--	if (rdata->cfile)
--		cifsFileInfo_put(rdata->cfile);
--
--	kfree(rdata);
--}
--
--static void collect_uncached_read_data(struct cifs_aio_ctx *ctx);
--
--static void
--cifs_uncached_readv_complete(struct work_struct *work)
--{
--	struct cifs_io_subrequest *rdata =
--		container_of(work, struct cifs_io_subrequest, work);
--
--	complete(&rdata->done);
--	collect_uncached_read_data(rdata->ctx);
--	/* the below call can possibly free the last ref to aio ctx */
--	cifs_put_readdata(rdata);
--}
--
--static int cifs_resend_rdata(struct cifs_io_subrequest *rdata,
--			struct list_head *rdata_list,
--			struct cifs_aio_ctx *ctx)
--{
--	size_t rsize;
--	struct cifs_credits credits;
--	int rc;
--	struct TCP_Server_Info *server;
--
--	/* XXX: should we pick a new channel here? */
--	server = rdata->server;
--
--	do {
--		if (rdata->cfile->invalidHandle) {
--			rc = cifs_reopen_file(rdata->cfile, true);
--			if (rc == -EAGAIN)
--				continue;
--			else if (rc)
--				break;
--		}
--
--		/*
--		 * Wait for credits to resend this rdata.
--		 * Note: we are attempting to resend the whole rdata not in
--		 * segments
--		 */
--		do {
--			rc = server->ops->wait_mtu_credits(server, rdata->subreq.len,
--						&rsize, &credits);
--
--			if (rc)
--				goto fail;
--
--			if (rsize < rdata->subreq.len) {
--				add_credits_and_wake_if(server, &credits, 0);
--				msleep(1000);
--			}
--		} while (rsize < rdata->subreq.len);
--		rdata->credits = credits;
--
--		rc = adjust_credits(server, &rdata->credits, rdata->subreq.len);
--		if (!rc) {
--			if (rdata->cfile->invalidHandle)
--				rc = -EAGAIN;
--			else {
--#ifdef CONFIG_CIFS_SMB_DIRECT
--				if (rdata->mr) {
--					rdata->mr->need_invalidate = true;
--					smbd_deregister_mr(rdata->mr);
--					rdata->mr = NULL;
--				}
--#endif
--				rc = server->ops->async_readv(rdata);
--			}
--		}
--
--		/* If the read was successfully sent, we are done */
--		if (!rc) {
--			/* Add to aio pending list */
--			list_add_tail(&rdata->list, rdata_list);
--			return 0;
--		}
--
--		/* Roll back credits and retry if needed */
--		add_credits_and_wake_if(server, &rdata->credits, 0);
--	} while (rc == -EAGAIN);
--
--fail:
--	cifs_put_readdata(rdata);
--	return rc;
--}
--
--static int
--cifs_send_async_read(loff_t fpos, size_t len, struct cifsFileInfo *open_file,
--		     struct cifs_sb_info *cifs_sb, struct list_head *rdata_list,
--		     struct cifs_aio_ctx *ctx)
--{
--	struct cifs_io_subrequest *rdata;
--	unsigned int nsegs, max_segs = INT_MAX;
--	struct cifs_credits credits_on_stack;
--	struct cifs_credits *credits = &credits_on_stack;
--	size_t cur_len, max_len, rsize;
--	int rc;
--	pid_t pid;
--	struct TCP_Server_Info *server;
--
--	server = cifs_pick_channel(tlink_tcon(open_file->tlink)->ses);
--
--#ifdef CONFIG_CIFS_SMB_DIRECT
--	if (server->smbd_conn)
--		max_segs = server->smbd_conn->max_frmr_depth;
--#endif
--
--	if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_RWPIDFORWARD)
--		pid = open_file->pid;
--	else
--		pid = current->tgid;
--
--	do {
--		if (open_file->invalidHandle) {
--			rc = cifs_reopen_file(open_file, true);
--			if (rc == -EAGAIN)
--				continue;
--			else if (rc)
--				break;
--		}
--
--		if (cifs_sb->ctx->rsize == 0)
--			cifs_sb->ctx->rsize =
--				server->ops->negotiate_rsize(tlink_tcon(open_file->tlink),
--							     cifs_sb->ctx);
--
--		rc = server->ops->wait_mtu_credits(server, cifs_sb->ctx->rsize,
--						   &rsize, credits);
--		if (rc)
--			break;
--
--		max_len = min_t(size_t, len, rsize);
--
--		cur_len = cifs_limit_bvec_subset(&ctx->iter, max_len,
--						 max_segs, &nsegs);
--		cifs_dbg(FYI, "read-to-iter len=%zx/%zx nsegs=%u/%lu/%u\n",
--			 cur_len, max_len, nsegs, ctx->iter.nr_segs, max_segs);
--		if (cur_len == 0) {
--			rc = -EIO;
--			add_credits_and_wake_if(server, credits, 0);
--			break;
--		}
--
--		rdata = cifs_readdata_alloc(cifs_uncached_readv_complete);
--		if (!rdata) {
--			add_credits_and_wake_if(server, credits, 0);
--			rc = -ENOMEM;
--			break;
--		}
--
--		rdata->server	= server;
--		rdata->cfile	= cifsFileInfo_get(open_file);
--		rdata->subreq.start	= fpos;
--		rdata->subreq.len	= cur_len;
--		rdata->pid	= pid;
--		rdata->credits	= credits_on_stack;
--		rdata->ctx	= ctx;
--		kref_get(&ctx->refcount);
--
--		rdata->subreq.io_iter = ctx->iter;
--		iov_iter_truncate(&rdata->subreq.io_iter, cur_len);
--
--		rc = adjust_credits(server, &rdata->credits, rdata->subreq.len);
--
--		if (!rc) {
--			if (rdata->cfile->invalidHandle)
--				rc = -EAGAIN;
--			else
--				rc = server->ops->async_readv(rdata);
--		}
--
--		if (rc) {
--			add_credits_and_wake_if(server, &rdata->credits, 0);
--			cifs_put_readdata(rdata);
--			if (rc == -EAGAIN)
--				continue;
--			break;
--		}
--
--		list_add_tail(&rdata->list, rdata_list);
--		iov_iter_advance(&ctx->iter, cur_len);
--		fpos += cur_len;
--		len -= cur_len;
--	} while (len > 0);
--
--	return rc;
--}
--
--static void
--collect_uncached_read_data(struct cifs_aio_ctx *ctx)
--{
--	struct cifs_io_subrequest *rdata, *tmp;
--	struct cifs_sb_info *cifs_sb;
--	int rc;
--
--	cifs_sb = CIFS_SB(ctx->cfile->dentry->d_sb);
--
--	mutex_lock(&ctx->aio_mutex);
--
--	if (list_empty(&ctx->list)) {
--		mutex_unlock(&ctx->aio_mutex);
--		return;
--	}
--
--	rc = ctx->rc;
--	/* the loop below should proceed in the order of increasing offsets */
--again:
--	list_for_each_entry_safe(rdata, tmp, &ctx->list, list) {
--		if (!rc) {
--			if (!try_wait_for_completion(&rdata->done)) {
--				mutex_unlock(&ctx->aio_mutex);
--				return;
--			}
--
--			if (rdata->result == -EAGAIN) {
--				/* resend call if it's a retryable error */
--				struct list_head tmp_list;
--				unsigned int got_bytes = rdata->got_bytes;
--
--				list_del_init(&rdata->list);
--				INIT_LIST_HEAD(&tmp_list);
--
--				if (ctx->direct_io) {
--					/*
--					 * Re-use rdata as this is a
--					 * direct I/O
--					 */
--					rc = cifs_resend_rdata(
--						rdata,
--						&tmp_list, ctx);
--				} else {
--					rc = cifs_send_async_read(
--						rdata->subreq.start + got_bytes,
--						rdata->subreq.len - got_bytes,
--						rdata->cfile, cifs_sb,
--						&tmp_list, ctx);
--
--					cifs_put_readdata(rdata);
--				}
--
--				list_splice(&tmp_list, &ctx->list);
--
--				goto again;
--			} else if (rdata->result)
--				rc = rdata->result;
--
--			/* if there was a short read -- discard anything left */
--			if (rdata->got_bytes && rdata->got_bytes < rdata->subreq.len)
--				rc = -ENODATA;
--
--			ctx->total_len += rdata->got_bytes;
--		}
--		list_del_init(&rdata->list);
--		cifs_put_readdata(rdata);
--	}
--
--	/* mask nodata case */
--	if (rc == -ENODATA)
--		rc = 0;
--
--	ctx->rc = (rc == 0) ? (ssize_t)ctx->total_len : rc;
--
--	mutex_unlock(&ctx->aio_mutex);
--
--	if (ctx->iocb && ctx->iocb->ki_complete)
--		ctx->iocb->ki_complete(ctx->iocb, ctx->rc);
--	else
--		complete(&ctx->done);
--}
--
--static ssize_t __cifs_readv(
--	struct kiocb *iocb, struct iov_iter *to, bool direct)
--{
--	size_t len;
--	struct file *file = iocb->ki_filp;
--	struct cifs_sb_info *cifs_sb;
--	struct cifsFileInfo *cfile;
--	struct cifs_tcon *tcon;
--	ssize_t rc, total_read = 0;
--	loff_t offset = iocb->ki_pos;
--	struct cifs_aio_ctx *ctx;
--
--	len = iov_iter_count(to);
--	if (!len)
--		return 0;
--
--	cifs_sb = CIFS_FILE_SB(file);
--	cfile = file->private_data;
--	tcon = tlink_tcon(cfile->tlink);
--
--	if (!tcon->ses->server->ops->async_readv)
--		return -ENOSYS;
--
--	if ((file->f_flags & O_ACCMODE) == O_WRONLY)
--		cifs_dbg(FYI, "attempting read on write only file instance\n");
--
--	ctx = cifs_aio_ctx_alloc();
--	if (!ctx)
--		return -ENOMEM;
--
--	ctx->pos	= offset;
--	ctx->direct_io	= direct;
--	ctx->len	= len;
--	ctx->cfile	= cifsFileInfo_get(cfile);
--	ctx->nr_pinned_pages = 0;
--
--	if (!is_sync_kiocb(iocb))
--		ctx->iocb = iocb;
--
--	if (user_backed_iter(to)) {
--		/*
--		 * Extract IOVEC/UBUF-type iterators to a BVEC-type iterator as
--		 * they contain references to the calling process's virtual
--		 * memory layout which won't be available in an async worker
--		 * thread.  This also takes a pin on every folio involved.
--		 */
--		rc = netfs_extract_user_iter(to, iov_iter_count(to),
--					     &ctx->iter, 0);
--		if (rc < 0) {
--			kref_put(&ctx->refcount, cifs_aio_ctx_release);
--			return rc;
--		}
--
--		ctx->nr_pinned_pages = rc;
--		ctx->bv = (void *)ctx->iter.bvec;
--		ctx->bv_need_unpin = iov_iter_extract_will_pin(to);
--		ctx->should_dirty = true;
--	} else if ((iov_iter_is_bvec(to) || iov_iter_is_kvec(to)) &&
--		   !is_sync_kiocb(iocb)) {
--		/*
--		 * If the op is asynchronous, we need to copy the list attached
--		 * to a BVEC/KVEC-type iterator, but we assume that the storage
--		 * will be retained by the caller; in any case, we may or may
--		 * not be able to pin the pages, so we don't try.
--		 */
--		ctx->bv = (void *)dup_iter(&ctx->iter, to, GFP_KERNEL);
--		if (!ctx->bv) {
--			kref_put(&ctx->refcount, cifs_aio_ctx_release);
--			return -ENOMEM;
--		}
--	} else {
--		/*
--		 * Otherwise, we just pass the iterator down as-is and rely on
--		 * the caller to make sure the pages referred to by the
--		 * iterator don't evaporate.
--		 */
--		ctx->iter = *to;
--	}
--
--	if (direct) {
--		rc = filemap_write_and_wait_range(file->f_inode->i_mapping,
--						  offset, offset + len - 1);
--		if (rc) {
--			kref_put(&ctx->refcount, cifs_aio_ctx_release);
--			return -EAGAIN;
--		}
--	}
--
--	/* grab a lock here due to read response handlers can access ctx */
--	mutex_lock(&ctx->aio_mutex);
--
--	rc = cifs_send_async_read(offset, len, cfile, cifs_sb, &ctx->list, ctx);
--
--	/* if at least one read request send succeeded, then reset rc */
--	if (!list_empty(&ctx->list))
--		rc = 0;
--
--	mutex_unlock(&ctx->aio_mutex);
--
--	if (rc) {
--		kref_put(&ctx->refcount, cifs_aio_ctx_release);
--		return rc;
--	}
--
--	if (!is_sync_kiocb(iocb)) {
--		kref_put(&ctx->refcount, cifs_aio_ctx_release);
--		return -EIOCBQUEUED;
--	}
--
--	rc = wait_for_completion_killable(&ctx->done);
--	if (rc) {
--		mutex_lock(&ctx->aio_mutex);
--		ctx->rc = rc = -EINTR;
--		total_read = ctx->total_len;
--		mutex_unlock(&ctx->aio_mutex);
--	} else {
--		rc = ctx->rc;
--		total_read = ctx->total_len;
--	}
--
--	kref_put(&ctx->refcount, cifs_aio_ctx_release);
--
--	if (total_read) {
--		iocb->ki_pos += total_read;
--		return total_read;
--	}
--	return rc;
--}
--
--ssize_t cifs_direct_readv(struct kiocb *iocb, struct iov_iter *to)
--{
--	return __cifs_readv(iocb, to, true);
--}
--
--ssize_t cifs_user_readv(struct kiocb *iocb, struct iov_iter *to)
--{
--	return __cifs_readv(iocb, to, false);
--
--}
--#endif // end netfslib removal 4143
--
- ssize_t cifs_loose_read_iter(struct kiocb *iocb, struct iov_iter *iter)
- {
- 	ssize_t rc;
-@@ -3790,101 +2881,6 @@ cifs_strict_readv(struct kiocb *iocb, struct iov_iter *to)
- 	return rc;
- }
- 
--#if 0 // TODO remove 4633
--static ssize_t
--cifs_read(struct file *file, char *read_data, size_t read_size, loff_t *offset)
--{
--	int rc = -EACCES;
--	unsigned int bytes_read = 0;
--	unsigned int total_read;
--	unsigned int current_read_size;
--	unsigned int rsize;
--	struct cifs_sb_info *cifs_sb;
--	struct cifs_tcon *tcon;
--	struct TCP_Server_Info *server;
--	unsigned int xid;
--	char *cur_offset;
--	struct cifsFileInfo *open_file;
--	struct cifs_io_parms io_parms = {0};
--	int buf_type = CIFS_NO_BUFFER;
--	__u32 pid;
--
--	xid = get_xid();
--	cifs_sb = CIFS_FILE_SB(file);
--
--	/* FIXME: set up handlers for larger reads and/or convert to async */
--	rsize = min_t(unsigned int, cifs_sb->ctx->rsize, CIFSMaxBufSize);
--
--	if (file->private_data == NULL) {
--		rc = -EBADF;
--		free_xid(xid);
--		return rc;
--	}
--	open_file = file->private_data;
--	tcon = tlink_tcon(open_file->tlink);
--	server = cifs_pick_channel(tcon->ses);
--
--	if (!server->ops->sync_read) {
--		free_xid(xid);
--		return -ENOSYS;
--	}
--
--	if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_RWPIDFORWARD)
--		pid = open_file->pid;
--	else
--		pid = current->tgid;
--
--	if ((file->f_flags & O_ACCMODE) == O_WRONLY)
--		cifs_dbg(FYI, "attempting read on write only file instance\n");
--
--	for (total_read = 0, cur_offset = read_data; read_size > total_read;
--	     total_read += bytes_read, cur_offset += bytes_read) {
--		do {
--			current_read_size = min_t(uint, read_size - total_read,
--						  rsize);
--			/*
--			 * For windows me and 9x we do not want to request more
--			 * than it negotiated since it will refuse the read
--			 * then.
--			 */
--			if (!(tcon->ses->capabilities &
--				tcon->ses->server->vals->cap_large_files)) {
--				current_read_size = min_t(uint,
--					current_read_size, CIFSMaxBufSize);
--			}
--			if (open_file->invalidHandle) {
--				rc = cifs_reopen_file(open_file, true);
--				if (rc != 0)
--					break;
--			}
--			io_parms.pid = pid;
--			io_parms.tcon = tcon;
--			io_parms.offset = *offset;
--			io_parms.length = current_read_size;
--			io_parms.server = server;
--			rc = server->ops->sync_read(xid, &open_file->fid, &io_parms,
--						    &bytes_read, &cur_offset,
--						    &buf_type);
--		} while (rc == -EAGAIN);
--
--		if (rc || (bytes_read == 0)) {
--			if (total_read) {
--				break;
--			} else {
--				free_xid(xid);
--				return rc;
--			}
--		} else {
--			cifs_stats_bytes_read(tcon, total_read);
--			*offset += bytes_read;
--		}
--	}
--	free_xid(xid);
--	return total_read;
--}
--#endif // end netfslib remove 4633
--
--
- static vm_fault_t cifs_page_mkwrite(struct vm_fault *vmf)
- {
- 	return netfs_page_mkwrite(vmf, NULL);
+Why to keep unused code?
+
+Thanks,
+Naveen
+
+> +	if (!(file->f_flags & O_DIRECT))
+> +		goto out;
+> +	if ((file->f_flags & (O_ACCMODE | O_APPEND)) =3D=3D O_RDONLY)
+> +		goto out;
+> +//inval:
+> +	cifs_invalidate_cache(file_inode(file), FSCACHE_INVAL_DIO_WRITE);
+>=20
+>  out:
+>  	free_dentry_path(page);
+> @@ -1218,6 +1235,7 @@ cifs_reopen_file(struct cifsFileInfo *cfile, bool
+> can_flush)
+>  	int disposition =3D FILE_OPEN;
+>  	int create_options =3D CREATE_NOT_DIR;
+>  	struct cifs_open_parms oparms;
+> +	int rdwr_for_fscache =3D 0;
+>=20
+>  	xid =3D get_xid();
+>  	mutex_lock(&cfile->fh_mutex);
+> @@ -1281,7 +1299,11 @@ cifs_reopen_file(struct cifsFileInfo *cfile, bool
+> can_flush)
+>  	}
+>  #endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
+>=20
+> -	desired_access =3D cifs_convert_flags(cfile->f_flags);
+> +	/* If we're caching, we need to be able to fill in around partial write=
+s. */
+> +	if (cifs_fscache_enabled(inode) && (cfile->f_flags & O_ACCMODE) =3D=3D
+> O_WRONLY)
+> +		rdwr_for_fscache =3D 1;
+> +
+> +	desired_access =3D cifs_convert_flags(cfile->f_flags, rdwr_for_fscache)=
+;
+>=20
+>  	/* O_SYNC also has bit for O_DSYNC so following check picks up either
+> */
+>  	if (cfile->f_flags & O_SYNC)
+> @@ -1293,6 +1315,7 @@ cifs_reopen_file(struct cifsFileInfo *cfile, bool
+> can_flush)
+>  	if (server->ops->get_lease_key)
+>  		server->ops->get_lease_key(inode, &cfile->fid);
+>=20
+> +retry_open:
+>  	oparms =3D (struct cifs_open_parms) {
+>  		.tcon =3D tcon,
+>  		.cifs_sb =3D cifs_sb,
+> @@ -1318,6 +1341,11 @@ cifs_reopen_file(struct cifsFileInfo *cfile, bool
+> can_flush)
+>  		/* indicate that we need to relock the file */
+>  		oparms.reconnect =3D true;
+>  	}
+> +	if (rc =3D=3D -EACCES && rdwr_for_fscache =3D=3D 1) {
+> +		desired_access =3D cifs_convert_flags(cfile->f_flags, 0);
+> +		rdwr_for_fscache =3D 2;
+> +		goto retry_open;
+> +	}
+>=20
+>  	if (rc) {
+>  		mutex_unlock(&cfile->fh_mutex);
+> @@ -1326,6 +1354,9 @@ cifs_reopen_file(struct cifsFileInfo *cfile, bool
+> can_flush)
+>  		goto reopen_error_exit;
+>  	}
+>=20
+> +	if (rdwr_for_fscache =3D=3D 2)
+> +		cifs_invalidate_cache(inode, FSCACHE_INVAL_DIO_WRITE);
+> +
+>  #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
+>  reopen_success:
+>  #endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */ diff --git
+> a/fs/smb/client/fscache.h b/fs/smb/client/fscache.h index
+> a3d73720914f..1f2ea9f5cc9a 100644
+> --- a/fs/smb/client/fscache.h
+> +++ b/fs/smb/client/fscache.h
+> @@ -109,6 +109,11 @@ static inline void cifs_readahead_to_fscache(struct
+> inode *inode,
+>  		__cifs_readahead_to_fscache(inode, pos, len);  }
+>=20
+> +static inline bool cifs_fscache_enabled(struct inode *inode) {
+> +	return fscache_cookie_enabled(cifs_inode_cookie(inode));
+> +}
+> +
+>  #else /* CONFIG_CIFS_FSCACHE */
+>  static inline
+>  void cifs_fscache_fill_coherency(struct inode *inode, @@ -124,6 +129,7 @=
+@
+> static inline void cifs_fscache_release_inode_cookie(struct inode *inode)=
+ {}  static
+> inline void cifs_fscache_unuse_inode_cookie(struct inode *inode, bool upd=
+ate) {}
+> static inline struct fscache_cookie *cifs_inode_cookie(struct inode *inod=
+e) { return
+> NULL; }  static inline void cifs_invalidate_cache(struct inode *inode, un=
+signed int
+> flags) {}
+> +static inline bool cifs_fscache_enabled(struct inode *inode) { return
+> +false; }
+>=20
+>  static inline int cifs_fscache_query_occupancy(struct inode *inode,
+>  					       pgoff_t first, unsigned int nr_pages,
+>=20
 
