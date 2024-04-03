@@ -1,57 +1,92 @@
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D85E5C61A;
-	Wed,  3 Apr 2024 08:59:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA6F11384B0
+	for <netfs@lists.linux.dev>; Wed,  3 Apr 2024 10:11:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712134766; cv=none; b=V5eFHRFbbVzFKz0znA4W6E5ruWLwkNr75DUxf6/vOGaKCkDFxXNwojdaQsSIptfbCVhh8gU2ukpnyN+ZIBht+thcb03By82z3awF4L61ATQhnvn8GRUPemU8t6t4dfqE1KNmV2evD3tLDAZ1JC0+j7ZozV+BMPgnJC8kcwkws6U=
+	t=1712139083; cv=none; b=L7wbZPRMFMvd/9HH4YxdkLoK4yqkiqieZ2Cu5WeXG3Kym7z+dVDLW0ZpMqQb9QhUgBbeSsahDLIZQcNAxX4VisB6Rd8ClVmSrqaNrD37LTzXukgYSLeAYKXmvLEev0poXwanUpYqj8VkoPbCIcuBwoGC3YLONM+kWPn5HZWp1Pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712134766; c=relaxed/simple;
-	bh=Y8rTUim6wOz7dPyp+qzNx4sbsi7VJTk/kH/pv5IxOOY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d4PnKbdodhuN049J6SmRsAhIWj0XaaqaPs7Q/Ks1fZ25UN00AaAYdTsZURrlefNLTqvdQbt5cckoVRmqjXjDdDk7qRHXYtXBkFO7bIVH80WXhWZaMpOkJ2JvWhifqVx7AMtIUweIMgY2jKsItwpgThx8HIA1pJzwZ5702eqXA2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 5FBB968BFE; Wed,  3 Apr 2024 10:59:18 +0200 (CEST)
-Date: Wed, 3 Apr 2024 10:59:18 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <christian@brauner.io>,
-	Jeff Layton <jlayton@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Steve French <smfrench@gmail.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
-	linux-cachefs@redhat.com, linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
-	linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Christoph Hellwig <hch@lst.de>
+	s=arc-20240116; t=1712139083; c=relaxed/simple;
+	bh=q5PvWHwoWD/1a3RxU9EydL5cEmke/jqCAXYn/kIe5KA=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=Zx6VfDFb7AyztAJVO4h87mqh55SMOitsVvPOztUasn3hJ1uPU/4k/dbNaJwBhWouMH893ph0UvJxZwPa9Z3FADFE32IH/JZ5FgyBK0d82NjzGwMuNIN9fWMhZMyn0GQC/0ZVyP8AwPnLA+DbuQSFRl7OYhS35bpKXubgKhdaVmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZqP6a6tr; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZqP6a6tr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1712139080;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=q10XbPWbwPAYz3tVe+780L2sWGchjiaH8ntssWQEh20=;
+	b=ZqP6a6tr97kNzsnrISqIEGslcAP2TW8GKbRtufE48BS0UMGNza574okvmp+FYgUwVJDae3
+	XRxxCirf0EDfasW0Q8ih99I6zoXfbyCknA6HqhW4wqd/7gsL75x1gDw9m19jJoDVefEXFF
+	gOuC4bx4SIyBVJKM6dbwUiNo+NjMsAc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-377-n6tZ6td_NZGxPdmOiGxErA-1; Wed, 03 Apr 2024 06:11:13 -0400
+X-MC-Unique: n6tZ6td_NZGxPdmOiGxErA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AD06C185A784;
+	Wed,  3 Apr 2024 10:11:11 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.146])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 51AC140C6CB3;
+	Wed,  3 Apr 2024 10:11:08 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20240403085918.GA1178@lst.de>
+References: <20240403085918.GA1178@lst.de> <20240328163424.2781320-1-dhowells@redhat.com> <20240328163424.2781320-16-dhowells@redhat.com>
+To: Christoph Hellwig <hch@lst.de>
+Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
+    Jeff Layton <jlayton@kernel.org>,
+    Gao Xiang <hsiangkao@linux.alibaba.com>,
+    Dominique Martinet <asmadeus@codewreck.org>,
+    Matthew Wilcox <willy@infradead.org>,
+    Steve French <smfrench@gmail.com>,
+    Marc Dionne <marc.dionne@auristor.com>,
+    Paulo Alcantara <pc@manguebit.com>,
+    Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+    Eric Van Hensbergen <ericvh@kernel.org>,
+    Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
+    linux-cachefs@redhat.com, linux-afs@lists.infradead.org,
+    linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
+    ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
+    linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
+    linux-mm@kvack.org, netdev@vger.kernel.org,
+    linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 15/26] mm: Export writeback_iter()
-Message-ID: <20240403085918.GA1178@lst.de>
-References: <20240328163424.2781320-1-dhowells@redhat.com> <20240328163424.2781320-16-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240328163424.2781320-16-dhowells@redhat.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <3235933.1712139047.1@warthog.procyon.org.uk>
+Date: Wed, 03 Apr 2024 11:10:47 +0100
+Message-ID: <3235934.1712139047@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
 
-On Thu, Mar 28, 2024 at 04:34:07PM +0000, David Howells wrote:
-> Export writeback_iter() so that it can be used by netfslib as a module.
+Christoph Hellwig <hch@lst.de> wrote:
 
-EXPORT_SYMBOL_GPL, please.
+> On Thu, Mar 28, 2024 at 04:34:07PM +0000, David Howells wrote:
+> > Export writeback_iter() so that it can be used by netfslib as a module.
+> 
+> EXPORT_SYMBOL_GPL, please.
+
+That depends.  You put a comment on write_cache_pages() saying that people
+should use writeback_iter() instead.  w_c_p() is not marked GPL.  Is it your
+intention to get rid of it?
+
+David
 
