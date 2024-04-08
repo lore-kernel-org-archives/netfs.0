@@ -1,132 +1,149 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F20A487BF
-	for <netfs@lists.linux.dev>; Mon,  8 Apr 2024 08:10:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A5564CF2;
+	Mon,  8 Apr 2024 13:03:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712563812; cv=none; b=mpiRuYZX2uKtPTXB9kKkES4EM5e+QMuW5FjgxffOqjztvwU862qdY3/rVQuzk6q2OFz+C+EVraIV/B7+7S7Pack1UWZsIZYQtfo1NoknGSvvngS4hV0/1Tz0UuABfxUpVXgKBCgs5Mk30+ZWuW6VDpw4yJqimykP6ILClb/KMts=
+	t=1712581437; cv=none; b=FJU1eIUF9183cmgDNKPVNWIlJGT3+Zwd9b4v+z6G/REXl3cT0zLopkzOzH/y2ubCOmIEQPO9cEbsKbJxOfx3NAMWJM/s7akSePdfy++DUVa4mm+26F2aDuRrBm+ZkVQeP0o2W6IOvXJfhKTtMy/dkaykHL0slAfVWpiw3YQbIrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712563812; c=relaxed/simple;
-	bh=zXiKh5YgqlUxpR6CzKT5LAt+pceSuhonqTRSJ9s3Qe0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=P7LI7DKZJVFfCwyqJkCo/hWeyrsON4YF7rkEzQNwJgGxibeOHmY2nM+RKUONNEAydS/0HvNdcHYfRJORkfseGiux5/XMP3hMiiPIQxbQTtDP7wxJ2yoOmUvjynMZ4QP4D8HSXYy62hwRJuD5FVGc6mJBzmqZThjUOASHBRQ4eoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mEx2WDet; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1712581437; c=relaxed/simple;
+	bh=Nx84nNful3EhSCX9GDP3HZbAXgF2FzEiBKfHlDAeiw4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=J+kwZYvBA0e/WeiPWdrCtqiIdsXl5lW3NXwwJZNw35pY3kmiNxwu2zxRHPJVPQLgjWMM9IyiabmCd7rbo1UBV73hlk7zFkInw2E8xUVWnAkpjY9ohy1TlGC3Tprv4e1SNjOBGbNPvD2d6r8iTJBuo/hCKSww0lH8yvYLokWQ1kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+KT8TTL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mEx2WDet"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-56829f41f81so5855707a12.2
-        for <netfs@lists.linux.dev>; Mon, 08 Apr 2024 01:10:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712563809; x=1713168609; darn=lists.linux.dev;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/jyCV40Jnj0ra4h5fmgg7SMMlhSo9ReCJm95L9ABZkU=;
-        b=mEx2WDetlFttJCsupLzhPMQp7Tl9KArjAXEMASA31rHzT/eCywLxaba+tWLveuNx8F
-         1Df3B3rDMyvAc9ztEcIU0e6mOQs319T8fbpDfWULFKGHVSBOMpVOY5A6wnsvi7/WToK/
-         hi/OWsFDeScd/oN/FLTcM6uq/+dQZbA3FSg3YG8IIH6g2FR+IwAWCaag9S9d0Prg1Qd1
-         0V4OryQsm5+uJdkxE3LlZa3TvmauRc9ig6Eh9jWqVP5VyzH6hqUfwtsd21E3RBzi+XoB
-         /DArW9ZBlnMY/e/VabWChs0CE4rM/qVvbaftLEXOkP8SmM7fOY2TdV37Acci5Ux2PoXr
-         O/wQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712563809; x=1713168609;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/jyCV40Jnj0ra4h5fmgg7SMMlhSo9ReCJm95L9ABZkU=;
-        b=sM45iqrxUNwmpZnufkYOk7r8SJLZa9c2f8htQGRm2GPFAnfIc2IWe0CRN733zTs/OA
-         XykOXvxLOe731G5vOEhZ3K8YZy1WyXvS32XWv5cPNAz8nVptU3zRTTGtzuVv12Jnz0Cr
-         NT8mVOwcdto2E+pZxgvtPFpo8RreOkjofHEAZPYQnrvnJ3zNinOUF7ev0mQjVAdE6Eup
-         98RHuMhP4WjHY0wgYJ/fxmgxUt8VnWThLHq1FSj4CaiyWmrObd0zjDOAAeR1jEmbI/YK
-         Ee7LSASY52K0G9XWSV1IR9jpnohrCoJ1/TOUpGFy78fbGkJa7IbXGh1W3nDJnNO70/wT
-         tX5Q==
-X-Gm-Message-State: AOJu0YwLa+bTtrDcmuepgomrrfzud5dGhSx917P56eZfve6uWihycPJv
-	ZmMA++MN74UmOLYXTfgnEJ+WmiFJKmsYMsojgR/O68D41GF1f08cMUfNPBsE9uc=
-X-Google-Smtp-Source: AGHT+IHPFgS+a6gYAF8FmFXqOMauqttCC7r6u5F7q5xAS+xd3Y1nsxqSTJN19ArBz85Ql86LosbJ3g==
-X-Received: by 2002:a50:875e:0:b0:56e:f64:aaf6 with SMTP id 30-20020a50875e000000b0056e0f64aaf6mr5104774edv.5.1712563808763;
-        Mon, 08 Apr 2024 01:10:08 -0700 (PDT)
-Received: from localhost ([102.222.70.76])
-        by smtp.gmail.com with ESMTPSA id n20-20020a05640206d400b0056e6a39cfb0sm96934edy.3.2024.04.08.01.10.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Apr 2024 01:10:08 -0700 (PDT)
-Date: Mon, 8 Apr 2024 10:21:05 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: dhowells@redhat.com
-Cc: netfs@lists.linux.dev
-Subject: [bug report] netfs: New writeback implementation
-Message-ID: <f61c6d0f-17ab-4182-b7fd-512c7de2047b@moroto.mountain>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+KT8TTL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A10DFC433C7;
+	Mon,  8 Apr 2024 13:03:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1712581437;
+	bh=Nx84nNful3EhSCX9GDP3HZbAXgF2FzEiBKfHlDAeiw4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=T+KT8TTLx84PkHk8YMW5QmyJFiQm6emyaGbV+Pl+nyLjK9pDCjkp2KsFng2UdHs3x
+	 uD9TznLOaPcjzgwD0fNO7Y624EIzCwiZDCUVMv4Q6J+sAxMxp9ZQUnVdAu/C375Ybb
+	 DXcAqzE0hrQzsWAwdYir8EznKR5K7IoOEBC9IJEA=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	David Howells <dhowells@redhat.com>,
+	Shyam Prasad N <nspmangalore@gmail.com>,
+	Rohith Surabattula <rohiths.msft@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 019/138] cifs: Fix duplicate fscache cookie warnings
+Date: Mon,  8 Apr 2024 14:57:13 +0200
+Message-ID: <20240408125256.827989943@linuxfoundation.org>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240408125256.218368873@linuxfoundation.org>
+References: <20240408125256.218368873@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-Hello David Howells,
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
-Commit 34e1ec492187 ("netfs: New writeback implementation") from Mar
-18, 2024 (linux-next), leads to the following Smatch static checker
-warning:
+------------------
 
-	fs/netfs/write_collect.c:55 netfs_folio_written_back()
-	warn: duplicate check 'group == (854)' (previous on line 53)
+From: David Howells <dhowells@redhat.com>
 
-fs/netfs/write_collect.c
-    33 int netfs_folio_written_back(struct folio *folio)
-    34 {
-    35         enum netfs_folio_trace why = netfs_folio_trace_clear;
-    36         struct netfs_folio *finfo;
-    37         struct netfs_group *group = NULL;
-    38         int gcount = 0;
-    39 
-    40         if ((finfo = netfs_folio_info(folio))) {
-    41                 /* Streaming writes cannot be redirtied whilst under writeback,
-    42                  * so discard the streaming record.
-    43                  */
-    44                 folio_detach_private(folio);
-    45                 group = finfo->netfs_group;
-    46                 gcount++;
-    47                 kfree(finfo);
-    48                 why = netfs_folio_trace_clear_s;
-    49                 goto end_wb;
-    50         }
-    51 
-    52         if ((group = netfs_folio_group(folio))) {
-    53                 if (group == NETFS_FOLIO_COPY_TO_CACHE) {
-                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[ Upstream commit 8876a37277cb832e1861c35f8c661825179f73f5 ]
 
-    54                         why = netfs_folio_trace_clear_cc;
---> 55                         if (group == NETFS_FOLIO_COPY_TO_CACHE)
-                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Duplicate check.  (This is an unpublished (too crappy) smatch check).
+fscache emits a lot of duplicate cookie warnings with cifs because the
+index key for the fscache cookies does not include everything that the
+cifs_find_inode() function does.  The latter is used with iget5_locked() to
+distinguish between inodes in the local inode cache.
 
-    56                                 folio_detach_private(folio);
-    57                         else
-    58                                 why = netfs_folio_trace_redirtied;
-    59                         goto end_wb;
-    60                 }
-    61 
-    62                 /* Need to detach the group pointer if the page didn't get
-    63                  * redirtied.  If it has been redirtied, then it must be within
-    64                  * the same group.
-    65                  */
-    66                 why = netfs_folio_trace_redirtied;
-    67                 if (!folio_test_dirty(folio)) {
-    68                         if (!folio_test_dirty(folio)) {
-    69                                 folio_detach_private(folio);
-    70                                 gcount++;
-    71                                 why = netfs_folio_trace_clear_g;
-    72                         }
-    73                 }
-    74         }
-    75 
-    76 end_wb:
-    77         trace_netfs_folio(folio, why);
-    78         folio_end_writeback(folio);
-    79         return gcount;
-    80 }
+Fix this by adding the creation time and file type to the fscache cookie
+key.
 
-regards,
-dan carpenter
+Additionally, add a couple of comments to note that if one is changed the
+other must be also.
+
+Signed-off-by: David Howells <dhowells@redhat.com>
+Fixes: 70431bfd825d ("cifs: Support fscache indexing rewrite")
+cc: Shyam Prasad N <nspmangalore@gmail.com>
+cc: Rohith Surabattula <rohiths.msft@gmail.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/smb/client/fscache.c | 16 +++++++++++++++-
+ fs/smb/client/inode.c   |  2 ++
+ 2 files changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/fs/smb/client/fscache.c b/fs/smb/client/fscache.c
+index f64bad513ba6d..6df4ab2a6e5dc 100644
+--- a/fs/smb/client/fscache.c
++++ b/fs/smb/client/fscache.c
+@@ -12,6 +12,16 @@
+ #include "cifs_fs_sb.h"
+ #include "cifsproto.h"
+ 
++/*
++ * Key for fscache inode.  [!] Contents must match comparisons in cifs_find_inode().
++ */
++struct cifs_fscache_inode_key {
++
++	__le64  uniqueid;	/* server inode number */
++	__le64  createtime;	/* creation time on server */
++	u8	type;		/* S_IFMT file type */
++} __packed;
++
+ static void cifs_fscache_fill_volume_coherency(
+ 	struct cifs_tcon *tcon,
+ 	struct cifs_fscache_volume_coherency_data *cd)
+@@ -97,15 +107,19 @@ void cifs_fscache_release_super_cookie(struct cifs_tcon *tcon)
+ void cifs_fscache_get_inode_cookie(struct inode *inode)
+ {
+ 	struct cifs_fscache_inode_coherency_data cd;
++	struct cifs_fscache_inode_key key;
+ 	struct cifsInodeInfo *cifsi = CIFS_I(inode);
+ 	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
+ 	struct cifs_tcon *tcon = cifs_sb_master_tcon(cifs_sb);
+ 
++	key.uniqueid	= cpu_to_le64(cifsi->uniqueid);
++	key.createtime	= cpu_to_le64(cifsi->createtime);
++	key.type	= (inode->i_mode & S_IFMT) >> 12;
+ 	cifs_fscache_fill_coherency(&cifsi->netfs.inode, &cd);
+ 
+ 	cifsi->netfs.cache =
+ 		fscache_acquire_cookie(tcon->fscache, 0,
+-				       &cifsi->uniqueid, sizeof(cifsi->uniqueid),
++				       &key, sizeof(key),
+ 				       &cd, sizeof(cd),
+ 				       i_size_read(&cifsi->netfs.inode));
+ 	if (cifsi->netfs.cache)
+diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
+index 5343898bac8a6..634f28f0d331e 100644
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -1274,6 +1274,8 @@ cifs_find_inode(struct inode *inode, void *opaque)
+ {
+ 	struct cifs_fattr *fattr = opaque;
+ 
++	/* [!] The compared values must be the same in struct cifs_fscache_inode_key. */
++
+ 	/* don't match inode with different uniqueid */
+ 	if (CIFS_I(inode)->uniqueid != fattr->cf_uniqueid)
+ 		return 0;
+-- 
+2.43.0
+
+
+
