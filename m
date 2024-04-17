@@ -1,86 +1,78 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6CC13C8EE;
-	Wed, 17 Apr 2024 11:27:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F7E13D26B
+	for <netfs@lists.linux.dev>; Wed, 17 Apr 2024 12:18:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713353231; cv=none; b=AGrbDgn4oH1pW4ekQfj3uBPDDzBhcL/GMr6XPrN+7Q2KMVfG5LehYtohN0WXK0FqifwR0uIMNvnIqdZU4A0+GZcLqmBTqMuE21bLTwskQ0pn5GjM2itlg/BLuhfz8spjIJnQCY3Yn+QgNbzSar8qU4k+f7CgcXcVpdOntgSeYrY=
+	t=1713356334; cv=none; b=beK4ao+KPYakDh1uUzGPDaJcFvBpOriUROK6JkIE770oXzjuOrXk6twAbOzZmuhQhfBOvVpDbyZP10Vbp6LrBXsp85FpxXlfmdHDh3b07jX+wUFnyuTfl/HEdKEeKvgB5Mo4D7EliiYkmh8JUhVxhzQiidyPAPyCzXJKY96l36I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713353231; c=relaxed/simple;
-	bh=z8FhVtgetX6LUdFuYuwud6VwQ1GU1TH7FJteCQo1HBY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LrkJvss+Wa6t06zvBnRgGycFogVuSgbomWni8FDPvNHs/tKZ77ZV+PiAzn/Jd48tvxKAmvO3nNalCgZsI+eHjv/xftkBggDrP96JbbHErXcvjzk3MITUN5dku2DhI4PDbQi0aNvyx74Lifc2eFgbT3VR62yj4JnBA9fL8KJy4Y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OdGvaeIP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1713356334; c=relaxed/simple;
+	bh=e5g+9Z9HtsHEKxe2LaOAecd54UvAXCkGQ96msWQj9N4=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=ocCyXH+YorEGRbBlAEbny2Lz7I7bYIbtHrlDcEXjSARG98Ni16WQ8xgYWrEOaMvmF19X58XQ6TcFUv0QuwtI63ZtGmIXl0ln7NGkR15+QkNSVwVJPoQIO79UNktMa200w7yC9BzcOJ42oekMo966T14Asya/JxGcKVaLp3p/Boo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QgqI3Um5; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OdGvaeIP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF582C072AA;
-	Wed, 17 Apr 2024 11:27:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713353231;
-	bh=z8FhVtgetX6LUdFuYuwud6VwQ1GU1TH7FJteCQo1HBY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OdGvaeIPo+rdvJuwCI/5ibLrCzCKrqHk/PUjNtwX3H7VRIKV72/AGcHywfiKAXbrq
-	 PCs3rlias7N0Qv+ltsfCgCvyqnvLHQifekEx3gvysBlc1Loi540AkvHCsABnJhRtax
-	 VdnRPK5Ww3/8Alj/EQn1bF3fDaKLIHkf4xSNB2smo8cluF+jeCskZkZqDnlPQ71F3s
-	 Z4I9DfICZiNSspeCbO1rXIta5/2E6z0k/KkGXpV5IjeoSGdH+AfKE2h8O0pYpf5+KZ
-	 yPHBwtLMoQmNoqDfZD8pqDF6c0Gg3oo63FmPqxqawxvttRk5tA27p9pWubtmXItbRZ
-	 fCcFASMUtTdWw==
-From: Christian Brauner <brauner@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	v9fs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] netfs: Fix writethrough-mode error handling
-Date: Wed, 17 Apr 2024 13:26:51 +0200
-Message-ID: <20240417-filmabend-matten-50d0cba545f5@brauner>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <6736.1713343639@warthog.procyon.org.uk>
-References: <6736.1713343639@warthog.procyon.org.uk>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QgqI3Um5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1713356331;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=e5g+9Z9HtsHEKxe2LaOAecd54UvAXCkGQ96msWQj9N4=;
+	b=QgqI3Um5wFUQbWZ+Z2cLWKMw12i78KoKdWYJQDUeZKFACDjCc4YRhtKEkswKqZU6ylx51B
+	ExL8Ia/PQHfKFaRMMxMgUueT4qu16DVOHxpRPyf0OibxqV9QEOsSimFWbhjqBcz8n1pIsx
+	/ilztGPeAjaDmoTaqcaR81l7SkonSAY=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-577-HZb4tYkCOiuraGxVwvC9Yw-1; Wed,
+ 17 Apr 2024 08:18:48 -0400
+X-MC-Unique: HZb4tYkCOiuraGxVwvC9Yw-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D17DE3C0253F;
+	Wed, 17 Apr 2024 12:18:47 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.200])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 762A6112132A;
+	Wed, 17 Apr 2024 12:18:46 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <202404161031.468b84f-oliver.sang@intel.com>
+References: <202404161031.468b84f-oliver.sang@intel.com>
+To: kernel test robot <oliver.sang@intel.com>
+Cc: dhowells@redhat.com, oe-lkp@lists.linux.dev, lkp@intel.com,
+    Steve French <sfrench@samba.org>,
+    Shyam Prasad N <nspmangalore@gmail.com>,
+    "Rohith
+ Surabattula" <rohiths.msft@gmail.com>,
+    Jeff Layton <jlayton@kernel.org>, netfs@lists.linux.dev,
+    linux-fsdevel@vger.kernel.org, linux-cifs@vger.kernel.org,
+    samba-technical@lists.samba.org
+Subject: Re: [dhowells-fs:cifs-netfs] [cifs] b4834f12a4: WARNING:at_fs/netfs/write_collect.c:#netfs_writeback_lookup_folio
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1079; i=brauner@kernel.org; h=from:subject:message-id; bh=z8FhVtgetX6LUdFuYuwud6VwQ1GU1TH7FJteCQo1HBY=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaTJb/y38f3Nj+ytmktdNJX35xzYeHLFLj62taGfHqWFc cWdK2X26ChlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjIZD1GhrO7umZK1fRuTcre Gnf7sN++9HVBSTU28vlsM33lDx1NK2f4w2tsOXNLqn/d5k8n766TifzjeCtQQSS8xcbPrY+r7/Z WTgA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <164953.1713356321.1@warthog.procyon.org.uk>
+Date: Wed, 17 Apr 2024 13:18:41 +0100
+Message-ID: <164954.1713356321@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 
-On Wed, 17 Apr 2024 09:47:19 +0100, David Howells wrote:
-> Fix the error return in netfs_perform_write() acting in writethrough-mode
-> to return any cached error in the case that netfs_end_writethrough()
-> returns 0.
-> 
-> This can affect the use of O_SYNC/O_DSYNC/RWF_SYNC/RWF_DSYNC in 9p and afs.
-> 
-> 
-> [...]
+When I try and do "sudo bin/lkp install job.yaml", I get an error because
+Fedora 39 doesn't have a libarchive-tools package.
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
+Also, I can't find a "filemicro_seqwriterandvargam.f" script, presumably
+because it would get patched into existence by the failing install step above.
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+David
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
-
-[1/1] netfs: Fix writethrough-mode error handling
-      https://git.kernel.org/vfs/vfs/c/c70fd201bd29
