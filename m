@@ -1,54 +1,53 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C7480C04
-	for <netfs@lists.linux.dev>; Wed, 17 Apr 2024 09:03:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9321012C80B
+	for <netfs@lists.linux.dev>; Wed, 17 Apr 2024 09:04:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713344586; cv=none; b=u8Np7wpeYb0JSKBYF1+cyDYmYemiVnV3lydQfYzVHq4BbI1F+I2bWsA7Cy0VUoIEIqYs8uzW3n+2BAWdxdjrBsIJvQpcrQWtnJCCtImIyAdL1QH+sGWLjbyqjiqx3NmBbKMjXe3fAUL751qvPFJXXde37w/R0pne/3arpYhm8ec=
+	t=1713344692; cv=none; b=HWaZIN7WOaEvJghLf/sg5+TjqQabsNxeX+og1o78t7QtZb67+6314O2O0XDKG8KFNRLR4uo7HOp9gSJP4OleCAcX6xJTBbSEoaRPn03IgNHxcCrlOtYbz0oc1+LzT1yX/3XhgqHUDQWBbrf9Cr8LhIwu1GM2CVW+yqXdTzPsffQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713344586; c=relaxed/simple;
-	bh=R4xZIyD420GCJPk7IwQrpmZ24e54I/xuenwhI6qQfh8=;
+	s=arc-20240116; t=1713344692; c=relaxed/simple;
+	bh=qPI0pCxxPzUoBEsI0BzOZn8buvMBR2S+RPSF+No4b5c=;
 	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=F+kdEqLAh7FwhXpCs+TA+cKABljAOsq+4tble2tkCzLYjFmOJ3LiCV9givGO4p23cL93Yx3lQZSZSkYpEdkXX4dhdMFC3O9zDy+hztWo14DDgyp5WHSEu22MJXo7j6SUKOR+iWFvREHh4aIqCvxA2wgilO5tlnzg+lbq4R3uxMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RnaClXaV; arc=none smtp.client-ip=170.10.129.124
+	 Content-Type:Date:Message-ID; b=RDrchOJ6F7M72UVP1FKGsX3VjUNrHVQFI0EJwmSwR1xxFRVkqgreKJAcwbu2F+4iSJvyyT8D87vNCw4NU5CDgomVqmCFzQTT5xwekL1DAWu8pITE6S2SUjLMQSh8pk4Icc43IgCmiRrg8J/ymPI2po5PTy/tz5iMSWXIy6gqzCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ma/1MAkK; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RnaClXaV"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ma/1MAkK"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1713344584;
+	s=mimecast20190719; t=1713344690;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+cqHolZFVcFPpeLBdV05ZqicpNbJqZRKW17Kvjt/Abs=;
-	b=RnaClXaVGrfX09bDkufjzSAK9KMoLmEnNPlRGuc1UbfE7ECBKZ7GlzdR6B3zLltZh4GvXE
-	8e9ID4CPFzc70tnjLNlVKYtZFJ6WXbaWACGLYsnh8Lhnt5UqlK4VOgsHgQ/eqv1g24IOyD
-	vnRVA9/BxUNxHui8eerytftKtOF4sQM=
+	bh=l0o9cqWvopzRGIbQrWEpYy4RFrMHbVHwEFIkzoBARCg=;
+	b=Ma/1MAkKX1oqlz0AiByVYvBf/isWjn9ydU1rIGqNpMbc5MtbuFPAI/85gZKH502FIxEkSd
+	BPKKzkpU+14vorjPk9uozg4H36FhBYCJ5TRtnK7Bc/qYHn0Xhx8Ugoljk1Az2RnJzkebHA
+	KeedE3nuFRqGLCp4Jhxwsnk2/ZmhfPw=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-455-UAKkPT0cNTu8x3FwjUWu1g-1; Wed, 17 Apr 2024 05:03:00 -0400
-X-MC-Unique: UAKkPT0cNTu8x3FwjUWu1g-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+ us-mta-140-NWduv8-0ObmjjPW5VGH_hQ-1; Wed, 17 Apr 2024 05:04:44 -0400
+X-MC-Unique: NWduv8-0ObmjjPW5VGH_hQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D56BA10499A0;
-	Wed, 17 Apr 2024 09:02:58 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9A15C806528;
+	Wed, 17 Apr 2024 09:04:43 +0000 (UTC)
 Received: from warthog.procyon.org.uk (unknown [10.42.28.200])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 6F32BC13FA2;
-	Wed, 17 Apr 2024 09:02:53 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 24BDC490DD;
+	Wed, 17 Apr 2024 09:04:40 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
 	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
 	Kingdom.
 	Registered in England and Wales under Company Registration No. 3798903
 From: David Howells <dhowells@redhat.com>
-In-Reply-To: <3570373a3db66151033a3667cb8c28bbf8bc505b.camel@kernel.org>
-References: <3570373a3db66151033a3667cb8c28bbf8bc505b.camel@kernel.org> <20240328163424.2781320-1-dhowells@redhat.com> <20240328163424.2781320-10-dhowells@redhat.com>
+In-Reply-To: <f555b324b79829d6fc63da0d05995ce337969f65.camel@kernel.org>
+References: <f555b324b79829d6fc63da0d05995ce337969f65.camel@kernel.org> <20240328163424.2781320-1-dhowells@redhat.com> <20240328163424.2781320-18-dhowells@redhat.com>
 To: Jeff Layton <jlayton@kernel.org>
-Cc: David Howells <dhowells@redhat.com>,
-    Christian Brauner <christian@brauner.io>,
+Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
     Gao Xiang <hsiangkao@linux.alibaba.com>,
     Dominique Martinet <asmadeus@codewreck.org>,
     Matthew Wilcox <willy@infradead.org>,
@@ -63,13 +62,8 @@ Cc: David Howells <dhowells@redhat.com>,
     ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
     linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
     linux-mm@kvack.org, netdev@vger.kernel.org,
-    linux-kernel@vger.kernel.org, Miklos Szeredi <miklos@szeredi.hu>,
-    Trond Myklebust <trond.myklebust@hammerspace.com>,
-    Christoph Hellwig <hch@lst.de>,
-    Andrew Morton <akpm@linux-foundation.org>,
-    Alexander Viro <viro@zeniv.linux.org.uk>,
-    Christian Brauner <brauner@kernel.org>, devel@lists.orangefs.org
-Subject: Re: [PATCH 09/26] mm: Provide a means of invalidation without using launder_folio
+    linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 17/26] netfs: Fix writethrough-mode error handling
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -77,22 +71,18 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <28262.1713344568.1@warthog.procyon.org.uk>
-Date: Wed, 17 Apr 2024 10:02:48 +0100
-Message-ID: <28263.1713344568@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Content-ID: <28313.1713344659.1@warthog.procyon.org.uk>
+Date: Wed, 17 Apr 2024 10:04:19 +0100
+Message-ID: <28314.1713344659@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
 
 Jeff Layton <jlayton@kernel.org> wrote:
 
-> I'd have liked to have seen the first caller of this function too.
+> Should this be merged independently? It looks like a bug that's present
+> now.
 
-Looking again at my code, I also need to make netfs_unbuffered_write_iter()
-use this function too.  I missed it before because that wasn't calling
-invalidate_inode_pages2_range() directly, but rather going through
-kiocb_invalidate_pages().
-
-So I'll add those changes into this patch to give you a first caller.  I also
-then need to make filemap_invalidate_inode() take a byte range.
+Yes.  I've just posted that as a separate fix for Christian to pick up.  I
+still need to keep it in this set, though, until it is upstream.
 
 David
 
