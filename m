@@ -1,51 +1,51 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9321012C80B
-	for <netfs@lists.linux.dev>; Wed, 17 Apr 2024 09:04:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94AAB13C80D
+	for <netfs@lists.linux.dev>; Wed, 17 Apr 2024 10:36:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713344692; cv=none; b=HWaZIN7WOaEvJghLf/sg5+TjqQabsNxeX+og1o78t7QtZb67+6314O2O0XDKG8KFNRLR4uo7HOp9gSJP4OleCAcX6xJTBbSEoaRPn03IgNHxcCrlOtYbz0oc1+LzT1yX/3XhgqHUDQWBbrf9Cr8LhIwu1GM2CVW+yqXdTzPsffQ=
+	t=1713350193; cv=none; b=KHqV6bSuC8VoNmALTM9KWHBiFmHI0jOjnuBUjL6PrdielksP50OrMBQpBbWuYUNyn8dNpd6j5meziAFg02K0xTlag369v3heI+4viOpxdadzAS99pscOTSkZo862Y/l2tpcrymO7EMK7+bXRJYN72bRWdKCGLlsXnxZceBqdYhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713344692; c=relaxed/simple;
-	bh=qPI0pCxxPzUoBEsI0BzOZn8buvMBR2S+RPSF+No4b5c=;
+	s=arc-20240116; t=1713350193; c=relaxed/simple;
+	bh=l3AYSJ/+mdg3v48SneVucrIzOcn2/tdaJ1WQ9uXh3tk=;
 	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=RDrchOJ6F7M72UVP1FKGsX3VjUNrHVQFI0EJwmSwR1xxFRVkqgreKJAcwbu2F+4iSJvyyT8D87vNCw4NU5CDgomVqmCFzQTT5xwekL1DAWu8pITE6S2SUjLMQSh8pk4Icc43IgCmiRrg8J/ymPI2po5PTy/tz5iMSWXIy6gqzCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ma/1MAkK; arc=none smtp.client-ip=170.10.133.124
+	 Content-Type:Date:Message-ID; b=ULg2/QxoDXmvUphf70LMV8MkKLbYiL60IanR3Nnhjxh1Ab1kThH3tIhRcs7oaTYovsmEi/bepwv5m3X6Wwp6inLTr8FvClwR++KwQWjaCe2iQeYPswRF2MIxraagkhjXeUukbAtrDiUDe7b2qqi+q3KxFNzLl0FuB6Nz2n0ggZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UL0lg2KW; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ma/1MAkK"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UL0lg2KW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1713344690;
+	s=mimecast20190719; t=1713350190;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=l0o9cqWvopzRGIbQrWEpYy4RFrMHbVHwEFIkzoBARCg=;
-	b=Ma/1MAkKX1oqlz0AiByVYvBf/isWjn9ydU1rIGqNpMbc5MtbuFPAI/85gZKH502FIxEkSd
-	BPKKzkpU+14vorjPk9uozg4H36FhBYCJ5TRtnK7Bc/qYHn0Xhx8Ugoljk1Az2RnJzkebHA
-	KeedE3nuFRqGLCp4Jhxwsnk2/ZmhfPw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-140-NWduv8-0ObmjjPW5VGH_hQ-1; Wed, 17 Apr 2024 05:04:44 -0400
-X-MC-Unique: NWduv8-0ObmjjPW5VGH_hQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
+	bh=oIJdAoOJD1/uhXCiQOPpdfvotOmhyFiedfiW/yeHsWQ=;
+	b=UL0lg2KWK3+VKr1Pn7gY8XtWvNI4WaFAgfYPneyGzeCEZIWa0LcGVSm9cHgkr5uB1xzraN
+	FNAAqe26cAfZSquzhOPnUaDOXr/n2HvoSVu+GxmzbZt+HRDd//P1sie6rZoocg/lodb2uB
+	f9/l75O0eWU30S6KtmSZnLyak2o/APE=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-361-tzkEwGWLMWac2hfcSazMmA-1; Wed,
+ 17 Apr 2024 06:36:24 -0400
+X-MC-Unique: tzkEwGWLMWac2hfcSazMmA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9A15C806528;
-	Wed, 17 Apr 2024 09:04:43 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 65AB738041CC;
+	Wed, 17 Apr 2024 10:36:23 +0000 (UTC)
 Received: from warthog.procyon.org.uk (unknown [10.42.28.200])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 24BDC490DD;
-	Wed, 17 Apr 2024 09:04:40 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 2FDF82026962;
+	Wed, 17 Apr 2024 10:36:20 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
 	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
 	Kingdom.
 	Registered in England and Wales under Company Registration No. 3798903
 From: David Howells <dhowells@redhat.com>
-In-Reply-To: <f555b324b79829d6fc63da0d05995ce337969f65.camel@kernel.org>
-References: <f555b324b79829d6fc63da0d05995ce337969f65.camel@kernel.org> <20240328163424.2781320-1-dhowells@redhat.com> <20240328163424.2781320-18-dhowells@redhat.com>
+In-Reply-To: <87d451ff8cd030a380b522b4dfc56ca42c9de444.camel@kernel.org>
+References: <87d451ff8cd030a380b522b4dfc56ca42c9de444.camel@kernel.org> <20240328163424.2781320-1-dhowells@redhat.com> <20240328163424.2781320-25-dhowells@redhat.com>
 To: Jeff Layton <jlayton@kernel.org>
 Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
     Gao Xiang <hsiangkao@linux.alibaba.com>,
@@ -62,8 +62,9 @@ Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
     ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
     linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
     linux-mm@kvack.org, netdev@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 17/26] netfs: Fix writethrough-mode error handling
+    linux-kernel@vger.kernel.org, Latchesar Ionkov <lucho@ionkov.net>,
+    Christian Schoenebeck <linux_oss@crudebyte.com>
+Subject: Re: [PATCH 24/26] netfs: Remove the old writeback code
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -71,18 +72,21 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <28313.1713344659.1@warthog.procyon.org.uk>
-Date: Wed, 17 Apr 2024 10:04:19 +0100
-Message-ID: <28314.1713344659@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Content-ID: <98240.1713350175.1@warthog.procyon.org.uk>
+Date: Wed, 17 Apr 2024 11:36:15 +0100
+Message-ID: <98241.1713350175@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 
 Jeff Layton <jlayton@kernel.org> wrote:
 
-> Should this be merged independently? It looks like a bug that's present
-> now.
+> #23 and #24 should probably be merged. I don't see any reason to do the
+> two-step of ifdef'ing out the code and then removing it. Just go for it
+> at this point in the series.
 
-Yes.  I've just posted that as a separate fix for Christian to pick up.  I
-still need to keep it in this set, though, until it is upstream.
+I would prefer to keep the ~500 line patch that's rearranging the plumbing
+separate from the ~1200 line patch that just deletes a load of lines to make
+the cutover patch easier to review.  I guess that comes down to a matter of
+preference.
 
 David
 
