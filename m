@@ -1,28 +1,28 @@
 Received: from dggsgout11.his.huawei.com (unknown [45.249.212.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C48D144D3B
-	for <netfs@lists.linux.dev>; Wed, 24 Apr 2024 03:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EAB4143C6F
+	for <netfs@lists.linux.dev>; Wed, 24 Apr 2024 03:48:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713930519; cv=none; b=NCnoeRcgbU4dETSzEn4pRUy0zGuOpcN6agqmacVMFDNjHk1Bjfvv6hTp7kq3cbLm9khNejOD1VacxqlAeO/4gLQLsC5HeOkxO5bhnUZY7G6bNH6wXVdNt2LJqyBlWvab9tb5xkKFnH7AwmLiwZYF0z94CGfPbPCgBma1DjIdqxA=
+	t=1713930520; cv=none; b=MiLZ6UdWnAZXskElzil6LjGAinyBZN11L1XZXsMMV/GvhKPaHfnmLjKU2yX1L6vIyzu4AgubnK5DNgVlpQDeoQlk01zG6CMJdsH992T/U0J6oOsBJDl5xx+z4amGa9lcsrO6rh8p7mzzFc5pL7s3WKWBncYx+4WL0nrzgebBIiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713930519; c=relaxed/simple;
-	bh=cYxrsQk4kALB+M5n3y14xwc+DZpcFKsuBTM4m8w7CGM=;
+	s=arc-20240116; t=1713930520; c=relaxed/simple;
+	bh=oD/uq+JheDeY/kgmym09d8Qh795Y/FHkwnjjdNNetUI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=h+1+UbrC8hckRu3euohVw+XdvUK1Erww3h4BsZDDxDlDoWAU/f6QC/UBTJFelDjPaBIt8Lu5ozwNurGYfqb6+ZAZYrBIrod3KYtQqOxK76wCq2SP3hphORl7uKPa4YkBfiObdwlsUPx1vKwpravSPogD94pmZuWFeX2iYblZDe8=
+	 MIME-Version; b=FryVnXM4QllyQnb5JH01U8P224XS/m5mAvaz40uu/B1zqxb0FaUS2j9vuH2jilZObp64ceh6nOxNZv+mqiIhstnMOCq3O8uoJ687u4IjrwSAQh+elowKraxFPGJs8sID3MqooizPaKE9V/VHtA/syADPrI7jGIn3O7JE2wm+mKA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4VPQ2544p5z4f3kKj
-	for <netfs@lists.linux.dev>; Wed, 24 Apr 2024 11:48:29 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.93.142])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4VPQ264Bh2z4f3jqL
+	for <netfs@lists.linux.dev>; Wed, 24 Apr 2024 11:48:30 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id 687301A0572
-	for <netfs@lists.linux.dev>; Wed, 24 Apr 2024 11:48:34 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTP id 6DE5B1A0175
+	for <netfs@lists.linux.dev>; Wed, 24 Apr 2024 11:48:35 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.175.104.67])
-	by APP1 (Coremail) with SMTP id cCh0CgCXaBELgShmKXE4Kw--.6143S13;
-	Wed, 24 Apr 2024 11:48:34 +0800 (CST)
+	by APP1 (Coremail) with SMTP id cCh0CgCXaBELgShmKXE4Kw--.6143S15;
+	Wed, 24 Apr 2024 11:48:35 +0800 (CST)
 From: libaokun@huaweicloud.com
 To: netfs@lists.linux.dev
 Cc: dhowells@redhat.com,
@@ -33,11 +33,10 @@ Cc: dhowells@redhat.com,
 	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	libaokun@huaweicloud.com,
-	Baokun Li <libaokun1@huawei.com>,
-	Hou Tao <houtao1@huawei.com>
-Subject: [PATCH 09/12] cachefiles: defer exposing anon_fd until after copy_to_user() succeeds
-Date: Wed, 24 Apr 2024 11:39:13 +0800
-Message-Id: <20240424033916.2748488-10-libaokun@huaweicloud.com>
+	Baokun Li <libaokun1@huawei.com>
+Subject: [PATCH 11/12] cachefiles: flush all requests after setting CACHEFILES_DEAD
+Date: Wed, 24 Apr 2024 11:39:15 +0800
+Message-Id: <20240424033916.2748488-12-libaokun@huaweicloud.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240424033916.2748488-1-libaokun@huaweicloud.com>
 References: <20240424033916.2748488-1-libaokun@huaweicloud.com>
@@ -48,10 +47,10 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:cCh0CgCXaBELgShmKXE4Kw--.6143S13
-X-Coremail-Antispam: 1UD129KBjvJXoWxGFyfGw15WryUKFWxuFyfJFb_yoWruFWfpF
-	WakFy3Kry8WFW8ur97ArZ8XFyfA34kA3ZrW3s0g34rArnIgryYvr10yr98uF15Ar97Grsx
-	ta1UuF93Gr1jy3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID:cCh0CgCXaBELgShmKXE4Kw--.6143S15
+X-Coremail-Antispam: 1UD129KBjvJXoW7KFWrXr13Zry8uw4UZw13urg_yoW5JFyrpF
+	Way3WUGry09r4qgw1kArZ8J34rJ3sxJF1qgw1UX3s5Arn0vr15Xr1IyryY9F15JrWrGa13
+	tr1jgFy7Z34jyrJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
 	9KBjDU0xBIdaVrnRJUUUQI14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWUWVWUuwAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JF0E3s1l82xGYI
 	kIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2
@@ -70,149 +69,61 @@ X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/
 
 From: Baokun Li <libaokun1@huawei.com>
 
-After installing the anonymous fd, we can now see it in userland and close
-it. However, at this point we may not have gotten the reference count of
-the cache, but we will put it during colse fd, so this may cause a cache
-UAF.
+In ondemand mode, when the daemon is processing an open request, if the
+kernel flags the cache as CACHEFILES_DEAD, the cachefiles_daemon_write()
+will always return -EIO, so the daemon can't pass the copen to the kernel.
+Then the kernel process that is waiting for the copen triggers a hung_task.
 
-To avoid this, we will make the anonymous fd accessible to the userland by
-executing fd_install() after copy_to_user() has succeeded, and by this
-point we must have already grabbed the reference count of the cache.
+Since the DEAD state is irreversible, it can only be exited by reopening
+/dev/cachefiles. Therefore, after calling cachefiles_io_error() to mark
+the cache as CACHEFILES_DEAD, if in ondemand mode, flush all requests to
+avoid the above hungtask. We may still be able to read some of the cached
+data before releasing the fd of /dev/cachefiles.
 
-Suggested-by: Hou Tao <houtao1@huawei.com>
+Note that this relies on the patch that adds reference counting to the req,
+otherwise it may UAF.
+
+Fixes: c8383054506c ("cachefiles: notify the user daemon when looking up cookie")
 Signed-off-by: Baokun Li <libaokun1@huawei.com>
 ---
- fs/cachefiles/ondemand.c | 53 +++++++++++++++++++++++++---------------
- 1 file changed, 33 insertions(+), 20 deletions(-)
+ fs/cachefiles/daemon.c   | 2 +-
+ fs/cachefiles/internal.h | 3 +++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-index 0cf63bfedc9e..7c2d43104120 100644
---- a/fs/cachefiles/ondemand.c
-+++ b/fs/cachefiles/ondemand.c
-@@ -4,6 +4,11 @@
- #include <linux/uio.h>
- #include "internal.h"
- 
-+struct anon_file {
-+	struct file *file;
-+	int fd;
-+};
-+
- static inline void cachefiles_req_put(struct cachefiles_req *req)
- {
- 	if (refcount_dec_and_test(&req->ref))
-@@ -244,14 +249,14 @@ int cachefiles_ondemand_restore(struct cachefiles_cache *cache, char *args)
+diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
+index ccb7b707ea4b..06cdf1a8a16f 100644
+--- a/fs/cachefiles/daemon.c
++++ b/fs/cachefiles/daemon.c
+@@ -133,7 +133,7 @@ static int cachefiles_daemon_open(struct inode *inode, struct file *file)
  	return 0;
  }
  
--static int cachefiles_ondemand_get_fd(struct cachefiles_req *req)
-+static int cachefiles_ondemand_get_fd(struct cachefiles_req *req,
-+				      struct anon_file *anon_file)
+-static void cachefiles_flush_reqs(struct cachefiles_cache *cache)
++void cachefiles_flush_reqs(struct cachefiles_cache *cache)
  {
- 	struct cachefiles_object *object;
- 	struct cachefiles_cache *cache;
- 	struct cachefiles_open *load;
--	struct file *file;
- 	u32 object_id;
--	int ret, fd;
-+	int ret;
+ 	struct xarray *xa = &cache->reqs;
+ 	struct cachefiles_req *req;
+diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
+index 45c8bed60538..6845a90cdfcc 100644
+--- a/fs/cachefiles/internal.h
++++ b/fs/cachefiles/internal.h
+@@ -188,6 +188,7 @@ extern int cachefiles_has_space(struct cachefiles_cache *cache,
+  * daemon.c
+  */
+ extern const struct file_operations cachefiles_daemon_fops;
++extern void cachefiles_flush_reqs(struct cachefiles_cache *cache);
+ extern void cachefiles_get_unbind_pincount(struct cachefiles_cache *cache);
+ extern void cachefiles_put_unbind_pincount(struct cachefiles_cache *cache);
  
- 	object = cachefiles_grab_object(req->object,
- 			cachefiles_obj_get_ondemand_fd);
-@@ -263,16 +268,16 @@ static int cachefiles_ondemand_get_fd(struct cachefiles_req *req)
- 	if (ret < 0)
- 		goto err;
+@@ -426,6 +427,8 @@ do {							\
+ 	pr_err("I/O Error: " FMT"\n", ##__VA_ARGS__);	\
+ 	fscache_io_error((___cache)->cache);		\
+ 	set_bit(CACHEFILES_DEAD, &(___cache)->flags);	\
++	if (cachefiles_in_ondemand_mode(___cache))	\
++		cachefiles_flush_reqs(___cache);	\
+ } while (0)
  
--	fd = get_unused_fd_flags(O_WRONLY);
--	if (fd < 0) {
--		ret = fd;
-+	anon_file->fd = get_unused_fd_flags(O_WRONLY);
-+	if (anon_file->fd < 0) {
-+		ret = anon_file->fd;
- 		goto err_free_id;
- 	}
- 
--	file = anon_inode_getfile("[cachefiles]", &cachefiles_ondemand_fd_fops,
--				  object, O_WRONLY);
--	if (IS_ERR(file)) {
--		ret = PTR_ERR(file);
-+	anon_file->file = anon_inode_getfile("[cachefiles]",
-+				&cachefiles_ondemand_fd_fops, object, O_WRONLY);
-+	if (IS_ERR(anon_file->file)) {
-+		ret = PTR_ERR(anon_file->file);
- 		goto err_put_fd;
- 	}
- 
-@@ -281,15 +286,14 @@ static int cachefiles_ondemand_get_fd(struct cachefiles_req *req)
- 		spin_unlock(&object->ondemand->lock);
- 		ret = -EEXIST;
- 		/* Avoid performing cachefiles_ondemand_fd_release(). */
--		file->private_data = NULL;
-+		anon_file->file->private_data = NULL;
- 		goto err_put_file;
- 	}
- 
--	file->f_mode |= FMODE_PWRITE | FMODE_LSEEK;
--	fd_install(fd, file);
-+	anon_file->file->f_mode |= FMODE_PWRITE | FMODE_LSEEK;
- 
- 	load = (void *)req->msg.data;
--	load->fd = fd;
-+	load->fd = anon_file->fd;
- 	object->ondemand->ondemand_id = object_id;
- 	spin_unlock(&object->ondemand->lock);
- 
-@@ -298,9 +302,11 @@ static int cachefiles_ondemand_get_fd(struct cachefiles_req *req)
- 	return 0;
- 
- err_put_file:
--	fput(file);
-+	fput(anon_file->file);
-+	anon_file->file = NULL;
- err_put_fd:
--	put_unused_fd(fd);
-+	put_unused_fd(anon_file->fd);
-+	anon_file->fd = ret;
- err_free_id:
- 	xa_erase(&cache->ondemand_ids, object_id);
- err:
-@@ -357,6 +363,7 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
- 	struct cachefiles_msg *msg;
- 	size_t n;
- 	int ret = 0;
-+	struct anon_file anon_file;
- 	XA_STATE(xas, &cache->reqs, cache->req_id_next);
- 
- 	xa_lock(&cache->reqs);
-@@ -390,7 +397,7 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
- 	xa_unlock(&cache->reqs);
- 
- 	if (msg->opcode == CACHEFILES_OP_OPEN) {
--		ret = cachefiles_ondemand_get_fd(req);
-+		ret = cachefiles_ondemand_get_fd(req, &anon_file);
- 		if (ret)
- 			goto out;
- 	}
-@@ -398,10 +405,16 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
- 	msg->msg_id = xas.xa_index;
- 	msg->object_id = req->object->ondemand->ondemand_id;
- 
--	if (copy_to_user(_buffer, msg, n) != 0) {
-+	if (copy_to_user(_buffer, msg, n) != 0)
- 		ret = -EFAULT;
--		if (msg->opcode == CACHEFILES_OP_OPEN)
--			close_fd(((struct cachefiles_open *)msg->data)->fd);
-+
-+	if (msg->opcode == CACHEFILES_OP_OPEN) {
-+		if (ret < 0) {
-+			fput(anon_file.file);
-+			put_unused_fd(anon_file.fd);
-+			goto out;
-+		}
-+		fd_install(anon_file.fd, anon_file.file);
- 	}
- out:
- 	cachefiles_put_object(req->object, cachefiles_obj_put_read_req);
+ #define cachefiles_io_error_obj(object, FMT, ...)			\
 -- 
 2.39.2
 
