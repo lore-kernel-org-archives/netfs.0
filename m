@@ -1,28 +1,28 @@
-Received: from dggsgout11.his.huawei.com (unknown [45.249.212.51])
+Received: from dggsgout12.his.huawei.com (unknown [45.249.212.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B4913D2A4
-	for <netfs@lists.linux.dev>; Wed, 24 Apr 2024 03:48:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC27145325
+	for <netfs@lists.linux.dev>; Wed, 24 Apr 2024 03:48:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713930518; cv=none; b=Ypf3TcSJDhDeRc9ICINzkVUIfuQYPQvxpuMylIQVxkLYtKjBJDuZvI0sPgw7qNpdMmg7HeCU/T5Knty3l4UHglE6uKhHg40FZb4jNTTspKrePpbvxqLoLVKza7hxcOwnW6SuqEYbJcbKS5hO84FtIYitx59qct6Tctd1wC7XlIM=
+	t=1713930519; cv=none; b=K5Ho2OJue05+9HcxiLcaKLDUr1sgr9hKMk3hGQ6VAxTAhjXHb1x2zJsLRzOjpy4s4SEN88s4JxsB4QP6JaCEbRNgOxB8ijhOgWDovAX4BixzBmHGK6Ohl9hE/4f59opdzNsx9/6WxFGy5oio7zaopL/EQype2N//lPFmTjJZHZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713930518; c=relaxed/simple;
-	bh=PwNqDD70BexKGmDdhHalU+iOW4RHuPA9PSloObR5YF4=;
+	s=arc-20240116; t=1713930519; c=relaxed/simple;
+	bh=2n8CaGm76wJpNvvMhxXP685KbFPBiVrc6aFFxzOLAEE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fdHMEhQ+K+TE5bfqpADO7m61b7pLkHndgcUqU1TQgSBSspKy4J4DEv/HPT36eWeyl4HQr19XwT1VlUKzjbkYBgLd8KL2RhI1TcV1uxK1rm5/nYLfcuK86QvAxVwDJ3mZCycSfmuWswKrzclRU8V/KK+65GRgpuXuLVio2PJcSPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
+	 MIME-Version; b=BPaUTDMdK1GHKoBV7Z2WL6rmijzUnDU/elaCxdu0imOpKY4ANv26rQ4Gm3LzetYrkh6wkIx6hiLG7e8e46gV+p9FvK1Q4s0zGP4v7Pm0rC/vyNPVUsbdl/Fs9wEawX82zWpvICuDReOTpPYeVliAx9Umrg3vdfooPqxKjOdC6sE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4VPQ2055w2z4f3lVg
-	for <netfs@lists.linux.dev>; Wed, 24 Apr 2024 11:48:24 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.93.142])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4VPQ232xfvz4f3knd
+	for <netfs@lists.linux.dev>; Wed, 24 Apr 2024 11:48:27 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id E0D891A0572
-	for <netfs@lists.linux.dev>; Wed, 24 Apr 2024 11:48:33 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTP id E96E61A016E
+	for <netfs@lists.linux.dev>; Wed, 24 Apr 2024 11:48:34 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.175.104.67])
-	by APP1 (Coremail) with SMTP id cCh0CgCXaBELgShmKXE4Kw--.6143S12;
-	Wed, 24 Apr 2024 11:48:33 +0800 (CST)
+	by APP1 (Coremail) with SMTP id cCh0CgCXaBELgShmKXE4Kw--.6143S14;
+	Wed, 24 Apr 2024 11:48:34 +0800 (CST)
 From: libaokun@huaweicloud.com
 To: netfs@lists.linux.dev
 Cc: dhowells@redhat.com,
@@ -33,10 +33,11 @@ Cc: dhowells@redhat.com,
 	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	libaokun@huaweicloud.com,
+	Zizhi Wo <wozizhi@huawei.com>,
 	Baokun Li <libaokun1@huawei.com>
-Subject: [PATCH 08/12] cachefiles: never get a new anon fd if ondemand_id is valid
-Date: Wed, 24 Apr 2024 11:39:12 +0800
-Message-Id: <20240424033916.2748488-9-libaokun@huaweicloud.com>
+Subject: [PATCH 10/12] cachefiles: Set object to close if ondemand_id < 0 in copen
+Date: Wed, 24 Apr 2024 11:39:14 +0800
+Message-Id: <20240424033916.2748488-11-libaokun@huaweicloud.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240424033916.2748488-1-libaokun@huaweicloud.com>
 References: <20240424033916.2748488-1-libaokun@huaweicloud.com>
@@ -47,10 +48,10 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:cCh0CgCXaBELgShmKXE4Kw--.6143S12
-X-Coremail-Antispam: 1UD129KBjvJXoWxAr1DJryUKF48CFyDKrW8tFb_yoW5Cw48pF
-	WakF9xKryxuF4xWrZ7Aan5XryFy3ykZFnrWa4ag34rAFn0gr1rZr1Utr13ZF15A3sIgrsr
-	ta1UWF9xtw1qk3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID:cCh0CgCXaBELgShmKXE4Kw--.6143S14
+X-Coremail-Antispam: 1UD129KBjvJXoW7Zry8Wry8Jr4Utr4xtr4UCFg_yoW8Cw4xpF
+	WakFy3Kry8uF1I9rn7Jw1kJ3yrC3ykZFnxWrZ0q3y8Ar98XryrZr4UtryUZF1UZ3yftr43
+	Jr10gF9Iga4qy3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
 	9KBjDU0xBIdaVrnRJUUUQI14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWUWVWUuwAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JF0E3s1l82xGYI
 	kIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2
@@ -67,102 +68,56 @@ X-Coremail-Antispam: 1UD129KBjvJXoWxAr1DJryUKF48CFyDKrW8tFb_yoW5Cw48pF
 	14v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7VUUNBMtUUUUU==
 X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Zizhi Wo <wozizhi@huawei.com>
 
-Now every time the daemon reads an open request, it requests a new anon fd
-and ondemand_id. With the introduction of "restore", it is possible to read
-the same open request more than once, and therefore have multiple anon fd's
-for the same object.
+If copen is maliciously called in the user mode, it may delete the request
+corresponding to the random id. And the request may have not been read yet.
 
-To avoid this, allocate a new anon fd only if no anon fd has been allocated
-(ondemand_id == 0) or if the previously allocated anon fd has been closed
-(ondemand_id == -1). Returns an error if ondemand_id is valid, letting the
-daemon know that the current userland restore logic is abnormal and needs
-to be checked.
+Note that when the object is set to reopen, the open request will be done
+with the still reopen state in above case. As a result, the request
+corresponding to this object is always skipped in select_req function, so
+the read request is never completed and blocks other process.
 
+Fix this issue by simply set object to close if its id < 0 in copen.
+
+Signed-off-by: Zizhi Wo <wozizhi@huawei.com>
 Signed-off-by: Baokun Li <libaokun1@huawei.com>
 ---
- fs/cachefiles/ondemand.c | 34 ++++++++++++++++++++++++++++------
- 1 file changed, 28 insertions(+), 6 deletions(-)
+ fs/cachefiles/ondemand.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-index b5e6a851ef04..0cf63bfedc9e 100644
+index 7c2d43104120..673e7ad52041 100644
 --- a/fs/cachefiles/ondemand.c
 +++ b/fs/cachefiles/ondemand.c
-@@ -14,11 +14,18 @@ static int cachefiles_ondemand_fd_release(struct inode *inode,
- 					  struct file *file)
- {
- 	struct cachefiles_object *object = file->private_data;
--	struct cachefiles_cache *cache = object->volume->cache;
--	struct cachefiles_ondemand_info *info = object->ondemand;
-+	struct cachefiles_cache *cache;
-+	struct cachefiles_ondemand_info *info;
- 	int object_id;
- 	struct cachefiles_req *req;
--	XA_STATE(xas, &cache->reqs, 0);
-+	XA_STATE(xas, NULL, 0);
-+
-+	if (!object)
-+		return 0;
-+
-+	info = object->ondemand;
-+	cache = object->volume->cache;
-+	xas.xa = &cache->reqs;
+@@ -182,6 +182,7 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
+ 	xas_store(&xas, NULL);
+ 	xa_unlock(&cache->reqs);
  
- 	xa_lock(&cache->reqs);
- 	spin_lock(&info->lock);
-@@ -269,22 +276,39 @@ static int cachefiles_ondemand_get_fd(struct cachefiles_req *req)
- 		goto err_put_fd;
++	info = req->object->ondemand;
+ 	/* fail OPEN request if copen format is invalid */
+ 	ret = kstrtol(psize, 0, &size);
+ 	if (ret) {
+@@ -201,7 +202,6 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
+ 		goto out;
  	}
  
-+	spin_lock(&object->ondemand->lock);
-+	if (object->ondemand->ondemand_id > 0) {
-+		spin_unlock(&object->ondemand->lock);
-+		ret = -EEXIST;
-+		/* Avoid performing cachefiles_ondemand_fd_release(). */
-+		file->private_data = NULL;
-+		goto err_put_file;
-+	}
-+
- 	file->f_mode |= FMODE_PWRITE | FMODE_LSEEK;
- 	fd_install(fd, file);
+-	info = req->object->ondemand;
+ 	spin_lock(&info->lock);
+ 	/* The anonymous fd was closed before copen ? */
+ 	if (info->ondemand_id == CACHEFILES_ONDEMAND_ID_CLOSED) {
+@@ -222,6 +222,11 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
+ 	wake_up_all(&cache->daemon_pollwq);
  
- 	load = (void *)req->msg.data;
- 	load->fd = fd;
- 	object->ondemand->ondemand_id = object_id;
-+	spin_unlock(&object->ondemand->lock);
- 
- 	cachefiles_get_unbind_pincount(cache);
- 	trace_cachefiles_ondemand_open(object, &req->msg, load);
- 	return 0;
- 
-+err_put_file:
-+	fput(file);
- err_put_fd:
- 	put_unused_fd(fd);
- err_free_id:
- 	xa_erase(&cache->ondemand_ids, object_id);
- err:
-+	spin_lock(&object->ondemand->lock);
-+	/* Avoid marking an opened object as closed. */
-+	if (object->ondemand->ondemand_id <= 0)
-+		cachefiles_ondemand_set_object_close(object);
-+	spin_unlock(&object->ondemand->lock);
- 	cachefiles_put_object(object, cachefiles_obj_put_ondemand_fd);
+ out:
++	spin_lock(&info->lock);
++	/* Need to set object close to avoid reopen status continuing */
++	if (info->ondemand_id == CACHEFILES_ONDEMAND_ID_CLOSED)
++		cachefiles_ondemand_set_object_close(req->object);
++	spin_unlock(&info->lock);
+ 	complete(&req->done);
  	return ret;
  }
-@@ -367,10 +391,8 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
- 
- 	if (msg->opcode == CACHEFILES_OP_OPEN) {
- 		ret = cachefiles_ondemand_get_fd(req);
--		if (ret) {
--			cachefiles_ondemand_set_object_close(req->object);
-+		if (ret)
- 			goto out;
--		}
- 	}
- 
- 	msg->msg_id = xas.xa_index;
 -- 
 2.39.2
 
