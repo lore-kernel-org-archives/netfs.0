@@ -1,28 +1,28 @@
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+Received: from dggsgout12.his.huawei.com (unknown [45.249.212.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D11B13B78F
-	for <netfs@lists.linux.dev>; Wed, 24 Apr 2024 03:36:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D50A13A269
+	for <netfs@lists.linux.dev>; Wed, 24 Apr 2024 03:36:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713929814; cv=none; b=miIe9BZpXPsjUgb3YJWiln7cTuxTOHsWF2pYfkGgZR5wFvNYczftp8n/SNPkiK2LXRYgbOhByMbWWAoTdoKOAnRfI60BVQxbOxwg3TExx+29dYGBCh0lZCfku6pXXy9fcxD4tzI8fEL3T6Pe0zn5llFgOx8kTscQdWEodgxDoEI=
+	t=1713929814; cv=none; b=I/vacvt9yLu40r7ga6O9M5xbw5nXE5s57OZF255SO+ufDCS2cfre6hRquKzXXuZq84mC84ad/fzAqxEYfVm8FvlYHli5IEdf65Rv856jbzi0j5HFcgSRXaY/y7ggaEvTJiCRwSnArx8B5rBYvG8vJBJ53xkZ/sklKeuDcxJbFMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1713929814; c=relaxed/simple;
-	bh=eYmI2UoND9NW9g+AeXxMK4ItoLkzH/5fFHbVVsjmXDU=;
+	bh=VekTjXJWG/vwl9TNzF0hki9AG327/LyNuPoQoWMw9fE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DOneYp9J2OkEOCBJz57pbfyjPQb3ACyjGLGDZ+bOQphqX/6/kcWmXNKibGA99+EmFz06WrHQ9vqAgBdbnQsdwQG8+LkcjJO25VzsgMSpiA0MCWEuLWlEacQwAdTL94WHdNBNK92aQtiSG+/C4XDD1mjz8m3v2Mc1eovYaN+Q09A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
+	 MIME-Version; b=J++HPA3u65Kdhr7J2mYZduMGIOcXutZjG2zLPnfirPX3p5Fx3FlmeiN5RWf2Txa04xTJTFgTYtv5MR2/QL8Pnk1/+02ymVxhDmYWGNNGt3MEon0bM71IcrVKznq2Ydf6+poCuesYfPWTp8kcKaDoz/b02mMf+t1fUiLL1YIiyqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4VPPmY3JnMz4f3kpl
-	for <netfs@lists.linux.dev>; Wed, 24 Apr 2024 11:36:45 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4VPPmS6HWJz4f3jct
+	for <netfs@lists.linux.dev>; Wed, 24 Apr 2024 11:36:40 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id 4F4921A0568
-	for <netfs@lists.linux.dev>; Wed, 24 Apr 2024 11:36:50 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTP id 68F481A0C7E
+	for <netfs@lists.linux.dev>; Wed, 24 Apr 2024 11:36:48 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.175.104.67])
-	by APP1 (Coremail) with SMTP id cCh0CgBHZQ5Nfihmarc3Kw--.25590S9;
-	Wed, 24 Apr 2024 11:36:50 +0800 (CST)
+	by APP1 (Coremail) with SMTP id cCh0CgBHZQ5Nfihmarc3Kw--.25590S5;
+	Wed, 24 Apr 2024 11:36:48 +0800 (CST)
 From: libaokun@huaweicloud.com
 To: netfs@lists.linux.dev
 Cc: dhowells@redhat.com,
@@ -33,9 +33,9 @@ Cc: dhowells@redhat.com,
 	linux-kernel@vger.kernel.org,
 	libaokun@huaweicloud.com,
 	Baokun Li <libaokun1@huawei.com>
-Subject: [PATCH 5/5] cachefiles: correct the return value of cachefiles_check_auxdata()
-Date: Wed, 24 Apr 2024 11:27:32 +0800
-Message-Id: <20240424032732.2711487-6-libaokun@huaweicloud.com>
+Subject: [PATCH 1/5] netfs, fscache: export fscache_put_volume() and add fscache_try_get_volume()
+Date: Wed, 24 Apr 2024 11:27:28 +0800
+Message-Id: <20240424032732.2711487-2-libaokun@huaweicloud.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240424032732.2711487-1-libaokun@huaweicloud.com>
 References: <20240424032732.2711487-1-libaokun@huaweicloud.com>
@@ -46,53 +46,108 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:cCh0CgBHZQ5Nfihmarc3Kw--.25590S9
-X-Coremail-Antispam: 1UD129KBjvdXoW7JFykurWUAF4kCF4DAr4xWFg_yoWfKFX_uF
-	Z7Ar4xXr4fGr4kJwsrA3y2qrWvqr1xAwn8Kr1Fgry2yw1aqFZ8XFWDtr98Ar1UWr4UK3WD
-	trZ7ZF13WF9FgjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbPAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6r1F6r1fM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUAVCq3wA2048vs2
-	IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28E
-	F7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr
-	1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0D
-	M2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjx
-	v20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1l
-	F7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2
-	IY04v7M4kE6xkIj40Ew7xC0wCY1x0264kExVAvwVAq07x20xyl42xK82IYc2Ij64vIr41l
-	4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
-	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
-	cVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26F4j6r4UJwCI42IY6xAIw20EY4
-	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AK
-	xVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUUpVbPUUUUU==
+X-CM-TRANSID:cCh0CgBHZQ5Nfihmarc3Kw--.25590S5
+X-Coremail-Antispam: 1UD129KBjvJXoWxGw17ur1rJw1kWw1rCr1rWFg_yoW5Cr1Dp3
+	srCrn7KF48Xw1xGw45Xw47Zrn3Z3yDKan7G348Gw15Cw4xtr15XF12yw15AF13A34UJrWI
+	yF1Utryjgw1UZr7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUmE14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWUWVWUuwAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jr4l82xGYIkIc2
+	x26xkF7I0E14v26r4j6ryUM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
+	Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJw
+	A2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS
+	0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2
+	IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0
+	Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kIc2
+	xKxwAKzVCY07xG64k0F24lc7CjxVAKzI0EY4vE52x082I5MxAIw28IcxkI7VAKI48JMxC2
+	0s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI
+	0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE
+	14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20x
+	vaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8
+	JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7sRi9a97UUUUU==
 X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/
 
 From: Baokun Li <libaokun1@huawei.com>
 
-Pass the error code to ret when xlen < 0 to avoid misleading the caller.
+Export fscache_put_volume() and add fscache_try_get_volume()
+helper function to allow cachefiles to get/put fscache_volume
+via linux/fscache-cache.h.
 
-Fixes: 72b957856b0c ("cachefiles: Implement metadata/coherency data storage in xattrs")
 Signed-off-by: Baokun Li <libaokun1@huawei.com>
 ---
- fs/cachefiles/xattr.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/netfs/fscache_volume.c     | 14 ++++++++++++++
+ fs/netfs/internal.h           |  2 --
+ include/linux/fscache-cache.h |  6 ++++++
+ 3 files changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/fs/cachefiles/xattr.c b/fs/cachefiles/xattr.c
-index 20e4a4391090..4dd8a993c60a 100644
---- a/fs/cachefiles/xattr.c
-+++ b/fs/cachefiles/xattr.c
-@@ -110,9 +110,11 @@ int cachefiles_check_auxdata(struct cachefiles_object *object, struct file *file
- 	if (xlen == 0)
- 		xlen = vfs_getxattr(&nop_mnt_idmap, dentry, cachefiles_xattr_cache, buf, tlen);
- 	if (xlen != tlen) {
--		if (xlen < 0)
-+		if (xlen < 0) {
-+			ret = xlen;
- 			trace_cachefiles_vfs_error(object, file_inode(file), xlen,
- 						   cachefiles_trace_getxattr_error);
-+		}
- 		if (xlen == -EIO)
- 			cachefiles_io_error_obj(
- 				object,
+diff --git a/fs/netfs/fscache_volume.c b/fs/netfs/fscache_volume.c
+index cdf991bdd9de..cb75c07b5281 100644
+--- a/fs/netfs/fscache_volume.c
++++ b/fs/netfs/fscache_volume.c
+@@ -27,6 +27,19 @@ struct fscache_volume *fscache_get_volume(struct fscache_volume *volume,
+ 	return volume;
+ }
+ 
++struct fscache_volume *fscache_try_get_volume(struct fscache_volume *volume,
++					      enum fscache_volume_trace where)
++{
++	int ref;
++
++	if (!__refcount_inc_not_zero(&volume->ref, &ref))
++		return NULL;
++
++	trace_fscache_volume(volume->debug_id, ref + 1, where);
++	return volume;
++}
++EXPORT_SYMBOL(fscache_try_get_volume);
++
+ static void fscache_see_volume(struct fscache_volume *volume,
+ 			       enum fscache_volume_trace where)
+ {
+@@ -420,6 +433,7 @@ void fscache_put_volume(struct fscache_volume *volume,
+ 			fscache_free_volume(volume);
+ 	}
+ }
++EXPORT_SYMBOL(fscache_put_volume);
+ 
+ /*
+  * Relinquish a volume representation cookie.
+diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
+index ec7045d24400..edf9b2a180ca 100644
+--- a/fs/netfs/internal.h
++++ b/fs/netfs/internal.h
+@@ -326,8 +326,6 @@ extern const struct seq_operations fscache_volumes_seq_ops;
+ 
+ struct fscache_volume *fscache_get_volume(struct fscache_volume *volume,
+ 					  enum fscache_volume_trace where);
+-void fscache_put_volume(struct fscache_volume *volume,
+-			enum fscache_volume_trace where);
+ bool fscache_begin_volume_access(struct fscache_volume *volume,
+ 				 struct fscache_cookie *cookie,
+ 				 enum fscache_access_trace why);
+diff --git a/include/linux/fscache-cache.h b/include/linux/fscache-cache.h
+index bdf7f3eddf0a..4c91a019972b 100644
+--- a/include/linux/fscache-cache.h
++++ b/include/linux/fscache-cache.h
+@@ -19,6 +19,7 @@
+ enum fscache_cache_trace;
+ enum fscache_cookie_trace;
+ enum fscache_access_trace;
++enum fscache_volume_trace;
+ 
+ enum fscache_cache_state {
+ 	FSCACHE_CACHE_IS_NOT_PRESENT,	/* No cache is present for this name */
+@@ -97,6 +98,11 @@ extern void fscache_withdraw_cookie(struct fscache_cookie *cookie);
+ 
+ extern void fscache_io_error(struct fscache_cache *cache);
+ 
++extern struct fscache_volume *
++fscache_try_get_volume(struct fscache_volume *volume,
++		       enum fscache_volume_trace where);
++extern void fscache_put_volume(struct fscache_volume *volume,
++			       enum fscache_volume_trace where);
+ extern void fscache_end_volume_access(struct fscache_volume *volume,
+ 				      struct fscache_cookie *cookie,
+ 				      enum fscache_access_trace why);
 -- 
 2.39.2
 
