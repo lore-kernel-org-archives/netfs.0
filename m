@@ -1,146 +1,113 @@
-Received: from dggsgout11.his.huawei.com (unknown [45.249.212.51])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F00B5A10A
-	for <netfs@lists.linux.dev>; Thu, 25 Apr 2024 06:53:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C9A2B9C9
+	for <netfs@lists.linux.dev>; Thu, 25 Apr 2024 08:39:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714027992; cv=none; b=SQgaCIB0nZIALWIRFhq0BGd+2MRKff1kWpdlJz/8p3hF8WBCfvHuyT/w6jIkEi+h2HeNyXFUq+7w2K+U6TGbeha+qeEkgS4u1P7JbObYPN2DrUopjWevIbNjJ35ue8GCEo7pKI9d47zhOgBMCwXWHvj3knlKukoNuIXt9RpMFnM=
+	t=1714034382; cv=none; b=D8MBkuv5gTn/aHB3b007MrznaHr1ltJ3yfi5UdvQ2SxPEaKI8Z24WUAgHLuGy5KhBPLfSZgbLPXPqqwn17jYxoARTZgIO0pvI1UgeqWI3JIxXP3Mq9jAWRLFpw4aQETRwW9iQzXbMW6YTDuaJnW23sUQUTKF4oxJFjpLxL2kwN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714027992; c=relaxed/simple;
-	bh=WBi/ZrNtZu3GF8PJnVE0tW9xrC6aEsYu+Aq/InrHVEQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mZFkqyMJRoWogaM4Z3MSqeOhhS2pN/vTWXD9sLwWMLvA4xxQAZ0bCB6PBODh5DwfF6aNhiYF8s1qiM51cKETAgHDvmldcfc6q2liyL/JETU/N8OeXQiDQ4QFhhXmlTelb6cOq2HDDfWvUVADO0utDEHk2X4j9Ei64hjlXijY3xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4VQ64S625Rz4f3l1b
-	for <netfs@lists.linux.dev>; Thu, 25 Apr 2024 14:52:56 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id 1A06B1A11DD
-	for <netfs@lists.linux.dev>; Thu, 25 Apr 2024 14:53:06 +0800 (CST)
-Received: from [10.174.177.174] (unknown [10.174.177.174])
-	by APP1 (Coremail) with SMTP id cCh0CgAX5g7O_Slm4WOeKw--.49376S3;
-	Thu, 25 Apr 2024 14:53:05 +0800 (CST)
-Message-ID: <7f379fde-a34d-163c-d965-651563e98327@huaweicloud.com>
-Date: Thu, 25 Apr 2024 14:53:02 +0800
+	s=arc-20240116; t=1714034382; c=relaxed/simple;
+	bh=/9yyKzE8Zxtr4YeXsLr5diSzcU8HNZj+vrs/DZ3QOog=;
+	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=lblUqX7Wenw5g3pGYnxTq9IrKuzyDpvELwDSoZTrbfFDD64zB9rjpTxAyYA5EJRN0lI5/Ocz/d48K7lU5vU4/xMZwhyhJLfrCSZ6WTZUWbB6nz3BN5/tIPXGWct3iBkUWVpl+ayJ54OnTAvbJ59Wc8UL2gVvCDtgs2uAo+FuroI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IVoU3rDp; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IVoU3rDp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1714034379;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=QZ3es0/m9Be3HXMWlawHrU+ruWvHPUrW+BQXBx/9QME=;
+	b=IVoU3rDpUsnxmN4Xn1n1DGYR+kjfpJFe51XitIxifI1f5XTxf8bkI/rMMf2aHHmNVbXjrv
+	kJBUq234jKedENLX9n3ZKtemSWj9H29dgblSdNLLBbLON26SeCutrD57zLadMRazjf6Q2h
+	0PGDKazvGbQCHEZ2e4Xh1/oRRznTuMM=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-590-e4mtFl2tPqGayEHnj_tMnw-1; Thu,
+ 25 Apr 2024 04:39:36 -0400
+X-MC-Unique: e4mtFl2tPqGayEHnj_tMnw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 85DBE29AA391;
+	Thu, 25 Apr 2024 08:39:35 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.200])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 829E551BF;
+	Thu, 25 Apr 2024 08:39:33 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: netdev@vger.kernel.org
+cc: dhowells@redhat.com, Jeff Layton <jlayton@kernel.org>,
+    Steve French <sfrench@samba.org>,
+    Herbert Xu <herbert@gondor.apana.org.au>,
+    "David S. Miller" <davem@davemloft.net>,
+    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+    Paolo Abeni <pabeni@redhat.com>, netfs@lists.linux.dev,
+    linux-crypto@vger.kernel.org, linux-cifs@vger.kernel.org,
+    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH net] Fix a potential infinite loop in extract_user_to_sg()
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.1.2
-Subject: Re: [PATCH 3/5] cachefiles: flush ondemand_object_worker during clean
- object
-Content-Language: en-US
-To: Jia Zhu <zhujia.zj@bytedance.com>, netfs@lists.linux.dev
-Cc: dhowells@redhat.com, jlayton@kernel.org, jefflexu@linux.alibaba.com,
- linux-cachefs@redhat.com, linux-erofs@lists.ozlabs.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- Hou Tao <houtao1@huawei.com>, libaokun@huaweicloud.com
-References: <20240424033409.2735257-1-libaokun@huaweicloud.com>
- <20240424033409.2735257-4-libaokun@huaweicloud.com>
- <8572a732-ca12-48d7-817c-d8218d536c0c@bytedance.com>
-From: Baokun Li <libaokun@huaweicloud.com>
-In-Reply-To: <8572a732-ca12-48d7-817c-d8218d536c0c@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:cCh0CgAX5g7O_Slm4WOeKw--.49376S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxAryDtr4rWF1UGryDAw48Crg_yoW5Cw15pF
-	WfAFyUGry8Wr1kGr1DXF1UJry8tryUJ3WDXF1YqFyUJrn8Jr1jqr1UXr1qgF1UJr48Jr47
-	Jr4UCr9rZr1UJrJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9F14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWUuVWrJwAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
-	0xkIwI1lc7I2V7IY0VAS07AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
-	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
-	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
-	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6rW3Jr0E
-	3s1lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcS
-	sGvfC2KfnxnUUI43ZEXa7VUbXdbUUUUUU==
-X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1967120.1714034372.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 25 Apr 2024 09:39:32 +0100
+Message-ID: <1967121.1714034372@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 
-Hi Jia,
+    =
 
-On 2024/4/25 13:41, Jia Zhu wrote:
-> Thanks for catching this. How about adding a Fixes tag.
->
-> Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
->
->
-Ok, I will add the Fixes tag in the next iteration.
-Thank you very much for your review!
+Fix extract_user_to_sg() so that it will break out of the loop if
+iov_iter_extract_pages() returns 0 rather than looping around forever.
 
-Cheers!
-Baokun
-> 在 2024/4/24 11:34, libaokun@huaweicloud.com 写道:
->> From: Hou Tao <houtao1@huawei.com>
->>
->> When queuing ondemand_object_worker() to re-open the object,
->> cachefiles_object is not pinned. The cachefiles_object may be freed when
->> the pending read request is completed intentionally and the related
->> erofs is umounted. If ondemand_object_worker() runs after the object is
->> freed, it will incur use-after-free problem as shown below.
->>
->> process A  processs B  process C  process D
->>
->> cachefiles_ondemand_send_req()
->> // send a read req X
->> // wait for its completion
->>
->>             // close ondemand fd
->>             cachefiles_ondemand_fd_release()
->>             // set object as CLOSE
->>
->>                         cachefiles_ondemand_daemon_read()
->>                         // set object as REOPENING
->>                         queue_work(fscache_wq, &info->ondemand_work)
->>
->>                                  // close /dev/cachefiles
->>                                  cachefiles_daemon_release
->>                                  cachefiles_flush_reqs
->>                                  complete(&req->done)
->>
->> // read req X is completed
->> // umount the erofs fs
->> cachefiles_put_object()
->> // object will be freed
->> cachefiles_ondemand_deinit_obj_info()
->> kmem_cache_free(object)
->>                         // both info and object are freed
->>                         ondemand_object_worker()
->>
->> When dropping an object, it is no longer necessary to reopen the object,
->> so use cancel_work_sync() to cancel or wait for ondemand_object_worker()
->> to complete.
->>
->> Signed-off-by: Hou Tao <houtao1@huawei.com>
->> Signed-off-by: Baokun Li <libaokun1@huawei.com>
->> ---
->>   fs/cachefiles/ondemand.c | 3 +++
->>   1 file changed, 3 insertions(+)
->>
->> diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
->> index d24bff43499b..f6440b3e7368 100644
->> --- a/fs/cachefiles/ondemand.c
->> +++ b/fs/cachefiles/ondemand.c
->> @@ -589,6 +589,9 @@ void cachefiles_ondemand_clean_object(struct 
->> cachefiles_object *object)
->>           }
->>       }
->>       xa_unlock(&cache->reqs);
->> +
->> +    /* Wait for ondemand_object_worker() to finish to avoid UAF. */
->> + cancel_work_sync(&object->ondemand->ondemand_work);
->>   }
->>     int cachefiles_ondemand_init_obj_info(struct cachefiles_object 
->> *object,
+[Note that I've included two fixes lines as the function got moved to a
+different file and renamed]
 
+Fixes: 85dd2c8ff368 ("netfs: Add a function to extract a UBUF or IOVEC int=
+o a BVEC iterator")
+Fixes: f5f82cd18732 ("Move netfs_extract_iter_to_sg() to lib/scatterlist.c=
+")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: Steve French <sfrench@samba.org>
+cc: Herbert Xu <herbert@gondor.apana.org.au>
+cc: "David S. Miller" <davem@davemloft.net>
+cc: Eric Dumazet <edumazet@google.com>
+cc: Jakub Kicinski <kuba@kernel.org>
+cc: Paolo Abeni <pabeni@redhat.com>
+cc: netfs@lists.linux.dev
+cc: linux-crypto@vger.kernel.org
+cc: linux-cifs@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
+cc: netdev@vger.kernel.org
+---
+ lib/scatterlist.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/scatterlist.c b/lib/scatterlist.c
+index 68b45c82c37a..7bc2220fea80 100644
+--- a/lib/scatterlist.c
++++ b/lib/scatterlist.c
+@@ -1124,7 +1124,7 @@ static ssize_t extract_user_to_sg(struct iov_iter *i=
+ter,
+ 	do {
+ 		res =3D iov_iter_extract_pages(iter, &pages, maxsize, sg_max,
+ 					     extraction_flags, &off);
+-		if (res < 0)
++		if (res <=3D 0)
+ 			goto failed;
+ =
+
+ 		len =3D res;
 
