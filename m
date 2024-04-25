@@ -1,59 +1,59 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E3812B7D
-	for <netfs@lists.linux.dev>; Thu, 25 Apr 2024 03:13:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F6A1AACB
+	for <netfs@lists.linux.dev>; Thu, 25 Apr 2024 03:17:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714014819; cv=none; b=nOUCb/sMZWLHv7eSysuP5gQxrP8bYKGJlur8vVjq1aXyx20UR+jfpmiB7xVYPPhM4rx0ar2jcDK8N6nEaLzk/AxmUEwgfCh/VZJZJP3ZwXn5pBCp2p7GVBcGBp1Qo8Ci8ZpC9DZLaz/CXFwBk3LRuGyK+1z3rmBIYHlbJiNhj8c=
+	t=1714015036; cv=none; b=ttc8enK1l5i7IkUBfcC9Ve1NUxsW31XHdDO9xCIwV+HHDbqGwbXBA/4LZQ8qQjaEJtLOwdN6fm6QN8PMFnHWjqH93v9IXKkZjZ/5mOPTkA02km2PHETr9pGgUTJRxYBbiRIZvNZxpmxFzAqINIJ7TRsTRKX4u98sc6EB1bWkgQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714014819; c=relaxed/simple;
-	bh=F/1VMu7Ncu+E5GMEYHg5FIcaKmH6+lOLwTRFwG32kF8=;
+	s=arc-20240116; t=1714015036; c=relaxed/simple;
+	bh=pL8OHOWHZcsyFmPcEjc+fBoaOnXJeZNW3DcIFx6MFus=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EeD9Z5f7tvWOPBOexr3BsdFdtGFHlIAHrM0xnTZpysqmnP+XLV2y4Rj7NOPrC7m9d35Ym0G+zfFEiwVXinCRJgD1BnpHGkxACZy10lTpg2jZKyp9SBLoS/HrwyUyqPTbGjNfG6OhDAWqA5Kz2OE2+YDfMLt0QeesUbrFuqlehaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=Y3LdwhCn; arc=none smtp.client-ip=209.85.216.42
+	 In-Reply-To:Content-Type; b=asjMZqGgir/TKpDaeRTkk70AcYskwbcAJemN153Fm3ryx0dd01XmFavANZm1WiD502upHWKqtCmI7nTtMOsUgw2AFsr9kbQfKVl2qykQeDO5OgwFRTK2xHE1DcAV9484FC7ELmgqWxp0RyuI4BNFB4NolREge/QR7gedl/geIiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=I49U2pvH; arc=none smtp.client-ip=209.85.210.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="Y3LdwhCn"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2af800ff18dso482173a91.1
-        for <netfs@lists.linux.dev>; Wed, 24 Apr 2024 20:13:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="I49U2pvH"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-6f2f6142d64so527479b3a.2
+        for <netfs@lists.linux.dev>; Wed, 24 Apr 2024 20:17:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1714014817; x=1714619617; darn=lists.linux.dev;
+        d=bytedance.com; s=google; t=1714015034; x=1714619834; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
          :user-agent:mime-version:date:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=45q2opjjuUYEePVm3ifdMLHGn3JYGUOldjvko9Req9k=;
-        b=Y3LdwhCnR2D+U4A/u+B2wHxbpLkxqnshl5ZvyZSOxxCCWrmVbsHCjSaZrxTAT44XEr
-         57DzbkvjH1nOw1kwzEzZ1+/qgSSMdGfHLcug7NSQrD2TkBxTX7Ilpvl/z4S7lwma32qN
-         fEmFCkacNwkXz3lOGJWP1nOhvou+iR812b/nCVBKoXgRQPBI2t/Awuvlp9Kup3LWTyhi
-         2cgKjG2k+klLLg7B1t1S5EvsMYXaknL5ZRY25XLzzJjqt54dgq79yP/428H4ieE+QUwj
-         iv7hrU4zzrO9/UJcBL/XBv5nIAhg1hp+TBNTxFOyrVFomOB5X8io7UjO+cCT6oUBohpi
-         FjfA==
+        bh=rDC6+MkZwtTiyGD4zhDwbs6EKw+Azk2OsJsJxDq9WIg=;
+        b=I49U2pvHLs/J1eFvBwSDGhpAhcsWN5tL13ZO9j0eecFGlj6UPK2u15YFJ/beL/xx1l
+         iM190rNzIq//V+DPJjNfr/DkQUroaV8h6iHk8yQ7R2FS6EqAbdSt8CyUYeYYpVWa5N3y
+         f21KOQXRSI2FKwWIQzccFB27hPAbpNbK3KNp417tR5gxBN3+0c87O96yJwebnzTwF0KV
+         Yr9ZRvVsf/d6Ya4mTh0PQM+cCs/2Ih5EvJH+iQga+5k7emgElUMvSHiZIQ0nbcHl4hBr
+         EXzsBxa9C4JahWHIBygCpNCEVM7i+5Wo9tKOe1oGhb9PnPpuJD68FSxA7duFW9jb1jMA
+         3Spg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714014817; x=1714619617;
+        d=1e100.net; s=20230601; t=1714015034; x=1714619834;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
          :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=45q2opjjuUYEePVm3ifdMLHGn3JYGUOldjvko9Req9k=;
-        b=OPbvp7/lQKMYsjJ8eY5TEQau4iVzOVslTP1x376ehQwEtKEOGdRi+hnneac+/FWpYK
-         BP/oqFX69wKv72QQzNDaF2XYm4ynluNOYDPYdq/GsOfdVTih3T5pvZ+YEckE6Z/vOMVT
-         acWdKw+9seJDkYJ//z8stPS5tZJjsnSjbMKPAleyworXQDEly5diOypbvsCrJJdHpzxs
-         QbDri7iVuB/qN4XYZqutSK560tNwdsbld0L+pc2wN1oVwriaLBDltRJZiMvfrOP0l0wx
-         ue+YEjsjB0WrkEGSIPSgLZ0omYWSYnvBF16i/8Xt76SrxYlAmUAttPx2Sr72v5mbEbvj
-         p+LQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWd74RAVTsKHUCNDv0NHYDFwrLYfpaAWZ/paI7ZV7/5xcaC8FHyrGnSNrWFfiPA3Rhw94M/wfXkaGHBTJAcab2sogkr6+w=
-X-Gm-Message-State: AOJu0YxmiRLG5Y7U3IPj+PBuXk5lPt6JQ4oFBGg7OFmSybxAkiN4RxO9
-	5WtniQxqOc8mPPJADQtET6ysFEw9JOV8E46a8xnaNGul+6951mSjEPkEGImZmHw=
-X-Google-Smtp-Source: AGHT+IEuq2nC3+NrQjBJkDqAEPYGH85KMdEqJehJWR0o0NQ3qmkCAsRYPwQPdvh8mGs6423pdhVCfA==
-X-Received: by 2002:a17:90a:6b47:b0:2ad:6294:7112 with SMTP id x7-20020a17090a6b4700b002ad62947112mr4177222pjl.14.1714014817331;
-        Wed, 24 Apr 2024 20:13:37 -0700 (PDT)
-Received: from [10.3.132.118] ([61.213.176.5])
-        by smtp.gmail.com with ESMTPSA id gk1-20020a17090b118100b002a5290ad3d4sm11981013pjb.3.2024.04.24.20.13.33
+        bh=rDC6+MkZwtTiyGD4zhDwbs6EKw+Azk2OsJsJxDq9WIg=;
+        b=eUjMQ5+KwIXOzF6xb+VSVWaGcYccY7H7dhCk5fgo6YgihykZxY/Wt1hSQCapb0OBqT
+         tnxmQHDNtqBbMlwRmb1/m28KaerjMefas/Gv4gyfH2TwLHEJZ0+45UTKiyBH5OC8rsx/
+         Do8fMCCI02jZ5guMJYgRbGr6TfoxIoqmLTTae0ih5WjliTjRWSG5PwTEXLaKZvNQV+Al
+         kC2mnylyeUWY7eNQFNoYepWzH95uUEbLJB8/V+W/euWPCVZc+CJvuatj3j24biLhsKHk
+         J9gFPeCsNBzzARFdobvFFOu9p7paQAqXo2oTa6Q1P4ZxyMmYpRbPRHAdswGKyOb8uL7o
+         DkeA==
+X-Forwarded-Encrypted: i=1; AJvYcCXGSX2/teZ7tMlQyz3DTFvMDy1a04ZEbmzuLuDIY2zXBI6LmnRTDwxFACV6ZlkKIXZL3MDcsyyGO7TVTSdNd3vd/M9WklM=
+X-Gm-Message-State: AOJu0YyRKXSMzASmcRZI0tTK84mhyeb1g1iAynx/JRQc+JBPN6MrWa7V
+	9cpcRjTXtyIzxrqH0W9YLcKjnzvxjE6pZ22B2Iq6UktpwY+Oxb7/M4WrdaujebY=
+X-Google-Smtp-Source: AGHT+IFsDUKcepwhTMfngbtOJkYdquZcdm/7+0FnSBhsRuUAiazYGUUz8MH7tc0XTEkAcFEoXbsTQw==
+X-Received: by 2002:a05:6a21:3d89:b0:1ac:dead:1370 with SMTP id bj9-20020a056a213d8900b001acdead1370mr4849697pzc.21.1714015034157;
+        Wed, 24 Apr 2024 20:17:14 -0700 (PDT)
+Received: from [10.3.132.118] ([61.213.176.12])
+        by smtp.gmail.com with ESMTPSA id x23-20020a056a00189700b006edadf8058asm12160586pfh.23.2024.04.24.20.17.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 24 Apr 2024 20:13:36 -0700 (PDT)
-Message-ID: <6c04aab1-44d7-464c-8080-b06d5c0f16ee@bytedance.com>
-Date: Thu, 25 Apr 2024 11:13:30 +0800
+        Wed, 24 Apr 2024 20:17:13 -0700 (PDT)
+Message-ID: <9228a873-8250-4b63-bf75-473e9a87ab80@bytedance.com>
+Date: Thu, 25 Apr 2024 11:17:08 +0800
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -61,17 +61,16 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/12] cachefiles: remove request from xarry during flush
- requests
+Subject: Re: [PATCH 02/12] cachefiles: remove err_put_fd tag in
+ cachefiles_ondemand_daemon_read()
 To: libaokun@huaweicloud.com, netfs@lists.linux.dev
 Cc: dhowells@redhat.com, jlayton@kernel.org, jefflexu@linux.alibaba.com,
  linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, Baokun Li <libaokun1@huawei.com>,
- zhujia.zj@bytedance.com
+ linux-kernel@vger.kernel.org, Baokun Li <libaokun1@huawei.com>
 References: <20240424033916.2748488-1-libaokun@huaweicloud.com>
- <20240424033916.2748488-2-libaokun@huaweicloud.com>
+ <20240424033916.2748488-3-libaokun@huaweicloud.com>
 From: Jia Zhu <zhujia.zj@bytedance.com>
-In-Reply-To: <20240424033916.2748488-2-libaokun@huaweicloud.com>
+In-Reply-To: <20240424033916.2748488-3-libaokun@huaweicloud.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
@@ -80,25 +79,39 @@ Content-Transfer-Encoding: 8bit
 在 2024/4/24 11:39, libaokun@huaweicloud.com 写道:
 > From: Baokun Li <libaokun1@huawei.com>
 > 
-> This prevents concurrency from causing access to a freed req.
+> The err_put_fd tag is only used once, so remove it to make the code more
+> readable.
 > 
 > Signed-off-by: Baokun Li <libaokun1@huawei.com>
 
 Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
 
 > ---
->   fs/cachefiles/daemon.c | 1 +
->   1 file changed, 1 insertion(+)
+>   fs/cachefiles/ondemand.c | 7 +++----
+>   1 file changed, 3 insertions(+), 4 deletions(-)
 > 
-> diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
-> index 6465e2574230..ccb7b707ea4b 100644
-> --- a/fs/cachefiles/daemon.c
-> +++ b/fs/cachefiles/daemon.c
-> @@ -159,6 +159,7 @@ static void cachefiles_flush_reqs(struct cachefiles_cache *cache)
->   	xa_for_each(xa, index, req) {
->   		req->error = -EIO;
->   		complete(&req->done);
-> +		__xa_erase(xa, index);
->   	}
->   	xa_unlock(xa);
+> diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
+> index 4ba42f1fa3b4..fd49728d8bae 100644
+> --- a/fs/cachefiles/ondemand.c
+> +++ b/fs/cachefiles/ondemand.c
+> @@ -347,7 +347,9 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
 >   
+>   	if (copy_to_user(_buffer, msg, n) != 0) {
+>   		ret = -EFAULT;
+> -		goto err_put_fd;
+> +		if (msg->opcode == CACHEFILES_OP_OPEN)
+> +			close_fd(((struct cachefiles_open *)msg->data)->fd);
+> +		goto error;
+>   	}
+>   
+>   	/* CLOSE request has no reply */
+> @@ -358,9 +360,6 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+>   
+>   	return n;
+>   
+> -err_put_fd:
+> -	if (msg->opcode == CACHEFILES_OP_OPEN)
+> -		close_fd(((struct cachefiles_open *)msg->data)->fd);
+>   error:
+>   	xa_erase(&cache->reqs, id);
+>   	req->error = ret;
