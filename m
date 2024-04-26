@@ -1,52 +1,52 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB3713C838
-	for <netfs@lists.linux.dev>; Fri, 26 Apr 2024 08:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFCF913CF96
+	for <netfs@lists.linux.dev>; Fri, 26 Apr 2024 08:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714121581; cv=none; b=RgvwEUY/zCoe4dByFkSM4lciwVBEpLPJegfPiFjODAUsSRVT6hrsLrzsbihRp3+3vAnujKck9eshEbvtQgPi/+UFyX5doQtBI6jj46iNZKvzSPRrAi3p7IE9JLsYSvSUUIXeoomEE9o+q6PiJslqd6wk0BQn6EzfVn62/Ho9N5Y=
+	t=1714121828; cv=none; b=PM8MYNZJHN3/79BfM8HSXTJdARo39hSO4XUQD1qusVHHmnxgz2TTubJpcu7JmEqJdzlGOgXqTgLZSpzeNktFxGFKcEkEc11jQSLYS5GRv+r5hNBpchonySQtCj8dloKHbd0H/XtCwJzG9zMvEsnergLHTh3i1GEgt6Ou5PHfXJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714121581; c=relaxed/simple;
-	bh=hUX2DVFFmTQX/4s5jbyX/Z7hdBlcgTsJJWSFEVnr4JM=;
+	s=arc-20240116; t=1714121828; c=relaxed/simple;
+	bh=1XTN5T6PRQMZa8FXz2scQeKYQ8+8piXFIKhjXNy4qqk=;
 	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=Df7FqKu7LNUGgGzbhGwrqxHTKiaxi1wNTY4vlvq1/nmNYNgUnjLG7YuQIreG2dcl/3SxHb/Xn8Oo+I3Uf8qOsU4xJnuA6WTF2+skOCDZprYEe3SEK6PoSiBO9w1E6dm0Uc111AHpS2rFsLiaCMhSbr/tI1wO9TPsikmd4hglJZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TGD744Z6; arc=none smtp.client-ip=170.10.129.124
+	 Content-Type:Date:Message-ID; b=sjLbBjinN51ymJWeZOyTPdv6fX1OG4+LEZYdOWEXICXFhDxvYhM2qUG+URZDNMz9LXjt+43lRiROQCFsbY01tpmHORv8ZNw7lzW/vO0plcAx+8Y3I1XYdxqqq3Af+FoAI/dGfsXt4zsc8zuqvWHiCAIUw1aDBb00AZIAFoF369Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Y3U6ErDb; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TGD744Z6"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Y3U6ErDb"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1714121578;
+	s=mimecast20190719; t=1714121825;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5XDOx+LRv/jq1Nvyq0OuXZVtvg/bIzTKjHQEeVzF+Yk=;
-	b=TGD744Z6zmhqWBHlyzhKBQVdEzz5V2sf8dzZLDgGQ3nUaz8SGEkNa+A1Q+NGzgbjA2mdNv
-	743gn0JurIhn5DBds8PTUJNLAmLCAQiJ2FR4aRB9p6Bxp925ukI8YRMo40FwJritu3twc4
-	Nlkfkls7VM0GGb90zYMcmkj4bz/8G2w=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-373-Ri3cBZkiMNm8Eg-Jxet00Q-1; Fri,
- 26 Apr 2024 04:52:54 -0400
-X-MC-Unique: Ri3cBZkiMNm8Eg-Jxet00Q-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+	bh=Q2pEeDTYgZgn4hwUL7ZGzmZnqIMR6LoTfbNN89+uR1s=;
+	b=Y3U6ErDbCnJlVts36htcOOosrIyBnpn4Ab5EnQ3qIF5L0DYbdgOl5G5Y3bOMgyfxaMKN+i
+	CobNS8+AUZ20PrtsR3vmSeL57ogNd35ZIv/kE1AGVV689uCWw+VNzk8xuY1mPvvbJc+5Ba
+	ckVG3wUIpBaA/SjV9m2pgaDFs6wJ4vU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-17-qRaC9TC_OIC8O5N87ajHKw-1; Fri, 26 Apr 2024 04:57:00 -0400
+X-MC-Unique: qRaC9TC_OIC8O5N87ajHKw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 43FFC293248B;
-	Fri, 26 Apr 2024 08:52:54 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5B03E8032FA;
+	Fri, 26 Apr 2024 08:56:59 +0000 (UTC)
 Received: from warthog.procyon.org.uk (unknown [10.42.28.200])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id F3E9710000AD;
-	Fri, 26 Apr 2024 08:52:52 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 146B72166B31;
+	Fri, 26 Apr 2024 08:56:57 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
 	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
 	Kingdom.
 	Registered in England and Wales under Company Registration No. 3798903
 From: David Howells <dhowells@redhat.com>
-In-Reply-To: <Zin4G2VYUiaYxsKQ@xsang-OptiPlex-9020>
-References: <Zin4G2VYUiaYxsKQ@xsang-OptiPlex-9020> <202404161031.468b84f-oliver.sang@intel.com> <164954.1713356321@warthog.procyon.org.uk>
+In-Reply-To: <2145850.1714121572@warthog.procyon.org.uk>
+References: <2145850.1714121572@warthog.procyon.org.uk> <Zin4G2VYUiaYxsKQ@xsang-OptiPlex-9020> <202404161031.468b84f-oliver.sang@intel.com> <164954.1713356321@warthog.procyon.org.uk>
 To: Oliver Sang <oliver.sang@intel.com>
 Cc: dhowells@redhat.com, oe-lkp@lists.linux.dev, lkp@intel.com,
     Steve French <sfrench@samba.org>,
@@ -64,47 +64,32 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2145849.1714121572.1@warthog.procyon.org.uk>
+Content-ID: <2145948.1714121817.1@warthog.procyon.org.uk>
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 26 Apr 2024 09:52:52 +0100
-Message-ID: <2145850.1714121572@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Date: Fri, 26 Apr 2024 09:56:57 +0100
+Message-ID: <2145949.1714121817@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 
-The "lkp install" didn't complete:
+David Howells <dhowells@redhat.com> wrote:
 
-=3D=3D> Retrieving sources...
-  -> Source is https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/li=
-nux.git
-  -> Cloning linux git repo...
-Cloning into bare repository '/root/lkp-tests/programs/turbostat/pkg/linux=
-'...
-remote: Enumerating objects: 10112942, done.
-remote: Counting objects: 100% (889/889), done.
-remote: Compressing objects: 100% (475/475), done.
-remote: Total 10112942 (delta 554), reused 549 (delta 412), pack-reused 10=
-112053
-Receiving objects: 100% (10112942/10112942), 2.78 GiB | 4.16 MiB/s, done.
-Resolving deltas: 100% (8300839/8300839), done.
-=3D=3D> WARNING: Skipping verification of source file PGP signatures.
-=3D=3D> Validating source files with md5sums...
-    linux ... Skipped
-=3D=3D> Extracting sources...
-  -> Source is https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/li=
-nux.git
-  -> Creating working copy of linux git repo...
-fatal: '/root/lkp-tests/pkg/turbostat/linux' does not appear to be a git r=
-epository
-fatal: Could not read from remote repository.
+> =3D=3D> Retrieving sources...
+>   -> Source is https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/=
+linux.git
+>   -> Cloning linux git repo...
+> Cloning into bare repository '/root/lkp-tests/programs/turbostat/pkg/lin=
+ux'...
 
+Actually, it cloned the linux git repo twice by http, once into:
 
-I looked around under /root/lkp-tests and there's no pkg/ directory.  It s=
-eems
-to be using tmp-pkg instead.
+	programs/turbostat/pkg/linux/
 
-Is there a way to skip the cloning of the kernel?  I already have my test
-kernel running on my test machine, booted by PXE/tftp from the build tree =
-on
-my desktop.  Just tell me what options I need to enable.
+which is a bare repo, and once into:
+
+	tmp-pkg/turbostat/src/linux/
+
+which has all the files checked out.
+
+If it must clone linux, can it at least clone one from the other?
 
 David
 
