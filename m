@@ -1,45 +1,45 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A06B13D8B4
-	for <netfs@lists.linux.dev>; Fri, 26 Apr 2024 08:34:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB3713C838
+	for <netfs@lists.linux.dev>; Fri, 26 Apr 2024 08:52:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714120452; cv=none; b=k8AP+PDnpka60CqQn1l0odmv7e5KyMhdXAJrkZIboqDFJqXdwCFoTNe0JNHjmNujkHaEv/ALND70PPyfzyooOUoaPIf6q/umLnFdLbk1EcjwYR9kl6rcbCdyNCKEGr3xI2s77N4Jxvto+tIrl3Intfafb83g5JfuVqNWpwj4d14=
+	t=1714121581; cv=none; b=RgvwEUY/zCoe4dByFkSM4lciwVBEpLPJegfPiFjODAUsSRVT6hrsLrzsbihRp3+3vAnujKck9eshEbvtQgPi/+UFyX5doQtBI6jj46iNZKvzSPRrAi3p7IE9JLsYSvSUUIXeoomEE9o+q6PiJslqd6wk0BQn6EzfVn62/Ho9N5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714120452; c=relaxed/simple;
-	bh=kt1qirSnBIx/luYlP/mepOvqv1Q7ipxYPxOcDHHjLLU=;
+	s=arc-20240116; t=1714121581; c=relaxed/simple;
+	bh=hUX2DVFFmTQX/4s5jbyX/Z7hdBlcgTsJJWSFEVnr4JM=;
 	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=UDPpjYVkK/YtaMGjBCrbaW2Ru94+8gvKCgiuRMMgyLeex2GC+EoOJ8vHyxSMufhdiD46JHDOrVz/A4ctgQYR9rgqhu8w/8fsW/FVSNZL7fukrVUd/HGAdENwggJp3zfomABBT8nvVHVuBZXFmzL+UaAh/gBdxuvIPb60/zTqzBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HpdUb+6K; arc=none smtp.client-ip=170.10.133.124
+	 Content-Type:Date:Message-ID; b=Df7FqKu7LNUGgGzbhGwrqxHTKiaxi1wNTY4vlvq1/nmNYNgUnjLG7YuQIreG2dcl/3SxHb/Xn8Oo+I3Uf8qOsU4xJnuA6WTF2+skOCDZprYEe3SEK6PoSiBO9w1E6dm0Uc111AHpS2rFsLiaCMhSbr/tI1wO9TPsikmd4hglJZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TGD744Z6; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HpdUb+6K"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TGD744Z6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1714120450;
+	s=mimecast20190719; t=1714121578;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JX0C/eE8/IhmRZdY4t48yInlwmvvYIOtx58avujDOfw=;
-	b=HpdUb+6K8Thu+GgnGyE++yBiSZUgo4fejfzmXB1L8tbeA7mBFysS36FQZs5G4pPZ0ucWkz
-	S7j3skgMpfkpSfdRawIg28L9H0iUWKgBRmXnJt43DedDYQ9/Pf+1INcyDH67OQ+8EQkdJh
-	tBH6qH3046OvkoDaKouBes51RAidZvw=
+	bh=5XDOx+LRv/jq1Nvyq0OuXZVtvg/bIzTKjHQEeVzF+Yk=;
+	b=TGD744Z6zmhqWBHlyzhKBQVdEzz5V2sf8dzZLDgGQ3nUaz8SGEkNa+A1Q+NGzgbjA2mdNv
+	743gn0JurIhn5DBds8PTUJNLAmLCAQiJ2FR4aRB9p6Bxp925ukI8YRMo40FwJritu3twc4
+	Nlkfkls7VM0GGb90zYMcmkj4bz/8G2w=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-318-5-xSqQlbNLWhSxB61eaJVg-1; Fri,
- 26 Apr 2024 04:34:05 -0400
-X-MC-Unique: 5-xSqQlbNLWhSxB61eaJVg-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-373-Ri3cBZkiMNm8Eg-Jxet00Q-1; Fri,
+ 26 Apr 2024 04:52:54 -0400
+X-MC-Unique: Ri3cBZkiMNm8Eg-Jxet00Q-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2F0C228C97CB;
-	Fri, 26 Apr 2024 08:34:05 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 43FFC293248B;
+	Fri, 26 Apr 2024 08:52:54 +0000 (UTC)
 Received: from warthog.procyon.org.uk (unknown [10.42.28.200])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id A70B32024511;
-	Fri, 26 Apr 2024 08:34:03 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id F3E9710000AD;
+	Fri, 26 Apr 2024 08:52:52 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
 	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
 	Kingdom.
@@ -63,36 +63,48 @@ List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2145849.1714121572.1@warthog.procyon.org.uk>
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 26 Apr 2024 09:34:02 +0100
-Message-ID: <2145544.1714120442@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Date: Fri, 26 Apr 2024 09:52:52 +0100
+Message-ID: <2145850.1714121572@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 
-Oliver Sang <oliver.sang@intel.com> wrote:
+The "lkp install" didn't complete:
 
-> I can pass "sudo bin/lkp install job.yaml" on my local machine with fedor=
-a 39
-> now.
+=3D=3D> Retrieving sources...
+  -> Source is https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/li=
+nux.git
+  -> Cloning linux git repo...
+Cloning into bare repository '/root/lkp-tests/programs/turbostat/pkg/linux=
+'...
+remote: Enumerating objects: 10112942, done.
+remote: Counting objects: 100% (889/889), done.
+remote: Compressing objects: 100% (475/475), done.
+remote: Total 10112942 (delta 554), reused 549 (delta 412), pack-reused 10=
+112053
+Receiving objects: 100% (10112942/10112942), 2.78 GiB | 4.16 MiB/s, done.
+Resolving deltas: 100% (8300839/8300839), done.
+=3D=3D> WARNING: Skipping verification of source file PGP signatures.
+=3D=3D> Validating source files with md5sums...
+    linux ... Skipped
+=3D=3D> Extracting sources...
+  -> Source is https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/li=
+nux.git
+  -> Creating working copy of linux git repo...
+fatal: '/root/lkp-tests/pkg/turbostat/linux' does not appear to be a git r=
+epository
+fatal: Could not read from remote repository.
 
-Note that this causes:
 
-systemd-sysv-generator[23561]: SysV service '/etc/rc.d/init.d/network' lack=
-s a native systemd unit file. =E2=99=BB=EF=B8=8F Automatically generating a=
- unit file for compatibility. Please update package to include a native sys=
-temd unit file, in order to make it safe, robust and future-proof. =E2=9A=
-=A0=EF=B8=8F This compatibility logic is deprecated, expect removal soon. =
-=E2=9A=A0=EF=B8=8F
+I looked around under /root/lkp-tests and there's no pkg/ directory.  It s=
+eems
+to be using tmp-pkg instead.
 
-to appear.  What's it doing to the networking settings?  It shouldn't be
-touching those.
-
-Also, does it have to install its own cifs server?  Can it not be directed =
-to
-my test server that's already set up on another machine?  And does it have =
-to
-build a kernel?  Can it not use the one that's already running on the machi=
-ne?
+Is there a way to skip the cloning of the kernel?  I already have my test
+kernel running on my test machine, booted by PXE/tftp from the build tree =
+on
+my desktop.  Just tell me what options I need to enable.
 
 David
 
