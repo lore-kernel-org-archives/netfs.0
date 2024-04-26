@@ -1,168 +1,91 @@
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D4663B8
-	for <netfs@lists.linux.dev>; Fri, 26 Apr 2024 02:13:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CE813C900
+	for <netfs@lists.linux.dev>; Fri, 26 Apr 2024 08:00:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714097602; cv=none; b=Ty8HWJkY/6z5Z07+1lroa/4vj0QH0K+zYTDZFl+r5IANZEqOu8iIVt2t54nKBJu46vJbCrx9SED7Tjh0e4v/nemfnfAExz1AMqicwKHyL4A3rp7BriwVHP8QF+28V4Qr0Q3RW99VJsu5jYsgxhSQKrQcZH/vF4jWfnyveP1LP6k=
+	t=1714118443; cv=none; b=KsGQUsr/ug/13gE5QMxtvewg9JJTA85fZ/ybxuNVhTt2mhtT9eyse75Zz8KCLyTozUhSjdFMtgDHP4TCMUckep8g5csBdHcmm4kmzIIxvEp/lOa01AG41Ldjkopl6IbkIlg+xBzTDsU/yLTlw5qrLZ+H1bwiPw184Aowjhj/UTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714097602; c=relaxed/simple;
-	bh=IKyM0RRgp91tpBkkosb3POhPoylTVEXs8xoD7G2L7I8=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=ah6cALoYrIeWHST58ekCq4mcpxhTSK4Ty5WYyAr2UJI2RAO1/xNo0n8MCqbCzBm95F4DNnfHavZXudOAbCBQ9IaFt9nTmK9PO4ELtDg3N0Bq8ifhBavzMSilbo2ortr8njoeTgmPiMt8J4Wmqnj5w3qcYChJl078TjXo9RMJGHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-36a20206746so17380975ab.3
-        for <netfs@lists.linux.dev>; Thu, 25 Apr 2024 19:13:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714097600; x=1714702400;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Gaf9uHIX188wy87s5s0fm7jlwwFHmUIC3X8hW3n0+40=;
-        b=bpyWG/qHmJ25+mKOqT4t4G6PbwaUPrqTfq876v/sfwqmEWYdN9x/9URKVPKPUs+rle
-         /3TETUg2iHCSjHQiwjKDUYSGQayV0f+EBXxiYxBmjHp1uNN0Jvz0+uGrv4IFO4xrkn4A
-         RwZe5WJrpBzYA6f8UtnjRXc+2cn5SLASJabCSjDkOyvzReHP5VjZTQSXq1kNaWGoiqpN
-         Lr8YICeC2eM6TC7/ZvoZvGuNGk0JB2Mbkto4X5EnZz8sm7wgqAuXWSjiqaXBPZMilMzy
-         nzhLfDAA5FexQEntDfY4BfuqP9/fojVI7w5Es3cKqmJR2DVrfT0taaJ7blpU2AWngYbk
-         wCsg==
-X-Forwarded-Encrypted: i=1; AJvYcCXtLa04KE4VoqXeGxJu1/o3FYyeayeM8Zo2AH4FfnWaz6LZcbKlb7tiBEuFSNiSzW9qOJQfUTgbeAludBcEa+hOlMuRZkE=
-X-Gm-Message-State: AOJu0YyrAwLyVo9IqaMUaG8x04iVgnohELU8lOmd1aoxo8iFjxq/DbI9
-	OGZ85afjHfNDv+E5mJlRiGt7nYaJkVg6af6BRfBJu7YYBWEM4JGOfBk9UFjPHKs64k1Nfngutwr
-	6j18UfVLyiGQfhoi8xh/frNN9E+h47wGKQYQsnCCfFm3vYQXUA9F1nWs=
-X-Google-Smtp-Source: AGHT+IFrB3lnw6BEPuWJpIonFKpdLdEWFcYAzAtghz/5naMW7RN8TmntdUhWPuTdxTTYaEcwqVGg7p10VQzQlNX+bsuipxfOL5gW
+	s=arc-20240116; t=1714118443; c=relaxed/simple;
+	bh=8moJHIF915kF9JPZZi2hSy1ahaIWtygA+5VPkH7e8r8=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=aWuzMSHhNscN/BDQkNx5RmG0/8wo3Fo10I+/NrIa15mXE0Phmw74AKRbQZq1ysfWapBcEzJZYazp9pmJJEeotKX4sRir5icCcXg8q0ii3D+EoU/JjeJUd5BJYtmMgGaMn4qBTvzzwW81zJ1fiF/uV9OjoJV15bXlgtJBWBmxM/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=K9t+9G+a; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="K9t+9G+a"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1714118441;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xIFFxT8ZyW309/4jPgibBUS9mKjAZgteIkx/pxryLuo=;
+	b=K9t+9G+aPTmZZzoQ5tlhaJveJfAzj+Dvd+earc8OJXle0oqywfSGxlVAfhfzV6//8YdWs9
+	D53/QBYZWd+fIDjpGRaTA0dNEIBPWbtVUhR2fGLSvH+uUFsHeysWWsSmi7lxwrgC+WGvS7
+	expAfT1edy4rM7EC5b6JOD7OqcE3DzE=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-573-mr3uO8cZOamc3ageCNO_lw-1; Fri,
+ 26 Apr 2024 04:00:37 -0400
+X-MC-Unique: mr3uO8cZOamc3ageCNO_lw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BE0893811701;
+	Fri, 26 Apr 2024 08:00:36 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.200])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 16B5016D93;
+	Fri, 26 Apr 2024 08:00:34 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20240425084537.6e406d86@kernel.org>
+References: <20240425084537.6e406d86@kernel.org> <1967121.1714034372@warthog.procyon.org.uk>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: dhowells@redhat.com, netdev@vger.kernel.org,
+    Jeff Layton <jlayton@kernel.org>, Steve French <sfrench@samba.org>,
+    Herbert Xu <herbert@gondor.apana.org.au>,
+    "David S.
+ Miller" <davem@davemloft.net>,
+    Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+    netfs@lists.linux.dev, linux-crypto@vger.kernel.org,
+    linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] Fix a potential infinite loop in extract_user_to_sg()
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1d10:b0:36b:26df:cce4 with SMTP id
- i16-20020a056e021d1000b0036b26dfcce4mr72709ila.6.1714097600234; Thu, 25 Apr
- 2024 19:13:20 -0700 (PDT)
-Date: Thu, 25 Apr 2024 19:13:20 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000009299ad0616f6727a@google.com>
-Subject: [syzbot] [netfs?] WARNING in netfs_pages_written_back
-From: syzbot <syzbot+dbc44fd848d570fc1526@syzkaller.appspotmail.com>
-To: dhowells@redhat.com, jlayton@kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netfs@lists.linux.dev, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2101063.1714118434.1@warthog.procyon.org.uk>
+Date: Fri, 26 Apr 2024 09:00:34 +0100
+Message-ID: <2101064.1714118434@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
 
-Hello,
+Jakub Kicinski <kuba@kernel.org> wrote:
 
-syzbot found the following issue on:
+> On Thu, 25 Apr 2024 09:39:32 +0100 David Howells wrote:
+> > Fix extract_user_to_sg() so that it will break out of the loop if
+> > iov_iter_extract_pages() returns 0 rather than looping around forever.
+> 
+> Is "goto fail" the right way to break out here?
+> My intuition would be "break".
+> 
+> On a quick read it seems like res = 0 may occur if we run out of
+> iterator, is passing maxsize > iter->count illegal?
 
-HEAD commit:    e33c4963bf53 Merge tag 'nfsd-6.9-5' of git://git.kernel.or..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=118f2c08980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=19891bd776e81b8b
-dashboard link: https://syzkaller.appspot.com/bug?extid=dbc44fd848d570fc1526
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-userspace arch: i386
+I would say that you're not allowed to ask for more than is in the iterator.
+In a number of places this is called, it's a clear failure if you can't get
+that the requested amount out of it - for example, if we're building a cifs
+message and have set all the fields in the header and are trying to encrypt
+the message.
 
-Unfortunately, I don't have any reproducer for this issue yet.
+David
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7bc7510fe41f/non_bootable_disk-e33c4963.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/af334172fdbc/vmlinux-e33c4963.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/9c0bfbadd1ab/bzImage-e33c4963.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+dbc44fd848d570fc1526@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-bad 1 @0 page 0 0
-WARNING: CPU: 0 PID: 14804 at fs/netfs/buffered_write.c:653 netfs_pages_written_back+0xe02/0x1320 fs/netfs/buffered_write.c:653
-Modules linked in:
-CPU: 0 PID: 14804 Comm: syz-executor.2 Not tainted 6.9.0-rc5-syzkaller-00053-ge33c4963bf53 #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:netfs_pages_written_back+0xe02/0x1320 fs/netfs/buffered_write.c:653
-Code: 48 c1 ee 03 80 3c 06 00 0f 85 d0 04 00 00 48 8b 44 24 18 4d 89 f0 48 c7 c7 80 54 22 8b 48 8b b0 28 01 00 00 e8 8f 0a 21 ff 90 <0f> 0b 90 90 e9 3c f4 ff ff e8 c0 35 5e ff e8 9b cc 44 ff 31 ff 41
-RSP: 0018:ffffc900030a75b8 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: ffffea0001522140 RCX: ffffffff81513b29
-RDX: ffff88801e1c2440 RSI: ffffffff81513b36 RDI: 0000000000000001
-RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000003 R12: dffffc0000000000
-R13: ffff88801fa60040 R14: 0000000000000000 R15: ffff88801fa60138
-FS:  0000000000000000(0000) GS:ffff88802c200000(0063) knlGS:00000000f5ed1b40
-CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
-CR2: 00000000eda8fda4 CR3: 00000000468b6000 CR4: 0000000000350ef0
-DR0: 0000000000000000 DR1: 00000000872c9164 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- netfs_cleanup_buffered_write+0x7a8/0x9b0 fs/netfs/buffered_write.c:726
- netfs_write_terminated+0x3c7/0x910 fs/netfs/output.c:121
- netfs_end_writethrough+0x1a6/0x200 fs/netfs/output.c:468
- netfs_perform_write+0x1a6c/0x26b0 fs/netfs/buffered_write.c:398
- netfs_buffered_write_iter_locked+0x213/0x2c0 fs/netfs/buffered_write.c:454
- netfs_file_write_iter+0x1e0/0x470 fs/netfs/buffered_write.c:493
- v9fs_file_write_iter+0xa1/0x100 fs/9p/vfs_file.c:407
- call_write_iter include/linux/fs.h:2110 [inline]
- do_iter_readv_writev+0x504/0x780 fs/read_write.c:741
- vfs_writev+0x36f/0xdb0 fs/read_write.c:971
- do_pwritev+0x1b2/0x260 fs/read_write.c:1072
- __do_compat_sys_pwritev2 fs/read_write.c:1218 [inline]
- __se_compat_sys_pwritev2 fs/read_write.c:1210 [inline]
- __ia32_compat_sys_pwritev2+0x121/0x1b0 fs/read_write.c:1210
- do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
- __do_fast_syscall_32+0x75/0x120 arch/x86/entry/common.c:386
- do_fast_syscall_32+0x32/0x80 arch/x86/entry/common.c:411
- entry_SYSENTER_compat_after_hwframe+0x84/0x8e
-RIP: 0023:0xf7300579
-Code: b8 01 10 06 03 74 b4 01 10 07 03 74 b0 01 10 08 03 74 d8 01 00 00 00 00 00 00 00 00 00 00 00 00 00 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90 90 90 90 8d b4 26 00 00 00 00 8d b4 26 00 00 00 00
-RSP: 002b:00000000f5ed15ac EFLAGS: 00000292 ORIG_RAX: 000000000000017b
-RAX: ffffffffffffffda RBX: 0000000000000026 RCX: 0000000020000240
-RDX: 0000000000000001 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000000000015 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000292 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
-----------------
-Code disassembly (best guess), 2 bytes skipped:
-   0:	10 06                	adc    %al,(%rsi)
-   2:	03 74 b4 01          	add    0x1(%rsp,%rsi,4),%esi
-   6:	10 07                	adc    %al,(%rdi)
-   8:	03 74 b0 01          	add    0x1(%rax,%rsi,4),%esi
-   c:	10 08                	adc    %cl,(%rax)
-   e:	03 74 d8 01          	add    0x1(%rax,%rbx,8),%esi
-  1e:	00 51 52             	add    %dl,0x52(%rcx)
-  21:	55                   	push   %rbp
-  22:	89 e5                	mov    %esp,%ebp
-  24:	0f 34                	sysenter
-  26:	cd 80                	int    $0x80
-* 28:	5d                   	pop    %rbp <-- trapping instruction
-  29:	5a                   	pop    %rdx
-  2a:	59                   	pop    %rcx
-  2b:	c3                   	ret
-  2c:	90                   	nop
-  2d:	90                   	nop
-  2e:	90                   	nop
-  2f:	90                   	nop
-  30:	8d b4 26 00 00 00 00 	lea    0x0(%rsi,%riz,1),%esi
-  37:	8d b4 26 00 00 00 00 	lea    0x0(%rsi,%riz,1),%esi
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
