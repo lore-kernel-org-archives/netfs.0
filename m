@@ -1,45 +1,45 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756AF17B4F7
-	for <netfs@lists.linux.dev>; Tue, 30 Apr 2024 14:01:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCCA81802B4
+	for <netfs@lists.linux.dev>; Tue, 30 Apr 2024 14:01:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714485691; cv=none; b=YjDQBQckP028XpdDO6TOn/5vUPCBRRC5L0iOmhHeOMqLSG1dZqpo0Sp3b1Qitptu0hkbgHnR19lShUNFpEU5GL2f5bmd6/3J+k52+LBCAQToGY3hHCYYt5zJTtYM4vlGf8k+mQsMEUPI9gj4N+s5VONg5G2UxJYgF3d6jHsJLUg=
+	t=1714485700; cv=none; b=f+pR0xmMg6RCKFudh/iX1zKjMmhLX4PNZSVCF2535qtyiV35583JmAWLrD/T2TtVVeWDlXkr4tRO+bNxaiks+CgJsiiJl+AnEQCrufcMxiCz/f4y8QiVxFdKByB4qyWkPQ68qcdW18GbefrUC6S80kvaKTMOeJcljkNv3jCb2IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714485691; c=relaxed/simple;
-	bh=l2BwvZmtrfT4S750WyzyWkcltqFLAI/SdD29xvEFeeI=;
+	s=arc-20240116; t=1714485700; c=relaxed/simple;
+	bh=hfTpBenYXqn/yYZgL0VekIwKOYS296pHNOKURBLP4z0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nQ1ysekanwzAvVfQ131QRGR/UuaXL11gMmuaveh5bX9NcZqEUfx92uO28ve04kb4QYg6nRxEvdj9XSmqc/NZ0eaDIfHuzTlmn4LUI/6mDLK3UWR8Nv3g/uOyMaUvCUP2EwgxfTuItbQhA0pT5asL6eRjbEIIlDLH3RWzxhdf6uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QGbCIA54; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=qRZTO9oWDLKvunEj9hJhmUxdn38bK+yz2bgR+OsLCI2ls5iCT5u39FTY+Bc9+bstreFkyrabTXl0mEa81qi5b8naOPdXjeM0+JWbH9F88P8l+2ga+foFaADzQ564m+Cf5Xp4D/HaPgX6Z6WF9m6YbFhmi41Rbh3dkMGsUNAuTqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gtLNu5C+; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QGbCIA54"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gtLNu5C+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1714485689;
+	s=mimecast20190719; t=1714485696;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uYKvItVfQ5vMLpVWGuG4Wu9Mz+mrcrwjH5IKasVHZvQ=;
-	b=QGbCIA54SmHE6MdaUbRWvW9DhOw4BrnYJYFXIEmRaSVNP0HHli0eZEYFmN5FSiULc16Csy
-	c7SrznAn75ql1UFy+89xoRT98ACAeNlBn4ut4oKLWSrJXbEQ1rqdYvVuxZ2zpnGry1MSip
-	pBp/Kn4ryG41P03ZviFF+PebHD573nY=
+	bh=SL4EWbx4NBAGR5Ppiq2v7C/YTDepZ3O+7v26rOrM0n0=;
+	b=gtLNu5C++A+WAJVxEIsv75ROzI1SsIb+56PI4u7WuDU5pnUVdup5/sgPsbeCGXKAes7CJB
+	idgxD3Xi+gEz77gFqYxpIPEmiZsDrWu+0p8jaqrfHWxhswOUbre054/lmmBJDVVSBsBjBs
+	MC2LMVIgoeWYw0mMQsIkr37LcPK8CF4=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-618--sMwcTQuMLKiRlu_VVUNdw-1; Tue,
- 30 Apr 2024 10:01:25 -0400
-X-MC-Unique: -sMwcTQuMLKiRlu_VVUNdw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-529--TbzclIPMMi2MXLaTqf-qA-1; Tue,
+ 30 Apr 2024 10:01:33 -0400
+X-MC-Unique: -TbzclIPMMi2MXLaTqf-qA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 04A6C1C4C397;
-	Tue, 30 Apr 2024 14:01:24 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A04ED1C4C385;
+	Tue, 30 Apr 2024 14:01:27 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.42.28.22])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 2175A202450F;
-	Tue, 30 Apr 2024 14:01:20 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 9BCF51121313;
+	Tue, 30 Apr 2024 14:01:24 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>,
 	Jeff Layton <jlayton@kernel.org>,
@@ -66,9 +66,9 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-mm@kvack.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 05/22] netfs: Make netfs_io_request::subreq_counter an atomic_t
-Date: Tue, 30 Apr 2024 15:00:36 +0100
-Message-ID: <20240430140056.261997-6-dhowells@redhat.com>
+Subject: [PATCH v2 06/22] netfs: Use subreq_counter to allocate subreq debug_index values
+Date: Tue, 30 Apr 2024 15:00:37 +0100
+Message-ID: <20240430140056.261997-7-dhowells@redhat.com>
 In-Reply-To: <20240430140056.261997-1-dhowells@redhat.com>
 References: <20240430140056.261997-1-dhowells@redhat.com>
 Precedence: bulk
@@ -78,45 +78,82 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 
-Make the netfs_io_request::subreq_counter, used to generate values for
-netfs_io_subrequest::debug_index, into an atomic_t so that it can be called
-from the retry thread at the same time as the app thread issuing writes.
+Use the subreq_counter in netfs_io_request to allocate subrequest
+debug_index values in read ops as well as write ops.
 
 Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
+cc: Jeff Layton <jlayton@kernel.org>
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
 ---
- fs/netfs/output.c     | 2 +-
- include/linux/netfs.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ fs/netfs/io.c      | 7 ++-----
+ fs/netfs/objects.c | 1 +
+ fs/netfs/output.c  | 1 -
+ 3 files changed, 3 insertions(+), 6 deletions(-)
 
+diff --git a/fs/netfs/io.c b/fs/netfs/io.c
+index 2641238aae82..8de581ac0cfb 100644
+--- a/fs/netfs/io.c
++++ b/fs/netfs/io.c
+@@ -501,8 +501,7 @@ netfs_rreq_prepare_read(struct netfs_io_request *rreq,
+  * Slice off a piece of a read request and submit an I/O request for it.
+  */
+ static bool netfs_rreq_submit_slice(struct netfs_io_request *rreq,
+-				    struct iov_iter *io_iter,
+-				    unsigned int *_debug_index)
++				    struct iov_iter *io_iter)
+ {
+ 	struct netfs_io_subrequest *subreq;
+ 	enum netfs_io_source source;
+@@ -511,7 +510,6 @@ static bool netfs_rreq_submit_slice(struct netfs_io_request *rreq,
+ 	if (!subreq)
+ 		return false;
+ 
+-	subreq->debug_index	= (*_debug_index)++;
+ 	subreq->start		= rreq->start + rreq->submitted;
+ 	subreq->len		= io_iter->count;
+ 
+@@ -565,7 +563,6 @@ static bool netfs_rreq_submit_slice(struct netfs_io_request *rreq,
+ int netfs_begin_read(struct netfs_io_request *rreq, bool sync)
+ {
+ 	struct iov_iter io_iter;
+-	unsigned int debug_index = 0;
+ 	int ret;
+ 
+ 	_enter("R=%x %llx-%llx",
+@@ -596,7 +593,7 @@ int netfs_begin_read(struct netfs_io_request *rreq, bool sync)
+ 		if (rreq->origin == NETFS_DIO_READ &&
+ 		    rreq->start + rreq->submitted >= rreq->i_size)
+ 			break;
+-		if (!netfs_rreq_submit_slice(rreq, &io_iter, &debug_index))
++		if (!netfs_rreq_submit_slice(rreq, &io_iter))
+ 			break;
+ 		if (test_bit(NETFS_RREQ_BLOCKED, &rreq->flags) &&
+ 		    test_bit(NETFS_RREQ_NONBLOCK, &rreq->flags))
+diff --git a/fs/netfs/objects.c b/fs/netfs/objects.c
+index 72b52f070270..8acc03a64059 100644
+--- a/fs/netfs/objects.c
++++ b/fs/netfs/objects.c
+@@ -152,6 +152,7 @@ struct netfs_io_subrequest *netfs_alloc_subrequest(struct netfs_io_request *rreq
+ 		INIT_LIST_HEAD(&subreq->rreq_link);
+ 		refcount_set(&subreq->ref, 2);
+ 		subreq->rreq = rreq;
++		subreq->debug_index = atomic_inc_return(&rreq->subreq_counter);
+ 		netfs_get_request(rreq, netfs_rreq_trace_get_subreq);
+ 		netfs_stat(&netfs_n_rh_sreq);
+ 	}
 diff --git a/fs/netfs/output.c b/fs/netfs/output.c
-index 625eb68f3e5a..fbdbb4f78234 100644
+index fbdbb4f78234..e586396d6b72 100644
 --- a/fs/netfs/output.c
 +++ b/fs/netfs/output.c
-@@ -37,7 +37,7 @@ struct netfs_io_subrequest *netfs_create_write_request(struct netfs_io_request *
+@@ -37,7 +37,6 @@ struct netfs_io_subrequest *netfs_create_write_request(struct netfs_io_request *
  		subreq->source	= dest;
  		subreq->start	= start;
  		subreq->len	= len;
--		subreq->debug_index = wreq->subreq_counter++;
-+		subreq->debug_index = atomic_inc_return(&wreq->subreq_counter);
+-		subreq->debug_index = atomic_inc_return(&wreq->subreq_counter);
  
  		switch (subreq->source) {
  		case NETFS_UPLOAD_TO_SERVER:
-diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-index f36a6d8163d1..ddafc6ebff42 100644
---- a/include/linux/netfs.h
-+++ b/include/linux/netfs.h
-@@ -202,7 +202,7 @@ struct netfs_io_request {
- 	unsigned int		debug_id;
- 	unsigned int		rsize;		/* Maximum read size (0 for none) */
- 	unsigned int		wsize;		/* Maximum write size (0 for none) */
--	unsigned int		subreq_counter;	/* Next subreq->debug_index */
-+	atomic_t		subreq_counter;	/* Next subreq->debug_index */
- 	atomic_t		nr_outstanding;	/* Number of ops in progress */
- 	atomic_t		nr_copy_ops;	/* Number of copy-to-cache ops in progress */
- 	size_t			submitted;	/* Amount submitted for I/O so far */
 
