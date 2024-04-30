@@ -1,77 +1,93 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EFC51527A4
-	for <netfs@lists.linux.dev>; Tue, 30 Apr 2024 14:47:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3AE172BCA
+	for <netfs@lists.linux.dev>; Tue, 30 Apr 2024 14:59:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714488473; cv=none; b=IPzUDBC5dWzuHfad+2MHnoeTriO2gbLnm2eFkia6Ucrl4iYNjH9RuYRwH0FDR7yQWwXqH900eCVBsRFPVL2wKG2WtcvO1DbvKRfvkkR/f91+RFcP2x8KNia+MnPmVtmV2xEmsLLCn+ocKkC259zjPpX/jufpraEOdnMTOUZmsWU=
+	t=1714489143; cv=none; b=amjQAYVj9CULqXmuHLZBvOyS5FQ7gnu1sVPr+47yCCiA1/oGZ7gjmwNStdAt/veVzWK3xKn8iR4CSH50oIQYXgZU9hegPki/TxzmDIiR1EmUTcTZ5e+yywn31pq3cPabE3jbFmQ69FyLNObjqOtCpURR/OEQy7oB+2uPJl6Qfuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714488473; c=relaxed/simple;
-	bh=17/ige2G0/bT+taZDR8dyDbj8f4gwH5Ssbdw0+0wOUY=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=O6Hu3k88vlsOWvoqQytA9AxOYRtetGoT0RdKr0hRH4zq9ZcuJuCQYuhGjeVZh3J4eDVwzazkzADJZFNiNwsdw9HHNcu9+2nEVsQ2NjMlDTX2RqJYkuj1MAfWSLwwwHQtBLKyNwczLOtOajwBhA6i5wglmkqvL8niMK+Jyj37EAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ShIiwUqI; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1714489143; c=relaxed/simple;
+	bh=/e+NK6Czol+7PAxT9nfpaxf/IU9cfQ6ydxY3hYa29qI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hFtfxmKH8TldDL0BgFAUPimB7v3h+Sgj19Wo/dvwtbv1tjxuFgbe7UVWOKCDmEMPGawKjVga1CDeqdsnUGt8DBElcDFIXk9dbU5paRKh4jSVHlu7t3/Ej6aZgjsr1OKIA8g9BHOz1EWJ6Kry/C3TWYkTMroiWps0iBdS4G6LwEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OsKJLxLQ; arc=none smtp.client-ip=209.85.208.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ShIiwUqI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1714488470;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=17/ige2G0/bT+taZDR8dyDbj8f4gwH5Ssbdw0+0wOUY=;
-	b=ShIiwUqID8nb6Fskv3Wlo4F3XTlQdH20QDnPJ6XyU02P9BDvtAtwXkMTpUvsvXapRUd5Xg
-	+5tOq8S+1hKv/DJJb3SZT/xgfU5qJrIqWpgJ+Ese7bnwfwSDAg/uWQva5slRdGXvwcz6Db
-	6mEUSsbXdyWkLVZKfMgEuwfOxkcHF/s=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-315-Yqhjr50rP_uciVJPbKQlhw-1; Tue,
- 30 Apr 2024 10:47:46 -0400
-X-MC-Unique: Yqhjr50rP_uciVJPbKQlhw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B7E0229AC014;
-	Tue, 30 Apr 2024 14:47:45 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.22])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 46C461121312;
-	Tue, 30 Apr 2024 14:47:44 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20240430140930.262762-1-dhowells@redhat.com>
-References: <20240430140930.262762-1-dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>,
-    Steve French <smfrench@gmail.com>
-Cc: dhowells@redhat.com, Jeff Layton <jlayton@kernel.org>,
-    Matthew Wilcox <willy@infradead.org>,
-    Paulo Alcantara <pc@manguebit.com>,
-    Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-    netfs@lists.linux.dev, linux-cifs@vger.kernel.org,
-    linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-    linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 00/16] netfs, cifs: Delegate high-level I/O to netfslib
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OsKJLxLQ"
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2def8e5ae60so66876891fa.2
+        for <netfs@lists.linux.dev>; Tue, 30 Apr 2024 07:59:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714489140; x=1715093940; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/e+NK6Czol+7PAxT9nfpaxf/IU9cfQ6ydxY3hYa29qI=;
+        b=OsKJLxLQZQ0IR0gEMxLguMvimr/anE0ITKNzkhyuMSAtM6MWiZmL8/6LrDla0P4o1M
+         M/RlEZ4XgqGxTShERWD5YU2dmsb5+nNOu4XI3Y4WtAxItTM8ttsqpttC01e09tCKVmrT
+         +8b84oZQnM/znrYbiQNUaSYhFaUuPFF6GPfssEKN1UwpGcT+qdCA/7WT+4zDcU9QBCS6
+         Erer1b9yyHfyaZ+Xh9HAPZESRLzsEgb2I4iAClhTA136/har1pV9OF4uv8dXV+dveq5P
+         NIybgNjdwfklpfMd2SZH7dPMRqR3F31MIAMMBu3sI4tKxeIervZH2S4Rj2NSw0zmb165
+         w+yA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714489140; x=1715093940;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/e+NK6Czol+7PAxT9nfpaxf/IU9cfQ6ydxY3hYa29qI=;
+        b=H6q8MaRq2CfpkVBjxHoFMckhm1ljzVJgLQAvixdqZJjyetfZ9H6Z/MNXyACo5ecfdn
+         7eWak20CV2gbQvm37fbBs1kzu5QqqiF0kkZaImlDuoNgqUI2mvnLjKCMtwyPjnVTKYzs
+         hvPBmMuqHLwrSA8ahwVoDRPMgz+IS8Zg4PkdbcXtCqWLiUBbtr6ARcBqrJ15rsi/P/8o
+         Dg7L2moCqueNXU/7OZLzor5/38iJHr23FF4vL+cxQWzAISoNUWHiXOq1pEQtkBGUrDK6
+         CKXPorwVqcYqLXpdSH4dauE2sw9vRC75TcNxCpwGjnx/ypC7rBy+Kox65SFCfinsJTc/
+         LdqA==
+X-Forwarded-Encrypted: i=1; AJvYcCU7ckWu9tlHDrqLk/364csnpKcHbbS9l1HFXNYZiQK9myHGLZGCp+3M2lS3KgwiHz1hA8LJ/b0FLSlakzfNveYDw3oGstQ=
+X-Gm-Message-State: AOJu0Yy5pqK9u4ulBJxVCdBOkLpN5+VCHHZz/qPgXY5MeLRpjlEVZy/o
+	P6ULHe7ryJXsIbBM/eQ3HHPErh3qlYubzxEP/y571ZRd7pcC5ORoosM0W9gqfJ0zWPAtDHUFl3T
+	4f6mlnz/471ziGqCGitWBqiawHbRRNA==
+X-Google-Smtp-Source: AGHT+IH1ix0BqVq9FIQTiQZX/OFdgb0zFuvm/XZ1HQbS+UYTDWVWBCztGEQwH9uF9Er2JGQROqanY7i0WYIkpAAzanE=
+X-Received: by 2002:a2e:7a0a:0:b0:2d8:45ff:d606 with SMTP id
+ v10-20020a2e7a0a000000b002d845ffd606mr7232211ljc.50.1714489139376; Tue, 30
+ Apr 2024 07:58:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <264959.1714488463.1@warthog.procyon.org.uk>
-Date: Tue, 30 Apr 2024 15:47:43 +0100
-Message-ID: <264960.1714488463@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+References: <20240430140930.262762-1-dhowells@redhat.com> <264960.1714488463@warthog.procyon.org.uk>
+In-Reply-To: <264960.1714488463@warthog.procyon.org.uk>
+From: Steve French <smfrench@gmail.com>
+Date: Tue, 30 Apr 2024 09:58:47 -0500
+Message-ID: <CAH2r5mspax98XVdEyYaupSFqh=M5zjcwckjta8H9=e+N-dnrmA@mail.gmail.com>
+Subject: Re: [PATCH v7 00/16] netfs, cifs: Delegate high-level I/O to netfslib
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <christian@brauner.io>, Jeff Layton <jlayton@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Paulo Alcantara <pc@manguebit.com>, 
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>, netfs@lists.linux.dev, 
+	linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Christian,
+Yes - I think it is easier for now if Christian picks up the series in
+his tree due to the VFS dependencies - if we start hitting merge
+conflicts with my tree later we can consider changing that.
 
-With Steve's agreement, could you pick this set of patches up also?
+On Tue, Apr 30, 2024 at 9:47=E2=80=AFAM David Howells <dhowells@redhat.com>=
+ wrote:
+>
+> Hi Christian,
+>
+> With Steve's agreement, could you pick this set of patches up also?
+>
+> Thanks,
+> David
+>
 
+
+--=20
 Thanks,
-David
 
+Steve
