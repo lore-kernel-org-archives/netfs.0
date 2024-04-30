@@ -1,57 +1,72 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1491D12C487;
-	Tue, 30 Apr 2024 10:51:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D25A172BC6
+	for <netfs@lists.linux.dev>; Tue, 30 Apr 2024 14:01:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474310; cv=none; b=Q9aubPVc4m9Ka/q82CAwJrb86rdcpB4VGDZC5E7hWyGQKtlnRzO6YQw8Zv8rWUXH8jpKYK0hnAzkQ3YzuPUSr7DnmPc6/b3MU7Lbn/CFQhSe4aZ4lIuZRDtwvar3ABHH80dpqprl1ymlqQFq4rPWlllF1CtTNrN4PgGtWHDHqIs=
+	t=1714485672; cv=none; b=eobW2ZW1TViCnaghSz5ug9+2YL0sowOhohzZX1VAUBwP0WzLtBpJnUcNx98mKLzGOcZ+e+JW4gK81Qf/+rABiNo5NkC2EGZ0qLXbxcGW6IGRgcGGK35KC0CGesqR/Cvjtw2IstfGvjQVcWXcFqqa6+3RGpaebZq/JVZr1w4BYxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474310; c=relaxed/simple;
-	bh=EqxWaXJkaKi6EmeJ/uq2stp+6OiNQwCUC8ehr0Ve1Ww=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WAQXgjuOKCZq3Ay/N2oodpK1zKQwvHINYo8VNmcBJvEYrVDC8WYIkUTqT8sSymkVcSIV3C9cjFm7WAYpIXdNR17YfhK/teN+ZvxMjNFKhLUopXYfH61hNDvfSq+L30gzI6gybSESrX9lH5/c3WgPI4wg1n0tdoRU4W+fkzjhok8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oTgqEuHg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1714485672; c=relaxed/simple;
+	bh=NE+NGnp7qcYNIdSVHXWfKTzGPKGrqOKwMtnL1oSVkp0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kYkgZdn0f2uO7wVdJa8G+LWcWBcnldzAEaiCFwdoW2rVMmp1QGOD0UHCdxAu1jtvm3IbLwG19+9UTXogUle0/M0F+k2ZwdPX3kQYnGMn75zyhrb+foltdMOqQYFP5VgKjhAmbd8bYm87U4mTMnoYTLJxdbxXM0SMUXF+Og71KxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=M8/oGuzm; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oTgqEuHg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5788EC4AF18;
-	Tue, 30 Apr 2024 10:51:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1714474309;
-	bh=EqxWaXJkaKi6EmeJ/uq2stp+6OiNQwCUC8ehr0Ve1Ww=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oTgqEuHgqQKdUci1Z3du65415M3GJ2TVlGxYZfvpPUKLshBl6qKVOcxYk5o3+hZEe
-	 mWLr+NFj5WD7vWLX3sIjMxcZyd3TmFgb5xbQWVGrpuiABOigLaqyH3dO05hIAki7/a
-	 b0/2sOxS15AAryy15gc/F9THApVMUTySCFlDObTg=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	David Howells <dhowells@redhat.com>,
-	Jeffrey Layton <jlayton@kernel.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M8/oGuzm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1714485670;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=K3Irydl6Xh7jL+cMJWxpcSfsWrNZFzC5/LPeqTp0XrU=;
+	b=M8/oGuzmbO9hmQiLFHh3N/zT46QsRffMdBoYuhWC0Z/yttEFCignCP8MQqq6ODfNMRgT3Q
+	sRBZFqeuBQBzuAvvvSUCXUiHeo9ijFi0VFilVXunjPDwFvy+d97OCHFf0S19WvAGrE5YQe
+	2jopQz/scTwlhX9naul5JFnPkajsb4I=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-88-lzol3MtxNXm8_iyxwxlWwA-1; Tue, 30 Apr 2024 10:01:04 -0400
+X-MC-Unique: lzol3MtxNXm8_iyxwxlWwA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CD4D8802352;
+	Tue, 30 Apr 2024 14:01:02 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.42.28.22])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 7D94C40C140B;
+	Tue, 30 Apr 2024 14:00:59 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>,
+	Jeff Layton <jlayton@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Dominique Martinet <asmadeus@codewreck.org>
+Cc: David Howells <dhowells@redhat.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Steve French <smfrench@gmail.com>,
 	Marc Dionne <marc.dionne@auristor.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Tom Talpey <tom@talpey.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
 	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	v9fs@lists.linux.dev,
+	linux-cachefs@redhat.com,
 	linux-afs@lists.infradead.org,
 	linux-cifs@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.8 119/228] netfs: Fix the pre-flush when appending to a file in writethrough mode
-Date: Tue, 30 Apr 2024 12:38:17 +0200
-Message-ID: <20240430103107.242045835@linuxfoundation.org>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240430103103.806426847@linuxfoundation.org>
-References: <20240430103103.806426847@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 00/22] netfs, afs, 9p, cifs: Rework netfs to use ->writepages() to copy to cache
+Date: Tue, 30 Apr 2024 15:00:31 +0100
+Message-ID: <20240430140056.261997-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -59,97 +74,194 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
 
-6.8-stable review patch.  If anyone has any objections, please let me know.
+Hi Christian, Willy,
 
-------------------
+Here's an updated version of my netfs writeback rewrite.  There haven't
+been any major fixes.  So far...
 
-From: David Howells <dhowells@redhat.com>
+The primary purpose of these patches is to rework the netfslib writeback
+implementation such that pages read from the cache are written to the cache
+through ->writepages(), thereby allowing the fscache page flag to be
+retired.
 
-[ Upstream commit c97f59e276d4e93480f29a70accbd0d7273cf3f5 ]
+The reworking also:
 
-In netfs_perform_write(), when the file is marked NETFS_ICTX_WRITETHROUGH
-or O_*SYNC or RWF_*SYNC was specified, write-through caching is performed
-on a buffered file.  When setting up for write-through, we flush any
-conflicting writes in the region and wait for the write to complete,
-failing if there's a write error to return.
+ (1) builds on top of the new writeback_iter() infrastructure;
 
-The issue arises if we're writing at or above the EOF position because we
-skip the flush and - more importantly - the wait.  This becomes a problem
-if there's a partial folio at the end of the file that is being written out
-and we want to make a write to it too.  Both the already-running write and
-the write we start both want to clear the writeback mark, but whoever is
-second causes a warning looking something like:
+ (2) makes it possible to use vectored write RPCs as discontiguous streams
+     of pages can be accommodated;
 
-    ------------[ cut here ]------------
-    R=00000012: folio 11 is not under writeback
-    WARNING: CPU: 34 PID: 654 at fs/netfs/write_collect.c:105
-    ...
-    CPU: 34 PID: 654 Comm: kworker/u386:27 Tainted: G S ...
-    ...
-    Workqueue: events_unbound netfs_write_collection_worker
-    ...
-    RIP: 0010:netfs_writeback_lookup_folio
+ (3) makes it easier to do simultaneous content crypto and stream division.
 
-Fix this by making the flush-and-wait unconditional.  It will do nothing if
-there are no folios in the pagecache and will return quickly if there are
-no folios in the region specified.
+ (4) provides support for retrying writes and re-dividing a stream;
 
-Further, move the WBC attachment above the flush call as the flush is going
-to attach a WBC and detach it again if it is not present - and since we
-need one anyway we might as well share it.
+ (5) replaces the ->launder_folio() op, so that ->writepages() is used
+     instead;
 
-Fixes: 41d8e7673a77 ("netfs: Implement a write-through caching option")
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202404161031.468b84f-oliver.sang@intel.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/2150448.1714130115@warthog.procyon.org.uk
-Reviewed-by: Jeffrey Layton <jlayton@kernel.org>
-cc: Eric Van Hensbergen <ericvh@kernel.org>
-cc: Latchesar Ionkov <lucho@ionkov.net>
-cc: Dominique Martinet <asmadeus@codewreck.org>
-cc: Christian Schoenebeck <linux_oss@crudebyte.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-cc: linux-mm@kvack.org
-cc: v9fs@lists.linux.dev
-cc: linux-afs@lists.infradead.org
-cc: linux-cifs@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/netfs/buffered_write.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ (6) uses mempools to allocate the netfs_io_request and netfs_io_subrequest
+     structs to avoid allocation failure in the writeback path.
 
-diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
-index 8f13ca8fbc74d..267b622d923b1 100644
---- a/fs/netfs/buffered_write.c
-+++ b/fs/netfs/buffered_write.c
-@@ -172,15 +172,14 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 	if (unlikely(test_bit(NETFS_ICTX_WRITETHROUGH, &ctx->flags) ||
- 		     iocb->ki_flags & (IOCB_DSYNC | IOCB_SYNC))
- 	    ) {
--		if (pos < i_size_read(inode)) {
--			ret = filemap_write_and_wait_range(mapping, pos, pos + iter->count);
--			if (ret < 0) {
--				goto out;
--			}
--		}
--
- 		wbc_attach_fdatawrite_inode(&wbc, mapping->host);
- 
-+		ret = filemap_write_and_wait_range(mapping, pos, pos + iter->count);
-+		if (ret < 0) {
-+			wbc_detach_inode(&wbc);
-+			goto out;
-+		}
-+
- 		wreq = netfs_begin_writethrough(iocb, iter->count);
- 		if (IS_ERR(wreq)) {
- 			wbc_detach_inode(&wbc);
--- 
-2.43.0
+Some code that uses the fscache page flag is retained for compatibility
+purposes with nfs and ceph.  The code is switched to using the synonymous
+private_2 label instead and marked with deprecation comments.  I have a
+separate set of patches that convert cifs to use this code.
 
+-~-
 
+In this new implementation, writeback_iter() is used to pump folios,
+progressively creating two parallel, but separate streams.  Either or both
+streams can contain gaps, and the subrequests in each stream can be of
+variable size, don't need to align with each other and don't need to align
+with the folios.  (Note that more streams can be added if we have multiple
+servers to duplicate data to).
+
+Indeed, subrequests can cross folio boundaries, may cover several folios or
+a folio may be spanned by multiple subrequests, e.g.:
+
+         +---+---+-----+-----+---+----------+
+Folios:  |   |   |     |     |   |          |
+         +---+---+-----+-----+---+----------+
+
+           +------+------+     +----+----+
+Upload:    |      |      |.....|    |    |
+           +------+------+     +----+----+
+
+         +------+------+------+------+------+
+Cache:   |      |      |      |      |      |
+         +------+------+------+------+------+
+
+Data that got read from the server that needs copying to the cache is
+stored in folios that are marked dirty and have folio->private set to a
+special value.
+
+The progressive subrequest construction permits the algorithm to be
+preparing both the next upload to the server and the next write to the
+cache whilst the previous ones are already in progress.  Throttling can be
+applied to control the rate of production of subrequests - and, in any
+case, we probably want to write them to the server in ascending order,
+particularly if the file will be extended.
+
+Content crypto can also be prepared at the same time as the subrequests and
+run asynchronously, with the prepped requests being stalled until the
+crypto catches up with them.  This might also be useful for transport
+crypto, but that happens at a lower layer, so probably would be harder to
+pull off.
+
+The algorithm is split into three parts:
+
+ (1) The issuer.  This walks through the data, packaging it up, encrypting
+     it and creating subrequests.  The part of this that generates
+     subrequests only deals with file positions and spans and so is usable
+     for DIO/unbuffered writes as well as buffered writes.
+
+ (2) The collector.  This asynchronously collects completed subrequests,
+     unlocks folios, frees crypto buffers and performs any retries.  This
+     runs in a work queue so that the issuer can return to the caller for
+     writeback (so that the VM can have its kswapd thread back) or async
+     writes.
+
+     Collection is slightly complex as the collector has to work out where
+     discontiguities happen in the folio list so that it doesn't try and
+     collect folios that weren't included in the write out.
+
+ (3) The retryer.  This pauses the issuer, waits for all outstanding
+     subrequests to complete and then goes through the failed subrequests
+     to reissue them.  This may involve reprepping them (with cifs, the
+     credits must be renegotiated and a subrequest may need splitting), and
+     doing RMW for content crypto if there's a conflicting change on the
+     server.
+
+The patches can be found here also:
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-writeback
+
+David
+
+Link: https://lore.kernel.org/r/20240328163424.2781320-1-dhowells@redhat.com/ # v1
+
+Changes
+=======
+ver #2)
+ - Rebase on v6.9-rc6 to accommodate some fixes that went upstream.
+ - Make netfs_begin_writethrough() actually return an error.
+ - Move the cifs invalidation patch to the cifs-netfs branch.
+ - Mark writeback_iter() EXPORT_SYMBOL_GPL.
+ - In p9_client_write_subreq(), use 'int len' rather than 'size_t len'
+   because of the varargs packet formatter.
+ - In netfs_perform_write(), don't wait for writeback if we don't need to.
+ - Don't do the AFS StoreData RPC inline, but keep doing it from a
+   workqueue.
+ - Remove a couple of redundant checks where the second used to be inside
+   a lock.
+ - Add missing linux/bio.h for BIO_MAX_VECS in cachefiles.
+ - Change a comma ending a statement to a semicolon.
+ - Make filemap_invalidate_inode() take a range.
+ - Make netfs_unbuffered_write_iter() use filemap_invalidate_inode().
+
+David Howells (22):
+  netfs: Update i_blocks when write committed to pagecache
+  netfs: Replace PG_fscache by setting folio->private and marking dirty
+  mm: Remove the PG_fscache alias for PG_private_2
+  netfs: Remove deprecated use of PG_private_2 as a second writeback
+    flag
+  netfs: Make netfs_io_request::subreq_counter an atomic_t
+  netfs: Use subreq_counter to allocate subreq debug_index values
+  mm: Provide a means of invalidation without using launder_folio
+  9p: Use alternative invalidation to using launder_folio
+  afs: Use alternative invalidation to using launder_folio
+  netfs: Remove ->launder_folio() support
+  netfs: Use mempools for allocating requests and subrequests
+  mm: Export writeback_iter()
+  netfs: Switch to using unsigned long long rather than loff_t
+  netfs: New writeback implementation
+  netfs: Add some write-side stats and clean up some stat names
+  netfs, afs: Implement helpers for new write code
+  netfs, 9p: Implement helpers for new write code
+  netfs, cachefiles: Implement helpers for new write code
+  netfs: Cut over to using new writeback code
+  netfs: Remove the old writeback code
+  netfs: Miscellaneous tidy ups
+  netfs, afs: Use writeback retry to deal with alternate keys
+
+ fs/9p/vfs_addr.c             |  60 +--
+ fs/afs/file.c                |   8 +-
+ fs/afs/internal.h            |   6 +-
+ fs/afs/validation.c          |   4 +-
+ fs/afs/write.c               | 189 ++++----
+ fs/cachefiles/io.c           |  76 +++-
+ fs/ceph/addr.c               |  24 +-
+ fs/ceph/inode.c              |   2 +
+ fs/netfs/Makefile            |   3 +-
+ fs/netfs/buffered_read.c     |  40 +-
+ fs/netfs/buffered_write.c    | 825 +++--------------------------------
+ fs/netfs/direct_write.c      |  56 ++-
+ fs/netfs/fscache_io.c        |  14 +-
+ fs/netfs/internal.h          |  55 ++-
+ fs/netfs/io.c                | 155 +------
+ fs/netfs/main.c              |  55 ++-
+ fs/netfs/misc.c              |  10 +-
+ fs/netfs/objects.c           |  81 +++-
+ fs/netfs/output.c            | 478 --------------------
+ fs/netfs/stats.c             |  17 +-
+ fs/netfs/write_collect.c     | 808 ++++++++++++++++++++++++++++++++++
+ fs/netfs/write_issue.c       | 675 ++++++++++++++++++++++++++++
+ fs/nfs/file.c                |   8 +-
+ fs/nfs/fscache.h             |   6 +-
+ fs/nfs/write.c               |   4 +-
+ fs/smb/client/file.c         |  16 +-
+ include/linux/fscache.h      |  22 +-
+ include/linux/netfs.h        | 196 +++++----
+ include/linux/pagemap.h      |   2 +
+ include/net/9p/client.h      |   2 +
+ include/trace/events/netfs.h | 249 ++++++++++-
+ mm/filemap.c                 |  60 ++-
+ mm/page-writeback.c          |   1 +
+ net/9p/Kconfig               |   1 +
+ net/9p/client.c              |  49 +++
+ 35 files changed, 2502 insertions(+), 1755 deletions(-)
+ delete mode 100644 fs/netfs/output.c
+ create mode 100644 fs/netfs/write_collect.c
+ create mode 100644 fs/netfs/write_issue.c
 
