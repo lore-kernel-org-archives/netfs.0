@@ -1,145 +1,57 @@
-Received: from mail-pj1-f65.google.com (mail-pj1-f65.google.com [209.85.216.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B1E53373
-	for <netfs@lists.linux.dev>; Thu,  2 May 2024 08:47:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7D613C811;
+	Thu,  2 May 2024 14:13:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714639668; cv=none; b=MTsA5Jif7OkNQmeGM7vb2ge9mE37sDXtg2I5rMIIDOP+M4lMTbtNSDnirPAr8dSGEWs9JeVQsnnuTtd2cFPrkFREAbO3GK7LXQzIlfZbivnMN7pnkt3AIFxTnaZ1zVnqygORSVV/NQnnLtG4UC5hmtT1eLUsItV8jaRbF1liJaU=
+	t=1714659224; cv=none; b=ivQ6qguK1bhqtIgGBw+oUl49SRtCgweDHUdLm1tCtkkwoX+USkW1rdz1cOYWsskJ7obh2SNMCgzSCc3iTPRydcmx/ydTVg0Con7jwGLs8xo1qbKv3lDyJG5PAw/hmI2l32sWBdUSPMnJnm/LIY3lXC8jsfnSpARXWWXgxvJ8DXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714639668; c=relaxed/simple;
-	bh=7wUERS10zASkjeML5DECo0InMoy+pGZDK8UElMVW8H4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ve4LagS/4AdjDI5L48hEa5GAI0+widojdPTiYH9Qd5KyzTz0Hjskev+gOlP4p9T7q5iE1UiU05bLHGuG/uVQrk69895jmFMqu6lnSAXJ8fswFOhUJpk7s+8xwIjEyPIs19K9Ap9tY/tP4irIV9ahJdwox9LJifh2DYGxFV+k5GQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EQnoR+PW; arc=none smtp.client-ip=209.85.216.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1714659224; c=relaxed/simple;
+	bh=1vUXQjL1XIYEiLePPiS1dnxjykzdCGKwKFECXqOOXzc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Dfijr899So2gKGZhhOFuuXhuDaT+9Je6XSmudKlLU66jl6Sp+qoS5kVTO0d8gW1rO1WI9HoMBflVrvuFg57GuiH32442hiceyjYne54KMNv7L4WJSooLPHoUZynmg0bXsDEx6DhOoz7toUOOVNtYQ6ASMoV5ULoGIDUyvi4fDg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l8xTyZlQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EQnoR+PW"
-Received: by mail-pj1-f65.google.com with SMTP id 98e67ed59e1d1-2b2769f017aso2133135a91.3
-        for <netfs@lists.linux.dev>; Thu, 02 May 2024 01:47:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714639666; x=1715244466; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:reply-to:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=UP9GO2qb86H7nq2iI26LPAW8N+Z2bRcTv9KbrkM7mY8=;
-        b=EQnoR+PWhUQHLX7533U1ankeg5f8dPQWCUfRXT7cmy3Md1mIUuvjgDCy0vqFH+7/H3
-         j2N6ujg1HZuUGLNakp4cXC8tuJYpOeQcuD6Fueb8yrGXWDJuWfFdNva0pxNXwe7a/MXm
-         Wub/mpjaMYL1MqrxHSfRCNGI1zvvZ6ilf6EzXdYr7wCkEEO7j1yFywB3PAbQewDqWu2h
-         cZ9dWO65rAeR/hBZw5DC5v1LSmke9fgV9n4R+rVi7lhvgKWkYGqSTqKUN8pIYclmDEYH
-         WC2xaTHXfHjLTVKVMASxH5ySl5ez1facTsLi4sNJc3RtCDqatGoiB6MNwco8BH02a2Jd
-         GJOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714639666; x=1715244466;
-        h=content-transfer-encoding:mime-version:reply-to:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=UP9GO2qb86H7nq2iI26LPAW8N+Z2bRcTv9KbrkM7mY8=;
-        b=mJ1DuMyUWTKiOjy/RUSQHu3cWBfyAFH8u7vVzjmgzjfl0O3CSqgcdVNJlCzHVPCHxZ
-         F7CRhocJz12cvWeo52mwPxKZeAnn4C8frOv/8G/1ob7htuwmu0yqQbLbjexdVIl09O7v
-         STxRtCPdcILyoyLbLNbKmy7bAcoD9/spgJTfm8xXnVYBNAb8aoyxaW6KoXb6U/9R5XLh
-         MjxgJzOE2jCFbw7TT9092YvwkjuKV2Hyj9Sa2SK+AVkvsEehOBtO5dTLzLXmygDofscE
-         A4If/E8MrVINKVgycm93WJGjfTZLx0fAx39/NkqRI+ddBEJDO2RVovqk4KiKtHpomwrr
-         Tqxw==
-X-Forwarded-Encrypted: i=1; AJvYcCXRCIL6405qVRcKPBeNrOB36zpQGfKVOBXFtmtvdKP0UoVw2m6HDtWgCtCUAyCQTAXe49WmTJpcd1FVF+SggKCd5M8YGUA=
-X-Gm-Message-State: AOJu0Ywpzo//G/G8aGQpzQ+bvM4eckHSrZVmUGFMikxRM+UFBf6lp8sY
-	DQG8TjCq8Pr1tJDSBKXhGKonFTTMWi3QzU8udZW2EAQl1r09aKhU
-X-Google-Smtp-Source: AGHT+IGyyg1F0OUABpcZNF++9ikGsOK3Q2kFtyAm+9ixtgSVwbvUEaYTKBIULHXdrWlHyTAR46Kcsw==
-X-Received: by 2002:a17:90b:2303:b0:2ab:f9af:cdce with SMTP id mt3-20020a17090b230300b002abf9afcdcemr4828016pjb.36.1714639666422;
-        Thu, 02 May 2024 01:47:46 -0700 (PDT)
-Received: from KASONG-MB2.tencent.com ([1.203.116.31])
-        by smtp.gmail.com with ESMTPSA id q6-20020a17090a938600b002b273cbbdf1sm686805pjo.49.2024.05.02.01.47.40
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 02 May 2024 01:47:45 -0700 (PDT)
-From: Kairui Song <ryncsn@gmail.com>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"Huang, Ying" <ying.huang@intel.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Chris Li <chrisl@kernel.org>,
-	Barry Song <v-songbaohua@oppo.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Neil Brown <neilb@suse.de>,
-	Minchan Kim <minchan@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Yosry Ahmed <yosryahmed@google.com>,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Kairui Song <kasong@tencent.com>,
-	David Howells <dhowells@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	netfs@lists.linux.dev
-Subject: [PATCH v4 07/12] netfs: drop usage of folio_file_pos
-Date: Thu,  2 May 2024 16:46:04 +0800
-Message-ID: <20240502084609.28376-8-ryncsn@gmail.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240502084609.28376-1-ryncsn@gmail.com>
-References: <20240502084609.28376-1-ryncsn@gmail.com>
-Reply-To: Kairui Song <kasong@tencent.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l8xTyZlQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC64C113CC;
+	Thu,  2 May 2024 14:13:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714659224;
+	bh=1vUXQjL1XIYEiLePPiS1dnxjykzdCGKwKFECXqOOXzc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=l8xTyZlQzl3HNe7cUjrdAgZ1NKd380t0HFvkjEvsnV+7K5cONejVCpBir2khe4grt
+	 IHE37n0odjwFWjz/dLJui5uXE5zfT9y8I1oyfmFlDdHY7oyIsrTw7Xb15EJyap380V
+	 GMJManJexVkv5kFR40UDgRIsUVtRd40xVghp5dqGaG6CIYeXa1xt7Qzaj4zUSQ8FhV
+	 JsgIQvMoLGc7x+BnQLcd8FPPXmn1PO4F7pMQnOljy2mhEAxQbdQLzvXyu1JGonVQwJ
+	 8dTasmNqJ5lcRe9QZ9Ua3V/Ay4cBLszk1nRUPXCRxvO96/f+LYcCnJs0tbTM9EYqQR
+	 2zqWufBT8RCPw==
+Date: Thu, 2 May 2024 16:13:38 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <christian@brauner.io>, 
+	Steve French <smfrench@gmail.com>, Jeff Layton <jlayton@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Paulo Alcantara <pc@manguebit.com>, 
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>, netfs@lists.linux.dev, 
+	linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 00/16] netfs, cifs: Delegate high-level I/O to netfslib
+Message-ID: <20240502-beteuern-vollzeit-54b8237c2809@brauner>
+References: <20240430140930.262762-1-dhowells@redhat.com>
+ <264960.1714488463@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <264960.1714488463@warthog.procyon.org.uk>
 
-From: Kairui Song <kasong@tencent.com>
+On Tue, Apr 30, 2024 at 03:47:43PM +0100, David Howells wrote:
+> Hi Christian,
+> 
+> With Steve's agreement, could you pick this set of patches up also?
 
-folio_file_pos is only needed for mixed usage of page cache and
-swap cache, for pure page cache usage, the caller can just use
-folio_pos instead.
-
-It can't be a swap cache page here. Swap mapping may only call into
-fs through swap_rw and that is not supported for netfs. So just drop
-it and use folio_pos instead.
-
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Jeff Layton <jlayton@kernel.org>
-Cc: netfs@lists.linux.dev
----
- fs/netfs/buffered_read.c  | 4 ++--
- fs/netfs/buffered_write.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index 3298c29b5548..d3687d81229f 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -255,7 +255,7 @@ int netfs_read_folio(struct file *file, struct folio *folio)
- 	_enter("%lx", folio->index);
- 
- 	rreq = netfs_alloc_request(mapping, file,
--				   folio_file_pos(folio), folio_size(folio),
-+				   folio_pos(folio), folio_size(folio),
- 				   NETFS_READPAGE);
- 	if (IS_ERR(rreq)) {
- 		ret = PTR_ERR(rreq);
-@@ -454,7 +454,7 @@ int netfs_write_begin(struct netfs_inode *ctx,
- 	}
- 
- 	rreq = netfs_alloc_request(mapping, file,
--				   folio_file_pos(folio), folio_size(folio),
-+				   folio_pos(folio), folio_size(folio),
- 				   NETFS_READ_FOR_WRITE);
- 	if (IS_ERR(rreq)) {
- 		ret = PTR_ERR(rreq);
-diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
-index 9a0d32e4b422..859a22a740c3 100644
---- a/fs/netfs/buffered_write.c
-+++ b/fs/netfs/buffered_write.c
-@@ -63,7 +63,7 @@ static enum netfs_how_to_modify netfs_how_to_modify(struct netfs_inode *ctx,
- 						    bool maybe_trouble)
- {
- 	struct netfs_folio *finfo = netfs_folio_info(folio);
--	loff_t pos = folio_file_pos(folio);
-+	loff_t pos = folio_pos(folio);
- 
- 	_enter("");
- 
--- 
-2.44.0
-
+Pulled both branches from you. Thank you!
