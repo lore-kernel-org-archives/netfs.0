@@ -1,32 +1,32 @@
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077D24594E
-	for <netfs@lists.linux.dev>; Mon,  6 May 2024 03:49:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD7E2D051
+	for <netfs@lists.linux.dev>; Mon,  6 May 2024 03:55:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714967348; cv=none; b=JTuW5GpwWD7+wz3gCFC6ZMi/OzHUqjF/D1bb3ZW98VuaBR9eEIhvkQFiSn88rbaEqJ0wI7NeJ0PN8Mh0a5GrVG/DUTRgFtCjZcE4vIu/yJymX1iZwOUn4N0WEUcQvZ5tkQbGQ5HrdIF9kdtIIKGSkHWHTbpVHOfbyIpvOtl8hPI=
+	t=1714967728; cv=none; b=l466RRyWdbw8Mu3SYISFVlR8E8N/Tg75T/G/iTeEzD2ydS+Ly1KNz/ttjJav6KOFKaDze2t8s0BcKWMr95j0BXn3DsQme5JDXk0aFBav86dohCcfHuazAFpsroxlX4h0+riRKGY6bHtsUaV87/DWnzFFll84r1W6c8MQYlRXhyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714967348; c=relaxed/simple;
-	bh=kxz8UrFictU+NsZQY7c3vhSPA+qILia20awE6iLFv4E=;
+	s=arc-20240116; t=1714967728; c=relaxed/simple;
+	bh=y2geqQG7esbioHge/Oua716DR+VeDMua5Od5GLNV/Ww=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SeWq0ibNZB3kk7pG42o7BlNm2HNupMIWjHsY00ENFBH83evY8sNhti02b8zX+5uFWckYVJEUNobxgH1mUsX21P1okdyUpSk4jvBUPuJlSOYfOz2R6545PyHzYYMru/NIP0BosA/nx9hB40KOxaRgK3cY9AzYkA1me7FB1r3JslI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=vekq48yL; arc=none smtp.client-ip=115.124.30.98
+	 In-Reply-To:Content-Type; b=lvyZLB9j4zPvF1/MO1XeN04RhWAxjFnfv3SZ7YXQ+4rKP/aG2fyuauzIQGuvGzgzyNvsIkz9nYimz0d4NwOR4by0JYHLvtwho8dl7Go15VX4xqWNOeFkrKnwtqhPWuWVWxskIr3T3VJCHuvGJHD2FZAiqfwu6WOt7yc7lAxz+Jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=d/BVEp7q; arc=none smtp.client-ip=115.124.30.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="vekq48yL"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="d/BVEp7q"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1714967337; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=j3Aqf3b+i7muF6AejD4CXK0yCEDvofmWz+0c/tM9NRY=;
-	b=vekq48yL4AeTVEGP6yhx0BxoVI8nWWG3GGZK0j/IULUNFrC9TUOBDyyG8UptzxzxhufHvq0CISoQE7+TCLMM11fi8idzpRwJFPq4Hm+qrlc4VTHC5rwshQo9AZCB2Nu5ZTPORZUKn3sT1kWJs7PrndGF9Q2dgcmc8fpNnL2LEQA=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037067113;MF=jefflexu@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0W5sGzlR_1714967335;
-Received: from 30.221.146.217(mailfrom:jefflexu@linux.alibaba.com fp:SMTPD_---0W5sGzlR_1714967335)
+	t=1714967718; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=zXslB2LIBpz38Ehk6jluQligrVVUBz1/x6XUjpfeVMs=;
+	b=d/BVEp7q9JT4mYgq+2kov6S5ndtBeoIqtlA4YbBf0waJAwzYrBcWuVdPBzdTnXc2FtrtqkkHOk00yHH1XLyS1fcMNlEvu/BsQUu1nG4igJN4DpIyAib4RlNGzjZeh6xW9PQRJ5X1ET3gWeDy6LkV88L6jFqk34X7i0JAxFnsMOo=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037067111;MF=jefflexu@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0W5rxNPa_1714967716;
+Received: from 30.221.146.217(mailfrom:jefflexu@linux.alibaba.com fp:SMTPD_---0W5rxNPa_1714967716)
           by smtp.aliyun-inc.com;
-          Mon, 06 May 2024 11:48:56 +0800
-Message-ID: <6e4a20f7-263a-46be-81cc-2667353c452d@linux.alibaba.com>
-Date: Mon, 6 May 2024 11:48:54 +0800
+          Mon, 06 May 2024 11:55:17 +0800
+Message-ID: <795cd804-f7a1-44ba-99ac-01070edd5a9a@linux.alibaba.com>
+Date: Mon, 6 May 2024 11:55:15 +0800
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -34,17 +34,17 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/12] cachefiles: remove request from xarry during flush
- requests
+Subject: Re: [PATCH 02/12] cachefiles: remove err_put_fd tag in
+ cachefiles_ondemand_daemon_read()
 To: libaokun@huaweicloud.com, netfs@lists.linux.dev
 Cc: dhowells@redhat.com, jlayton@kernel.org, zhujia.zj@bytedance.com,
  linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
  linux-kernel@vger.kernel.org, Baokun Li <libaokun1@huawei.com>
 References: <20240424033916.2748488-1-libaokun@huaweicloud.com>
- <20240424033916.2748488-2-libaokun@huaweicloud.com>
+ <20240424033916.2748488-3-libaokun@huaweicloud.com>
 Content-Language: en-US
 From: Jingbo Xu <jefflexu@linux.alibaba.com>
-In-Reply-To: <20240424033916.2748488-2-libaokun@huaweicloud.com>
+In-Reply-To: <20240424033916.2748488-3-libaokun@huaweicloud.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
@@ -53,28 +53,44 @@ Content-Transfer-Encoding: 7bit
 On 4/24/24 11:39 AM, libaokun@huaweicloud.com wrote:
 > From: Baokun Li <libaokun1@huawei.com>
 > 
-> This prevents concurrency from causing access to a freed req.
+> The err_put_fd tag is only used once, so remove it to make the code more
+> readable.
 
-Could you give more details on how the concurrent access will happen?
-How could another process access the &cache->reqs xarray after it has
-been flushed?
+I think it's a conventional style to put error handling in the bottom of
+the function so that it could be reused.  Indeed currently err_put_fd
+has only one caller but IMHO it's only styling issues.
+
+By the way it seems that this is not needed anymore if patch 9 is applied.
 
 > ---
->  fs/cachefiles/daemon.c | 1 +
->  1 file changed, 1 insertion(+)
+>  fs/cachefiles/ondemand.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
 > 
-> diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
-> index 6465e2574230..ccb7b707ea4b 100644
-> --- a/fs/cachefiles/daemon.c
-> +++ b/fs/cachefiles/daemon.c
-> @@ -159,6 +159,7 @@ static void cachefiles_flush_reqs(struct cachefiles_cache *cache)
->  	xa_for_each(xa, index, req) {
->  		req->error = -EIO;
->  		complete(&req->done);
-> +		__xa_erase(xa, index);
->  	}
->  	xa_unlock(xa);
+> diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
+> index 4ba42f1fa3b4..fd49728d8bae 100644
+> --- a/fs/cachefiles/ondemand.c
+> +++ b/fs/cachefiles/ondemand.c
+> @@ -347,7 +347,9 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
 >  
+>  	if (copy_to_user(_buffer, msg, n) != 0) {
+>  		ret = -EFAULT;
+> -		goto err_put_fd;
+> +		if (msg->opcode == CACHEFILES_OP_OPEN)
+> +			close_fd(((struct cachefiles_open *)msg->data)->fd);
+> +		goto error;
+>  	}
+>  
+>  	/* CLOSE request has no reply */
+> @@ -358,9 +360,6 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+>  
+>  	return n;
+>  
+> -err_put_fd:
+> -	if (msg->opcode == CACHEFILES_OP_OPEN)
+> -		close_fd(((struct cachefiles_open *)msg->data)->fd);
+>  error:
+>  	xa_erase(&cache->reqs, id);
+>  	req->error = ret;
 
 -- 
 Thanks,
