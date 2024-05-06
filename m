@@ -1,117 +1,121 @@
-Received: from dggsgout12.his.huawei.com (unknown [45.249.212.56])
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A6E3E462
-	for <netfs@lists.linux.dev>; Mon,  6 May 2024 04:02:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A367D47F53
+	for <netfs@lists.linux.dev>; Mon,  6 May 2024 05:50:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714968176; cv=none; b=mLPz4LNS1wU+BQr4ldNbvTcw9bb8Nj5Z+j5CoLgQ5vQDwxVatvMC8k5Ou54N3oUP86w4/AOEs4unegmcrsFc6N4GRnoiHeBoX2sSUOCpwY64O9cN30d+sZkijrffm7rSmqPIbB3Yube0e4tPQ92qIHW5A0h3D/IoJW2Jn6iuJ/E=
+	t=1714974649; cv=none; b=CkVe1xzzlc7jf8OkMQn3sywxm9EiILmoo95+wQ+BTZlAzK/KltuIYD1SYdas2hxM62k3UzBPQ6rUDrLWpnlb0Ecpp+c3siTUqdm/Y2Red1k2xVoRY3amxltNKZIIlnGxiSDITCw8i//WCV+toRJRKXBFx3hVpkFx37oECxjXJRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714968176; c=relaxed/simple;
-	bh=w2mIEHb1FX0xHYK9nCgdIaQaDhdD7nnojVP4YG3F/dc=;
+	s=arc-20240116; t=1714974649; c=relaxed/simple;
+	bh=eW3jwfz6bKOXBu7OZKwEXC2aDpMjobO1Pl1Lw7wR61Y=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=loqYZTJmFRxQy1QydGDlA6iSj6qJgsUDJjTJ/u8gMDzIUxgB8AUaendSEDd2polN5sOf5kkM5WD/ya+nApsa7GNpv/vMb00+UF/ipfFwGeUhhHWRUDu6Ue+l1Tm15eKGZ7eRbAUy5a5M62h9dkW9bcB7fNTVQ12FdJyFOroKZnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4VXnmy4cxLz4f3jMl
-	for <netfs@lists.linux.dev>; Mon,  6 May 2024 12:02:42 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id CBBC81A0572
-	for <netfs@lists.linux.dev>; Mon,  6 May 2024 12:02:50 +0800 (CST)
-Received: from [10.174.177.174] (unknown [10.174.177.174])
-	by APP1 (Coremail) with SMTP id cCh0CgAX6RFoVjhmHoqLLw--.43088S3;
-	Mon, 06 May 2024 12:02:50 +0800 (CST)
-Message-ID: <aace11c7-d399-6966-02d0-2f08d1fa8b13@huaweicloud.com>
-Date: Mon, 6 May 2024 12:02:48 +0800
+	 In-Reply-To:Content-Type; b=OCGpelgNGIKnWXwd7zLyUg21HUAbDio2c+teuS+K0seNqy6ZYo4FjXuelQhpiZhj+9M9HAcpmXs5zMAHxaO2AI5I7/zmDWmcU/M+zVlU21VoaBFt4gxoQ42X/72Nlw4bk0YJyupt/QIOWDrWkqoJG7ysi2dQnnZbtcf07iBDIDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=UrliiQYN; arc=none smtp.client-ip=115.124.30.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="UrliiQYN"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1714974637; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=jzjYRYNv9PIVT8Vfr3RNPMl2TSVcXUpCKYYeAEqj4j4=;
+	b=UrliiQYNuyFz0FMHPr+J87xJa6HkJFRkGXLn1Fsg7Y7X43mtlUQKYBvrVK1aANLZH+x5k1bD27t9VpzpUV3BXu2XybCCli6k3Hcvy2u/tPb5COChLmlZTBv0rZESuO+TyzMzqWilciHIXwPaMHdPoCjKB9IrjzLTvt4CmI0iags=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R211e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037067109;MF=jefflexu@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0W5tv91D_1714974635;
+Received: from 30.221.146.217(mailfrom:jefflexu@linux.alibaba.com fp:SMTPD_---0W5tv91D_1714974635)
+          by smtp.aliyun-inc.com;
+          Mon, 06 May 2024 13:50:36 +0800
+Message-ID: <876cd180-6268-4f1a-a3bc-6b7b2aa3279f@linux.alibaba.com>
+Date: Mon, 6 May 2024 13:50:34 +0800
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.1.2
-Subject: Re: [PATCH 02/12] cachefiles: remove err_put_fd tag in
- cachefiles_ondemand_daemon_read()
-Content-Language: en-US
-To: Jingbo Xu <jefflexu@linux.alibaba.com>, netfs@lists.linux.dev
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/12] cachefiles: remove request from xarry during flush
+ requests
+To: Baokun Li <libaokun@huaweicloud.com>, netfs@lists.linux.dev
 Cc: dhowells@redhat.com, jlayton@kernel.org, zhujia.zj@bytedance.com,
  linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, libaokun@huaweicloud.com,
- yangerkun <yangerkun@huawei.com>
+ linux-kernel@vger.kernel.org, yangerkun <yangerkun@huawei.com>
 References: <20240424033916.2748488-1-libaokun@huaweicloud.com>
- <20240424033916.2748488-3-libaokun@huaweicloud.com>
- <795cd804-f7a1-44ba-99ac-01070edd5a9a@linux.alibaba.com>
-From: Baokun Li <libaokun@huaweicloud.com>
-In-Reply-To: <795cd804-f7a1-44ba-99ac-01070edd5a9a@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:cCh0CgAX6RFoVjhmHoqLLw--.43088S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7uw1kCFW7ur4DCr4kWr13XFb_yoW8Wr4xpF
-	WSya43Kr109F13ur97Aas8X3ySy395JFnrWwnYqws3A3Zagr1rZr48Kw45ZFyDurs3GF4I
-	q3W2gF97G34jy3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9214x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWUuVWrJwAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
-	0xkIwI1lc7I2V7IY0VAS07AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
-	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
-	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
-	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6rWUJVWr
-	Zr1UMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYx
-	BIdaVFxhVjvjDU0xZFpf9x0JUZa9-UUUUU=
-X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/
+ <20240424033916.2748488-2-libaokun@huaweicloud.com>
+ <6e4a20f7-263a-46be-81cc-2667353c452d@linux.alibaba.com>
+ <ba40eb22-dc28-54b6-a8cb-7a8ba4464c9a@huaweicloud.com>
+Content-Language: en-US
+From: Jingbo Xu <jefflexu@linux.alibaba.com>
+In-Reply-To: <ba40eb22-dc28-54b6-a8cb-7a8ba4464c9a@huaweicloud.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 2024/5/6 11:55, Jingbo Xu wrote:
->
-> On 4/24/24 11:39 AM, libaokun@huaweicloud.com wrote:
->> From: Baokun Li <libaokun1@huawei.com>
+
+
+On 5/6/24 11:57 AM, Baokun Li wrote:
+> On 2024/5/6 11:48, Jingbo Xu wrote:
 >>
->> The err_put_fd tag is only used once, so remove it to make the code more
->> readable.
-> I think it's a conventional style to put error handling in the bottom of
-> the function so that it could be reused.  Indeed currently err_put_fd
-> has only one caller but IMHO it's only styling issues.
->
-> By the way it seems that this is not needed anymore if patch 9 is applied.
-This is just to make patch 3 look clearer, if you insist on dropping it
-I will drop it in the next revision.
-
-Cheers,
-Baokun
->> ---
->>   fs/cachefiles/ondemand.c | 7 +++----
->>   1 file changed, 3 insertions(+), 4 deletions(-)
->>
->> diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
->> index 4ba42f1fa3b4..fd49728d8bae 100644
->> --- a/fs/cachefiles/ondemand.c
->> +++ b/fs/cachefiles/ondemand.c
->> @@ -347,7 +347,9 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
->>   
->>   	if (copy_to_user(_buffer, msg, n) != 0) {
->>   		ret = -EFAULT;
->> -		goto err_put_fd;
->> +		if (msg->opcode == CACHEFILES_OP_OPEN)
->> +			close_fd(((struct cachefiles_open *)msg->data)->fd);
->> +		goto error;
->>   	}
->>   
->>   	/* CLOSE request has no reply */
->> @@ -358,9 +360,6 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
->>   
->>   	return n;
->>   
->> -err_put_fd:
->> -	if (msg->opcode == CACHEFILES_OP_OPEN)
->> -		close_fd(((struct cachefiles_open *)msg->data)->fd);
->>   error:
->>   	xa_erase(&cache->reqs, id);
->>   	req->error = ret;
+>> On 4/24/24 11:39 AM, libaokun@huaweicloud.com wrote:
+>>> From: Baokun Li <libaokun1@huawei.com>
+>>>
+>>> This prevents concurrency from causing access to a freed req.
+>> Could you give more details on how the concurrent access will happen?
+>> How could another process access the &cache->reqs xarray after it has
+>> been flushed?
+> 
+> Similar logic to restore leading to UAF:
+> 
+>      mount  |   daemon_thread1    |    daemon_thread2
+> ------------------------------------------------------------
+>  cachefiles_ondemand_init_object
+>   cachefiles_ondemand_send_req
+>    REQ_A = kzalloc(sizeof(*req) + data_len)
+>    wait_for_completion(&REQ_A->done)
+> 
+>             cachefiles_daemon_read
+>              cachefiles_ondemand_daemon_read
+>               REQ_A = cachefiles_ondemand_select_req
+>               cachefiles_ondemand_get_fd
+>               copy_to_user(_buffer, msg, n)
+>             process_open_req(REQ_A)
+>                                   // close dev fd
+>                                   cachefiles_flush_reqs
+>                                    complete(&REQ_A->done)
+>    kfree(REQ_A)
 
 
+>              cachefiles_ondemand_get_fd(REQ_A)
+>               fd = get_unused_fd_flags
+>               file = anon_inode_getfile
+>               fd_install(fd, file)
+>               load = (void *)REQ_A->msg.data;
+>               load->fd = fd;
+>               // load UAF !!!
+
+How could the second cachefiles_ondemand_get_fd() get called here, given
+the cache has been flushed and flagged as DEAD?
+
+
+> 
+>>> ---
+>>>   fs/cachefiles/daemon.c | 1 +
+>>>   1 file changed, 1 insertion(+)
+>>>
+>>> diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
+>>> index 6465e2574230..ccb7b707ea4b 100644
+>>> --- a/fs/cachefiles/daemon.c
+>>> +++ b/fs/cachefiles/daemon.c
+>>> @@ -159,6 +159,7 @@ static void cachefiles_flush_reqs(struct
+>>> cachefiles_cache *cache)
+>>>       xa_for_each(xa, index, req) {
+>>>           req->error = -EIO;
+>>>           complete(&req->done);
+>>> +        __xa_erase(xa, index);
+>>>       }
+>>>       xa_unlock(xa);
+>>>   
+> 
+
+-- 
+Thanks,
+Jingbo
