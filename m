@@ -1,117 +1,79 @@
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4486D152162
-	for <netfs@lists.linux.dev>; Tue,  7 May 2024 11:20:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B64216E890
+	for <netfs@lists.linux.dev>; Fri, 10 May 2024 11:23:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715080819; cv=none; b=L6d5Y6EUazdjkr/CObEF4Or3t/vxhH4t6c4/EQ8JDtoP8+mncI28Kxbii6Pe3XIrjCGC6bPQSgubXWgE9l/QrXULTJuNQtckMYs5E3ZiSFewU2KXc9gy0W+A5nXTrvf9GBOIZoUgSbukTsJolHLWQUnOw9CA3eBbc9mOtB0nbrc=
+	t=1715340240; cv=none; b=ZyL00dIh2cvgg6BlqVuMlUHz1lUJzRgKmaQM7Bm4rggqS1a2JRbHVq/KZejHoMT15jV9vkddx64D966IQDo28tPFOX8+LzGkRBgn52/e0/ZJQzVqLyJOYzNS78T/WMC+GAVZjvvo8BXs7nc4f/12vfg1h5QIHqY+K9esx56nOr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715080819; c=relaxed/simple;
-	bh=XJb5env3w+A8FoPLlKR4k/O4kmKTVVipdBC1VV39X5I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NkSpr3pyeVa3gSJ5jvCkF3LXTdFkHC5fbHcJZIyR2Sde66P81rmbLb93yiC8Jah4Zgx9/HdMr4IkWLrL20J+W5ge6LaKLVdT5UxhPlCAln+1OzRJn1n7ytTaa2zApb0TP2kDflReE62eDTSje8g+nKdCv8YHBpE5cLN2oraXTtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4VYbRC1Myfz4f3kKy
-	for <netfs@lists.linux.dev>; Tue,  7 May 2024 19:20:07 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id 77D9A1A016E
-	for <netfs@lists.linux.dev>; Tue,  7 May 2024 19:20:12 +0800 (CST)
-Received: from [10.174.177.174] (unknown [10.174.177.174])
-	by APP1 (Coremail) with SMTP id cCh0CgBnOBFoDjpmOyUEMA--.18524S3;
-	Tue, 07 May 2024 19:20:12 +0800 (CST)
-Message-ID: <a6d89482-6f81-29d1-3e9f-4772ffbb56af@huaweicloud.com>
-Date: Tue, 7 May 2024 19:20:08 +0800
+	s=arc-20240116; t=1715340240; c=relaxed/simple;
+	bh=47x/4Pk6TGycDhdZnlbzTMHVd0iRYhoMxpqaHz5aors=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XHz3rdNs/bEitY+UAq9TGRra17R3oe5F7hP+E+5PoSdYDq3cV9TP9liGi2gTP8w/5LTtbOoDFLjji23gD5gfNPPjDqSgQsW96tTaUzoZp3BV0yXXJ7s8QHW1gyZKhU+8wLIRw66eHvbvk5iF5tgPW3J6weGO8JXKZ1XrsoDqi3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu; spf=pass smtp.mailfrom=szeredi.hu; dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b=i8+46Mty; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szeredi.hu
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b="i8+46Mty"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a4702457ccbso486699566b.3
+        for <netfs@lists.linux.dev>; Fri, 10 May 2024 04:23:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=szeredi.hu; s=google; t=1715340237; x=1715945037; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=47x/4Pk6TGycDhdZnlbzTMHVd0iRYhoMxpqaHz5aors=;
+        b=i8+46MtyQBgZUZzZKi8C3dUWlkDl1y4LzPjW0hbEF84DMk7OI8V9eE4VQGPjG6uUJZ
+         JpGyFagvishyjZTUA8k21duCCFnlyhbnFoB4Q8hVF05UcZl6+gGQocTZuqRm988X5ZnX
+         37TQY8HOrfKoQOKK8E+pvXpe/lFEsjaOYaFME=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715340237; x=1715945037;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=47x/4Pk6TGycDhdZnlbzTMHVd0iRYhoMxpqaHz5aors=;
+        b=CzwmuXs9Kux/4gBLp2CvqUkgoFF5fxH2XBJZo4+HMN9WapLvj7KdK7d4wDYpaUnjr1
+         tVLs9/rjFGzVZ7ZKzR8Mca1TCqZvBCpQWtKYR81C0pthDv1I+KsGzkifzbV+YbjrW9Nm
+         V46AyTQYl/RmIEEEsq/ao6HW+4Vx9GD3f0nYs5sAxl9cnkCz5nc69Ox4vBis1juynPdF
+         eolnmVFdQjsemtCZ/YNmFRlrrBHrBbyvt6ZMANpGIhuqXnuUyg9TKQi6G+1g3bRUtEtc
+         dDlyT33TXipQU5NRfelNRTK9YFHnkqIa+xdxwXkADgTc/+IuWM0sVYn7mnPmRAJY46HG
+         xhQw==
+X-Forwarded-Encrypted: i=1; AJvYcCVSRqHBzdd2h9wcNGb0MUI+rc2iINQFqC6DQdI+vCiH2qCyZXJ/9MiVX9E9FeeUQVOQ008HywIayYbxnBaIaXYysCRwNiI=
+X-Gm-Message-State: AOJu0YxoposGbvzY8A4xK5hxZOpEAH6vDC1/+8rcRCalRL2QcaWOAn4K
+	eUiTgzZjd1MYVVXpd/tLDnUMI26Vvo6KWV0UNTgAURjAuR+r6k6229gwNRsrzE6gdI7C1kZf2I+
+	YeZtFi96Gknm/ThsAmqlp3p1w5En2eNt1afR5CQ==
+X-Google-Smtp-Source: AGHT+IFz5qP18mAylhBbmtThupMzDKv7Hxf/YKoxmcI8024bWwzwHlVosWJHVpjswkQo1H6JZ+uOIVvInsfVrUzL8aQ=
+X-Received: by 2002:a17:907:26c9:b0:a59:ba2b:5913 with SMTP id
+ a640c23a62f3a-a5a2d66b525mr199596766b.62.1715340236873; Fri, 10 May 2024
+ 04:23:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.1.2
-Subject: Re: [PATCH 0/5] cachefiles: some bugfixes for withdraw and xattr
-Content-Language: en-US
-To: netfs@lists.linux.dev, dhowells@redhat.com, jlayton@kernel.org
-Cc: linux-cachefs@redhat.com, linux-erofs@lists.ozlabs.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- yangerkun <yangerkun@huawei.com>, libaokun@huaweicloud.com
-References: <20240424032732.2711487-1-libaokun@huaweicloud.com>
-From: Baokun Li <libaokun@huaweicloud.com>
-In-Reply-To: <20240424032732.2711487-1-libaokun@huaweicloud.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:cCh0CgBnOBFoDjpmOyUEMA--.18524S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7tFy5Kr17Wr4fKryUWw4kWFg_yoW8Ww4DpF
-	Wayr4ayry8W397Gwn3ArsxJr1rA393JF1vgw17Wr1DAwn5Xr1YqryIyr15ZFyUuryUGws3
-	t3WjgFy3Ww1UA3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkC14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWUuVWrJwAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCYjI0SjxkI62AI1cAE67vI
-	Y487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
-	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y
-	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
-	WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_WFyUJVCq3wCI42IY6I8E87Iv67AKxVWUJVW8
-	JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUoOJ5UU
-	UUU
-X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/
+References: <20240502212631.110175-1-thorsten.blum@toblux.com> <20240502212631.110175-3-thorsten.blum@toblux.com>
+In-Reply-To: <20240502212631.110175-3-thorsten.blum@toblux.com>
+From: Miklos Szeredi <miklos@szeredi.hu>
+Date: Fri, 10 May 2024 13:23:45 +0200
+Message-ID: <CAJfpegsVWa-fu=DePSC0J1WkfQxhaqs0RTxopMBHduwMANieyQ@mail.gmail.com>
+Subject: Re: [PATCH 3/4] overlayfs: Remove duplicate included header
+To: Thorsten Blum <thorsten.blum@toblux.com>
+Cc: Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>, 
+	David Howells <dhowells@redhat.com>, Jeff Layton <jlayton@kernel.org>, 
+	Amir Goldstein <amir73il@gmail.com>, Baoquan He <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>, 
+	Dave Young <dyoung@redhat.com>, linux-btrfs@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netfs@lists.linux.dev, 
+	linux-fsdevel@vger.kernel.org, linux-unionfs@vger.kernel.org, 
+	kexec@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi David,
-Hi Jeff,
+On Thu, 2 May 2024 at 23:27, Thorsten Blum <thorsten.blum@toblux.com> wrote:
+>
+> Remove duplicate included header file linux/posix_acl.h
+>
+> Signed-off-by: Thorsten Blum <thorsten.blum@toblux.com>
 
-Could you please take time to take a look at this series?  I'd 
-appreciated it
-if I could get some feedback and comments.
+Applied, thanks.
 
-Thanks,
-Baokun
-
-On 2024/4/24 11:27, libaokun@huaweicloud.com wrote:
-> From: Baokun Li <libaokun1@huawei.com>
->
-> Hello everyone!
->
-> Recently we found some bugs while doing tests on cachefiles ondemand mode,
-> and this patchset is a fix for some of those issues. The following is a
-> brief overview of the patches, see the patches for more details.
->
-> Patch 1-2: Add fscache_try_get_volume() helper function to avoid
-> fscache_volume use-after-free on cache withdrawal.
->
-> Patch 3: Fix cachefiles_lookup_cookie() and cachefiles_withdraw_cache()
-> concurrency causing cachefiles_volume use-after-free.
->
-> Patch 4-5: Propagate error codes returned by vfs_getxattr() to avoid
-> endless loops.
->
-> Comments and questions are, as always, welcome.
->
-> Thanks,
-> Baokun
->
-> Baokun Li (5):
->    netfs, fscache: export fscache_put_volume() and add
->      fscache_try_get_volume()
->    cachefiles: fix slab-use-after-free in fscache_withdraw_volume()
->    cachefiles: fix slab-use-after-free in cachefiles_withdraw_cookie()
->    cachefiles: correct the return value of
->      cachefiles_check_volume_xattr()
->    cachefiles: correct the return value of cachefiles_check_auxdata()
->
->   fs/cachefiles/cache.c          | 45 +++++++++++++++++++++++++++++++++-
->   fs/cachefiles/volume.c         |  1 -
->   fs/cachefiles/xattr.c          |  5 +++-
->   fs/netfs/fscache_volume.c      | 14 +++++++++++
->   fs/netfs/internal.h            |  2 --
->   include/linux/fscache-cache.h  |  6 +++++
->   include/trace/events/fscache.h |  4 +++
->   7 files changed, 72 insertions(+), 5 deletions(-)
->
-
+Miklos
