@@ -1,32 +1,32 @@
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58AE1B7E9
-	for <netfs@lists.linux.dev>; Mon, 20 May 2024 07:09:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8598BE576
+	for <netfs@lists.linux.dev>; Mon, 20 May 2024 07:24:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716188965; cv=none; b=gAHc2GFduqaGVWK2+n3uGPsFXHy9xFMJPaRk3zzH3Q4gkLYzC3l7yrsyJaeiiR9QjiwG1p8zE/NTtdhVYLop+ffVHUFZnX6CZzKLJFD3mOf3fyl+LV0EjNHQNdZ66cO1byM2yetj5uFqHCCUArUU5OGy9lWBfH7jh6NIaxom2Yk=
+	t=1716189886; cv=none; b=VvVH5pbqS67cTjMPt21RL5EcrXO5n5p/XdTI13F2Ibu4umH1DJ7cfv9KTfJhb+FPJ99StoF6wNDlqF7E3DEUoYxHv08Z/PQyjcMqdDH7N+eqMwnRJt4LFL0NvSc2jC24Jn6UM8Eet4LD3u8SEElFjA/IiCLskieHfWC5OpDWNcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716188965; c=relaxed/simple;
-	bh=JmovHuASvA+p1UsintWL61loAHcJzRWLo3Jjwj74OjQ=;
+	s=arc-20240116; t=1716189886; c=relaxed/simple;
+	bh=l00/+uOMDkhRE/QdP2A2ykbsURjs/s57h6reqFA2rek=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mbbRPMo4Fr28c3+KSIqq1TzFm190fDHjJFi6FXmtvh5t8lucn4lCqVlJXzqRJSDyJHYhF1nLWGUK3nIXndMoxdzi0THJuJtto9lnjm3L5JJKhJhLGzEPItQgDrjLzDBdc2LYJ7kZvHRbx7I6CI5xhtGYwZdTY73zIrDY8++9EuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=aXET4ZKT; arc=none smtp.client-ip=115.124.30.124
+	 In-Reply-To:Content-Type; b=YfCgwXCsxXrevw5WGG/eseym5MQkSBY01REaPnm0ux1z11w6oBc+jr/CHC0fEMmrGZWO5X28Rv2gnANZ9mnSDP/f1tU3JhmVhcH/EGg1/w4B0gb0Av2aH2CBvXn4E5pvDxWSOCygyQaXOsDwCZ5G588GX4J7jVt+XTSmgxzyM/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=fhaOciNk; arc=none smtp.client-ip=115.124.30.100
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="aXET4ZKT"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="fhaOciNk"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1716188954; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=MDsSId074xo3EY1nI/gNouEZEC8qd9U9t2v9Vm9rIbo=;
-	b=aXET4ZKTNGS4FY28AswQ7chQwxMwaiq285OgWDn7i+iV/yafqAbASX4rmkWBm0Ue11K4zTmDIRgcMaj/yaAtZFZnUp+eHFluI2Bz1446uMcYjtTw4N90uBQ+VC/Aq3/Fj0FCSL6Fv7xGvQh96P1rZof+yjZBquj8WbTgkzdE/P0=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037067113;MF=jefflexu@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0W6ny017_1716188952;
-Received: from 30.221.148.185(mailfrom:jefflexu@linux.alibaba.com fp:SMTPD_---0W6ny017_1716188952)
+	t=1716189875; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=IlmzNrUbsrPyph3pr6xCrO3cu14PxLbK25E2+fDJGUE=;
+	b=fhaOciNkbx+JqjsxRoTMXSpBkO9tclVtUP7kJt8d8ZRVSHZg4+GeZ0uP9y5geUdweE69qKQr2hgHePExzl0E+TimTmBoQT1fIVYp0QHWwsToidPawWo8wgVEjXtMIt0HtsqJYoQ2O/e+KDsHQ/uXMvmWDDNs2soKyxXbKrx3WRc=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037067110;MF=jefflexu@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0W6nhN.g_1716189872;
+Received: from 30.221.148.185(mailfrom:jefflexu@linux.alibaba.com fp:SMTPD_---0W6nhN.g_1716189872)
           by smtp.aliyun-inc.com;
-          Mon, 20 May 2024 15:09:13 +0800
-Message-ID: <764c7b94-9ca9-4288-b806-b3e99fbd05c5@linux.alibaba.com>
-Date: Mon, 20 May 2024 15:09:11 +0800
+          Mon, 20 May 2024 15:24:34 +0800
+Message-ID: <35561c99-c978-4cf6-82e9-d1308c82a7ff@linux.alibaba.com>
+Date: Mon, 20 May 2024 15:24:31 +0800
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -34,8 +34,8 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/12] cachefiles: remove request from xarry during
- flush requests
+Subject: Re: [PATCH v2 03/12] cachefiles: fix slab-use-after-free in
+ cachefiles_ondemand_get_fd()
 To: libaokun@huaweicloud.com, netfs@lists.linux.dev, dhowells@redhat.com,
  jlayton@kernel.org
 Cc: hsiangkao@linux.alibaba.com, zhujia.zj@bytedance.com,
@@ -43,10 +43,10 @@ Cc: hsiangkao@linux.alibaba.com, zhujia.zj@bytedance.com,
  linux-kernel@vger.kernel.org, yangerkun@huawei.com, houtao1@huawei.com,
  yukuai3@huawei.com, wozizhi@huawei.com, Baokun Li <libaokun1@huawei.com>
 References: <20240515084601.3240503-1-libaokun@huaweicloud.com>
- <20240515084601.3240503-2-libaokun@huaweicloud.com>
+ <20240515084601.3240503-4-libaokun@huaweicloud.com>
 Content-Language: en-US
 From: Jingbo Xu <jefflexu@linux.alibaba.com>
-In-Reply-To: <20240515084601.3240503-2-libaokun@huaweicloud.com>
+In-Reply-To: <20240515084601.3240503-4-libaokun@huaweicloud.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
@@ -55,8 +55,42 @@ Content-Transfer-Encoding: 7bit
 On 5/15/24 4:45 PM, libaokun@huaweicloud.com wrote:
 > From: Baokun Li <libaokun1@huawei.com>
 > 
-> Even with CACHEFILES_DEAD set, we can still read the requests, so in the
-> following concurrency the request may be used after it has been freed:
+> We got the following issue in a fuzz test of randomly issuing the restore
+> command:
+> 
+> ==================================================================
+> BUG: KASAN: slab-use-after-free in cachefiles_ondemand_daemon_read+0x609/0xab0
+> Write of size 4 at addr ffff888109164a80 by task ondemand-04-dae/4962
+> 
+> CPU: 11 PID: 4962 Comm: ondemand-04-dae Not tainted 6.8.0-rc7-dirty #542
+> Call Trace:
+>  kasan_report+0x94/0xc0
+>  cachefiles_ondemand_daemon_read+0x609/0xab0
+>  vfs_read+0x169/0xb50
+>  ksys_read+0xf5/0x1e0
+> 
+> Allocated by task 626:
+>  __kmalloc+0x1df/0x4b0
+>  cachefiles_ondemand_send_req+0x24d/0x690
+>  cachefiles_create_tmpfile+0x249/0xb30
+>  cachefiles_create_file+0x6f/0x140
+>  cachefiles_look_up_object+0x29c/0xa60
+>  cachefiles_lookup_cookie+0x37d/0xca0
+>  fscache_cookie_state_machine+0x43c/0x1230
+>  [...]
+> 
+> Freed by task 626:
+>  kfree+0xf1/0x2c0
+>  cachefiles_ondemand_send_req+0x568/0x690
+>  cachefiles_create_tmpfile+0x249/0xb30
+>  cachefiles_create_file+0x6f/0x140
+>  cachefiles_look_up_object+0x29c/0xa60
+>  cachefiles_lookup_cookie+0x37d/0xca0
+>  fscache_cookie_state_machine+0x43c/0x1230
+>  [...]
+> ==================================================================
+> 
+> Following is the process that triggers the issue:
 > 
 >      mount  |   daemon_thread1    |    daemon_thread2
 > ------------------------------------------------------------
@@ -64,44 +98,208 @@ On 5/15/24 4:45 PM, libaokun@huaweicloud.com wrote:
 >   cachefiles_ondemand_send_req
 >    REQ_A = kzalloc(sizeof(*req) + data_len)
 >    wait_for_completion(&REQ_A->done)
+> 
 >             cachefiles_daemon_read
 >              cachefiles_ondemand_daemon_read
->                                   // close dev fd
->                                   cachefiles_flush_reqs
->                                    complete(&REQ_A->done)
+>               REQ_A = cachefiles_ondemand_select_req
+>               cachefiles_ondemand_get_fd
+>               copy_to_user(_buffer, msg, n)
+>             process_open_req(REQ_A)
+>                                   ------ restore ------
+>                                   cachefiles_ondemand_restore
+>                                   xas_for_each(&xas, req, ULONG_MAX)
+>                                    xas_set_mark(&xas, CACHEFILES_REQ_NEW);
+> 
+>                                   cachefiles_daemon_read
+>                                    cachefiles_ondemand_daemon_read
+>                                     REQ_A = cachefiles_ondemand_select_req
+> 
+>              write(devfd, ("copen %u,%llu", msg->msg_id, size));
+>              cachefiles_ondemand_copen
+>               xa_erase(&cache->reqs, id)
+>               complete(&REQ_A->done)
 >    kfree(REQ_A)
->               xa_lock(&cache->reqs);
->               cachefiles_ondemand_select_req
->                 req->msg.opcode != CACHEFILES_OP_READ
->                 // req use-after-free !!!
->               xa_unlock(&cache->reqs);
->                                    xa_destroy(&cache->reqs)
+>                                     cachefiles_ondemand_get_fd(REQ_A)
+>                                      fd = get_unused_fd_flags
+>                                      file = anon_inode_getfile
+>                                      fd_install(fd, file)
+>                                      load = (void *)REQ_A->msg.data;
+>                                      load->fd = fd;
+>                                      // load UAF !!!
 > 
-> Hence remove requests from cache->reqs when flushing them to avoid
-> accessing freed requests.
+> This issue is caused by issuing a restore command when the daemon is still
+> alive, which results in a request being processed multiple times thus
+> triggering a UAF. So to avoid this problem, add an additional reference
+> count to cachefiles_req, which is held while waiting and reading, and then
+> released when the waiting and reading is over.
 > 
-> Fixes: c8383054506c ("cachefiles: notify the user daemon when looking up cookie")
+
+
+> Note that since there is only one reference count for waiting, we need to
+> avoid the same request being completed multiple times, so we can only
+> complete the request if it is successfully removed from the xarray.
+
+Sorry the above description makes me confused.  As the same request may
+be got by different daemon threads multiple times, the introduced
+refcount mechanism can't protect it from being completed multiple times
+(which is expected).  The refcount only protects it from being freed
+multiple times.
+
+> 
+> Fixes: e73fa11a356c ("cachefiles: add restore command to recover inflight ondemand read requests")
+> Suggested-by: Hou Tao <houtao1@huawei.com>
 > Signed-off-by: Baokun Li <libaokun1@huawei.com>
 > Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
-
-Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
-
 > ---
->  fs/cachefiles/daemon.c | 1 +
->  1 file changed, 1 insertion(+)
+>  fs/cachefiles/internal.h |  1 +
+>  fs/cachefiles/ondemand.c | 44 ++++++++++++++++++++++------------------
+>  2 files changed, 25 insertions(+), 20 deletions(-)
 > 
-> diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
-> index 6465e2574230..ccb7b707ea4b 100644
-> --- a/fs/cachefiles/daemon.c
-> +++ b/fs/cachefiles/daemon.c
-> @@ -159,6 +159,7 @@ static void cachefiles_flush_reqs(struct cachefiles_cache *cache)
->  	xa_for_each(xa, index, req) {
->  		req->error = -EIO;
->  		complete(&req->done);
-> +		__xa_erase(xa, index);
->  	}
->  	xa_unlock(xa);
+> diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
+> index d33169f0018b..7745b8abc3aa 100644
+> --- a/fs/cachefiles/internal.h
+> +++ b/fs/cachefiles/internal.h
+> @@ -138,6 +138,7 @@ static inline bool cachefiles_in_ondemand_mode(struct cachefiles_cache *cache)
+>  struct cachefiles_req {
+>  	struct cachefiles_object *object;
+>  	struct completion done;
+> +	refcount_t ref;
+>  	int error;
+>  	struct cachefiles_msg msg;
+>  };
+> diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
+> index fd49728d8bae..56d12fe4bf73 100644
+> --- a/fs/cachefiles/ondemand.c
+> +++ b/fs/cachefiles/ondemand.c
+> @@ -4,6 +4,12 @@
+>  #include <linux/uio.h>
+>  #include "internal.h"
 >  
+> +static inline void cachefiles_req_put(struct cachefiles_req *req)
+> +{
+> +	if (refcount_dec_and_test(&req->ref))
+> +		kfree(req);
+> +}
+> +
+>  static int cachefiles_ondemand_fd_release(struct inode *inode,
+>  					  struct file *file)
+>  {
+> @@ -299,7 +305,6 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+>  {
+>  	struct cachefiles_req *req;
+>  	struct cachefiles_msg *msg;
+> -	unsigned long id = 0;
+>  	size_t n;
+>  	int ret = 0;
+>  	XA_STATE(xas, &cache->reqs, cache->req_id_next);
+> @@ -330,41 +335,39 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+>  
+>  	xas_clear_mark(&xas, CACHEFILES_REQ_NEW);
+>  	cache->req_id_next = xas.xa_index + 1;
+> +	refcount_inc(&req->ref);
+>  	xa_unlock(&cache->reqs);
+>  
+> -	id = xas.xa_index;
+> -
+>  	if (msg->opcode == CACHEFILES_OP_OPEN) {
+>  		ret = cachefiles_ondemand_get_fd(req);
+>  		if (ret) {
+>  			cachefiles_ondemand_set_object_close(req->object);
+> -			goto error;
+> +			goto out;
+>  		}
+>  	}
+>  
+> -	msg->msg_id = id;
+> +	msg->msg_id = xas.xa_index;
+>  	msg->object_id = req->object->ondemand->ondemand_id;
+>  
+>  	if (copy_to_user(_buffer, msg, n) != 0) {
+>  		ret = -EFAULT;
+>  		if (msg->opcode == CACHEFILES_OP_OPEN)
+>  			close_fd(((struct cachefiles_open *)msg->data)->fd);
+> -		goto error;
+>  	}
+> -
+> -	/* CLOSE request has no reply */
+> -	if (msg->opcode == CACHEFILES_OP_CLOSE) {
+> -		xa_erase(&cache->reqs, id);
+> -		complete(&req->done);
+> +out:
+> +	/* Remove error request and CLOSE request has no reply */
+> +	if (ret || msg->opcode == CACHEFILES_OP_CLOSE) {
+> +		xas_reset(&xas);
+> +		xas_lock(&xas);
+> +		if (xas_load(&xas) == req) {
+
+Just out of curiosity... How could xas_load(&xas) doesn't equal to req?
+
+
+> +			req->error = ret;
+> +			complete(&req->done);
+> +			xas_store(&xas, NULL);
+> +		}
+> +		xas_unlock(&xas);
+>  	}
+> -
+> -	return n;
+> -
+> -error:
+> -	xa_erase(&cache->reqs, id);
+> -	req->error = ret;
+> -	complete(&req->done);
+> -	return ret;
+> +	cachefiles_req_put(req);
+> +	return ret ? ret : n;
+>  }
+
+This is actually a combination of a fix and a cleanup which combines the
+logic of removing error request and the CLOSE requests into one place.
+Also it relies on the cleanup made in patch 2 ("cachefiles: remove
+err_put_fd tag in cachefiles_ondemand_daemon_read()"), making it
+difficult to be atomatically back ported to the stable (as patch 2 is
+not marked as "Fixes").
+
+Thus could we make the fix first, and then make the cleanup.
+
+>  
+>  typedef int (*init_req_fn)(struct cachefiles_req *req, void *private);
+> @@ -394,6 +397,7 @@ static int cachefiles_ondemand_send_req(struct cachefiles_object *object,
+>  		goto out;
+>  	}
+>  
+> +	refcount_set(&req->ref, 1);
+>  	req->object = object;
+>  	init_completion(&req->done);
+>  	req->msg.opcode = opcode;
+> @@ -455,7 +459,7 @@ static int cachefiles_ondemand_send_req(struct cachefiles_object *object,
+>  	wake_up_all(&cache->daemon_pollwq);
+>  	wait_for_completion(&req->done);
+>  	ret = req->error;
+> -	kfree(req);
+> +	cachefiles_req_put(req);
+>  	return ret;
+>  out:
+>  	/* Reset the object to close state in error handling path.
+
+
+Don't we need to also convert "kfree(req)" to cachefiles_req_put(req)
+for the error path of cachefiles_ondemand_send_req()?
+
+```
+out:
+	/* Reset the object to close state in error handling path.
+	 * If error occurs after creating the anonymous fd,
+	 * cachefiles_ondemand_fd_release() will set object to close.
+	 */
+	if (opcode == CACHEFILES_OP_OPEN)
+		cachefiles_ondemand_set_object_close(object);
+	kfree(req);
+	return ret;
+```
+
+
+
 
 -- 
 Thanks,
