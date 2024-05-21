@@ -1,87 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611217FBA3;
-	Tue, 21 May 2024 14:16:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AACBB1CA80
+	for <netfs@lists.linux.dev>; Tue, 21 May 2024 15:49:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716301019; cv=none; b=gAvxK68xXzOnZ08IKcycQCqhyFI1iaHhee2lDSRHFKvlT5WIwU0JXmS4o81sqGWocH8CE713Bg7AQebSeRMThHo4oD6L4xWSbXDA8A8EEF0Ng/10LHdUwOSlwG4ZiLUlan7obbG75ewKXvwzwyjEXiRTTKBkYYR+fQAOGYpWISI=
+	t=1716306596; cv=none; b=IfaBvaHGAeK7D9Ap8Eja1/by9nmdsiFQPWR08StNoYWq5fG0L29OFtS5EfnirRBByheXWPFmC2MYO/UNsNdBmVbABjVbPNi8i5FwNGhqnw24SDN/GI5ebKSZACyVToGTra8HzVMqTNnLbsVIawbVwJUOkv1Iv/FVQgHTBtSY0io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716301019; c=relaxed/simple;
-	bh=k7c5PdzZkjCSd2BhGuu+0h3gB9EZl1yGGRc5tKw1BSg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cftBAMYj35InjfjXf8W+j+yy5i3JEfVrTzc8+UnmwANNql2Npf7KmHBKYtBMJxdf79xjy3l1/iOdHHE9Ej4IWwEAcxZ8Qq9BNEG2dYNsPaROelhD++X/gM5gR8lvpsImbNyXtYmIxWumMS82IL1a43ssf3tONRRuVqGf7ovVKl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Khodptqa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1716306596; c=relaxed/simple;
+	bh=EsNjHQD8onwzJqeFZmAIuXFOW2blNrOa1Rp4vndUGRU=;
+	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=tqgLtX3QZcqy+9FgCVDs9VUidpXP2iRO15DESBN0pVxirTAorP7Qy0dI8MS1emIXrkS4zbYRjQdIH55X8pbOfFUudnWjJjAwFM+PIh8WfqPV9fWpibp5aM2/0mKp7H7/Kgr7jBbFnetk+UxeWlzlknwfuR7+uwIMFRExFHAkj0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ckgc987g; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Khodptqa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73D29C32789;
-	Tue, 21 May 2024 14:16:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716301018;
-	bh=k7c5PdzZkjCSd2BhGuu+0h3gB9EZl1yGGRc5tKw1BSg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Khodptqap/WzDPfedXz/DwKuzyeN4v7AV1fI2Aa//uMXtUEGFr5QUU8A88tzXyI2s
-	 M0Sx00YkT70Tbmy7bIx8pIb+FBUplpjaz+VxhV3KZqzM4nB0slseiCL18aStpSd6/j
-	 rtG4A+JCKwTkVpTyTpdHtN3g7DolldIq43KA9Ou6xAU0Wzv4dvHox1Gr5sGCqYpW1k
-	 HYodR3O5QUuZDzJVlKv5hzrkLO8XFSgpmjdgKt7o8Va5pg1/Z5cFvbBp8eX1Riu8x5
-	 elXbEaL83L7qy2fh20lkataIdnGrav+9oLV88T236sPo9RKDTPY3zWu35nAwhONlL8
-	 9QPtiEIUjwnVQ==
-From: Christian Brauner <brauner@kernel.org>
-To: Steve French <stfrench@microsoft.com>,
-	David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	Enzo Matsumiya <ematsumiya@suse.de>,
-	netfs@lists.linux.dev,
-	v9fs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] netfs: Fix AIO error handling when doing write-through
-Date: Tue, 21 May 2024 16:16:49 +0200
-Message-ID: <20240521-handel-landbrot-e013a2c4560d@brauner>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <295052.1716298587@warthog.procyon.org.uk>
-References: <295052.1716298587@warthog.procyon.org.uk>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ckgc987g"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1716306593;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=3JK4qzqYYZMoo+8Y+hbMdVVgqmEeOKBQ3rxyZn96arA=;
+	b=Ckgc987gBwtPPfApHYh9s2wTnff+01pteXqgUpxW3ZyjNcRenXdpX38pFasQusx/WpQLKa
+	eRy4ANoqV4143xxt+t+HQZWoCR8FZZgNfacCfHm1iMh2Svzc7fr/5REGGye7miAFKxl6pP
+	YOGcvjT+EKB8WcVNMg+PCAUUgiLrNRc=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-210-q3c8SPE5M_WT51A7n4paVw-1; Tue,
+ 21 May 2024 11:49:50 -0400
+X-MC-Unique: q3c8SPE5M_WT51A7n4paVw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B3CE41C05129;
+	Tue, 21 May 2024 15:49:49 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.20])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 97E4F21EE56B;
+	Tue, 21 May 2024 15:49:47 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: Steve French <stfrench@microsoft.com>
+cc: dhowells@redhat.com, Jeff Layton <jlayton@kernel.org>,
+    Enzo Matsumiya <ematsumiya@suse.de>, Jens Axboe <axboe@kernel.dk>,
+    Matthew Wilcox <willy@infradead.org>,
+    Christian Brauner <brauner@kernel.org>, netfs@lists.linux.dev,
+    v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
+    linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: [PATCH] netfs: Fix setting of BDP_ASYNC from iocb flags
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1381; i=brauner@kernel.org; h=from:subject:message-id; bh=k7c5PdzZkjCSd2BhGuu+0h3gB9EZl1yGGRc5tKw1BSg=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaT5rLn0rVQ1jjF39fu9z16/XlIhx1Nl41OR9F1K63uRF Gf+prW1HaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABNJiWP4Z3ksVLKaj8H8k5ON xg3nD/cuH2xcLGA/8b7FqwmP2Zl6JzP8j/jVEfFwJpvGt9dTb6wUXyBvMZnxo33KYx4buQ3K289 EMgEA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <316305.1716306586.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 21 May 2024 16:49:46 +0100
+Message-ID: <316306.1716306586@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 
-On Tue, 21 May 2024 14:36:27 +0100, David Howells wrote:
-> If an error occurs whilst we're doing an AIO write in write-through mode,
-> we may end up calling ->ki_complete() *and* returning an error from
-> ->write_iter().  This can result in either a UAF (the ->ki_complete() func
-> pointer may get overwritten, for example) or a refcount underflow in
-> io_submit() as ->ki_complete is called twice.
-> 
-> Fix this by making netfs_end_writethrough() - and thus
-> netfs_perform_write() - unconditionally return -EIOCBQUEUED if we're doing
-> an AIO write and wait for completion if we're not.
-> 
-> [...]
+Fix netfs_perform_write() to set BDP_ASYNC if IOCB_NOWAIT is set rather
+than if IOCB_SYNC is not set.  It reflects asynchronicity in the sense of
+not waiting rather than synchronicity in the sense of not returning until
+the op is complete.
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
+Without this, generic/590 fails on cifs in strict caching mode with a
+complaint that one of the writes fails with EAGAIN.  The test can be
+distilled down to:
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+        mount -t cifs /my/share /mnt -ostuff
+        xfs_io -i -c 'falloc 0 8191M -c fsync -f /mnt/file
+        xfs_io -i -c 'pwrite -b 1M -W 0 8191M' /mnt/file
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+Fixes: c38f4e96e605 ("netfs: Provide func to copy data to pagecache for bu=
+ffered write")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: Enzo Matsumiya <ematsumiya@suse.de>
+cc: Jens Axboe <axboe@kernel.dk>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: netfs@lists.linux.dev
+cc: v9fs@lists.linux.dev
+cc: linux-afs@lists.infradead.org
+cc: linux-cifs@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
+---
+ fs/netfs/buffered_write.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
+index 1121601536d1..07bc1fd43530 100644
+--- a/fs/netfs/buffered_write.c
++++ b/fs/netfs/buffered_write.c
+@@ -181,7 +181,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct=
+ iov_iter *iter,
+ 	struct folio *folio, *writethrough =3D NULL;
+ 	enum netfs_how_to_modify howto;
+ 	enum netfs_folio_trace trace;
+-	unsigned int bdp_flags =3D (iocb->ki_flags & IOCB_SYNC) ? 0: BDP_ASYNC;
++	unsigned int bdp_flags =3D (iocb->ki_flags & IOCB_NOWAIT) ? BDP_ASYNC : =
+0;
+ 	ssize_t written =3D 0, ret, ret2;
+ 	loff_t i_size, pos =3D iocb->ki_pos, from, to;
+ 	size_t max_chunk =3D PAGE_SIZE << MAX_PAGECACHE_ORDER;
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
-
-[1/1] netfs: Fix AIO error handling when doing write-through
-      https://git.kernel.org/vfs/vfs/c/eb5239732070
