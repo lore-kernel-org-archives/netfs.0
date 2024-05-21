@@ -1,178 +1,85 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB577EEF3
-	for <netfs@lists.linux.dev>; Tue, 21 May 2024 13:37:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E621271B48;
+	Tue, 21 May 2024 14:16:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716298676; cv=none; b=LuX00EbltzGY+MvvD9T0pyyaHfK+UT7syOaO0H0RZzies/iLGi5wnCfuDFij0F9oBIyKj7ZvMudd6r1NKSSGGpk6PHjMlyJ7nKU3KSE2q2z3shU+5Enc9/JLF+6BPqgpvbCzPcSmwhA9hJgzxJ9G0MbPi+VRYJGyewRahE/8zes=
+	t=1716300972; cv=none; b=Ob0rv9PASElMpzaOHAWJ6uLmXz4JEFAaEhnLyidTM2BFSbLPUp7u3Fae5xw+mfbWYG5baD/v51kLWd6JOTcByhoK4U7394rjvGX8F9J8KsQ9alnMcmPlNXVgc8XF1erN34Ht9wevBkE1+yi8Ol56yYKkDQfsVSksAG5W8+CNT0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716298676; c=relaxed/simple;
-	bh=7INAOGtFzIQ6Gh/pVWdLpMxhgHEOfWNqpfhFK2p6qdg=;
-	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=TtwCi9kgCuziDrz1ig33v1twsvx37mdvS6HLpoZ4a6aQMugpy8tvoF4v6PlitEDGaFBh7222lRvxF9nEoUmYVk/5SOrpbHc+gVokX59P95Q6aVqVr0giCs1t/D5rIptymPUdmaEJvQRTAIudu1/pX8NuyeGMkD52DsH4PNtrrfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hYWB4/Bi; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1716300972; c=relaxed/simple;
+	bh=QzfF+EFnCDCxFr4kbXOmJ2u12v1wZA/7KB6nqUZ27qc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ahQtoKfnFW0fu7xaI/56v+CxTX+74hFhe45lu4p325yMyxSRc45fElxdyvGoHIDOwPvSOeXNDxPWeTLh/QSsSvUdxsb++2rFqg8UjeBHDCcclQlIeV6rQUInFkLZLdcrzRcY2tNoMlnNSFA2yqyI5mslnk1h06nV03HT9KMFT68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ouUbzHOi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hYWB4/Bi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1716298674;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=yOcMvNO//1W6FqwIcohFnux5QRyePYcjnQaavCfQFB8=;
-	b=hYWB4/BiLYo8eQ22IBMajcNJRetTUjvBB8YPEi6Wex0t6uQowzOy1JjrKidfa/woSgzD9K
-	UT0RU2fxSMe/T7zhZSqa0R6/95Dw9TpuRefzNZ8lQgF2k7oHAfzSwlaMcu+CcaXD8YPRJZ
-	ElWVvIQmVU2Y1tZR7/cSvJkuZovCqtg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-460-6G-zXPF0MmCejZwxiQ4EAg-1; Tue, 21 May 2024 09:37:49 -0400
-X-MC-Unique: 6G-zXPF0MmCejZwxiQ4EAg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4306A18188B0;
-	Tue, 21 May 2024 13:37:45 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.20])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id ECFEB1C09480;
-	Tue, 21 May 2024 13:37:43 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-To: Steve French <stfrench@microsoft.com>
-cc: dhowells@redhat.com, Jeff Layton <jlayton@kernel.org>,
-    Enzo Matsumiya <ematsumiya@suse.de>,
-    Christian Brauner <brauner@kernel.org>, netfs@lists.linux.dev,
-    v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
-    linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Subject: [PATCH] netfs: Fix io_uring based write-through
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ouUbzHOi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A19CC2BD11;
+	Tue, 21 May 2024 14:16:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716300971;
+	bh=QzfF+EFnCDCxFr4kbXOmJ2u12v1wZA/7KB6nqUZ27qc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ouUbzHOiGuwDb7dxQAPrA0+vH+s2nu6ziinxfrQwSpKu/ViJUOJ7AmC1QKr6FlCzS
+	 cODYGRQLPduIqIox2nNxLvgLpKcuWHFUIBQNTpBG2ImM0SdxQ2iHWvgNkWdTC2PDTI
+	 8iLCRm81GUvbxilTftjxKr86rFugqE5hQqQtWK7AAvqZuUYy5QLfc1CyB7Lp+ruVqi
+	 Rf9TvORajynsPXbNAS6bubeL7C4/QPXJg6mHdOEeCbXqitr160MZgZPrDLks6BVt33
+	 IP4UhT9Ah/J6yi181U8/scaP3MnVsEPapipX4EkqFA0wppUmYD32e3mttlupgMHzFi
+	 GjPXrYD/0nDKQ==
+From: Christian Brauner <brauner@kernel.org>
+To: Steve French <stfrench@microsoft.com>,
+	David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Enzo Matsumiya <ematsumiya@suse.de>,
+	netfs@lists.linux.dev,
+	v9fs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] netfs: Fix io_uring based write-through
+Date: Tue, 21 May 2024 16:15:59 +0200
+Message-ID: <20240521-teigwaren-gehindert-316a25d666fb@brauner>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <295086.1716298663@warthog.procyon.org.uk>
+References: <295086.1716298663@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <295085.1716298663.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 21 May 2024 14:37:43 +0100
-Message-ID: <295086.1716298663@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1116; i=brauner@kernel.org; h=from:subject:message-id; bh=QzfF+EFnCDCxFr4kbXOmJ2u12v1wZA/7KB6nqUZ27qc=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaT5rFnE4m8x45/62gSOdNld15xUDxTflL8eOu/uQo9J0 5keLp97tKOUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAiWQ4Mv5jPHN/z8/PNp+9n lJ/faN5zQWrViSXb43a4nuZvWGqi9TKV4Z9uXuCTO+9PdT/K4b4vxXPkQpXOo5THz5254pYn6QV OXcwHAA==
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-This can be triggered by mounting a cifs filesystem with a cache=3Dstrict
-mount option and then, using the fsx program from xfstests, doing:
+On Tue, 21 May 2024 14:37:43 +0100, David Howells wrote:
+> This can be triggered by mounting a cifs filesystem with a cache=strict
+> mount option and then, using the fsx program from xfstests, doing:
+> 
+>         ltp/fsx -A -d -N 1000 -S 11463 -P /tmp /cifs-mount/foo \
+>           --replay-ops=gen112-fsxops
+> 
+> Where gen112-fsxops holds:
+> 
+> [...]
 
-        ltp/fsx -A -d -N 1000 -S 11463 -P /tmp /cifs-mount/foo \
-          --replay-ops=3Dgen112-fsxops
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-Where gen112-fsxops holds:
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-        fallocate 0x6be7 0x8fc5 0x377d3
-        copy_range 0x9c71 0x77e8 0x2edaf 0x377d3
-        write 0x2776d 0x8f65 0x377d3
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-The problem is that netfs_io_request::len is being used for two purposes
-and ends up getting set to the amount of data we transferred, not the
-amount of data the caller asked to be transferred (for various reasons,
-such as mmap'd writes, we might end up rounding out the data written to th=
-e
-server to include the entire folio at each end).
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
-Fix this by keeping the amount we were asked to write in ->len and using
-->submitted to track what we issued ops for.  Then, when we come to callin=
-g
-->ki_complete(), ->len is the right size.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
 
-This also required netfs_cleanup_dio_write() to change since we're no
-longer advancing wreq->len.  Use wreq->transferred instead as we might hav=
-e
-done a short read.
-
-With this, the generic/112 xfstest passes if cifs is forced to put all
-non-DIO opens into write-through mode.
-
-Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: Steve French <stfrench@microsoft.com>
-cc: Enzo Matsumiya <ematsumiya@suse.de>
-cc: netfs@lists.linux.dev
-cc: v9fs@lists.linux.dev
-cc: linux-afs@lists.infradead.org
-cc: linux-cifs@vger.kernel.org
-cc: linux-fsdevel@vger.kernel.org
----
- fs/netfs/direct_write.c  |    2 +-
- fs/netfs/write_collect.c |    7 ++++---
- fs/netfs/write_issue.c   |    2 +-
- 3 files changed, 6 insertions(+), 5 deletions(-)
-
-diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
-index 608ba6416919..28163516bf03 100644
---- a/fs/netfs/direct_write.c
-+++ b/fs/netfs/direct_write.c
-@@ -12,7 +12,7 @@
- static void netfs_cleanup_dio_write(struct netfs_io_request *wreq)
- {
- 	struct inode *inode =3D wreq->inode;
--	unsigned long long end =3D wreq->start + wreq->len;
-+	unsigned long long end =3D wreq->start + wreq->transferred;
- =
-
- 	if (!wreq->error &&
- 	    i_size_read(inode) < end) {
-diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
-index 60112e4b2c5e..426cf87aaf2e 100644
---- a/fs/netfs/write_collect.c
-+++ b/fs/netfs/write_collect.c
-@@ -510,7 +510,7 @@ static void netfs_collect_write_results(struct netfs_i=
-o_request *wreq)
- 	 * stream has a gap that can be jumped.
- 	 */
- 	if (notes & SOME_EMPTY) {
--		unsigned long long jump_to =3D wreq->start + wreq->len;
-+		unsigned long long jump_to =3D wreq->start + READ_ONCE(wreq->submitted)=
-;
- =
-
- 		for (s =3D 0; s < NR_IO_STREAMS; s++) {
- 			stream =3D &wreq->io_streams[s];
-@@ -690,10 +690,11 @@ void netfs_write_collection_worker(struct work_struc=
-t *work)
- 	wake_up_bit(&wreq->flags, NETFS_RREQ_IN_PROGRESS);
- =
-
- 	if (wreq->iocb) {
--		wreq->iocb->ki_pos +=3D wreq->transferred;
-+		size_t written =3D min(wreq->transferred, wreq->len);
-+		wreq->iocb->ki_pos +=3D written;
- 		if (wreq->iocb->ki_complete)
- 			wreq->iocb->ki_complete(
--				wreq->iocb, wreq->error ? wreq->error : wreq->transferred);
-+				wreq->iocb, wreq->error ? wreq->error : written);
- 		wreq->iocb =3D VFS_PTR_POISON;
- 	}
- =
-
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index acbfd1f5ee9d..3aa86e268f40 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -254,7 +254,7 @@ static void netfs_issue_write(struct netfs_io_request =
-*wreq,
- 	stream->construct =3D NULL;
- =
-
- 	if (subreq->start + subreq->len > wreq->start + wreq->submitted)
--		wreq->len =3D wreq->submitted =3D subreq->start + subreq->len - wreq->s=
-tart;
-+		WRITE_ONCE(wreq->submitted, subreq->start + subreq->len - wreq->start);
- 	netfs_do_issue_write(stream, subreq);
- }
- =
-
+[1/1] netfs: Fix io_uring based write-through
+      https://git.kernel.org/vfs/vfs/c/c51124cbc622
