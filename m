@@ -1,28 +1,27 @@
-Received: from dggsgout11.his.huawei.com (unknown [45.249.212.51])
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34A679950
-	for <netfs@lists.linux.dev>; Wed, 22 May 2024 03:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFEC237144
+	for <netfs@lists.linux.dev>; Wed, 22 May 2024 04:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716349809; cv=none; b=Zr0ASjjzk664Xm9QIArp7ZXg9b/1yzYJ0c5Gpqza3p7lU8nSoiG27sY0deDN5C1tw55z0KOrrcLDr6caKeIbMK5d183SVYuCKrWYGYjTptejJp1SstKL72u4t19JjLQik5RNZAKPLs2N4Qydycp7+UOWu4xSDdV8m+W5X3Itijk=
+	t=1716350762; cv=none; b=TFOq5xZH4Av2VCo85Z3ES5A/MV/WpsVLtrqfvJnMazQKNFeOZFwC/FaKJWU/y3mGYns2nbH8OCKMz00dP1IhoDPHilgexiFMM7T2s4GHly2Z7QdWMbZc0PNuZHhwkP4LhbxEKzaomiqDYxvKYrvswxK0OgjI/teRsUTqMjMzcqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716349809; c=relaxed/simple;
-	bh=xFIWIQs94nRiioTsqRVAvGLFuymDOqizWvscX/cU7L0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=AHy1sPaVZvEVoXQUX71RSDIG5Mk/OUbPM0lMjH6zwHvzp8LKdp79BuKm60I+4kMDJ+8gsUp/OV88pwlOE0DS300lIJ0iAm79PgrQ1/JV9SFg9t9mSgeBuVd44TVoIqXJw3d8xgwR1NvNMQEU01i2KTYg4aPpy20f7/AJbP1vj/A=
+	s=arc-20240116; t=1716350762; c=relaxed/simple;
+	bh=ChxVf4FnXZilWSTRkjIB2ZHFv7JVFX1ZGcQCv3Sbf1c=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GZJbNZJM1AEZrHrOC/SXZ0pTYIJ7pSIeoGLANCjSK5C2XFiYU5JHUhP6GxqlK/6g3xw5wc1sxXqcPhQiBmynFjmJabYueMA6naPL9ZVRXb3qjefidhcDE2PZorELtJ6fy6zsrdSSY4i5BP5NSqJ1bFIRy4dX7PLy0+q2qjOQ6lc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4Vkckr238nz4f3jkR
-	for <netfs@lists.linux.dev>; Wed, 22 May 2024 11:49:56 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.93.142])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4Vkd5B5K68z4f3jqP
+	for <netfs@lists.linux.dev>; Wed, 22 May 2024 12:05:50 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id 141251A0ECD
-	for <netfs@lists.linux.dev>; Wed, 22 May 2024 11:50:02 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTP id 866D31A0182
+	for <netfs@lists.linux.dev>; Wed, 22 May 2024 12:05:56 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.175.104.67])
-	by APP1 (Coremail) with SMTP id cCh0CgBHGBFea01mxlBXNQ--.57627S16;
-	Wed, 22 May 2024 11:50:01 +0800 (CST)
+	by APP1 (Coremail) with SMTP id cCh0CgBHZQ4ib01ms1VYNQ--.24441S4;
+	Wed, 22 May 2024 12:05:56 +0800 (CST)
 From: libaokun@huaweicloud.com
 To: netfs@lists.linux.dev,
 	dhowells@redhat.com,
@@ -39,12 +38,10 @@ Cc: hsiangkao@linux.alibaba.com,
 	yukuai3@huawei.com,
 	wozizhi@huawei.com,
 	Baokun Li <libaokun1@huawei.com>
-Subject: [PATCH v3 12/12] cachefiles: make on-demand read killable
-Date: Wed, 22 May 2024 19:43:08 +0800
-Message-Id: <20240522114308.2402121-13-libaokun@huaweicloud.com>
+Subject: [PATCH RESEND 0/5] cachefiles: some bugfixes for withdraw and xattr
+Date: Wed, 22 May 2024 19:59:06 +0800
+Message-Id: <20240522115911.2403021-1-libaokun@huaweicloud.com>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240522114308.2402121-1-libaokun@huaweicloud.com>
-References: <20240522114308.2402121-1-libaokun@huaweicloud.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -52,116 +49,66 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:cCh0CgBHGBFea01mxlBXNQ--.57627S16
-X-Coremail-Antispam: 1UD129KBjvJXoWxZrWUJry5tw4ruw48KFW7Arb_yoW5Ar1rpF
-	Waya45KrykWF4Ikrn3Aw4UX34Sy3y8AFZrWrySqw1fAFnIqr1rZr1Ut3WYvF15A34jgrZx
-	tw48uFWxK34jv3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUQS14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2jI8I6cxK62vIxIIY0VWUZVW8XwA2048vs2IY02
-	0E87I2jVAFwI0_JF0E3s1l82xGYIkIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0
-	rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6x
-	IIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xv
-	wVC2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFc
-	xC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_
-	Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2
-	IErcIFxwACI402YVCY1x02628vn2kIc2xKxwAKzVCY07xG64k0F24l42xK82IYc2Ij64vI
-	r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
-	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0
-	cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1lIxAIcVCF04
-	k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7Cj
-	xVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjTRupB-UUUUU
+X-CM-TRANSID:cCh0CgBHZQ4ib01ms1VYNQ--.24441S4
+X-Coremail-Antispam: 1UD129KBjvJXoW7WFWxuF1xtw13Ar4ktFyDGFg_yoW8Xr47pF
+	WakF13JrykW39rGw4fAw15Xr1fA3yfGF4vg347Wr18Awn5Xr1YvF4Iyw15ZFy5Cr17tws2
+	v3WUKFy7Wr1Yy3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBa14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2jI8I6cxK62vIxIIY0VWUZVW8XwA2ocxC64kIII
+	0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xv
+	wVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4
+	x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG
+	64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r
+	1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAq
+	YI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lw4CEc2x0rVAKj4xxMxAIw28IcxkI7V
+	AKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
+	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6x
+	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
+	w20EY4v20xvaj40_Wr1j6rW3Jr1lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aV
+	CY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0pR6wZ7UUUUU=
 X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/
 
 From: Baokun Li <libaokun1@huawei.com>
 
-Replacing wait_for_completion() with wait_for_completion_killable() in
-cachefiles_ondemand_send_req() allows us to kill processes that might
-trigger a hunk_task if the daemon is abnormal.
+Hi all!
 
-But now only CACHEFILES_OP_READ is killable, because OP_CLOSE and OP_OPEN
-is initiated from kworker context and the signal is prohibited in these
-kworker.
+There are some fixes for some cachefiles generic processes. We found these
+issues when testing the on-demand mode, but the non-on-demand mode is also
+involved. The following is a brief overview of the patches, see the patches
+for more details.
 
-Note that when the req in xas changes, i.e. xas_load(&xas) != req, it
-means that a process will complete the current request soon, so wait
-again for the request to be completed.
+Patch 1-2: Add fscache_try_get_volume() helper function to avoid
+fscache_volume use-after-free on cache withdrawal.
 
-In addition, add the cachefiles_ondemand_finish_req() helper function to
-simplify the code.
+Patch 3: Fix cachefiles_lookup_cookie() and cachefiles_withdraw_cache()
+concurrency causing cachefiles_volume use-after-free.
 
-Suggested-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Acked-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
----
- fs/cachefiles/ondemand.c | 40 ++++++++++++++++++++++++++++------------
- 1 file changed, 28 insertions(+), 12 deletions(-)
+Patch 4-5: Propagate error codes returned by vfs_getxattr() to avoid
+endless loops.
 
-diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-index 922cab1a314b..58bd80956c5a 100644
---- a/fs/cachefiles/ondemand.c
-+++ b/fs/cachefiles/ondemand.c
-@@ -380,6 +380,20 @@ static struct cachefiles_req *cachefiles_ondemand_select_req(struct xa_state *xa
- 	return NULL;
- }
- 
-+static inline bool cachefiles_ondemand_finish_req(struct cachefiles_req *req,
-+						  struct xa_state *xas, int err)
-+{
-+	if (unlikely(!xas || !req))
-+		return false;
-+
-+	if (xa_cmpxchg(xas->xa, xas->xa_index, req, NULL, 0) != req)
-+		return false;
-+
-+	req->error = err;
-+	complete(&req->done);
-+	return true;
-+}
-+
- ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
- 					char __user *_buffer, size_t buflen)
- {
-@@ -443,16 +457,8 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
- out:
- 	cachefiles_put_object(req->object, cachefiles_obj_put_read_req);
- 	/* Remove error request and CLOSE request has no reply */
--	if (ret || msg->opcode == CACHEFILES_OP_CLOSE) {
--		xas_reset(&xas);
--		xas_lock(&xas);
--		if (xas_load(&xas) == req) {
--			req->error = ret;
--			complete(&req->done);
--			xas_store(&xas, NULL);
--		}
--		xas_unlock(&xas);
--	}
-+	if (ret || msg->opcode == CACHEFILES_OP_CLOSE)
-+		cachefiles_ondemand_finish_req(req, &xas, ret);
- 	cachefiles_req_put(req);
- 	return ret ? ret : n;
- }
-@@ -544,8 +550,18 @@ static int cachefiles_ondemand_send_req(struct cachefiles_object *object,
- 		goto out;
- 
- 	wake_up_all(&cache->daemon_pollwq);
--	wait_for_completion(&req->done);
--	ret = req->error;
-+wait:
-+	ret = wait_for_completion_killable(&req->done);
-+	if (!ret) {
-+		ret = req->error;
-+	} else {
-+		ret = -EINTR;
-+		if (!cachefiles_ondemand_finish_req(req, &xas, ret)) {
-+			/* Someone will complete it soon. */
-+			cpu_relax();
-+			goto wait;
-+		}
-+	}
- 	cachefiles_req_put(req);
- 	return ret;
- out:
+Comments and questions are, as always, welcome.
+
+Thanks,
+Baokun
+
+Baokun Li (5):
+  netfs, fscache: export fscache_put_volume() and add
+    fscache_try_get_volume()
+  cachefiles: fix slab-use-after-free in fscache_withdraw_volume()
+  cachefiles: fix slab-use-after-free in cachefiles_withdraw_cookie()
+  cachefiles: correct the return value of
+    cachefiles_check_volume_xattr()
+  cachefiles: correct the return value of cachefiles_check_auxdata()
+
+ fs/cachefiles/cache.c          | 45 +++++++++++++++++++++++++++++++++-
+ fs/cachefiles/volume.c         |  1 -
+ fs/cachefiles/xattr.c          |  5 +++-
+ fs/netfs/fscache_volume.c      | 14 +++++++++++
+ fs/netfs/internal.h            |  2 --
+ include/linux/fscache-cache.h  |  6 +++++
+ include/trace/events/fscache.h |  4 +++
+ 7 files changed, 72 insertions(+), 5 deletions(-)
+
 -- 
 2.39.2
 
