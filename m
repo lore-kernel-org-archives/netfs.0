@@ -1,27 +1,28 @@
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+Received: from dggsgout12.his.huawei.com (unknown [45.249.212.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFEC237144
-	for <netfs@lists.linux.dev>; Wed, 22 May 2024 04:05:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D5FB71B48
+	for <netfs@lists.linux.dev>; Wed, 22 May 2024 04:06:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716350762; cv=none; b=TFOq5xZH4Av2VCo85Z3ES5A/MV/WpsVLtrqfvJnMazQKNFeOZFwC/FaKJWU/y3mGYns2nbH8OCKMz00dP1IhoDPHilgexiFMM7T2s4GHly2Z7QdWMbZc0PNuZHhwkP4LhbxEKzaomiqDYxvKYrvswxK0OgjI/teRsUTqMjMzcqs=
+	t=1716350763; cv=none; b=uwaT+O4nlRo4o38Oq0o0pAlInH14S5P3zns80zgbjDLIsxYR/oTkTbSG3C/84ISlq5zOoVUqlxiyX/xVqW/WPyxkTm891JFcJflLupIDMIldgOOq/CffnNApA6ixv4a1I19rS94Itamm6PFlLsFQz5pFnMdC9iVhaQfJBCDHvT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716350762; c=relaxed/simple;
-	bh=ChxVf4FnXZilWSTRkjIB2ZHFv7JVFX1ZGcQCv3Sbf1c=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GZJbNZJM1AEZrHrOC/SXZ0pTYIJ7pSIeoGLANCjSK5C2XFiYU5JHUhP6GxqlK/6g3xw5wc1sxXqcPhQiBmynFjmJabYueMA6naPL9ZVRXb3qjefidhcDE2PZorELtJ6fy6zsrdSSY4i5BP5NSqJ1bFIRy4dX7PLy0+q2qjOQ6lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
+	s=arc-20240116; t=1716350763; c=relaxed/simple;
+	bh=EaeMvtcrAfCUa9GeEeBHxpnpWMww9yf+oayv9Ypac7o=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=cpMYA+a+eZeXRRoRhwhkyjH3WWfGLLUpVGB0edj9O5FW5yKUXL2z/ZwXGc4zjIkDjRUxwrCHf+TrUsksLaFrTKcspL6tGc4C+AxXsKFKQQe8S14qyqkAhFOXhuVKoHXjzyy7JE4nd0XxmLQ8W42uMI1ylZlCwPavpVnoD9DIHkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4Vkd5B5K68z4f3jqP
-	for <netfs@lists.linux.dev>; Wed, 22 May 2024 12:05:50 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4Vkd596mfFz4f3jXt
+	for <netfs@lists.linux.dev>; Wed, 22 May 2024 12:05:49 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id 866D31A0182
-	for <netfs@lists.linux.dev>; Wed, 22 May 2024 12:05:56 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTP id DDA0D1A01B9
+	for <netfs@lists.linux.dev>; Wed, 22 May 2024 12:05:58 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.175.104.67])
-	by APP1 (Coremail) with SMTP id cCh0CgBHZQ4ib01ms1VYNQ--.24441S4;
-	Wed, 22 May 2024 12:05:56 +0800 (CST)
+	by APP1 (Coremail) with SMTP id cCh0CgBHZQ4ib01ms1VYNQ--.24441S8;
+	Wed, 22 May 2024 12:05:58 +0800 (CST)
 From: libaokun@huaweicloud.com
 To: netfs@lists.linux.dev,
 	dhowells@redhat.com,
@@ -38,10 +39,12 @@ Cc: hsiangkao@linux.alibaba.com,
 	yukuai3@huawei.com,
 	wozizhi@huawei.com,
 	Baokun Li <libaokun1@huawei.com>
-Subject: [PATCH RESEND 0/5] cachefiles: some bugfixes for withdraw and xattr
-Date: Wed, 22 May 2024 19:59:06 +0800
-Message-Id: <20240522115911.2403021-1-libaokun@huaweicloud.com>
+Subject: [PATCH RESEND 4/5] cachefiles: correct the return value of cachefiles_check_volume_xattr()
+Date: Wed, 22 May 2024 19:59:10 +0800
+Message-Id: <20240522115911.2403021-5-libaokun@huaweicloud.com>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240522115911.2403021-1-libaokun@huaweicloud.com>
+References: <20240522115911.2403021-1-libaokun@huaweicloud.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -49,66 +52,60 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:cCh0CgBHZQ4ib01ms1VYNQ--.24441S4
-X-Coremail-Antispam: 1UD129KBjvJXoW7WFWxuF1xtw13Ar4ktFyDGFg_yoW8Xr47pF
-	WakF13JrykW39rGw4fAw15Xr1fA3yfGF4vg347Wr18Awn5Xr1YvF4Iyw15ZFy5Cr17tws2
-	v3WUKFy7Wr1Yy3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBa14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2jI8I6cxK62vIxIIY0VWUZVW8XwA2ocxC64kIII
-	0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xv
-	wVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4
-	x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG
-	64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r
-	1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAq
-	YI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lw4CEc2x0rVAKj4xxMxAIw28IcxkI7V
-	AKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
-	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6x
-	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
-	w20EY4v20xvaj40_Wr1j6rW3Jr1lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aV
-	CY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0pR6wZ7UUUUU=
+X-CM-TRANSID:cCh0CgBHZQ4ib01ms1VYNQ--.24441S8
+X-Coremail-Antispam: 1UD129KBjvdXoWrZFyrAFW5Cw4xuw4kZF13urg_yoWkZwc_uF
+	9xAF4UZrs3Gr48JrsrAa42qrWSqr1UCwn8Jr1Yva13tws8KrW5XFWDtr9xAr17Wr4DK3Wq
+	kryxZF13Xr9FgjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbmkFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M280x2IEY4vEnII2IxkI6r1a6r45M28IrcIa0xkI8V
+	A2jI8067AKxVWUAVCq3wA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJ
+	M28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2I
+	x0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK
+	6I8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4
+	xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8
+	JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20V
+	AGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7M4kE6xkIj40Ew7xC0wCF04k20xvY0x0EwIxG
+	rwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4
+	vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IY
+	x2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK8V
+	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E
+	14v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7sREMKZDUUUUU==
 X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/
 
 From: Baokun Li <libaokun1@huawei.com>
 
-Hi all!
+In cachefiles_check_volume_xattr(), the error returned by vfs_getxattr is
+not passed to ret, so it ends up returning -ESTALE, which leads to an
+endless loop as follows:
 
-There are some fixes for some cachefiles generic processes. We found these
-issues when testing the on-demand mode, but the non-on-demand mode is also
-involved. The following is a brief overview of the patches, see the patches
-for more details.
+cachefiles_acquire_volume
+retry:
+  cachefiles_check_volume_xattr
+  // return -ESTALE
+  cachefiles_bury_object
+  //  EIO causes rename failure
+  goto retry;
 
-Patch 1-2: Add fscache_try_get_volume() helper function to avoid
-fscache_volume use-after-free on cache withdrawal.
+So pass the error code to ret when xlen < 0 to avoid the above problem.
 
-Patch 3: Fix cachefiles_lookup_cookie() and cachefiles_withdraw_cache()
-concurrency causing cachefiles_volume use-after-free.
+Fixes: 32e150037dce ("fscache, cachefiles: Store the volume coherency data")
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+---
+ fs/cachefiles/xattr.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Patch 4-5: Propagate error codes returned by vfs_getxattr() to avoid
-endless loops.
-
-Comments and questions are, as always, welcome.
-
-Thanks,
-Baokun
-
-Baokun Li (5):
-  netfs, fscache: export fscache_put_volume() and add
-    fscache_try_get_volume()
-  cachefiles: fix slab-use-after-free in fscache_withdraw_volume()
-  cachefiles: fix slab-use-after-free in cachefiles_withdraw_cookie()
-  cachefiles: correct the return value of
-    cachefiles_check_volume_xattr()
-  cachefiles: correct the return value of cachefiles_check_auxdata()
-
- fs/cachefiles/cache.c          | 45 +++++++++++++++++++++++++++++++++-
- fs/cachefiles/volume.c         |  1 -
- fs/cachefiles/xattr.c          |  5 +++-
- fs/netfs/fscache_volume.c      | 14 +++++++++++
- fs/netfs/internal.h            |  2 --
- include/linux/fscache-cache.h  |  6 +++++
- include/trace/events/fscache.h |  4 +++
- 7 files changed, 72 insertions(+), 5 deletions(-)
-
+diff --git a/fs/cachefiles/xattr.c b/fs/cachefiles/xattr.c
+index bcb6173943ee..20e4a4391090 100644
+--- a/fs/cachefiles/xattr.c
++++ b/fs/cachefiles/xattr.c
+@@ -252,6 +252,7 @@ int cachefiles_check_volume_xattr(struct cachefiles_volume *volume)
+ 		xlen = vfs_getxattr(&nop_mnt_idmap, dentry, cachefiles_xattr_cache, buf, len);
+ 	if (xlen != len) {
+ 		if (xlen < 0) {
++			ret = xlen;
+ 			trace_cachefiles_vfs_error(NULL, d_inode(dentry), xlen,
+ 						   cachefiles_trace_getxattr_error);
+ 			if (xlen == -EIO)
 -- 
 2.39.2
 
