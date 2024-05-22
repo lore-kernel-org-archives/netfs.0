@@ -1,118 +1,248 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4568680C15
-	for <netfs@lists.linux.dev>; Wed, 22 May 2024 09:27:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1429210EC
+	for <netfs@lists.linux.dev>; Wed, 22 May 2024 21:09:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716370060; cv=none; b=q2mgEz9da3VD2KgTe6KRgVDlx2nWr7DMjDjWEvDDgX600DdvUqKvksizmBT3gvraZTP3iffqMxKzeZL08ix1vOACmK9Q6Xv+Sc7ise+mqCk73PBZOGsnzkB/Ho3wu6oOCHMsZA/R/RiPKiATVtN3RufI9ZKmN8S1zX1HbRHVEe4=
+	t=1716412154; cv=none; b=eN7hbRNSK11FiCz4cCQ1kjBp+wl0bT8FOpqE3HAVy6uglEFew8ek//q77X+SgqnfrxfvCBh7fklwIBiZCb9C0q2if+Z82Q7uby0YaoBlXOodawn5sYuq2KTM2CslKca0DPZ+tJVHckbdQCBGsljS8DpSZPncYTUw449lcyldamk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716370060; c=relaxed/simple;
-	bh=yIYBXGdl869XX2pTr1QmDY+AP5o/usnaarQJoGjwRv8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AI9+YXFEtSWwirFyMI9e3wBuTILZPefa4IhQe4rWhHVsUFSgil0Hg/23PeNHH0X6YZCNzWE/sLsWpaMzWYCEd1WyxDZ3xZ+h/ULairMx7jF7JiS0T3AF0Z+yEJzNWfX3B9+uCPdHCWL4dWvTmU4x6qFdQ124Zl47Uow+FAqJ+GM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XL2ObSzG; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1716412154; c=relaxed/simple;
+	bh=FL8TX/ZAVoB1PP91BvAGdWUewzyVdl+tkLkyIR/IPlA=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=sTVsnA+neCzHrT8upxAaLHk6orFG5YwXUP2dzfEWA9b+vht/Qf+TyngoNn3W6ckMsSdStHD2ruc4kRJMXwc3S4EkfurHB515tGckR1sDVos8jC8jKwd7QGb7CsSAcc0FD20pReI0u0JN6VKykxhglD/fNNR5K911HRsMfcV3byQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TZkrtf11; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XL2ObSzG"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-51f40b5e059so6803044e87.0
-        for <netfs@lists.linux.dev>; Wed, 22 May 2024 02:27:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716370057; x=1716974857; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=J3RHkz1PAC1a1gnJwaqPWf+2yMWWiU1EZBBXLHMWkG0=;
-        b=XL2ObSzGVqI7vCnUIghwijpRYd+UUNSJ9aL/piMLvMtDTT27nOykNlTYPMuTPTKgpl
-         ByDFI7f+bWl8oNEsGKNMyTV2nN3UbBk/vQnTV3+EbqKBEutvy+uq5qK1OqJpEyrLRM7d
-         bsNerjtCGxG/JX93SfbtqgQHtPRbOjzuapF5wNxAer5ZijWYG5rbs4eoxwib2PeDLriX
-         FBggtjkhlsxCkFLwTzht/KKhlBF3Yb+UF+lZEceRZ2sRACkZk5vgn9EDj0nYEZKn76CC
-         Sf8yOd8Lqf8FPwVZdKx/IYSZUnzJ3gMLMFf30/RGl5HZmaUGppVgaymFWxosqY4xd+hJ
-         w9BQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716370057; x=1716974857;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=J3RHkz1PAC1a1gnJwaqPWf+2yMWWiU1EZBBXLHMWkG0=;
-        b=BNU4QgKAd4/qvFg99ZSq9gr6WW8Mv5mGTFaIf7OsrYvJfdFR3R4HHgu7ZLnzqMbodF
-         pb7ER01wZ7rbnWAIr3h3n287EfdPxOeNGYus91VhS5j2TssMtiXf+fl3I+Uwmy11bXio
-         oAAV8wMjo+AgMSE2s4tJeVO1K4XZuSIGx6no2M+k+x0GZDzro0oq8gWdzlgwKG+uIxYN
-         0IjyvM+FXJMfZjeVVjCzSyAhct81Eao6TZFmRgzsLGjJB28ffGxSCxMEYaiel2vw92ps
-         y45e2UEdV4Oge/xpm91L/r7tPvFszWXhBre6fUh6i+/H+mcKSNFGYLnpLVypFBhNurlf
-         M3/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXNljFqYCxG2f+8sOtJVrBWsYXWyQUGd9ZeVdC2YIXFHBOijE98rvi9UvnIB+pNt3OdiSrBF5qOB6TfcSxByAXhCviTQ04=
-X-Gm-Message-State: AOJu0Yz8JFOleCUbKJfHqjrgPJJAlY6Dg9g99QluwR7+3Yp0b9UEQ0OP
-	vl0N6PAOLBy7tA2zExAn3f4vz316E0qo4c5PuJhiFIXeBr0DCvVhVWyvLNzL1sKWkdzuyHB0ALp
-	1l4+GV1ehUg3VvzXKvXQ7KKmGDac=
-X-Google-Smtp-Source: AGHT+IEFyirCOQaf4B+kNykUPvpKVUgbY2KUycXUHf9UnyJn6uHYcrCR1+MiVHLL/L30cClXAAGye9v+HQ0A/uuAH5M=
-X-Received: by 2002:a05:6512:4dc:b0:519:2d60:d71b with SMTP id
- 2adb3069b0e04-526bdd47f63mr896360e87.22.1716370057087; Wed, 22 May 2024
- 02:27:37 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TZkrtf11"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1716412150;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=16PqWbFEFWjkwJI4FUe2h6WfSs9KhKFVVUB3JvoJi30=;
+	b=TZkrtf11N1hqO6tsP0MVSct3TJsFMIg3nDK77ptEP3Ld5GjywKAs00awcemBWtWUkabVLN
+	Xyk7UsqHty6zfi/lLCTqgxW3SMjUrUF/SfOAZ55awxAlfXS8g63I6ikvvSWA8jqI5HwJkR
+	AilyzYUcRG2ZHuJf9aSNVBxhgxaqmd8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-191-yNBlmEh6PjCfKwIsNvsRQg-1; Wed, 22 May 2024 17:09:07 -0400
+X-MC-Unique: yNBlmEh6PjCfKwIsNvsRQg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A7C40801190;
+	Wed, 22 May 2024 21:09:06 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.20])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 656161050178;
+	Wed, 22 May 2024 21:09:04 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <Zkr8i9XxpkJ9AABZ@codewreck.org>
+References: <Zkr8i9XxpkJ9AABZ@codewreck.org> <0000000000005be0aa061846f8d6@google.com>
+To: syzbot+df038d463cca332e8414@syzkaller.appspotmail.com
+Cc: dhowells@redhat.com, asmadeus@codewreck.org, ericvh@kernel.org,
+    linux-kernel@vger.kernel.org, linux_oss@crudebyte.com,
+    lucho@ionkov.net, syzkaller-bugs@googlegroups.com,
+    v9fs@lists.linux.dev, Jeff Layton <jlayton@kernel.org>,
+    Steve French <sfrench@samba.org>,
+    Christian Brauner <brauner@kernel.org>,
+    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+    netfs@lists.linux.dev
+Subject: Re: [syzbot] [v9fs?] KASAN: slab-use-after-free Write in v9fs_free_request
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <367856.1716367128@warthog.procyon.org.uk>
-In-Reply-To: <367856.1716367128@warthog.procyon.org.uk>
-From: Steve French <smfrench@gmail.com>
-Date: Wed, 22 May 2024 04:27:24 -0500
-Message-ID: <CAH2r5mvhyrtXSvS4du4_iHO_X=bjrhPoyn4iFCrTVhbSo1eVew@mail.gmail.com>
-Subject: Re: [PATCH] cifs: Fix smb3_insert_range() to move the zero_point
-To: David Howells <dhowells@redhat.com>
-Cc: Steve French <sfrench@samba.org>, Shyam Prasad N <nspmangalore@gmail.com>, 
-	Rohith Surabattula <rohiths.msft@gmail.com>, Jeff Layton <jlayton@kernel.org>, 
-	Christian Brauner <brauner@kernel.org>, linux-cifs@vger.kernel.org, netfs@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <463667.1716412143.1@warthog.procyon.org.uk>
 Content-Transfer-Encoding: quoted-printable
+Date: Wed, 22 May 2024 22:09:03 +0100
+Message-ID: <463668.1716412143@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 
-Added the patch to the test branch and rerunning tests on it now
+#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.gi=
+t master
 
-http://smb311-linux-testing.southcentralus.cloudapp.azure.com/#/builders/3/=
-builds/122
+netfs, 9p: Fix race between umount and async request completion
 
-On Wed, May 22, 2024 at 3:39=E2=80=AFAM David Howells <dhowells@redhat.com>=
- wrote:
->
-> Fix smb3_insert_range() to move the zero_point over to the new EOF.
-> Without this, generic/147 fails as reads of data beyond the old EOF point
-> return zeroes.
->
-> Fixes: 3ee1a1fc3981 ("cifs: Cut over to using netfslib")
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> cc: Steve French <sfrench@samba.org>
-> cc: Shyam Prasad N <nspmangalore@gmail.com>
-> cc: Rohith Surabattula <rohiths.msft@gmail.com>
-> cc: Jeff Layton <jlayton@kernel.org>
-> cc: linux-cifs@vger.kernel.org
-> cc: netfs@lists.linux.dev
-> ---
->  fs/smb/client/smb2ops.c |    1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-> index ef18cd30f66c..b87b70edd0be 100644
-> --- a/fs/smb/client/smb2ops.c
-> +++ b/fs/smb/client/smb2ops.c
-> @@ -3636,6 +3636,7 @@ static long smb3_insert_range(struct file *file, st=
-ruct cifs_tcon *tcon,
->         rc =3D smb2_copychunk_range(xid, cfile, cfile, off, count, off + =
-len);
->         if (rc < 0)
->                 goto out_2;
-> +       cifsi->netfs.zero_point =3D new_eof;
->
->         rc =3D smb3_zero_data(file, tcon, off, len, xid);
->         if (rc < 0)
->
->
+There's a problem in 9p's interaction with netfslib whereby a crash occurs
+because the 9p_fid structs get forcibly destroyed during client teardown
+(without paying attention to their refcounts) before netfslib has finished
+with them.  However, it's not a simple case of deferring the clunking that
+p9_fid_put() does as that requires the client.
 
+The problem is that netfslib has to unlock pages and clear the IN_PROGRESS
+flag before destroying the objects involved - including the pid - and, in
+any case, nothing checks to see if writeback completed barring looking at
+the page flags.
 
---=20
-Thanks,
+Fix this by keeping a count of outstanding I/O requests (of any type) and
+waiting for it to quiesce during inode eviction.
 
-Steve
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Eric Van Hensbergen <ericvh@kernel.org>
+cc: Latchesar Ionkov <lucho@ionkov.net>
+cc: Dominique Martinet <asmadeus@codewreck.org>
+cc: Christian Schoenebeck <linux_oss@crudebyte.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: Steve French <sfrench@samba.org>
+cc: v9fs@lists.linux.dev
+cc: linux-afs@lists.infradead.org
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+---
+ fs/9p/vfs_inode.c      |    5 ++++-
+ fs/afs/inode.c         |    1 +
+ fs/netfs/objects.c     |    5 +++++
+ fs/smb/client/cifsfs.c |    1 +
+ include/linux/netfs.h  |   18 ++++++++++++++++++
+ 5 files changed, 29 insertions(+), 1 deletion(-)
+
+diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
+index 8c9a896d691e..57cfa9f65046 100644
+--- a/fs/9p/vfs_inode.c
++++ b/fs/9p/vfs_inode.c
+@@ -354,6 +354,7 @@ void v9fs_evict_inode(struct inode *inode)
+ 		version =3D cpu_to_le32(v9inode->qid.version);
+ 		netfs_clear_inode_writeback(inode, &version);
+ =
+
++		netfs_wait_for_outstanding_io(inode);
+ 		clear_inode(inode);
+ 		filemap_fdatawrite(&inode->i_data);
+ =
+
+@@ -361,8 +362,10 @@ void v9fs_evict_inode(struct inode *inode)
+ 		if (v9fs_inode_cookie(v9inode))
+ 			fscache_relinquish_cookie(v9fs_inode_cookie(v9inode), false);
+ #endif
+-	} else
++	} else {
++		netfs_wait_for_outstanding_io(inode);
+ 		clear_inode(inode);
++	}
+ }
+ =
+
+ struct inode *
+diff --git a/fs/afs/inode.c b/fs/afs/inode.c
+index 94fc049aff58..c831e711a4ac 100644
+--- a/fs/afs/inode.c
++++ b/fs/afs/inode.c
+@@ -652,6 +652,7 @@ void afs_evict_inode(struct inode *inode)
+ =
+
+ 	afs_set_cache_aux(vnode, &aux);
+ 	netfs_clear_inode_writeback(inode, &aux);
++	netfs_wait_for_outstanding_io(inode);
+ 	clear_inode(inode);
+ =
+
+ 	while (!list_empty(&vnode->wb_keys)) {
+diff --git a/fs/netfs/objects.c b/fs/netfs/objects.c
+index c90d482b1650..f4a642727479 100644
+--- a/fs/netfs/objects.c
++++ b/fs/netfs/objects.c
+@@ -72,6 +72,7 @@ struct netfs_io_request *netfs_alloc_request(struct addr=
+ess_space *mapping,
+ 		}
+ 	}
+ =
+
++	atomic_inc(&ctx->io_count);
+ 	trace_netfs_rreq_ref(rreq->debug_id, 1, netfs_rreq_trace_new);
+ 	netfs_proc_add_rreq(rreq);
+ 	netfs_stat(&netfs_n_rh_rreq);
+@@ -124,6 +125,7 @@ static void netfs_free_request(struct work_struct *wor=
+k)
+ {
+ 	struct netfs_io_request *rreq =3D
+ 		container_of(work, struct netfs_io_request, work);
++	struct netfs_inode *ictx =3D netfs_inode(rreq->inode);
+ 	unsigned int i;
+ =
+
+ 	trace_netfs_rreq(rreq, netfs_rreq_trace_free);
+@@ -142,6 +144,9 @@ static void netfs_free_request(struct work_struct *wor=
+k)
+ 		}
+ 		kvfree(rreq->direct_bv);
+ 	}
++
++	if (atomic_dec_and_test(&ictx->io_count))
++		wake_up_var(&ictx->io_count);
+ 	call_rcu(&rreq->rcu, netfs_free_request_rcu);
+ }
+ =
+
+diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
+index ec5b639f421a..21c9e173ea9a 100644
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -435,6 +435,7 @@ cifs_evict_inode(struct inode *inode)
+ 	if (inode->i_state & I_PINNING_NETFS_WB)
+ 		cifs_fscache_unuse_inode_cookie(inode, true);
+ 	cifs_fscache_release_inode_cookie(inode);
++	netfs_wait_for_outstanding_io(inode);
+ 	clear_inode(inode);
+ }
+ =
+
+diff --git a/include/linux/netfs.h b/include/linux/netfs.h
+index d2d291a9cdad..3ca3906bb8da 100644
+--- a/include/linux/netfs.h
++++ b/include/linux/netfs.h
+@@ -68,6 +68,7 @@ struct netfs_inode {
+ 	loff_t			remote_i_size;	/* Size of the remote file */
+ 	loff_t			zero_point;	/* Size after which we assume there's no data
+ 						 * on the server */
++	atomic_t		io_count;	/* Number of outstanding reqs */
+ 	unsigned long		flags;
+ #define NETFS_ICTX_ODIRECT	0		/* The file has DIO in progress */
+ #define NETFS_ICTX_UNBUFFERED	1		/* I/O should not use the pagecache */
+@@ -474,6 +475,7 @@ static inline void netfs_inode_init(struct netfs_inode=
+ *ctx,
+ 	ctx->remote_i_size =3D i_size_read(&ctx->inode);
+ 	ctx->zero_point =3D LLONG_MAX;
+ 	ctx->flags =3D 0;
++	atomic_set(&ctx->io_count, 0);
+ #if IS_ENABLED(CONFIG_FSCACHE)
+ 	ctx->cache =3D NULL;
+ #endif
+@@ -517,4 +519,20 @@ static inline struct fscache_cookie *netfs_i_cookie(s=
+truct netfs_inode *ctx)
+ #endif
+ }
+ =
+
++/**
++ * netfs_wait_for_outstanding_io - Wait for outstanding I/O to complete
++ * @ctx: The netfs inode to wait on
++ *
++ * Wait for outstanding I/O requests of any type to complete.  This is in=
+tended
++ * to be called from inode eviction routines.  This makes sure that any
++ * resources held by those requests are cleaned up before we let the inod=
+e get
++ * cleaned up.
++ */
++static inline void netfs_wait_for_outstanding_io(struct inode *inode)
++{
++	struct netfs_inode *ictx =3D netfs_inode(inode);
++
++	wait_var_event(&ictx->io_count, atomic_read(&ictx->io_count) =3D=3D 0);
++}
++
+ #endif /* _LINUX_NETFS_H */
+
