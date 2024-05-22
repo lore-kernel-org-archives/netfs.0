@@ -1,28 +1,28 @@
-Received: from dggsgout11.his.huawei.com (unknown [45.249.212.51])
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B5B7C0B7
-	for <netfs@lists.linux.dev>; Wed, 22 May 2024 03:50:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98BF7E56C
+	for <netfs@lists.linux.dev>; Wed, 22 May 2024 03:50:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716349808; cv=none; b=YXVZMNYr5LFvn2mNVZus5k0igqf8GeXVamMbxHuyOscwRycys+w3OQpuJmOLd9RhYtEmoEq5oRb4Ytq5bqiZOu2mEwvXM7nFYGAJssD+Go92/hlHB4w6plg5HygD/hoJ4tCC5Kg8V0/IHWEdm8NOhyAiSZ7cHz3ONU0ua5YIBTc=
+	t=1716349809; cv=none; b=cBO/EyZ7iA7Xa6WQgo5KAil56iczzjq9ssDXHljAprWbruSCQIX414kra7zDFpLDMkcOOnGX//YV4hhAjjnXDoRqtESNpyYFZChmnyEcTE7+LPZPl2Hb172+epmkjUEiuNoIX/qcRqs3/mGfdPj/4kmmLMeG93hCQPi6tDnC4EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716349808; c=relaxed/simple;
-	bh=Z4bw6PjoxRKpRPcGnKfLPpokzYceGNp+wKOxILonUbI=;
+	s=arc-20240116; t=1716349809; c=relaxed/simple;
+	bh=kWxVJ/dGHXmL6Pb3y1v6dGD5eivC2kR2xmKgb20co9U=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DTZGxsSyy8HiovBSNkt6YZur+BPvBkchdiNHUF+pQ9+jLKzs/WE3QtZyBaVGVtXX3R6tUxgyvWplFzVGO+Q28lFeZ7HBpVeN0LmBh1uc/gNdm3vey1Mn5dBYWnuIdFfYihjYQdvwkpMkRwe/n9tgqyHSPHTmRddYpXAbCrVKw68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
+	 MIME-Version; b=Yte4bnG3nSeVHFEqrR+/2c/E3GRTPjr6g6hls9rtDHa8xTCY3FwRrp3+mY+RuTXXrKesYxTXRgAlP5a75/80WRhOLLvDnLoNEOAud8Hqk+qLa/xYHY2hV5cgJI2hsfucYbc4lDYMzqnsZ+jJBObrJ/vLC7h7XYst4GObrOPmBl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4Vkckg4tCWz4f3m7J
-	for <netfs@lists.linux.dev>; Wed, 22 May 2024 11:49:47 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4Vkckm3mFtz4f3jrc
+	for <netfs@lists.linux.dev>; Wed, 22 May 2024 11:49:52 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id 2A0D91A016E
-	for <netfs@lists.linux.dev>; Wed, 22 May 2024 11:49:58 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTP id 76DB31A0199
+	for <netfs@lists.linux.dev>; Wed, 22 May 2024 11:50:01 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.175.104.67])
-	by APP1 (Coremail) with SMTP id cCh0CgBHGBFea01mxlBXNQ--.57627S10;
-	Wed, 22 May 2024 11:49:57 +0800 (CST)
+	by APP1 (Coremail) with SMTP id cCh0CgBHGBFea01mxlBXNQ--.57627S15;
+	Wed, 22 May 2024 11:50:01 +0800 (CST)
 From: libaokun@huaweicloud.com
 To: netfs@lists.linux.dev,
 	dhowells@redhat.com,
@@ -39,9 +39,9 @@ Cc: hsiangkao@linux.alibaba.com,
 	yukuai3@huawei.com,
 	wozizhi@huawei.com,
 	Baokun Li <libaokun1@huawei.com>
-Subject: [PATCH v3 06/12] cachefiles: add consistency check for copen/cread
-Date: Wed, 22 May 2024 19:43:02 +0800
-Message-Id: <20240522114308.2402121-7-libaokun@huaweicloud.com>
+Subject: [PATCH v3 11/12] cachefiles: flush all requests after setting CACHEFILES_DEAD
+Date: Wed, 22 May 2024 19:43:07 +0800
+Message-Id: <20240522114308.2402121-12-libaokun@huaweicloud.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240522114308.2402121-1-libaokun@huaweicloud.com>
 References: <20240522114308.2402121-1-libaokun@huaweicloud.com>
@@ -52,10 +52,10 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:cCh0CgBHGBFea01mxlBXNQ--.57627S10
-X-Coremail-Antispam: 1UD129KBjvJXoWxuF1kXrWfCr4xWw4xJFy8uFg_yoW5XFW5pF
-	WayFW3KryxuFs29r97JF1rGa4Fy3s2va9rWr9aqa4rAFnxWryFvr1UtryUZF15Z395JFsr
-	J34rKF9rG34jy3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID:cCh0CgBHGBFea01mxlBXNQ--.57627S15
+X-Coremail-Antispam: 1UD129KBjvJXoWxurykGw4fJw1rAw4UArW5Jrb_yoW5Jw4DpF
+	Way3WUGry09r4qgw1kArZ8A34rt3sxJF4DWw1UX3s5Arn0vr15Xr1IyryY9r15JrWrGa13
+	tr1jgFy7Z34jyrJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
 	9KBjDU0xBIdaVrnRJUUUQS14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2jI8I6cxK62vIxIIY0VWUZVW8XwA2048vs2IY02
 	0E87I2jVAFwI0_JF0E3s1l82xGYIkIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0
@@ -67,93 +67,69 @@ X-Coremail-Antispam: 1UD129KBjvJXoWxuF1kXrWfCr4xWw4xJFy8uFg_yoW5XFW5pF
 	IErcIFxwACI402YVCY1x02628vn2kIc2xKxwAKzVCY07xG64k0F24l42xK82IYc2Ij64vI
 	r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
 	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0
-	cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1lIxAIcVCF04
-	k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7Cj
+	cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1lIxAIcVCF04
+	k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7Cj
 	xVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjTRupB-UUUUU
 X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/
 
 From: Baokun Li <libaokun1@huawei.com>
 
-This prevents malicious processes from completing random copen/cread
-requests and crashing the system. Added checks are listed below:
+In ondemand mode, when the daemon is processing an open request, if the
+kernel flags the cache as CACHEFILES_DEAD, the cachefiles_daemon_write()
+will always return -EIO, so the daemon can't pass the copen to the kernel.
+Then the kernel process that is waiting for the copen triggers a hung_task.
 
-  * Generic, copen can only complete open requests, and cread can only
-    complete read requests.
-  * For copen, ondemand_id must not be 0, because this indicates that the
-    request has not been read by the daemon.
-  * For cread, the object corresponding to fd and req should be the same.
+Since the DEAD state is irreversible, it can only be exited by closing
+/dev/cachefiles. Therefore, after calling cachefiles_io_error() to mark
+the cache as CACHEFILES_DEAD, if in ondemand mode, flush all requests to
+avoid the above hungtask. We may still be able to read some of the cached
+data before closing the fd of /dev/cachefiles.
 
+Note that this relies on the patch that adds reference counting to the req,
+otherwise it may UAF.
+
+Fixes: c8383054506c ("cachefiles: notify the user daemon when looking up cookie")
 Signed-off-by: Baokun Li <libaokun1@huawei.com>
 Acked-by: Jeff Layton <jlayton@kernel.org>
 ---
- fs/cachefiles/ondemand.c | 27 ++++++++++++++++++++-------
- 1 file changed, 20 insertions(+), 7 deletions(-)
+ fs/cachefiles/daemon.c   | 2 +-
+ fs/cachefiles/internal.h | 3 +++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-index bb94ef6a6f61..898fab68332b 100644
---- a/fs/cachefiles/ondemand.c
-+++ b/fs/cachefiles/ondemand.c
-@@ -82,12 +82,12 @@ static loff_t cachefiles_ondemand_fd_llseek(struct file *filp, loff_t pos,
+diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
+index ccb7b707ea4b..06cdf1a8a16f 100644
+--- a/fs/cachefiles/daemon.c
++++ b/fs/cachefiles/daemon.c
+@@ -133,7 +133,7 @@ static int cachefiles_daemon_open(struct inode *inode, struct file *file)
+ 	return 0;
  }
  
- static long cachefiles_ondemand_fd_ioctl(struct file *filp, unsigned int ioctl,
--					 unsigned long arg)
-+					 unsigned long id)
+-static void cachefiles_flush_reqs(struct cachefiles_cache *cache)
++void cachefiles_flush_reqs(struct cachefiles_cache *cache)
  {
- 	struct cachefiles_object *object = filp->private_data;
- 	struct cachefiles_cache *cache = object->volume->cache;
+ 	struct xarray *xa = &cache->reqs;
  	struct cachefiles_req *req;
--	unsigned long id;
-+	XA_STATE(xas, &cache->reqs, id);
+diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
+index 45c8bed60538..6845a90cdfcc 100644
+--- a/fs/cachefiles/internal.h
++++ b/fs/cachefiles/internal.h
+@@ -188,6 +188,7 @@ extern int cachefiles_has_space(struct cachefiles_cache *cache,
+  * daemon.c
+  */
+ extern const struct file_operations cachefiles_daemon_fops;
++extern void cachefiles_flush_reqs(struct cachefiles_cache *cache);
+ extern void cachefiles_get_unbind_pincount(struct cachefiles_cache *cache);
+ extern void cachefiles_put_unbind_pincount(struct cachefiles_cache *cache);
  
- 	if (ioctl != CACHEFILES_IOC_READ_COMPLETE)
- 		return -EINVAL;
-@@ -95,10 +95,15 @@ static long cachefiles_ondemand_fd_ioctl(struct file *filp, unsigned int ioctl,
- 	if (!test_bit(CACHEFILES_ONDEMAND_MODE, &cache->flags))
- 		return -EOPNOTSUPP;
+@@ -426,6 +427,8 @@ do {							\
+ 	pr_err("I/O Error: " FMT"\n", ##__VA_ARGS__);	\
+ 	fscache_io_error((___cache)->cache);		\
+ 	set_bit(CACHEFILES_DEAD, &(___cache)->flags);	\
++	if (cachefiles_in_ondemand_mode(___cache))	\
++		cachefiles_flush_reqs(___cache);	\
+ } while (0)
  
--	id = arg;
--	req = xa_erase(&cache->reqs, id);
--	if (!req)
-+	xa_lock(&cache->reqs);
-+	req = xas_load(&xas);
-+	if (!req || req->msg.opcode != CACHEFILES_OP_READ ||
-+	    req->object != object) {
-+		xa_unlock(&cache->reqs);
- 		return -EINVAL;
-+	}
-+	xas_store(&xas, NULL);
-+	xa_unlock(&cache->reqs);
- 
- 	trace_cachefiles_ondemand_cread(object, id);
- 	complete(&req->done);
-@@ -126,6 +131,7 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
- 	unsigned long id;
- 	long size;
- 	int ret;
-+	XA_STATE(xas, &cache->reqs, 0);
- 
- 	if (!test_bit(CACHEFILES_ONDEMAND_MODE, &cache->flags))
- 		return -EOPNOTSUPP;
-@@ -149,9 +155,16 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
- 	if (ret)
- 		return ret;
- 
--	req = xa_erase(&cache->reqs, id);
--	if (!req)
-+	xa_lock(&cache->reqs);
-+	xas.xa_index = id;
-+	req = xas_load(&xas);
-+	if (!req || req->msg.opcode != CACHEFILES_OP_OPEN ||
-+	    !req->object->ondemand->ondemand_id) {
-+		xa_unlock(&cache->reqs);
- 		return -EINVAL;
-+	}
-+	xas_store(&xas, NULL);
-+	xa_unlock(&cache->reqs);
- 
- 	/* fail OPEN request if copen format is invalid */
- 	ret = kstrtol(psize, 0, &size);
+ #define cachefiles_io_error_obj(object, FMT, ...)			\
 -- 
 2.39.2
 
