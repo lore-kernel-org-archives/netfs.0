@@ -1,111 +1,199 @@
-Received: from mail-il1-f181.google.com (mail-il1-f181.google.com [209.85.166.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F9214831E
-	for <netfs@lists.linux.dev>; Tue, 21 May 2024 20:09:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9B47FF
+	for <netfs@lists.linux.dev>; Wed, 22 May 2024 00:02:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716322162; cv=none; b=Oujiyl8lWPJqqpvkxoSu95G7wTWKydwlRovCyVc8rrUD4aSxgEveFzwAkHEjYh6qYwrWgxYEiewi2co+KOipPRIMAXRDjNCPqcSYfU6jzI1LltFEb5lYxkfIVFu3ls74weHlC8cDMeY6PjxOEgfVanCC5qkpIyxKaAS0Xy53+68=
+	t=1716336159; cv=none; b=itxP5AUeahdei6SOpiJj/Tls1v+W2/24jydGBIbLvqS+3Ts6zInCtmgyNWlnU5GF8tO9ny2SifPiFQOkNRsPYZGYdJUeLrnNAsz77WQCEYKM7Gm8vlnXFecYCzDUoQ9l2Rf/gI10mEcvEo0Q8I/1ZvdmWg8fU0sPbxNnwZxhaIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716322162; c=relaxed/simple;
-	bh=Ia5u62ZgalmlFXflRn8jvvJ7YquyeyNuoWA9RxmS/I8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ek2DJuz+QhRQLkVoOe+078Me3kSxwwhhqdhdd5Os0xoeMfMg+VhkjZtjYM1Qff2faAvZ92I5+RiCiAULvfAMxQ5eIIemRgMDGvztz1Xt6esa3aKQ106Rvdr5p1CkntpdLQlgMpRsBC2F7TvbHcM44EX+8nNXY4CFoNCGQZZUbw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=hqJwukLU; arc=none smtp.client-ip=209.85.166.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+	s=arc-20240116; t=1716336159; c=relaxed/simple;
+	bh=mFQLmK0u0L6PeEG0M4FAs/47qdfzUrU/wDLiUWnZizc=;
+	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=tQuqhZwaA5g9b0JCwIOM+0qKlmKIEbW8x0zV85hCoHOz22+cUnyLYt9UnRAJOqnX4HhZe8FdPZMMWXORzH+5KVX9LwkfJbtRonaNG3AuBvlHgB/EGDjy+YaL0pbWKKvHb3BL4YCn7Xdp5zNgwPcDQ81qvD1tY3OUWssM0kGB188=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VOq4aALs; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="hqJwukLU"
-Received: by mail-il1-f181.google.com with SMTP id e9e14a558f8ab-36dd6cbad62so2647325ab.3
-        for <netfs@lists.linux.dev>; Tue, 21 May 2024 13:09:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1716322159; x=1716926959; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=EWrpteYcdBNlx+6493QsXpUMihLRMiYDww87eKY9bg8=;
-        b=hqJwukLUIuZdcw7FYiJcoKL87WTdOPpvgax81ueURsL4eMu9G0NWilm7Q2dUHoUrqW
-         1gRErJOf88nNezQGLdCnjDIQjtqOYI3MMK0ozMnRcXwmbXkWfy6TJ89SjXPrASs8dXE5
-         ez2FhjRY/70qrqIHwL2tBF/jbxLMMXvI31dcziFp7siyrBEUUqHlcqF2RjyykOWBrN47
-         gZxPr+PcM5IzOqa6b86QE9zFMb5bt27Xt9sMTZ4Xp3adEblXWiwao3p1P1b4AM8e54px
-         vK3xS7N0Zm6Mmjgzwjtp/ivRL1qbwLGb/kaxIv7HHqMQAhxl62+YQaI5QcG/dhr4E1W1
-         n6Hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716322159; x=1716926959;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EWrpteYcdBNlx+6493QsXpUMihLRMiYDww87eKY9bg8=;
-        b=gZygGFFoA3rGQOrjWSKbEcil7dgoxI48wwAkP5RrD2CeNGyLFDFmmSRMM3SZaTTgbx
-         YK7wbOZQX3Z1PT1wXmJ8IUrNXyHFCzQsdfe91IVLH5Y3N84ZE06kn2q9cwzAzgsfwTsz
-         SBGy71MNzIsGeZCkDrQMz8e3JHhTJMupCa0H0SbgMEmHKIZRKxBLClRzqnEE1aPGWDdl
-         EuDNc+P/FQUkZtqNGDG5GHViMJCYK4h3U1g/wf/8Sd5jmMNhOBm65Opv024ZCVJWiESA
-         ti8p4iZUAsBuYn3ivrC6Vj9HoWdX0pQy9L4jdPadJ7qSTGy0VCX8pxrtmNJ+Ixdn42KT
-         Z+SQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWB/mmiL/xavdFdc4HSlrzezlNhuYd6+jkUGh7QiIUxkV5N1R++1vkxfTWKj8pkxeBF6o70Aspi+2mz4Hfld24Yu6C9YXo=
-X-Gm-Message-State: AOJu0YwkGZUboUX5ZPICaPcyiIb82hU/RfUQHTek8aD6tLW66yGftpxe
-	plZ8KjZqAa4Y1l6zKhUUfZ3bz3X7t9DK6pwQsx6Ikf+HHNT1KdJDQYGFb2ONuNM=
-X-Google-Smtp-Source: AGHT+IFmqPzAUfkTViTVSpsDLLwhzPZ48S3LYwKXKDRY2ly4piMizKtsvAivJxLfypb9ZtbG417izA==
-X-Received: by 2002:a05:6e02:13af:b0:369:f53b:6c2 with SMTP id e9e14a558f8ab-371f9405868mr782595ab.1.1716322159199;
-        Tue, 21 May 2024 13:09:19 -0700 (PDT)
-Received: from [192.168.1.116] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4893703b15bsm7042659173.54.2024.05.21.13.09.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 May 2024 13:09:18 -0700 (PDT)
-Message-ID: <6c7676ae-f0a3-4a9d-bcfa-f6fa0a03c928@kernel.dk>
-Date: Tue, 21 May 2024 14:09:16 -0600
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VOq4aALs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1716336156;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=oDcaJ/Lp2AwW/U3NTUWORaonQ76tpE8JccALy7WD+Ks=;
+	b=VOq4aALsL1HASHQNGbfGCMkM3w+WtgG8nfK3at0YKSk+PRkRyosJl9Kj62K6v78YOmZhbr
+	bJNkFR9ReQlpl5kbYhasc+Ny9BWbEarNhqmuOupo7hWoDtxcRZYGDLR+cMPpZ2cCSr+4yw
+	54pkFiogBNPSReCrwkvWJXBWV9FFwo4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-615-CnM72DXNOiq9R9tznT5T_A-1; Tue, 21 May 2024 20:02:32 -0400
+X-MC-Unique: CnM72DXNOiq9R9tznT5T_A-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 52DEC812296;
+	Wed, 22 May 2024 00:02:32 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.20])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 03A3C492BC6;
+	Wed, 22 May 2024 00:02:30 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: Steve French <stfrench@microsoft.com>
+cc: dhowells@redhat.com, Jeff Layton <jlayton@kernel.org>,
+    Enzo Matsumiya <ematsumiya@suse.de>,
+    Christian Brauner <brauner@kernel.org>, netfs@lists.linux.dev,
+    v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
+    linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: [PATCH v2] netfs: Fix io_uring based write-through
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] netfs: Fix setting of BDP_ASYNC from iocb flags
-To: David Howells <dhowells@redhat.com>
-Cc: Steve French <stfrench@microsoft.com>, Jeff Layton <jlayton@kernel.org>,
- Enzo Matsumiya <ematsumiya@suse.de>, Matthew Wilcox <willy@infradead.org>,
- Christian Brauner <brauner@kernel.org>, netfs@lists.linux.dev,
- v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
- linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <110d2995-f473-4781-9412-30f7f96858dd@kernel.dk>
- <2e73c659-06a3-426c-99c0-eff896eb2323@kernel.dk>
- <316306.1716306586@warthog.procyon.org.uk>
- <316428.1716306899@warthog.procyon.org.uk>
- <322229.1716321947@warthog.procyon.org.uk>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <322229.1716321947@warthog.procyon.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <351481.1716336150.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 22 May 2024 01:02:30 +0100
+Message-ID: <351482.1716336150@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 
-On 5/21/24 2:05 PM, David Howells wrote:
-> Jens Axboe <axboe@kernel.dk> wrote:
-> 
->> On 5/21/24 9:54 AM, David Howells wrote:
->>> Jens Axboe <axboe@kernel.dk> wrote:
->>>
->>>> However, I'll note that BDP_ASYNC is horribly named, it should be
->>>> BDP_NOWAIT instead. But that's a separate thing, fix looks correct
->>>> as-is.
->>>
->>> I thought IOCB_NOWAIT was related to RWF_NOWAIT, but apparently not from the
->>> code.
->>
->> It is, something submitted with RWF_NOWAIT should have IOCB_NOWAIT set.
->> But RWF_NOWAIT isn't the sole user of IOCB_NOWAIT, and no assumptions
->> should be made about whether something is sync or async based on whether
->> or not RWF_NOWAIT is set. Those aren't related other than _some_ proper
->> async IO will have IOCB_NOWAIT set, and others will not.
-> 
-> Are you sure?  RWF_NOWAIT seems to set IOCB_NOIO.
+This can be triggered by mounting a cifs filesystem with a cache=3Dstrict
+mount option and then, using the fsx program from xfstests, doing:
 
-As it should, no-wait should imply not blocking on other IO. This is
-completely orthogonal to whether or not it's async or sync IO.
+        ltp/fsx -A -d -N 1000 -S 11463 -P /tmp /cifs-mount/foo \
+          --replay-ops=3Dgen112-fsxops
 
-I have a distinct feeling we're talking past each other :-)
+Where gen112-fsxops holds:
 
--- 
-Jens Axboe
+        fallocate 0x6be7 0x8fc5 0x377d3
+        copy_range 0x9c71 0x77e8 0x2edaf 0x377d3
+        write 0x2776d 0x8f65 0x377d3
+
+The problem is that netfs_io_request::len is being used for two purposes
+and ends up getting set to the amount of data we transferred, not the
+amount of data the caller asked to be transferred (for various reasons,
+such as mmap'd writes, we might end up rounding out the data written to th=
+e
+server to include the entire folio at each end).
+
+Fix this by keeping the amount we were asked to write in ->len and using
+->submitted to track what we issued ops for.  Then, when we come to callin=
+g
+->ki_complete(), ->len is the right size.
+
+This also required netfs_cleanup_dio_write() to change since we're no
+longer advancing wreq->len.  Use wreq->transferred instead as we might hav=
+e
+done a short read and wreq->len must be set when setting up a direct write=
+.
+
+With this, the generic/112 xfstest passes if cifs is forced to put all
+non-DIO opens into write-through mode.
+
+Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: Steve French <stfrench@microsoft.com>
+cc: Enzo Matsumiya <ematsumiya@suse.de>
+cc: netfs@lists.linux.dev
+cc: v9fs@lists.linux.dev
+cc: linux-afs@lists.infradead.org
+cc: linux-cifs@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
+Link: https://lore.kernel.org/r/295086.1716298663@warthog.procyon.org.uk/ =
+# v1
+---
+ Changes
+ =3D=3D=3D=3D=3D=3D=3D
+ ver #2)
+  - Set wreq->len when doing direct writes.
+
+ fs/netfs/direct_write.c  |    5 +++--
+ fs/netfs/write_collect.c |    7 ++++---
+ fs/netfs/write_issue.c   |    2 +-
+ 3 files changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
+index 608ba6416919..93b41e121042 100644
+--- a/fs/netfs/direct_write.c
++++ b/fs/netfs/direct_write.c
+@@ -12,7 +12,7 @@
+ static void netfs_cleanup_dio_write(struct netfs_io_request *wreq)
+ {
+ 	struct inode *inode =3D wreq->inode;
+-	unsigned long long end =3D wreq->start + wreq->len;
++	unsigned long long end =3D wreq->start + wreq->transferred;
+ =
+
+ 	if (!wreq->error &&
+ 	    i_size_read(inode) < end) {
+@@ -92,8 +92,9 @@ static ssize_t netfs_unbuffered_write_iter_locked(struct=
+ kiocb *iocb, struct iov
+ 	__set_bit(NETFS_RREQ_UPLOAD_TO_SERVER, &wreq->flags);
+ 	if (async)
+ 		wreq->iocb =3D iocb;
++	wreq->len =3D iov_iter_count(&wreq->io_iter);
+ 	wreq->cleanup =3D netfs_cleanup_dio_write;
+-	ret =3D netfs_unbuffered_write(wreq, is_sync_kiocb(iocb), iov_iter_count=
+(&wreq->io_iter));
++	ret =3D netfs_unbuffered_write(wreq, is_sync_kiocb(iocb), wreq->len);
+ 	if (ret < 0) {
+ 		_debug("begin =3D %zd", ret);
+ 		goto out;
+diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
+index 60112e4b2c5e..426cf87aaf2e 100644
+--- a/fs/netfs/write_collect.c
++++ b/fs/netfs/write_collect.c
+@@ -510,7 +510,7 @@ static void netfs_collect_write_results(struct netfs_i=
+o_request *wreq)
+ 	 * stream has a gap that can be jumped.
+ 	 */
+ 	if (notes & SOME_EMPTY) {
+-		unsigned long long jump_to =3D wreq->start + wreq->len;
++		unsigned long long jump_to =3D wreq->start + READ_ONCE(wreq->submitted)=
+;
+ =
+
+ 		for (s =3D 0; s < NR_IO_STREAMS; s++) {
+ 			stream =3D &wreq->io_streams[s];
+@@ -690,10 +690,11 @@ void netfs_write_collection_worker(struct work_struc=
+t *work)
+ 	wake_up_bit(&wreq->flags, NETFS_RREQ_IN_PROGRESS);
+ =
+
+ 	if (wreq->iocb) {
+-		wreq->iocb->ki_pos +=3D wreq->transferred;
++		size_t written =3D min(wreq->transferred, wreq->len);
++		wreq->iocb->ki_pos +=3D written;
+ 		if (wreq->iocb->ki_complete)
+ 			wreq->iocb->ki_complete(
+-				wreq->iocb, wreq->error ? wreq->error : wreq->transferred);
++				wreq->iocb, wreq->error ? wreq->error : written);
+ 		wreq->iocb =3D VFS_PTR_POISON;
+ 	}
+ =
+
+diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
+index acbfd1f5ee9d..3aa86e268f40 100644
+--- a/fs/netfs/write_issue.c
++++ b/fs/netfs/write_issue.c
+@@ -254,7 +254,7 @@ static void netfs_issue_write(struct netfs_io_request =
+*wreq,
+ 	stream->construct =3D NULL;
+ =
+
+ 	if (subreq->start + subreq->len > wreq->start + wreq->submitted)
+-		wreq->len =3D wreq->submitted =3D subreq->start + subreq->len - wreq->s=
+tart;
++		WRITE_ONCE(wreq->submitted, subreq->start + subreq->len - wreq->start);
+ 	netfs_do_issue_write(stream, subreq);
+ }
+ =
 
