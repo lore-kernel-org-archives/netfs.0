@@ -1,28 +1,28 @@
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+Received: from dggsgout11.his.huawei.com (unknown [45.249.212.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABAC79B96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34A679950
 	for <netfs@lists.linux.dev>; Wed, 22 May 2024 03:50:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716349809; cv=none; b=dvWJjvu+lrPZrzuwNKf5fetAfP4qXLmMAJpseccw511rLJ4MuE6ImM40F97Ui28VmhcA+YsiiN9zJBXrNg7cPENp84sWtCg4h7xsDwut8zxW6Wz75/mbdcWNw6X9H9idAwWsBbeyktNIiPhjaF/Xsa3uNJiFmfKZ6drA4FiVjhs=
+	t=1716349809; cv=none; b=Zr0ASjjzk664Xm9QIArp7ZXg9b/1yzYJ0c5Gpqza3p7lU8nSoiG27sY0deDN5C1tw55z0KOrrcLDr6caKeIbMK5d183SVYuCKrWYGYjTptejJp1SstKL72u4t19JjLQik5RNZAKPLs2N4Qydycp7+UOWu4xSDdV8m+W5X3Itijk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1716349809; c=relaxed/simple;
-	bh=WMP43Nhkjw6tr3NT+HpRSczoh3A+6E4rMITc5OlgyjQ=;
+	bh=xFIWIQs94nRiioTsqRVAvGLFuymDOqizWvscX/cU7L0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Nc0a65ppcPB/9wlQN/qb0Cp7KTkjLm0c/wiFnEoqn7eQy+5a/LZb+bk3yIdlVl/dMsSa86kToy21SqYI68aVjtazBW+yOETn1G/IrmYrSZpN4OfhED093RElKn35WO9y6Jfgglb7VMsuqPWbh4TBtb4C5oVIkMDJV3ZsIEIDV+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+	 MIME-Version; b=AHy1sPaVZvEVoXQUX71RSDIG5Mk/OUbPM0lMjH6zwHvzp8LKdp79BuKm60I+4kMDJ+8gsUp/OV88pwlOE0DS300lIJ0iAm79PgrQ1/JV9SFg9t9mSgeBuVd44TVoIqXJw3d8xgwR1NvNMQEU01i2KTYg4aPpy20f7/AJbP1vj/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4Vkckl5CNSz4f3jdH
-	for <netfs@lists.linux.dev>; Wed, 22 May 2024 11:49:51 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.163.235])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4Vkckr238nz4f3jkR
+	for <netfs@lists.linux.dev>; Wed, 22 May 2024 11:49:56 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id A6C621A01B9
-	for <netfs@lists.linux.dev>; Wed, 22 May 2024 11:50:00 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTP id 141251A0ECD
+	for <netfs@lists.linux.dev>; Wed, 22 May 2024 11:50:02 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.175.104.67])
-	by APP1 (Coremail) with SMTP id cCh0CgBHGBFea01mxlBXNQ--.57627S14;
-	Wed, 22 May 2024 11:50:00 +0800 (CST)
+	by APP1 (Coremail) with SMTP id cCh0CgBHGBFea01mxlBXNQ--.57627S16;
+	Wed, 22 May 2024 11:50:01 +0800 (CST)
 From: libaokun@huaweicloud.com
 To: netfs@lists.linux.dev,
 	dhowells@redhat.com,
@@ -39,9 +39,9 @@ Cc: hsiangkao@linux.alibaba.com,
 	yukuai3@huawei.com,
 	wozizhi@huawei.com,
 	Baokun Li <libaokun1@huawei.com>
-Subject: [PATCH v3 10/12] cachefiles: Set object to close if ondemand_id < 0 in copen
-Date: Wed, 22 May 2024 19:43:06 +0800
-Message-Id: <20240522114308.2402121-11-libaokun@huaweicloud.com>
+Subject: [PATCH v3 12/12] cachefiles: make on-demand read killable
+Date: Wed, 22 May 2024 19:43:08 +0800
+Message-Id: <20240522114308.2402121-13-libaokun@huaweicloud.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240522114308.2402121-1-libaokun@huaweicloud.com>
 References: <20240522114308.2402121-1-libaokun@huaweicloud.com>
@@ -52,10 +52,10 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:cCh0CgBHGBFea01mxlBXNQ--.57627S14
-X-Coremail-Antispam: 1UD129KBjvJXoW7Zry8Wry8Jr4Utr4xtr4UCFg_yoW8ZrWDpF
-	WakFW3Kry8Wr129r97Jw1kA3y8C3ykZFnxWrZIq348Arn8Xrn5Zr1Utr1UZF1UZ3yftr43
-	Jr18Kr9Iga4qy3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID:cCh0CgBHGBFea01mxlBXNQ--.57627S16
+X-Coremail-Antispam: 1UD129KBjvJXoWxZrWUJry5tw4ruw48KFW7Arb_yoW5Ar1rpF
+	Waya45KrykWF4Ikrn3Aw4UX34Sy3y8AFZrWrySqw1fAFnIqr1rZr1Ut3WYvF15A34jgrZx
+	tw48uFWxK34jv3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
 	9KBjDU0xBIdaVrnRJUUUQS14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2jI8I6cxK62vIxIIY0VWUZVW8XwA2048vs2IY02
 	0E87I2jVAFwI0_JF0E3s1l82xGYIkIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0
@@ -72,58 +72,96 @@ X-Coremail-Antispam: 1UD129KBjvJXoW7Zry8Wry8Jr4Utr4xtr4UCFg_yoW8ZrWDpF
 	xVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjTRupB-UUUUU
 X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/
 
-From: Zizhi Wo <wozizhi@huawei.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-If copen is maliciously called in the user mode, it may delete the request
-corresponding to the random id. And the request may have not been read yet.
+Replacing wait_for_completion() with wait_for_completion_killable() in
+cachefiles_ondemand_send_req() allows us to kill processes that might
+trigger a hunk_task if the daemon is abnormal.
 
-Note that when the object is set to reopen, the open request will be done
-with the still reopen state in above case. As a result, the request
-corresponding to this object is always skipped in select_req function, so
-the read request is never completed and blocks other process.
+But now only CACHEFILES_OP_READ is killable, because OP_CLOSE and OP_OPEN
+is initiated from kworker context and the signal is prohibited in these
+kworker.
 
-Fix this issue by simply set object to close if its id < 0 in copen.
+Note that when the req in xas changes, i.e. xas_load(&xas) != req, it
+means that a process will complete the current request soon, so wait
+again for the request to be completed.
 
-Signed-off-by: Zizhi Wo <wozizhi@huawei.com>
+In addition, add the cachefiles_ondemand_finish_req() helper function to
+simplify the code.
+
+Suggested-by: Hou Tao <houtao1@huawei.com>
 Signed-off-by: Baokun Li <libaokun1@huawei.com>
 Acked-by: Jeff Layton <jlayton@kernel.org>
 Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
 ---
- fs/cachefiles/ondemand.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/cachefiles/ondemand.c | 40 ++++++++++++++++++++++++++++------------
+ 1 file changed, 28 insertions(+), 12 deletions(-)
 
 diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-index 6f815e7c5086..922cab1a314b 100644
+index 922cab1a314b..58bd80956c5a 100644
 --- a/fs/cachefiles/ondemand.c
 +++ b/fs/cachefiles/ondemand.c
-@@ -182,6 +182,7 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
- 	xas_store(&xas, NULL);
- 	xa_unlock(&cache->reqs);
- 
-+	info = req->object->ondemand;
- 	/* fail OPEN request if copen format is invalid */
- 	ret = kstrtol(psize, 0, &size);
- 	if (ret) {
-@@ -201,7 +202,6 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
- 		goto out;
- 	}
- 
--	info = req->object->ondemand;
- 	spin_lock(&info->lock);
- 	/*
- 	 * The anonymous fd was closed before copen ? Fail the request.
-@@ -241,6 +241,11 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
- 	wake_up_all(&cache->daemon_pollwq);
- 
- out:
-+	spin_lock(&info->lock);
-+	/* Need to set object close to avoid reopen status continuing */
-+	if (info->ondemand_id == CACHEFILES_ONDEMAND_ID_CLOSED)
-+		cachefiles_ondemand_set_object_close(req->object);
-+	spin_unlock(&info->lock);
- 	complete(&req->done);
- 	return ret;
+@@ -380,6 +380,20 @@ static struct cachefiles_req *cachefiles_ondemand_select_req(struct xa_state *xa
+ 	return NULL;
  }
+ 
++static inline bool cachefiles_ondemand_finish_req(struct cachefiles_req *req,
++						  struct xa_state *xas, int err)
++{
++	if (unlikely(!xas || !req))
++		return false;
++
++	if (xa_cmpxchg(xas->xa, xas->xa_index, req, NULL, 0) != req)
++		return false;
++
++	req->error = err;
++	complete(&req->done);
++	return true;
++}
++
+ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ 					char __user *_buffer, size_t buflen)
+ {
+@@ -443,16 +457,8 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ out:
+ 	cachefiles_put_object(req->object, cachefiles_obj_put_read_req);
+ 	/* Remove error request and CLOSE request has no reply */
+-	if (ret || msg->opcode == CACHEFILES_OP_CLOSE) {
+-		xas_reset(&xas);
+-		xas_lock(&xas);
+-		if (xas_load(&xas) == req) {
+-			req->error = ret;
+-			complete(&req->done);
+-			xas_store(&xas, NULL);
+-		}
+-		xas_unlock(&xas);
+-	}
++	if (ret || msg->opcode == CACHEFILES_OP_CLOSE)
++		cachefiles_ondemand_finish_req(req, &xas, ret);
+ 	cachefiles_req_put(req);
+ 	return ret ? ret : n;
+ }
+@@ -544,8 +550,18 @@ static int cachefiles_ondemand_send_req(struct cachefiles_object *object,
+ 		goto out;
+ 
+ 	wake_up_all(&cache->daemon_pollwq);
+-	wait_for_completion(&req->done);
+-	ret = req->error;
++wait:
++	ret = wait_for_completion_killable(&req->done);
++	if (!ret) {
++		ret = req->error;
++	} else {
++		ret = -EINTR;
++		if (!cachefiles_ondemand_finish_req(req, &xas, ret)) {
++			/* Someone will complete it soon. */
++			cpu_relax();
++			goto wait;
++		}
++	}
+ 	cachefiles_req_put(req);
+ 	return ret;
+ out:
 -- 
 2.39.2
 
