@@ -1,244 +1,182 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from dggsgout12.his.huawei.com (unknown [45.249.212.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8519B11720
-	for <netfs@lists.linux.dev>; Thu, 23 May 2024 15:26:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF12BE48
+	for <netfs@lists.linux.dev>; Fri, 24 May 2024 02:28:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716477964; cv=none; b=BHqlbisgmMserkdLXkKa63ug5g7xkIBsgDDgSGCFqaEv1JY6od5B6vxFZxOgFF6iBWwUwTyiWRjfkrk3/Aj6G40CmMwI95H2v8g+jba9ENJWbLJOLRT9SeiUuKHSLvz3ODvYl/AYJm+1zcXAzs3wQiBZyzOueQi72iRnkS5bFS0=
+	t=1716517715; cv=none; b=p1e8umNMslFYTzl48mDFsWMCbcpCg7SeyRs6m9MASttbc8doWEb5Bc8Gbws9nPCdcsi2ccDPD6dQK22l1g57K1+WSMGA8icB3Drt25SOzaPTbItPVaJIoidk5fph89+NOx3yRUt6iff5tOdg0K0rPVZ+IS7GeDxmGsGh167sYMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716477964; c=relaxed/simple;
-	bh=l2GJNPvnOuBY0p+8cAyKo5yFrNiYcC1jXCZMzu2RQfI=;
-	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=d2lrAKdXbatK96ntmQ6ROLa4/bGIKDo/ux0goJYUTizdZCP8Cc/DvPb1I0Lb/7rpW00NfbegwcM49GXT6rIUZbQVflb55pCin7rAR+706zv4blR3SC49si2rP2bTqEr7M4J/V8bPsgJcLZ8bDMSBL6av4YaLTfvmvmtrc3qlTbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h1TAL/VO; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h1TAL/VO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1716477961;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=sevltQuqimnyvzsibw9S0f0mhjPzGyH5ydA1n7QiXJA=;
-	b=h1TAL/VObuezpIMvuZgVrFvaL2TPdyKrQkXwmG2qnPT0EN1dwBYy1cKDxOsTH4KqzKduED
-	P9vg2L92J35MYw0Tss/1adiQyp7Bi32cqqU91qT99yO1ZIKf0ktg5jVJlOtQMaGxJSHjHO
-	FFc/mLsUP6OUp5i/N4b2AFQSFSrrCgo=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-539-5DoKTXW-PvG1h34seVV_Mw-1; Thu,
- 23 May 2024 11:25:56 -0400
-X-MC-Unique: 5DoKTXW-PvG1h34seVV_Mw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 34BA03C025B9;
-	Thu, 23 May 2024 15:25:55 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.20])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id DCF3A7412;
-	Thu, 23 May 2024 15:25:50 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-To: Dominique Martinet <asmadeus@codewreck.org>
-cc: dhowells@redhat.com,
-    syzbot+df038d463cca332e8414@syzkaller.appspotmail.com,
-    syzbot+d7c7a495a5e466c031b6@syzkaller.appspotmail.com,
-    syzbot+1527696d41a634cc1819@syzkaller.appspotmail.com,
-    Eric Van Hensbergen <ericvh@kernel.org>,
-    Latchesar Ionkov <lucho@ionkov.net>,
-    Christian Schoenebeck <linux_oss@crudebyte.com>,
-    Jeff Layton <jlayton@kernel.org>, Steve French <sfrench@samba.org>,
-    Hillf Danton <hdanton@sina.com>,
-    Christian Brauner <brauner@kernel.org>, v9fs@lists.linux.dev,
-    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Subject: [PATCH v2] netfs, 9p: Fix race between umount and async request completion 
+	s=arc-20240116; t=1716517715; c=relaxed/simple;
+	bh=H8aLNm5MJOA+vX46VpUQmOIxGGBQ5aeql+ZVGLNntL4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OaBHEzLSsp3PhOPg0HtwkzfiTONaVvHB3XUUrq+xRivxdb3kE34uD3GbJ7vYFKaeb9D4Pc34I82rYe/p1rG2rK9G5qkrAUfrgbf/zPmM+9I/wVsRVb1kvThWlkYsJcExG5oNkfFdxcl1q4oltYvtsneC063Pq36mhWLSpgNrwfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.93.142])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4Vlpqj49RBz4f3jHW
+	for <netfs@lists.linux.dev>; Fri, 24 May 2024 10:28:17 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.112])
+	by mail.maildlp.com (Postfix) with ESMTP id 989DB1A0181
+	for <netfs@lists.linux.dev>; Fri, 24 May 2024 10:28:26 +0800 (CST)
+Received: from [10.174.177.174] (unknown [10.174.177.174])
+	by APP1 (Coremail) with SMTP id cCh0CgAX5g5G+09mNr8LNg--.19950S3;
+	Fri, 24 May 2024 10:28:26 +0800 (CST)
+Message-ID: <c2e331a1-8293-0055-3314-738530db3822@huaweicloud.com>
+Date: Fri, 24 May 2024 10:28:22 +0800
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <582730.1716477949.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 23 May 2024 16:25:49 +0100
-Message-ID: <582731.1716477949@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.1.2
+Subject: Re: [PATCH v3 06/12] cachefiles: add consistency check for
+ copen/cread
+To: Jingbo Xu <jefflexu@linux.alibaba.com>, netfs@lists.linux.dev,
+ dhowells@redhat.com, jlayton@kernel.org
+Cc: hsiangkao@linux.alibaba.com, zhujia.zj@bytedance.com,
+ linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, yangerkun@huawei.com, houtao1@huawei.com,
+ yukuai3@huawei.com, wozizhi@huawei.com, Baokun Li <libaokun1@huawei.com>,
+ libaokun@huaweicloud.com
+References: <20240522114308.2402121-1-libaokun@huaweicloud.com>
+ <20240522114308.2402121-7-libaokun@huaweicloud.com>
+ <11f10862-9149-49c7-bac4-f0c1e0601b23@linux.alibaba.com>
+Content-Language: en-US
+From: Baokun Li <libaokun@huaweicloud.com>
+In-Reply-To: <11f10862-9149-49c7-bac4-f0c1e0601b23@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:cCh0CgAX5g5G+09mNr8LNg--.19950S3
+X-Coremail-Antispam: 1UD129KBjvJXoWxWw4rCr4fWr45tw1xZF4fZrb_yoWrAF4rpF
+	WayayakFy8uF1xKr97JF95W34Fy3s3AFsxWr93ta4UArnxur1Fvryft34UZF1UZwsYgr4I
+	qw42gF9rGr1jv3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9F14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
+	0xkIwI1lc7I2V7IY0VAS07AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
+	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
+	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
+	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6rW3Jr0E
+	3s1lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcS
+	sGvfC2KfnxnUUI43ZEXa7VUbXdbUUUUUU==
+X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/
 
-There's a problem in 9p's interaction with netfslib whereby a crash occurs
-because the 9p_fid structs get forcibly destroyed during client teardown
-(without paying attention to their refcounts) before netfslib has finished
-with them.  However, it's not a simple case of deferring the clunking that
-p9_fid_put() does as that requires the client.
+Hi Jingbo,
 
-The problem is that netfslib has to unlock pages and clear the IN_PROGRESS
-flag before destroying the objects involved - including the pid - and, in
-any case, nothing checks to see if writeback completed barring looking at
-the page flags.
+Thanks for the review!
 
-Fix this by keeping a count of outstanding I/O requests (of any type) and
-waiting for it to quiesce during inode eviction.
+On 2024/5/23 22:28, Jingbo Xu wrote:
+>
+> On 5/22/24 7:43 PM, libaokun@huaweicloud.com wrote:
+>> From: Baokun Li <libaokun1@huawei.com>
+>>
+>> This prevents malicious processes from completing random copen/cread
+>> requests and crashing the system. Added checks are listed below:
+>>
+>>    * Generic, copen can only complete open requests, and cread can only
+>>      complete read requests.
+>>    * For copen, ondemand_id must not be 0, because this indicates that the
+>>      request has not been read by the daemon.
+>>    * For cread, the object corresponding to fd and req should be the same.
+>>
+>> Signed-off-by: Baokun Li <libaokun1@huawei.com>
+>> Acked-by: Jeff Layton <jlayton@kernel.org>
+>> ---
+>>   fs/cachefiles/ondemand.c | 27 ++++++++++++++++++++-------
+>>   1 file changed, 20 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
+>> index bb94ef6a6f61..898fab68332b 100644
+>> --- a/fs/cachefiles/ondemand.c
+>> +++ b/fs/cachefiles/ondemand.c
+>> @@ -82,12 +82,12 @@ static loff_t cachefiles_ondemand_fd_llseek(struct file *filp, loff_t pos,
+>>   }
+>>   
+>>   static long cachefiles_ondemand_fd_ioctl(struct file *filp, unsigned int ioctl,
+>> -					 unsigned long arg)
+>> +					 unsigned long id)
+>>   {
+>>   	struct cachefiles_object *object = filp->private_data;
+>>   	struct cachefiles_cache *cache = object->volume->cache;
+>>   	struct cachefiles_req *req;
+>> -	unsigned long id;
+>> +	XA_STATE(xas, &cache->reqs, id);
+>>   
+>>   	if (ioctl != CACHEFILES_IOC_READ_COMPLETE)
+>>   		return -EINVAL;
+>> @@ -95,10 +95,15 @@ static long cachefiles_ondemand_fd_ioctl(struct file *filp, unsigned int ioctl,
+>>   	if (!test_bit(CACHEFILES_ONDEMAND_MODE, &cache->flags))
+>>   		return -EOPNOTSUPP;
+>>   
+>> -	id = arg;
+>> -	req = xa_erase(&cache->reqs, id);
+>> -	if (!req)
+>> +	xa_lock(&cache->reqs);
+>> +	req = xas_load(&xas);
+>> +	if (!req || req->msg.opcode != CACHEFILES_OP_READ ||
+>> +	    req->object != object) {
+>> +		xa_unlock(&cache->reqs);
+>>   		return -EINVAL;
+>> +	}
+>> +	xas_store(&xas, NULL);
+>> +	xa_unlock(&cache->reqs);
+>>   
+>>   	trace_cachefiles_ondemand_cread(object, id);
+>>   	complete(&req->done);
+>> @@ -126,6 +131,7 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
+>>   	unsigned long id;
+>>   	long size;
+>>   	int ret;
+>> +	XA_STATE(xas, &cache->reqs, 0);
+>>   
+>>   	if (!test_bit(CACHEFILES_ONDEMAND_MODE, &cache->flags))
+>>   		return -EOPNOTSUPP;
+>> @@ -149,9 +155,16 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
+>>   	if (ret)
+>>   		return ret;
+>>   
+>> -	req = xa_erase(&cache->reqs, id);
+>> -	if (!req)
+>> +	xa_lock(&cache->reqs);
+>> +	xas.xa_index = id;
+>> +	req = xas_load(&xas);
+>> +	if (!req || req->msg.opcode != CACHEFILES_OP_OPEN ||
+>> +	    !req->object->ondemand->ondemand_id) {
+> For a valid opened object, I think ondemand_id shall > 0.  When the
+> copen is for the object which is in the reopening state, ondemand_id can
+> be CACHEFILES_ONDEMAND_ID_CLOSED (actually -1)?
+If ondemand_id is -1, there are two scenarios:
+  * This could be a restore/reopen request that has not yet get_fd;
+  * The request is being processed by the daemon but its anonymous
+     fd has been closed.
 
-Reported-by: syzbot+df038d463cca332e8414@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/0000000000005be0aa061846f8d6@google.com/
-Reported-by: syzbot+d7c7a495a5e466c031b6@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/000000000000b86c5e06130da9c6@google.com/
-Reported-by: syzbot+1527696d41a634cc1819@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/000000000000041f960618206d7e@google.com/
-Signed-off-by: David Howells <dhowells@redhat.com>
-Tested-by: syzbot+d7c7a495a5e466c031b6@syzkaller.appspotmail.com
-cc: Eric Van Hensbergen <ericvh@kernel.org>
-cc: Latchesar Ionkov <lucho@ionkov.net>
-cc: Dominique Martinet <asmadeus@codewreck.org>
-cc: Christian Schoenebeck <linux_oss@crudebyte.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: Steve French <sfrench@samba.org>
-cc: Hillf Danton <hdanton@sina.com>
-cc: v9fs@lists.linux.dev
-cc: linux-afs@lists.infradead.org
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
----
-    Changes
-    =3D=3D=3D=3D=3D=3D=3D
-    ver #2)
-     - Wait for outstanding I/O before clobbering the pagecache.
+In the first case, there is no argument for not allowing copen.
+In the latter case, however, the closing of an anonymous fd may
+not be malicious, so if a copen delete request fails, the OPEN
+request will not be processed until RESTORE lets it be processed
+by the daemon again. However, RESTORE is not a frequent operation,
+so if only one anonymous fd is accidentally closed, this may result
+in a hung.
 
- fs/9p/vfs_inode.c      |    1 +
- fs/afs/inode.c         |    1 +
- fs/netfs/objects.c     |    5 +++++
- fs/smb/client/cifsfs.c |    1 +
- include/linux/netfs.h  |   18 ++++++++++++++++++
- 5 files changed, 26 insertions(+)
+So in later patches, we ensure that fd is valid (i.e. ondemand_id > 0)
+when setting the object to OPEN state and do not prevent it
+from removing the request here.
 
-diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
-index 8c9a896d691e..effb3aa1f3ed 100644
---- a/fs/9p/vfs_inode.c
-+++ b/fs/9p/vfs_inode.c
-@@ -349,6 +349,7 @@ void v9fs_evict_inode(struct inode *inode)
- 	__le32 __maybe_unused version;
- =
+If ondemand_id is 0, then it can be confirmed that the req has not
+been initialised, so the copen must be malicious at this point, so it
+is not allowed to complete the request. This is an instantaneous
+state, and the request can be processed normally after the daemon
+has read it properly. So there won't be any side effects here.
 
- 	if (!is_bad_inode(inode)) {
-+		netfs_wait_for_outstanding_io(inode);
- 		truncate_inode_pages_final(&inode->i_data);
- =
-
- 		version =3D cpu_to_le32(v9inode->qid.version);
-diff --git a/fs/afs/inode.c b/fs/afs/inode.c
-index 94fc049aff58..15bb7989c387 100644
---- a/fs/afs/inode.c
-+++ b/fs/afs/inode.c
-@@ -648,6 +648,7 @@ void afs_evict_inode(struct inode *inode)
- =
-
- 	ASSERTCMP(inode->i_ino, =3D=3D, vnode->fid.vnode);
- =
-
-+	netfs_wait_for_outstanding_io(inode);
- 	truncate_inode_pages_final(&inode->i_data);
- =
-
- 	afs_set_cache_aux(vnode, &aux);
-diff --git a/fs/netfs/objects.c b/fs/netfs/objects.c
-index c90d482b1650..f4a642727479 100644
---- a/fs/netfs/objects.c
-+++ b/fs/netfs/objects.c
-@@ -72,6 +72,7 @@ struct netfs_io_request *netfs_alloc_request(struct addr=
-ess_space *mapping,
- 		}
- 	}
- =
-
-+	atomic_inc(&ctx->io_count);
- 	trace_netfs_rreq_ref(rreq->debug_id, 1, netfs_rreq_trace_new);
- 	netfs_proc_add_rreq(rreq);
- 	netfs_stat(&netfs_n_rh_rreq);
-@@ -124,6 +125,7 @@ static void netfs_free_request(struct work_struct *wor=
-k)
- {
- 	struct netfs_io_request *rreq =3D
- 		container_of(work, struct netfs_io_request, work);
-+	struct netfs_inode *ictx =3D netfs_inode(rreq->inode);
- 	unsigned int i;
- =
-
- 	trace_netfs_rreq(rreq, netfs_rreq_trace_free);
-@@ -142,6 +144,9 @@ static void netfs_free_request(struct work_struct *wor=
-k)
- 		}
- 		kvfree(rreq->direct_bv);
- 	}
-+
-+	if (atomic_dec_and_test(&ictx->io_count))
-+		wake_up_var(&ictx->io_count);
- 	call_rcu(&rreq->rcu, netfs_free_request_rcu);
- }
- =
-
-diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
-index ec5b639f421a..14810ffd15c8 100644
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -431,6 +431,7 @@ cifs_free_inode(struct inode *inode)
- static void
- cifs_evict_inode(struct inode *inode)
- {
-+	netfs_wait_for_outstanding_io(inode);
- 	truncate_inode_pages_final(&inode->i_data);
- 	if (inode->i_state & I_PINNING_NETFS_WB)
- 		cifs_fscache_unuse_inode_cookie(inode, true);
-diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-index d2d291a9cdad..3ca3906bb8da 100644
---- a/include/linux/netfs.h
-+++ b/include/linux/netfs.h
-@@ -68,6 +68,7 @@ struct netfs_inode {
- 	loff_t			remote_i_size;	/* Size of the remote file */
- 	loff_t			zero_point;	/* Size after which we assume there's no data
- 						 * on the server */
-+	atomic_t		io_count;	/* Number of outstanding reqs */
- 	unsigned long		flags;
- #define NETFS_ICTX_ODIRECT	0		/* The file has DIO in progress */
- #define NETFS_ICTX_UNBUFFERED	1		/* I/O should not use the pagecache */
-@@ -474,6 +475,7 @@ static inline void netfs_inode_init(struct netfs_inode=
- *ctx,
- 	ctx->remote_i_size =3D i_size_read(&ctx->inode);
- 	ctx->zero_point =3D LLONG_MAX;
- 	ctx->flags =3D 0;
-+	atomic_set(&ctx->io_count, 0);
- #if IS_ENABLED(CONFIG_FSCACHE)
- 	ctx->cache =3D NULL;
- #endif
-@@ -517,4 +519,20 @@ static inline struct fscache_cookie *netfs_i_cookie(s=
-truct netfs_inode *ctx)
- #endif
- }
- =
-
-+/**
-+ * netfs_wait_for_outstanding_io - Wait for outstanding I/O to complete
-+ * @ctx: The netfs inode to wait on
-+ *
-+ * Wait for outstanding I/O requests of any type to complete.  This is in=
-tended
-+ * to be called from inode eviction routines.  This makes sure that any
-+ * resources held by those requests are cleaned up before we let the inod=
-e get
-+ * cleaned up.
-+ */
-+static inline void netfs_wait_for_outstanding_io(struct inode *inode)
-+{
-+	struct netfs_inode *ictx =3D netfs_inode(inode);
-+
-+	wait_var_event(&ictx->io_count, atomic_read(&ictx->io_count) =3D=3D 0);
-+}
-+
- #endif /* _LINUX_NETFS_H */
+-- 
+With Best Regards,
+Baokun Li
 
