@@ -1,182 +1,153 @@
-Received: from dggsgout12.his.huawei.com (unknown [45.249.212.56])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF12BE48
-	for <netfs@lists.linux.dev>; Fri, 24 May 2024 02:28:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75B712C47B
+	for <netfs@lists.linux.dev>; Fri, 24 May 2024 14:23:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716517715; cv=none; b=p1e8umNMslFYTzl48mDFsWMCbcpCg7SeyRs6m9MASttbc8doWEb5Bc8Gbws9nPCdcsi2ccDPD6dQK22l1g57K1+WSMGA8icB3Drt25SOzaPTbItPVaJIoidk5fph89+NOx3yRUt6iff5tOdg0K0rPVZ+IS7GeDxmGsGh167sYMs=
+	t=1716560634; cv=none; b=LetdWXBllojIYz0eLhFAXb9OzYpeKEoMfSIxShp0rl32cchTBTAtyl3HmWcXd8Vf4KZGsXSUuJY7Zgy8YYNlu+O6S1ip9L0VYXNkwET6rCn/VIlwAI9FAKm/+qO07WHv4hqcpZ2gIOoZey/KinZ5KW36vD14+eMS0PC8kY3whyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716517715; c=relaxed/simple;
-	bh=H8aLNm5MJOA+vX46VpUQmOIxGGBQ5aeql+ZVGLNntL4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OaBHEzLSsp3PhOPg0HtwkzfiTONaVvHB3XUUrq+xRivxdb3kE34uD3GbJ7vYFKaeb9D4Pc34I82rYe/p1rG2rK9G5qkrAUfrgbf/zPmM+9I/wVsRVb1kvThWlkYsJcExG5oNkfFdxcl1q4oltYvtsneC063Pq36mhWLSpgNrwfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4Vlpqj49RBz4f3jHW
-	for <netfs@lists.linux.dev>; Fri, 24 May 2024 10:28:17 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id 989DB1A0181
-	for <netfs@lists.linux.dev>; Fri, 24 May 2024 10:28:26 +0800 (CST)
-Received: from [10.174.177.174] (unknown [10.174.177.174])
-	by APP1 (Coremail) with SMTP id cCh0CgAX5g5G+09mNr8LNg--.19950S3;
-	Fri, 24 May 2024 10:28:26 +0800 (CST)
-Message-ID: <c2e331a1-8293-0055-3314-738530db3822@huaweicloud.com>
-Date: Fri, 24 May 2024 10:28:22 +0800
+	s=arc-20240116; t=1716560634; c=relaxed/simple;
+	bh=EpoHsjB4EOCos3U2u+XvJyYSt6At/bEiZlRNqBU3718=;
+	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=D1lcflOI/zQn/iBlItIMjZhfcG4h3SY5VW13NaV9gAZTrVhiIR4PjRDXVlRKUC5p9uh6paBHpvGAVL/eBmlgPOHXrJS2LlWOJyhfH26Y1h+Cm+weNOtLTBUzGEVjwmJMkLvvuO6TAaEVbKMn48TbVW4vv0dBLfzmPyiVe9ai3WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=d7X3OhJd; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="d7X3OhJd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1716560631;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=0AzS/2TqPoHiXyqv0zYxlSb1DTSMYdwN2BmrfNFCiwg=;
+	b=d7X3OhJdBem19hx6RXP0dLaZ0EXoO71+MPWcA0XdhWogtb3SVD5rjpRBMxcTRY7oLsfLVQ
+	By9EKE7oOeEOPMGGCOIgAVaEmaVfUlsWiubzW0QeQL9oUrR56fBkPrzj0qkyrxNbo1ybUG
+	Ji/AZ0O+SigBCZ75vKiObpGKZNdysPk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-136-yPthP4h7N7-bmYUuQbCbkQ-1; Fri, 24 May 2024 10:23:45 -0400
+X-MC-Unique: yPthP4h7N7-bmYUuQbCbkQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B384881227E;
+	Fri, 24 May 2024 14:23:44 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.20])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 8B0D740C6EB7;
+	Fri, 24 May 2024 14:23:39 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: Steve French <sfrench@samba.org>
+cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.com>,
+    Shyam Prasad N <nspmangalore@gmail.com>,
+    Rohith Surabattula <rohiths.msft@gmail.com>,
+    Jeff Layton <jlayton@kernel.org>, linux-cifs@vger.kernel.org,
+    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: [PATCH] cifs: Fix missing set of remote_i_size
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.1.2
-Subject: Re: [PATCH v3 06/12] cachefiles: add consistency check for
- copen/cread
-To: Jingbo Xu <jefflexu@linux.alibaba.com>, netfs@lists.linux.dev,
- dhowells@redhat.com, jlayton@kernel.org
-Cc: hsiangkao@linux.alibaba.com, zhujia.zj@bytedance.com,
- linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, yangerkun@huawei.com, houtao1@huawei.com,
- yukuai3@huawei.com, wozizhi@huawei.com, Baokun Li <libaokun1@huawei.com>,
- libaokun@huaweicloud.com
-References: <20240522114308.2402121-1-libaokun@huaweicloud.com>
- <20240522114308.2402121-7-libaokun@huaweicloud.com>
- <11f10862-9149-49c7-bac4-f0c1e0601b23@linux.alibaba.com>
-Content-Language: en-US
-From: Baokun Li <libaokun@huaweicloud.com>
-In-Reply-To: <11f10862-9149-49c7-bac4-f0c1e0601b23@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:cCh0CgAX5g5G+09mNr8LNg--.19950S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxWw4rCr4fWr45tw1xZF4fZrb_yoWrAF4rpF
-	WayayakFy8uF1xKr97JF95W34Fy3s3AFsxWr93ta4UArnxur1Fvryft34UZF1UZwsYgr4I
-	qw42gF9rGr1jv3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9F14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
-	0xkIwI1lc7I2V7IY0VAS07AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
-	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
-	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
-	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6rW3Jr0E
-	3s1lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcS
-	sGvfC2KfnxnUUI43ZEXa7VUbXdbUUUUUU==
-X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <755786.1716560616.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 24 May 2024 15:23:36 +0100
+Message-ID: <755787.1716560616@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
 
-Hi Jingbo,
+Occasionally, the generic/001 xfstest will fail indicating corruption in
+one of the copy chains when run on cifs against a server that supports
+FSCTL_DUPLICATE_EXTENTS_TO_FILE (eg. Samba with a share on btrfs).  The
+problem is that the remote_i_size value isn't updated by cifs_setsize()
+when called by smb2_duplicate_extents(), but i_size *is*.
 
-Thanks for the review!
+This may cause cifs_remap_file_range() to then skip the bit after calling
+->duplicate_extents() that sets sizes.
 
-On 2024/5/23 22:28, Jingbo Xu wrote:
->
-> On 5/22/24 7:43 PM, libaokun@huaweicloud.com wrote:
->> From: Baokun Li <libaokun1@huawei.com>
->>
->> This prevents malicious processes from completing random copen/cread
->> requests and crashing the system. Added checks are listed below:
->>
->>    * Generic, copen can only complete open requests, and cread can only
->>      complete read requests.
->>    * For copen, ondemand_id must not be 0, because this indicates that the
->>      request has not been read by the daemon.
->>    * For cread, the object corresponding to fd and req should be the same.
->>
->> Signed-off-by: Baokun Li <libaokun1@huawei.com>
->> Acked-by: Jeff Layton <jlayton@kernel.org>
->> ---
->>   fs/cachefiles/ondemand.c | 27 ++++++++++++++++++++-------
->>   1 file changed, 20 insertions(+), 7 deletions(-)
->>
->> diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
->> index bb94ef6a6f61..898fab68332b 100644
->> --- a/fs/cachefiles/ondemand.c
->> +++ b/fs/cachefiles/ondemand.c
->> @@ -82,12 +82,12 @@ static loff_t cachefiles_ondemand_fd_llseek(struct file *filp, loff_t pos,
->>   }
->>   
->>   static long cachefiles_ondemand_fd_ioctl(struct file *filp, unsigned int ioctl,
->> -					 unsigned long arg)
->> +					 unsigned long id)
->>   {
->>   	struct cachefiles_object *object = filp->private_data;
->>   	struct cachefiles_cache *cache = object->volume->cache;
->>   	struct cachefiles_req *req;
->> -	unsigned long id;
->> +	XA_STATE(xas, &cache->reqs, id);
->>   
->>   	if (ioctl != CACHEFILES_IOC_READ_COMPLETE)
->>   		return -EINVAL;
->> @@ -95,10 +95,15 @@ static long cachefiles_ondemand_fd_ioctl(struct file *filp, unsigned int ioctl,
->>   	if (!test_bit(CACHEFILES_ONDEMAND_MODE, &cache->flags))
->>   		return -EOPNOTSUPP;
->>   
->> -	id = arg;
->> -	req = xa_erase(&cache->reqs, id);
->> -	if (!req)
->> +	xa_lock(&cache->reqs);
->> +	req = xas_load(&xas);
->> +	if (!req || req->msg.opcode != CACHEFILES_OP_READ ||
->> +	    req->object != object) {
->> +		xa_unlock(&cache->reqs);
->>   		return -EINVAL;
->> +	}
->> +	xas_store(&xas, NULL);
->> +	xa_unlock(&cache->reqs);
->>   
->>   	trace_cachefiles_ondemand_cread(object, id);
->>   	complete(&req->done);
->> @@ -126,6 +131,7 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
->>   	unsigned long id;
->>   	long size;
->>   	int ret;
->> +	XA_STATE(xas, &cache->reqs, 0);
->>   
->>   	if (!test_bit(CACHEFILES_ONDEMAND_MODE, &cache->flags))
->>   		return -EOPNOTSUPP;
->> @@ -149,9 +155,16 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
->>   	if (ret)
->>   		return ret;
->>   
->> -	req = xa_erase(&cache->reqs, id);
->> -	if (!req)
->> +	xa_lock(&cache->reqs);
->> +	xas.xa_index = id;
->> +	req = xas_load(&xas);
->> +	if (!req || req->msg.opcode != CACHEFILES_OP_OPEN ||
->> +	    !req->object->ondemand->ondemand_id) {
-> For a valid opened object, I think ondemand_id shall > 0.  When the
-> copen is for the object which is in the reopening state, ondemand_id can
-> be CACHEFILES_ONDEMAND_ID_CLOSED (actually -1)?
-If ondemand_id is -1, there are two scenarios:
-  * This could be a restore/reopen request that has not yet get_fd;
-  * The request is being processed by the daemon but its anonymous
-     fd has been closed.
+Fix this by calling netfs_resize_file() in smb2_duplicate_extents() before
+calling cifs_setsize() to set i_size.
 
-In the first case, there is no argument for not allowing copen.
-In the latter case, however, the closing of an anonymous fd may
-not be malicious, so if a copen delete request fails, the OPEN
-request will not be processed until RESTORE lets it be processed
-by the daemon again. However, RESTORE is not a frequent operation,
-so if only one anonymous fd is accidentally closed, this may result
-in a hung.
+This means we don't then need to call netfs_resize_file() upon return from
+->duplicate_extents(), but we also fix the test to compare against the pre=
+-dup
+inode size.
 
-So in later patches, we ensure that fd is valid (i.e. ondemand_id > 0)
-when setting the object to OPEN state and do not prevent it
-from removing the request here.
+[Note that this goes back before the addition of remote_i_size with the
+netfs_inode struct.  It should probably have been setting cifsi->server_eo=
+f
+previously.]
 
-If ondemand_id is 0, then it can be confirmed that the req has not
-been initialised, so the copen must be malicious at this point, so it
-is not allowed to complete the request. This is an instantaneous
-state, and the request can be processed normally after the daemon
-has read it properly. So there won't be any side effects here.
+Fixes: cfc63fc8126a ("smb3: fix cached file size problems in duplicate ext=
+ents (reflink)")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Steve French <sfrench@samba.org>
+cc: Paulo Alcantara <pc@manguebit.com>
+cc: Shyam Prasad N <nspmangalore@gmail.com>
+cc: Rohith Surabattula <rohiths.msft@gmail.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+---
+ fs/smb/client/cifsfs.c  |    6 +++---
+ fs/smb/client/smb2ops.c |    1 +
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
--- 
-With Best Regards,
-Baokun Li
+diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
+index 14810ffd15c8..bb86fc0641d8 100644
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -1227,7 +1227,7 @@ static loff_t cifs_remap_file_range(struct file *src=
+_file, loff_t off,
+ 	struct cifsFileInfo *smb_file_src =3D src_file->private_data;
+ 	struct cifsFileInfo *smb_file_target =3D dst_file->private_data;
+ 	struct cifs_tcon *target_tcon, *src_tcon;
+-	unsigned long long destend, fstart, fend, new_size;
++	unsigned long long destend, fstart, fend, old_size, new_size;
+ 	unsigned int xid;
+ 	int rc;
+ =
+
+@@ -1294,6 +1294,7 @@ static loff_t cifs_remap_file_range(struct file *src=
+_file, loff_t off,
+ 		goto unlock;
+ 	if (fend > target_cifsi->netfs.zero_point)
+ 		target_cifsi->netfs.zero_point =3D fend + 1;
++	old_size =3D target_cifsi->netfs.remote_i_size;
+ =
+
+ 	/* Discard all the folios that overlap the destination region. */
+ 	cifs_dbg(FYI, "about to discard pages %llx-%llx\n", fstart, fend);
+@@ -1306,9 +1307,8 @@ static loff_t cifs_remap_file_range(struct file *src=
+_file, loff_t off,
+ 	if (target_tcon->ses->server->ops->duplicate_extents) {
+ 		rc =3D target_tcon->ses->server->ops->duplicate_extents(xid,
+ 			smb_file_src, smb_file_target, off, len, destoff);
+-		if (rc =3D=3D 0 && new_size > i_size_read(target_inode)) {
++		if (rc =3D=3D 0 && new_size > old_size) {
+ 			truncate_setsize(target_inode, new_size);
+-			netfs_resize_file(&target_cifsi->netfs, new_size, true);
+ 			fscache_resize_cookie(cifs_inode_cookie(target_inode),
+ 					      new_size);
+ 		}
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index b87b70edd0be..4ce6c3121a7e 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -2028,6 +2028,7 @@ smb2_duplicate_extents(const unsigned int xid,
+ 		 * size will be queried on next revalidate, but it is important
+ 		 * to make sure that file's cached size is updated immediately
+ 		 */
++		netfs_resize_file(netfs_inode(inode), dest_off + len, true);
+ 		cifs_setsize(inode, dest_off + len);
+ 	}
+ 	rc =3D SMB2_ioctl(xid, tcon, trgtfile->fid.persistent_fid,
 
