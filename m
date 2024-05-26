@@ -1,61 +1,60 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434142F46
-	for <netfs@lists.linux.dev>; Sun, 26 May 2024 21:21:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2570013048F
+	for <netfs@lists.linux.dev>; Sun, 26 May 2024 21:23:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716758502; cv=none; b=VgaBTwG3J4lvSpz4gTtRe2NNWpyQrL91weohVGfS/I3Fxs/UAbdv6wc5sTh3hAE8ALCVZQjrLRp/YrQHRSYKG1rSgl3PRkPN24aKq4gI/hn0sluvqIN55a2vUO9+7thr0Ii/bRm5nHKvOQCuuPeoMhAkr1JKM5Gp3/hvVxZmxY4=
+	t=1716758621; cv=none; b=VVBEZxMAN6UfUiwj0ob2f2LFa13BrqKPFxTbLOUzTUAenW+614/XaqODCo8hbm7lFfCsJ6hCC29WnTWkD7SJ0ECwiSVvF9OB8x75ug/UeHMGR26e6f5WOkZVQ+1HkW+5qujBigb9hIhwa5BtjSK6z/tu5XOuyhmd89SnajmEQ+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716758502; c=relaxed/simple;
-	bh=h07742SfbAhVzUh56nb4wWh/jm6ZTEc0nPN1Utkt790=;
+	s=arc-20240116; t=1716758621; c=relaxed/simple;
+	bh=4br1+bsqarhpsUSUDMHnPY9ItAu5sQzF64WsQKB/4Bg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LJVatkLaNPNlwegtiFPWbNw0nzde8xhI2kkB/FjCZ2dNXZbR9zfLU7p2k8Z02PqQbcsq3HQ6BVT3fy3QvdSSc/8g0VKmnwcIyNqsYbFyzfIZuY89ewtES06HLeZW32Dmas0KlG0ckHlRWvc6lwQbT+n8Viqn8tYcyyl/73qZM7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toblux.com; spf=none smtp.mailfrom=toblux.com; dkim=pass (2048-bit key) header.d=toblux-com.20230601.gappssmtp.com header.i=@toblux-com.20230601.gappssmtp.com header.b=WEFOsmI8; arc=none smtp.client-ip=209.85.128.46
+	 MIME-Version; b=VAkMWAoYnt6ZqBFWb7eU7kEP4J1JXbZLCzkBdidGqYafAiFelhckk3t2ZFCVtX08UiwbrzPTjBmxoAq6JDC71QAJXyeZIIa+KoHHZwZfRG8WycO6YwgbmRzX7vo6VolcflEx2bqsqafsIWyGERBls5w7GPLzb4dd0z1nYyfek1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toblux.com; spf=none smtp.mailfrom=toblux.com; dkim=pass (2048-bit key) header.d=toblux-com.20230601.gappssmtp.com header.i=@toblux-com.20230601.gappssmtp.com header.b=K2gS9gr5; arc=none smtp.client-ip=209.85.221.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toblux.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=toblux.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toblux-com.20230601.gappssmtp.com header.i=@toblux-com.20230601.gappssmtp.com header.b="WEFOsmI8"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-421087b6f3fso21273345e9.1
-        for <netfs@lists.linux.dev>; Sun, 26 May 2024 14:21:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=toblux-com.20230601.gappssmtp.com header.i=@toblux-com.20230601.gappssmtp.com header.b="K2gS9gr5"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-354e22bc14bso3972008f8f.1
+        for <netfs@lists.linux.dev>; Sun, 26 May 2024 14:23:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toblux-com.20230601.gappssmtp.com; s=20230601; t=1716758497; x=1717363297; darn=lists.linux.dev;
+        d=toblux-com.20230601.gappssmtp.com; s=20230601; t=1716758618; x=1717363418; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FrZS6a+2WmF7PbI/Eek9PooMML2FIBwy4rVSyH7zOdU=;
-        b=WEFOsmI8AxI2/R/77NfwEM68ayc8FolpqBXRxMHKhUZEIbxaS5S2CKIzfjTMpcQjl4
-         M7mKoKhBE8aZ5SaHytITkAfwL0SPMKvLxvbtpUpNe25EA2CWjjvSLUA7bki59esy/ctv
-         L2whl3HhT4MA/XVH0t/uN/t1RB6A/Qjdt3+27BfLpzIX2hriXySR5r62Q9qVSLPSroj9
-         Qy+tZE3Cg3hY56A7QF8OqbibQxQBmRnbMO+Dx2FYZFjJJ9kZnywIp62CXNGZlc+w3lIU
-         HaPVbaNdQHRPMonLodAX9Dou0kZCTkjHJIJ69XQYC4vSLB39yfDbJNzyn+LVoFNEcdNc
-         z/dQ==
+        bh=Qbk0UNvpsQrSUqN6RzC4hENS9R3C9NfeLNOx5djjey0=;
+        b=K2gS9gr5KfHGL0utz061NSGkn7XJ5Lma5I7J43KnbQCTJfNuKTqEd/AWjt8yaQd+bt
+         YjT/UmjdchW3pLDUa5F6dHWlmLiabN1zk5+yRGvSg+DuHPfPpV2SkJdBrATzcfebqIac
+         09hQ70URlQRQp9WZ0eBtaZK1APfO2ZPAIV8NRSIV4ESvpPMQ03SkOosy4qQuZ7vp6QAq
+         jkE3trlYOzYZeLo6aD3LF22dbcsUrlWFqEC46sURv/+IgJuEHmSldhQFlbNSUYLzLZYB
+         z9g4pVeW47kGy2TbfechUCDxs/QfMrDSqxdrvUYvWCn4WrFyryiRsNUSY9jfCHSOQjSJ
+         vPaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716758497; x=1717363297;
+        d=1e100.net; s=20230601; t=1716758618; x=1717363418;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FrZS6a+2WmF7PbI/Eek9PooMML2FIBwy4rVSyH7zOdU=;
-        b=HY1CyRFHVWpZn87Zbe4xKyn3Nqwwjbau4s+zM//F5kZlNCSgvxLrdoTwBosXFK42VM
-         IWwBhMmQD2Yem1VTI/QTSdHlt+trv9wc6HCc6qKeEC2UtwdOVjjNRn4t08bSpSCLFgBC
-         jlux6gN8yx3YtlLlCzLf39in8Y2EOghWnCzeuCwH47tICO0ZaqUOE5znRQ7QIPUJ8e2d
-         5WmgGuKB0fH2QUC8tKVogcFNpVy1flEvpOO/Ga8t05YhA/fpUND1PfEvj4LnG0fC472b
-         ce/puaD+VSlqFv8SC8Lepx6vZ4lTbN71CIuZu47b1WER1htEFog8zUMQxkbhgi0HFzdb
-         MuKA==
-X-Forwarded-Encrypted: i=1; AJvYcCVjGtyccfgBf54miLKKwPytLKS357YH7sE31LHsanpLTrblbUI7gGoAPs1UPc4Ec2JxzmwyQKtguBVIqAYYh1fBcw1u4Tg=
-X-Gm-Message-State: AOJu0YzUCB43VKni8clST0suYn+oiUE+Tn981CwPGwFNVqgIyZq9Wx5G
-	3FprJeW93+HVb96ZB5qY/rn+XEagyHQgGD54L+yal+fm/fYBAE0LAJmL9yUk3Zc=
-X-Google-Smtp-Source: AGHT+IHW4ae7lxNWn2WaLCNzfX0cTLfvfU9RcG3UisSM/eMD5CFFw81oCKu+GmqWICgbek/bKosQUg==
-X-Received: by 2002:a05:600c:6a93:b0:41b:f359:2b53 with SMTP id 5b1f17b1804b1-42108a14eaemr57525155e9.37.1716758497510;
-        Sun, 26 May 2024 14:21:37 -0700 (PDT)
+        bh=Qbk0UNvpsQrSUqN6RzC4hENS9R3C9NfeLNOx5djjey0=;
+        b=LSKgts40vTqPb93wQ20voNyT66KuBmzpENIkJrc4DEglfcQkuavQVTsfbN1GqUl4NE
+         Ce9L/ClKfkh8fJurk/2tpI8D+1vPjuQbJ9A1xiMSjtdwWDbj/I9+4WOatYudsw7ck7cr
+         fgHzNdlclvueBr3hWQ0QV2vsW46C0kZfn+cGfDQ53f/2U6v5VrX6ESufW6kfTxaztGzF
+         +A4peinAvI/WttFkQ5LK28zv1/YSIVjpJdiOkxseBsVu8JEXElRuERxZBUkloLBxftP4
+         OFru4WRcIv8bX6uY8DEhkuZpgPXkLwnotaTK3LvALB5w86kq11g2AuvVeW06q2Twe9Bi
+         Xziw==
+X-Forwarded-Encrypted: i=1; AJvYcCVCuLXtlit0WJLC0IWskIQlwESAJwEI5xR1XUP7z5Q6NkuMDYw+g2uaEVNrDZxcludFi8rmkYwUOkxQ19TBNSRlbCGZ5L4=
+X-Gm-Message-State: AOJu0YwN46sUVZSNHUUA0APaXzrVbtvlrIcej9e+Je4YlpyUIb5WXHKl
+	YaM4benI4g7lgGLa2vgvbvJkM9NqnlPhw+nEZp6kKIqv1MbcAOO0AEJETO9I854=
+X-Google-Smtp-Source: AGHT+IFy5L/fF6HnmYmy15FzQ2I5Aj94AJhD6S8HOgJeCGnH2efGYlzLjxrfvdfR5wJ4GRUcUbR/8g==
+X-Received: by 2002:a5d:4e01:0:b0:354:f1de:33eb with SMTP id ffacd0b85a97d-3552f4fd249mr5166115f8f.26.1716758618179;
+        Sun, 26 May 2024 14:23:38 -0700 (PDT)
 Received: from fedora.fritz.box (aftr-62-216-208-100.dynamic.mnet-online.de. [62.216.208.100])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-421089ccf32sm87534245e9.48.2024.05.26.14.21.36
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35579d7de1bsm7224197f8f.13.2024.05.26.14.23.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 May 2024 14:21:37 -0700 (PDT)
+        Sun, 26 May 2024 14:23:37 -0700 (PDT)
 From: Thorsten Blum <thorsten.blum@toblux.com>
-To: thorsten.blum@toblux.com
+To: bhe@redhat.com
 Cc: amir73il@gmail.com,
-	bhe@redhat.com,
 	clm@fb.com,
 	dhowells@redhat.com,
 	dsterba@suse.com,
@@ -69,13 +68,14 @@ Cc: amir73il@gmail.com,
 	linux-unionfs@vger.kernel.org,
 	miklos@szeredi.hu,
 	netfs@lists.linux.dev,
+	thorsten.blum@toblux.com,
 	vgoyal@redhat.com
-Subject: [RESEND PATCH 2/4] fscache: Remove duplicate included header
-Date: Sun, 26 May 2024 23:21:09 +0200
-Message-ID: <20240526212108.1462-2-thorsten.blum@toblux.com>
+Subject: [RESEND PATCH 4/4] crash: Remove duplicate included header
+Date: Sun, 26 May 2024 23:23:10 +0200
+Message-ID: <20240526212309.1586-2-thorsten.blum@toblux.com>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240502212631.110175-2-thorsten.blum@toblux.com>
-References: <20240502212631.110175-2-thorsten.blum@toblux.com>
+In-Reply-To: <ZjcvKd+n74MFCJtj@MiWiFi-R3L-srv>
+References: <ZjcvKd+n74MFCJtj@MiWiFi-R3L-srv>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -84,25 +84,26 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Remove duplicate included header file linux/uio.h
+Remove duplicate included header file linux/kexec.h
 
 Signed-off-by: Thorsten Blum <thorsten.blum@toblux.com>
+Acked-by: Baoquan He <bhe@redhat.com>
 ---
- fs/netfs/fscache_io.c | 1 -
+ kernel/crash_reserve.c | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/fs/netfs/fscache_io.c b/fs/netfs/fscache_io.c
-index 38637e5c9b57..b1722a82c03d 100644
---- a/fs/netfs/fscache_io.c
-+++ b/fs/netfs/fscache_io.c
-@@ -9,7 +9,6 @@
- #include <linux/uio.h>
- #include <linux/bvec.h>
- #include <linux/slab.h>
--#include <linux/uio.h>
- #include "internal.h"
+diff --git a/kernel/crash_reserve.c b/kernel/crash_reserve.c
+index 5b2722a93a48..d3b4cd12bdd1 100644
+--- a/kernel/crash_reserve.c
++++ b/kernel/crash_reserve.c
+@@ -13,7 +13,6 @@
+ #include <linux/memory.h>
+ #include <linux/cpuhotplug.h>
+ #include <linux/memblock.h>
+-#include <linux/kexec.h>
+ #include <linux/kmemleak.h>
  
- /**
+ #include <asm/page.h>
 -- 
 2.45.1
 
