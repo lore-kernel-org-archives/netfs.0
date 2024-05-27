@@ -1,109 +1,93 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2570013048F
-	for <netfs@lists.linux.dev>; Sun, 26 May 2024 21:23:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F7C249FF;
+	Mon, 27 May 2024 11:09:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716758621; cv=none; b=VVBEZxMAN6UfUiwj0ob2f2LFa13BrqKPFxTbLOUzTUAenW+614/XaqODCo8hbm7lFfCsJ6hCC29WnTWkD7SJ0ECwiSVvF9OB8x75ug/UeHMGR26e6f5WOkZVQ+1HkW+5qujBigb9hIhwa5BtjSK6z/tu5XOuyhmd89SnajmEQ+s=
+	t=1716808153; cv=none; b=gVlWuUNlmXceAMZsa7lJX5JRFZpecp7ucvAjogpKkb11MLIHAYb4aoRG35tEWq7RlhsGnjPb7TX955n6PXXbRwxSOi9Rn85B0EgKRXGId5yMuPk0zJjjlEnAF143+ZPDK1uctcq8eNqYUzLxZcryEoAucaayqPFPdiEl5d2V0BU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716758621; c=relaxed/simple;
-	bh=4br1+bsqarhpsUSUDMHnPY9ItAu5sQzF64WsQKB/4Bg=;
+	s=arc-20240116; t=1716808153; c=relaxed/simple;
+	bh=62hMWxUD6NFUz/J34q8tsRJOtZmuEttxuaWbk0zbTEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VAkMWAoYnt6ZqBFWb7eU7kEP4J1JXbZLCzkBdidGqYafAiFelhckk3t2ZFCVtX08UiwbrzPTjBmxoAq6JDC71QAJXyeZIIa+KoHHZwZfRG8WycO6YwgbmRzX7vo6VolcflEx2bqsqafsIWyGERBls5w7GPLzb4dd0z1nYyfek1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toblux.com; spf=none smtp.mailfrom=toblux.com; dkim=pass (2048-bit key) header.d=toblux-com.20230601.gappssmtp.com header.i=@toblux-com.20230601.gappssmtp.com header.b=K2gS9gr5; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toblux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=toblux.com
+	 MIME-Version:Content-Type; b=p7DTZJw7GtVaSI9fmCX8+AMInk9QPN6dzvcjl7PEj+l+XzW8/W6OybGYnL0YY3pg2sEHXu9tgSiJsL/wP0c1s2yrbIEbuju+A1cGqT79gg+50TppjlUJOle+rl0HK4K/iZgPMSkLIMG9FJQaiLt9o9qIbFRnwyrK+WwXWXj+DUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sJxRuRSy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toblux-com.20230601.gappssmtp.com header.i=@toblux-com.20230601.gappssmtp.com header.b="K2gS9gr5"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-354e22bc14bso3972008f8f.1
-        for <netfs@lists.linux.dev>; Sun, 26 May 2024 14:23:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toblux-com.20230601.gappssmtp.com; s=20230601; t=1716758618; x=1717363418; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Qbk0UNvpsQrSUqN6RzC4hENS9R3C9NfeLNOx5djjey0=;
-        b=K2gS9gr5KfHGL0utz061NSGkn7XJ5Lma5I7J43KnbQCTJfNuKTqEd/AWjt8yaQd+bt
-         YjT/UmjdchW3pLDUa5F6dHWlmLiabN1zk5+yRGvSg+DuHPfPpV2SkJdBrATzcfebqIac
-         09hQ70URlQRQp9WZ0eBtaZK1APfO2ZPAIV8NRSIV4ESvpPMQ03SkOosy4qQuZ7vp6QAq
-         jkE3trlYOzYZeLo6aD3LF22dbcsUrlWFqEC46sURv/+IgJuEHmSldhQFlbNSUYLzLZYB
-         z9g4pVeW47kGy2TbfechUCDxs/QfMrDSqxdrvUYvWCn4WrFyryiRsNUSY9jfCHSOQjSJ
-         vPaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716758618; x=1717363418;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Qbk0UNvpsQrSUqN6RzC4hENS9R3C9NfeLNOx5djjey0=;
-        b=LSKgts40vTqPb93wQ20voNyT66KuBmzpENIkJrc4DEglfcQkuavQVTsfbN1GqUl4NE
-         Ce9L/ClKfkh8fJurk/2tpI8D+1vPjuQbJ9A1xiMSjtdwWDbj/I9+4WOatYudsw7ck7cr
-         fgHzNdlclvueBr3hWQ0QV2vsW46C0kZfn+cGfDQ53f/2U6v5VrX6ESufW6kfTxaztGzF
-         +A4peinAvI/WttFkQ5LK28zv1/YSIVjpJdiOkxseBsVu8JEXElRuERxZBUkloLBxftP4
-         OFru4WRcIv8bX6uY8DEhkuZpgPXkLwnotaTK3LvALB5w86kq11g2AuvVeW06q2Twe9Bi
-         Xziw==
-X-Forwarded-Encrypted: i=1; AJvYcCVCuLXtlit0WJLC0IWskIQlwESAJwEI5xR1XUP7z5Q6NkuMDYw+g2uaEVNrDZxcludFi8rmkYwUOkxQ19TBNSRlbCGZ5L4=
-X-Gm-Message-State: AOJu0YwN46sUVZSNHUUA0APaXzrVbtvlrIcej9e+Je4YlpyUIb5WXHKl
-	YaM4benI4g7lgGLa2vgvbvJkM9NqnlPhw+nEZp6kKIqv1MbcAOO0AEJETO9I854=
-X-Google-Smtp-Source: AGHT+IFy5L/fF6HnmYmy15FzQ2I5Aj94AJhD6S8HOgJeCGnH2efGYlzLjxrfvdfR5wJ4GRUcUbR/8g==
-X-Received: by 2002:a5d:4e01:0:b0:354:f1de:33eb with SMTP id ffacd0b85a97d-3552f4fd249mr5166115f8f.26.1716758618179;
-        Sun, 26 May 2024 14:23:38 -0700 (PDT)
-Received: from fedora.fritz.box (aftr-62-216-208-100.dynamic.mnet-online.de. [62.216.208.100])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35579d7de1bsm7224197f8f.13.2024.05.26.14.23.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 May 2024 14:23:37 -0700 (PDT)
-From: Thorsten Blum <thorsten.blum@toblux.com>
-To: bhe@redhat.com
-Cc: amir73il@gmail.com,
-	clm@fb.com,
-	dhowells@redhat.com,
-	dsterba@suse.com,
-	dyoung@redhat.com,
-	jlayton@kernel.org,
-	josef@toxicpanda.com,
-	kexec@lists.infradead.org,
-	linux-btrfs@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sJxRuRSy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F31AC2BBFC;
+	Mon, 27 May 2024 11:09:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716808152;
+	bh=62hMWxUD6NFUz/J34q8tsRJOtZmuEttxuaWbk0zbTEE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=sJxRuRSyF8aZl6lcHv4GNNbUtVqSVlKp+Xe/+i+D6yW1/oO/ot6EalwOzSHtrCo4K
+	 s0dQbDVSkXR6WepDxxDij1Q54BKKBWWhdmNiSj8TTkMqt9MTvIiiPdh49TRPO6Pj86
+	 rWP0aK1OzS00I+zfo7KiYPoyReQVkRqVHKqOwaqlnSGP7f2HTBJ/5G1FScQj0Q9Dz8
+	 keqj6K/C1AuubkdWkfcykho2TfTj7Ukds7jbRtwZZjliN36IBWlvehAG7mXvXGjSMy
+	 UG9U+OMvUnqNU5ZqRlchB7sVZE4/zAiYA1s8HL5QllUGwa5ynmsu52/Nml3RMEB9vg
+	 dGhHN3oDTUPBA==
+From: Christian Brauner <brauner@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	syzbot+df038d463cca332e8414@syzkaller.appspotmail.com,
+	syzbot+d7c7a495a5e466c031b6@syzkaller.appspotmail.com,
+	syzbot+1527696d41a634cc1819@syzkaller.appspotmail.com,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Steve French <sfrench@samba.org>,
+	Hillf Danton <hdanton@sina.com>,
+	v9fs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	netfs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-unionfs@vger.kernel.org,
-	miklos@szeredi.hu,
-	netfs@lists.linux.dev,
-	thorsten.blum@toblux.com,
-	vgoyal@redhat.com
-Subject: [RESEND PATCH 4/4] crash: Remove duplicate included header
-Date: Sun, 26 May 2024 23:23:10 +0200
-Message-ID: <20240526212309.1586-2-thorsten.blum@toblux.com>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <ZjcvKd+n74MFCJtj@MiWiFi-R3L-srv>
-References: <ZjcvKd+n74MFCJtj@MiWiFi-R3L-srv>
+	Dominique Martinet <asmadeus@codewreck.org>
+Subject: Re: [PATCH v3] netfs, 9p: Fix race between umount and async request completion
+Date: Mon, 27 May 2024 13:09:00 +0200
+Message-ID: <20240527-losgefahren-albern-a9b1d8be3835@brauner>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <755891.1716560771@warthog.procyon.org.uk>
+References: <755891.1716560771@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1313; i=brauner@kernel.org; h=from:subject:message-id; bh=62hMWxUD6NFUz/J34q8tsRJOtZmuEttxuaWbk0zbTEE=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaSFZJ7zelnJM7U+5vs16+iDzU/eHak22+8zK2h3/Nxtx kt0hJJkO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACbiZ8/wP5lhXd2tnn2lDrHe S064NiWHCmp8PyXfyLxJ4KB6Y7f0U0aGtffmxsec3rSGNywtN+FVmNpSSVFb/R/TPYJj8uSzQl6 wAwA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-Remove duplicate included header file linux/kexec.h
+On Fri, 24 May 2024 15:26:11 +0100, David Howells wrote:
+> netfs, 9p: Fix race between umount and async request completion
+> 
+> There's a problem in 9p's interaction with netfslib whereby a crash occurs
+> because the 9p_fid structs get forcibly destroyed during client teardown
+> (without paying attention to their refcounts) before netfslib has finished
+> with them.  However, it's not a simple case of deferring the clunking that
+> p9_fid_put() does as that requires the p9_client record to still be
+> present.
+> 
+> [...]
 
-Signed-off-by: Thorsten Blum <thorsten.blum@toblux.com>
-Acked-by: Baoquan He <bhe@redhat.com>
----
- kernel/crash_reserve.c | 1 -
- 1 file changed, 1 deletion(-)
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-diff --git a/kernel/crash_reserve.c b/kernel/crash_reserve.c
-index 5b2722a93a48..d3b4cd12bdd1 100644
---- a/kernel/crash_reserve.c
-+++ b/kernel/crash_reserve.c
-@@ -13,7 +13,6 @@
- #include <linux/memory.h>
- #include <linux/cpuhotplug.h>
- #include <linux/memblock.h>
--#include <linux/kexec.h>
- #include <linux/kmemleak.h>
- 
- #include <asm/page.h>
--- 
-2.45.1
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[1/1] netfs, 9p: Fix race between umount and async request completion
+      https://git.kernel.org/vfs/vfs/c/e20fe12bfb0b
