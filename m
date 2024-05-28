@@ -1,44 +1,67 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2957C1F93E;
-	Mon, 27 May 2024 20:17:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5496F16FF29
+	for <netfs@lists.linux.dev>; Tue, 28 May 2024 14:45:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716841063; cv=none; b=eYjUVfhs5ykllxXOCt3cIcC6Dt0Ty7qa7ATvpgJSWBB0FpZOwO0D95I8LTcYYE0NS1fuUEZi0qfXEmrT6pnS2NaBqHhXdGRZwWRFeU6NvgrP2eRXKdgXDM1eG1O8nZhjZd4x8le/bfhu3Zg+HxIG2CSZ09icGO8DljLgTM8qJjU=
+	t=1716907502; cv=none; b=Cua4YXbxXHDBjmlYL0LdCMSfH0go6tONXDmpklvWdFzYWw97eB0CTWSElSVkG7vq9QCSj8645hFXY5qYc+BXeV+Nt2nbfRE95yYhSlrC2M2UBMyK+YrX+mvfMxKhrz5jby2klXOn38cmGNkHzCgOZKt70Ark5rT/DBqjOOeyFPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716841063; c=relaxed/simple;
-	bh=/9kUq5EMxCqTjmTkOzTNl6oIfCxnjJBJ5Xsg8p3q1c8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SMI8TPwAYajJzdquhS21T2vDF4+IWnai00cDh5ejX9Gk6Oz2QB13Usb1f+vLNjO/+kVE5AtGKMr/lIvPTx5qGriGYGkdsdrAqelJgAOfKsLvFy0Xo57SY4TWNXVRByvFT0Vgf5Sd/ykrcbfr2RgUXR5Ejci3YNLLrE5kutKatgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=qS6AX82e; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1716907502; c=relaxed/simple;
+	bh=u5DGMExmMELV1xy8yLiiNHEKToOQqClZz2C5kQWXUNA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cYWPhexPfYzBW1eM3NHZnjD/9vCkb/1xIzCnG9EhpeNAMkS71n2bdOQyAXY0Pcuwn38wN2rGp0D+0Esoc1+/kNzQnRgYJDN7CrawGVJ5ZunhfxMgzzUo4GBmfkDfwKYWBy16Tz4hauOh8K9lifnqrcNQIdL5P/B/oz/0HBQeWE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=XGlqYIti; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="qS6AX82e"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=WglzafCQ32Oh9fRpxZ2M7keEtteiFvz8W328NU+RXvY=; b=qS6AX82e+UVA9l3bloIlXyEHh3
-	HefYPtGajiArHrlzGcjEOms53whTl0ubR49KAkcNr3rU80m4Y2kfbc+4wTvfBdZozAubRX7/b9KHx
-	V5FJb0BKwCqh95iv78IE+24fmLdimFHp+TT1ep42SZVeFO50JpW4j2QXNHksueJ/zYn4dVKDmqha6
-	4f/5y6DS4Of3JbGljIuqTFNjKi/IbbOZCo4oA9PCvBZD+rWUB+rj3Isytmavx2p77rZOeUpqzAsib
-	xDUmHDrTibhxz7Oe9gIaZPGrcr3cxIzB6AsE28ZXmwIaH7pDbUrw+uTY4BWLEBjCvl52+Ni76wNKa
-	1MTfXodA==;
-Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sBgmn-00000007xrG-1sBi;
-	Mon, 27 May 2024 20:17:37 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: David Howells <dhowells@redhat.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jeff Layton <jlayton@kernel.org>,
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="XGlqYIti"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a6303e13ffeso110307166b.3
+        for <netfs@lists.linux.dev>; Tue, 28 May 2024 07:45:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1716907499; x=1717512299; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TG5W+RrKzluwPnH1A1A5fDJr2fjufgKg3mZALw2M2DI=;
+        b=XGlqYItiu2+HiXuKSOMjOD2PmnhIc0L4Ieh4A2Pysn3IHwgIbUnT9zYxjp8avkvsRx
+         abNZBLvu6EKM0E6RbSUgawIFkBAN5jFysDPLA51uaHZ/c0I8nLFpEORu55jrHZ5nZdE2
+         ApbPNV0hrPnS5M4Xn+4CpXVNbbAJo84WGiGlUHWSHmNoa52ffA8NlyNC0B0knxPj38Wx
+         wqWaCIB8W4O0WOLCNQj6SlBxEfBuhEZT5Xa8dxzp6q+JpKoXZHbPJyVIINdg97nSN932
+         ZgOOEMHkkzV8Dzmzh3wucmXM1dFdVqDlGLuOZXOWGOANRkZ1JtHGgjiG5OxQbs6Tcunl
+         ZOAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716907499; x=1717512299;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TG5W+RrKzluwPnH1A1A5fDJr2fjufgKg3mZALw2M2DI=;
+        b=Y4B5u+g5fth5GmgRDDIHMbRxG4Kqvyrm0VfUYmoz7/OMP7m8Z4DfH1h5k+HHjh2lDn
+         Ba5onFuvja5DsNrzu3tk8EmEGCW7ElYgVjmYJlcr8MnabvfaRhqLLIWoKWhtOEpYKV5p
+         Bq7lSBYVXOC88EMB3zKZqa5Ufs9WFtABoI2t75jCNxIlGLh80mQYuirDP9SHM5GJG8Vw
+         x1s6VmC8dYqwjdOEXfql1eYYGq21t1iG/s61ZLzBqjIAM1Q6fE68cEKB9ku49y3XM96v
+         KYUuFBKT4s+L+HEXsd+XMoD8oKsNM5cjHaZ1+w0MC18unwKwKlzLVWG126vpPmPiQtOw
+         rcMA==
+X-Forwarded-Encrypted: i=1; AJvYcCVJKPclRUOCBMtiE+H84Kb52Q6A1PQsZuXuGVQuZxzRn7JURLUH4DfMRxKgUcd94NNfmUb1wVIOKKxhsBgBzyK3jSoERDY=
+X-Gm-Message-State: AOJu0Yw96JWKY7pdFLkLyuy3Tf+czd6O/flizNAyRg5SMU+voKVkh8Xd
+	KJQwvtqA7v7WIU3280ZW/bO0fYoS5x30AjdULQXUaUtHr+ndzOYqnNo6yz025jo=
+X-Google-Smtp-Source: AGHT+IGcfIH5RPh4OnyVqTq4ATc6SBA5sJNh2KrF2k5/BA6AVB02Dz6lBLYJ9g6apMqOwqcdLBUyzg==
+X-Received: by 2002:a17:906:4453:b0:a59:9b75:b84 with SMTP id a640c23a62f3a-a62646cd4bfmr828803266b.35.1716907498607;
+        Tue, 28 May 2024 07:44:58 -0700 (PDT)
+Received: from raven.blarg.de (p200300dc6f06e100023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f06:e100:230:64ff:fe74:809])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a626c817bffsm623787766b.32.2024.05.28.07.44.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 May 2024 07:44:58 -0700 (PDT)
+From: Max Kellermann <max.kellermann@ionos.com>
+To: dhowells@redhat.com,
+	jlayton@kernel.org,
 	netfs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
-	Xu Yang <xu.yang_2@nxp.com>
-Subject: [PATCH] netfs: Fault in smaller chunks for non-large folio mappings
-Date: Mon, 27 May 2024 21:17:32 +0100
-Message-ID: <20240527201735.1898381-1-willy@infradead.org>
-X-Mailer: git-send-email 2.44.0
+	linux-kernel@vger.kernel.org
+Cc: Max Kellermann <max.kellermann@ionos.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] fs/netfs/fscache_cookie: add missing "n_accesses" check
+Date: Tue, 28 May 2024 16:44:45 +0200
+Message-Id: <20240528144445.3268304-1-max.kellermann@ionos.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -47,29 +70,105 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-As in commit 4e527d5841e2 ("iomap: fault in smaller chunks for non-large
-folio mappings"), we can see a performance loss for filesystems
-which have not yet been converted to large folios.
+This fixes a NULL pointer dereference bug due to a data race which
+looks like this:
 
-Fixes: c38f4e96e605 ("netfs: Provide func to copy data to pagecache for buffered write")
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+  BUG: kernel NULL pointer dereference, address: 0000000000000008
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 0 P4D 0
+  Oops: 0000 [#1] SMP PTI
+  CPU: 33 PID: 16573 Comm: kworker/u97:799 Not tainted 6.8.7-cm4all1-hp+ #43
+  Hardware name: HP ProLiant DL380 Gen9/ProLiant DL380 Gen9, BIOS P89 10/17/2018
+  Workqueue: events_unbound netfs_rreq_write_to_cache_work
+  RIP: 0010:cachefiles_prepare_write+0x30/0xa0
+  Code: 57 41 56 45 89 ce 41 55 49 89 cd 41 54 49 89 d4 55 53 48 89 fb 48 83 ec 08 48 8b 47 08 48 83 7f 10 00 48 89 34 24 48 8b 68 20 <48> 8b 45 08 4c 8b 38 74 45 49 8b 7f 50 e8 4e a9 b0 ff 48 8b 73 10
+  RSP: 0018:ffffb4e78113bde0 EFLAGS: 00010286
+  RAX: ffff976126be6d10 RBX: ffff97615cdb8438 RCX: 0000000000020000
+  RDX: ffff97605e6c4c68 RSI: ffff97605e6c4c60 RDI: ffff97615cdb8438
+  RBP: 0000000000000000 R08: 0000000000278333 R09: 0000000000000001
+  R10: ffff97605e6c4600 R11: 0000000000000001 R12: ffff97605e6c4c68
+  R13: 0000000000020000 R14: 0000000000000001 R15: ffff976064fe2c00
+  FS:  0000000000000000(0000) GS:ffff9776dfd40000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 0000000000000008 CR3: 000000005942c002 CR4: 00000000001706f0
+  Call Trace:
+   <TASK>
+   ? __die+0x1f/0x70
+   ? page_fault_oops+0x15d/0x440
+   ? search_module_extables+0xe/0x40
+   ? fixup_exception+0x22/0x2f0
+   ? exc_page_fault+0x5f/0x100
+   ? asm_exc_page_fault+0x22/0x30
+   ? cachefiles_prepare_write+0x30/0xa0
+   netfs_rreq_write_to_cache_work+0x135/0x2e0
+   process_one_work+0x137/0x2c0
+   worker_thread+0x2e9/0x400
+   ? __pfx_worker_thread+0x10/0x10
+   kthread+0xcc/0x100
+   ? __pfx_kthread+0x10/0x10
+   ret_from_fork+0x30/0x50
+   ? __pfx_kthread+0x10/0x10
+   ret_from_fork_asm+0x1b/0x30
+   </TASK>
+  Modules linked in:
+  CR2: 0000000000000008
+  ---[ end trace 0000000000000000 ]---
+
+This happened because fscache_cookie_state_machine() was slow and was
+still running while another process invoked fscache_unuse_cookie();
+this led to a fscache_cookie_lru_do_one() call, setting the
+FSCACHE_COOKIE_DO_LRU_DISCARD flag, which was picked up by
+fscache_cookie_state_machine(), withdrawing the cookie via
+cachefiles_withdraw_cookie(), clearing cookie->cache_priv.
+
+At the same time, yet another process invoked
+cachefiles_prepare_write(), which found a NULL pointer in this code
+line:
+
+  struct cachefiles_object *object = cachefiles_cres_object(cres);
+
+The next line crashes, obviously:
+
+  struct cachefiles_cache *cache = object->volume->cache;
+
+During cachefiles_prepare_write(), the "n_accesses" counter is
+non-zero (via fscache_begin_operation()).  The cookie must not be
+withdrawn until it drops to zero.
+
+The counter is checked by fscache_cookie_state_machine() before
+switching to FSCACHE_COOKIE_STATE_RELINQUISHING and
+FSCACHE_COOKIE_STATE_WITHDRAWING (in "case
+FSCACHE_COOKIE_STATE_FAILED"), but not for
+FSCACHE_COOKIES_TATE_LRU_DISCARDING ("case
+FSCACHE_COOKIE_STATE_ACTIVE").
+
+This patch adds the missing check.  With a non-zero access counter,
+the function returns and the next fscache_end_cookie_access() call
+will queue another fscache_cookie_state_machine() call to handle the
+still-pending FSCACHE_COOKIE_DO_LRU_DISCARD.
+
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 ---
- fs/netfs/buffered_write.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/netfs/fscache_cookie.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
-index 07bc1fd43530..3288561e98dd 100644
---- a/fs/netfs/buffered_write.c
-+++ b/fs/netfs/buffered_write.c
-@@ -184,7 +184,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 	unsigned int bdp_flags = (iocb->ki_flags & IOCB_NOWAIT) ? BDP_ASYNC : 0;
- 	ssize_t written = 0, ret, ret2;
- 	loff_t i_size, pos = iocb->ki_pos, from, to;
--	size_t max_chunk = PAGE_SIZE << MAX_PAGECACHE_ORDER;
-+	size_t max_chunk = mapping_max_folio_size(mapping);
- 	bool maybe_trouble = false;
- 
- 	if (unlikely(test_bit(NETFS_ICTX_WRITETHROUGH, &ctx->flags) ||
+diff --git a/fs/netfs/fscache_cookie.c b/fs/netfs/fscache_cookie.c
+index bce2492186d0..d4d4b3a8b106 100644
+--- a/fs/netfs/fscache_cookie.c
++++ b/fs/netfs/fscache_cookie.c
+@@ -741,6 +741,10 @@ static void fscache_cookie_state_machine(struct fscache_cookie *cookie)
+ 			spin_lock(&cookie->lock);
+ 		}
+ 		if (test_bit(FSCACHE_COOKIE_DO_LRU_DISCARD, &cookie->flags)) {
++			if (atomic_read(&cookie->n_accesses) != 0)
++				/* still being accessed: postpone it */
++				break;
++
+ 			__fscache_set_cookie_state(cookie,
+ 						   FSCACHE_COOKIE_STATE_LRU_DISCARDING);
+ 			wake = true;
 -- 
-2.43.0
+2.39.2
 
