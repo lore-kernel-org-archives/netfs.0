@@ -1,174 +1,117 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5496F16FF29
-	for <netfs@lists.linux.dev>; Tue, 28 May 2024 14:45:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D76B16937A;
+	Wed, 29 May 2024 11:07:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716907502; cv=none; b=Cua4YXbxXHDBjmlYL0LdCMSfH0go6tONXDmpklvWdFzYWw97eB0CTWSElSVkG7vq9QCSj8645hFXY5qYc+BXeV+Nt2nbfRE95yYhSlrC2M2UBMyK+YrX+mvfMxKhrz5jby2klXOn38cmGNkHzCgOZKt70Ark5rT/DBqjOOeyFPs=
+	t=1716980844; cv=none; b=W1o3RwSE9r0FEppADJ6qrFJpdNey7wXP2NoMZT6etQG08UOmDumSRQuF6upbH09zM1KbSG+8OUn6g+n/J9e4SVOSvbNx+aBoKEi7sNcHwZWpomo1pjwxBIW/NGuWBiSL6JXQdjlx804eSBc/+hKEwBBQuJqaWwrwnPtuJNHvR2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716907502; c=relaxed/simple;
-	bh=u5DGMExmMELV1xy8yLiiNHEKToOQqClZz2C5kQWXUNA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cYWPhexPfYzBW1eM3NHZnjD/9vCkb/1xIzCnG9EhpeNAMkS71n2bdOQyAXY0Pcuwn38wN2rGp0D+0Esoc1+/kNzQnRgYJDN7CrawGVJ5ZunhfxMgzzUo4GBmfkDfwKYWBy16Tz4hauOh8K9lifnqrcNQIdL5P/B/oz/0HBQeWE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=XGlqYIti; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+	s=arc-20240116; t=1716980844; c=relaxed/simple;
+	bh=Zz5dcUJAjpstTHPJIb+etUveMtW/6Scwi5EQeOUJ7ds=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lLkdl0uW71n9hhR6g2YwzI/3gwMkk3hwZ4aSsKGUp9S6fu0TmOiFfuHFCcUa4CyJiUWAEG1HLxKIiwVTrM0ey/orHGYang+l1TdpRxxgXtQYeP5rJE9Tvv8T2b4SPnKiIz6Qakj2lJzA9oPjSFu5hq8Xs5fIbxnwB8rlo1A/TAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jXGyI0ee; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="XGlqYIti"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a6303e13ffeso110307166b.3
-        for <netfs@lists.linux.dev>; Tue, 28 May 2024 07:45:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1716907499; x=1717512299; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=TG5W+RrKzluwPnH1A1A5fDJr2fjufgKg3mZALw2M2DI=;
-        b=XGlqYItiu2+HiXuKSOMjOD2PmnhIc0L4Ieh4A2Pysn3IHwgIbUnT9zYxjp8avkvsRx
-         abNZBLvu6EKM0E6RbSUgawIFkBAN5jFysDPLA51uaHZ/c0I8nLFpEORu55jrHZ5nZdE2
-         ApbPNV0hrPnS5M4Xn+4CpXVNbbAJo84WGiGlUHWSHmNoa52ffA8NlyNC0B0knxPj38Wx
-         wqWaCIB8W4O0WOLCNQj6SlBxEfBuhEZT5Xa8dxzp6q+JpKoXZHbPJyVIINdg97nSN932
-         ZgOOEMHkkzV8Dzmzh3wucmXM1dFdVqDlGLuOZXOWGOANRkZ1JtHGgjiG5OxQbs6Tcunl
-         ZOAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716907499; x=1717512299;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TG5W+RrKzluwPnH1A1A5fDJr2fjufgKg3mZALw2M2DI=;
-        b=Y4B5u+g5fth5GmgRDDIHMbRxG4Kqvyrm0VfUYmoz7/OMP7m8Z4DfH1h5k+HHjh2lDn
-         Ba5onFuvja5DsNrzu3tk8EmEGCW7ElYgVjmYJlcr8MnabvfaRhqLLIWoKWhtOEpYKV5p
-         Bq7lSBYVXOC88EMB3zKZqa5Ufs9WFtABoI2t75jCNxIlGLh80mQYuirDP9SHM5GJG8Vw
-         x1s6VmC8dYqwjdOEXfql1eYYGq21t1iG/s61ZLzBqjIAM1Q6fE68cEKB9ku49y3XM96v
-         KYUuFBKT4s+L+HEXsd+XMoD8oKsNM5cjHaZ1+w0MC18unwKwKlzLVWG126vpPmPiQtOw
-         rcMA==
-X-Forwarded-Encrypted: i=1; AJvYcCVJKPclRUOCBMtiE+H84Kb52Q6A1PQsZuXuGVQuZxzRn7JURLUH4DfMRxKgUcd94NNfmUb1wVIOKKxhsBgBzyK3jSoERDY=
-X-Gm-Message-State: AOJu0Yw96JWKY7pdFLkLyuy3Tf+czd6O/flizNAyRg5SMU+voKVkh8Xd
-	KJQwvtqA7v7WIU3280ZW/bO0fYoS5x30AjdULQXUaUtHr+ndzOYqnNo6yz025jo=
-X-Google-Smtp-Source: AGHT+IGcfIH5RPh4OnyVqTq4ATc6SBA5sJNh2KrF2k5/BA6AVB02Dz6lBLYJ9g6apMqOwqcdLBUyzg==
-X-Received: by 2002:a17:906:4453:b0:a59:9b75:b84 with SMTP id a640c23a62f3a-a62646cd4bfmr828803266b.35.1716907498607;
-        Tue, 28 May 2024 07:44:58 -0700 (PDT)
-Received: from raven.blarg.de (p200300dc6f06e100023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f06:e100:230:64ff:fe74:809])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a626c817bffsm623787766b.32.2024.05.28.07.44.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 May 2024 07:44:58 -0700 (PDT)
-From: Max Kellermann <max.kellermann@ionos.com>
-To: dhowells@redhat.com,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jXGyI0ee"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A6A5C2BD10;
+	Wed, 29 May 2024 11:07:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716980844;
+	bh=Zz5dcUJAjpstTHPJIb+etUveMtW/6Scwi5EQeOUJ7ds=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=jXGyI0eek+m4h8vLzCcIeqL3BResayzbn/9eq4eQdmX8aGvdadTDSyYhHbcWZ7SMc
+	 oCHQG0OQdVbEsJSt3B2AbSXznOQSRzoJwEN5Cox/MdZ7LUZKIyLN+E5lH0+PfCsDRN
+	 TGZF/nVM1sP/Icm7ACn92c6W04cxE/awFZkGYgQQSmtOOVLCVu9Iv12oMrqxF1myES
+	 esvfCOgGZhdP02mrWdKyYm4BDL9W/A90oxT6Sb4FeOwgsoS00ldMD3kE2DTm4w+oFq
+	 Mox9gT62Xm9LJZdYY3YHlfGoF/FY4TJfAmVS6NUnNN+yAmO3a8yUWCXmg2lkxK737+
+	 ENQfbJjqd1Ecw==
+From: Christian Brauner <brauner@kernel.org>
+To: netfs@lists.linux.dev,
+	dhowells@redhat.com,
 	jlayton@kernel.org,
-	netfs@lists.linux.dev,
+	libaokun@huaweicloud.com
+Cc: Christian Brauner <brauner@kernel.org>,
+	jefflexu@linux.alibaba.com,
+	zhujia.zj@bytedance.com,
+	linux-erofs@lists.ozlabs.org,
 	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Max Kellermann <max.kellermann@ionos.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] fs/netfs/fscache_cookie: add missing "n_accesses" check
-Date: Tue, 28 May 2024 16:44:45 +0200
-Message-Id: <20240528144445.3268304-1-max.kellermann@ionos.com>
-X-Mailer: git-send-email 2.39.2
+	linux-kernel@vger.kernel.org,
+	yangerkun@huawei.com,
+	houtao1@huawei.com,
+	yukuai3@huawei.com,
+	wozizhi@huawei.com,
+	Baokun Li <libaokun1@huawei.com>,
+	Gao Xiang <xiang@kernel.org>
+Subject: Re: [PATCH v3 00/12] cachefiles: some bugfixes and cleanups for ondemand requests
+Date: Wed, 29 May 2024 13:07:07 +0200
+Message-ID: <20240529-lehrling-verordnen-e5040aa65017@brauner>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240522114308.2402121-1-libaokun@huaweicloud.com>
+References: <20240522114308.2402121-1-libaokun@huaweicloud.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2670; i=brauner@kernel.org; h=from:subject:message-id; bh=Zz5dcUJAjpstTHPJIb+etUveMtW/6Scwi5EQeOUJ7ds=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaSF80RPn/nywh92lrKCzP0rxB1+/17elKrM5+26rmBZ2 JZzUuuNOkpZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACZy34zhr8yErrj9TWUn1tkq PQysO1zQo8TAtoQhRa5EiEvt1a/+cIa/0uzH707ymRFnFLm2c8ElhUNcmVJXtrkVOp/hF5hcbfK ECwA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-This fixes a NULL pointer dereference bug due to a data race which
-looks like this:
+On Wed, 22 May 2024 19:42:56 +0800, libaokun@huaweicloud.com wrote:
+> From: Baokun Li <libaokun1@huawei.com>
+> 
+> Hi all!
+> 
+> This is the third version of this patch series. The new version has no
+> functional changes compared to the previous one, so I've kept the previous
+> Acked-by and Reviewed-by, so please let me know if you have any objections.
+> 
+> [...]
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000008
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 0 P4D 0
-  Oops: 0000 [#1] SMP PTI
-  CPU: 33 PID: 16573 Comm: kworker/u97:799 Not tainted 6.8.7-cm4all1-hp+ #43
-  Hardware name: HP ProLiant DL380 Gen9/ProLiant DL380 Gen9, BIOS P89 10/17/2018
-  Workqueue: events_unbound netfs_rreq_write_to_cache_work
-  RIP: 0010:cachefiles_prepare_write+0x30/0xa0
-  Code: 57 41 56 45 89 ce 41 55 49 89 cd 41 54 49 89 d4 55 53 48 89 fb 48 83 ec 08 48 8b 47 08 48 83 7f 10 00 48 89 34 24 48 8b 68 20 <48> 8b 45 08 4c 8b 38 74 45 49 8b 7f 50 e8 4e a9 b0 ff 48 8b 73 10
-  RSP: 0018:ffffb4e78113bde0 EFLAGS: 00010286
-  RAX: ffff976126be6d10 RBX: ffff97615cdb8438 RCX: 0000000000020000
-  RDX: ffff97605e6c4c68 RSI: ffff97605e6c4c60 RDI: ffff97615cdb8438
-  RBP: 0000000000000000 R08: 0000000000278333 R09: 0000000000000001
-  R10: ffff97605e6c4600 R11: 0000000000000001 R12: ffff97605e6c4c68
-  R13: 0000000000020000 R14: 0000000000000001 R15: ffff976064fe2c00
-  FS:  0000000000000000(0000) GS:ffff9776dfd40000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 0000000000000008 CR3: 000000005942c002 CR4: 00000000001706f0
-  Call Trace:
-   <TASK>
-   ? __die+0x1f/0x70
-   ? page_fault_oops+0x15d/0x440
-   ? search_module_extables+0xe/0x40
-   ? fixup_exception+0x22/0x2f0
-   ? exc_page_fault+0x5f/0x100
-   ? asm_exc_page_fault+0x22/0x30
-   ? cachefiles_prepare_write+0x30/0xa0
-   netfs_rreq_write_to_cache_work+0x135/0x2e0
-   process_one_work+0x137/0x2c0
-   worker_thread+0x2e9/0x400
-   ? __pfx_worker_thread+0x10/0x10
-   kthread+0xcc/0x100
-   ? __pfx_kthread+0x10/0x10
-   ret_from_fork+0x30/0x50
-   ? __pfx_kthread+0x10/0x10
-   ret_from_fork_asm+0x1b/0x30
-   </TASK>
-  Modules linked in:
-  CR2: 0000000000000008
-  ---[ end trace 0000000000000000 ]---
+So I've taken that as a fixes series which should probably make it upstream
+rather sooner than later. Correct?
 
-This happened because fscache_cookie_state_machine() was slow and was
-still running while another process invoked fscache_unuse_cookie();
-this led to a fscache_cookie_lru_do_one() call, setting the
-FSCACHE_COOKIE_DO_LRU_DISCARD flag, which was picked up by
-fscache_cookie_state_machine(), withdrawing the cookie via
-cachefiles_withdraw_cookie(), clearing cookie->cache_priv.
-
-At the same time, yet another process invoked
-cachefiles_prepare_write(), which found a NULL pointer in this code
-line:
-
-  struct cachefiles_object *object = cachefiles_cres_object(cres);
-
-The next line crashes, obviously:
-
-  struct cachefiles_cache *cache = object->volume->cache;
-
-During cachefiles_prepare_write(), the "n_accesses" counter is
-non-zero (via fscache_begin_operation()).  The cookie must not be
-withdrawn until it drops to zero.
-
-The counter is checked by fscache_cookie_state_machine() before
-switching to FSCACHE_COOKIE_STATE_RELINQUISHING and
-FSCACHE_COOKIE_STATE_WITHDRAWING (in "case
-FSCACHE_COOKIE_STATE_FAILED"), but not for
-FSCACHE_COOKIES_TATE_LRU_DISCARDING ("case
-FSCACHE_COOKIE_STATE_ACTIVE").
-
-This patch adds the missing check.  With a non-zero access counter,
-the function returns and the next fscache_end_cookie_access() call
-will queue another fscache_cookie_state_machine() call to handle the
-still-pending FSCACHE_COOKIE_DO_LRU_DISCARD.
-
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 ---
- fs/netfs/fscache_cookie.c | 4 ++++
- 1 file changed, 4 insertions(+)
 
-diff --git a/fs/netfs/fscache_cookie.c b/fs/netfs/fscache_cookie.c
-index bce2492186d0..d4d4b3a8b106 100644
---- a/fs/netfs/fscache_cookie.c
-+++ b/fs/netfs/fscache_cookie.c
-@@ -741,6 +741,10 @@ static void fscache_cookie_state_machine(struct fscache_cookie *cookie)
- 			spin_lock(&cookie->lock);
- 		}
- 		if (test_bit(FSCACHE_COOKIE_DO_LRU_DISCARD, &cookie->flags)) {
-+			if (atomic_read(&cookie->n_accesses) != 0)
-+				/* still being accessed: postpone it */
-+				break;
-+
- 			__fscache_set_cookie_state(cookie,
- 						   FSCACHE_COOKIE_STATE_LRU_DISCARDING);
- 			wake = true;
--- 
-2.39.2
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
+
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[01/12] cachefiles: add output string to cachefiles_obj_[get|put]_ondemand_fd
+        https://git.kernel.org/vfs/vfs/c/cc5ac966f261
+[02/12] cachefiles: remove requests from xarray during flushing requests
+        https://git.kernel.org/vfs/vfs/c/0fc75c5940fa
+[03/12] cachefiles: fix slab-use-after-free in cachefiles_ondemand_get_fd()
+        https://git.kernel.org/vfs/vfs/c/de3e26f9e5b7
+[04/12] cachefiles: fix slab-use-after-free in cachefiles_ondemand_daemon_read()
+        https://git.kernel.org/vfs/vfs/c/da4a82741606
+[05/12] cachefiles: remove err_put_fd label in cachefiles_ondemand_daemon_read()
+        https://git.kernel.org/vfs/vfs/c/3e6d704f02aa
+[06/12] cachefiles: add consistency check for copen/cread
+        https://git.kernel.org/vfs/vfs/c/a26dc49df37e
+[07/12] cachefiles: add spin_lock for cachefiles_ondemand_info
+        https://git.kernel.org/vfs/vfs/c/0a790040838c
+[08/12] cachefiles: never get a new anonymous fd if ondemand_id is valid
+        https://git.kernel.org/vfs/vfs/c/4988e35e95fc
+[09/12] cachefiles: defer exposing anon_fd until after copy_to_user() succeeds
+        https://git.kernel.org/vfs/vfs/c/4b4391e77a6b
+[10/12] cachefiles: Set object to close if ondemand_id < 0 in copen
+        https://git.kernel.org/vfs/vfs/c/4f8703fb3482
+[11/12] cachefiles: flush all requests after setting CACHEFILES_DEAD
+        https://git.kernel.org/vfs/vfs/c/85e833cd7243
+[12/12] cachefiles: make on-demand read killable
+        https://git.kernel.org/vfs/vfs/c/bc9dde615546
