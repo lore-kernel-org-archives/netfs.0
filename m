@@ -1,82 +1,79 @@
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF1EB374C3
-	for <netfs@lists.linux.dev>; Mon,  3 Jun 2024 06:23:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3A412BF3A;
+	Mon,  3 Jun 2024 13:39:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717395842; cv=none; b=Amor8vjTkl8OvHGnWkYeravQFa+yFHSLja3JqFB51tN31hOPMv7WNoojDA0e8YdeG9Wn8+xQFOdGoeHvxxsikH2T6iz2xMYxmwZwISzYtqxlnjGXccr4X5NQmMPO3hIx4eI6LzDpKeuUIT2zP5m6jcoBYOQtkccaaooozxvXNqs=
+	t=1717421997; cv=none; b=GkKVbHyVROEyfWeyqWnKv1a9yIlyvbZBe+QAnBNC0xU0nVjXTovl8KlxYEztexniALMptdZFz27+Jwz3RR9HtD5IvDJrwfF/+/bVFGzM53pB/8zdmpNPWV/o8dKpiiqCQhYfuJMM2b/TXdYkCqjD0TOt9dpSwhzf6/YdwXiBPAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717395842; c=relaxed/simple;
-	bh=lLu8LKo7XxtUrSy83Xf34urTJfq4u9txHi/JQrK1T6s=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=GBiniVpSHiJt4bUXVfrQ/x0ZylIb4DKQpkeb+PCFTPBk4is6BjjBTuxY9bXplZbUgZbSXR2737S4RNzbZ1+d9DBZYoNjevVTdx2ZgqTHwxgbPMHUTNeNd0bO5ZOgOM5CFqUXk1UyKyzKbJYeFgl0L5frpxIW61GyvilGe6khpJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Y/abDZqS; arc=none smtp.client-ip=115.124.30.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1717421997; c=relaxed/simple;
+	bh=T7Y/+gtUnckL0y2wD4ut574bzZtI0DADyHMyFC770JM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EPyg3Q0UQHl1dTspZZXsDcx1UfTcuJ2R4L3tsbn393G9z9UItX88tBPzsZGO+RPbIlbigUhySs7mrLgDmQM9Q16BLakqMgXR+s+vX1ceuuCevd4fLmbggkZ7HIyCG8AE4JoyiJ8b9CPyhAPRsi6hsj3wV0WQwvF/HqBleygKuzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L6tmNkv3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Y/abDZqS"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1717395831; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=RJvBTmOHwBqSadSu7zhGvazryslaykXfzim0ANksWbc=;
-	b=Y/abDZqSdB4+FDyOeFbGpC0v5rqZkT/P8Lalk3pQPVxMVY8AWWfMxcsDhNqCCSHv2yPYncSag7kIAy8Hkvk+13UrCEZky+LD2J+aTWaeWzhPmjPSvaeQkS3BoFbxK7yt0VzSc1Ey36jDYqoPQTefYL8QhLzNJKGXD5S4gn/z6dw=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R821e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037067111;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0W7j3vbx_1717395826;
-Received: from x31i01179.sqa.na131.tbsite.net(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0W7j3vbx_1717395826)
-          by smtp.aliyun-inc.com;
-          Mon, 03 Jun 2024 14:23:50 +0800
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
-To: Christian Brauner <brauner@kernel.org>,
-	linux-fsdevel@vger.kernel.org,
-	Al Viro <viro@zeniv.linux.org.uk>
-Cc: David Howells <dhowells@redhat.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L6tmNkv3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4092BC4AF07;
+	Mon,  3 Jun 2024 13:39:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717421996;
+	bh=T7Y/+gtUnckL0y2wD4ut574bzZtI0DADyHMyFC770JM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=L6tmNkv31YF6s79iv8Zz7iJ+yQ0aquj14pocCJIQype5m8BI2Hvy+8ZbNmHZa6ptH
+	 aOHJA+lNgJf+bKu7TSknDK+vYK5C0ES59PSye4p324Fg82k1LtIOnwTVYRXc8bAU5Y
+	 LaeuWoWeXcGFmVuVvb4/Q1c08l2oCAGiiXUvA9elzqFd6g16EZsQhSFNdCQrTGbZAh
+	 AaJEzkogKxJMTh7g+emjqxHEzE9cRJ1/8utSF/e2ZaNJVJnsASYIKQgAuPtrMZQx3M
+	 XANAjBvGhKcCmmdIpbpbhDO+scS82wbqzggVN+FG5sXhuulR56yMyrIwqXOCkB7ry3
+	 sajA/WM612v3A==
+From: Christian Brauner <brauner@kernel.org>
+To: Gao Xiang <xiang@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>,
+	David Howells <dhowells@redhat.com>,
 	netfs@lists.linux.dev,
 	Jeffle Xu <jefflexu@linux.alibaba.com>,
 	Baokun Li <libaokun1@huawei.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>
-Subject: [PATCH] cachefiles: remove unneeded include of <linux/fdtable.h>
-Date: Mon,  3 Jun 2024 14:23:44 +0800
-Message-Id: <20240603062344.818290-1-hsiangkao@linux.alibaba.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20240603034055.GI1629371@ZenIV>
-References: <20240603034055.GI1629371@ZenIV>
+	linux-fsdevel@vger.kernel.org,
+	Al Viro <viro@zeniv.linux.org.uk>
+Subject: Re: (subset) [PATCH] cachefiles: remove unneeded include of <linux/fdtable.h>
+Date: Mon,  3 Jun 2024 15:39:40 +0200
+Message-ID: <20240603-besen-orbit-0a0aef505617@brauner>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240603062344.818290-1-hsiangkao@linux.alibaba.com>
+References: <20240603034055.GI1629371@ZenIV> <20240603062344.818290-1-hsiangkao@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1007; i=brauner@kernel.org; h=from:subject:message-id; bh=T7Y/+gtUnckL0y2wD4ut574bzZtI0DADyHMyFC770JM=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaTFHl8SfnhFUfwR04UagsVlnEsYsj5MfFXEaf3P71Pmx kkSViwGHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABM5c43hv8My4y38F5+KF+27 r744acPDs1tijj6yLT9baXBv90/lNX2MDP9fJSRtsDScwZEdI7vbo9iS76iSSsbDpRYp6RWi7uW HeQA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-close_fd() has been killed, let's get rid of unneeded
-<linux/fdtable.h> as Al Viro pointed out [1].
+On Mon, 03 Jun 2024 14:23:44 +0800, Gao Xiang wrote:
+> close_fd() has been killed, let's get rid of unneeded
+> <linux/fdtable.h> as Al Viro pointed out [1].
+> 
+> [1] https://lore.kernel.org/r/20240603034055.GI1629371@ZenIV
+> 
+> 
 
-[1] https://lore.kernel.org/r/20240603034055.GI1629371@ZenIV
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
----
-Hi Christian,
-If it's possible, please kindly also help pick this
-patch along with the original patchset..
-https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git/commit/?h=vfs.fixes&id=a82c13d29985a4d99dacd700b497f0c062fe3625
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-Thanks,
-Gao Xiang
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
- fs/cachefiles/ondemand.c | 1 -
- 1 file changed, 1 deletion(-)
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
-diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-index 58bd80956c5a..bce005f2b456 100644
---- a/fs/cachefiles/ondemand.c
-+++ b/fs/cachefiles/ondemand.c
-@@ -1,5 +1,4 @@
- // SPDX-License-Identifier: GPL-2.0-or-later
--#include <linux/fdtable.h>
- #include <linux/anon_inodes.h>
- #include <linux/uio.h>
- #include "internal.h"
--- 
-2.39.3
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
 
+[1/1] cachefiles: remove unneeded include of <linux/fdtable.h>
+      https://git.kernel.org/vfs/vfs/c/5ea71848f7b2
