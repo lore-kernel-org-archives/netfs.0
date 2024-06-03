@@ -1,118 +1,152 @@
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10383158844
-	for <netfs@lists.linux.dev>; Wed, 29 May 2024 14:28:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC80391;
+	Mon,  3 Jun 2024 00:11:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716992930; cv=none; b=e6KQyjR7Ui6T6R/VwgyVeCT823Clrf9ol6Ha6AB9b/h1KifbkhjU1Dsam2q8qurcd0Y9epKAAKOe5ke5aOXyhIwnDzwhQHJtGxhc5EyVIdDy8hMKg+hjBSs6Eei1Mf0gVnWypqLjoLKzHWh1ir3lYe/UoNW8NJctGLGw1Zym3BQ=
+	t=1717373500; cv=none; b=lyoyNeAuFahMJyOWOiz6OJi475SjbkoNKvZ2unsfLo0pp1SkMs526c7F+VQ8axn6lK2VzfytI9I3TPSaQ6acq8hz6agRIbUYAoPomgHii2xRSX5LWMYL+Hxh8FsrrMLiW+yJtz8zACDfO0oAtD2spxSXJvjj43a3ZNpoQGdlD38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716992930; c=relaxed/simple;
-	bh=YMQyhhaP6Gg3VRgatRDCJBiv0lWaUNKjwv78w6uHqZg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R17whpRyk8jR+HVSHur5cgILSnj3tUSHEt+KRK4KVnzOIMiqVWaNHRmn9eDvZYNJ8i8yYGiM/oHT5I+Go4IZbc7GvFecREttfxi17U7WICszLooemheBKYNVJroCXDtuY83tmyaLhGzptApdtBnGF9LeZXBcdTjUhFZZ4tZoTXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=mw8j/CgV; arc=none smtp.client-ip=115.124.30.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1717373500; c=relaxed/simple;
+	bh=0N9/3beR6r3NlBuOs+ExSKBxyVEUTdd78kumcqgbUFY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=Jurvlb4zYM5+Ls3wQACcij7xUCfH5vcRgq3uVj0OWmOBmJl6freXBxa1wWtAKcCasN66EbIovH2PZ5b1WyfB/VRvR5z++ZzPKtYa60ck+Xoy7GzlHK4TNbBO8uy0liXQOBmaLU11YszWMzaV6nyUebOuLhRFn20X+tvGglHigLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=HlMaL/TE; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="mw8j/CgV"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1716992918; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=Oje62Ov6FUBQ4DHAsaEy7GE8Yt2ouQ/knXBYAIm0bWE=;
-	b=mw8j/CgV/4aYJxy1mQgVGQg1YxAhvc0mxSSeSAgQkpRRCd8NaV8RXY7cZHl2bek/h80eaKAK/EREjWe/QcnSstPxHjDX2dqcXNIJM37g8RyFhapq4YpEzqu1IzVW140eEcv6y/OjkaAcJDdiiAYnt+0JiiJ+rh0L30NDQ4zl7Mo=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037067112;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0W7U1T.u_1716992916;
-Received: from 192.168.3.4(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0W7U1T.u_1716992916)
-          by smtp.aliyun-inc.com;
-          Wed, 29 May 2024 22:28:37 +0800
-Message-ID: <2dc48e89-cd3f-4736-8847-4d23bcad27e5@linux.alibaba.com>
-Date: Wed, 29 May 2024 22:28:35 +0800
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="HlMaL/TE"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=k+aTG+7jrx2T4a778EpixhdD8FY1cMDJkJZ0swf1dBg=; b=HlMaL/TEtG1b+PO7ynkHuAVRQ9
+	UQ+48uk2BOJmv6Y6LxcOdHn9GPPrahc06bbg/kJ/rExZAjb6mQAJXNMWeiDreerXv/zXS9wMv0BVV
+	8tuAeebhvH4E4cYO5BwmtsHKBjSOsjzPlD13b1qHhreHk5e6w6b6GHxWlBpEENVm89Ty/TRXf+fD4
+	OaZtbwvyUpCGVxyG8PP8e02pOH/U1O+y06L4DTeg7G55t7QzOCNnTxQDOv9nZsQ3JFBcPWWCxPxJC
+	ni6/HJyttMMVF2XTx/LCT1Y5uOqvj2XULvGDAFsEA3HvPPT1FJkel8IflxsbSCekHwZS9zU9gJ7nE
+	KR2ctH9w==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.96 #2 (Red Hat Linux))
+	id 1sDvIO-00B9uk-1m;
+	Mon, 03 Jun 2024 00:11:28 +0000
+Date: Mon, 3 Jun 2024 01:11:28 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: David Howells <dhowells@redhat.com>
+Cc: Jeffle Xu <jefflexu@linux.alibaba.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>, netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH] get rid of close_fd() misuse in cachefiles
+Message-ID: <20240603001128.GG1629371@ZenIV>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/12] cachefiles: some bugfixes and cleanups for
- ondemand requests
-To: Christian Brauner <brauner@kernel.org>, netfs@lists.linux.dev,
- dhowells@redhat.com, jlayton@kernel.org, libaokun@huaweicloud.com
-Cc: jefflexu@linux.alibaba.com, zhujia.zj@bytedance.com,
- linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, yangerkun@huawei.com, houtao1@huawei.com,
- yukuai3@huawei.com, wozizhi@huawei.com, Baokun Li <libaokun1@huawei.com>,
- Gao Xiang <xiang@kernel.org>
-References: <20240522114308.2402121-1-libaokun@huaweicloud.com>
- <20240529-lehrling-verordnen-e5040aa65017@brauner>
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
-In-Reply-To: <20240529-lehrling-verordnen-e5040aa65017@brauner>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-Hi Christian,
+	fd_install() can't be undone by close_fd().  Just delay it
+until the last failure exit - have cachefiles_ondemand_get_fd()
+return the file on success (and ERR_PTR() on error) and let the
+caller do fd_install() after successful copy_to_user()
 
-On 2024/5/29 19:07, Christian Brauner wrote:
-> On Wed, 22 May 2024 19:42:56 +0800, libaokun@huaweicloud.com wrote:
->> From: Baokun Li <libaokun1@huawei.com>
->>
->> Hi all!
->>
->> This is the third version of this patch series. The new version has no
->> functional changes compared to the previous one, so I've kept the previous
->> Acked-by and Reviewed-by, so please let me know if you have any objections.
->>
->> [...]
-> 
-> So I've taken that as a fixes series which should probably make it upstream
-> rather sooner than later. Correct?
-
-Yeah, many thanks for picking these up!  AFAIK, they've already been
-landed downstream for a while so it'd be much better to address
-these upstream. :-)
-
-Thanks,
-Gao Xiang
-
-> 
-> ---
-> 
-> Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-> Patches in the vfs.fixes branch should appear in linux-next soon.
-> 
-> Please report any outstanding bugs that were missed during review in a
-> new review to the original patch series allowing us to drop it.
-> 
-> It's encouraged to provide Acked-bys and Reviewed-bys even though the
-> patch has now been applied. If possible patch trailers will be updated.
-> 
-> Note that commit hashes shown below are subject to change due to rebase,
-> trailer updates or similar. If in doubt, please check the listed branch.
-> 
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-> branch: vfs.fixes
-> 
-> [01/12] cachefiles: add output string to cachefiles_obj_[get|put]_ondemand_fd
->          https://git.kernel.org/vfs/vfs/c/cc5ac966f261
-> [02/12] cachefiles: remove requests from xarray during flushing requests
->          https://git.kernel.org/vfs/vfs/c/0fc75c5940fa
-> [03/12] cachefiles: fix slab-use-after-free in cachefiles_ondemand_get_fd()
->          https://git.kernel.org/vfs/vfs/c/de3e26f9e5b7
-> [04/12] cachefiles: fix slab-use-after-free in cachefiles_ondemand_daemon_read()
->          https://git.kernel.org/vfs/vfs/c/da4a82741606
-> [05/12] cachefiles: remove err_put_fd label in cachefiles_ondemand_daemon_read()
->          https://git.kernel.org/vfs/vfs/c/3e6d704f02aa
-> [06/12] cachefiles: add consistency check for copen/cread
->          https://git.kernel.org/vfs/vfs/c/a26dc49df37e
-> [07/12] cachefiles: add spin_lock for cachefiles_ondemand_info
->          https://git.kernel.org/vfs/vfs/c/0a790040838c
-> [08/12] cachefiles: never get a new anonymous fd if ondemand_id is valid
->          https://git.kernel.org/vfs/vfs/c/4988e35e95fc
-> [09/12] cachefiles: defer exposing anon_fd until after copy_to_user() succeeds
->          https://git.kernel.org/vfs/vfs/c/4b4391e77a6b
-> [10/12] cachefiles: Set object to close if ondemand_id < 0 in copen
->          https://git.kernel.org/vfs/vfs/c/4f8703fb3482
-> [11/12] cachefiles: flush all requests after setting CACHEFILES_DEAD
->          https://git.kernel.org/vfs/vfs/c/85e833cd7243
-> [12/12] cachefiles: make on-demand read killable
->          https://git.kernel.org/vfs/vfs/c/bc9dde615546
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+---
+diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
+index 4ba42f1fa3b4..b5da26ef2d45 100644
+--- a/fs/cachefiles/ondemand.c
++++ b/fs/cachefiles/ondemand.c
+@@ -205,7 +205,7 @@ int cachefiles_ondemand_restore(struct cachefiles_cache *cache, char *args)
+ 	return 0;
+ }
+ 
+-static int cachefiles_ondemand_get_fd(struct cachefiles_req *req)
++static struct file *cachefiles_ondemand_get_fd(struct cachefiles_req *req)
+ {
+ 	struct cachefiles_object *object;
+ 	struct cachefiles_cache *cache;
+@@ -238,7 +238,6 @@ static int cachefiles_ondemand_get_fd(struct cachefiles_req *req)
+ 	}
+ 
+ 	file->f_mode |= FMODE_PWRITE | FMODE_LSEEK;
+-	fd_install(fd, file);
+ 
+ 	load = (void *)req->msg.data;
+ 	load->fd = fd;
+@@ -246,7 +245,7 @@ static int cachefiles_ondemand_get_fd(struct cachefiles_req *req)
+ 
+ 	cachefiles_get_unbind_pincount(cache);
+ 	trace_cachefiles_ondemand_open(object, &req->msg, load);
+-	return 0;
++	return file;
+ 
+ err_put_fd:
+ 	put_unused_fd(fd);
+@@ -254,7 +253,7 @@ static int cachefiles_ondemand_get_fd(struct cachefiles_req *req)
+ 	xa_erase(&cache->ondemand_ids, object_id);
+ err:
+ 	cachefiles_put_object(object, cachefiles_obj_put_ondemand_fd);
+-	return ret;
++	return ERR_PTR(ret);
+ }
+ 
+ static void ondemand_object_worker(struct work_struct *work)
+@@ -299,9 +298,9 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ {
+ 	struct cachefiles_req *req;
+ 	struct cachefiles_msg *msg;
++	struct file *file = NULL;
+ 	unsigned long id = 0;
+ 	size_t n;
+-	int ret = 0;
+ 	XA_STATE(xas, &cache->reqs, cache->req_id_next);
+ 
+ 	xa_lock(&cache->reqs);
+@@ -335,8 +334,8 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ 	id = xas.xa_index;
+ 
+ 	if (msg->opcode == CACHEFILES_OP_OPEN) {
+-		ret = cachefiles_ondemand_get_fd(req);
+-		if (ret) {
++		file = cachefiles_ondemand_get_fd(req);
++		if (IS_ERR(file)) {
+ 			cachefiles_ondemand_set_object_close(req->object);
+ 			goto error;
+ 		}
+@@ -346,10 +345,15 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ 	msg->object_id = req->object->ondemand->ondemand_id;
+ 
+ 	if (copy_to_user(_buffer, msg, n) != 0) {
+-		ret = -EFAULT;
+-		goto err_put_fd;
++		if (file)
++			fput(file);
++		file = ERR_PTR(-EFAULT);
++		goto error;
+ 	}
+ 
++	if (file)
++		fd_install(((struct cachefiles_open *)msg->data)->fd, file);
++
+ 	/* CLOSE request has no reply */
+ 	if (msg->opcode == CACHEFILES_OP_CLOSE) {
+ 		xa_erase(&cache->reqs, id);
+@@ -358,14 +362,11 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ 
+ 	return n;
+ 
+-err_put_fd:
+-	if (msg->opcode == CACHEFILES_OP_OPEN)
+-		close_fd(((struct cachefiles_open *)msg->data)->fd);
+ error:
+ 	xa_erase(&cache->reqs, id);
+-	req->error = ret;
++	req->error = PTR_ERR(file);
+ 	complete(&req->done);
+-	return ret;
++	return PTR_ERR(file);
+ }
+ 
+ typedef int (*init_req_fn)(struct cachefiles_req *req, void *private);
