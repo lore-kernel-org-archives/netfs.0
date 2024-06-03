@@ -1,79 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3A412BF3A;
-	Mon,  3 Jun 2024 13:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E52135A46;
+	Mon,  3 Jun 2024 18:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717421997; cv=none; b=GkKVbHyVROEyfWeyqWnKv1a9yIlyvbZBe+QAnBNC0xU0nVjXTovl8KlxYEztexniALMptdZFz27+Jwz3RR9HtD5IvDJrwfF/+/bVFGzM53pB/8zdmpNPWV/o8dKpiiqCQhYfuJMM2b/TXdYkCqjD0TOt9dpSwhzf6/YdwXiBPAI=
+	t=1717437687; cv=none; b=TtUDFmr13j4u0iVxXg65Q6XkSmIbyH8lLMXeMtEZIrn9/9UBbNIUq66cnV/RHtd2NIQAMwe67h6ZakRZzil2+xALEZ7Q9m3mmsGTi74ZDC9kiPHdbL/luD91Z6vO+DMSl4A4bpM7i2I8YHQYHEH5ccpP+LX3OrHC536vTVzoUq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717421997; c=relaxed/simple;
-	bh=T7Y/+gtUnckL0y2wD4ut574bzZtI0DADyHMyFC770JM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EPyg3Q0UQHl1dTspZZXsDcx1UfTcuJ2R4L3tsbn393G9z9UItX88tBPzsZGO+RPbIlbigUhySs7mrLgDmQM9Q16BLakqMgXR+s+vX1ceuuCevd4fLmbggkZ7HIyCG8AE4JoyiJ8b9CPyhAPRsi6hsj3wV0WQwvF/HqBleygKuzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L6tmNkv3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1717437687; c=relaxed/simple;
+	bh=7wbfTvzN1ZGYxMgm7ZA/tR9fMo/2aHMXnL51s275mE4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fxP/XEF6vB/DaOChWptjCMCWr3ZxPtx5a5mWc6ulwDnmTalDCCyyqiXjsZ+TKs1XYB/rpWcAwkkW20C67VIT7sVk64WOyVvYencaTQKHdvjLRRU1hQpAQOsWgPcPiE66sAUiXvVtJhbPxu1KdPowMiCAMg6g1gvrCHBxxVx3xf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CeHcZpkN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L6tmNkv3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4092BC4AF07;
-	Mon,  3 Jun 2024 13:39:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CeHcZpkN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA6CCC2BD10;
+	Mon,  3 Jun 2024 18:01:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717421996;
-	bh=T7Y/+gtUnckL0y2wD4ut574bzZtI0DADyHMyFC770JM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L6tmNkv31YF6s79iv8Zz7iJ+yQ0aquj14pocCJIQype5m8BI2Hvy+8ZbNmHZa6ptH
-	 aOHJA+lNgJf+bKu7TSknDK+vYK5C0ES59PSye4p324Fg82k1LtIOnwTVYRXc8bAU5Y
-	 LaeuWoWeXcGFmVuVvb4/Q1c08l2oCAGiiXUvA9elzqFd6g16EZsQhSFNdCQrTGbZAh
-	 AaJEzkogKxJMTh7g+emjqxHEzE9cRJ1/8utSF/e2ZaNJVJnsASYIKQgAuPtrMZQx3M
-	 XANAjBvGhKcCmmdIpbpbhDO+scS82wbqzggVN+FG5sXhuulR56yMyrIwqXOCkB7ry3
-	 sajA/WM612v3A==
-From: Christian Brauner <brauner@kernel.org>
-To: Gao Xiang <xiang@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	netfs@lists.linux.dev,
-	Jeffle Xu <jefflexu@linux.alibaba.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	linux-fsdevel@vger.kernel.org,
-	Al Viro <viro@zeniv.linux.org.uk>
-Subject: Re: (subset) [PATCH] cachefiles: remove unneeded include of <linux/fdtable.h>
-Date: Mon,  3 Jun 2024 15:39:40 +0200
-Message-ID: <20240603-besen-orbit-0a0aef505617@brauner>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240603062344.818290-1-hsiangkao@linux.alibaba.com>
-References: <20240603034055.GI1629371@ZenIV> <20240603062344.818290-1-hsiangkao@linux.alibaba.com>
+	s=k20201202; t=1717437687;
+	bh=7wbfTvzN1ZGYxMgm7ZA/tR9fMo/2aHMXnL51s275mE4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CeHcZpkN4zwepuyuMN/cVcQXXrW4X7lsm8bk/i1qf6KEFBcesVZLxx+k/XNH1mSTQ
+	 6g9fF6ZRUIJmJ379Lff5V3xeEUVpQcJydVHXCWZfcCiTEOMHKdCeRcznBFffV/s0in
+	 iNBaSfub7M16NSQ3EuNwz0wLwmpZ+7AMydDRT+TUpSBVDx42BwxOp/NdzfAC2rr8rg
+	 CQqZ9J/i5RhbWj+wn+PLmnS5DhuOOKWs20NyaoXZXPtXuv515s4wxXM3Px3eu+pYsf
+	 YTe3wRH86dNDT0aCYc8seWxVOOLJ4LqtoSM5vClTe8Sn/ZqMWIPUxlje+C05LxCX9f
+	 xCPtJhf3PYciA==
+Date: Mon, 3 Jun 2024 19:01:21 +0100
+From: Simon Horman <horms@kernel.org>
+To: Thorsten Blum <thorsten.blum@toblux.com>
+Cc: amir73il@gmail.com, bhe@redhat.com, clm@fb.com, dhowells@redhat.com,
+	dsterba@suse.com, dyoung@redhat.com, jlayton@kernel.org,
+	josef@toxicpanda.com, kexec@lists.infradead.org,
+	linux-btrfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-unionfs@vger.kernel.org,
+	miklos@szeredi.hu, netfs@lists.linux.dev, vgoyal@redhat.com
+Subject: Re: [RESEND PATCH 2/4] fscache: Remove duplicate included header
+Message-ID: <20240603180121.GF491852@kernel.org>
+References: <20240502212631.110175-2-thorsten.blum@toblux.com>
+ <20240526212108.1462-2-thorsten.blum@toblux.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1007; i=brauner@kernel.org; h=from:subject:message-id; bh=T7Y/+gtUnckL0y2wD4ut574bzZtI0DADyHMyFC770JM=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaTFHl8SfnhFUfwR04UagsVlnEsYsj5MfFXEaf3P71Pmx kkSViwGHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABM5c43hv8My4y38F5+KF+27 r744acPDs1tijj6yLT9baXBv90/lNX2MDP9fJSRtsDScwZEdI7vbo9iS76iSSsbDpRYp6RWi7uW HeQA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240526212108.1462-2-thorsten.blum@toblux.com>
 
-On Mon, 03 Jun 2024 14:23:44 +0800, Gao Xiang wrote:
-> close_fd() has been killed, let's get rid of unneeded
-> <linux/fdtable.h> as Al Viro pointed out [1].
+On Sun, May 26, 2024 at 11:21:09PM +0200, Thorsten Blum wrote:
+> Remove duplicate included header file linux/uio.h
 > 
-> [1] https://lore.kernel.org/r/20240603034055.GI1629371@ZenIV
-> 
-> 
+> Signed-off-by: Thorsten Blum <thorsten.blum@toblux.com>
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
-
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
-
-[1/1] cachefiles: remove unneeded include of <linux/fdtable.h>
-      https://git.kernel.org/vfs/vfs/c/5ea71848f7b2
