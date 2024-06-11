@@ -1,885 +1,247 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5359856446;
-	Sat,  8 Jun 2024 15:14:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717859644; cv=none; b=Db5zOmvqrxp0F8Y9XJKVuQXAImL7BP2UOTuUOyhKvnj9UvIdjh1XOsW2hn/5dE5oh/S6nMlJDy5heqr+gAVA+hlSVsNAyuHuO0pyP13cugYQOXF8BqK1tWvTDaSllpg72CzF75BONEa6zBeIBN/UbvrsXZl6ry6Fcom1ixzFsI8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717859644; c=relaxed/simple;
-	bh=TYLhq/7OLYs7NxdH1ND7YwFqNnesbbtR5DaoXUkCwPk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sbuGBYQT9cjGNXPqsixpzZdHTeNyudlkY0DceGwswsvtojK/ix5YOa2tPbdcL8++H+cqreRrDKQm7r0sQ4+8cN1q6pbpihRPQNFdTAjKGqTVAXVJ1/fu/n2FT2qJO4Cmqh5pk0FnqRHkE3L1gIeGWKiFnoY1B3DzPbuBqpr+WOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pWkbB6if; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A15C1422A6;
+	Tue, 11 Jun 2024 08:00:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1718092807; cv=fail; b=qp1ogx314eufAZ+JeXXNmVe5LVnudUbFm/iMnl9JUOQ+efG/psFJShkcHsDFQEQmuofPCkaNZQw5ZKkof3urdRpSLrEOJiY7mn/ccbgIraHgpfkBTRQMSpUyYLoKC+A7sw7Xc4PpBMUF7gYjmprepardMeoUq19LNNRUi0+RsK4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1718092807; c=relaxed/simple;
+	bh=EHrvhkPd2clawd7D4unEyGcEMHWNJXcplxfgc52+wss=;
+	h=Date:From:To:CC:Subject:Message-ID:Content-Type:
+	 Content-Disposition:MIME-Version; b=XcIxHGfWhLs0K5PgEp53xknWZDK2pdANGVRU9cO4ijhezVbssh9hLWdEN8uRm/JrJYI8xKAyphpFCCfqcmF6DcMTm4b4TnRWEIA1WfaZl3gJsKHiMDvRarNn9SXtwOQcyubXOUalmq2Y02QoQQEn/Q7sXq/3OYOIIkpd6vxCZG8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S4zV2twK; arc=fail smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pWkbB6if"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA6A9C2BD11;
-	Sat,  8 Jun 2024 15:14:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717859643;
-	bh=TYLhq/7OLYs7NxdH1ND7YwFqNnesbbtR5DaoXUkCwPk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=pWkbB6ifd4vMHk0hLUkWgNlnjxKdbKIeV/pd/6hphLaaRokJAZ43pffvjPeG7RNHM
-	 Bn+TcK0mooLuyckpGeUFNHkv/88cjunNkoQ5DjPe7kGBVDBqsrUf0o79DVn9zpV95K
-	 MMV8gEQRJyZZZtTPaxo1Bw1LtEBDGRaU9YbGlGQlGd4yufFvKuDyb9LLMiM/W9YN6e
-	 3j/SWl7CR9OnSCXFNeW7t+8+rdm0k05Yvicxoo02caUj8bzreHhhKO7Ag+YHWh6yOP
-	 7GdfM94G+f4CFABskVSCkF1jcyIZ2djnb1OoC3uyjYDGvtF1H4WLozgBjiotgRafw+
-	 NRiTuRavAWw+Q==
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S4zV2twK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1718092805; x=1749628805;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=EHrvhkPd2clawd7D4unEyGcEMHWNJXcplxfgc52+wss=;
+  b=S4zV2twKxk+wC8QOyOT8fcQDTM+ib6wPfigdM+Vrb9hlonCEq6/oo0Z/
+   JkVlsHGNmoRpj8CcLXX49Dfzw8RCVt3GY4KsuJsVSfDqn7xnP5fskiy35
+   zGGaTlCkarpOZ+3WKBnP6g2cBVnHyviDsnFZ0eCfzyX/0ZBbHr9AVXyRo
+   aTzfhU0u0IVYAZT8R+uxv0V/vVZfeVJr2tC7Bn2f19A8wltkxUKDspiV5
+   GtI3lwSDj489WNMDBEi8kux7jxYNBldc6OIDvSgrw0QI+Ae5ILCPyBVfq
+   zCbPeqenhQyO4WJ+47CKR++fXKAuETTavlmVloECQ4SlT97bd0YnDTdk+
+   w==;
+X-CSE-ConnectionGUID: wDsQDqB9SuWeuX0hPFFyxw==
+X-CSE-MsgGUID: xKnBQe7mQv2YZt+56FkAjA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="37308277"
+X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; 
+   d="scan'208";a="37308277"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2024 01:00:03 -0700
+X-CSE-ConnectionGUID: KV6EbLeRTF6aAqFD+ESimw==
+X-CSE-MsgGUID: 0rnSgMJcS4eiSgqMJQAq5g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; 
+   d="scan'208";a="40029898"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by orviesa007.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 11 Jun 2024 01:00:03 -0700
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 11 Jun 2024 01:00:01 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 11 Jun 2024 01:00:01 -0700
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Tue, 11 Jun 2024 01:00:01 -0700
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (104.47.74.48) by
+ edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 11 Jun 2024 01:00:01 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cV1qJTZBGocYYIWI5P4ll3r2Ic+OZI6P7ewLg/EjdtXOF8zo63UUCkPKqmDvVfK/kkzQTDzjE6vkb0KisMnOqk2CidkO9LVBNPMrmJyNT4ifBu3Dybjje7eE+C6BU0aXfQNVO4f3dNdiWmNzLPVTbC3x6/8JARkSGHDxEdxiQtV6XQcaR7Vl6RIWhN92C3YkaQ9ujhan778n371l/aMWJfOG6Hf1y6JJ7/TFeJvB4lXyrB9SdluN5wjClcDVL+LmM/LDcU4l8XlGyHcH3n/NvyJCxYnM3JNu33LXdJwz2S6+skhxV0HQSgjvq0QuRkx1J7sr0l6qD4Hzgg7g+E/kGA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hZAx77Y249zuTeGkgiHZgKQ440v5wWelXc3o+ulBIS4=;
+ b=N5NIGtJfvjNRg986wmjGambKKYjePIlvx92gluV4fss+SQAM2bfIf3usnVMDYQDfWMusZH8NP+ZunTtbdSWTEND1sGr1S9SelDiaO2nzaOsYof26bMOb+JGoj19zvfsefVOZW5665y+Vxon0dk/1XGTP/afTI3f6VN7HesuWQDoWonGrOtb6ABo0NHBbq2y243He6G0TyI2/IU848d5h/ExYA2B3hJuXqkMJu1pcbiBZD+NmEfjPbiAATT6O1jJ3yuy9Fxd1NJ4rUn9EJXTebO5H0sOvOR2oDoK3vufCpdgEllZDk4jOjPFhjzP9Yasa84on+hzbfbyfSEkrygNbYQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from LV3PR11MB8603.namprd11.prod.outlook.com (2603:10b6:408:1b6::9)
+ by BY1PR11MB8054.namprd11.prod.outlook.com (2603:10b6:a03:52f::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.36; Tue, 11 Jun
+ 2024 07:59:58 +0000
+Received: from LV3PR11MB8603.namprd11.prod.outlook.com
+ ([fe80::4622:29cf:32b:7e5c]) by LV3PR11MB8603.namprd11.prod.outlook.com
+ ([fe80::4622:29cf:32b:7e5c%2]) with mapi id 15.20.7633.036; Tue, 11 Jun 2024
+ 07:59:58 +0000
+Date: Tue, 11 Jun 2024 15:59:49 +0800
+From: kernel test robot <oliver.sang@intel.com>
 To: David Howells <dhowells@redhat.com>
-Cc: Jeff Layton <jlayton@kernel.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH] netfs: Switch debug logging to pr_debug()
-Date: Sat,  8 Jun 2024 17:13:51 +0200
-Message-ID: <20240608151352.22860-2-ukleinek@kernel.org>
-X-Mailer: git-send-email 2.43.0
+CC: <oe-lkp@lists.linux.dev>, <lkp@intel.com>, <linux-kernel@vger.kernel.org>,
+	Christian Brauner <brauner@kernel.org>, Jeff Layton <jlayton@kernel.org>,
+	Steve French <stfrench@microsoft.com>, Enzo Matsumiya <ematsumiya@suse.de>,
+	<netfs@lists.linux.dev>, <linux-fsdevel@vger.kernel.org>,
+	<oliver.sang@intel.com>
+Subject: [linus:master] [netfs]  9b038d004c: xfstests.generic.617.fail
+Message-ID: <202406111527.994f629c-oliver.sang@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+X-ClientProxiedBy: SG2P153CA0018.APCP153.PROD.OUTLOOK.COM (2603:1096::28) To
+ LV3PR11MB8603.namprd11.prod.outlook.com (2603:10b6:408:1b6::9)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=29772; i=ukleinek@kernel.org; h=from:subject; bh=TYLhq/7OLYs7NxdH1ND7YwFqNnesbbtR5DaoXUkCwPk=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBmZHUxWCBxBNfEYLcWGIqZathDMQhrlvYoO4OAQ W8p7+e+LdWJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZmR1MQAKCRCPgPtYfRL+ Thw+B/9ECcdFXQthRzg0xElUpNrGlFBc2Ixg+fRz9c0ePgmv+PFOJ16C3/BLzf5WAaFvQbl4dz8 tMTx/qBP48LLrJY/HFOBe2qG5tJsAJt2wWKhoRhGlOQW2S9nFJVrNGp3V1lj1uEdMYTM9RSrAnJ BlKG07z+gKxF908QnPvwvAFiew4YZMOrNEKf9bO13/Lqhyw2X33wyrQxiyvrWU8qFbU+Y605R8n ZCGUSjakzQeUBypEL3ihoYg+DsbcY+5hvTHoNvRiPP28ktgtU35i4Cqhvdudm9iL2X7zC6VYZj8 WwbsfDPGoUmjoF+Od0dx66I6rhJgNBPd503IyEFj1sQN13jV
-X-Developer-Key: i=ukleinek@kernel.org; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR11MB8603:EE_|BY1PR11MB8054:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5948aae8-36b5-4b50-8955-08dc89ec7d47
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|366007|376005;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?9wJh1AYemh8DWpYPlXInaxTYlHnvEa1YwdyN8zQZXkt2MeYrMgeVtBbLTmwe?=
+ =?us-ascii?Q?TiRlOopnBCRcuJWdO+UB/mHqQZk8J2IGRyeJLrHyDC1RbZYJ/kJATfrcHxHb?=
+ =?us-ascii?Q?Lq3nXj0/lxfITlg5s/qPllWlhfVLDnkd8mwOYPcHrh4gYnWlmEXCxdcSvlrr?=
+ =?us-ascii?Q?yuq6VOCnkWxdXuC8plY1vt6N+qlOZ0q038iyKt+YwuBxGyBuYf0aTZmRmUVi?=
+ =?us-ascii?Q?BKK/VNrPMgqV+R1nJino9jFA+0/tVwGAAg9YAATluMoJlmjj+oYojIbUhEVZ?=
+ =?us-ascii?Q?SvD6C/tgtEU1JZqy3YF3nSytGUfcyhWFYG5q4nWOBLS/XNJ8DAxs7/wLDyWO?=
+ =?us-ascii?Q?FI8E+9iWbM1P5JYgR9shfJx7YLRQlJBkTknH/ecgT4wvXndNdb1uwBauISPW?=
+ =?us-ascii?Q?zUAp1lO41hx390+vc/DusSFyKCFe6xmiRtKuWvu6yCij7oY2oUd2h2Jaey7W?=
+ =?us-ascii?Q?/FpLYOli/gFhsP7LonwcBQE5EtbrxTL2FbbI/W3rLrFGp/0QaimmohjSsjo2?=
+ =?us-ascii?Q?E8Vof4D5c8s+mtiFhFo5fJM4HNj6mSU+Slkeh9kgyoJFGUfLhR2Jf8/mD/Ta?=
+ =?us-ascii?Q?0wI0J1DlLQwucCSQXLjpEP7/t1GaSdEOX2cxHYazav8JVSgAdicCcYfCAAdF?=
+ =?us-ascii?Q?TmzaDucg9hQS/onwELyLutyWGTUst5HYRY7gqfEQQNjEO/IV3CRSSQl8ZDqH?=
+ =?us-ascii?Q?hxafIJ8aigJoebCfOZbz4AHVSNnxqkbnXsWAUeelgkerq5whHeuzsdkmKBer?=
+ =?us-ascii?Q?LQRCuqlsGjn2NZ7I/XSsbTACvYpm2iRh+0A+ILmLp+/Av7SLsCcVuWI4EFx/?=
+ =?us-ascii?Q?nlcyE9fYjQweXJ0flUzos4mqkSe4d/tJH8Q20eJYBAFEgqj4C9vXL37nwUuB?=
+ =?us-ascii?Q?rfDEZjxmXPu2f/ytFICtfPpCHn/iaqO0ulbrNNYqwFlGDDUJj9jRW6J72Cdf?=
+ =?us-ascii?Q?ZK+OhMuJdEWbHzLPDwHYl18Td2cHlhU7F7dAhEcjiNNPJuBGt/80YxIzXbjI?=
+ =?us-ascii?Q?S/b+WkKiyBetb0vFZ40NKFwjf0Syii0LfHcEnMaCkqG0iPlrWUavJrsmU+9k?=
+ =?us-ascii?Q?r09F5CoAo1M5OHoMFgVoIkyIDmDYxR+g6/LPFptDLnIZ3cn0ggUzrTyO5wpY?=
+ =?us-ascii?Q?AMcgKnwKgeTFfo5G4kMD62DsNY4MqkLtS4qmoEmGNmcGNnOujU8UU5oRNYGI?=
+ =?us-ascii?Q?H9CTTH6e5AyCAv4BhOlYtyCqSlxJgZlSsMlZpbzeP/YIGzYdf/9twfmGfb3m?=
+ =?us-ascii?Q?VsasYVhXpTnoQmK7FlPGI9NCyFfh3X1TIvokRfJlpQ=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8603.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(366007)(376005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?2lLolfTGhpW3lYoS2WW7ANj9ahFBhTBz3lJlMxG689yZxyulV+TUCAJ+Zg4F?=
+ =?us-ascii?Q?SUxwOx+cSE8xSPMxFAQhHzxQHZ5pR4GrFFC9llLbQvBXlnlO82si4tfQM0yt?=
+ =?us-ascii?Q?HX79hUDdXnke2QgcQVYwU2A2ivH9HuNicHFEzAIZr/AF/dj/8B3Nm9xX0F+a?=
+ =?us-ascii?Q?mvjWm3LdJiPrqjHe3wetEBiHJqGyv0qx575rv09gJAEj/yabwUGkb1gtQ2Tf?=
+ =?us-ascii?Q?LfHv/TJP4vXAjppOX+1sg4rMVrttUar+KOjsr6RWdT2dbTj073vKCmGW+MQU?=
+ =?us-ascii?Q?5m7+ecq3ajJGPL5jKkYSCYu0XhnwvC81xv/K+dfQjED0SekilB+4GEnop3mp?=
+ =?us-ascii?Q?J8TDB+7s5fjckFuwu7hhvFyAjwMzH/4It1NvU/r26fSWVWtBpK2WINudTjL+?=
+ =?us-ascii?Q?Tbiby9zS6QzEkE7b+ufscCXJtboJk+k9x9LVYjS3B0ryrnDKqVHRC76UhwkI?=
+ =?us-ascii?Q?0ukMgl0AIvZeXR6b1nG3KkrUqq1UnCEp6BwZr8clF99Ke5E6xPHPTkwgJipd?=
+ =?us-ascii?Q?HG9zLIS++hZ8l96ayDfHfmLL9x97YHwNGaZ9jrzu6Mf4+ave88Vg4bffQHUx?=
+ =?us-ascii?Q?5IPOJHnXmOFlWphe3fOiLwkrSfYqlNnLqrCbCfJT0ANs4e3X/iSMCv7ti2mF?=
+ =?us-ascii?Q?FFw63KZlDwtBv+UMHBKiWF/RwDl1QW6RPstYwk/mqg9At8rBhGo+wGL8HegF?=
+ =?us-ascii?Q?eB7wsKOE6h4fXzvSB9mkGGHzhyHW9L0pdjlmkBZM9A7FKtgCDGVP5bI1/zxC?=
+ =?us-ascii?Q?ZBNTSZzf1J0y/3PWz8t1lJC1A/d/zMUEZ4Iyk5RnJfvcMnd0RvwSlDy3J8qg?=
+ =?us-ascii?Q?ocH4JIk4BWQlrgoJ1JQCscEh6l26l7mcXeI4gjzc11PqfZoPZy6dKEVopBh1?=
+ =?us-ascii?Q?oIiSa8lM3UO5Aisg9rTEXPCa9cf/66QIxeXNSAc6efh85UXe+LDoRB7sh2V9?=
+ =?us-ascii?Q?rAJCA0ZMUHlOqatCW3aAYe7RdNPgLgPGLs1c7PBhOOqwL7M3UEHhVUcaMJaO?=
+ =?us-ascii?Q?YZervO6nQUmHiwV4tGCD80z34uYCLvunMCcJk6P3F+/6wNzOSM0NTEIAlxhZ?=
+ =?us-ascii?Q?UwVk6m3hRN0pARo0FrnMUXXpD22Pe9kaqq3DdimTTXbJJSrLseoGE9hv87S1?=
+ =?us-ascii?Q?h8OJzb8kpnAyWl8lsDja0BI3814AEXQmIRMVyZreFYXvfHm0IvUamZhhtoVQ?=
+ =?us-ascii?Q?u0eS/vpYH3nqrCpgL2S53ivQiJWmOrEuMjH1+6/SGb8Z/s1w+z2I5V6ed7yG?=
+ =?us-ascii?Q?k/0ooSVF3atwTohkO+38Qq9q90uGkFtzaFqBYKzGKlKvgkJGDb3Fd+Vgl2Rv?=
+ =?us-ascii?Q?RouRjm8VFoy3vha19b6xvSIdY3wq0L42zXrlB5lxcXuGbhHEmQkvqYADcyhl?=
+ =?us-ascii?Q?AOFutNUmUr5sr9JA2PKA0VQLEYOH67dcEgNJDxbmuzm/ovTvsoLBRO58IvhK?=
+ =?us-ascii?Q?q5WSFZkdu7eqsWVlE6bUmLKVP3h16fqmL/OSaY+FeFSUOhQw85UXSZ3tY+pQ?=
+ =?us-ascii?Q?7iwAQCD1nMHPTh4Ch7qWzURXoLEayI2wwlzt+Zvu19xomEEl0eVYR06vIPNW?=
+ =?us-ascii?Q?VyOjpQy6zdyU+yf5sGVU2V5lX1dOeK7U5oMFgOK6nMY+nsoFWp55hFPEAlMf?=
+ =?us-ascii?Q?eQ=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5948aae8-36b5-4b50-8955-08dc89ec7d47
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8603.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2024 07:59:58.7557
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZaEjEByH5QzzAD6Van+1ojNNjEc7razzsd7uVPQQEnjJgFfOnbRMZm+hH3YBsbYsiMtJJUVQqFQxJ5YoMIM91w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY1PR11MB8054
+X-OriginatorOrg: intel.com
 
-Instead of inventing a custom way to conditionally enable debugging,
-just make use of pr_debug(), which also has dynamic debugging facilities
-and is more likely known to someone who hunts a problem in the netfs
-code. Also drop the module parameter netfs_debug which didn't have any
-effect without further source changes. (The variable netfs_debug was
-only used in #ifdef blocks for cpp vars that don't exist; Note that
-CONFIG_NETFS_DEBUG isn't settable via kconfig, a variable with that name
-never existed in the mainline and is probably just taken over (and
-renamed) from similar custom debug logging implementations.)
 
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
----
- fs/netfs/buffered_read.c  | 14 +++++++-------
- fs/netfs/buffered_write.c | 12 ++++++------
- fs/netfs/direct_read.c    |  2 +-
- fs/netfs/direct_write.c   |  8 ++++----
- fs/netfs/fscache_cache.c  |  4 ++--
- fs/netfs/fscache_cookie.c | 28 ++++++++++++++--------------
- fs/netfs/fscache_io.c     | 12 ++++++------
- fs/netfs/fscache_main.c   |  2 +-
- fs/netfs/fscache_volume.c |  4 ++--
- fs/netfs/internal.h       | 33 +--------------------------------
- fs/netfs/io.c             | 12 ++++++------
- fs/netfs/main.c           |  4 ----
- fs/netfs/misc.c           |  4 ++--
- fs/netfs/write_collect.c  | 16 ++++++++--------
- fs/netfs/write_issue.c    | 36 ++++++++++++++++++------------------
- 15 files changed, 78 insertions(+), 113 deletions(-)
 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index a6bb03bea920..4c0401dbbfcf 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -117,7 +117,7 @@ void netfs_rreq_unlock_folios(struct netfs_io_request *rreq)
- 		if (!test_bit(NETFS_RREQ_DONT_UNLOCK_FOLIOS, &rreq->flags)) {
- 			if (folio->index == rreq->no_unlock_folio &&
- 			    test_bit(NETFS_RREQ_NO_UNLOCK_FOLIO, &rreq->flags))
--				_debug("no unlock");
-+				kdebug("no unlock");
- 			else
- 				folio_unlock(folio);
- 		}
-@@ -204,7 +204,7 @@ void netfs_readahead(struct readahead_control *ractl)
- 	struct netfs_inode *ctx = netfs_inode(ractl->mapping->host);
- 	int ret;
- 
--	_enter("%lx,%x", readahead_index(ractl), readahead_count(ractl));
-+	kenter("%lx,%x", readahead_index(ractl), readahead_count(ractl));
- 
- 	if (readahead_count(ractl) == 0)
- 		return;
-@@ -268,7 +268,7 @@ int netfs_read_folio(struct file *file, struct folio *folio)
- 	struct folio *sink = NULL;
- 	int ret;
- 
--	_enter("%lx", folio->index);
-+	kenter("%lx", folio->index);
- 
- 	rreq = netfs_alloc_request(mapping, file,
- 				   folio_file_pos(folio), folio_size(folio),
-@@ -508,7 +508,7 @@ int netfs_write_begin(struct netfs_inode *ctx,
- 
- have_folio:
- 	*_folio = folio;
--	_leave(" = 0");
-+	kleave(" = 0");
- 	return 0;
- 
- error_put:
-@@ -518,7 +518,7 @@ int netfs_write_begin(struct netfs_inode *ctx,
- 		folio_unlock(folio);
- 		folio_put(folio);
- 	}
--	_leave(" = %d", ret);
-+	kleave(" = %d", ret);
- 	return ret;
- }
- EXPORT_SYMBOL(netfs_write_begin);
-@@ -536,7 +536,7 @@ int netfs_prefetch_for_write(struct file *file, struct folio *folio,
- 	size_t flen = folio_size(folio);
- 	int ret;
- 
--	_enter("%zx @%llx", flen, start);
-+	kenter("%zx @%llx", flen, start);
- 
- 	ret = -ENOMEM;
- 
-@@ -567,7 +567,7 @@ int netfs_prefetch_for_write(struct file *file, struct folio *folio,
- error_put:
- 	netfs_put_request(rreq, false, netfs_rreq_trace_put_discard);
- error:
--	_leave(" = %d", ret);
-+	kleave(" = %d", ret);
- 	return ret;
- }
- 
-diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
-index 1121601536d1..42b48a2b99cd 100644
---- a/fs/netfs/buffered_write.c
-+++ b/fs/netfs/buffered_write.c
-@@ -56,7 +56,7 @@ static enum netfs_how_to_modify netfs_how_to_modify(struct netfs_inode *ctx,
- 	struct netfs_group *group = netfs_folio_group(folio);
- 	loff_t pos = folio_file_pos(folio);
- 
--	_enter("");
-+	kenter("");
- 
- 	if (group != netfs_group && group != NETFS_FOLIO_COPY_TO_CACHE)
- 		return NETFS_FLUSH_CONTENT;
-@@ -272,12 +272,12 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 		 */
- 		howto = netfs_how_to_modify(ctx, file, folio, netfs_group,
- 					    flen, offset, part, maybe_trouble);
--		_debug("howto %u", howto);
-+		kdebug("howto %u", howto);
- 		switch (howto) {
- 		case NETFS_JUST_PREFETCH:
- 			ret = netfs_prefetch_for_write(file, folio, offset, part);
- 			if (ret < 0) {
--				_debug("prefetch = %zd", ret);
-+				kdebug("prefetch = %zd", ret);
- 				goto error_folio_unlock;
- 			}
- 			break;
-@@ -418,7 +418,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 	}
- 
- 	iocb->ki_pos += written;
--	_leave(" = %zd [%zd]", written, ret);
-+	kleave(" = %zd [%zd]", written, ret);
- 	return written ? written : ret;
- 
- error_folio_unlock:
-@@ -491,7 +491,7 @@ ssize_t netfs_file_write_iter(struct kiocb *iocb, struct iov_iter *from)
- 	struct netfs_inode *ictx = netfs_inode(inode);
- 	ssize_t ret;
- 
--	_enter("%llx,%zx,%llx", iocb->ki_pos, iov_iter_count(from), i_size_read(inode));
-+	kenter("%llx,%zx,%llx", iocb->ki_pos, iov_iter_count(from), i_size_read(inode));
- 
- 	if (!iov_iter_count(from))
- 		return 0;
-@@ -528,7 +528,7 @@ vm_fault_t netfs_page_mkwrite(struct vm_fault *vmf, struct netfs_group *netfs_gr
- 	vm_fault_t ret = VM_FAULT_RETRY;
- 	int err;
- 
--	_enter("%lx", folio->index);
-+	kenter("%lx", folio->index);
- 
- 	sb_start_pagefault(inode->i_sb);
- 
-diff --git a/fs/netfs/direct_read.c b/fs/netfs/direct_read.c
-index 10a1e4da6bda..b6debac6205f 100644
---- a/fs/netfs/direct_read.c
-+++ b/fs/netfs/direct_read.c
-@@ -33,7 +33,7 @@ ssize_t netfs_unbuffered_read_iter_locked(struct kiocb *iocb, struct iov_iter *i
- 	size_t orig_count = iov_iter_count(iter);
- 	bool async = !is_sync_kiocb(iocb);
- 
--	_enter("");
-+	kenter("");
- 
- 	if (!orig_count)
- 		return 0; /* Don't update atime */
-diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
-index f516460e994e..cce072abfd18 100644
---- a/fs/netfs/direct_write.c
-+++ b/fs/netfs/direct_write.c
-@@ -37,7 +37,7 @@ ssize_t netfs_unbuffered_write_iter_locked(struct kiocb *iocb, struct iov_iter *
- 	size_t len = iov_iter_count(iter);
- 	bool async = !is_sync_kiocb(iocb);
- 
--	_enter("");
-+	kenter("");
- 
- 	/* We're going to need a bounce buffer if what we transmit is going to
- 	 * be different in some way to the source buffer, e.g. because it gets
-@@ -45,7 +45,7 @@ ssize_t netfs_unbuffered_write_iter_locked(struct kiocb *iocb, struct iov_iter *
- 	 */
- 	// TODO
- 
--	_debug("uw %llx-%llx", start, end);
-+	kdebug("uw %llx-%llx", start, end);
- 
- 	wreq = netfs_create_write_req(iocb->ki_filp->f_mapping, iocb->ki_filp, start,
- 				      iocb->ki_flags & IOCB_DIRECT ?
-@@ -95,7 +95,7 @@ ssize_t netfs_unbuffered_write_iter_locked(struct kiocb *iocb, struct iov_iter *
- 	wreq->cleanup = netfs_cleanup_dio_write;
- 	ret = netfs_unbuffered_write(wreq, is_sync_kiocb(iocb), iov_iter_count(&wreq->io_iter));
- 	if (ret < 0) {
--		_debug("begin = %zd", ret);
-+		kdebug("begin = %zd", ret);
- 		goto out;
- 	}
- 
-@@ -142,7 +142,7 @@ ssize_t netfs_unbuffered_write_iter(struct kiocb *iocb, struct iov_iter *from)
- 	loff_t pos = iocb->ki_pos;
- 	unsigned long long end = pos + iov_iter_count(from) - 1;
- 
--	_enter("%llx,%zx,%llx", pos, iov_iter_count(from), i_size_read(inode));
-+	kenter("%llx,%zx,%llx", pos, iov_iter_count(from), i_size_read(inode));
- 
- 	if (!iov_iter_count(from))
- 		return 0;
-diff --git a/fs/netfs/fscache_cache.c b/fs/netfs/fscache_cache.c
-index 9397ed39b0b4..288a73c3072d 100644
---- a/fs/netfs/fscache_cache.c
-+++ b/fs/netfs/fscache_cache.c
-@@ -237,7 +237,7 @@ int fscache_add_cache(struct fscache_cache *cache,
- {
- 	int n_accesses;
- 
--	_enter("{%s,%s}", ops->name, cache->name);
-+	kenter("{%s,%s}", ops->name, cache->name);
- 
- 	BUG_ON(fscache_cache_state(cache) != FSCACHE_CACHE_IS_PREPARING);
- 
-@@ -257,7 +257,7 @@ int fscache_add_cache(struct fscache_cache *cache,
- 
- 	up_write(&fscache_addremove_sem);
- 	pr_notice("Cache \"%s\" added (type %s)\n", cache->name, ops->name);
--	_leave(" = 0 [%s]", cache->name);
-+	kleave(" = 0 [%s]", cache->name);
- 	return 0;
- }
- EXPORT_SYMBOL(fscache_add_cache);
-diff --git a/fs/netfs/fscache_cookie.c b/fs/netfs/fscache_cookie.c
-index bce2492186d0..4d1e8bf4c615 100644
---- a/fs/netfs/fscache_cookie.c
-+++ b/fs/netfs/fscache_cookie.c
-@@ -456,7 +456,7 @@ struct fscache_cookie *__fscache_acquire_cookie(
- {
- 	struct fscache_cookie *cookie;
- 
--	_enter("V=%x", volume->debug_id);
-+	kenter("V=%x", volume->debug_id);
- 
- 	if (!index_key || !index_key_len || index_key_len > 255 || aux_data_len > 255)
- 		return NULL;
-@@ -484,7 +484,7 @@ struct fscache_cookie *__fscache_acquire_cookie(
- 
- 	trace_fscache_acquire(cookie);
- 	fscache_stat(&fscache_n_acquires_ok);
--	_leave(" = c=%08x", cookie->debug_id);
-+	kleave(" = c=%08x", cookie->debug_id);
- 	return cookie;
- }
- EXPORT_SYMBOL(__fscache_acquire_cookie);
-@@ -505,7 +505,7 @@ static void fscache_perform_lookup(struct fscache_cookie *cookie)
- 	enum fscache_access_trace trace = fscache_access_lookup_cookie_end_failed;
- 	bool need_withdraw = false;
- 
--	_enter("");
-+	kenter("");
- 
- 	if (!cookie->volume->cache_priv) {
- 		fscache_create_volume(cookie->volume, true);
-@@ -519,7 +519,7 @@ static void fscache_perform_lookup(struct fscache_cookie *cookie)
- 		if (cookie->state != FSCACHE_COOKIE_STATE_FAILED)
- 			fscache_set_cookie_state(cookie, FSCACHE_COOKIE_STATE_QUIESCENT);
- 		need_withdraw = true;
--		_leave(" [fail]");
-+		kleave(" [fail]");
- 		goto out;
- 	}
- 
-@@ -572,7 +572,7 @@ void __fscache_use_cookie(struct fscache_cookie *cookie, bool will_modify)
- 	bool queue = false;
- 	int n_active;
- 
--	_enter("c=%08x", cookie->debug_id);
-+	kenter("c=%08x", cookie->debug_id);
- 
- 	if (WARN(test_bit(FSCACHE_COOKIE_RELINQUISHED, &cookie->flags),
- 		 "Trying to use relinquished cookie\n"))
-@@ -636,7 +636,7 @@ void __fscache_use_cookie(struct fscache_cookie *cookie, bool will_modify)
- 	spin_unlock(&cookie->lock);
- 	if (queue)
- 		fscache_queue_cookie(cookie, fscache_cookie_get_use_work);
--	_leave("");
-+	kleave("");
- }
- EXPORT_SYMBOL(__fscache_use_cookie);
- 
-@@ -702,7 +702,7 @@ static void fscache_cookie_state_machine(struct fscache_cookie *cookie)
- 	enum fscache_cookie_state state;
- 	bool wake = false;
- 
--	_enter("c=%x", cookie->debug_id);
-+	kenter("c=%x", cookie->debug_id);
- 
- again:
- 	spin_lock(&cookie->lock);
-@@ -820,7 +820,7 @@ static void fscache_cookie_state_machine(struct fscache_cookie *cookie)
- 	spin_unlock(&cookie->lock);
- 	if (wake)
- 		wake_up_cookie_state(cookie);
--	_leave("");
-+	kleave("");
- }
- 
- static void fscache_cookie_worker(struct work_struct *work)
-@@ -867,7 +867,7 @@ static void fscache_cookie_lru_do_one(struct fscache_cookie *cookie)
- 		set_bit(FSCACHE_COOKIE_DO_LRU_DISCARD, &cookie->flags);
- 		spin_unlock(&cookie->lock);
- 		fscache_stat(&fscache_n_cookies_lru_expired);
--		_debug("lru c=%x", cookie->debug_id);
-+		kdebug("lru c=%x", cookie->debug_id);
- 		__fscache_withdraw_cookie(cookie);
- 	}
- 
-@@ -971,7 +971,7 @@ void __fscache_relinquish_cookie(struct fscache_cookie *cookie, bool retire)
- 	if (retire)
- 		fscache_stat(&fscache_n_relinquishes_retire);
- 
--	_enter("c=%08x{%d},%d",
-+	kenter("c=%08x{%d},%d",
- 	       cookie->debug_id, atomic_read(&cookie->n_active), retire);
- 
- 	if (WARN(test_and_set_bit(FSCACHE_COOKIE_RELINQUISHED, &cookie->flags),
-@@ -1050,7 +1050,7 @@ void __fscache_invalidate(struct fscache_cookie *cookie,
- {
- 	bool is_caching;
- 
--	_enter("c=%x", cookie->debug_id);
-+	kenter("c=%x", cookie->debug_id);
- 
- 	fscache_stat(&fscache_n_invalidates);
- 
-@@ -1072,7 +1072,7 @@ void __fscache_invalidate(struct fscache_cookie *cookie,
- 	case FSCACHE_COOKIE_STATE_INVALIDATING: /* is_still_valid will catch it */
- 	default:
- 		spin_unlock(&cookie->lock);
--		_leave(" [no %u]", cookie->state);
-+		kleave(" [no %u]", cookie->state);
- 		return;
- 
- 	case FSCACHE_COOKIE_STATE_LOOKING_UP:
-@@ -1081,7 +1081,7 @@ void __fscache_invalidate(struct fscache_cookie *cookie,
- 		fallthrough;
- 	case FSCACHE_COOKIE_STATE_CREATING:
- 		spin_unlock(&cookie->lock);
--		_leave(" [look %x]", cookie->inval_counter);
-+		kleave(" [look %x]", cookie->inval_counter);
- 		return;
- 
- 	case FSCACHE_COOKIE_STATE_ACTIVE:
-@@ -1094,7 +1094,7 @@ void __fscache_invalidate(struct fscache_cookie *cookie,
- 
- 		if (is_caching)
- 			fscache_queue_cookie(cookie, fscache_cookie_get_inval_work);
--		_leave(" [inv]");
-+		kleave(" [inv]");
- 		return;
- 	}
- }
-diff --git a/fs/netfs/fscache_io.c b/fs/netfs/fscache_io.c
-index 38637e5c9b57..bf4eaeec44fb 100644
---- a/fs/netfs/fscache_io.c
-+++ b/fs/netfs/fscache_io.c
-@@ -28,12 +28,12 @@ bool fscache_wait_for_operation(struct netfs_cache_resources *cres,
- 
- again:
- 	if (!fscache_cache_is_live(cookie->volume->cache)) {
--		_leave(" [broken]");
-+		kleave(" [broken]");
- 		return false;
- 	}
- 
- 	state = fscache_cookie_state(cookie);
--	_enter("c=%08x{%u},%x", cookie->debug_id, state, want_state);
-+	kenter("c=%08x{%u},%x", cookie->debug_id, state, want_state);
- 
- 	switch (state) {
- 	case FSCACHE_COOKIE_STATE_CREATING:
-@@ -52,7 +52,7 @@ bool fscache_wait_for_operation(struct netfs_cache_resources *cres,
- 	case FSCACHE_COOKIE_STATE_DROPPED:
- 	case FSCACHE_COOKIE_STATE_RELINQUISHING:
- 	default:
--		_leave(" [not live]");
-+		kleave(" [not live]");
- 		return false;
- 	}
- 
-@@ -92,7 +92,7 @@ static int fscache_begin_operation(struct netfs_cache_resources *cres,
- 	spin_lock(&cookie->lock);
- 
- 	state = fscache_cookie_state(cookie);
--	_enter("c=%08x{%u},%x", cookie->debug_id, state, want_state);
-+	kenter("c=%08x{%u},%x", cookie->debug_id, state, want_state);
- 
- 	switch (state) {
- 	case FSCACHE_COOKIE_STATE_LOOKING_UP:
-@@ -140,7 +140,7 @@ static int fscache_begin_operation(struct netfs_cache_resources *cres,
- 	cres->cache_priv = NULL;
- 	cres->ops = NULL;
- 	fscache_end_cookie_access(cookie, fscache_access_io_not_live);
--	_leave(" = -ENOBUFS");
-+	kleave(" = -ENOBUFS");
- 	return -ENOBUFS;
- }
- 
-@@ -224,7 +224,7 @@ void __fscache_write_to_cache(struct fscache_cookie *cookie,
- 	if (len == 0)
- 		goto abandon;
- 
--	_enter("%llx,%zx", start, len);
-+	kenter("%llx,%zx", start, len);
- 
- 	wreq = kzalloc(sizeof(struct fscache_write_request), GFP_NOFS);
- 	if (!wreq)
-diff --git a/fs/netfs/fscache_main.c b/fs/netfs/fscache_main.c
-index 42e98bb523e3..bf9b33d26e31 100644
---- a/fs/netfs/fscache_main.c
-+++ b/fs/netfs/fscache_main.c
-@@ -99,7 +99,7 @@ int __init fscache_init(void)
-  */
- void __exit fscache_exit(void)
- {
--	_enter("");
-+	kenter("");
- 
- 	kmem_cache_destroy(fscache_cookie_jar);
- 	fscache_proc_cleanup();
-diff --git a/fs/netfs/fscache_volume.c b/fs/netfs/fscache_volume.c
-index cdf991bdd9de..fbdc428aaea9 100644
---- a/fs/netfs/fscache_volume.c
-+++ b/fs/netfs/fscache_volume.c
-@@ -251,7 +251,7 @@ static struct fscache_volume *fscache_alloc_volume(const char *volume_key,
- 	fscache_see_volume(volume, fscache_volume_new_acquire);
- 	fscache_stat(&fscache_n_volumes);
- 	up_write(&fscache_addremove_sem);
--	_leave(" = v=%x", volume->debug_id);
-+	kleave(" = v=%x", volume->debug_id);
- 	return volume;
- 
- err_vol:
-@@ -452,7 +452,7 @@ void fscache_withdraw_volume(struct fscache_volume *volume)
- {
- 	int n_accesses;
- 
--	_debug("withdraw V=%x", volume->debug_id);
-+	kdebug("withdraw V=%x", volume->debug_id);
- 
- 	/* Allow wakeups on dec-to-0 */
- 	n_accesses = atomic_dec_return(&volume->n_accesses);
-diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
-index 95e281a8af78..de59e39e39a7 100644
---- a/fs/netfs/internal.h
-+++ b/fs/netfs/internal.h
-@@ -34,7 +34,6 @@ int netfs_begin_read(struct netfs_io_request *rreq, bool sync);
- /*
-  * main.c
-  */
--extern unsigned int netfs_debug;
- extern struct list_head netfs_io_requests;
- extern spinlock_t netfs_proc_lock;
- extern mempool_t netfs_request_pool;
-@@ -365,42 +364,12 @@ void fscache_create_volume(struct fscache_volume *volume, bool wait);
-  * debug tracing
-  */
- #define dbgprintk(FMT, ...) \
--	printk("[%-6.6s] "FMT"\n", current->comm, ##__VA_ARGS__)
-+	pr_debug("[%-6.6s] "FMT"\n", current->comm, ##__VA_ARGS__)
- 
- #define kenter(FMT, ...) dbgprintk("==> %s("FMT")", __func__, ##__VA_ARGS__)
- #define kleave(FMT, ...) dbgprintk("<== %s()"FMT"", __func__, ##__VA_ARGS__)
- #define kdebug(FMT, ...) dbgprintk(FMT, ##__VA_ARGS__)
- 
--#ifdef __KDEBUG
--#define _enter(FMT, ...) kenter(FMT, ##__VA_ARGS__)
--#define _leave(FMT, ...) kleave(FMT, ##__VA_ARGS__)
--#define _debug(FMT, ...) kdebug(FMT, ##__VA_ARGS__)
--
--#elif defined(CONFIG_NETFS_DEBUG)
--#define _enter(FMT, ...)			\
--do {						\
--	if (netfs_debug)			\
--		kenter(FMT, ##__VA_ARGS__);	\
--} while (0)
--
--#define _leave(FMT, ...)			\
--do {						\
--	if (netfs_debug)			\
--		kleave(FMT, ##__VA_ARGS__);	\
--} while (0)
--
--#define _debug(FMT, ...)			\
--do {						\
--	if (netfs_debug)			\
--		kdebug(FMT, ##__VA_ARGS__);	\
--} while (0)
--
--#else
--#define _enter(FMT, ...) no_printk("==> %s("FMT")", __func__, ##__VA_ARGS__)
--#define _leave(FMT, ...) no_printk("<== %s()"FMT"", __func__, ##__VA_ARGS__)
--#define _debug(FMT, ...) no_printk(FMT, ##__VA_ARGS__)
--#endif
--
- /*
-  * assertions
-  */
-diff --git a/fs/netfs/io.c b/fs/netfs/io.c
-index c93851b98368..c7576481c321 100644
---- a/fs/netfs/io.c
-+++ b/fs/netfs/io.c
-@@ -130,7 +130,7 @@ static void netfs_reset_subreq_iter(struct netfs_io_request *rreq,
- 	if (count == remaining)
- 		return;
- 
--	_debug("R=%08x[%u] ITER RESUB-MISMATCH %zx != %zx-%zx-%llx %x\n",
-+	kdebug("R=%08x[%u] ITER RESUB-MISMATCH %zx != %zx-%zx-%llx %x\n",
- 	       rreq->debug_id, subreq->debug_index,
- 	       iov_iter_count(&subreq->io_iter), subreq->transferred,
- 	       subreq->len, rreq->i_size,
-@@ -326,7 +326,7 @@ void netfs_subreq_terminated(struct netfs_io_subrequest *subreq,
- 	struct netfs_io_request *rreq = subreq->rreq;
- 	int u;
- 
--	_enter("R=%x[%x]{%llx,%lx},%zd",
-+	kenter("R=%x[%x]{%llx,%lx},%zd",
- 	       rreq->debug_id, subreq->debug_index,
- 	       subreq->start, subreq->flags, transferred_or_error);
- 
-@@ -435,7 +435,7 @@ netfs_rreq_prepare_read(struct netfs_io_request *rreq,
- 	struct netfs_inode *ictx = netfs_inode(rreq->inode);
- 	size_t lsize;
- 
--	_enter("%llx-%llx,%llx", subreq->start, subreq->start + subreq->len, rreq->i_size);
-+	kenter("%llx-%llx,%llx", subreq->start, subreq->start + subreq->len, rreq->i_size);
- 
- 	if (rreq->origin != NETFS_DIO_READ) {
- 		source = netfs_cache_prepare_read(subreq, rreq->i_size);
-@@ -518,7 +518,7 @@ static bool netfs_rreq_submit_slice(struct netfs_io_request *rreq,
- 	subreq->start		= rreq->start + rreq->submitted;
- 	subreq->len		= io_iter->count;
- 
--	_debug("slice %llx,%zx,%llx", subreq->start, subreq->len, rreq->submitted);
-+	kdebug("slice %llx,%zx,%llx", subreq->start, subreq->len, rreq->submitted);
- 	list_add_tail(&subreq->rreq_link, &rreq->subrequests);
- 
- 	/* Call out to the cache to find out what it can do with the remaining
-@@ -570,7 +570,7 @@ int netfs_begin_read(struct netfs_io_request *rreq, bool sync)
- 	struct iov_iter io_iter;
- 	int ret;
- 
--	_enter("R=%x %llx-%llx",
-+	kenter("R=%x %llx-%llx",
- 	       rreq->debug_id, rreq->start, rreq->start + rreq->len - 1);
- 
- 	if (rreq->len == 0) {
-@@ -593,7 +593,7 @@ int netfs_begin_read(struct netfs_io_request *rreq, bool sync)
- 	atomic_set(&rreq->nr_outstanding, 1);
- 	io_iter = rreq->io_iter;
- 	do {
--		_debug("submit %llx + %llx >= %llx",
-+		kdebug("submit %llx + %llx >= %llx",
- 		       rreq->start, rreq->submitted, rreq->i_size);
- 		if (rreq->origin == NETFS_DIO_READ &&
- 		    rreq->start + rreq->submitted >= rreq->i_size)
-diff --git a/fs/netfs/main.c b/fs/netfs/main.c
-index 5f0f438e5d21..db824c372842 100644
---- a/fs/netfs/main.c
-+++ b/fs/netfs/main.c
-@@ -20,10 +20,6 @@ MODULE_LICENSE("GPL");
- 
- EXPORT_TRACEPOINT_SYMBOL(netfs_sreq);
- 
--unsigned netfs_debug;
--module_param_named(debug, netfs_debug, uint, S_IWUSR | S_IRUGO);
--MODULE_PARM_DESC(netfs_debug, "Netfs support debugging mask");
--
- static struct kmem_cache *netfs_request_slab;
- static struct kmem_cache *netfs_subrequest_slab;
- mempool_t netfs_request_pool;
-diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
-index bc1fc54fb724..607dd6327a60 100644
---- a/fs/netfs/misc.c
-+++ b/fs/netfs/misc.c
-@@ -107,7 +107,7 @@ bool netfs_dirty_folio(struct address_space *mapping, struct folio *folio)
- 	struct fscache_cookie *cookie = netfs_i_cookie(ictx);
- 	bool need_use = false;
- 
--	_enter("");
-+	kenter("");
- 
- 	if (!filemap_dirty_folio(mapping, folio))
- 		return false;
-@@ -180,7 +180,7 @@ void netfs_invalidate_folio(struct folio *folio, size_t offset, size_t length)
- 	struct netfs_folio *finfo;
- 	size_t flen = folio_size(folio);
- 
--	_enter("{%lx},%zx,%zx", folio->index, offset, length);
-+	kenter("{%lx},%zx,%zx", folio->index, offset, length);
- 
- 	if (!folio_test_private(folio))
- 		return;
-diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
-index 60112e4b2c5e..79058e238660 100644
---- a/fs/netfs/write_collect.c
-+++ b/fs/netfs/write_collect.c
-@@ -161,7 +161,7 @@ static void netfs_retry_write_stream(struct netfs_io_request *wreq,
- {
- 	struct list_head *next;
- 
--	_enter("R=%x[%x:]", wreq->debug_id, stream->stream_nr);
-+	kenter("R=%x[%x:]", wreq->debug_id, stream->stream_nr);
- 
- 	if (list_empty(&stream->subrequests))
- 		return;
-@@ -374,7 +374,7 @@ static void netfs_collect_write_results(struct netfs_io_request *wreq)
- 	unsigned int notes;
- 	int s;
- 
--	_enter("%llx-%llx", wreq->start, wreq->start + wreq->len);
-+	kenter("%llx-%llx", wreq->start, wreq->start + wreq->len);
- 	trace_netfs_collect(wreq);
- 	trace_netfs_rreq(wreq, netfs_rreq_trace_collect);
- 
-@@ -409,7 +409,7 @@ static void netfs_collect_write_results(struct netfs_io_request *wreq)
- 		front = stream->front;
- 		while (front) {
- 			trace_netfs_collect_sreq(wreq, front);
--			//_debug("sreq [%x] %llx %zx/%zx",
-+			//kdebug("sreq [%x] %llx %zx/%zx",
- 			//       front->debug_index, front->start, front->transferred, front->len);
- 
- 			/* Stall if there may be a discontinuity. */
-@@ -598,7 +598,7 @@ static void netfs_collect_write_results(struct netfs_io_request *wreq)
- out:
- 	netfs_put_group_many(wreq->group, wreq->nr_group_rel);
- 	wreq->nr_group_rel = 0;
--	_leave(" = %x", notes);
-+	kleave(" = %x", notes);
- 	return;
- 
- need_retry:
-@@ -606,7 +606,7 @@ static void netfs_collect_write_results(struct netfs_io_request *wreq)
- 	 * that any partially completed op will have had any wholly transferred
- 	 * folios removed from it.
- 	 */
--	_debug("retry");
-+	kdebug("retry");
- 	netfs_retry_writes(wreq);
- 	goto out;
- }
-@@ -621,7 +621,7 @@ void netfs_write_collection_worker(struct work_struct *work)
- 	size_t transferred;
- 	int s;
- 
--	_enter("R=%x", wreq->debug_id);
-+	kenter("R=%x", wreq->debug_id);
- 
- 	netfs_see_request(wreq, netfs_rreq_trace_see_work);
- 	if (!test_bit(NETFS_RREQ_IN_PROGRESS, &wreq->flags)) {
-@@ -684,7 +684,7 @@ void netfs_write_collection_worker(struct work_struct *work)
- 	if (wreq->origin == NETFS_DIO_WRITE)
- 		inode_dio_end(wreq->inode);
- 
--	_debug("finished");
-+	kdebug("finished");
- 	trace_netfs_rreq(wreq, netfs_rreq_trace_wake_ip);
- 	clear_bit_unlock(NETFS_RREQ_IN_PROGRESS, &wreq->flags);
- 	wake_up_bit(&wreq->flags, NETFS_RREQ_IN_PROGRESS);
-@@ -743,7 +743,7 @@ void netfs_write_subrequest_terminated(void *_op, ssize_t transferred_or_error,
- 	struct netfs_io_request *wreq = subreq->rreq;
- 	struct netfs_io_stream *stream = &wreq->io_streams[subreq->stream_nr];
- 
--	_enter("%x[%x] %zd", wreq->debug_id, subreq->debug_index, transferred_or_error);
-+	kenter("%x[%x] %zd", wreq->debug_id, subreq->debug_index, transferred_or_error);
- 
- 	switch (subreq->source) {
- 	case NETFS_UPLOAD_TO_SERVER:
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index e190043bc0da..f61f30ed8546 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -99,7 +99,7 @@ struct netfs_io_request *netfs_create_write_req(struct address_space *mapping,
- 	if (IS_ERR(wreq))
- 		return wreq;
- 
--	_enter("R=%x", wreq->debug_id);
-+	kenter("R=%x", wreq->debug_id);
- 
- 	ictx = netfs_inode(wreq->inode);
- 	if (test_bit(NETFS_RREQ_WRITE_TO_CACHE, &wreq->flags))
-@@ -159,7 +159,7 @@ static void netfs_prepare_write(struct netfs_io_request *wreq,
- 	subreq->max_nr_segs	= INT_MAX;
- 	subreq->stream_nr	= stream->stream_nr;
- 
--	_enter("R=%x[%x]", wreq->debug_id, subreq->debug_index);
-+	kenter("R=%x[%x]", wreq->debug_id, subreq->debug_index);
- 
- 	trace_netfs_sreq_ref(wreq->debug_id, subreq->debug_index,
- 			     refcount_read(&subreq->ref),
-@@ -215,7 +215,7 @@ static void netfs_do_issue_write(struct netfs_io_stream *stream,
- {
- 	struct netfs_io_request *wreq = subreq->rreq;
- 
--	_enter("R=%x[%x],%zx", wreq->debug_id, subreq->debug_index, subreq->len);
-+	kenter("R=%x[%x],%zx", wreq->debug_id, subreq->debug_index, subreq->len);
- 
- 	if (test_bit(NETFS_SREQ_FAILED, &subreq->flags))
- 		return netfs_write_subrequest_terminated(subreq, subreq->error, false);
-@@ -272,11 +272,11 @@ int netfs_advance_write(struct netfs_io_request *wreq,
- 	size_t part;
- 
- 	if (!stream->avail) {
--		_leave("no write");
-+		kleave("no write");
- 		return len;
- 	}
- 
--	_enter("R=%x[%x]", wreq->debug_id, subreq ? subreq->debug_index : 0);
-+	kenter("R=%x[%x]", wreq->debug_id, subreq ? subreq->debug_index : 0);
- 
- 	if (subreq && start != subreq->start + subreq->len) {
- 		netfs_issue_write(wreq, stream);
-@@ -288,7 +288,7 @@ int netfs_advance_write(struct netfs_io_request *wreq,
- 	subreq = stream->construct;
- 
- 	part = min(subreq->max_len - subreq->len, len);
--	_debug("part %zx/%zx %zx/%zx", subreq->len, subreq->max_len, part, len);
-+	kdebug("part %zx/%zx %zx/%zx", subreq->len, subreq->max_len, part, len);
- 	subreq->len += part;
- 	subreq->nr_segs++;
- 
-@@ -319,7 +319,7 @@ static int netfs_write_folio(struct netfs_io_request *wreq,
- 	bool to_eof = false, streamw = false;
- 	bool debug = false;
- 
--	_enter("");
-+	kenter("");
- 
- 	/* netfs_perform_write() may shift i_size around the page or from out
- 	 * of the page to beyond it, but cannot move i_size into or through the
-@@ -329,7 +329,7 @@ static int netfs_write_folio(struct netfs_io_request *wreq,
- 
- 	if (fpos >= i_size) {
- 		/* mmap beyond eof. */
--		_debug("beyond eof");
-+		kdebug("beyond eof");
- 		folio_start_writeback(folio);
- 		folio_unlock(folio);
- 		wreq->nr_group_rel += netfs_folio_written_back(folio);
-@@ -363,7 +363,7 @@ static int netfs_write_folio(struct netfs_io_request *wreq,
- 	}
- 	flen -= foff;
- 
--	_debug("folio %zx %zx %zx", foff, flen, fsize);
-+	kdebug("folio %zx %zx %zx", foff, flen, fsize);
- 
- 	/* Deal with discontinuities in the stream of dirty pages.  These can
- 	 * arise from a number of sources:
-@@ -487,7 +487,7 @@ static int netfs_write_folio(struct netfs_io_request *wreq,
- 		for (int s = 0; s < NR_IO_STREAMS; s++)
- 			netfs_issue_write(wreq, &wreq->io_streams[s]);
- 
--	_leave(" = 0");
-+	kleave(" = 0");
- 	return 0;
- }
- 
-@@ -522,7 +522,7 @@ int netfs_writepages(struct address_space *mapping,
- 	netfs_stat(&netfs_n_wh_writepages);
- 
- 	do {
--		_debug("wbiter %lx %llx", folio->index, wreq->start + wreq->submitted);
-+		kdebug("wbiter %lx %llx", folio->index, wreq->start + wreq->submitted);
- 
- 		/* It appears we don't have to handle cyclic writeback wrapping. */
- 		WARN_ON_ONCE(wreq && folio_pos(folio) < wreq->start + wreq->submitted);
-@@ -546,14 +546,14 @@ int netfs_writepages(struct address_space *mapping,
- 	mutex_unlock(&ictx->wb_lock);
- 
- 	netfs_put_request(wreq, false, netfs_rreq_trace_put_return);
--	_leave(" = %d", error);
-+	kleave(" = %d", error);
- 	return error;
- 
- couldnt_start:
- 	netfs_kill_dirty_pages(mapping, wbc, folio);
- out:
- 	mutex_unlock(&ictx->wb_lock);
--	_leave(" = %d", error);
-+	kleave(" = %d", error);
- 	return error;
- }
- EXPORT_SYMBOL(netfs_writepages);
-@@ -590,7 +590,7 @@ int netfs_advance_writethrough(struct netfs_io_request *wreq, struct writeback_c
- 			       struct folio *folio, size_t copied, bool to_page_end,
- 			       struct folio **writethrough_cache)
- {
--	_enter("R=%x ic=%zu ws=%u cp=%zu tp=%u",
-+	kenter("R=%x ic=%zu ws=%u cp=%zu tp=%u",
- 	       wreq->debug_id, wreq->iter.count, wreq->wsize, copied, to_page_end);
- 
- 	if (!*writethrough_cache) {
-@@ -624,7 +624,7 @@ int netfs_end_writethrough(struct netfs_io_request *wreq, struct writeback_contr
- 	struct netfs_inode *ictx = netfs_inode(wreq->inode);
- 	int ret;
- 
--	_enter("R=%x", wreq->debug_id);
-+	kenter("R=%x", wreq->debug_id);
- 
- 	if (writethrough_cache)
- 		netfs_write_folio(wreq, wbc, writethrough_cache);
-@@ -652,7 +652,7 @@ int netfs_unbuffered_write(struct netfs_io_request *wreq, bool may_wait, size_t
- 	loff_t start = wreq->start;
- 	int error = 0;
- 
--	_enter("%zx", len);
-+	kenter("%zx", len);
- 
- 	if (wreq->origin == NETFS_DIO_WRITE)
- 		inode_dio_begin(wreq->inode);
-@@ -660,7 +660,7 @@ int netfs_unbuffered_write(struct netfs_io_request *wreq, bool may_wait, size_t
- 	while (len) {
- 		// TODO: Prepare content encryption
- 
--		_debug("unbuffered %zx", len);
-+		kdebug("unbuffered %zx", len);
- 		part = netfs_advance_write(wreq, upload, start, len, false);
- 		start += part;
- 		len -= part;
-@@ -679,6 +679,6 @@ int netfs_unbuffered_write(struct netfs_io_request *wreq, bool may_wait, size_t
- 	if (list_empty(&upload->subrequests))
- 		netfs_wake_write_collector(wreq, false);
- 
--	_leave(" = %d", error);
-+	kleave(" = %d", error);
- 	return error;
- }
+Hello,
 
-base-commit: 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0
+kernel test robot noticed "xfstests.generic.617.fail" on:
+
+commit: 9b038d004ce95551cb35381c49fe896c5bc11ffe ("netfs: Fix io_uring based write-through")
+https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
+
+[test failed on linus/master      2df0193e62cf887f373995fb8a91068562784adc]
+[test failed on linux-next/master ee78a17615ad0cfdbbc27182b1047cd36c9d4d5f]
+
+in testcase: xfstests
+version: xfstests-x86_64-98379713-1_20240603
+with following parameters:
+
+	disk: 4HDD
+	fs: ext4
+	fs2: smbv3
+	test: generic-617
+
+
+
+compiler: gcc-13
+test machine: 4 threads Intel(R) Core(TM) i5-6500 CPU @ 3.20GHz (Skylake) with 32G memory
+
+(please refer to attached dmesg/kmsg for entire log/backtrace)
+
+
+
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <oliver.sang@intel.com>
+| Closes: https://lore.kernel.org/oe-lkp/202406111527.994f629c-oliver.sang@intel.com
+
+2024-06-06 01:33:53 mount /dev/sda1 /fs/sda1
+2024-06-06 01:33:54 mkdir -p /smbv3//cifs/sda1
+2024-06-06 01:33:54 export FSTYP=cifs
+2024-06-06 01:33:54 export TEST_DEV=//localhost/fs/sda1
+2024-06-06 01:33:54 export TEST_DIR=/smbv3//cifs/sda1
+2024-06-06 01:33:54 export CIFS_MOUNT_OPTIONS=-ousername=root,password=pass,noperm,vers=3.0,mfsymlinks,actimeo=0
+2024-06-06 01:33:54 echo generic/617
+2024-06-06 01:33:54 ./check -E tests/cifs/exclude.incompatible-smb3.txt -E tests/cifs/exclude.very-slow.txt generic/617
+FSTYP         -- cifs
+PLATFORM      -- Linux/x86_64 lkp-skl-d05 6.9.0-10324-g9b038d004ce9 #1 SMP PREEMPT_DYNAMIC Thu Jun  6 03:01:37 CST 2024
+
+generic/617       - output mismatch (see /lkp/benchmarks/xfstests/results//generic/617.out.bad)
+    --- tests/generic/617.out	2024-06-03 12:10:00.000000000 +0000
+    +++ /lkp/benchmarks/xfstests/results//generic/617.out.bad	2024-06-06 01:34:51.537054472 +0000
+    @@ -1,2 +1,12 @@
+     QA output created by 617
+    +uring write bad io length: 0 instead of 110592
+    +short write: 0x0 bytes instead of 0x1b000
+    +LOG DUMP (4 total operations):
+    +1(  1 mod 256): SKIPPED (no operation)
+    +2(  2 mod 256): SKIPPED (no operation)
+    +3(  3 mod 256): SKIPPED (no operation)
+    ...
+    (Run 'diff -u /lkp/benchmarks/xfstests/tests/generic/617.out /lkp/benchmarks/xfstests/results//generic/617.out.bad'  to see the entire diff)
+Ran: generic/617
+Failures: generic/617
+Failed 1 of 1 tests
+
+
+
+
+The kernel config and materials to reproduce are available at:
+https://download.01.org/0day-ci/archive/20240611/202406111527.994f629c-oliver.sang@intel.com
+
+
+
 -- 
-2.43.0
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
