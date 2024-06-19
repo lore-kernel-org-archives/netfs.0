@@ -1,81 +1,123 @@
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F6F15747A
-	for <netfs@lists.linux.dev>; Tue, 18 Jun 2024 13:37:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E795F612EB;
+	Wed, 19 Jun 2024 11:27:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718717869; cv=none; b=mlu79dmsU1vQjIaMOUGBIppecOTUJ2yrX7tofN1XII9GVPsg+HPctSvS2Yk/4LpgYvff2xMdlyuknQ5l6JztQjDfuFL66mhyIrmRpVR+BRoP0ktFz7uZ0SgmvWowlMDDwSeyYNo5E3u+VhqAPb/jSgWaSiEi9L6g9ja1Y3vz0Lc=
+	t=1718796425; cv=none; b=UgvwYMaYWi/6ZE1NjBGFUa+4z+Jko12vYEvxDLejD18Wp1QpExejsdUoIvg1vQ2CBa+ti4xm0D7UXgRLil91nOuTishvLevGV7KlzFxk63vOZ8QWIaO1nulA1uLoJuHvZLR3TSry8LZhSGlG++lzj9DoGhEbwR/ACg/STf+r6C4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718717869; c=relaxed/simple;
-	bh=KssnqUamADmWVBsMeaGkbmuidtbL8xmrw+FgZlCyEus=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=oTg4ReqTSjfLFARIczldU/zTeio3B5jIqIapFRjbumRGGAY7IBOA9ho8CCgwpwEmNnN8pCSv8hFzkRPbZQsg063GqYvxyqKZPZSTmWKsR4U6/w7sCx43X9K/H3hqOg4wGeHrJOeKEpEfujGmhgNrqNiaQr+5HPRUyH/zg/Q6wqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4W3SQR0pw8zPrGw;
-	Tue, 18 Jun 2024 21:34:07 +0800 (CST)
-Received: from kwepemf100017.china.huawei.com (unknown [7.202.181.16])
-	by mail.maildlp.com (Postfix) with ESMTPS id DBB2818007A;
-	Tue, 18 Jun 2024 21:37:38 +0800 (CST)
-Received: from [10.174.176.88] (10.174.176.88) by
- kwepemf100017.china.huawei.com (7.202.181.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 18 Jun 2024 21:37:37 +0800
-Message-ID: <6ffcbc02-b059-4e56-8900-53820d2d3caa@huawei.com>
-Date: Tue, 18 Jun 2024 21:37:37 +0800
+	s=arc-20240116; t=1718796425; c=relaxed/simple;
+	bh=0hOuCVZMzu4EPGwSP4jUUH6lE8b0tGGjf5OMxmllJmk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lVLD9RbOrLAaZeCCul27JJwgaTsSJDhGfOq0abLJ29mWEFpf0g92WrN4YOG+Qy0rAZYawqBsVKGTGtAaHyEqynl0bekoK2dBPBO6uJKD6a/3GktWEdthKkuljTieMYp8eEHt4tI0ZC/MBJNJpJEUYjkr6BMzv4ct7kT2hjtsjb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Me8iKtJQ; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Me8iKtJQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA94C2BBFC;
+	Wed, 19 Jun 2024 11:27:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718796424;
+	bh=0hOuCVZMzu4EPGwSP4jUUH6lE8b0tGGjf5OMxmllJmk=;
+	h=Subject:To:Cc:From:Date:From;
+	b=Me8iKtJQiDc2nu1kUCmqyR0+YGIFIu0fiMHPJ88h0v2BToXuLHuXIude7JuhRF0X2
+	 bGFXV623Pvby25ovCOk4S116vpy3a9ZiFNqZUCZzg9r7ZUx1kzPWDrc7jDLm1U3gaN
+	 Ei+X290iCIFBD56ShHx4BT6ffPuvmEbBIrMGw5eQ=
+Subject: Patch "cachefiles, erofs: Fix NULL deref in when cachefiles is not doing ondemand-mode" has been added to the 6.6-stable tree
+To: chao@kernel.org,dhowells@redhat.com,gregkh@linuxfoundation.org,huyue2@coolpad.com,jefflexu@linux.alibaba.com,linux-erofs@lists.ozlabs.org,marc.dionne@auristor.com,netfs@lists.linux.dev,xiang@kernel.org
+Cc: <stable-commits@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Wed, 19 Jun 2024 13:27:01 +0200
+Message-ID: <2024061901-dangle-idealism-cf51@gregkh>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] cachefiles: modify inappropriate error return value in
- cachefiles_daemon_secctx
-To: <dhowells@redhat.com>, <steved@redhat.com>, <Trond.Myklebust@netapp.com>,
-	<viro@zeniv.linux.org.uk>
-CC: <netfs@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<yangerkun@huawei.com>, Gao Xiang <hsiangkao@linux.alibaba.com>,
-	<jefflexu@linux.alibaba>, <zhujia.zj@bytedance.com>, <libaokun1@huawei.com>,
-	<houtao1@huawei.com>, Yu Kuai <yukuai3@huawei.com>
-References: <20240604071334.3982185-1-wozizhi@huawei.com>
-From: Zizhi Wo <wozizhi@huawei.com>
-In-Reply-To: <20240604071334.3982185-1-wozizhi@huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemf100017.china.huawei.com (7.202.181.16)
+X-stable: commit
+X-Patchwork-Hint: ignore 
 
-friendly ping
 
-在 2024/6/4 15:13, Zizhi Wo 写道:
-> In cachefiles_daemon_secctx(), if it is detected that secctx has been
-> written to the cache, the error code returned is -EINVAL, which is
-> inappropriate and does not distinguish the situation well.
-> 
-> Like cachefiles_daemon_dir(), fix this issue by return -EEXIST to the user
-> if it has already been defined once.
-> 
-> Fixes: 9ae326a69004 ("CacheFiles: A cache that backs onto a mounted filesystem")
-> Signed-off-by: Zizhi Wo <wozizhi@huawei.com>
-> ---
->   fs/cachefiles/daemon.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
-> index 6465e2574230..1b14849804f3 100644
-> --- a/fs/cachefiles/daemon.c
-> +++ b/fs/cachefiles/daemon.c
-> @@ -586,7 +586,7 @@ static int cachefiles_daemon_secctx(struct cachefiles_cache *cache, char *args)
->   
->   	if (cache->secctx) {
->   		pr_err("Second security context specified\n");
-> -		return -EINVAL;
-> +		return -EEXIST;
->   	}
->   
->   	secctx = kstrdup(args, GFP_KERNEL);
+This is a note to let you know that I've just added the patch titled
 
+    cachefiles, erofs: Fix NULL deref in when cachefiles is not doing ondemand-mode
+
+to the 6.6-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+
+The filename of the patch is:
+     cachefiles-erofs-fix-null-deref-in-when-cachefiles-is-not-doing-ondemand-mode.patch
+and it can be found in the queue-6.6 subdirectory.
+
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.
+
+
+From c3d6569a43322f371e7ba0ad386112723757ac8f Mon Sep 17 00:00:00 2001
+From: David Howells <dhowells@redhat.com>
+Date: Fri, 19 Jan 2024 20:49:34 +0000
+Subject: cachefiles, erofs: Fix NULL deref in when cachefiles is not doing ondemand-mode
+
+From: David Howells <dhowells@redhat.com>
+
+commit c3d6569a43322f371e7ba0ad386112723757ac8f upstream.
+
+cachefiles_ondemand_init_object() as called from cachefiles_open_file() and
+cachefiles_create_tmpfile() does not check if object->ondemand is set
+before dereferencing it, leading to an oops something like:
+
+	RIP: 0010:cachefiles_ondemand_init_object+0x9/0x41
+	...
+	Call Trace:
+	 <TASK>
+	 cachefiles_open_file+0xc9/0x187
+	 cachefiles_lookup_cookie+0x122/0x2be
+	 fscache_cookie_state_machine+0xbe/0x32b
+	 fscache_cookie_worker+0x1f/0x2d
+	 process_one_work+0x136/0x208
+	 process_scheduled_works+0x3a/0x41
+	 worker_thread+0x1a2/0x1f6
+	 kthread+0xca/0xd2
+	 ret_from_fork+0x21/0x33
+
+Fix this by making cachefiles_ondemand_init_object() return immediately if
+cachefiles->ondemand is NULL.
+
+Fixes: 3c5ecfe16e76 ("cachefiles: extract ondemand info field from cachefiles_object")
+Reported-by: Marc Dionne <marc.dionne@auristor.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Gao Xiang <xiang@kernel.org>
+cc: Chao Yu <chao@kernel.org>
+cc: Yue Hu <huyue2@coolpad.com>
+cc: Jeffle Xu <jefflexu@linux.alibaba.com>
+cc: linux-erofs@lists.ozlabs.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ fs/cachefiles/ondemand.c |    3 +++
+ 1 file changed, 3 insertions(+)
+
+--- a/fs/cachefiles/ondemand.c
++++ b/fs/cachefiles/ondemand.c
+@@ -611,6 +611,9 @@ int cachefiles_ondemand_init_object(stru
+ 	struct fscache_volume *volume = object->volume->vcookie;
+ 	size_t volume_key_size, cookie_key_size, data_len;
+ 
++	if (!object->ondemand)
++		return 0;
++
+ 	/*
+ 	 * CacheFiles will firstly check the cache file under the root cache
+ 	 * directory. If the coherency check failed, it will fallback to
+
+
+Patches currently in stable-queue which might be from dhowells@redhat.com are
+
+queue-6.6/cachefiles-resend-an-open-request-if-the-read-reques.patch
+queue-6.6/cachefiles-add-restore-command-to-recover-inflight-o.patch
+queue-6.6/cachefiles-introduce-object-ondemand-state.patch
+queue-6.6/cachefiles-extract-ondemand-info-field-from-cachefil.patch
+queue-6.6/cachefiles-erofs-fix-null-deref-in-when-cachefiles-is-not-doing-ondemand-mode.patch
