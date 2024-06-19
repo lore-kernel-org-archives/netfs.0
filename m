@@ -1,64 +1,61 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5C013E883;
-	Wed, 19 Jun 2024 11:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE1512FB31;
+	Wed, 19 Jun 2024 13:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718797303; cv=none; b=GrLdgIbBKeJPvOrwHyMcVvkaoApZYlNudd5fEjn2XN8frQ3MLHMOvdf/pjyx3egp6HipMYTmGVlVCF/ibtYvwJX++7n9miCX21uQD3NPEwZIX0KSvUJ4C6TRX+Ymx3Sm01JvIjPE+E1kzLr1KxA7s6t7ecSgXXeS7RfVa+hSKMY=
+	t=1718802600; cv=none; b=jQmVJXzo3WcXZZ6/V0yyhhkFveUsvEhTh0+e9lXVCEPGBmSEK4OHtoM1SsvqbypMSHivOP0p8q3gfiURtY4gJIRisCp2TGsze26f1eI4ZW8KOU5LitTvRIvF+MUlZOSDG4qwl9G/XiCyCN2itLNJ+9ZKEj7gkyqeJMZHZNMDCqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718797303; c=relaxed/simple;
-	bh=aETZJ6QFcxWCmeFR+2UkzJ4h4YY19n/zh9NWSvVXkk4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=iSA1Lm6F1Ysi97BGCckey9wvaITKUxVPVvajjjYyp/TOgJCvUGZEIH86kaUyEpSsHwBbc+zLCiPJLbmYYISn+I7KB6DeJAcW+hKieDMLYlz90Y2SfqorXg7EB5+iHMa42ims7IayBy/SYLUa4wEYXxZ3jY58O1bsQvSjFs9Fnbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJEK0SC2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1718802600; c=relaxed/simple;
+	bh=VV919UURObOpWiM6NE+Q9Ku6hmAoZcCF0pgl5kUFSho=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=enAHk95CEh11EOy6V2dq0rjEyrodyGNsGK9zq/jVLYLSHbY21fnAQE5/cEJopb+kyPfl4VAndJ51qKeBTA2Qm9dQEpc2wIZxVCAc8BrppOGXD0rWJKoPjDdhPD1nl4/ua/jDKHqFg94AHuDSmjXeIT0yHSdfEnD81wefMDOvkmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z3vs73U4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJEK0SC2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 223B6C2BBFC;
-	Wed, 19 Jun 2024 11:41:41 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z3vs73U4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1859C2BBFC;
+	Wed, 19 Jun 2024 13:09:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718797302;
-	bh=aETZJ6QFcxWCmeFR+2UkzJ4h4YY19n/zh9NWSvVXkk4=;
-	h=Subject:To:Cc:From:Date:From;
-	b=oJEK0SC27Esx4fkprBwSTtsEuoYR8IousQi1erSqsL2D0sw8YhesWngQA5XIEfzr2
-	 o93CnKxCYpY6qWpdQZyWAC7az+6L4XwrRmzcAAY34oOEvYbkRSEvd1QFIb5QJW8GSI
-	 KqyJ7HzQGvxAKh6/1rknIq/P0uhXhn58ZRjj/BDo=
-Subject: Patch "cachefiles, erofs: Fix NULL deref in when cachefiles is not doing ondemand-mode" has been added to the 6.1-stable tree
-To: chao@kernel.org,dhowells@redhat.com,gregkh@linuxfoundation.org,huyue2@coolpad.com,jefflexu@linux.alibaba.com,linux-erofs@lists.ozlabs.org,marc.dionne@auristor.com,netfs@lists.linux.dev,xiang@kernel.org
-Cc: <stable-commits@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Wed, 19 Jun 2024 13:41:39 +0200
-Message-ID: <2024061939-liability-failing-7856@gregkh>
+	s=korg; t=1718802600;
+	bh=VV919UURObOpWiM6NE+Q9Ku6hmAoZcCF0pgl5kUFSho=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Z3vs73U4KyYuNwHV/FZ3rIIfeeOgoB49+RbhaNTfdXlwsp+qJKKDkb2xSUwTrJ+BK
+	 MVC0rh5vd9wg1+gp04NFIISdqcIKpoV6fcECwjN5i2JlsEs4GwQ9hZ9E+fQu+pxTQE
+	 YwVRK1qiKlKf2afftngwgTEKVGqv+lILXSARGoN4=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Marc Dionne <marc.dionne@auristor.com>,
+	David Howells <dhowells@redhat.com>,
+	Gao Xiang <xiang@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Yue Hu <huyue2@coolpad.com>,
+	Jeffle Xu <jefflexu@linux.alibaba.com>,
+	linux-erofs@lists.ozlabs.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH 6.6 250/267] cachefiles, erofs: Fix NULL deref in when cachefiles is not doing ondemand-mode
+Date: Wed, 19 Jun 2024 14:56:41 +0200
+Message-ID: <20240619125615.915210973@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-stable: commit
-X-Patchwork-Hint: ignore 
 
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
-This is a note to let you know that I've just added the patch titled
-
-    cachefiles, erofs: Fix NULL deref in when cachefiles is not doing ondemand-mode
-
-to the 6.1-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-
-The filename of the patch is:
-     cachefiles-erofs-fix-null-deref-in-when-cachefiles-is-not-doing-ondemand-mode.patch
-and it can be found in the queue-6.1 subdirectory.
-
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
-
-
-From c3d6569a43322f371e7ba0ad386112723757ac8f Mon Sep 17 00:00:00 2001
-From: David Howells <dhowells@redhat.com>
-Date: Fri, 19 Jan 2024 20:49:34 +0000
-Subject: cachefiles, erofs: Fix NULL deref in when cachefiles is not doing ondemand-mode
+------------------
 
 From: David Howells <dhowells@redhat.com>
 
@@ -114,10 +111,3 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	 * directory. If the coherency check failed, it will fallback to
 
 
-Patches currently in stable-queue which might be from dhowells@redhat.com are
-
-queue-6.1/cachefiles-resend-an-open-request-if-the-read-reques.patch
-queue-6.1/cachefiles-add-restore-command-to-recover-inflight-o.patch
-queue-6.1/cachefiles-introduce-object-ondemand-state.patch
-queue-6.1/cachefiles-extract-ondemand-info-field-from-cachefil.patch
-queue-6.1/cachefiles-erofs-fix-null-deref-in-when-cachefiles-is-not-doing-ondemand-mode.patch
