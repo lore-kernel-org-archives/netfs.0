@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E795F612EB;
-	Wed, 19 Jun 2024 11:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5C013E883;
+	Wed, 19 Jun 2024 11:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718796425; cv=none; b=UgvwYMaYWi/6ZE1NjBGFUa+4z+Jko12vYEvxDLejD18Wp1QpExejsdUoIvg1vQ2CBa+ti4xm0D7UXgRLil91nOuTishvLevGV7KlzFxk63vOZ8QWIaO1nulA1uLoJuHvZLR3TSry8LZhSGlG++lzj9DoGhEbwR/ACg/STf+r6C4=
+	t=1718797303; cv=none; b=GrLdgIbBKeJPvOrwHyMcVvkaoApZYlNudd5fEjn2XN8frQ3MLHMOvdf/pjyx3egp6HipMYTmGVlVCF/ibtYvwJX++7n9miCX21uQD3NPEwZIX0KSvUJ4C6TRX+Ymx3Sm01JvIjPE+E1kzLr1KxA7s6t7ecSgXXeS7RfVa+hSKMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718796425; c=relaxed/simple;
-	bh=0hOuCVZMzu4EPGwSP4jUUH6lE8b0tGGjf5OMxmllJmk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lVLD9RbOrLAaZeCCul27JJwgaTsSJDhGfOq0abLJ29mWEFpf0g92WrN4YOG+Qy0rAZYawqBsVKGTGtAaHyEqynl0bekoK2dBPBO6uJKD6a/3GktWEdthKkuljTieMYp8eEHt4tI0ZC/MBJNJpJEUYjkr6BMzv4ct7kT2hjtsjb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Me8iKtJQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1718797303; c=relaxed/simple;
+	bh=aETZJ6QFcxWCmeFR+2UkzJ4h4YY19n/zh9NWSvVXkk4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=iSA1Lm6F1Ysi97BGCckey9wvaITKUxVPVvajjjYyp/TOgJCvUGZEIH86kaUyEpSsHwBbc+zLCiPJLbmYYISn+I7KB6DeJAcW+hKieDMLYlz90Y2SfqorXg7EB5+iHMa42ims7IayBy/SYLUa4wEYXxZ3jY58O1bsQvSjFs9Fnbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJEK0SC2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Me8iKtJQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA94C2BBFC;
-	Wed, 19 Jun 2024 11:27:03 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJEK0SC2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 223B6C2BBFC;
+	Wed, 19 Jun 2024 11:41:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718796424;
-	bh=0hOuCVZMzu4EPGwSP4jUUH6lE8b0tGGjf5OMxmllJmk=;
+	s=korg; t=1718797302;
+	bh=aETZJ6QFcxWCmeFR+2UkzJ4h4YY19n/zh9NWSvVXkk4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Me8iKtJQiDc2nu1kUCmqyR0+YGIFIu0fiMHPJ88h0v2BToXuLHuXIude7JuhRF0X2
-	 bGFXV623Pvby25ovCOk4S116vpy3a9ZiFNqZUCZzg9r7ZUx1kzPWDrc7jDLm1U3gaN
-	 Ei+X290iCIFBD56ShHx4BT6ffPuvmEbBIrMGw5eQ=
-Subject: Patch "cachefiles, erofs: Fix NULL deref in when cachefiles is not doing ondemand-mode" has been added to the 6.6-stable tree
+	b=oJEK0SC27Esx4fkprBwSTtsEuoYR8IousQi1erSqsL2D0sw8YhesWngQA5XIEfzr2
+	 o93CnKxCYpY6qWpdQZyWAC7az+6L4XwrRmzcAAY34oOEvYbkRSEvd1QFIb5QJW8GSI
+	 KqyJ7HzQGvxAKh6/1rknIq/P0uhXhn58ZRjj/BDo=
+Subject: Patch "cachefiles, erofs: Fix NULL deref in when cachefiles is not doing ondemand-mode" has been added to the 6.1-stable tree
 To: chao@kernel.org,dhowells@redhat.com,gregkh@linuxfoundation.org,huyue2@coolpad.com,jefflexu@linux.alibaba.com,linux-erofs@lists.ozlabs.org,marc.dionne@auristor.com,netfs@lists.linux.dev,xiang@kernel.org
 Cc: <stable-commits@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 19 Jun 2024 13:27:01 +0200
-Message-ID: <2024061901-dangle-idealism-cf51@gregkh>
+Date: Wed, 19 Jun 2024 13:41:39 +0200
+Message-ID: <2024061939-liability-failing-7856@gregkh>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -44,12 +44,12 @@ This is a note to let you know that I've just added the patch titled
 
     cachefiles, erofs: Fix NULL deref in when cachefiles is not doing ondemand-mode
 
-to the 6.6-stable tree which can be found at:
+to the 6.1-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
      cachefiles-erofs-fix-null-deref-in-when-cachefiles-is-not-doing-ondemand-mode.patch
-and it can be found in the queue-6.6 subdirectory.
+and it can be found in the queue-6.1 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
 please let <stable@vger.kernel.org> know about it.
@@ -116,8 +116,8 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 Patches currently in stable-queue which might be from dhowells@redhat.com are
 
-queue-6.6/cachefiles-resend-an-open-request-if-the-read-reques.patch
-queue-6.6/cachefiles-add-restore-command-to-recover-inflight-o.patch
-queue-6.6/cachefiles-introduce-object-ondemand-state.patch
-queue-6.6/cachefiles-extract-ondemand-info-field-from-cachefil.patch
-queue-6.6/cachefiles-erofs-fix-null-deref-in-when-cachefiles-is-not-doing-ondemand-mode.patch
+queue-6.1/cachefiles-resend-an-open-request-if-the-read-reques.patch
+queue-6.1/cachefiles-add-restore-command-to-recover-inflight-o.patch
+queue-6.1/cachefiles-introduce-object-ondemand-state.patch
+queue-6.1/cachefiles-extract-ondemand-info-field-from-cachefil.patch
+queue-6.1/cachefiles-erofs-fix-null-deref-in-when-cachefiles-is-not-doing-ondemand-mode.patch
