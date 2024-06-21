@@ -1,86 +1,93 @@
-Received: from submarine.notk.org (62-210-214-84.rev.poneytelecom.eu [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1CDC6BB58;
-	Thu, 20 Jun 2024 20:50:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC7012F37F
+	for <netfs@lists.linux.dev>; Fri, 21 Jun 2024 06:15:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718916618; cv=none; b=OcLXR+gDKLZ1vwHCwveoZNxneJAsHnlHaZkoo2r8ERzTFcVeJH2Dmd7HjeVzS36YnAsMPk1I3kJpJsciMCprfYJRbw6xh5kc7mO7nK1D/lmeQ5tUgOXGVdbALe1bjivgImBeqMx8H4XCAT/K9tIKAlwknkROlGoAnT5S5SgUPeM=
+	t=1718950534; cv=none; b=toNCMghx65Te96fDBGHA9aNmQBwa3YViwHNdES8wkBZzpHKladKIP/j/LNZK+YaoH7nsWY56snod7AOMFd+7f4apGa13Rt+WMzN/O1NpxQ9Pxgz20nvRReo0rRAAoQnFKN6eaeCP88o+Loo72p5LrF/qxBjEP0nn9z4NMjQg0u8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718916618; c=relaxed/simple;
-	bh=AvGVFTfgQ8CQv1Ova9G8llKmivCTuZfd3jl734L9bIE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TggXoK4Q1dS4G3j/kMm6dHRd116TfXOEA7c3wU2lS8eT7kg3f2NhKJCr1RejTTc1SCpkExX2thyxAYWu/EK/lLsVIbDRI7dnXIONTA4ZHvgwTRbaOOyYGX6454Ge4ysiG3CSI5SENOQycLhjztzZqjiEOGysKknDz5R9nRNeyxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=ALJdfkXV; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="ALJdfkXV"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 8A5F214C2DD;
-	Thu, 20 Jun 2024 22:50:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1718916615;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VLVCmMswFYW/yptkreRA4q0clrbQSOEC9H3udI4LuGU=;
-	b=ALJdfkXV4jYbTnxVURz9T/eVwi75e+Jpzd/NnEdNtowVW0EPginJ+UR6WjORHnH38deSjd
-	uJwnIU9Cj7KamD9RuKu8/mGuiDvl4zepXXeiSbVTriN0efe9Ugz46seuDEdUL9p7r7KRLr
-	P7bpbNTjSYBxjIuPaVX1MWKzMKecMwktnyLawuNoID0Mbc/ddEMnIWkpd3XG+6pyYH418a
-	3W/N9t5Qfs/oTZaI9U3i3KvnPFWdkdWReTPrI5Iv2PcSTYiBLmAJf7px1y70cBjtciXJPK
-	i5woghwPVaymjTFrWRyF7a/0NAHSSLe6Bk1rVFeZVi+wKnfbRR0RGgGH6UokHw==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 39921304;
-	Thu, 20 Jun 2024 20:50:04 +0000 (UTC)
-Date: Fri, 21 Jun 2024 05:49:49 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <christian@brauner.io>,
-	Steve French <smfrench@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-	v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>
-Subject: Re: [PATCH 06/17] 9p: Enable multipage folios
-Message-ID: <ZnSV7TmLpmucb8el@codewreck.org>
-References: <20240620173137.610345-1-dhowells@redhat.com>
- <20240620173137.610345-7-dhowells@redhat.com>
- <ZnSSaeLo8dY7cu3W@codewreck.org>
+	s=arc-20240116; t=1718950534; c=relaxed/simple;
+	bh=bWQsSOHl7FmW2soC2aFOM4bmQc7hOmKEkuPy2LIiNoA=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Cdg9YAbE4czDmZk6pGakN9urV4oVIccLtSKD2B4N1LsegBr8u+ioWYKQD/ZIf2OGiB4hNJYfAhFa6mNxwyzzo6VqdJdAMwC3scQK0fWBvmUC/CxpoVkKy13WrjiMLFE3sRZAToiXvtfz+DytWGzXY93wtmfuo09GLXCAJ2ZAhQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4W56Sn5hhgzPpbC;
+	Fri, 21 Jun 2024 14:11:53 +0800 (CST)
+Received: from dggpeml500022.china.huawei.com (unknown [7.185.36.66])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8AA7F1400C8;
+	Fri, 21 Jun 2024 14:15:28 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by dggpeml500022.china.huawei.com
+ (7.185.36.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 21 Jun
+ 2024 14:15:28 +0800
+From: Hongbo Li <lihongbo22@huawei.com>
+To: <xiang@kernel.org>, <chao@kernel.org>, <huyue2@coolpad.com>,
+	<jefflexu@linux.alibaba.com>, <dhavale@google.com>, <dhowells@redhat.com>
+CC: <linux-erofs@lists.ozlabs.org>, <netfs@lists.linux.dev>,
+	<lihongbo22@huawei.com>
+Subject: [PATCH 1/2] erofs: support query erofs ondemand feature by sysfs interface
+Date: Fri, 21 Jun 2024 14:18:07 +0800
+Message-ID: <20240621061808.1585253-2-lihongbo22@huawei.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240621061808.1585253-1-lihongbo22@huawei.com>
+References: <20240621061808.1585253-1-lihongbo22@huawei.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ZnSSaeLo8dY7cu3W@codewreck.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpeml500022.china.huawei.com (7.185.36.66)
 
-Dominique Martinet wrote on Fri, Jun 21, 2024 at 05:34:49AM +0900:
-> David Howells wrote on Thu, Jun 20, 2024 at 06:31:24PM +0100:
-> > Enable support for multipage folios on the 9P filesystem.  This is all
-> > handled through netfslib and is already enabled on AFS and CIFS also.
-> 
-> Since this is fairly unrelated to the other patches let's take this
-> through the 9p tree as well - I'll run some quick tests to verify writes
-> go from 4k to something larger
+Erofs over fscache depands on the config CONFIG_EROFS_FS_ONDEMAND
+in erofs. There is no way to check whether this feature is supported
+or not in userspace. We introduce sysfs file `erofs_ondemand` for
+user checking current features. Here is the example:
 
-(huh, my memory is rotten, we were already aggregating writes at some
-point without this. Oh, well, at least it doesn't seem to blow up)
+[Before]
+$ cat /sys/fs/erofs/features/erofs_ondemand
+cat: /sys/fs/erofs/features/erofs_ondemand: No such file or directory
 
-> and it doesn't blow up immediately and push it out for 6.11
+[After]
+$ cat /sys/fs/erofs/features/erofs_ondemand
+supported
 
-Queued for -next.
+Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
+---
+ fs/erofs/sysfs.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
+diff --git a/fs/erofs/sysfs.c b/fs/erofs/sysfs.c
+index 435e515c0792..1b3d77583f76 100644
+--- a/fs/erofs/sysfs.c
++++ b/fs/erofs/sysfs.c
+@@ -78,6 +78,9 @@ EROFS_ATTR_FEATURE(sb_chksum);
+ EROFS_ATTR_FEATURE(ztailpacking);
+ EROFS_ATTR_FEATURE(fragments);
+ EROFS_ATTR_FEATURE(dedupe);
++#if IS_ENABLED(CONFIG_EROFS_FS_ONDEMAND)
++EROFS_ATTR_FEATURE(erofs_ondemand);
++#endif
+ 
+ static struct attribute *erofs_feat_attrs[] = {
+ 	ATTR_LIST(zero_padding),
+@@ -90,6 +93,9 @@ static struct attribute *erofs_feat_attrs[] = {
+ 	ATTR_LIST(ztailpacking),
+ 	ATTR_LIST(fragments),
+ 	ATTR_LIST(dedupe),
++#if IS_ENABLED(CONFIG_EROFS_FS_ONDEMAND)
++	ATTR_LIST(erofs_ondemand),
++#endif
+ 	NULL,
+ };
+ ATTRIBUTE_GROUPS(erofs_feat);
 -- 
-Dominique Martinet | Asmadeus
+2.34.1
+
