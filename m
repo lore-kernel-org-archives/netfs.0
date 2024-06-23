@@ -1,109 +1,146 @@
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6528C17167B
-	for <netfs@lists.linux.dev>; Fri, 21 Jun 2024 10:42:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B9C1822E6;
+	Sun, 23 Jun 2024 13:44:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718966575; cv=none; b=cxEzih6+5Broz5/TzAtEEw+0OcP7j1owUlhWgcvVGrRVj/Fc5gKS2DCB2QyfLp2jXqMqOnBjbnhLhhZarOcWSiiXAQGGhvB5hinmnvzJniHLK5P22ienCeZTZ7b4RVgXmcsvXwm0ZeA8WlZ+FLX8DV4NWnljFzi0xxwoj2uX+eU=
+	t=1719150254; cv=none; b=Z/6rajgUnDuOAnTvKiDIuC4I1S3yAfzBcbOm5kNouYpjSgdXXNvAH6XcX5uwP9NAjDtkZhvRyR56jnjQP9PI21JqTS+nmq4zxpGJYmW/W4BbvwKUlTEpyJDeZQWJRisVSTsMK709+t9T1qd7UCDCrEfDvCdR7izkWUjLtoBZJ2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718966575; c=relaxed/simple;
-	bh=sI4Ex/OBxHSCVagVPcOQsxtJkfheVJCy8B99rm8fL0k=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=rQSNhm2Er3W84eqMuV7moy3p1mXueMfEd7oUNrZfgYfNBYqK7IOXLyoKKOv7LXM0crJbDwkiCxtlWeAqe0Wt7M9SiL8U11rxG6kVG2n+Pp8+XxXw2UrOU1zQ7o+Ynl8kGG8OYv5SQxvuKlKCOs6Esd6f2YtccxQBLPm1S0o/d8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=FvU6Eo/e; arc=none smtp.client-ip=115.124.30.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1719150254; c=relaxed/simple;
+	bh=sU95wHz24DjAtGVg1jl5w6m9y01tDKMR8WD7U+GU1gs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EHxuuporONIcARrCDRKyFfsbxq/YD6jGBnPtG2wVY9e6x8X0ZKIMuBl8xSsTKcWxzx5AyuTLQfx6zVNrNey4PeAQguB4ycMQSlEuO6nGgMkkJWw5oBItgTNcV6RvHVIGZyDtNJje/woa+LfIflD9vpujyMIFVWLeCgF4Lp007b0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bwYY0qI8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="FvU6Eo/e"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1718966569; h=Message-ID:Date:MIME-Version:Subject:From:To:Content-Type;
-	bh=fYlbPkruKzNFnntQmTAd6cagWf2Vv3jPxV3GJpD9zrA=;
-	b=FvU6Eo/eatBPzgSD9LCjEVuamsXXbP/jCPMZAkcvUaUkX0DUi6oKtOjHzS+8QYf7Mz5jjdvOfbi8bbFfbUiWVVPjXSN0Ge/Dxv/1/9mfBNn+Wf2fnWbKtQRB5bQMCWKKVZsNH5AkjZRN7CIfEGYmGvBSTd3TuqiR0sfnjh1YfRs=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033068173054;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0W8w51Dx_1718966566;
-Received: from 30.244.70.251(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0W8w51Dx_1718966566)
-          by smtp.aliyun-inc.com;
-          Fri, 21 Jun 2024 18:42:48 +0800
-Message-ID: <88888ec4-1e45-477a-8084-2c122c0bfda2@linux.alibaba.com>
-Date: Fri, 21 Jun 2024 18:42:46 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bwYY0qI8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF02C4AF0A;
+	Sun, 23 Jun 2024 13:44:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719150254;
+	bh=sU95wHz24DjAtGVg1jl5w6m9y01tDKMR8WD7U+GU1gs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=bwYY0qI8zGeaI19F+kZQ3eeTJ865M75Ea/Vy45pamOKfcI7sIbt1S2lVtVYdHzGWP
+	 FwVw67DTDVp/ayUJWPJb0WjPoyvy38hpaYdFSt46Xxdv68d6o7aafbL5OWx7erufdh
+	 QHs3aGO08zdPC/Em4uq3FKjnn1XtbGS232A6v0VbMGBttFx3O270qjbG+0QipIvsLh
+	 pEH2UM+IOmVsQ1s1IL52MoceiTPaxeAy4LMplGAuNsqUrvP/Fq2XcSexVoO8XkHUfL
+	 bpY7Ud3NFv5e7sYUeIG+3kx8AKRX18GnR0T0bsLR+dADw9qW6EZoA4mfzRsEJPCFol
+	 yxJXv73EOAZ2g==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Baokun Li <libaokun1@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Jingbo Xu <jefflexu@linux.alibaba.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	dhowells@redhat.com,
+	netfs@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.9 05/21] cachefiles: add consistency check for copen/cread
+Date: Sun, 23 Jun 2024 09:43:38 -0400
+Message-ID: <20240623134405.809025-5-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240623134405.809025-1-sashal@kernel.org>
+References: <20240623134405.809025-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] cachefiles: support query cachefiles ondemand feature
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
-To: Hongbo Li <lihongbo22@huawei.com>, xiang@kernel.org, chao@kernel.org,
- huyue2@coolpad.com, jefflexu@linux.alibaba.com, dhavale@google.com,
- dhowells@redhat.com
-Cc: linux-erofs@lists.ozlabs.org, netfs@lists.linux.dev
-References: <20240621061808.1585253-1-lihongbo22@huawei.com>
- <20240621061808.1585253-3-lihongbo22@huawei.com>
- <c4748d68-b61f-4935-815b-f4d3af77f890@linux.alibaba.com>
- <1fe0f4e5-37b0-4bbd-bcd3-9764f65660e8@huawei.com>
- <f148e340-26c5-44ce-887f-076c2c76137c@linux.alibaba.com>
-In-Reply-To: <f148e340-26c5-44ce-887f-076c2c76137c@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.9.6
+Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Baokun Li <libaokun1@huawei.com>
 
-On 2024/6/21 18:06, Gao Xiang wrote:
-> 
-> 
-> On 2024/6/21 17:37, Hongbo Li wrote:
->>
->>
->> On 2024/6/21 17:14, Gao Xiang wrote:
->>>
->>>
->>> On 2024/6/21 14:18, Hongbo Li wrote:
->>>> Erofs over fscache need CONFIG_CACHEFILES_ONDEMAND in cachefiles
->>>> module. We cannot know whether it is supported from userspace, so
->>>> we export this feature to user by sysfs interface.
->>>>
->>>> [Before]
->>>> $ cat /sys/fs/cachefiles/features/cachefiles_ondemand
->>>> cat: /sys/fs/cachefiles/features/cachefiles_ondemand: No such file or directory
->>>>
->>>> [After]
->>>> $ cat /sys/fs/cachefiles/features/cachefiles_ondemand
->>>> supported
->>>>
->>>> Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
->>>
->>> I don't think such sysfs is needed, you could just use
->>> `bind ondemand` to check if it is supported:
->>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/fs/cachefiles/daemon.c?h=v6.9#n780
->>>
->> Thanks for reply!
->> `bind ondemand` can check if it is supported, but it requires a more complicated procedure for user to implement. For example, a serial of system call (open, ioctl, close) are need.The containerd snapshotter daemon relies on these feature, only use a simple check method is usable in product environment. The snapshotter developers may know how cachefiles works, but for snapshotter users, a simple way to check whether snapshotter can be launched is useful. Even though they do not know how cachefiles works.
-> 
-> I don't think it needs to be considered as long as userspace
-> has a way to check since you could wrap up these as a helper
-> (I will do in the official erofs-utils later or if you have
-> some interest you could help too) and even some erofs-utils
-> binary for this.
-> 
-> sysfs maintainence just for some random feature doesn't
-> sound good to me (similar to ext4/xfs on-disk features) and
-> even if works, you cannot use this way for 5.19~6.10
-> upstream kernels.
+[ Upstream commit a26dc49df37e996876f50a0210039b2d211fdd6f ]
 
-Anyway, I know userspace folks always would like to have a
-simple kernel way to check if a feature is supported for a
-kernel, but (many years later) my current thought is that
-the simplist way to check this is to introduce a simple
-helper to try.  You cannot list every kernel features you
-concerned as some sysfs file and in time properly, or you
-could cause some inconsistency.
+This prevents malicious processes from completing random copen/cread
+requests and crashing the system. Added checks are listed below:
 
-Anyway, that is my personal thought, having another detailed
-list for all features users care about along with the real
-implementaions seems unnecessary.
+  * Generic, copen can only complete open requests, and cread can only
+    complete read requests.
+  * For copen, ondemand_id must not be 0, because this indicates that the
+    request has not been read by the daemon.
+  * For cread, the object corresponding to fd and req should be the same.
 
-Thanks,
-Gao Xiang
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240522114308.2402121-7-libaokun@huaweicloud.com
+Acked-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/cachefiles/ondemand.c | 27 ++++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
+
+diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
+index 89f118d68d125..6f815e7c50867 100644
+--- a/fs/cachefiles/ondemand.c
++++ b/fs/cachefiles/ondemand.c
+@@ -97,12 +97,12 @@ static loff_t cachefiles_ondemand_fd_llseek(struct file *filp, loff_t pos,
+ }
+ 
+ static long cachefiles_ondemand_fd_ioctl(struct file *filp, unsigned int ioctl,
+-					 unsigned long arg)
++					 unsigned long id)
+ {
+ 	struct cachefiles_object *object = filp->private_data;
+ 	struct cachefiles_cache *cache = object->volume->cache;
+ 	struct cachefiles_req *req;
+-	unsigned long id;
++	XA_STATE(xas, &cache->reqs, id);
+ 
+ 	if (ioctl != CACHEFILES_IOC_READ_COMPLETE)
+ 		return -EINVAL;
+@@ -110,10 +110,15 @@ static long cachefiles_ondemand_fd_ioctl(struct file *filp, unsigned int ioctl,
+ 	if (!test_bit(CACHEFILES_ONDEMAND_MODE, &cache->flags))
+ 		return -EOPNOTSUPP;
+ 
+-	id = arg;
+-	req = xa_erase(&cache->reqs, id);
+-	if (!req)
++	xa_lock(&cache->reqs);
++	req = xas_load(&xas);
++	if (!req || req->msg.opcode != CACHEFILES_OP_READ ||
++	    req->object != object) {
++		xa_unlock(&cache->reqs);
+ 		return -EINVAL;
++	}
++	xas_store(&xas, NULL);
++	xa_unlock(&cache->reqs);
+ 
+ 	trace_cachefiles_ondemand_cread(object, id);
+ 	complete(&req->done);
+@@ -142,6 +147,7 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
+ 	unsigned long id;
+ 	long size;
+ 	int ret;
++	XA_STATE(xas, &cache->reqs, 0);
+ 
+ 	if (!test_bit(CACHEFILES_ONDEMAND_MODE, &cache->flags))
+ 		return -EOPNOTSUPP;
+@@ -165,9 +171,16 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
+ 	if (ret)
+ 		return ret;
+ 
+-	req = xa_erase(&cache->reqs, id);
+-	if (!req)
++	xa_lock(&cache->reqs);
++	xas.xa_index = id;
++	req = xas_load(&xas);
++	if (!req || req->msg.opcode != CACHEFILES_OP_OPEN ||
++	    !req->object->ondemand->ondemand_id) {
++		xa_unlock(&cache->reqs);
+ 		return -EINVAL;
++	}
++	xas_store(&xas, NULL);
++	xa_unlock(&cache->reqs);
+ 
+ 	/* fail OPEN request if copen format is invalid */
+ 	ret = kstrtol(psize, 0, &size);
+-- 
+2.43.0
+
