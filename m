@@ -1,48 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB76183079;
-	Sun, 23 Jun 2024 13:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3731018FDB4;
+	Sun, 23 Jun 2024 13:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719150257; cv=none; b=Jzunbi7mrQbUPw17keNzUa3a7S8swRzu5kfTMcn8w54L0cgKThcMpEzJr+b2sJ4q0DYEqOJoPHDUTmybF3Xu0bpYZ+CB7iEa3CV2Pt84fAn9VZF3jxoH1G02ZuuZmWsLY06bNTx3+rac0bq3arSbi/F838uwvLl9vWCU9EqJEW0=
+	t=1719150297; cv=none; b=jOWGp+rrVvFgndM8fZD6ExtF5rTYw56iepdavbRVOTv6tVowRRtt73la24k7pc/Cto/nEzA+ew/PbOQAq+y0p2xWgminAnoJ7RSwUx39ySzNFKo9xE0Yd7jX13aMlTc5o9H4Yz5vXbe8EGoM6hHn+MvqXjKqf4I5SwC+kMaSzEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719150257; c=relaxed/simple;
-	bh=dKy6LkwywmysDJSaktBVDJEaAMupduauUN3rMr7hUeM=;
+	s=arc-20240116; t=1719150297; c=relaxed/simple;
+	bh=r/b0ciWjzISWnepJ9kFySb3gDAWmKtarJfO9wtHGBrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FMPyCzfhWQIyn1OU2grZy3zeUuWzuP6v6YQ/9tsD02ageXve3phCg/U1nSVRhhOslirU3fT4Zstl1WjtGd7JoQ4vHupvF8OQVUuj+a8IvIHDAUWt2vOOapQbr/XhBLUGI3xrdjUG+mqR+XBbT3erarQ9XxtgK31UhVqnYmwRb5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X4gMYdb5; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=BEvndthMVW1OEybHMSv9GHlPaAQpXV5tynL285ijQ5XtUo9my2pfXdNg52vdU6XN94FV1NYbGaKTI2ql0l23HBg5EVBGHW/CydcTXePPa3Mcp0utBdcrnR+Ce7+rNFnXW8yc1TQUPEGJnYaIzuVkDOPYTMvc6+ZIGZv00ZUv03M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BlvNTW7f; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X4gMYdb5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B113C32781;
-	Sun, 23 Jun 2024 13:44:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BlvNTW7f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16560C32781;
+	Sun, 23 Jun 2024 13:44:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719150257;
-	bh=dKy6LkwywmysDJSaktBVDJEaAMupduauUN3rMr7hUeM=;
+	s=k20201202; t=1719150297;
+	bh=r/b0ciWjzISWnepJ9kFySb3gDAWmKtarJfO9wtHGBrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X4gMYdb5Pucm/14851uV5EvIqyHicEgHTCAFexw3NPMHP7izK8mituDp0+gaMEYqi
-	 WQwBPRdM+TXT7/eCI4Dl9dn5UuwbISCRQDhWEWcGbeFYaKiS+mVtx/QfLABPuCxAPL
-	 BKASt1zo1XJJmQz8ENVqj8O7ORQW1YSe76FcdoNuiL8rpG9PX4kiGmVPfj9jigUfLy
-	 PivhMm+EVmPcn85HeEC08G20GaNzWZpKXr69YBklb/weHtrIDLiKb0uZ60ubTcsVJn
-	 /DWB9u/PC92ai41SR+EkwAPyO8Z4F9W9UUU9TdDiQCZXVaqxUN3EdnRBJ985ovUjYM
-	 T9Ag1pHF5pfNw==
+	b=BlvNTW7fSgPClqhHWR34v9nyHzygGLlSazUHQwitX+wRqr5WgxW4Jlk4B/4WIc1IT
+	 39ua0sO2EQTtONIZPRGZc7hnkLBcSPacT2gX1UEcuntpedmUDK4Ybu/qYPNiQk86dJ
+	 F08H7lzc4iFFcurRkYjMKVtsdZXxLXiqJJFdN29WtXNwQy9T2ikSgPh1yKJaVwUm4i
+	 YYf+auxhLFPO6UqxNEEKza82wve/RXKdRI2m1BUayPKYBwd9WUoG3LNixCZvYfrSod
+	 POkvQNJuShm2ltm7O64NoDKFMq3lwRgC2BOM9jrRxRIOs1ANLdOgoXmL5tKfHPOpXr
+	 3ZRFDNP8XJGxA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Baokun Li <libaokun1@huawei.com>,
-	Hou Tao <houtao1@huawei.com>,
 	Jeff Layton <jlayton@kernel.org>,
-	Jia Zhu <zhujia.zj@bytedance.com>,
+	Jingbo Xu <jefflexu@linux.alibaba.com>,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	dhowells@redhat.com,
 	netfs@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.9 07/21] cachefiles: make on-demand read killable
-Date: Sun, 23 Jun 2024 09:43:40 -0400
-Message-ID: <20240623134405.809025-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 05/16] cachefiles: add consistency check for copen/cread
+Date: Sun, 23 Jun 2024 09:44:34 -0400
+Message-ID: <20240623134448.809470-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240623134405.809025-1-sashal@kernel.org>
-References: <20240623134405.809025-1-sashal@kernel.org>
+In-Reply-To: <20240623134448.809470-1-sashal@kernel.org>
+References: <20240623134448.809470-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -51,104 +50,97 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.9.6
+X-stable-base: Linux 6.6.35
 Content-Transfer-Encoding: 8bit
 
 From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit bc9dde6155464e906e630a0a5c17a4cab241ffbb ]
+[ Upstream commit a26dc49df37e996876f50a0210039b2d211fdd6f ]
 
-Replacing wait_for_completion() with wait_for_completion_killable() in
-cachefiles_ondemand_send_req() allows us to kill processes that might
-trigger a hunk_task if the daemon is abnormal.
+This prevents malicious processes from completing random copen/cread
+requests and crashing the system. Added checks are listed below:
 
-But now only CACHEFILES_OP_READ is killable, because OP_CLOSE and OP_OPEN
-is initiated from kworker context and the signal is prohibited in these
-kworker.
+  * Generic, copen can only complete open requests, and cread can only
+    complete read requests.
+  * For copen, ondemand_id must not be 0, because this indicates that the
+    request has not been read by the daemon.
+  * For cread, the object corresponding to fd and req should be the same.
 
-Note that when the req in xas changes, i.e. xas_load(&xas) != req, it
-means that a process will complete the current request soon, so wait
-again for the request to be completed.
-
-In addition, add the cachefiles_ondemand_finish_req() helper function to
-simplify the code.
-
-Suggested-by: Hou Tao <houtao1@huawei.com>
 Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240522114308.2402121-13-libaokun@huaweicloud.com
+Link: https://lore.kernel.org/r/20240522114308.2402121-7-libaokun@huaweicloud.com
 Acked-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
+Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cachefiles/ondemand.c | 40 ++++++++++++++++++++++++++++------------
- 1 file changed, 28 insertions(+), 12 deletions(-)
+ fs/cachefiles/ondemand.c | 27 ++++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
 
 diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-index 922cab1a314b2..58bd80956c5a6 100644
+index 4b39f0422e590..b8e9cdc93643e 100644
 --- a/fs/cachefiles/ondemand.c
 +++ b/fs/cachefiles/ondemand.c
-@@ -380,6 +380,20 @@ static struct cachefiles_req *cachefiles_ondemand_select_req(struct xa_state *xa
- 	return NULL;
+@@ -97,12 +97,12 @@ static loff_t cachefiles_ondemand_fd_llseek(struct file *filp, loff_t pos,
  }
  
-+static inline bool cachefiles_ondemand_finish_req(struct cachefiles_req *req,
-+						  struct xa_state *xas, int err)
-+{
-+	if (unlikely(!xas || !req))
-+		return false;
-+
-+	if (xa_cmpxchg(xas->xa, xas->xa_index, req, NULL, 0) != req)
-+		return false;
-+
-+	req->error = err;
-+	complete(&req->done);
-+	return true;
-+}
-+
- ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
- 					char __user *_buffer, size_t buflen)
+ static long cachefiles_ondemand_fd_ioctl(struct file *filp, unsigned int ioctl,
+-					 unsigned long arg)
++					 unsigned long id)
  {
-@@ -443,16 +457,8 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
- out:
- 	cachefiles_put_object(req->object, cachefiles_obj_put_read_req);
- 	/* Remove error request and CLOSE request has no reply */
--	if (ret || msg->opcode == CACHEFILES_OP_CLOSE) {
--		xas_reset(&xas);
--		xas_lock(&xas);
--		if (xas_load(&xas) == req) {
--			req->error = ret;
--			complete(&req->done);
--			xas_store(&xas, NULL);
--		}
--		xas_unlock(&xas);
--	}
-+	if (ret || msg->opcode == CACHEFILES_OP_CLOSE)
-+		cachefiles_ondemand_finish_req(req, &xas, ret);
- 	cachefiles_req_put(req);
- 	return ret ? ret : n;
- }
-@@ -544,8 +550,18 @@ static int cachefiles_ondemand_send_req(struct cachefiles_object *object,
- 		goto out;
+ 	struct cachefiles_object *object = filp->private_data;
+ 	struct cachefiles_cache *cache = object->volume->cache;
+ 	struct cachefiles_req *req;
+-	unsigned long id;
++	XA_STATE(xas, &cache->reqs, id);
  
- 	wake_up_all(&cache->daemon_pollwq);
--	wait_for_completion(&req->done);
--	ret = req->error;
-+wait:
-+	ret = wait_for_completion_killable(&req->done);
-+	if (!ret) {
-+		ret = req->error;
-+	} else {
-+		ret = -EINTR;
-+		if (!cachefiles_ondemand_finish_req(req, &xas, ret)) {
-+			/* Someone will complete it soon. */
-+			cpu_relax();
-+			goto wait;
-+		}
+ 	if (ioctl != CACHEFILES_IOC_READ_COMPLETE)
+ 		return -EINVAL;
+@@ -110,10 +110,15 @@ static long cachefiles_ondemand_fd_ioctl(struct file *filp, unsigned int ioctl,
+ 	if (!test_bit(CACHEFILES_ONDEMAND_MODE, &cache->flags))
+ 		return -EOPNOTSUPP;
+ 
+-	id = arg;
+-	req = xa_erase(&cache->reqs, id);
+-	if (!req)
++	xa_lock(&cache->reqs);
++	req = xas_load(&xas);
++	if (!req || req->msg.opcode != CACHEFILES_OP_READ ||
++	    req->object != object) {
++		xa_unlock(&cache->reqs);
+ 		return -EINVAL;
 +	}
- 	cachefiles_req_put(req);
- 	return ret;
- out:
++	xas_store(&xas, NULL);
++	xa_unlock(&cache->reqs);
+ 
+ 	trace_cachefiles_ondemand_cread(object, id);
+ 	complete(&req->done);
+@@ -142,6 +147,7 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
+ 	unsigned long id;
+ 	long size;
+ 	int ret;
++	XA_STATE(xas, &cache->reqs, 0);
+ 
+ 	if (!test_bit(CACHEFILES_ONDEMAND_MODE, &cache->flags))
+ 		return -EOPNOTSUPP;
+@@ -165,9 +171,16 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
+ 	if (ret)
+ 		return ret;
+ 
+-	req = xa_erase(&cache->reqs, id);
+-	if (!req)
++	xa_lock(&cache->reqs);
++	xas.xa_index = id;
++	req = xas_load(&xas);
++	if (!req || req->msg.opcode != CACHEFILES_OP_OPEN ||
++	    !req->object->ondemand->ondemand_id) {
++		xa_unlock(&cache->reqs);
+ 		return -EINVAL;
++	}
++	xas_store(&xas, NULL);
++	xa_unlock(&cache->reqs);
+ 
+ 	/* fail OPEN request if copen format is invalid */
+ 	ret = kstrtol(psize, 0, &size);
 -- 
 2.43.0
 
