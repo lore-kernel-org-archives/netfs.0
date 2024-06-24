@@ -1,104 +1,130 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9945513AD16
-	for <netfs@lists.linux.dev>; Mon, 24 Jun 2024 11:24:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87631132120
+	for <netfs@lists.linux.dev>; Mon, 24 Jun 2024 11:59:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719228256; cv=none; b=oShnNXFgqMPUe5cDn4qKQK2OVuEypz2UB51ZfVAIuTB9pf2sNd9Pa30nFUCYhDKwhWZxdzbTWLS5dshl6i81toehy6zEaTYS4PqhLIh11VOzGvOa9Skb8pBEfY2Z1YlHdv4YZ3B1kN6JsrMUCGmr2IbJ0edi82lqrfQZz6Mijto=
+	t=1719230346; cv=none; b=G6lZLBiqAUz9bSwbNUPNJdN+19b3/NV5mpndPOs6fivow8nwA94Y6dAGsmY9gqSHzUGUhhPT1JenvvyW7Z30tU6i9DzBDl2GwYs/XSM9BZtdhpOFcXjeiZBr7DjBj6gfIsrHoD/5HMjzIs687YH4uBnrZr7tSstI/hsrKf7c4lM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719228256; c=relaxed/simple;
-	bh=bGbOgZ7/GsB8UBgf0LqnNlTJgNKN+fPQoD9ErB4i4UQ=;
-	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=icYM33rEZHcGFHdK+oFvfCWOP9VwaWUIFuQ5v+uNok2gB9GTY2vCg22jV5Im8WwcP9sXxYbsfPwZvbL2ThJxQeHfR4TZLHUX81HMHB1mn9I1rZj1hwd0wxqpVkEeNuNymxtP5GN3xumWo9mpWza7JXykw3mpWdNUnNsjGvJbaoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Hg7Pa1QZ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Hg7Pa1QZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1719228253;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=1MZhBdhakyXXyis3UviwdkIkQ/9gObuVjuoXkcPA6zY=;
-	b=Hg7Pa1QZAsPc87fCjsq6ba9K2BaOZkwSazul3hk+V9gYJVapW9mGSBGnyM3elY7ErNSBa7
-	V+aLEWSSZoEAaUq+Fx9DRllekXOYuQTJZLlzaK+NmscAbibW+WRa8W+tUjH8flmHKYQg+P
-	SKVy93pP99TxPwTTLo0FXgD7Uvg27iw=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-145-O_GMqFPHO-OqoLHMuqV_Ew-1; Mon,
- 24 Jun 2024 07:24:10 -0400
-X-MC-Unique: O_GMqFPHO-OqoLHMuqV_Ew-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 24006195608C;
-	Mon, 24 Jun 2024 11:24:08 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.111])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9D0541956051;
-	Mon, 24 Jun 2024 11:24:04 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>,
-    Matthew Wilcox <willy@infradead.org>
-cc: dhowells@redhat.com, Jeff Layton <jlayton@kernel.org>,
-    netfs@lists.linux.dev, v9fs@lists.linux.dev,
-    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-    linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Subject: [PATCH] netfs: Fix netfs_page_mkwrite() to flush conflicting data, not wait
+	s=arc-20240116; t=1719230346; c=relaxed/simple;
+	bh=z7vLRNUQutcdkKqoZDIu9rST1C0MUQnLCi4Ct9JZ3Ms=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=RsQwmykVHsPS59bQJVWHbdPQ+54WCoJ+iYBNNAW0WHzxmMY0GGuXuIFw4i5Z9bypuC3KPFk72QJKV6Rjdb50WoBAioxHFpwgQ5CSFT+nSZowS3zAXNPWkHTGQX7c4oFp+j8sU7AajGxRWkormR+Dsj4gfu6rtfTzF4rshMBHos0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4W75wv04jxzZcGG;
+	Mon, 24 Jun 2024 19:54:39 +0800 (CST)
+Received: from dggpeml500022.china.huawei.com (unknown [7.185.36.66])
+	by mail.maildlp.com (Postfix) with ESMTPS id B2CDB1400D6;
+	Mon, 24 Jun 2024 19:59:00 +0800 (CST)
+Received: from [10.67.111.104] (10.67.111.104) by
+ dggpeml500022.china.huawei.com (7.185.36.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 24 Jun 2024 19:59:00 +0800
+Message-ID: <3f542dc9-2686-43af-a915-2bfede803771@huawei.com>
+Date: Mon, 24 Jun 2024 19:58:59 +0800
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <614299.1719228243.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 24 Jun 2024 12:24:03 +0100
-Message-ID: <614300.1719228243@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] cachefiles: support query cachefiles ondemand feature
+To: Gao Xiang <hsiangkao@linux.alibaba.com>, <xiang@kernel.org>,
+	<chao@kernel.org>, <huyue2@coolpad.com>, <jefflexu@linux.alibaba.com>,
+	<dhavale@google.com>, <dhowells@redhat.com>
+CC: <linux-erofs@lists.ozlabs.org>, <netfs@lists.linux.dev>
+References: <20240621061808.1585253-1-lihongbo22@huawei.com>
+ <20240621061808.1585253-3-lihongbo22@huawei.com>
+ <c4748d68-b61f-4935-815b-f4d3af77f890@linux.alibaba.com>
+ <1fe0f4e5-37b0-4bbd-bcd3-9764f65660e8@huawei.com>
+ <f148e340-26c5-44ce-887f-076c2c76137c@linux.alibaba.com>
+ <88888ec4-1e45-477a-8084-2c122c0bfda2@linux.alibaba.com>
+Content-Language: en-US
+From: Hongbo Li <lihongbo22@huawei.com>
+In-Reply-To: <88888ec4-1e45-477a-8084-2c122c0bfda2@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpeml500022.china.huawei.com (7.185.36.66)
 
-Fix netfs_page_mkwrite() to use filemap_fdatawrite_range(), not
-filemap_fdatawait_range() to flush conflicting data.
 
-Fixes: 102a7e2c598c ("netfs: Allow buffered shared-writeable mmap through =
-netfs_page_mkwrite()")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: netfs@lists.linux.dev
-cc: v9fs@lists.linux.dev
-cc: linux-afs@lists.infradead.org
-cc: linux-cifs@vger.kernel.org
-cc: linux-mm@kvack.org
-cc: linux-fsdevel@vger.kernel.org
----
- fs/netfs/buffered_write.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
-index 05745bcc54c6..9cbbeeee6170 100644
---- a/fs/netfs/buffered_write.c
-+++ b/fs/netfs/buffered_write.c
-@@ -554,9 +554,9 @@ vm_fault_t netfs_page_mkwrite(struct vm_fault *vmf, st=
-ruct netfs_group *netfs_gr
- 	group =3D netfs_folio_group(folio);
- 	if (group !=3D netfs_group && group !=3D NETFS_FOLIO_COPY_TO_CACHE) {
- 		folio_unlock(folio);
--		err =3D filemap_fdatawait_range(mapping,
--					      folio_pos(folio),
--					      folio_pos(folio) + folio_size(folio));
-+		err =3D filemap_fdatawrite_range(mapping,
-+					       folio_pos(folio),
-+					       folio_pos(folio) + folio_size(folio));
- 		switch (err) {
- 		case 0:
- 			ret =3D VM_FAULT_RETRY;
+On 2024/6/21 18:42, Gao Xiang wrote:
+> Hi,
+> 
+> On 2024/6/21 18:06, Gao Xiang wrote:
+>>
+>>
+>> On 2024/6/21 17:37, Hongbo Li wrote:
+>>>
+>>>
+>>> On 2024/6/21 17:14, Gao Xiang wrote:
+>>>>
+>>>>
+>>>> On 2024/6/21 14:18, Hongbo Li wrote:
+>>>>> Erofs over fscache need CONFIG_CACHEFILES_ONDEMAND in cachefiles
+>>>>> module. We cannot know whether it is supported from userspace, so
+>>>>> we export this feature to user by sysfs interface.
+>>>>>
+>>>>> [Before]
+>>>>> $ cat /sys/fs/cachefiles/features/cachefiles_ondemand
+>>>>> cat: /sys/fs/cachefiles/features/cachefiles_ondemand: No such file 
+>>>>> or directory
+>>>>>
+>>>>> [After]
+>>>>> $ cat /sys/fs/cachefiles/features/cachefiles_ondemand
+>>>>> supported
+>>>>>
+>>>>> Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
+>>>>
+>>>> I don't think such sysfs is needed, you could just use
+>>>> `bind ondemand` to check if it is supported:
+>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/fs/cachefiles/daemon.c?h=v6.9#n780
+>>>>
+>>> Thanks for reply!
+>>> `bind ondemand` can check if it is supported, but it requires a more 
+>>> complicated procedure for user to implement. For example, a serial of 
+>>> system call (open, ioctl, close) are need.The containerd snapshotter 
+>>> daemon relies on these feature, only use a simple check method is 
+>>> usable in product environment. The snapshotter developers may know 
+>>> how cachefiles works, but for snapshotter users, a simple way to 
+>>> check whether snapshotter can be launched is useful. Even though they 
+>>> do not know how cachefiles works.
+>>
+>> I don't think it needs to be considered as long as userspace
+>> has a way to check since you could wrap up these as a helper
+>> (I will do in the official erofs-utils later or if you have
+>> some interest you could help too) and even some erofs-utils
+>> binary for this.
+>>
+>> sysfs maintainence just for some random feature doesn't
+>> sound good to me (similar to ext4/xfs on-disk features) and
+>> even if works, you cannot use this way for 5.19~6.10
+>> upstream kernels.
+> 
+> Anyway, I know userspace folks always would like to have a
+> simple kernel way to check if a feature is supported for a
+> kernel, but (many years later) my current thought is that
+> the simplist way to check this is to introduce a simple
+> helper to try.  You cannot list every kernel features you
+> concerned as some sysfs file and in time properly, or you
+> could cause some inconsistency.
+> 
+> Anyway, that is my personal thought, having another detailed
+> list for all features users care about along with the real
+> implementaions seems unnecessary.
+Thanks for explaining!
+Maybe the way of showing the features in erofs now seems not
+quite reasonable. It only output the "supported" string from
+sysfs. What suggestions do you have for this?
 
+Thanks,
+Hongbo
+> 
+> Thanks,
+> Gao Xiang
