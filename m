@@ -1,63 +1,86 @@
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB36C53E23
-	for <netfs@lists.linux.dev>; Wed, 26 Jun 2024 03:28:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CE017F51C;
+	Wed, 26 Jun 2024 12:19:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719372525; cv=none; b=Ap52xiQJMWlep13z9ncCsHG0zHuHCtCPAiYJnQGU/WsGQWjDYkSlgra0/JGxWAtjO0hZ0gu0/ZbuxH4bLfhSqIzmch9Ie+R/1IdTYN9lJvBkJGLhiaiH6elckznXKuakExZvSUxqwpIQZHGuaRGG67HVOYTG/5VBY/XMuDZXMyk=
+	t=1719404375; cv=none; b=JjdSoyPUzIl7oOhARfRrOQbunN3qwOcw+5HmeNcVqfJZAqEqv/6BJUF/1Ov9aL0q2RXbB49tKZNGAb4xz3OGpsJbH31STZnEB/ClQd4n/tllzXNp831bTyKK29wgl9vU5a9dfWcGWoy+VtC0CyBynvZKsuLF770jtQNbwBW39bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719372525; c=relaxed/simple;
-	bh=0zrJpY1JkZv2ZzG/zVeUvi0maDu1O7pGTexPM9pzIs4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QyUS/8DI904UhA7I7Wd3nTdjDa8OoQkKJBBXAuFTzjmrenzrXr24YHE3WARMOLuGerZ7dYDfYAtEh4anMfkDLqamFQTQ83j3W3JYZV1hijdLGWj6DScNSvHQK8CFZ/2FwQpjG2M7VCPhYzoru0gc8NsXRhzZUE86zglKSsVOjN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=LYrBGatm; arc=none smtp.client-ip=115.124.30.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1719404375; c=relaxed/simple;
+	bh=+a6cKOTvjBqwaDCkw+KkodDw+TAU6VuT99/mNKvMi/o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QyUkwDNyOUMuuHTxK5qFzb1Fu84ovanaqJ3CI8g06kK8Dn1sbETPpPlDCK23sNv1ADj/MCiYksShRsYPcWps1XXryWLZ9LyAN9iUEI7ydj997UuYJ6qI/MPQEFLsUw1r44jV6cJvkSW2I4OBpnS5AkS6MSi21mS4pLW1AuMx2ZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pri+ihHX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="LYrBGatm"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1719372521; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=0zrJpY1JkZv2ZzG/zVeUvi0maDu1O7pGTexPM9pzIs4=;
-	b=LYrBGatmjT9nW1IvjWwLOXzUYQy2gl92pgz5Vp0qLbtgnYvS/pXt/DbkzXKmwaolzO/OlIuGYerTABP9tfuLNtjPwIWYXkF0kMpDeBOMnQ/TW0ZmlRNSp6fwCqQh+WsZTKco+Rc7TTQOr1kAI09NmP+Z7/lQogWEojIlf7AEgro=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033068164191;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0W9Hi27f_1719372519;
-Received: from 30.97.48.205(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0W9Hi27f_1719372519)
-          by smtp.aliyun-inc.com;
-          Wed, 26 Jun 2024 11:28:40 +0800
-Message-ID: <c809cda4-57be-41b5-af2f-5ebac23e95e0@linux.alibaba.com>
-Date: Wed, 26 Jun 2024 11:28:39 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pri+ihHX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA674C2BD10;
+	Wed, 26 Jun 2024 12:19:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719404374;
+	bh=+a6cKOTvjBqwaDCkw+KkodDw+TAU6VuT99/mNKvMi/o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=pri+ihHX6LCjoCWfssh1KMC23/kENbI3RJR/QRgf5v1PH+ivyNER4s3d4Y4Ei9wdZ
+	 R9wpkRQL5fDkRmkGBcetNtjmbny16WrQt51T62EmpyxJ22VicfdS8GNzFwvOFzfO4H
+	 xgn9oLBAzKDwK8EiYEhNUwii6WUaJup+13qLAPWjh8+621zQVTVVK3ga5ofgCNtnvy
+	 AiX14y4WmlQfj2MxHsIKbHQE2Mje7Nhhuu5wG7SJpNGR8njRbHxiJ9hD/BITvLibiR
+	 auK1zl6EfHYXdpsWHYdprFvHnFmoPMqm3iwygWG8LbwMZFWOvkOeVCteF8T6y6GU/0
+	 ypdq2Pr9emrVg==
+From: Christian Brauner <brauner@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	netfs@lists.linux.dev,
+	v9fs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] netfs: Fix netfs_page_mkwrite() to check folio->mapping is valid
+Date: Wed, 26 Jun 2024 14:19:24 +0200
+Message-ID: <20240626-kennen-westseite-0c15ed37b7a5@brauner>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <780211.1719318546@warthog.procyon.org.uk>
+References: <614257.1719228181@warthog.procyon.org.uk> <780211.1719318546@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/5] cachefiles: some bugfixes for clean object/send
- req/poll
-To: Baokun Li <libaokun@huaweicloud.com>, netfs@lists.linux.dev,
- dhowells@redhat.com, jlayton@kernel.org
-Cc: jefflexu@linux.alibaba.com, zhujia.zj@bytedance.com,
- linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, yangerkun@huawei.com, houtao1@huawei.com,
- yukuai3@huawei.com, wozizhi@huawei.com, Baokun Li <libaokun1@huawei.com>
-References: <20240515125136.3714580-1-libaokun@huaweicloud.com>
- <13b4dd18-8105-44e0-b383-8835fd34ac9e@huaweicloud.com>
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
-In-Reply-To: <13b4dd18-8105-44e0-b383-8835fd34ac9e@huaweicloud.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1250; i=brauner@kernel.org; h=from:subject:message-id; bh=+a6cKOTvjBqwaDCkw+KkodDw+TAU6VuT99/mNKvMi/o=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaTVsPsxi/x9Fmk/c4KNgkXyZiG7vkmT1jWVhYnnml4Ki ZBerBPdUcrCIMbFICumyOLQbhIut5ynYrNRpgbMHFYmkCEMXJwCMBHDV4wMh77GvnLqe1bMGLjb +s+3rABXy/7zq4QPtkbkXnk5/bbTZob/5SnPvHyijp+5nbLx9wdRzQPnpbkvfVljY/2vgi8x7mc fGwA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
+On Tue, 25 Jun 2024 13:29:06 +0100, David Howells wrote:
+> 
+> Fix netfs_page_mkwrite() to check that folio->mapping is valid once it has
+> taken the folio lock (as filemap_page_mkwrite() does).  Without this,
+> generic/247 occasionally oopses with something like the following:
+> 
+>     BUG: kernel NULL pointer dereference, address: 0000000000000000
+>     #PF: supervisor read access in kernel mode
+>     #PF: error_code(0x0000) - not-present page
+> 
+> [...]
 
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-On 2024/6/26 11:04, Baokun Li wrote:
-> A gentle ping.
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-Since it's been long time, I guess you could just resend
-a new patchset with collected new tags instead of just
-ping for the next round review?
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-Thanks,
-Gao Xiang
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[1/1] netfs: Fix netfs_page_mkwrite() to check folio->mapping is valid
+      https://git.kernel.org/vfs/vfs/c/a81c98bfa40c
