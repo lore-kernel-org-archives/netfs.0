@@ -1,32 +1,32 @@
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88579F519
-	for <netfs@lists.linux.dev>; Fri, 28 Jun 2024 07:30:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB25140363
+	for <netfs@lists.linux.dev>; Fri, 28 Jun 2024 07:39:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719559842; cv=none; b=rgsRb4e+ZV7BQKZonFJ9vwTpRWIVVMViIylEbsIi1HgAPY5/Yo24z93Xlf5MuasFR+qC8fCU51gkX3XEPePRcTG2NCXMzxzz8B9NrNG+LQrd/oUSswna/h0qeXRIwybLf+RhbzZRDRoLEvtvIvSfri/d6/us08vhSoLNrIqbEzs=
+	t=1719560371; cv=none; b=ZQcoX/bCZ85Uy+zcoCMJbcw6mcoXtJTjeoQQqDhS9yirCaEcDQ1nvKI2KIsmv6tXJt5ueQqIscNBRGOy4HaekhGevQAnIFH6T7hoVMXKI/77UZZ959CeqJWEt2D5ognb/9N8Ng3j+TIULyMokdSRP51x2S87cSli1boIZwO1+4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719559842; c=relaxed/simple;
-	bh=9DjJsXx99iqs0CwhlzUJW8Y4ZcRpPL1NAmZ/+KNhQn8=;
+	s=arc-20240116; t=1719560371; c=relaxed/simple;
+	bh=tHW0KMxF0Le+fZFdbDVVw/G/3C67/mNlFJa2G6YHrE8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tPHvbteXs5rn6LcDnk/xUeoR3B0haxbsT56EXz6jqw9AIw5Qxu0oTdRBmUihyQky5wyQKvqqjYbHillmx0UlbUrLKXPkp4PNGKd361HGPrvY8Tlb+2dchD7GnSrZvmSAxvtwILSeseQWPd1GukfeWIvoSv6nvDpiZmtKyO0XSQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Nb8OWQLg; arc=none smtp.client-ip=115.124.30.110
+	 In-Reply-To:Content-Type; b=snVRK/qmiNQ68VJXiqb7z/tieXb9vbVwoZ2ihgPqN7QMqUJXb67Y44E3zuqVIKHbvFd/VSCbQuQM+yArDheLyic8pRCQpIAKxMeqwamEp5OEXS2cYf5snvR8AEwX24O27bH7xFUf1y9qF7+IuOOdyqjq0ghpBveLXzl1s6LOot4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Jjde3unv; arc=none smtp.client-ip=115.124.30.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Nb8OWQLg"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Jjde3unv"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1719559837; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=eyQs0tMPU81R2eg4ZErSJAcR3SHyXy5n22wLWs/5v64=;
-	b=Nb8OWQLguMXl+MDHpJ/x0yyIJANIepdj6E/cKQL4N1LPEmrlkzW2i+USMs5CmbtfqnQnBExHfAmdGcWEwDeP8ldVxuM5mNl28VszkGJ1rKOr+z0bQrov6S8yw1bl2HLKEvFbGYpzD17lj1wHMOIbdyyzXxG2rjpAmUHnU9N7LEU=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033023225041;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0W9PYgHp_1719559835;
-Received: from 30.97.48.160(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0W9PYgHp_1719559835)
+	t=1719560366; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=BL+alWHXQ+GW6lLZJwH43dW4UHUN5EClmD0/pcFXBWQ=;
+	b=Jjde3unvFIDMqkQDjk/kGfHG7aclt1j/yzhl9QaEv5cL1RTDk2txEqCRBAMnY/gP4C0dsWjZDuNcbChyfBFnxWZrt8BpoMe+/DRKi8sviPZpSwHYA4OZs/pu7xeeKJZUQL8i8T2pniDxWNOTCfxItws00OOfv9FGbBOpihFLeFc=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037067110;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0W9Pclg9_1719560365;
+Received: from 30.97.48.160(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0W9Pclg9_1719560365)
           by smtp.aliyun-inc.com;
-          Fri, 28 Jun 2024 15:30:36 +0800
-Message-ID: <47a91a45-7e36-45e0-891f-475adca77f59@linux.alibaba.com>
-Date: Fri, 28 Jun 2024 15:30:35 +0800
+          Fri, 28 Jun 2024 15:39:25 +0800
+Message-ID: <ce6a7e15-5bea-413a-951e-b252319e1dfd@linux.alibaba.com>
+Date: Fri, 28 Jun 2024 15:39:24 +0800
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -34,54 +34,82 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/9] cachefiles: propagate errors from vfs_getxattr()
- to avoid infinite loop
+Subject: Re: [PATCH v3 0/9] cachefiles: random bugfixes
 To: libaokun@huaweicloud.com, netfs@lists.linux.dev, dhowells@redhat.com,
- jlayton@kernel.org
+ jlayton@kernel.org, Christian Brauner <brauner@kernel.org>
 Cc: jefflexu@linux.alibaba.com, zhujia.zj@bytedance.com,
- linux-erofs@lists.ozlabs.org, brauner@kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- yangerkun@huawei.com, houtao1@huawei.com, yukuai3@huawei.com,
- wozizhi@huawei.com, Baokun Li <libaokun1@huawei.com>
+ linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, yangerkun@huawei.com, houtao1@huawei.com,
+ yukuai3@huawei.com, wozizhi@huawei.com, Baokun Li <libaokun1@huawei.com>
 References: <20240628062930.2467993-1-libaokun@huaweicloud.com>
- <20240628062930.2467993-5-libaokun@huaweicloud.com>
 From: Gao Xiang <hsiangkao@linux.alibaba.com>
-In-Reply-To: <20240628062930.2467993-5-libaokun@huaweicloud.com>
+In-Reply-To: <20240628062930.2467993-1-libaokun@huaweicloud.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-
+Hi Baokun,
 
 On 2024/6/28 14:29, libaokun@huaweicloud.com wrote:
 > From: Baokun Li <libaokun1@huawei.com>
 > 
-> In cachefiles_check_volume_xattr(), the error returned by vfs_getxattr()
-> is not passed to ret, so it ends up returning -ESTALE, which leads to an
-> endless loop as follows:
+> Hi all!
 > 
-> cachefiles_acquire_volume
-> retry:
->    ret = cachefiles_check_volume_xattr
->      ret = -ESTALE
->      xlen = vfs_getxattr // return -EIO
->      // The ret is not updated when xlen < 0, so -ESTALE is returned.
->      return ret
->    // Supposed to jump out of the loop at this judgement.
->    if (ret != -ESTALE)
->        goto error_dir;
->    cachefiles_bury_object
->      //  EIO causes rename failure
->    goto retry;
+> This is the third version of this patch series, in which another patch set
+> is subsumed into this one to avoid confusing the two patch sets.
+> (https://patchwork.kernel.org/project/linux-fsdevel/list/?series=854914)
 > 
-> Hence propagate the error returned by vfs_getxattr() to avoid the above
-> issue. Do the same in cachefiles_check_auxdata().
+> Thank you, Jia Zhu, Gao Xiang, Jeff Layton, for the feedback in the
+> previous version.
 > 
-> Fixes: 32e150037dce ("fscache, cachefiles: Store the volume coherency data")
-> Fixes: 72b957856b0c ("cachefiles: Implement metadata/coherency data storage in xattrs")
-> Signed-off-by: Baokun Li <libaokun1@huawei.com>
+> We've been testing ondemand mode for cachefiles since January, and we're
+> almost done. We hit a lot of issues during the testing period, and this
+> patch series fixes some of the issues. The patches have passed internal
+> testing without regression.
+> 
+> The following is a brief overview of the patches, see the patches for
+> more details.
+> 
+> Patch 1-2: Add fscache_try_get_volume() helper function to avoid
+> fscache_volume use-after-free on cache withdrawal.
+> 
+> Patch 3: Fix cachefiles_lookup_cookie() and cachefiles_withdraw_cache()
+> concurrency causing cachefiles_volume use-after-free.
+> 
+> Patch 4: Propagate error codes returned by vfs_getxattr() to avoid
+> endless loops.
+> 
+> Patch 5-7: A read request waiting for reopen could be closed maliciously
+> before the reopen worker is executing or waiting to be scheduled. So
+> ondemand_object_worker() may be called after the info and object and even
+> the cache have been freed and trigger use-after-free. So use
+> cancel_work_sync() in cachefiles_ondemand_clean_object() to cancel the
+> reopen worker or wait for it to finish. Since it makes no sense to wait
+> for the daemon to complete the reopen request, to avoid this pointless
+> operation blocking cancel_work_sync(), Patch 1 avoids request generation
+> by the DROPPING state when the request has not been sent, and Patch 2
+> flushes the requests of the current object before cancel_work_sync().
+> 
+> Patch 8: Cyclic allocation of msg_id to avoid msg_id reuse misleading
+> the daemon to cause hung.
+> 
+> Patch 9: Hold xas_lock during polling to avoid dereferencing reqs causing
+> use-after-free. This issue was triggered frequently in our tests, and we
+> found that anolis 5.10 had fixed it. So to avoid failing the test, this
+> patch is pushed upstream as well.
+> 
+> Comments and questions are, as always, welcome.
+> Please let me know what you think.
 
-It looks good to me,
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Patch 4-9 looks good to me, and they are independent to patch 1-3
+so personally I guess they could go upstream in advance.
+
+I hope the way to fix cachefiles in patch 1-4 could be also
+confirmed by David and Jeff since they relates the generic
+cachefiles logic anyway.
 
 Thanks,
 Gao Xiang
+
+> 
+> Thanks,
+> Baokun
