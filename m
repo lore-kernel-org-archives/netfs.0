@@ -1,27 +1,28 @@
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D9DD299
-	for <netfs@lists.linux.dev>; Fri, 28 Jun 2024 06:31:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CFCE61FED
+	for <netfs@lists.linux.dev>; Fri, 28 Jun 2024 06:31:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719556267; cv=none; b=KDnaoSNKY2ozUEtXaclx9D8g1MzdHsDnKrGi2GHBvyDxZl++UpscQPqQirCI6RIOFG/F7JijBgJ+gykYf8mTeQK96pw84v12KBpPekmAu/zBdPHSbgnScTbIE2ih2omg6U9DTl4XUCbsKXo7ynQD4BFQo5z4yjZ236780zYhUqY=
+	t=1719556267; cv=none; b=Hx1gsvoBFdDBeAmeBOgEJXZB6ddYSn9LabzPTEcoAq8+avIh+0luVBk2A8J92IV/wvPfH6HUnIF2YZcAWppEMNWPxbTbA9lAVnZybGhNa6CbuJen51L0h8fcLcAn3QPfV8KRjzbeQ6QbvGMDH99t4Due2Lz6FSdTLkYHS7S+O/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1719556267; c=relaxed/simple;
-	bh=OB3rG63lQv8Wc0U7H2NQzqY5pNuhOA7iXsARZQPDZro=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=URKt3QRLxlHOMxWqaNsf9cWwY8vmrI3hEb+CA3XwjsrhEpqjLW/fvNnOib0BBaRh190KxXYuox8J/m6G7AdPhM0YnLHMnJBC6stMTju38mGCoXvC+NH/EhRjKSVFit/RZLC5JRSyQJoXCfXWPL+8zUwdZk5zK3isL6ldvIH9tJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
+	bh=EeUTOXX+ikXI0gUddRBFhNlS1L6H+hG/JmTeVZ9ra6M=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=uOfeMXHHh0RjJJpveW8/9J1HVCAeTqKaSaYf6DiG7cwjAL5Ml2y8TXpnoCv7XKx8otCMEgrMARBKAh1mbaSOifRJYETG+tmKqByxot+77rWDf4KOHWXH/pM5Ysfp3Ie91fCk2MjC98uXAsLduSHFXVPnpBDD2/x033ysQoI2L+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
 Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4W9QYM4TBdz4f3kw4
-	for <netfs@lists.linux.dev>; Fri, 28 Jun 2024 14:30:47 +0800 (CST)
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4W9QYQ5wxFz4f3jds
+	for <netfs@lists.linux.dev>; Fri, 28 Jun 2024 14:30:50 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id D8DF61A0568
-	for <netfs@lists.linux.dev>; Fri, 28 Jun 2024 14:30:59 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTP id BBADF1A0568
+	for <netfs@lists.linux.dev>; Fri, 28 Jun 2024 14:31:01 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.175.104.67])
-	by APP2 (Coremail) with SMTP id Syh0CgBXwIWfWH5mZZVAAg--.52859S4;
-	Fri, 28 Jun 2024 14:30:57 +0800 (CST)
+	by APP2 (Coremail) with SMTP id Syh0CgBXwIWfWH5mZZVAAg--.52859S7;
+	Fri, 28 Jun 2024 14:31:01 +0800 (CST)
 From: libaokun@huaweicloud.com
 To: netfs@lists.linux.dev,
 	dhowells@redhat.com,
@@ -39,137 +40,193 @@ Cc: hsiangkao@linux.alibaba.com,
 	yukuai3@huawei.com,
 	wozizhi@huawei.com,
 	Baokun Li <libaokun1@huawei.com>
-Subject: [PATCH v3 0/9] cachefiles: random bugfixes
-Date: Fri, 28 Jun 2024 14:29:21 +0800
-Message-Id: <20240628062930.2467993-1-libaokun@huaweicloud.com>
+Subject: [PATCH v3 3/9] cachefiles: fix slab-use-after-free in cachefiles_withdraw_cookie()
+Date: Fri, 28 Jun 2024 14:29:24 +0800
+Message-Id: <20240628062930.2467993-4-libaokun@huaweicloud.com>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240628062930.2467993-1-libaokun@huaweicloud.com>
+References: <20240628062930.2467993-1-libaokun@huaweicloud.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Syh0CgBXwIWfWH5mZZVAAg--.52859S4
-X-Coremail-Antispam: 1UD129KBjvJXoWxGr15CF1DXrW3GFy5ZFy5Arb_yoWrAr17pF
-	Waka13JrykWry7C393Zw13tFyrA3yfXFn2gr17Xw15A3s8XF15ZrWI9r1YvFyUCrZ7Jw42
-	vr1jkFn7Gr1jv3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvE14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
-	Y2ka0xkIwI1lw4CEc2x0rVAKj4xxMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r
-	1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CE
-	b7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0x
-	vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_WFyUJVCq3wCI
-	42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWI
-	evJa73UjIFyTuYvjfUYWrWUUUUU
-X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAQAIBV1jkH-YcwABs3
+X-CM-TRANSID:Syh0CgBXwIWfWH5mZZVAAg--.52859S7
+X-Coremail-Antispam: 1UD129KBjvJXoWxtr1DXw1fuFWfXw13Zr45Awb_yoW7Ary3pF
+	ZIvrWxtrW8W3y7Grs8Jw1UJrn3J3s8JanrXw18Xr1rAws5Zr1YqF1jyr1YvFy5CrWkArs2
+	y3WUKFy7WryUArJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUPC14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JrWl82xGYIkIc2
+	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
+	Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJw
+	A2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS
+	0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2
+	IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0
+	Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kIc2
+	xKxwAKzVCY07xG64k0F24l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l
+	x2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14
+	v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IY
+	x2IY6xkF7I0E14v26F4j6r4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z2
+	80aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI
+	43ZEXa7VUbgdbUUUUUU==
+X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAgAIBV1jkHrzbwAAsH
 
 From: Baokun Li <libaokun1@huawei.com>
 
-Hi all!
+We got the following issue in our fault injection stress test:
 
-This is the third version of this patch series, in which another patch set
-is subsumed into this one to avoid confusing the two patch sets.
-(https://patchwork.kernel.org/project/linux-fsdevel/list/?series=854914)
+==================================================================
+BUG: KASAN: slab-use-after-free in cachefiles_withdraw_cookie+0x4d9/0x600
+Read of size 8 at addr ffff888118efc000 by task kworker/u78:0/109
 
-Thank you, Jia Zhu, Gao Xiang, Jeff Layton, for the feedback in the
-previous version.
+CPU: 13 PID: 109 Comm: kworker/u78:0 Not tainted 6.8.0-dirty #566
+Call Trace:
+ <TASK>
+ kasan_report+0x93/0xc0
+ cachefiles_withdraw_cookie+0x4d9/0x600
+ fscache_cookie_state_machine+0x5c8/0x1230
+ fscache_cookie_worker+0x91/0x1c0
+ process_one_work+0x7fa/0x1800
+ [...]
 
-We've been testing ondemand mode for cachefiles since January, and we're
-almost done. We hit a lot of issues during the testing period, and this
-patch series fixes some of the issues. The patches have passed internal
-testing without regression.
+Allocated by task 117:
+ kmalloc_trace+0x1b3/0x3c0
+ cachefiles_acquire_volume+0xf3/0x9c0
+ fscache_create_volume_work+0x97/0x150
+ process_one_work+0x7fa/0x1800
+ [...]
 
-The following is a brief overview of the patches, see the patches for
-more details.
+Freed by task 120301:
+ kfree+0xf1/0x2c0
+ cachefiles_withdraw_cache+0x3fa/0x920
+ cachefiles_put_unbind_pincount+0x1f6/0x250
+ cachefiles_daemon_release+0x13b/0x290
+ __fput+0x204/0xa00
+ task_work_run+0x139/0x230
+ do_exit+0x87a/0x29b0
+ [...]
+==================================================================
 
-Patch 1-2: Add fscache_try_get_volume() helper function to avoid
-fscache_volume use-after-free on cache withdrawal.
+Following is the process that triggers the issue:
 
-Patch 3: Fix cachefiles_lookup_cookie() and cachefiles_withdraw_cache()
-concurrency causing cachefiles_volume use-after-free.
+           p1                |             p2
+------------------------------------------------------------
+                              fscache_begin_lookup
+                               fscache_begin_volume_access
+                                fscache_cache_is_live(fscache_cache)
+cachefiles_daemon_release
+ cachefiles_put_unbind_pincount
+  cachefiles_daemon_unbind
+   cachefiles_withdraw_cache
+    fscache_withdraw_cache
+     fscache_set_cache_state(cache, FSCACHE_CACHE_IS_WITHDRAWN);
+    cachefiles_withdraw_objects(cache)
+    fscache_wait_for_objects(fscache)
+      atomic_read(&fscache_cache->object_count) == 0
+                              fscache_perform_lookup
+                               cachefiles_lookup_cookie
+                                cachefiles_alloc_object
+                                 refcount_set(&object->ref, 1);
+                                 object->volume = volume
+                                 fscache_count_object(vcookie->cache);
+                                  atomic_inc(&fscache_cache->object_count)
+    cachefiles_withdraw_volumes
+     cachefiles_withdraw_volume
+      fscache_withdraw_volume
+      __cachefiles_free_volume
+       kfree(cachefiles_volume)
+                              fscache_cookie_state_machine
+                               cachefiles_withdraw_cookie
+                                cache = object->volume->cache;
+                                // cachefiles_volume UAF !!!
 
-Patch 4: Propagate error codes returned by vfs_getxattr() to avoid
-endless loops.
+After setting FSCACHE_CACHE_IS_WITHDRAWN, wait for all the cookie lookups
+to complete first, and then wait for fscache_cache->object_count == 0 to
+avoid the cookie exiting after the volume has been freed and triggering
+the above issue. Therefore call fscache_withdraw_volume() before calling
+cachefiles_withdraw_objects().
 
-Patch 5-7: A read request waiting for reopen could be closed maliciously
-before the reopen worker is executing or waiting to be scheduled. So
-ondemand_object_worker() may be called after the info and object and even
-the cache have been freed and trigger use-after-free. So use
-cancel_work_sync() in cachefiles_ondemand_clean_object() to cancel the
-reopen worker or wait for it to finish. Since it makes no sense to wait
-for the daemon to complete the reopen request, to avoid this pointless
-operation blocking cancel_work_sync(), Patch 1 avoids request generation
-by the DROPPING state when the request has not been sent, and Patch 2
-flushes the requests of the current object before cancel_work_sync().
+This way, after setting FSCACHE_CACHE_IS_WITHDRAWN, only the following two
+cases will occur:
+1) fscache_begin_lookup fails in fscache_begin_volume_access().
+2) fscache_withdraw_volume() will ensure that fscache_count_object() has
+   been executed before calling fscache_wait_for_objects().
 
-Patch 8: Cyclic allocation of msg_id to avoid msg_id reuse misleading
-the daemon to cause hung.
+Fixes: fe2140e2f57f ("cachefiles: Implement volume support")
+Suggested-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+---
+ fs/cachefiles/cache.c  | 35 ++++++++++++++++++++++++++++++++++-
+ fs/cachefiles/volume.c |  1 -
+ 2 files changed, 34 insertions(+), 2 deletions(-)
 
-Patch 9: Hold xas_lock during polling to avoid dereferencing reqs causing
-use-after-free. This issue was triggered frequently in our tests, and we
-found that anolis 5.10 had fixed it. So to avoid failing the test, this
-patch is pushed upstream as well.
-
-Comments and questions are, as always, welcome.
-Please let me know what you think.
-
-Thanks,
-Baokun
-
-Changes since v2:
-  * Collect Acked-by from Jeff Layton.(Thanks for your ack!)
-  * Collect RVB from Gao Xiang.(Thanks for your review!)
-  * Patch 1-4 from another patch set.
-  * Pathch 4,6,7: Optimise commit messages and subjects.
-
-Changes since v1:
-  * Collect RVB from Jia Zhu and Gao Xiang.(Thanks for your review!)
-  * Pathch 1,2：Add more commit messages.
-  * Pathch 3：Add Fixes tag as suggested by Jia Zhu.
-  * Pathch 4：No longer changing "do...while" to "retry" to focus changes
-    and optimise commit messages.
-  * Pathch 5: Drop the internal RVB tag.
-
-v1: https://lore.kernel.org/all/20240424033409.2735257-1-libaokun@huaweicloud.com
-v2: https://lore.kernel.org/all/20240515125136.3714580-1-libaokun@huaweicloud.com
-
-Baokun Li (7):
-  netfs, fscache: export fscache_put_volume() and add
-    fscache_try_get_volume()
-  cachefiles: fix slab-use-after-free in fscache_withdraw_volume()
-  cachefiles: fix slab-use-after-free in cachefiles_withdraw_cookie()
-  cachefiles: propagate errors from vfs_getxattr() to avoid infinite
-    loop
-  cachefiles: stop sending new request when dropping object
-  cachefiles: cancel all requests for the object that is being dropped
-  cachefiles: cyclic allocation of msg_id to avoid reuse
-
-Hou Tao (1):
-  cachefiles: wait for ondemand_object_worker to finish when dropping
-    object
-
-Jingbo Xu (1):
-  cachefiles: add missing lock protection when polling
-
- fs/cachefiles/cache.c          | 45 ++++++++++++++++++++++++++++-
- fs/cachefiles/daemon.c         |  4 +--
- fs/cachefiles/internal.h       |  3 ++
- fs/cachefiles/ondemand.c       | 52 ++++++++++++++++++++++++++++++----
- fs/cachefiles/volume.c         |  1 -
- fs/cachefiles/xattr.c          |  5 +++-
- fs/netfs/fscache_volume.c      | 14 +++++++++
- fs/netfs/internal.h            |  2 --
- include/linux/fscache-cache.h  |  6 ++++
- include/trace/events/fscache.h |  4 +++
- 10 files changed, 123 insertions(+), 13 deletions(-)
-
+diff --git a/fs/cachefiles/cache.c b/fs/cachefiles/cache.c
+index 56ef519a36a0..9fb06dc16520 100644
+--- a/fs/cachefiles/cache.c
++++ b/fs/cachefiles/cache.c
+@@ -313,7 +313,39 @@ static void cachefiles_withdraw_objects(struct cachefiles_cache *cache)
+ }
+ 
+ /*
+- * Withdraw volumes.
++ * Withdraw fscache volumes.
++ */
++static void cachefiles_withdraw_fscache_volumes(struct cachefiles_cache *cache)
++{
++	struct list_head *cur;
++	struct cachefiles_volume *volume;
++	struct fscache_volume *vcookie;
++
++	_enter("");
++retry:
++	spin_lock(&cache->object_list_lock);
++	list_for_each(cur, &cache->volumes) {
++		volume = list_entry(cur, struct cachefiles_volume, cache_link);
++
++		if (atomic_read(&volume->vcookie->n_accesses) == 0)
++			continue;
++
++		vcookie = fscache_try_get_volume(volume->vcookie,
++						 fscache_volume_get_withdraw);
++		if (vcookie) {
++			spin_unlock(&cache->object_list_lock);
++			fscache_withdraw_volume(vcookie);
++			fscache_put_volume(vcookie, fscache_volume_put_withdraw);
++			goto retry;
++		}
++	}
++	spin_unlock(&cache->object_list_lock);
++
++	_leave("");
++}
++
++/*
++ * Withdraw cachefiles volumes.
+  */
+ static void cachefiles_withdraw_volumes(struct cachefiles_cache *cache)
+ {
+@@ -381,6 +413,7 @@ void cachefiles_withdraw_cache(struct cachefiles_cache *cache)
+ 	pr_info("File cache on %s unregistering\n", fscache->name);
+ 
+ 	fscache_withdraw_cache(fscache);
++	cachefiles_withdraw_fscache_volumes(cache);
+ 
+ 	/* we now have to destroy all the active objects pertaining to this
+ 	 * cache - which we do by passing them off to thread pool to be
+diff --git a/fs/cachefiles/volume.c b/fs/cachefiles/volume.c
+index 89df0ba8ba5e..781aac4ef274 100644
+--- a/fs/cachefiles/volume.c
++++ b/fs/cachefiles/volume.c
+@@ -133,7 +133,6 @@ void cachefiles_free_volume(struct fscache_volume *vcookie)
+ 
+ void cachefiles_withdraw_volume(struct cachefiles_volume *volume)
+ {
+-	fscache_withdraw_volume(volume->vcookie);
+ 	cachefiles_set_volume_xattr(volume);
+ 	__cachefiles_free_volume(volume);
+ }
 -- 
 2.39.2
 
