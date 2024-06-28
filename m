@@ -1,115 +1,76 @@
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB25140363
-	for <netfs@lists.linux.dev>; Fri, 28 Jun 2024 07:39:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E6B1494BD;
+	Fri, 28 Jun 2024 08:45:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719560371; cv=none; b=ZQcoX/bCZ85Uy+zcoCMJbcw6mcoXtJTjeoQQqDhS9yirCaEcDQ1nvKI2KIsmv6tXJt5ueQqIscNBRGOy4HaekhGevQAnIFH6T7hoVMXKI/77UZZ959CeqJWEt2D5ognb/9N8Ng3j+TIULyMokdSRP51x2S87cSli1boIZwO1+4c=
+	t=1719564304; cv=none; b=IAWkMxWUfP3dicb+3ndXmXvw+DsE4cob5KPXrLMZirP1M5wDn1qefIhl2rLMkRo84vY7/qKVWsw1qN7XMbicoLvLhq1zEkSSnGz5/hnNMcVdQxvW/s4PHDEY9GdFRq1oY55mf/GOPzU44QNIhWdpDgrZ3u3a8LOwjqiwxg8a/7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719560371; c=relaxed/simple;
-	bh=tHW0KMxF0Le+fZFdbDVVw/G/3C67/mNlFJa2G6YHrE8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=snVRK/qmiNQ68VJXiqb7z/tieXb9vbVwoZ2ihgPqN7QMqUJXb67Y44E3zuqVIKHbvFd/VSCbQuQM+yArDheLyic8pRCQpIAKxMeqwamEp5OEXS2cYf5snvR8AEwX24O27bH7xFUf1y9qF7+IuOOdyqjq0ghpBveLXzl1s6LOot4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Jjde3unv; arc=none smtp.client-ip=115.124.30.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1719564304; c=relaxed/simple;
+	bh=cC+EmC/4LJL8p72CmY1W0gVCgYZuQXFrJjllOON5cRA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=I2SV47NBksLZQURSEsnzz0yWAhXLaIoKI2T6a392ACBtYRoq4wGhDwBt74HRbJZTujAyVmR4lvddNC9zyTdwqyP9V1WAxl+ycfrDtFOIYqgEjko4EJYgiGti5J1e6EdaOCstjuhItlHtUJhRiMUsCji1m/Xcz8KzhfgUl1pqcu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m7qIWgsv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Jjde3unv"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1719560366; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=BL+alWHXQ+GW6lLZJwH43dW4UHUN5EClmD0/pcFXBWQ=;
-	b=Jjde3unvFIDMqkQDjk/kGfHG7aclt1j/yzhl9QaEv5cL1RTDk2txEqCRBAMnY/gP4C0dsWjZDuNcbChyfBFnxWZrt8BpoMe+/DRKi8sviPZpSwHYA4OZs/pu7xeeKJZUQL8i8T2pniDxWNOTCfxItws00OOfv9FGbBOpihFLeFc=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037067110;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0W9Pclg9_1719560365;
-Received: from 30.97.48.160(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0W9Pclg9_1719560365)
-          by smtp.aliyun-inc.com;
-          Fri, 28 Jun 2024 15:39:25 +0800
-Message-ID: <ce6a7e15-5bea-413a-951e-b252319e1dfd@linux.alibaba.com>
-Date: Fri, 28 Jun 2024 15:39:24 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m7qIWgsv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30415C2BD10;
+	Fri, 28 Jun 2024 08:45:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719564304;
+	bh=cC+EmC/4LJL8p72CmY1W0gVCgYZuQXFrJjllOON5cRA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=m7qIWgsvfXgM9EfkQoo4XwC9oblZQYOndBTwObvOBSEpKlv1hqwUmC8WIwC+uUwhj
+	 fPi0A+F8+UTMhv5adgBduSp/iQ9tsG25sPkZWAdBwOMFQIM4dBHcgqV4KT0R1BChnZ
+	 x9ztdGaoiruXo1Bvg38CM3/ElbcSkj8+7k2Ug+vCh67Rvw6fVK3gsV+VkgWwKk8SUQ
+	 wglMYa4NdaGaXlw1/TXCyc9OJdG8E5bkft0QkF4C1meC9pz8TyuAbPJBLcwKlsJ6Fb
+	 /xZCr/2/ichN8f2kBD2PRwUWmLZgg2bFsElL0vI0YBENV1d4Kz0iBxjR3kUwsdQiyz
+	 B7viv6honmy7g==
+From: Christian Brauner <brauner@kernel.org>
+To: Thorsten Blum <thorsten.blum@toblux.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Simon Horman <horms@kernel.org>,
+	dhowells@redhat.com,
+	jlayton@kernel.org
+Subject: Re: [RESEND PATCH] fscache: Remove duplicate included header
+Date: Fri, 28 Jun 2024 10:44:48 +0200
+Message-ID: <20240628-dingfest-gemessen-756a29e9af0b@brauner>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240628062329.321162-2-thorsten.blum@toblux.com>
+References: <20240628062329.321162-2-thorsten.blum@toblux.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/9] cachefiles: random bugfixes
-To: libaokun@huaweicloud.com, netfs@lists.linux.dev, dhowells@redhat.com,
- jlayton@kernel.org, Christian Brauner <brauner@kernel.org>
-Cc: jefflexu@linux.alibaba.com, zhujia.zj@bytedance.com,
- linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, yangerkun@huawei.com, houtao1@huawei.com,
- yukuai3@huawei.com, wozizhi@huawei.com, Baokun Li <libaokun1@huawei.com>
-References: <20240628062930.2467993-1-libaokun@huaweicloud.com>
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
-In-Reply-To: <20240628062930.2467993-1-libaokun@huaweicloud.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=875; i=brauner@kernel.org; h=from:subject:message-id; bh=cC+EmC/4LJL8p72CmY1W0gVCgYZuQXFrJjllOON5cRA=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaTVVbC/XetzVnouV5jIohsPF5wuCc5qiy//vNJj+d+5Z vO2q1U+7yhlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjI3UWMDA8fTtys4m12aFPF /P9Z4cKMrdlL5zIIxayRfCquXi+qHMPI0Dano09f8tp9i+wYBZ3Cxc/us4oY31/w9reBlc4E847 3rAA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-Hi Baokun,
+On Fri, 28 Jun 2024 08:23:30 +0200, Thorsten Blum wrote:
+> Remove duplicate included header file linux/uio.h
+> 
+> 
 
-On 2024/6/28 14:29, libaokun@huaweicloud.com wrote:
-> From: Baokun Li <libaokun1@huawei.com>
-> 
-> Hi all!
-> 
-> This is the third version of this patch series, in which another patch set
-> is subsumed into this one to avoid confusing the two patch sets.
-> (https://patchwork.kernel.org/project/linux-fsdevel/list/?series=854914)
-> 
-> Thank you, Jia Zhu, Gao Xiang, Jeff Layton, for the feedback in the
-> previous version.
-> 
-> We've been testing ondemand mode for cachefiles since January, and we're
-> almost done. We hit a lot of issues during the testing period, and this
-> patch series fixes some of the issues. The patches have passed internal
-> testing without regression.
-> 
-> The following is a brief overview of the patches, see the patches for
-> more details.
-> 
-> Patch 1-2: Add fscache_try_get_volume() helper function to avoid
-> fscache_volume use-after-free on cache withdrawal.
-> 
-> Patch 3: Fix cachefiles_lookup_cookie() and cachefiles_withdraw_cache()
-> concurrency causing cachefiles_volume use-after-free.
-> 
-> Patch 4: Propagate error codes returned by vfs_getxattr() to avoid
-> endless loops.
-> 
-> Patch 5-7: A read request waiting for reopen could be closed maliciously
-> before the reopen worker is executing or waiting to be scheduled. So
-> ondemand_object_worker() may be called after the info and object and even
-> the cache have been freed and trigger use-after-free. So use
-> cancel_work_sync() in cachefiles_ondemand_clean_object() to cancel the
-> reopen worker or wait for it to finish. Since it makes no sense to wait
-> for the daemon to complete the reopen request, to avoid this pointless
-> operation blocking cancel_work_sync(), Patch 1 avoids request generation
-> by the DROPPING state when the request has not been sent, and Patch 2
-> flushes the requests of the current object before cancel_work_sync().
-> 
-> Patch 8: Cyclic allocation of msg_id to avoid msg_id reuse misleading
-> the daemon to cause hung.
-> 
-> Patch 9: Hold xas_lock during polling to avoid dereferencing reqs causing
-> use-after-free. This issue was triggered frequently in our tests, and we
-> found that anolis 5.10 had fixed it. So to avoid failing the test, this
-> patch is pushed upstream as well.
-> 
-> Comments and questions are, as always, welcome.
-> Please let me know what you think.
+Applied to the vfs.netfs branch of the vfs/vfs.git tree.
+Patches in the vfs.netfs branch should appear in linux-next soon.
 
-Patch 4-9 looks good to me, and they are independent to patch 1-3
-so personally I guess they could go upstream in advance.
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-I hope the way to fix cachefiles in patch 1-4 could be also
-confirmed by David and Jeff since they relates the generic
-cachefiles logic anyway.
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-Thanks,
-Gao Xiang
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
-> 
-> Thanks,
-> Baokun
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.netfs
+
+[1/1] fscache: Remove duplicate included header
+      https://git.kernel.org/vfs/vfs/c/5094b901bedc
