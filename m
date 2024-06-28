@@ -1,32 +1,32 @@
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8733213DDC9
-	for <netfs@lists.linux.dev>; Fri, 28 Jun 2024 07:22:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88579F519
+	for <netfs@lists.linux.dev>; Fri, 28 Jun 2024 07:30:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.110
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719559335; cv=none; b=K45HNaBy2P9oknYfH5usYSZhVs1FynRIBrbLXGOn7RA/+uLq96utPW8YMr9tntBc/BN1yUpnLnRuSketh/PXqhy/kxL3M7KVRFBR5d5zePWuLaN9YqUFFoqJeBGYWsOQhnsITvzRSZJtPdqQIqMoPT5jpTXI26r80EU8d7QD0sQ=
+	t=1719559842; cv=none; b=rgsRb4e+ZV7BQKZonFJ9vwTpRWIVVMViIylEbsIi1HgAPY5/Yo24z93Xlf5MuasFR+qC8fCU51gkX3XEPePRcTG2NCXMzxzz8B9NrNG+LQrd/oUSswna/h0qeXRIwybLf+RhbzZRDRoLEvtvIvSfri/d6/us08vhSoLNrIqbEzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719559335; c=relaxed/simple;
-	bh=+wsQjZY5cjH6Gyaiayr2bHQGY8kxalxUhV+ML6iDptY=;
+	s=arc-20240116; t=1719559842; c=relaxed/simple;
+	bh=9DjJsXx99iqs0CwhlzUJW8Y4ZcRpPL1NAmZ/+KNhQn8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k2/jSWoh2pjy4gEwTeH77VQ/2kTuUvljjYLlL1DlumXQgeerql/V5QOibe0+5YLKZLHcGDbQiAJkSx8g1j6ggTLkOJUXgF+ibPa6lZ5popbYoCHp4J0GQrX90GnGGFsAGeu8BZsujXiF+B53bvgLwoM9+TWVIq72tyN7E/inrvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=KpbeYZuB; arc=none smtp.client-ip=115.124.30.97
+	 In-Reply-To:Content-Type; b=tPHvbteXs5rn6LcDnk/xUeoR3B0haxbsT56EXz6jqw9AIw5Qxu0oTdRBmUihyQky5wyQKvqqjYbHillmx0UlbUrLKXPkp4PNGKd361HGPrvY8Tlb+2dchD7GnSrZvmSAxvtwILSeseQWPd1GukfeWIvoSv6nvDpiZmtKyO0XSQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Nb8OWQLg; arc=none smtp.client-ip=115.124.30.110
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="KpbeYZuB"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Nb8OWQLg"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1719559331; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=IrbTsirtrY43rd7JDwwCb+Vavj288uGg3kYA56aBvE8=;
-	b=KpbeYZuBrJRW1EPPRPv2PWmUbCpiL1kiKmariL1cYN60zNWNqZ4EemVYWNKtATQkaP+Betzk1ZDXgO5tWzm7YqabLyWEImeaGrlcYZS0+rsW3au6tj94qAwN9bVhqxuBYf2UswMpfACPc6Qqi7BlOYbz2koxM6WIlA0dULn0aQI=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033023225041;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0W9PYbzE_1719559330;
-Received: from 30.97.48.160(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0W9PYbzE_1719559330)
+	t=1719559837; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=eyQs0tMPU81R2eg4ZErSJAcR3SHyXy5n22wLWs/5v64=;
+	b=Nb8OWQLguMXl+MDHpJ/x0yyIJANIepdj6E/cKQL4N1LPEmrlkzW2i+USMs5CmbtfqnQnBExHfAmdGcWEwDeP8ldVxuM5mNl28VszkGJ1rKOr+z0bQrov6S8yw1bl2HLKEvFbGYpzD17lj1wHMOIbdyyzXxG2rjpAmUHnU9N7LEU=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033023225041;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0W9PYgHp_1719559835;
+Received: from 30.97.48.160(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0W9PYgHp_1719559835)
           by smtp.aliyun-inc.com;
-          Fri, 28 Jun 2024 15:22:11 +0800
-Message-ID: <d5a1aed6-cb93-4562-b8ae-90c688f17f07@linux.alibaba.com>
-Date: Fri, 28 Jun 2024 15:22:09 +0800
+          Fri, 28 Jun 2024 15:30:36 +0800
+Message-ID: <47a91a45-7e36-45e0-891f-475adca77f59@linux.alibaba.com>
+Date: Fri, 28 Jun 2024 15:30:35 +0800
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -34,8 +34,8 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 7/9] cachefiles: wait for ondemand_object_worker to
- finish when dropping object
+Subject: Re: [PATCH v3 4/9] cachefiles: propagate errors from vfs_getxattr()
+ to avoid infinite loop
 To: libaokun@huaweicloud.com, netfs@lists.linux.dev, dhowells@redhat.com,
  jlayton@kernel.org
 Cc: jefflexu@linux.alibaba.com, zhujia.zj@bytedance.com,
@@ -44,61 +44,43 @@ Cc: jefflexu@linux.alibaba.com, zhujia.zj@bytedance.com,
  yangerkun@huawei.com, houtao1@huawei.com, yukuai3@huawei.com,
  wozizhi@huawei.com, Baokun Li <libaokun1@huawei.com>
 References: <20240628062930.2467993-1-libaokun@huaweicloud.com>
- <20240628062930.2467993-8-libaokun@huaweicloud.com>
+ <20240628062930.2467993-5-libaokun@huaweicloud.com>
 From: Gao Xiang <hsiangkao@linux.alibaba.com>
-In-Reply-To: <20240628062930.2467993-8-libaokun@huaweicloud.com>
+In-Reply-To: <20240628062930.2467993-5-libaokun@huaweicloud.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 
 
 On 2024/6/28 14:29, libaokun@huaweicloud.com wrote:
-> From: Hou Tao <houtao1@huawei.com>
+> From: Baokun Li <libaokun1@huawei.com>
 > 
-> When queuing ondemand_object_worker() to re-open the object,
-> cachefiles_object is not pinned. The cachefiles_object may be freed when
-> the pending read request is completed intentionally and the related
-> erofs is umounted. If ondemand_object_worker() runs after the object is
-> freed, it will incur use-after-free problem as shown below.
+> In cachefiles_check_volume_xattr(), the error returned by vfs_getxattr()
+> is not passed to ret, so it ends up returning -ESTALE, which leads to an
+> endless loop as follows:
 > 
-> process A  processs B  process C  process D
+> cachefiles_acquire_volume
+> retry:
+>    ret = cachefiles_check_volume_xattr
+>      ret = -ESTALE
+>      xlen = vfs_getxattr // return -EIO
+>      // The ret is not updated when xlen < 0, so -ESTALE is returned.
+>      return ret
+>    // Supposed to jump out of the loop at this judgement.
+>    if (ret != -ESTALE)
+>        goto error_dir;
+>    cachefiles_bury_object
+>      //  EIO causes rename failure
+>    goto retry;
 > 
-> cachefiles_ondemand_send_req()
-> // send a read req X
-> // wait for its completion
+> Hence propagate the error returned by vfs_getxattr() to avoid the above
+> issue. Do the same in cachefiles_check_auxdata().
 > 
->             // close ondemand fd
->             cachefiles_ondemand_fd_release()
->             // set object as CLOSE
-> 
->                         cachefiles_ondemand_daemon_read()
->                         // set object as REOPENING
->                         queue_work(fscache_wq, &info->ondemand_work)
-> 
->                                  // close /dev/cachefiles
->                                  cachefiles_daemon_release
->                                  cachefiles_flush_reqs
->                                  complete(&req->done)
-> 
-> // read req X is completed
-> // umount the erofs fs
-> cachefiles_put_object()
-> // object will be freed
-> cachefiles_ondemand_deinit_obj_info()
-> kmem_cache_free(object)
->                         // both info and object are freed
->                         ondemand_object_worker()
-> 
-> When dropping an object, it is no longer necessary to reopen the object,
-> so use cancel_work_sync() to cancel or wait for ondemand_object_worker()
-> to finish.
-> 
-> Fixes: 0a7e54c1959c ("cachefiles: resend an open request if the read request's object is closed")
-> Signed-off-by: Hou Tao <houtao1@huawei.com>
+> Fixes: 32e150037dce ("fscache, cachefiles: Store the volume coherency data")
+> Fixes: 72b957856b0c ("cachefiles: Implement metadata/coherency data storage in xattrs")
 > Signed-off-by: Baokun Li <libaokun1@huawei.com>
-> Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
-> Acked-by: Jeff Layton <jlayton@kernel.org>
 
+It looks good to me,
 Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 
 Thanks,
