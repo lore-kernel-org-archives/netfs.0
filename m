@@ -1,30 +1,30 @@
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE50A158A33
-	for <netfs@lists.linux.dev>; Fri, 28 Jun 2024 11:37:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C29916B3B4
+	for <netfs@lists.linux.dev>; Tue,  2 Jul 2024 12:25:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719574643; cv=none; b=AftxL7YWD6Ooz2H7HE647zd/quI1c3+Qj/iUYKxRiJmC1dYNZLNzUlOAUUnFicXk3ZF/rRpHonuOAF1DGxRWz5Nek0xLgBK0uhpJSWh5rgijGuUJ8d6RQDuPHzYpCrNabwvewNwuNnwkAlnBG77Gznu7nhomTxeQBwNpZiHMN8o=
+	t=1719923117; cv=none; b=MIs2JBLdl6FzwtISlFoMrLmQlGiXyUR4xkIfEu43aGroyZ30PiV6jswLJNWNoVixZL8Xw4EIjH3Ej93llzfgi5apogqWDkwsZEYfubTyaaLY+RbkElGFD55P2jFjYobJricogDjJU0poK0cPZ3FAfbm4Y9oHIPOm7xgtdKvvpAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719574643; c=relaxed/simple;
-	bh=Uwa9DiSYD3gjtp88rgsIr0BCC8uTTimKDrWBJ24KDaY=;
+	s=arc-20240116; t=1719923117; c=relaxed/simple;
+	bh=ktCITwpxHpI1W1hj/sUArc8rIdogsyyInYcXkBWuLH0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fRBmwasjltWFJAlGmPGYVJvSub3Z8mxsTJLmMuqYGO+X5pcO9mKKDePMcgCrFF6kfXuImxezJfph8Mim6B/j+wwhKklgqkX536YX9FwBXNVQAMHISuALW9ykBzVyEeTVKKvhuXLHbpSU3kxYr7k7HKkiOsAFIOuVo0n4Tp44P9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
+	 In-Reply-To:Content-Type; b=W+kehe7JDYqZ7awSj9wIKc9kwNProwtT3pm0rAe8CxbfN+wZ3rMRDUqV0wm/oxmOgbBZB8Zb91TFjntkrYMWPRWTr8C+6YS9WEZGbhYv/EmUBUrtUXwfdfE2s2lfJxZBkZlHZBgqqmJj8RBnsKYCEA9ah4lTWyf1KqNegzPHdBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
 Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4W9YLn2YX1z4f3kkB
-	for <netfs@lists.linux.dev>; Fri, 28 Jun 2024 19:37:05 +0800 (CST)
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4WD2DF3P3jz4f3jsP
+	for <netfs@lists.linux.dev>; Tue,  2 Jul 2024 20:25:01 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id 85B081A0568
-	for <netfs@lists.linux.dev>; Fri, 28 Jun 2024 19:37:12 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTP id A14C01A058E
+	for <netfs@lists.linux.dev>; Tue,  2 Jul 2024 20:25:12 +0800 (CST)
 Received: from [10.174.177.174] (unknown [10.174.177.174])
-	by APP1 (Coremail) with SMTP id cCh0CgBXgHxjoH5mMEhDAg--.18518S3;
-	Fri, 28 Jun 2024 19:37:10 +0800 (CST)
-Message-ID: <3536f485-e496-4042-a231-c43a567cee7b@huaweicloud.com>
-Date: Fri, 28 Jun 2024 19:37:06 +0800
+	by APP1 (Coremail) with SMTP id cCh0CgBXgHyi8YNm6TG7Aw--.61077S3;
+	Tue, 02 Jul 2024 20:25:10 +0800 (CST)
+Message-ID: <5e3ffecd-4def-44b4-b141-e24429d13929@huaweicloud.com>
+Date: Tue, 2 Jul 2024 20:25:06 +0800
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -33,115 +33,143 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 0/9] cachefiles: random bugfixes
-To: Gao Xiang <hsiangkao@linux.alibaba.com>
-Cc: Christian Brauner <brauner@kernel.org>, jlayton@kernel.org,
- dhowells@redhat.com, netfs@lists.linux.dev, jefflexu@linux.alibaba.com,
- zhujia.zj@bytedance.com, linux-erofs@lists.ozlabs.org,
+To: netfs@lists.linux.dev, dhowells@redhat.com, jlayton@kernel.org
+Cc: hsiangkao@linux.alibaba.com, jefflexu@linux.alibaba.com,
+ zhujia.zj@bytedance.com, linux-erofs@lists.ozlabs.org, brauner@kernel.org,
  linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
  yangerkun@huawei.com, houtao1@huawei.com, yukuai3@huawei.com,
  wozizhi@huawei.com, Baokun Li <libaokun1@huawei.com>,
  Baokun Li <libaokun@huaweicloud.com>
 References: <20240628062930.2467993-1-libaokun@huaweicloud.com>
- <ce6a7e15-5bea-413a-951e-b252319e1dfd@linux.alibaba.com>
 Content-Language: en-US
 From: Baokun Li <libaokun@huaweicloud.com>
-In-Reply-To: <ce6a7e15-5bea-413a-951e-b252319e1dfd@linux.alibaba.com>
+In-Reply-To: <20240628062930.2467993-1-libaokun@huaweicloud.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:cCh0CgBXgHxjoH5mMEhDAg--.18518S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxuryDuF4UJrW5Aw4UCw1DGFg_yoW5CF4rpF
-	Wakay5KFWkWry0kws2yr4xtF4Fy3yxXFnrGr1rWr1UC3s8XF1IyrZakw1Yvas5Cr4fGw4a
-	vr4jvas3AryqyaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:cCh0CgBXgHyi8YNm6TG7Aw--.61077S3
+X-Coremail-Antispam: 1UD129KBjvJXoWxCF13tr18Wr1kZw45uFy8Zrb_yoWrCw17pF
+	WakanxArykWryxCws3Zw4xtFyFy3yxX3Z2gr1xXw15A3s8XF1FvrWIkr15ZFy5Crs7GrW2
+	vr1q9Fn3Gw1qv3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
 	9KBjDU0xBIdaVrnRJUUUkE14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kI
-	c2xKxwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
-	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkG
-	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6rW3Jr0E3s1lIxAIcVC2z280aVAFwI0_Gr0_
-	Cr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUQvt
+	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
+	0xkIwI1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
+	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIY
+	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
+	v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWrZr1j6s0DMIIF0xvEx4A2jsIE14v26r1j
+	6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUQvt
 	AUUUUU=
-X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAQAIBV1jkIANfAAAsT
+X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAgAMBV1jkHxNzQAAsZ
 
-Hi Xiang,
+Friendly ping...
 
-On 2024/6/28 15:39, Gao Xiang wrote:
-> Hi Baokun,
+On 2024/6/28 14:29, libaokun@huaweicloud.com wrote:
+> From: Baokun Li <libaokun1@huawei.com>
 >
-> On 2024/6/28 14:29, libaokun@huaweicloud.com wrote:
->> From: Baokun Li <libaokun1@huawei.com>
->>
->> Hi all!
->>
->> This is the third version of this patch series, in which another 
->> patch set
->> is subsumed into this one to avoid confusing the two patch sets.
->> (https://patchwork.kernel.org/project/linux-fsdevel/list/?series=854914)
->>
->> Thank you, Jia Zhu, Gao Xiang, Jeff Layton, for the feedback in the
->> previous version.
->>
->> We've been testing ondemand mode for cachefiles since January, and we're
->> almost done. We hit a lot of issues during the testing period, and this
->> patch series fixes some of the issues. The patches have passed internal
->> testing without regression.
->>
->> The following is a brief overview of the patches, see the patches for
->> more details.
->>
->> Patch 1-2: Add fscache_try_get_volume() helper function to avoid
->> fscache_volume use-after-free on cache withdrawal.
->>
->> Patch 3: Fix cachefiles_lookup_cookie() and cachefiles_withdraw_cache()
->> concurrency causing cachefiles_volume use-after-free.
->>
->> Patch 4: Propagate error codes returned by vfs_getxattr() to avoid
->> endless loops.
->>
->> Patch 5-7: A read request waiting for reopen could be closed maliciously
->> before the reopen worker is executing or waiting to be scheduled. So
->> ondemand_object_worker() may be called after the info and object and 
->> even
->> the cache have been freed and trigger use-after-free. So use
->> cancel_work_sync() in cachefiles_ondemand_clean_object() to cancel the
->> reopen worker or wait for it to finish. Since it makes no sense to wait
->> for the daemon to complete the reopen request, to avoid this pointless
->> operation blocking cancel_work_sync(), Patch 1 avoids request generation
->> by the DROPPING state when the request has not been sent, and Patch 2
->> flushes the requests of the current object before cancel_work_sync().
->>
->> Patch 8: Cyclic allocation of msg_id to avoid msg_id reuse misleading
->> the daemon to cause hung.
->>
->> Patch 9: Hold xas_lock during polling to avoid dereferencing reqs 
->> causing
->> use-after-free. This issue was triggered frequently in our tests, and we
->> found that anolis 5.10 had fixed it. So to avoid failing the test, this
->> patch is pushed upstream as well.
->>
->> Comments and questions are, as always, welcome.
->> Please let me know what you think.
+> Hi all!
 >
-> Patch 4-9 looks good to me, and they are independent to patch 1-3
-> so personally I guess they could go upstream in advance.
-
-Thank you for your review!
-
-Indeed, the first three patches have no dependencies on the later
-ones, and the later ones can be merged in first.
+> This is the third version of this patch series, in which another patch set
+> is subsumed into this one to avoid confusing the two patch sets.
+> (https://patchwork.kernel.org/project/linux-fsdevel/list/?series=854914)
 >
-> I hope the way to fix cachefiles in patch 1-4 could be also
-> confirmed by David and Jeff since they relates the generic
-> cachefiles logic anyway.
-Yes, the first four patches modify the generic process for cachefiles,
-and it would be great if David and Jeff could take a look at those.
-The logic for patches 2 and 3 is a bit more complex, so the review
-may take some time.
+> Thank you, Jia Zhu, Gao Xiang, Jeff Layton, for the feedback in the
+> previous version.
+>
+> We've been testing ondemand mode for cachefiles since January, and we're
+> almost done. We hit a lot of issues during the testing period, and this
+> patch series fixes some of the issues. The patches have passed internal
+> testing without regression.
+>
+> The following is a brief overview of the patches, see the patches for
+> more details.
+>
+> Patch 1-2: Add fscache_try_get_volume() helper function to avoid
+> fscache_volume use-after-free on cache withdrawal.
+>
+> Patch 3: Fix cachefiles_lookup_cookie() and cachefiles_withdraw_cache()
+> concurrency causing cachefiles_volume use-after-free.
+>
+> Patch 4: Propagate error codes returned by vfs_getxattr() to avoid
+> endless loops.
+>
+> Patch 5-7: A read request waiting for reopen could be closed maliciously
+> before the reopen worker is executing or waiting to be scheduled. So
+> ondemand_object_worker() may be called after the info and object and even
+> the cache have been freed and trigger use-after-free. So use
+> cancel_work_sync() in cachefiles_ondemand_clean_object() to cancel the
+> reopen worker or wait for it to finish. Since it makes no sense to wait
+> for the daemon to complete the reopen request, to avoid this pointless
+> operation blocking cancel_work_sync(), Patch 1 avoids request generation
+> by the DROPPING state when the request has not been sent, and Patch 2
+> flushes the requests of the current object before cancel_work_sync().
+>
+> Patch 8: Cyclic allocation of msg_id to avoid msg_id reuse misleading
+> the daemon to cause hung.
+>
+> Patch 9: Hold xas_lock during polling to avoid dereferencing reqs causing
+> use-after-free. This issue was triggered frequently in our tests, and we
+> found that anolis 5.10 had fixed it. So to avoid failing the test, this
+> patch is pushed upstream as well.
+>
+> Comments and questions are, as always, welcome.
+> Please let me know what you think.
+>
+> Thanks,
+> Baokun
+>
+> Changes since v2:
+>    * Collect Acked-by from Jeff Layton.(Thanks for your ack!)
+>    * Collect RVB from Gao Xiang.(Thanks for your review!)
+>    * Patch 1-4 from another patch set.
+>    * Pathch 4,6,7: Optimise commit messages and subjects.
+>
+> Changes since v1:
+>    * Collect RVB from Jia Zhu and Gao Xiang.(Thanks for your review!)
+>    * Pathch 1,2：Add more commit messages.
+>    * Pathch 3：Add Fixes tag as suggested by Jia Zhu.
+>    * Pathch 4：No longer changing "do...while" to "retry" to focus changes
+>      and optimise commit messages.
+>    * Pathch 5: Drop the internal RVB tag.
+>
+> v1: https://lore.kernel.org/all/20240424033409.2735257-1-libaokun@huaweicloud.com
+> v2: https://lore.kernel.org/all/20240515125136.3714580-1-libaokun@huaweicloud.com
+>
+> Baokun Li (7):
+>    netfs, fscache: export fscache_put_volume() and add
+>      fscache_try_get_volume()
+>    cachefiles: fix slab-use-after-free in fscache_withdraw_volume()
+>    cachefiles: fix slab-use-after-free in cachefiles_withdraw_cookie()
+>    cachefiles: propagate errors from vfs_getxattr() to avoid infinite
+>      loop
+>    cachefiles: stop sending new request when dropping object
+>    cachefiles: cancel all requests for the object that is being dropped
+>    cachefiles: cyclic allocation of msg_id to avoid reuse
+>
+> Hou Tao (1):
+>    cachefiles: wait for ondemand_object_worker to finish when dropping
+>      object
+>
+> Jingbo Xu (1):
+>    cachefiles: add missing lock protection when polling
+>
+>   fs/cachefiles/cache.c          | 45 ++++++++++++++++++++++++++++-
+>   fs/cachefiles/daemon.c         |  4 +--
+>   fs/cachefiles/internal.h       |  3 ++
+>   fs/cachefiles/ondemand.c       | 52 ++++++++++++++++++++++++++++++----
+>   fs/cachefiles/volume.c         |  1 -
+>   fs/cachefiles/xattr.c          |  5 +++-
+>   fs/netfs/fscache_volume.c      | 14 +++++++++
+>   fs/netfs/internal.h            |  2 --
+>   include/linux/fscache-cache.h  |  6 ++++
+>   include/trace/events/fscache.h |  4 +++
+>   10 files changed, 123 insertions(+), 13 deletions(-)
+>
 
-Cheers,
-Baokun
+-- 
+With Best Regards,
+Baokun Li
 
