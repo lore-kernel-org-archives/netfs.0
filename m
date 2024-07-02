@@ -1,194 +1,146 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9892816728B
-	for <netfs@lists.linux.dev>; Tue,  2 Jul 2024 12:35:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28DA1BA896
+	for <netfs@lists.linux.dev>; Tue,  2 Jul 2024 14:50:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719923706; cv=none; b=cn2gEf31e9G7jdIy9CuG2d35Z0fXIhBhHfeiiFR96vkgduFgbT/ycxK1TOEUoY1vhhPQxSELjbg/t2A5JhWqVZazH/5tNthk9KYAn/0+zD0uHxE8y447GdWIyIY/H8Cd1CGpZUsDZ2ZWajYsRXUPmr95LLlJgSJLyvJSzO+twt4=
+	t=1719931822; cv=none; b=aT/YmxdO4Swc3LoFWLFA1pwpiLPEB5IJdfxDRzZW0tf8ZCPs2KyVQmdXdGzilAdRaRHnHAb8GkiB+QXvjFGnyegX8HDPfMlyDiX44DD+5VYEuS/612ClgpHmNrbje4SReDIgCjJkxETGo90KphUMft4kBC/vPmk7GnpsC6axshU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719923706; c=relaxed/simple;
-	bh=CYAdJeB+CqncFSyqJi1YrjNIbpA52qv/O23+hWZWLAs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=d6W/GAx2OZIXHC/9kJ7WKiVoU8dgAuvzmKFn2V75tO86VjU7PoKmlamjt5ikWMTxEeS/4y3Q4ckSlCrv08+hlpN/stRDWf2Ky2TONwbIOuQhuMu6qzoG2xQXPP5u0AE9AbNQjNgLBVSrZUxRqM3DQb1AJ4OPDwNLyV5M57+hHNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=TbyFU9cL; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+	s=arc-20240116; t=1719931822; c=relaxed/simple;
+	bh=j04qJCMTRC27SFYKj5QHjaBXylUAzvskB/hwKauQY1s=;
+	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=Gt6VFH/6AMcibJSYrKDit/25pjh0/Df57vaK3KQv4Ra2+uMh6JEOC1Tdk8PQruc8NsfbEKQzXA8vMihXJecu1wG8UmN4y65/Dje7R85DXsVgxNBGoqEg+m9FdIHvoFaHJ0WBIgnJ804Kku/ysiqQPl5sUtR8V3Kwu3bfPlY5Qio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AxIZPVXG; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="TbyFU9cL"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1f9ffd24262so23555675ad.0
-        for <netfs@lists.linux.dev>; Tue, 02 Jul 2024 05:35:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1719923704; x=1720528504; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t2VzYQ+j8+6iQewLkeQCbIq09NlR4ehs8d7s9IHNlCc=;
-        b=TbyFU9cLyg6ktvP6FIguWjrl1vrnced4x+VruHhIzWjeFXJB5cFsl4HFkCIpIbOlDo
-         y7rUrmP3q0XF7TkLkTACan9hlWcI08abnWIMI8PATUtbpMNA4127AzknU3/6zD5uV3z6
-         XoOk7kt3oGShdrWZv1CL2ntucNwxyxfCP/U3rqSAgG8T+w3Z5NiXXXUu4k/lEIuD0Efo
-         zPWoG44gfFU6dcy+md4JuhEhsCFwC35uEyw8Vl/6456SLLN+papIj/4q8BUpZXrTzcGG
-         KqOwx+lHS4pCSnKqOJUJnuBqh467GG15kf/CB3T/MVFAQF65bQZyVydbqdVRd2vd59jz
-         lVfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719923704; x=1720528504;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=t2VzYQ+j8+6iQewLkeQCbIq09NlR4ehs8d7s9IHNlCc=;
-        b=CYRIXyhvEncN7cv3LJU3nlqsIhPj075XIO0wdtlFXK91PRdfjcdKX9gSVymh07YA0j
-         QbpO6R8H4awgV6zponCQE/OA8HNWRbCvMDOUCRAeZhWJcm+jBRYV1OaiJ/+DgtywMExh
-         ceFIZRgBsQ/tA2BcNq/0S/PosAEw19hl7332ROvRChf1hiE8iHdAw9Xnu9FvXNoZ4Eiq
-         MG6XeOSPxum7idWfQW38Vx0agrZkfnfTrfjPFyfZOlfgjn+zYgb8EsV1R15vSy6r4uM4
-         ojZ3yOkdBJzAXPRaQocSC6/c9W8Wsyj7kewRjbP9Y6wyWSieNKO8aN8JLsp6bv/rkfy3
-         rESA==
-X-Forwarded-Encrypted: i=1; AJvYcCUBOHx/q9CE1GVEszsiEoHK8/M4z5vMQcBoBEY/j7xPeXyPosY56IGmashVNeqyZDCpb0sp36ScyA67LOrQeruUpS8eCJ0=
-X-Gm-Message-State: AOJu0Yz378qw22cgiJIHkEJaikM86vZTJm/1b3ZIb5hJFLz5y8l107j2
-	oxTPHdqR1QO7uGU3DDElWh3sN3emW23UjnSwWgIdmMIqIcxvEbH1HQsWQXor2pE=
-X-Google-Smtp-Source: AGHT+IHQnoogWURs/kZMnk2ajJRFjETen6Zlw109v1iQySDinr13mF+vbirF+SJ/r8hNYxe5uKUJlA==
-X-Received: by 2002:a17:902:e80f:b0:1f9:ddb9:3ee5 with SMTP id d9443c01a7336-1fadbc85f8dmr67450555ad.26.1719923703933;
-        Tue, 02 Jul 2024 05:35:03 -0700 (PDT)
-Received: from [10.3.154.188] ([61.213.176.6])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fac11d9685sm83027985ad.111.2024.07.02.05.34.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Jul 2024 05:35:02 -0700 (PDT)
-Message-ID: <616a1162-233e-46a9-98e8-cfac36426a2b@bytedance.com>
-Date: Tue, 2 Jul 2024 20:34:56 +0800
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AxIZPVXG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1719931819;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=uWZifttcEAbyBfObjSbGpm26/PI7fGmjt0k2HweKiRc=;
+	b=AxIZPVXGsZZkX45h2qovVvfj0yOwcsL9dV+W82+5wPcXhgWc8BzeSdA9Hg9vsN4a4q2gAm
+	Q41Hpho8RwxYrvtoApNDrKJbapN0A2aM+It7d9Ro+BbpDoYNE8XyjmkT7CEDxnK5BLnRSl
+	ZE/WsSSAa3CV2ATrMtNloEznOGHVcx4=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-544-7te1MDSUOmGrLCL5FkfiOg-1; Tue,
+ 02 Jul 2024 10:50:16 -0400
+X-MC-Unique: 7te1MDSUOmGrLCL5FkfiOg-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0252219560B8;
+	Tue,  2 Jul 2024 14:50:14 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.111])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 640C93000221;
+	Tue,  2 Jul 2024 14:50:10 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: Steve French <sfrench@samba.org>
+cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.com>,
+    Jeff Layton <jlayton@kernel.org>,
+    Christian Brauner <christian@brauner.io>,
+    Matthew Wilcox <willy@infradead.org>, linux-cifs@vger.kernel.org,
+    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+    linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] cifs: Fix read-performance regression by dropping readahead expansion
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [External] [PATCH v3 8/9] cachefiles: cyclic allocation of msg_id
- to avoid reuse
-To: libaokun@huaweicloud.com, netfs@lists.linux.dev, dhowells@redhat.com,
- jlayton@kernel.org
-Cc: hsiangkao@linux.alibaba.com, jefflexu@linux.alibaba.com,
- linux-erofs@lists.ozlabs.org, brauner@kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- yangerkun@huawei.com, houtao1@huawei.com, yukuai3@huawei.com,
- wozizhi@huawei.com, Baokun Li <libaokun1@huawei.com>, zhujia.zj@bytedance.com
-References: <20240628062930.2467993-1-libaokun@huaweicloud.com>
- <20240628062930.2467993-9-libaokun@huaweicloud.com>
-From: Jia Zhu <zhujia.zj@bytedance.com>
-In-Reply-To: <20240628062930.2467993-9-libaokun@huaweicloud.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <3042270.1719931809.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 02 Jul 2024 15:50:09 +0100
+Message-ID: <3042271.1719931809@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
+cifs_expand_read() is causing a performance regression of around 30% by
+causing extra pagecache to be allocated for an inode in the readahead path
+before we begin actually dispatching RPC requests, thereby delaying the
+actual I/O.  The expansion is sized according to the rsize parameter, whic=
+h
+seems to be 4MiB on my test system; this is a big step up from the first
+requests made by the fio test program.
 
+Fix this by removing cifs_expand_readahead().  Readahead expansion is
+mostly useful for when we're using the local cache if the local cache has =
+a
+block size greater than PAGE_SIZE, so we can dispense with it when not
+caching.
 
-在 2024/6/28 14:29, libaokun@huaweicloud.com 写道:
-> From: Baokun Li <libaokun1@huawei.com>
-> 
-> Reusing the msg_id after a maliciously completed reopen request may cause
-> a read request to remain unprocessed and result in a hung, as shown below:
-> 
->         t1       |      t2       |      t3
-> -------------------------------------------------
-> cachefiles_ondemand_select_req
->   cachefiles_ondemand_object_is_close(A)
->   cachefiles_ondemand_set_object_reopening(A)
->   queue_work(fscache_object_wq, &info->work)
->                  ondemand_object_worker
->                   cachefiles_ondemand_init_object(A)
->                    cachefiles_ondemand_send_req(OPEN)
->                      // get msg_id 6
->                      wait_for_completion(&req_A->done)
-> cachefiles_ondemand_daemon_read
->   // read msg_id 6 req_A
->   cachefiles_ondemand_get_fd
->   copy_to_user
->                                  // Malicious completion msg_id 6
->                                  copen 6,-1
->                                  cachefiles_ondemand_copen
->                                   complete(&req_A->done)
->                                   // will not set the object to close
->                                   // because ondemand_id && fd is valid.
-> 
->                  // ondemand_object_worker() is done
->                  // but the object is still reopening.
-> 
->                                  // new open req_B
->                                  cachefiles_ondemand_init_object(B)
->                                   cachefiles_ondemand_send_req(OPEN)
->                                   // reuse msg_id 6
-> process_open_req
->   copen 6,A.size
->   // The expected failed copen was executed successfully
-> 
-> Expect copen to fail, and when it does, it closes fd, which sets the
-> object to close, and then close triggers reopen again. However, due to
-> msg_id reuse resulting in a successful copen, the anonymous fd is not
-> closed until the daemon exits. Therefore read requests waiting for reopen
-> to complete may trigger hung task.
-> 
-> To avoid this issue, allocate the msg_id cyclically to avoid reusing the
-> msg_id for a very short duration of time.
-> 
-> Fixes: c8383054506c ("cachefiles: notify the user daemon when looking up cookie")
-> Signed-off-by: Baokun Li <libaokun1@huawei.com>
-> Acked-by: Jeff Layton <jlayton@kernel.org>
-> Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Steve French <sfrench@samba.org>
+cc: Paulo Alcantara <pc@manguebit.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+cc: linux-mm@kvack.org
+---
+ fs/smb/client/file.c |   30 ------------------------------
+ 1 file changed, 30 deletions(-)
 
-Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index f1f2573bb18d..1374635e89fa 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -245,35 +245,6 @@ static int cifs_init_request(struct netfs_io_request =
+*rreq, struct file *file)
+ 	return 0;
+ }
+ =
 
-> ---
->   fs/cachefiles/internal.h |  1 +
->   fs/cachefiles/ondemand.c | 20 ++++++++++++++++----
->   2 files changed, 17 insertions(+), 4 deletions(-)
-> 
-> diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
-> index a1a1d25e9514..7b99bd98de75 100644
-> --- a/fs/cachefiles/internal.h
-> +++ b/fs/cachefiles/internal.h
-> @@ -129,6 +129,7 @@ struct cachefiles_cache {
->   	unsigned long			req_id_next;
->   	struct xarray			ondemand_ids;	/* xarray for ondemand_id allocation */
->   	u32				ondemand_id_next;
-> +	u32				msg_id_next;
->   };
->   
->   static inline bool cachefiles_in_ondemand_mode(struct cachefiles_cache *cache)
-> diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-> index 1d5b970206d0..470c96658385 100644
-> --- a/fs/cachefiles/ondemand.c
-> +++ b/fs/cachefiles/ondemand.c
-> @@ -528,20 +528,32 @@ static int cachefiles_ondemand_send_req(struct cachefiles_object *object,
->   		smp_mb();
->   
->   		if (opcode == CACHEFILES_OP_CLOSE &&
-> -			!cachefiles_ondemand_object_is_open(object)) {
-> +		    !cachefiles_ondemand_object_is_open(object)) {
->   			WARN_ON_ONCE(object->ondemand->ondemand_id == 0);
->   			xas_unlock(&xas);
->   			ret = -EIO;
->   			goto out;
->   		}
->   
-> -		xas.xa_index = 0;
-> +		/*
-> +		 * Cyclically find a free xas to avoid msg_id reuse that would
-> +		 * cause the daemon to successfully copen a stale msg_id.
-> +		 */
-> +		xas.xa_index = cache->msg_id_next;
->   		xas_find_marked(&xas, UINT_MAX, XA_FREE_MARK);
-> +		if (xas.xa_node == XAS_RESTART) {
-> +			xas.xa_index = 0;
-> +			xas_find_marked(&xas, cache->msg_id_next - 1, XA_FREE_MARK);
-> +		}
->   		if (xas.xa_node == XAS_RESTART)
->   			xas_set_err(&xas, -EBUSY);
-> +
->   		xas_store(&xas, req);
-> -		xas_clear_mark(&xas, XA_FREE_MARK);
-> -		xas_set_mark(&xas, CACHEFILES_REQ_NEW);
-> +		if (xas_valid(&xas)) {
-> +			cache->msg_id_next = xas.xa_index + 1;
-> +			xas_clear_mark(&xas, XA_FREE_MARK);
-> +			xas_set_mark(&xas, CACHEFILES_REQ_NEW);
-> +		}
->   		xas_unlock(&xas);
->   	} while (xas_nomem(&xas, GFP_KERNEL));
->   
+-/*
+- * Expand the size of a readahead to the size of the rsize, if at least a=
+s
+- * large as a page, allowing for the possibility that rsize is not pow-2
+- * aligned.
+- */
+-static void cifs_expand_readahead(struct netfs_io_request *rreq)
+-{
+-	unsigned int rsize =3D rreq->rsize;
+-	loff_t misalignment, i_size =3D i_size_read(rreq->inode);
+-
+-	if (rsize < PAGE_SIZE)
+-		return;
+-
+-	if (rsize < INT_MAX)
+-		rsize =3D roundup_pow_of_two(rsize);
+-	else
+-		rsize =3D ((unsigned int)INT_MAX + 1) / 2;
+-
+-	misalignment =3D rreq->start & (rsize - 1);
+-	if (misalignment) {
+-		rreq->start -=3D misalignment;
+-		rreq->len +=3D misalignment;
+-	}
+-
+-	rreq->len =3D round_up(rreq->len, rsize);
+-	if (rreq->start < i_size && rreq->len > i_size - rreq->start)
+-		rreq->len =3D i_size - rreq->start;
+-}
+-
+ /*
+  * Completion of a request operation.
+  */
+@@ -329,7 +300,6 @@ const struct netfs_request_ops cifs_req_ops =3D {
+ 	.init_request		=3D cifs_init_request,
+ 	.free_request		=3D cifs_free_request,
+ 	.free_subrequest	=3D cifs_free_subrequest,
+-	.expand_readahead	=3D cifs_expand_readahead,
+ 	.clamp_length		=3D cifs_clamp_length,
+ 	.issue_read		=3D cifs_req_issue_read,
+ 	.done			=3D cifs_rreq_done,
+
