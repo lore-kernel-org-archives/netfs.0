@@ -1,107 +1,100 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD841C0057;
-	Tue,  2 Jul 2024 17:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 533374D584;
+	Wed,  3 Jul 2024 08:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719940685; cv=none; b=knZVki69h1x+DYFDTCQC0+RrAfmwUKtrnw5Ua5q3Egjw1gPL7kIQATsqkfaXsKVEG3fEff5xeONDHIaM6hf0ZHXxNh9Fmo05gW774jyQvMxvZ3cmWDggaa8x3gwxX5jgf17dAJA6Fhaes3j8/GjLBQe1pmNuhWBmbPJfktvID7E=
+	t=1719995474; cv=none; b=OcGVfzFeUZmjly9XhlWbNRYmrqZH4XVC9TPoIrEzER3xsQEtOkG+dMeTJq9YPG8v+e/GZnj7GjYhNMFMqRhOajWyEws56GvvluFbDU2faLAGmfm+YosKAvY7rc7qrb0gkExNOSwZu2cqzrcLxiwlxsXWTthcqufByun/m16WUZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719940685; c=relaxed/simple;
-	bh=EON+gqEufkTPjkcJvb2LKu94Uj13qfooeC/bdqwFgY0=;
+	s=arc-20240116; t=1719995474; c=relaxed/simple;
+	bh=YDu++FQvyBbQ5q007YIq1M9txqwp9dKc/o3S30ODOmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oTIAPStTPctjJR/kKNJVp0eEeRqujLzoyYcXlsySxi/0eHkp1saDgylVXfFhQwn3PFv8LNOec/RVhvGa8qA/4WfoMBCQmQFFicvuPxImTHC+ocItcCtcSkC3Wv+b2egEGGGtLlUNPficYlRJYPWj61fmn6fmuHTzVC2QGo9NGLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AVfK0B4/; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=DbrKV8gy6iitBNvUKGUjc4B3Kua+Gj0Rr+n3y6f327gF5PIzQ9hOHgAM5sPWx0YpHal8YpQ1jyOxuQWBw9wSDePPPo/kEkQWPFErvXeBnlJunGuFHM+irBMg8JohH/SqdK6ISxLT+e80rZbD6IJ9QIRcw+jUyKPZwChw5DOH8gA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=De8x6DGF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AVfK0B4/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F146AC116B1;
-	Tue,  2 Jul 2024 17:18:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719940685;
-	bh=EON+gqEufkTPjkcJvb2LKu94Uj13qfooeC/bdqwFgY0=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="De8x6DGF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10385C2BD10;
+	Wed,  3 Jul 2024 08:31:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719995473;
+	bh=YDu++FQvyBbQ5q007YIq1M9txqwp9dKc/o3S30ODOmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AVfK0B4/VLfszVK2GVrRYavPxtQL8FYWFuozactC36JVOt9Ah+d36yWpl99QIPfCd
-	 cx0SWA0+iF2gSb8/PM4U5fg/ElEWxYF1uhcc/bi4iXMnnkeal8a6L1ZR4l7iZ79zFc
-	 IfapPgM1qdYDbI7XXJoCGNY0+KEFCNj8umtgaqo0=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	netfs@lists.linux.dev,
-	v9fs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-mm@kvack.org,
+	b=De8x6DGFGSuDGJ9Fd92iKUb2XW3pL8/ay7jtZOpHAFu4EkQkGXk28CEzWBY4zqQqQ
+	 LLulSEHgAtRsvUkG9EEaO0z2E8Xfuvp9Cn1fxSrqqqp8Zh1tw9rKGyGd9uUEq3kyTR
+	 zx34zQ/4yOkCJN3JvLEF1niGnZ6jxyiUFbUs3OJZnjwdCI5pGdblQXuG/TAbWoArdm
+	 wFpKbtbXyvlbOcF3TAJs/1N59b6RSSUPF4H3h3s0jkbtbNRoFP1+J8CijKpRxtSnRN
+	 ac/3TBDqVqZP5959YIKjEOFe8++Ca088D8KzNsHGUPbz7OknTrs1BDL+R1C97f7jBv
+	 1olW5FUw/KFrQ==
+From: Christian Brauner <brauner@kernel.org>
+To: netfs@lists.linux.dev,
+	dhowells@redhat.com,
+	jlayton@kernel.org,
+	libaokun@huaweicloud.com
+Cc: Christian Brauner <brauner@kernel.org>,
+	jefflexu@linux.alibaba.com,
+	zhujia.zj@bytedance.com,
+	linux-erofs@lists.ozlabs.org,
 	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 222/222] netfs: Fix netfs_page_mkwrite() to flush conflicting data, not wait
-Date: Tue,  2 Jul 2024 19:04:20 +0200
-Message-ID: <20240702170252.473065522@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240702170243.963426416@linuxfoundation.org>
-References: <20240702170243.963426416@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	linux-kernel@vger.kernel.org,
+	yangerkun@huawei.com,
+	houtao1@huawei.com,
+	yukuai3@huawei.com,
+	wozizhi@huawei.com,
+	Baokun Li <libaokun1@huawei.com>,
+	Gao Xiang <xiang@kernel.org>
+Subject: Re: (subset) [PATCH v3 0/9] cachefiles: random bugfixes
+Date: Wed,  3 Jul 2024 10:30:55 +0200
+Message-ID: <20240703-miene-ausziehen-1f6a167a1020@brauner>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240628062930.2467993-1-libaokun@huaweicloud.com>
+References: <20240628062930.2467993-1-libaokun@huaweicloud.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1761; i=brauner@kernel.org; h=from:subject:message-id; bh=YDu++FQvyBbQ5q007YIq1M9txqwp9dKc/o3S30ODOmA=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaS18rjf3fhdbtn9SEFvTZZnEz+xLrC75lD5Y5eYyue8b dxcivmTOkpZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACYiWcLwP6uI7eHCSFXlg75t rWt2T3IR4O2avGpbrV3qB34jcxXOg4wMF1LX5YReTFgbvXaLVebEdxEV+Tm63+IWzv58u+m8crY yLwA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+On Fri, 28 Jun 2024 14:29:21 +0800, libaokun@huaweicloud.com wrote:
+> From: Baokun Li <libaokun1@huawei.com>
+> 
+> Hi all!
+> 
+> This is the third version of this patch series, in which another patch set
+> is subsumed into this one to avoid confusing the two patch sets.
+> (https://patchwork.kernel.org/project/linux-fsdevel/list/?series=854914)
+> 
+> [...]
 
-------------------
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-From: David Howells <dhowells@redhat.com>
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-[ Upstream commit 9d66154f73b7c7007c3be1113dfb50b99b791f8f ]
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-Fix netfs_page_mkwrite() to use filemap_fdatawrite_range(), not
-filemap_fdatawait_range() to flush conflicting data.
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
-Fixes: 102a7e2c598c ("netfs: Allow buffered shared-writeable mmap through netfs_page_mkwrite()")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/614300.1719228243@warthog.procyon.org.uk
-cc: Matthew Wilcox <willy@infradead.org>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: netfs@lists.linux.dev
-cc: v9fs@lists.linux.dev
-cc: linux-afs@lists.infradead.org
-cc: linux-cifs@vger.kernel.org
-cc: linux-mm@kvack.org
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/netfs/buffered_write.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
 
-diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
-index 72e4fa233c526..d2ce0849bb53d 100644
---- a/fs/netfs/buffered_write.c
-+++ b/fs/netfs/buffered_write.c
-@@ -535,9 +535,9 @@ vm_fault_t netfs_page_mkwrite(struct vm_fault *vmf, struct netfs_group *netfs_gr
- 
- 	if (netfs_folio_group(folio) != netfs_group) {
- 		folio_unlock(folio);
--		err = filemap_fdatawait_range(mapping,
--					      folio_pos(folio),
--					      folio_pos(folio) + folio_size(folio));
-+		err = filemap_fdatawrite_range(mapping,
-+					       folio_pos(folio),
-+					       folio_pos(folio) + folio_size(folio));
- 		switch (err) {
- 		case 0:
- 			ret = VM_FAULT_RETRY;
--- 
-2.43.0
-
-
-
+[4/9] cachefiles: propagate errors from vfs_getxattr() to avoid infinite loop
+      https://git.kernel.org/vfs/vfs/c/b688bd1735e7
+[5/9] cachefiles: stop sending new request when dropping object
+      https://git.kernel.org/vfs/vfs/c/32eb47eab833
+[6/9] cachefiles: cancel all requests for the object that is being dropped
+      https://git.kernel.org/vfs/vfs/c/2f47569feef0
+[7/9] cachefiles: wait for ondemand_object_worker to finish when dropping object
+      https://git.kernel.org/vfs/vfs/c/343ce8c52dd0
+[8/9] cachefiles: cyclic allocation of msg_id to avoid reuse
+      https://git.kernel.org/vfs/vfs/c/5e6c8a1ed5ba
+[9/9] cachefiles: add missing lock protection when polling
+      https://git.kernel.org/vfs/vfs/c/5fcb2094431b
