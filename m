@@ -1,106 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6724D584;
-	Wed,  3 Jul 2024 08:37:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532D6158216
+	for <netfs@lists.linux.dev>; Thu, 11 Jul 2024 13:19:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719995857; cv=none; b=L+/2MKsKDw3Tt1+rbpbdr0pyjXGKEtu+ngKx3l2l14KgrYeWaGral+sNg9MSdjdwgn4F1GxhFZ2nzkmoSiGC9xu8W6Hh3pHNix4b0nk12NM1XRarQkCbQbJ0xCmuwOhjM2Q6szec1ZDWx7VIuPPitFWhBx+X0c05HLQi/yBskao=
+	t=1720703999; cv=none; b=DNxKM14JqfVIHSYrTctdhnoAVW+P6o65zYM92MQefhqh/qy85vtPGWKkOYQBA33owBl8fOt41g9zM4E2oNoLoxMplpMUDLG02T0HAZ6SCuvmPqixbbc4bSyg/PAQ65mAjxxsRDS2VL4HZ1l042iF4nkrvbkr1vFdX9HUjsPPDL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719995857; c=relaxed/simple;
-	bh=sJN+MwV5sUnjoxSQ5dfAVt8zKfWkamWIkI8xHG1+5/E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FFOm6OJWh2rpRe/UH48/xqZnfH20K58Md7lY0wNxoN68gTMJ87WtiRNR9QFRgRlCaot4KxxtdCTJIUDSQN41Lqk/46oy3Hpndr1Df4Y2RKEJlwigdnoXMSOAEcOnblkeCiXJAxUId2iVUjYfJfUZZ88V4F/z7uKZo/Q1hSBLzuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oYIXoNSn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1720703999; c=relaxed/simple;
+	bh=gCwTYbQeabb3GfeJU/oEEubSclUQQgWDiIn0ljKgsxM=;
+	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=OMaHRRfmEVB+uFg6IXOEIrKj1iLaUUAkX+UL/B3GtSo37P+Ag2VFhcFtNzD4Qnw7eOtR08wiZ7OzqjA4u3vEad2dN9uZuDpMhYc9Po8P4ECl+WbeP4j8JfidQLIQjscKN5hn40Y47Lw4Ml0GiP+7TBMC6+KSD0QtT7em6Uy/oUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fWSyveEX; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oYIXoNSn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24FEAC2BD10;
-	Wed,  3 Jul 2024 08:37:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719995856;
-	bh=sJN+MwV5sUnjoxSQ5dfAVt8zKfWkamWIkI8xHG1+5/E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oYIXoNSnDnTODvPBZ2lWNiOAhSRpc/Ft1dVV3BiFipzKHxsDmrIByL4EAO+3IQ0+m
-	 U0dVB539ht4XH4U9PYqwTkeAPNdPW3m2vl0OfRnSrtf8QJwapI5epMUx1kGzzocRNe
-	 +r0bKbP84mX1sXSFxMJ8y90kIQx/iolbmU29SIjmKFX1yUCkHGhhVaCeB1ZlyDQDVl
-	 oqFjDHqBjkcro6AyOgpUDFjb1WOUGt4kTGI3pjFK0V7k4B7HNnXmYH60gb9cL20l3k
-	 9nEusexxMFMacoQCtSHIBl/x6rPyPoNBc43Mrpr/ASYn8CoWuEGyEc7J0TkELnNwaS
-	 xQRvrXMCXj+zw==
-From: Christian Brauner <brauner@kernel.org>
-To: netfs@lists.linux.dev,
-	dhowells@redhat.com,
-	jlayton@kernel.org,
-	libaokun@huaweicloud.com
-Cc: Christian Brauner <brauner@kernel.org>,
-	jefflexu@linux.alibaba.com,
-	zhujia.zj@bytedance.com,
-	linux-erofs@lists.ozlabs.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	yangerkun@huawei.com,
-	houtao1@huawei.com,
-	yukuai3@huawei.com,
-	wozizhi@huawei.com,
-	Baokun Li <libaokun1@huawei.com>,
-	Gao Xiang <xiang@kernel.org>
-Subject: Re: [PATCH v3 0/9] cachefiles: random bugfixes
-Date: Wed,  3 Jul 2024 10:37:24 +0200
-Message-ID: <20240703-beweis-glimpflich-439d10d8ea13@brauner>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240628062930.2467993-1-libaokun@huaweicloud.com>
-References: <20240628062930.2467993-1-libaokun@huaweicloud.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fWSyveEX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1720703995;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=KQAneCFk7IMzHAKN9/AEAYz+zztVPj5RlKnWcmXPprE=;
+	b=fWSyveEX2pDKopsfQ84jgbkJx2t4fd5BVK9ElHuF/1f6KHxNaR6YGBgi4iTn8/dRyGczb9
+	yhtsouJxRj7brAv7eW75m8iOw4FDPduE5jRF56mrbCOoxMSQgab+wkH0e3PTZuVgFXoPbs
+	rGW5M4QjwTtWQ7aWJDfMqpAWbm9zk/Q=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-641-RhZZrTalNhum6sBZHdVoig-1; Thu,
+ 11 Jul 2024 09:19:45 -0400
+X-MC-Unique: RhZZrTalNhum6sBZHdVoig-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A0A7019560B1;
+	Thu, 11 Jul 2024 13:19:43 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.111])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DC31E1956046;
+	Thu, 11 Jul 2024 13:19:40 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: Eric Van Hensbergen <ericvh@kernel.org>,
+    Latchesar Ionkov <lucho@ionkov.net>,
+    Dominique Martinet <asmadeus@codewreck.org>
+cc: dhowells@redhat.com, Christian Schoenebeck <linux_oss@crudebyte.com>,
+    v9fs@lists.linux.dev, netfs@lists.linux.dev,
+    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] 9p: Fix O_NONBLOCK read behaviour in P9L_DIRECT mode
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2151; i=brauner@kernel.org; h=from:subject:message-id; bh=sJN+MwV5sUnjoxSQ5dfAVt8zKfWkamWIkI8xHG1+5/E=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaS18h5fzfvjj8+mIIHXTK3+lpoZn/JX77N5alJzQZJXM cEgvEigo5SFQYyLQVZMkcWh3SRcbjlPxWajTA2YOaxMIEMYuDgFYCL+EQz/U/PmMhQcv9nvURe/ brVqbY2D5b2lTOrvorf8U9dP3qzWyPBX+pN+nderS4Kne03ZZ65S5HAV31vu/PaN2hn9RJuQ/yt ZAQ==
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <4058792.1720703979.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 11 Jul 2024 14:19:39 +0100
+Message-ID: <4058793.1720703979@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Fri, 28 Jun 2024 14:29:21 +0800, libaokun@huaweicloud.com wrote:
-> From: Baokun Li <libaokun1@huawei.com>
-> 
-> Hi all!
-> 
-> This is the third version of this patch series, in which another patch set
-> is subsumed into this one to avoid confusing the two patch sets.
-> (https://patchwork.kernel.org/project/linux-fsdevel/list/?series=854914)
-> 
-> [...]
+With the 9p filesystem, in P9L_DIRECT mode, if O_NONBLOCK is set, a read
+should terminate after doing one piece of I/O.
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
+Fixes: 80105ed2fd27 ("9p: Use netfslib read/write_iter")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D218916
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Eric Van Hensbergen <ericvh@kernel.org>
+cc: Latchesar Ionkov <lucho@ionkov.net>
+cc: Dominique Martinet <asmadeus@codewreck.org>
+cc: Christian Schoenebeck <linux_oss@crudebyte.com>
+cc: v9fs@lists.linux.dev
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+---
+ fs/9p/vfs_addr.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+diff --git a/fs/9p/vfs_addr.c b/fs/9p/vfs_addr.c
+index a97ceb105cd8..b443024bf715 100644
+--- a/fs/9p/vfs_addr.c
++++ b/fs/9p/vfs_addr.c
+@@ -77,6 +77,10 @@ static void v9fs_issue_read(struct netfs_io_subrequest =
+*subreq)
+ 	 * cache won't be on server and is zeroes */
+ 	__set_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags);
+ =
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
++	if ((fid->mode & P9L_DIRECT) &&
++	    test_bit(NETFS_RREQ_NONBLOCK, &rreq->flags))
++		set_bit(NETFS_RREQ_BLOCKED, &rreq->flags);
++
+ 	netfs_subreq_terminated(subreq, err ?: total, false);
+ }
+ =
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
-
-[1/9] netfs, fscache: export fscache_put_volume() and add fscache_try_get_volume()
-      https://git.kernel.org/vfs/vfs/c/857edaec7e8b
-[2/9] cachefiles: fix slab-use-after-free in fscache_withdraw_volume()
-      https://git.kernel.org/vfs/vfs/c/6438822b8978
-[3/9] cachefiles: fix slab-use-after-free in cachefiles_withdraw_cookie()
-      https://git.kernel.org/vfs/vfs/c/ba71b9fbe167
-[4/9] cachefiles: propagate errors from vfs_getxattr() to avoid infinite loop
-      https://git.kernel.org/vfs/vfs/c/389332dcf4ea
-[5/9] cachefiles: stop sending new request when dropping object
-      https://git.kernel.org/vfs/vfs/c/6091d755c681
-[6/9] cachefiles: cancel all requests for the object that is being dropped
-      https://git.kernel.org/vfs/vfs/c/f4648f418a04
-[7/9] cachefiles: wait for ondemand_object_worker to finish when dropping object
-      https://git.kernel.org/vfs/vfs/c/9659aaa5c58b
-[8/9] cachefiles: cyclic allocation of msg_id to avoid reuse
-      https://git.kernel.org/vfs/vfs/c/1a95962625e1
-[9/9] cachefiles: add missing lock protection when polling
-      https://git.kernel.org/vfs/vfs/c/6cc42ff0f5c9
