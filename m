@@ -1,101 +1,111 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mout.web.de (mout.web.de [212.227.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532D6158216
-	for <netfs@lists.linux.dev>; Thu, 11 Jul 2024 13:19:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F9913DDDD;
+	Sat, 13 Jul 2024 18:45:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720703999; cv=none; b=DNxKM14JqfVIHSYrTctdhnoAVW+P6o65zYM92MQefhqh/qy85vtPGWKkOYQBA33owBl8fOt41g9zM4E2oNoLoxMplpMUDLG02T0HAZ6SCuvmPqixbbc4bSyg/PAQ65mAjxxsRDS2VL4HZ1l042iF4nkrvbkr1vFdX9HUjsPPDL8=
+	t=1720896305; cv=none; b=QG21428rmpj5aY5o+mgw2o7gICRHfZ3MWB1G6q7xsZfc4Tqp6BgMb6ohlfmWaUV6X4aO2CXwRTf+kMKJxuToArodobCge6dicVPFPgJjE/cmKMiBG9br/HVTG7SQeiI6CkUpFVAFMwHw4FY0EilPdSI1Whtajga0VqsttzdBfF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720703999; c=relaxed/simple;
-	bh=gCwTYbQeabb3GfeJU/oEEubSclUQQgWDiIn0ljKgsxM=;
-	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=OMaHRRfmEVB+uFg6IXOEIrKj1iLaUUAkX+UL/B3GtSo37P+Ag2VFhcFtNzD4Qnw7eOtR08wiZ7OzqjA4u3vEad2dN9uZuDpMhYc9Po8P4ECl+WbeP4j8JfidQLIQjscKN5hn40Y47Lw4Ml0GiP+7TBMC6+KSD0QtT7em6Uy/oUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fWSyveEX; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1720896305; c=relaxed/simple;
+	bh=S4VHF1SncDJq0sGOKJ8UmXPy4Jk7J8435o2/pnX922k=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=IS7nP9VrJz+boHd6ubVW8d6PidPH+yWqvzqoy1Mlk/7YZcGXMsx6Zbu7u4OwyBDs8Od7vlfzTSdeUqqHzgEbdzQdnZ/ggrFZe0IftM01M0W3ubpF/OCTv0cIsSKO0mfIYTK0sbWFQ1bT0EV3Z4roYw9gruTOYNgm7QIyqjjddag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=mVaYXeBU; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fWSyveEX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1720703995;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=KQAneCFk7IMzHAKN9/AEAYz+zztVPj5RlKnWcmXPprE=;
-	b=fWSyveEX2pDKopsfQ84jgbkJx2t4fd5BVK9ElHuF/1f6KHxNaR6YGBgi4iTn8/dRyGczb9
-	yhtsouJxRj7brAv7eW75m8iOw4FDPduE5jRF56mrbCOoxMSQgab+wkH0e3PTZuVgFXoPbs
-	rGW5M4QjwTtWQ7aWJDfMqpAWbm9zk/Q=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-641-RhZZrTalNhum6sBZHdVoig-1; Thu,
- 11 Jul 2024 09:19:45 -0400
-X-MC-Unique: RhZZrTalNhum6sBZHdVoig-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A0A7019560B1;
-	Thu, 11 Jul 2024 13:19:43 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.111])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DC31E1956046;
-	Thu, 11 Jul 2024 13:19:40 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-To: Eric Van Hensbergen <ericvh@kernel.org>,
-    Latchesar Ionkov <lucho@ionkov.net>,
-    Dominique Martinet <asmadeus@codewreck.org>
-cc: dhowells@redhat.com, Christian Schoenebeck <linux_oss@crudebyte.com>,
-    v9fs@lists.linux.dev, netfs@lists.linux.dev,
-    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] 9p: Fix O_NONBLOCK read behaviour in P9L_DIRECT mode
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="mVaYXeBU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1720896295; x=1721501095; i=markus.elfring@web.de;
+	bh=Tl94jXHRVPHxXEsNK8QYCbwg6IcbsePXJwiPZ1IYb2s=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:From:
+	 Subject:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=mVaYXeBUhKnDonClssgvcoZRLq7wEZ4av2RDahQVJ8y428r7TOc2I7GtiA/zhIu1
+	 Kjg5Pn8w3+M0LeFS3pEtBRm37Rg+98/hPJaoBG4eDu8FX099srvss2QyVDRAU+Mq3
+	 OV1CoYIpdrsgjU2IoLwN94U0fDUodrxexRjlGPw8TcRVibtnUP/bZOEUlwpMVvo0K
+	 pGYTysuvouY/TRs0YOZbY2QI13Xyxka0hJjxOxCakNY1Kr4uDET14c/I4zZOsYqmK
+	 /rX5ZfqBhJCKSH5R9FEayfjH7BnXYASlD9cas0l1upH9bLxOB3K/XAescIv4lb0LN
+	 pZS0FfEhxSF1Z5PRJw==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.82.95]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MbTGt-1rvppX3qO1-00bN57; Sat, 13
+ Jul 2024 20:44:54 +0200
+Message-ID: <aace3b69-d26d-4f4f-a584-97f1bcb59f29@web.de>
+Date: Sat, 13 Jul 2024 20:44:54 +0200
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <4058792.1720703979.1@warthog.procyon.org.uk>
+User-Agent: Mozilla Thunderbird
+To: netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+ kernel-janitors@vger.kernel.org, David Howells <dhowells@redhat.com>,
+ Jeff Layton <jlayton@kernel.org>
+Content-Language: en-GB
+Cc: LKML <linux-kernel@vger.kernel.org>
+From: Markus Elfring <Markus.Elfring@web.de>
+Subject: [PATCH] netfs: Use seq_putc() in fscache_cookies_seq_show()
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 11 Jul 2024 14:19:39 +0100
-Message-ID: <4058793.1720703979@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Provags-ID: V03:K1:JmU/2zR/PKK4sSlgNuBI3f9yIhj/lxOWu4mkHIhjafPLe6M+1rt
+ rl5qyE3nSYsi3evGHgxOrDpIeP6oEqGldhN8Ld4hS9+wBzEpU4Mqty6A5uhZGcYrq0Mot2b
+ vRwe+d0Rgq374vNOCEkxuiTPPmyNXRYRIcRSHaHDCkrF5VbDThNWVLD8TXf1aN35d243Aj9
+ tSbgi4jrNnLl9POykuEWw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:jKBRqTA+rHg=;iYl9a6wc/pomO0tBXDvrmEI0a4f
+ cs3p7lv6SpK3XOrTTfTvJ3rL04LziIMKMrTjyOL0sNXi1FlYt00MJ0phhsClms0El9BrjULG4
+ a9KTA98J6a3pqiyZXuHxmVrssvC7hZ4/FrQvSYdpDxmfnM+Uee7KoRzwL2iLqRBQRTpRG4hHX
+ LT5kiyDhNmPQ5u0GM5LokfAFDOfmoUykJ9gVkT9wK1nwSNeyl74p9IKYRie+FzvgQCqur+qq/
+ 15NSnZ6vuzl7VlrSFbBZZwETDmh5NE5xk+vig6WB9qnHtecnn4bcs+zfUii/6XNwCwY3mAP/4
+ mbIovkLekC5GOy5K+PbqELrxaoxAoVnv9jPnOx0oZu1psaiEoP4n+yV24FjuF4MKAKRbGcoQF
+ 2U5Dm21qfIgZsGNTdnWznBC7QTAsh34AooVel5Jmvms1VD2gMWFmEA7GJIIZl5bOjcsF3kG/B
+ spY1Hw0B7OBjKodpv0ZphBC1hp4jCooRW/obXFS8SuYRv2M3UzYHci8GqA+edoGG43qRtl9FC
+ horcYQv//MDKWU2nCuc17f2X3yvlOfPqDF6jyWwMnz+lRg0WPKQXYpdZeQQAC6hYPAzc1dZnh
+ df6H7rwgH1SAiWyvqEMAGCe8Z5skeTyhc9Rhy15lmQC7Ue5GCBTAOWzuQHMtXUh/rwgpDHGJA
+ WMyQ/pR+XpKcOFBTJNLI5olz1kWbq1oaabP0Mi3YbY//q2rTuRN/UjKbR7YBhZJ88fTrH5AuA
+ s/1SMCZ4T2E3MXw/KUYIMAnrKdGnlivqiJlfMaho38Qqmb/XI4lFptF/lr+KeD7sWOHpl8/i5
+ g2FNondHa2GcxnJk0kVzC/eg==
 
-With the 9p filesystem, in P9L_DIRECT mode, if O_NONBLOCK is set, a read
-should terminate after doing one piece of I/O.
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Sat, 13 Jul 2024 20:35:35 +0200
 
-Fixes: 80105ed2fd27 ("9p: Use netfslib read/write_iter")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D218916
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Eric Van Hensbergen <ericvh@kernel.org>
-cc: Latchesar Ionkov <lucho@ionkov.net>
-cc: Dominique Martinet <asmadeus@codewreck.org>
-cc: Christian Schoenebeck <linux_oss@crudebyte.com>
-cc: v9fs@lists.linux.dev
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
----
- fs/9p/vfs_addr.c |    4 ++++
- 1 file changed, 4 insertions(+)
+Single characters should be put into a sequence.
+Thus use the corresponding function =E2=80=9Cseq_putc=E2=80=9D.
 
-diff --git a/fs/9p/vfs_addr.c b/fs/9p/vfs_addr.c
-index a97ceb105cd8..b443024bf715 100644
---- a/fs/9p/vfs_addr.c
-+++ b/fs/9p/vfs_addr.c
-@@ -77,6 +77,10 @@ static void v9fs_issue_read(struct netfs_io_subrequest =
-*subreq)
- 	 * cache won't be on server and is zeroes */
- 	__set_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags);
- =
+This issue was transformed by using the Coccinelle software.
 
-+	if ((fid->mode & P9L_DIRECT) &&
-+	    test_bit(NETFS_RREQ_NONBLOCK, &rreq->flags))
-+		set_bit(NETFS_RREQ_BLOCKED, &rreq->flags);
-+
- 	netfs_subreq_terminated(subreq, err ?: total, false);
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+=2D--
+ fs/netfs/fscache_cookie.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/fs/netfs/fscache_cookie.c b/fs/netfs/fscache_cookie.c
+index 4d1e8bf4c615..5e490336b90f 100644
+=2D-- a/fs/netfs/fscache_cookie.c
++++ b/fs/netfs/fscache_cookie.c
+@@ -1134,7 +1134,7 @@ static int fscache_cookies_seq_show(struct seq_file =
+*m, void *v)
+ 	auxlen =3D cookie->aux_len;
+
+ 	if (keylen > 0 || auxlen > 0) {
+-		seq_puts(m, " ");
++		seq_putc(m, ' ');
+ 		p =3D keylen <=3D sizeof(cookie->inline_key) ?
+ 			cookie->inline_key : cookie->key;
+ 		for (; keylen > 0; keylen--)
+@@ -1148,7 +1148,7 @@ static int fscache_cookies_seq_show(struct seq_file =
+*m, void *v)
+ 		}
+ 	}
+
+-	seq_puts(m, "\n");
++	seq_putc(m, '\n');
+ 	return 0;
  }
- =
+
+=2D-
+2.45.2
 
