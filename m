@@ -1,103 +1,142 @@
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6585E4D8A3
-	for <netfs@lists.linux.dev>; Tue, 16 Jul 2024 12:41:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3016C1A072C;
+	Tue, 16 Jul 2024 18:32:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721133664; cv=none; b=XmYQG+yIR0ghZgMbV4ygw8yIDknLrRCWyqPsDOIP/qdowiGKOjap6Pt+5DiwI6eDeF6kz43zL4sl6xD6ltPek0s3xUkMl98m3Hb9iJZbDCIhoH14sgyPY5T4FBOyyL8muY6jodvMFQ1SUpBdLSFs+HXX2cTd242qybA6WUnIr/E=
+	t=1721154749; cv=none; b=C1oWF8TvUsuYtCWzTmFE0I31/8wk9VVDBYN27mBf8ctDKmWkyaiu++3ssCRytwRAW5J1qezbdS7/z3lc7O7CqCsWUoJgiEiNDpkswBqeBQ7GbsH05VkgWLGk1GIKIK+jUOnCmUJYv/O1ULQpwTzebx34u2nMr+UPvX+CkxtSLug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721133664; c=relaxed/simple;
-	bh=50UIaMI/YZaGDR4KLnQ3LwKRz53ZGEn7p893qyn691s=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jeH71xhx0rMb2FPNfKrTejXA7oFPGEz3/qomUUCIl/XRSAKkZSB7b+p0WU2eVW//W2+bz1+tRySOGGbr6hPyeS6bXrj2Tz0R39ru52LYlaMbSAtMYnOmmLSDLjzbk6TAH6KPDOkJ0ZCZAZEocM3jg46TRDzaP6j7OGY7zdnzv+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4WNdpW0Nc1zxSgK;
-	Tue, 16 Jul 2024 20:36:03 +0800 (CST)
-Received: from dggpeml500022.china.huawei.com (unknown [7.185.36.66])
-	by mail.maildlp.com (Postfix) with ESMTPS id C0ABE14041A;
-	Tue, 16 Jul 2024 20:40:53 +0800 (CST)
-Received: from huawei.com (10.90.53.73) by dggpeml500022.china.huawei.com
- (7.185.36.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 16 Jul
- 2024 20:40:53 +0800
-From: Hongbo Li <lihongbo22@huawei.com>
-To: <xiang@kernel.org>, <chao@kernel.org>, <huyue2@coolpad.com>,
-	<jefflexu@linux.alibaba.com>, <dhavale@google.com>, <dhowells@redhat.com>
-CC: <linux-erofs@lists.ozlabs.org>, <netfs@lists.linux.dev>,
-	<lihongbo22@huawei.com>
-Subject: [PATCH] erofs: support STATX_DIOALIGN
-Date: Tue, 16 Jul 2024 20:45:34 +0800
-Message-ID: <20240716124534.2358151-1-lihongbo22@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1721154749; c=relaxed/simple;
+	bh=lqc3OqZNH/tdSCuL9uHksJx7di2erjMhjEm9jioaF0E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=JVL148Iqzaf3kZxnILsVSvqpeFoSo8BS/l1lQBWEer/dijZgYm81Uyhcg7B4ie1KwWqpxJ9bMlRrA/PUhCFws0kZTLdbLlq2krQ/KKNVt+p+3Gp0ucfk7ifDK2SMF1WK5ig/A2mrNiZZNj43Zb0/1EAQLtqI3AP6i/oFzbBID30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l9LvucgA; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l9LvucgA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC329C4AF12;
+	Tue, 16 Jul 2024 18:32:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721154749;
+	bh=lqc3OqZNH/tdSCuL9uHksJx7di2erjMhjEm9jioaF0E=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=l9LvucgA3f2REfcBxYfgWaoRppjnCIieIYu/dT/XpUqkswb+XutBxuideZK5CIH0x
+	 OZPHKTwiX1fsl+QUkO3x3hk2BDTWcKEAXVvhwJDovrGJcrRv6o0yy5jZ4uUsis9FsJ
+	 aQFj3NHXqD3SrWvaE9bHWTpsXdcjEYbIgQX/fspPHxk4wUyXO0ZrKFUm3G5GW5r62u
+	 oykLRQeaM+OSRAKe8N79G6MmTfhkLhlNVhRXqTiQ6sqsU5IvofJcCvvlQlUkMifX9F
+	 Pb1H8c6opdurZgoEt8nzjW9MrF9dRVd3nZ1KLk4xp3+q/RACfRgkqWJ4NZg04QGj8l
+	 k71Exz6hEbNJA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Baokun Li <libaokun1@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Jia Zhu <zhujia.zj@bytedance.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	dhowells@redhat.com,
+	netfs@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.9 03/11] cachefiles: stop sending new request when dropping object
+Date: Tue, 16 Jul 2024 14:31:47 -0400
+Message-ID: <20240716183222.2813968-3-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240716183222.2813968-1-sashal@kernel.org>
+References: <20240716183222.2813968-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.9.9
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpeml500022.china.huawei.com (7.185.36.66)
 
-Add support for STATX_DIOALIGN to erofs, so that direct I/O
-alignment restrictions are exposed to userspace in a generic
-way.
+From: Baokun Li <libaokun1@huawei.com>
 
-[Before]
-```
-./statx_test /mnt/erofs/testfile
-statx(/mnt/erofs/testfile) = 0
-dio mem align:0
-dio offset align:0
-```
+[ Upstream commit b2415d1f4566b6939acacc69637eaa57815829c1 ]
 
-[After]
-```
-./statx_test /mnt/erofs/testfile
-statx(/mnt/erofs/testfile) = 0
-dio mem align:512
-dio offset align:512
-```
+Added CACHEFILES_ONDEMAND_OBJSTATE_DROPPING indicates that the cachefiles
+object is being dropped, and is set after the close request for the dropped
+object completes, and no new requests are allowed to be sent after this
+state.
 
-Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
+This prepares for the later addition of cancel_work_sync(). It prevents
+leftover reopen requests from being sent, to avoid processing unnecessary
+requests and to avoid cancel_work_sync() blocking by waiting for daemon to
+complete the reopen requests.
+
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240628062930.2467993-6-libaokun@huaweicloud.com
+Acked-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/inode.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ fs/cachefiles/internal.h |  2 ++
+ fs/cachefiles/ondemand.c | 10 ++++++++--
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/fs/erofs/inode.c b/fs/erofs/inode.c
-index 5f6439a63af7..9325a6f0058a 100644
---- a/fs/erofs/inode.c
-+++ b/fs/erofs/inode.c
-@@ -342,6 +342,25 @@ int erofs_getattr(struct mnt_idmap *idmap, const struct path *path,
- 	stat->attributes_mask |= (STATX_ATTR_COMPRESSED |
- 				  STATX_ATTR_IMMUTABLE);
+diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
+index 6845a90cdfcce..a1a1d25e95147 100644
+--- a/fs/cachefiles/internal.h
++++ b/fs/cachefiles/internal.h
+@@ -48,6 +48,7 @@ enum cachefiles_object_state {
+ 	CACHEFILES_ONDEMAND_OBJSTATE_CLOSE, /* Anonymous fd closed by daemon or initial state */
+ 	CACHEFILES_ONDEMAND_OBJSTATE_OPEN, /* Anonymous fd associated with object is available */
+ 	CACHEFILES_ONDEMAND_OBJSTATE_REOPENING, /* Object that was closed and is being reopened. */
++	CACHEFILES_ONDEMAND_OBJSTATE_DROPPING, /* Object is being dropped. */
+ };
  
-+	/*
-+	 * Return the DIO alignment restrictions if requested.
-+	 *
-+	 * In erofs, STATX_DIOALIGN is not supported in ondemand mode and
-+	 * the compressed file, so in these cases we report no DIO support.
-+	 */
-+	if ((request_mask & STATX_DIOALIGN) && S_ISREG(inode->i_mode)) {
-+		stat->result_mask |= STATX_DIOALIGN;
-+		if (!erofs_is_fscache_mode(inode->i_sb) &&
-+			!erofs_inode_is_data_compressed(EROFS_I(inode)->datalayout)) {
-+			struct block_device *bdev = inode->i_sb->s_bdev;
-+			unsigned int bsize = (bdev) ? bdev_logical_block_size(bdev) :
-+						i_blocksize(inode);
+ struct cachefiles_ondemand_info {
+@@ -335,6 +336,7 @@ cachefiles_ondemand_set_object_##_state(struct cachefiles_object *object) \
+ CACHEFILES_OBJECT_STATE_FUNCS(open, OPEN);
+ CACHEFILES_OBJECT_STATE_FUNCS(close, CLOSE);
+ CACHEFILES_OBJECT_STATE_FUNCS(reopening, REOPENING);
++CACHEFILES_OBJECT_STATE_FUNCS(dropping, DROPPING);
+ 
+ static inline bool cachefiles_ondemand_is_reopening_read(struct cachefiles_req *req)
+ {
+diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
+index 89f118d68d125..14f91a9fbe447 100644
+--- a/fs/cachefiles/ondemand.c
++++ b/fs/cachefiles/ondemand.c
+@@ -494,7 +494,8 @@ static int cachefiles_ondemand_send_req(struct cachefiles_object *object,
+ 		 */
+ 		xas_lock(&xas);
+ 
+-		if (test_bit(CACHEFILES_DEAD, &cache->flags)) {
++		if (test_bit(CACHEFILES_DEAD, &cache->flags) ||
++		    cachefiles_ondemand_object_is_dropping(object)) {
+ 			xas_unlock(&xas);
+ 			ret = -EIO;
+ 			goto out;
+@@ -535,7 +536,8 @@ static int cachefiles_ondemand_send_req(struct cachefiles_object *object,
+ 	 * If error occurs after creating the anonymous fd,
+ 	 * cachefiles_ondemand_fd_release() will set object to close.
+ 	 */
+-	if (opcode == CACHEFILES_OP_OPEN)
++	if (opcode == CACHEFILES_OP_OPEN &&
++	    !cachefiles_ondemand_object_is_dropping(object))
+ 		cachefiles_ondemand_set_object_close(object);
+ 	kfree(req);
+ 	return ret;
+@@ -634,8 +636,12 @@ int cachefiles_ondemand_init_object(struct cachefiles_object *object)
+ 
+ void cachefiles_ondemand_clean_object(struct cachefiles_object *object)
+ {
++	if (!object->ondemand)
++		return;
 +
-+			stat->dio_mem_align = bsize;
-+			stat->dio_offset_align = bsize;
-+		}
-+	}
-+
- 	generic_fillattr(idmap, request_mask, inode, stat);
- 	return 0;
+ 	cachefiles_ondemand_send_req(object, CACHEFILES_OP_CLOSE, 0,
+ 			cachefiles_ondemand_init_close_req, NULL);
++	cachefiles_ondemand_set_object_dropping(object);
  }
+ 
+ int cachefiles_ondemand_init_obj_info(struct cachefiles_object *object,
 -- 
-2.34.1
+2.43.0
 
