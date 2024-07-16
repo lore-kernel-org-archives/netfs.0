@@ -1,111 +1,103 @@
-Received: from mout.web.de (mout.web.de [212.227.17.11])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F9913DDDD;
-	Sat, 13 Jul 2024 18:45:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6585E4D8A3
+	for <netfs@lists.linux.dev>; Tue, 16 Jul 2024 12:41:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720896305; cv=none; b=QG21428rmpj5aY5o+mgw2o7gICRHfZ3MWB1G6q7xsZfc4Tqp6BgMb6ohlfmWaUV6X4aO2CXwRTf+kMKJxuToArodobCge6dicVPFPgJjE/cmKMiBG9br/HVTG7SQeiI6CkUpFVAFMwHw4FY0EilPdSI1Whtajga0VqsttzdBfF0=
+	t=1721133664; cv=none; b=XmYQG+yIR0ghZgMbV4ygw8yIDknLrRCWyqPsDOIP/qdowiGKOjap6Pt+5DiwI6eDeF6kz43zL4sl6xD6ltPek0s3xUkMl98m3Hb9iJZbDCIhoH14sgyPY5T4FBOyyL8muY6jodvMFQ1SUpBdLSFs+HXX2cTd242qybA6WUnIr/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720896305; c=relaxed/simple;
-	bh=S4VHF1SncDJq0sGOKJ8UmXPy4Jk7J8435o2/pnX922k=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=IS7nP9VrJz+boHd6ubVW8d6PidPH+yWqvzqoy1Mlk/7YZcGXMsx6Zbu7u4OwyBDs8Od7vlfzTSdeUqqHzgEbdzQdnZ/ggrFZe0IftM01M0W3ubpF/OCTv0cIsSKO0mfIYTK0sbWFQ1bT0EV3Z4roYw9gruTOYNgm7QIyqjjddag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=mVaYXeBU; arc=none smtp.client-ip=212.227.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="mVaYXeBU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1720896295; x=1721501095; i=markus.elfring@web.de;
-	bh=Tl94jXHRVPHxXEsNK8QYCbwg6IcbsePXJwiPZ1IYb2s=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:From:
-	 Subject:Content-Type:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=mVaYXeBUhKnDonClssgvcoZRLq7wEZ4av2RDahQVJ8y428r7TOc2I7GtiA/zhIu1
-	 Kjg5Pn8w3+M0LeFS3pEtBRm37Rg+98/hPJaoBG4eDu8FX099srvss2QyVDRAU+Mq3
-	 OV1CoYIpdrsgjU2IoLwN94U0fDUodrxexRjlGPw8TcRVibtnUP/bZOEUlwpMVvo0K
-	 pGYTysuvouY/TRs0YOZbY2QI13Xyxka0hJjxOxCakNY1Kr4uDET14c/I4zZOsYqmK
-	 /rX5ZfqBhJCKSH5R9FEayfjH7BnXYASlD9cas0l1upH9bLxOB3K/XAescIv4lb0LN
-	 pZS0FfEhxSF1Z5PRJw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.82.95]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MbTGt-1rvppX3qO1-00bN57; Sat, 13
- Jul 2024 20:44:54 +0200
-Message-ID: <aace3b69-d26d-4f4f-a584-97f1bcb59f29@web.de>
-Date: Sat, 13 Jul 2024 20:44:54 +0200
+	s=arc-20240116; t=1721133664; c=relaxed/simple;
+	bh=50UIaMI/YZaGDR4KLnQ3LwKRz53ZGEn7p893qyn691s=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jeH71xhx0rMb2FPNfKrTejXA7oFPGEz3/qomUUCIl/XRSAKkZSB7b+p0WU2eVW//W2+bz1+tRySOGGbr6hPyeS6bXrj2Tz0R39ru52LYlaMbSAtMYnOmmLSDLjzbk6TAH6KPDOkJ0ZCZAZEocM3jg46TRDzaP6j7OGY7zdnzv+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4WNdpW0Nc1zxSgK;
+	Tue, 16 Jul 2024 20:36:03 +0800 (CST)
+Received: from dggpeml500022.china.huawei.com (unknown [7.185.36.66])
+	by mail.maildlp.com (Postfix) with ESMTPS id C0ABE14041A;
+	Tue, 16 Jul 2024 20:40:53 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by dggpeml500022.china.huawei.com
+ (7.185.36.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 16 Jul
+ 2024 20:40:53 +0800
+From: Hongbo Li <lihongbo22@huawei.com>
+To: <xiang@kernel.org>, <chao@kernel.org>, <huyue2@coolpad.com>,
+	<jefflexu@linux.alibaba.com>, <dhavale@google.com>, <dhowells@redhat.com>
+CC: <linux-erofs@lists.ozlabs.org>, <netfs@lists.linux.dev>,
+	<lihongbo22@huawei.com>
+Subject: [PATCH] erofs: support STATX_DIOALIGN
+Date: Tue, 16 Jul 2024 20:45:34 +0800
+Message-ID: <20240716124534.2358151-1-lihongbo22@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
- kernel-janitors@vger.kernel.org, David Howells <dhowells@redhat.com>,
- Jeff Layton <jlayton@kernel.org>
-Content-Language: en-GB
-Cc: LKML <linux-kernel@vger.kernel.org>
-From: Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] netfs: Use seq_putc() in fscache_cookies_seq_show()
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:JmU/2zR/PKK4sSlgNuBI3f9yIhj/lxOWu4mkHIhjafPLe6M+1rt
- rl5qyE3nSYsi3evGHgxOrDpIeP6oEqGldhN8Ld4hS9+wBzEpU4Mqty6A5uhZGcYrq0Mot2b
- vRwe+d0Rgq374vNOCEkxuiTPPmyNXRYRIcRSHaHDCkrF5VbDThNWVLD8TXf1aN35d243Aj9
- tSbgi4jrNnLl9POykuEWw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:jKBRqTA+rHg=;iYl9a6wc/pomO0tBXDvrmEI0a4f
- cs3p7lv6SpK3XOrTTfTvJ3rL04LziIMKMrTjyOL0sNXi1FlYt00MJ0phhsClms0El9BrjULG4
- a9KTA98J6a3pqiyZXuHxmVrssvC7hZ4/FrQvSYdpDxmfnM+Uee7KoRzwL2iLqRBQRTpRG4hHX
- LT5kiyDhNmPQ5u0GM5LokfAFDOfmoUykJ9gVkT9wK1nwSNeyl74p9IKYRie+FzvgQCqur+qq/
- 15NSnZ6vuzl7VlrSFbBZZwETDmh5NE5xk+vig6WB9qnHtecnn4bcs+zfUii/6XNwCwY3mAP/4
- mbIovkLekC5GOy5K+PbqELrxaoxAoVnv9jPnOx0oZu1psaiEoP4n+yV24FjuF4MKAKRbGcoQF
- 2U5Dm21qfIgZsGNTdnWznBC7QTAsh34AooVel5Jmvms1VD2gMWFmEA7GJIIZl5bOjcsF3kG/B
- spY1Hw0B7OBjKodpv0ZphBC1hp4jCooRW/obXFS8SuYRv2M3UzYHci8GqA+edoGG43qRtl9FC
- horcYQv//MDKWU2nCuc17f2X3yvlOfPqDF6jyWwMnz+lRg0WPKQXYpdZeQQAC6hYPAzc1dZnh
- df6H7rwgH1SAiWyvqEMAGCe8Z5skeTyhc9Rhy15lmQC7Ue5GCBTAOWzuQHMtXUh/rwgpDHGJA
- WMyQ/pR+XpKcOFBTJNLI5olz1kWbq1oaabP0Mi3YbY//q2rTuRN/UjKbR7YBhZJ88fTrH5AuA
- s/1SMCZ4T2E3MXw/KUYIMAnrKdGnlivqiJlfMaho38Qqmb/XI4lFptF/lr+KeD7sWOHpl8/i5
- g2FNondHa2GcxnJk0kVzC/eg==
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpeml500022.china.huawei.com (7.185.36.66)
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sat, 13 Jul 2024 20:35:35 +0200
+Add support for STATX_DIOALIGN to erofs, so that direct I/O
+alignment restrictions are exposed to userspace in a generic
+way.
 
-Single characters should be put into a sequence.
-Thus use the corresponding function =E2=80=9Cseq_putc=E2=80=9D.
+[Before]
+```
+./statx_test /mnt/erofs/testfile
+statx(/mnt/erofs/testfile) = 0
+dio mem align:0
+dio offset align:0
+```
 
-This issue was transformed by using the Coccinelle software.
+[After]
+```
+./statx_test /mnt/erofs/testfile
+statx(/mnt/erofs/testfile) = 0
+dio mem align:512
+dio offset align:512
+```
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-=2D--
- fs/netfs/fscache_cookie.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
+---
+ fs/erofs/inode.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/fs/netfs/fscache_cookie.c b/fs/netfs/fscache_cookie.c
-index 4d1e8bf4c615..5e490336b90f 100644
-=2D-- a/fs/netfs/fscache_cookie.c
-+++ b/fs/netfs/fscache_cookie.c
-@@ -1134,7 +1134,7 @@ static int fscache_cookies_seq_show(struct seq_file =
-*m, void *v)
- 	auxlen =3D cookie->aux_len;
-
- 	if (keylen > 0 || auxlen > 0) {
--		seq_puts(m, " ");
-+		seq_putc(m, ' ');
- 		p =3D keylen <=3D sizeof(cookie->inline_key) ?
- 			cookie->inline_key : cookie->key;
- 		for (; keylen > 0; keylen--)
-@@ -1148,7 +1148,7 @@ static int fscache_cookies_seq_show(struct seq_file =
-*m, void *v)
- 		}
- 	}
-
--	seq_puts(m, "\n");
-+	seq_putc(m, '\n');
+diff --git a/fs/erofs/inode.c b/fs/erofs/inode.c
+index 5f6439a63af7..9325a6f0058a 100644
+--- a/fs/erofs/inode.c
++++ b/fs/erofs/inode.c
+@@ -342,6 +342,25 @@ int erofs_getattr(struct mnt_idmap *idmap, const struct path *path,
+ 	stat->attributes_mask |= (STATX_ATTR_COMPRESSED |
+ 				  STATX_ATTR_IMMUTABLE);
+ 
++	/*
++	 * Return the DIO alignment restrictions if requested.
++	 *
++	 * In erofs, STATX_DIOALIGN is not supported in ondemand mode and
++	 * the compressed file, so in these cases we report no DIO support.
++	 */
++	if ((request_mask & STATX_DIOALIGN) && S_ISREG(inode->i_mode)) {
++		stat->result_mask |= STATX_DIOALIGN;
++		if (!erofs_is_fscache_mode(inode->i_sb) &&
++			!erofs_inode_is_data_compressed(EROFS_I(inode)->datalayout)) {
++			struct block_device *bdev = inode->i_sb->s_bdev;
++			unsigned int bsize = (bdev) ? bdev_logical_block_size(bdev) :
++						i_blocksize(inode);
++
++			stat->dio_mem_align = bsize;
++			stat->dio_offset_align = bsize;
++		}
++	}
++
+ 	generic_fillattr(idmap, request_mask, inode, stat);
  	return 0;
  }
-
-=2D-
-2.45.2
+-- 
+2.34.1
 
