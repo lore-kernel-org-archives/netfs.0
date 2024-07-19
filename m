@@ -1,116 +1,126 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304CF7580A
-	for <netfs@lists.linux.dev>; Thu, 18 Jul 2024 20:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66C0282FB
+	for <netfs@lists.linux.dev>; Fri, 19 Jul 2024 14:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721333416; cv=none; b=tyUY1mRFPVu7Lo1KUK/Az68hQd7TKYies6NmICDUdbN5gVTMWiW0JWcHn74EadsLt8He8BwIySapd/CGNey55S60DTmWMCFKa58OeQSYKfTQ+26pXfWDA6lrRuKCO0zdxUso9cls++XMmRz20Py29CnrMG5anMhZ1vPuVfzkn7Y=
+	t=1721398164; cv=none; b=gPCCgOq7rY06GeZ2Gk76b79yO77P95cgS6Vhat0msllhS9TVuusfpsIDdYuswqewmgSV6W3AOAEd+JE/OqDhX3gp8VVTsvg3AbCE4tQ/xEVuAoNNLXvL/gd5XMVnRNWw08xNAgaR2pmdQrHrjjpsiWc3ebeiy0ooCoDhr5cXRBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721333416; c=relaxed/simple;
-	bh=ugaWR8JGHdj3yGFXvMOXzTdia9uN1CQ7x8IvBCYoT6A=;
-	h=From:In-Reply-To:References:To:cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=UZ1ZkvZaeUhEmOvvYoBAqtwfgVThuwDU4LpXNQiUJ60Wnlh6+Vz5tWJiCviRK66E22ShIgIr980Z3iq2hCZQprln6M7Bs0rI4It48lUPdXRLmkj91dwJlyqggAx7rkdKSPWro8qe/U7FSpgj846ZG2mlOgOP4lCsdOzJCCNLQ+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QKdqX0kq; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1721398164; c=relaxed/simple;
+	bh=fre4/NqB1QX3kYFrVwwxZtWqZ8RN0m4oK0mMVAsB7Ok=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=l1wWVkHA+rf/mlAM83vBGbA2QIFgnrmB530nAHaoCnVTp30y2wTnFmnoaHkEpTMPndqkAp/xVKvD0UJejIPGzbqL3dlnlFaSNe3QcXjOLrKk6DUqeBHOgFbmGDReDtIvYSNou5Jw9ewU+C/hFMBcKzQQEYp+IodKfGi2tSImwqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MVP13yn8; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QKdqX0kq"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MVP13yn8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721333414;
+	s=mimecast20190719; t=1721398161;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MhNrypD9tKCB76J+bi+54vbqRuUJuHcgPMKesV6Oa6c=;
-	b=QKdqX0kqu1uYVv+rxeeuZipINbl84qqxHXfXwrN92bOz7L9h4pMwWUfkOQyd7vwwhFiDZY
-	8YQHAcgVbYL2u9OE5xStnpioau4gDBHhwYVmbndfBF9ubifkkRkH0qRJ87cPrBgZ8Gz8Ga
-	zb3dbS+G17aO4KV+nH35JlJ+kjxVLJo=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	bh=OHBrQxJhHKq/0+I6r91RjUd+G1W1o7qj5MHAExhQKcI=;
+	b=MVP13yn8UgEOhk9KkNU90UOw0tgkjyxih2DuzyTMQ+shmP8OcWQWs24kovbwrtsC9XvBZ/
+	HNzFSzTG/9lilKPbpC0wy1lxNnOWspdyyG8kBn2xAbObta352aCG/kUREgJWjI8ORfbVqk
+	lg0A55DJ/9dt+F/fcTnQ/fIzvTKlM8c=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-107-l6JER5hFOUaXuakXyqR36A-1; Thu,
- 18 Jul 2024 16:10:10 -0400
-X-MC-Unique: l6JER5hFOUaXuakXyqR36A-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-549-XHKxl2mIPn-W94e6oZHLDQ-1; Fri,
+ 19 Jul 2024 10:09:19 -0400
+X-MC-Unique: XHKxl2mIPn-W94e6oZHLDQ-1
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 97A42195420D;
-	Thu, 18 Jul 2024 20:10:09 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.216])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7E4971955F40;
-	Thu, 18 Jul 2024 20:10:07 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A92B91944B30;
+	Fri, 19 Jul 2024 14:09:17 +0000 (UTC)
+Received: from warthog.procyon.org.uk.com (unknown [10.42.28.216])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B99981955F40;
+	Fri, 19 Jul 2024 14:09:14 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
-In-Reply-To: <1410685.1721333252@warthog.procyon.org.uk>
-References: <1410685.1721333252@warthog.procyon.org.uk>
-To: Christian Brauner <brauner@kernel.org>
-cc: dhowells@redhat.com,
-    Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
-    Jeff Layton <jlayton@kernel.org>, netfs@lists.linux.dev,
-    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] netfs: Rename CONFIG_FSCACHE_DEBUG to CONFIG_NETFS_DEBUG
+To: Steve French <sfrench@samba.org>
+Cc: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Shyam Prasad N <nspmangalore@gmail.com>,
+	Rohith Surabattula <rohiths.msft@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	Aurelien Aptel <aaptel@suse.com>,
+	netfs@lists.linux.dev
+Subject: [PATCH 1/4] cifs: Fix server re-repick on subrequest retry
+Date: Fri, 19 Jul 2024 15:09:01 +0100
+Message-ID: <20240719140907.1598372-2-dhowells@redhat.com>
+In-Reply-To: <20240719140907.1598372-1-dhowells@redhat.com>
+References: <20240719140907.1598372-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 18 Jul 2024 21:10:06 +0100
-Message-ID: <1410796.1721333406@warthog.procyon.org.uk>
+Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
+When a subrequest is marked for needing retry, netfs will call
+cifs_prepare_write() which will make cifs repick the server for the op
+before renegotiating credits; it then calls cifs_issue_write() which
+invokes smb2_async_writev() - which re-repicks the server.
 
-CONFIG_FSCACHE_DEBUG should have been renamed to CONFIG_NETFS_DEBUG, so do
-that now.
+If a different server is then selected, this causes the increment of
+server->in_flight to happen against one record and the decrement to happen
+against another, leading to misaccounting.
 
+Fix this by just removing the repick code in smb2_async_writev().  As this
+is only called from netfslib-driven code, cifs_prepare_write() should
+always have been called first, and so server should never be NULL and the
+preparatory step is repeated in the event that we do a retry.
+
+The problem manifests as a warning looking something like:
+
+ WARNING: CPU: 4 PID: 72896 at fs/smb/client/smb2ops.c:97 smb2_add_credits+0x3f0/0x9e0 [cifs]
+ ...
+ RIP: 0010:smb2_add_credits+0x3f0/0x9e0 [cifs]
+ ...
+  smb2_writev_callback+0x334/0x560 [cifs]
+  cifs_demultiplex_thread+0x77a/0x11b0 [cifs]
+  kthread+0x187/0x1d0
+  ret_from_fork+0x34/0x60
+  ret_from_fork_asm+0x1a/0x30
+
+Which may be triggered by a number of different xfstests running against an
+Azure server in multichannel mode.  generic/249 seems the most repeatable,
+but generic/215, generic/249 and generic/308 may also show it.
+
+Fixes: 3ee1a1fc3981 ("cifs: Cut over to using netfslib")
+Reported-by: Steve French <sfrench@samba.org>
 Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Uwe Kleine-K=C3=B6nig <ukleinek@kernel.org>
-cc: Christian Brauner <brauner@kernel.org>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
 cc: Jeff Layton <jlayton@kernel.org>
+cc: Aurelien Aptel <aaptel@suse.com>
+cc: linux-cifs@vger.kernel.org
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
 ---
- fs/netfs/Kconfig |   18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ fs/smb/client/smb2pdu.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/fs/netfs/Kconfig b/fs/netfs/Kconfig
-index bec805e0c44c..1b78e8b65ebc 100644
---- a/fs/netfs/Kconfig
-+++ b/fs/netfs/Kconfig
-@@ -22,6 +22,14 @@ config NETFS_STATS
- 	  between CPUs.  On the other hand, the stats are very useful for
- 	  debugging purposes.  Saying 'Y' here is recommended.
-=20
-+config NETFS_DEBUG
-+	bool "Enable dynamic debugging netfslib and FS-Cache"
-+	depends on NETFS
-+	help
-+	  This permits debugging to be dynamically enabled in the local caching
-+	  management module.  If this is set, the debugging output may be
-+	  enabled by setting bits in /sys/module/netfs/parameters/debug.
-+
- config FSCACHE
- 	bool "General filesystem local caching manager"
- 	depends on NETFS_SUPPORT
-@@ -50,13 +58,3 @@ config FSCACHE_STATS
- 	  debugging purposes.  Saying 'Y' here is recommended.
-=20
- 	  See Documentation/filesystems/caching/fscache.rst for more information.
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index 2ae2dbb6202b..bb84a89e5905 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -4859,9 +4859,6 @@ smb2_async_writev(struct cifs_io_subrequest *wdata)
+ 	struct cifs_io_parms *io_parms = NULL;
+ 	int credit_request;
+ 
+-	if (!wdata->server || test_bit(NETFS_SREQ_RETRYING, &wdata->subreq.flags))
+-		server = wdata->server = cifs_pick_channel(tcon->ses);
 -
--config FSCACHE_DEBUG
--	bool "Debug FS-Cache"
--	depends on FSCACHE
--	help
--	  This permits debugging to be dynamically enabled in the local caching
--	  management module.  If this is set, the debugging output may be
--	  enabled by setting bits in /sys/modules/fscache/parameter/debug.
--
--	  See Documentation/filesystems/caching/fscache.rst for more information.
+ 	/*
+ 	 * in future we may get cifs_io_parms passed in from the caller,
+ 	 * but for now we construct it here...
 
