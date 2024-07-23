@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A55614F9E9;
-	Tue, 23 Jul 2024 11:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935AC14F9E1;
+	Tue, 23 Jul 2024 11:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721733852; cv=none; b=HL7Aok6OJ9093YczRnPgSts064/iOg4FqKwq/y3GJQHaPSBSC/zhiOYrxytRtb7Y/1ZHNhBq2dXaPCPCatBLpmqQB67RpiDqLD0yRAlMTySc985g4x6wKqPTln9TLEXWWfUKuFgewRZKrhn0jrnCYet22bAQh71eyZBp/97GQMw=
+	t=1721733855; cv=none; b=Pxd7tVp8AD/Olv4gWVBRzbFcM0+Rk3mBDpxTIp05mIethUyLWr0WfolgdoMROFy1eQAxVNKxjkAdXfOJunPPHC1MVopZmGt87jFuSG3CZz4dENumUBdEIqE8uW9aLRRI4WGgDzacd0Q+bi4eC2whtoCPMePuuI4pvrOtfhMvvBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721733852; c=relaxed/simple;
-	bh=WT1R4JXlAscYM9Eu3wRc2IO4UpVlARwdXG7i/HkXkj0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=uBNS4d+i+8mQ34bFCdSx6EhhXAk5DXMUwx6MDtzERAaHKMHnte/CMfeJ0U/MX/BiPwpo8sjqi8WRENiHo0XlncHZki3Tp79VD8WnT12iDwW4g24sKDE45BDlE4IqtKoM9LHn0c0rldnZMT53kJGzTbrzWkMmvDRHXJQTK5Zt45A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODQ99rdO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1721733855; c=relaxed/simple;
+	bh=8tcX3ravFCvacKuAtuQ/YQoCw3mf7V/gwg9MD4ykR1U=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XhgBIUlSO3IHF7i05tmk94anRivGR4vSS/Rja7FN7JUSVviXaaqKSzvXgzrlzBcrsTJUOGwk2KtidK0K76b4GOrxO/8ngk624qsxjuX2iHEGPO+H0IYSO9e9IOgK22SKJMObaoZN63oC+iFpATfnOtArcdFz85rNjCuYvxIjGt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vit7MszS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODQ99rdO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48327C4AF09;
-	Tue, 23 Jul 2024 11:24:11 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vit7MszS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24B4C4AF09;
+	Tue, 23 Jul 2024 11:24:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721733851;
-	bh=WT1R4JXlAscYM9Eu3wRc2IO4UpVlARwdXG7i/HkXkj0=;
+	s=korg; t=1721733855;
+	bh=8tcX3ravFCvacKuAtuQ/YQoCw3mf7V/gwg9MD4ykR1U=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ODQ99rdOBV2iMXiylfwqVQ2ghPr0QXlAb4TrKxjkuJRO+SYfF0rL/VtwZRjHaidRU
-	 RBlrvHx1B6Nbzp1OfvyZIPcSR/9sn/yZzB6LVpU6KOQUCpim4Ug0js4avlR2upNN1F
-	 Ihh/q7I8uk4g5+a2aooMvvg/L9ww71f4ha+VyzJY=
-Subject: Patch "cifs: Fix server re-repick on subrequest retry" has been added to the 6.10-stable tree
-To: aaptel@suse.com,dhowells@redhat.com,gregkh@linuxfoundation.org,jlayton@kernel.org,netfs@lists.linux.dev,pc@manguebit.com,smfrench@gmail.com,stfrench@microsoft.com,tom@talpey.com
+	b=vit7MszSSzfDWV70iek14rfASUVIBW9UM8uLxirRrxeGBSbMmKBIwjodxIec7eK4i
+	 QWIxCluYSBqR6BabCUVsgXWyooW0QXYlpMqp96DIsM/S62Qi/T+xSX4Fu6kNmeyM9o
+	 NY/Fm/qa9nxtTNttcgyVB7IypdvWUn/5d+VBHCfU=
+Subject: Patch "cifs: Fix setting of zero_point after DIO write" has been added to the 6.10-stable tree
+To: dhowells@redhat.com,gregkh@linuxfoundation.org,jlayton@kernel.org,netfs@lists.linux.dev,pc@manguebit.com,sfrench@samba.org,stfrench@microsoft.com
 Cc: <stable-commits@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Tue, 23 Jul 2024 13:23:54 +0200
-Message-ID: <2024072354-drained-vision-44ea@gregkh>
+Message-ID: <2024072354-aide-entomb-3674@gregkh>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -42,92 +42,83 @@ X-Patchwork-Hint: ignore
 
 This is a note to let you know that I've just added the patch titled
 
-    cifs: Fix server re-repick on subrequest retry
+    cifs: Fix setting of zero_point after DIO write
 
 to the 6.10-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     cifs-fix-server-re-repick-on-subrequest-retry.patch
+     cifs-fix-setting-of-zero_point-after-dio-write.patch
 and it can be found in the queue-6.10 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
 please let <stable@vger.kernel.org> know about it.
 
 
-From de40579b903883274fe203865f29d66b168b7236 Mon Sep 17 00:00:00 2001
+From 61ea6b3a3104fcd66364282391dd2152bc4c129a Mon Sep 17 00:00:00 2001
 From: David Howells <dhowells@redhat.com>
-Date: Thu, 18 Jul 2024 20:19:32 +0100
-Subject: cifs: Fix server re-repick on subrequest retry
+Date: Fri, 19 Jul 2024 14:07:07 +0100
+Subject: cifs: Fix setting of zero_point after DIO write
 
 From: David Howells <dhowells@redhat.com>
 
-commit de40579b903883274fe203865f29d66b168b7236 upstream.
+commit 61ea6b3a3104fcd66364282391dd2152bc4c129a upstream.
 
-When a subrequest is marked for needing retry, netfs will call
-cifs_prepare_write() which will make cifs repick the server for the op
-before renegotiating credits; it then calls cifs_issue_write() which
-invokes smb2_async_writev() - which re-repicks the server.
+At the moment, at the end of a DIO write, cifs calls netfs_resize_file() to
+adjust the size of the file if it needs it.  This will reduce the
+zero_point (the point above which we assume a read will just return zeros)
+if it's more than the new i_size, but won't increase it.
 
-If a different server is then selected, this causes the increment of
-server->in_flight to happen against one record and the decrement to happen
-against another, leading to misaccounting.
+With DIO writes, however, we definitely want to increase it as we have
+clobbered the local pagecache and then written some data that's not
+available locally.
 
-Fix this by just removing the repick code in smb2_async_writev().  As this
-is only called from netfslib-driven code, cifs_prepare_write() should
-always have been called first, and so server should never be NULL and the
-preparatory step is repeated in the event that we do a retry.
+Fix cifs to make the zero_point above the end of a DIO or unbuffered write.
 
-The problem manifests as a warning looking something like:
-
- WARNING: CPU: 4 PID: 72896 at fs/smb/client/smb2ops.c:97 smb2_add_credits+0x3f0/0x9e0 [cifs]
- ...
- RIP: 0010:smb2_add_credits+0x3f0/0x9e0 [cifs]
- ...
-  smb2_writev_callback+0x334/0x560 [cifs]
-  cifs_demultiplex_thread+0x77a/0x11b0 [cifs]
-  kthread+0x187/0x1d0
-  ret_from_fork+0x34/0x60
-  ret_from_fork_asm+0x1a/0x30
-
-Which may be triggered by a number of different xfstests running against an
-Azure server in multichannel mode.  generic/249 seems the most repeatable,
-but generic/215, generic/249 and generic/308 may also show it.
+This fixes corruption seen occasionally with the generic/708 xfs-test.  In
+that case, the read-back of some of the written data is being
+short-circuited and replaced with zeroes.
 
 Fixes: 3ee1a1fc3981 ("cifs: Cut over to using netfslib")
 Cc: stable@vger.kernel.org
-Reported-by: Steve French <smfrench@gmail.com>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Acked-by: Tom Talpey <tom@talpey.com>
+Reported-by: Steve French <sfrench@samba.org>
 Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
 cc: Jeff Layton <jlayton@kernel.org>
-cc: Aurelien Aptel <aaptel@suse.com>
 cc: linux-cifs@vger.kernel.org
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2pdu.c | 3 ---
- 1 file changed, 3 deletions(-)
+ fs/smb/client/file.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index 2ae2dbb6202b..bb84a89e5905 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -4859,9 +4859,6 @@ smb2_async_writev(struct cifs_io_subrequest *wdata)
- 	struct cifs_io_parms *io_parms = NULL;
- 	int credit_request;
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -2364,13 +2364,18 @@ void cifs_write_subrequest_terminated(st
+ 				      bool was_async)
+ {
+ 	struct netfs_io_request *wreq = wdata->rreq;
+-	loff_t new_server_eof;
++	struct netfs_inode *ictx = netfs_inode(wreq->inode);
++	loff_t wrend;
  
--	if (!wdata->server || test_bit(NETFS_SREQ_RETRYING, &wdata->subreq.flags))
--		server = wdata->server = cifs_pick_channel(tcon->ses);
--
- 	/*
- 	 * in future we may get cifs_io_parms passed in from the caller,
- 	 * but for now we construct it here...
--- 
-2.45.2
-
+ 	if (result > 0) {
+-		new_server_eof = wdata->subreq.start + wdata->subreq.transferred + result;
++		wrend = wdata->subreq.start + wdata->subreq.transferred + result;
+ 
+-		if (new_server_eof > netfs_inode(wreq->inode)->remote_i_size)
+-			netfs_resize_file(netfs_inode(wreq->inode), new_server_eof, true);
++		if (wrend > ictx->zero_point &&
++		    (wdata->rreq->origin == NETFS_UNBUFFERED_WRITE ||
++		     wdata->rreq->origin == NETFS_DIO_WRITE))
++			ictx->zero_point = wrend;
++		if (wrend > ictx->remote_i_size)
++			netfs_resize_file(ictx, wrend, true);
+ 	}
+ 
+ 	netfs_write_subrequest_terminated(&wdata->subreq, result, was_async);
 
 
 Patches currently in stable-queue which might be from dhowells@redhat.com are
