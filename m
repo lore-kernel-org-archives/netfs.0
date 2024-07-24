@@ -1,71 +1,252 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B81115252B
-	for <netfs@lists.linux.dev>; Wed, 24 Jul 2024 09:43:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C71152511
+	for <netfs@lists.linux.dev>; Wed, 24 Jul 2024 13:30:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721814194; cv=none; b=i9VCnX3XFbJgPncfPV4X4Wdjr5Eh7v78zjiyF3w2lQMrwy/aZvtDgSG2PvW0QfBYl3iJud1nzgMRLlWUsRt+96DzrhLxBodRmcIlmSbJcekJLG784v8NwWCg5CTqoTUzRvszv/LAKNSzrFEHr0BVuGkGQEbZkmqOxQI/dtaawUQ=
+	t=1721827813; cv=none; b=BAk+EuxWnxBYzEs3JK3+bI8IoA8ZzjFlw287y+/YdOhwYv1BBfSHMgBEkuzh4hBuA8BsNgWXoN60T8J/HF3cIKl3U6BZO79Y9nWmG5Obcjl+tysIkYlc7AmqOmk4//zGEmh24Sh+CRc4e9j16/maxghMmZTmxkYuHOchWdc6KiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721814194; c=relaxed/simple;
-	bh=On3pfYPoO7z0t+5h4T28x9zYP+tznnS6VJGlMP61PsU=;
-	h=From:In-Reply-To:References:Cc:Subject:MIME-Version:Content-Type:
-	 Date:Message-ID; b=Lu1yW0A7i+JIonjKhuBxi5S4eyDxS7rX0eCvMHev5K4HwxGSDYlMJYkA/mopqOaWG6agNf/5FLjjRfMbZojbrRux0+d00iI/Bzzoo7uZsPFe4wZmk2s2ocWvQ5UK+R+w9JfnNOU2X6kqlmDgCM5qOul8AutVtbzh12YD3eiF1Ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OIdTZNMY; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1721827813; c=relaxed/simple;
+	bh=F3Mc1gljNyvAcgDBDUA1YynRl/LCAnNs98LevOMjHnA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=poeqfsMfuVkMepmZDXQ9qvi/zrOqYiOra6L8I9DzvsyPp0h8/K+5S2aVEt+zoEsnSFwjaR66Vtg4JWMuFh0oZlO5ChZfDF8AhfxUFCDrOzDr5txj3LN7Vzlet/BQC18pXSzB/MgkOcQZIJ5G/gR+2gkqXc54AZy/Hmf12fBN8QQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=ZBbrg3Ar; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=b1i0F8SP; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=ZBbrg3Ar; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=b1i0F8SP; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OIdTZNMY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721814192;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=On3pfYPoO7z0t+5h4T28x9zYP+tznnS6VJGlMP61PsU=;
-	b=OIdTZNMY1ucKBWGQ/539/CbutW9cHIzrCCZ9vhu1A4QzEVFqNnK/2fQ54gCLuUHtnF/OeL
-	mtmwMd+cOMor9mrrLrCcpuXsXB5Sr+peOT9dhBtSFOD1j75PEHbyT8vrcwa5UksgRq6UgL
-	OvTUhoqHO7rw2ptaVbDNAQkEDCXC6LM=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-507-aiHBK3TROMqWK67A11NOKQ-1; Wed,
- 24 Jul 2024 05:43:07 -0400
-X-MC-Unique: aiHBK3TROMqWK67A11NOKQ-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="ZBbrg3Ar";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="b1i0F8SP";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="ZBbrg3Ar";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="b1i0F8SP"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E84B01955D57;
-	Wed, 24 Jul 2024 09:43:05 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.216])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EBDCF1955D42;
-	Wed, 24 Jul 2024 09:42:59 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <2299428.1721813616@warthog.procyon.org.uk>
-References: <2299428.1721813616@warthog.procyon.org.uk>
-Cc: dhowells@redhat.com, Christian Brauner <brauner@kernel.org>,
-    Gao Xiang <xiang@kernel.org>, netfs@lists.linux.dev,
-    linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] cachefiles: Fix non-taking of sb_writers around set/removexattr
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 48EAD1F7A1;
+	Wed, 24 Jul 2024 13:30:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1721827810; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BfH8hrgqItTtjnVn4i5MjiuCGCIZRWDHNb/C5lajMog=;
+	b=ZBbrg3ArdLo3VvM+I+5jmxRV4h3bMiTvL5cIqg9tHwHpv3t54uxWU7zSwd607m0nKr6JNu
+	PM0HQJvdVgsQtHeAw8o9vtPRD+fI4rVjhH21EuZ/RlIQBgqK+ZacMHFbiLhnRlHh+14RZb
+	BI5snj0ifCjzD5lG+8TyB5k41NVWw7g=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1721827810;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BfH8hrgqItTtjnVn4i5MjiuCGCIZRWDHNb/C5lajMog=;
+	b=b1i0F8SPEkueO7uBkpdATFqSX0Yr5RVIRvy1419pEbV11XG7m96n52SffSv9ZgAv3sTq+G
+	WJXoes6ThQm843Cw==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1721827810; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BfH8hrgqItTtjnVn4i5MjiuCGCIZRWDHNb/C5lajMog=;
+	b=ZBbrg3ArdLo3VvM+I+5jmxRV4h3bMiTvL5cIqg9tHwHpv3t54uxWU7zSwd607m0nKr6JNu
+	PM0HQJvdVgsQtHeAw8o9vtPRD+fI4rVjhH21EuZ/RlIQBgqK+ZacMHFbiLhnRlHh+14RZb
+	BI5snj0ifCjzD5lG+8TyB5k41NVWw7g=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1721827810;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BfH8hrgqItTtjnVn4i5MjiuCGCIZRWDHNb/C5lajMog=;
+	b=b1i0F8SPEkueO7uBkpdATFqSX0Yr5RVIRvy1419pEbV11XG7m96n52SffSv9ZgAv3sTq+G
+	WJXoes6ThQm843Cw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 398E41324F;
+	Wed, 24 Jul 2024 13:30:10 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id KAALDuIBoWZhFwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 24 Jul 2024 13:30:10 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id E1CF5A08E4; Wed, 24 Jul 2024 15:30:09 +0200 (CEST)
+Date: Wed, 24 Jul 2024 15:30:09 +0200
+From: Jan Kara <jack@suse.cz>
+To: David Howells <dhowells@redhat.com>
+Cc: Jan Kara <jack@suse.cz>, Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>, Gao Xiang <xiang@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>, netfs@lists.linux.dev,
+	linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] vfs: Fix potential circular locking through setxattr()
+ and removexattr()
+Message-ID: <20240724133009.6st3vmk5ondigbj7@quack3>
+References: <20240723104533.mznf3svde36w6izp@quack3>
+ <2136178.1721725194@warthog.procyon.org.uk>
+ <2147168.1721743066@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2300460.1721814176.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 24 Jul 2024 10:42:56 +0100
-Message-ID: <2300461.1721814176@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2147168.1721743066@warthog.procyon.org.uk>
+X-Spam-Level: 
+X-Spamd-Result: default: False [-0.60 / 50.00];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	FROM_HAS_DN(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:email,suse.cz:email]
+X-Spam-Flag: NO
+X-Spam-Score: -0.60
 
-Fixes: 9ae326a69004 ("CacheFiles: A cache that backs onto a mounted filesy=
-stem")
+On Tue 23-07-24 14:57:46, David Howells wrote:
+> Jan Kara <jack@suse.cz> wrote:
+> 
+> > Well, it seems like you are trying to get rid of the dependency
+> > sb_writers->mmap_sem. But there are other places where this dependency is
+> > created, in particular write(2) path is a place where it would be very
+> > difficult to get rid of it (you take sb_writers, then do all the work
+> > preparing the write and then you copy user data into page cache which
+> > may require mmap_sem).
+> >
+> > ...
+> > 
+> > This is the problematic step - from quite deep in the locking chain holding
+> > invalidate_lock and having PG_Writeback set you suddently jump to very outer
+> > locking context grabbing sb_writers. Now AFAICT this is not a real deadlock
+> > problem because the locks are actually on different filesystems, just
+> > lockdep isn't able to see this. So I don't think you will get rid of these
+> > lockdep splats unless you somehow manage to convey to lockdep that there's
+> > the "upper" fs (AFS in this case) and the "lower" fs (the one behind
+> > cachefiles) and their locks are different.
+> 
+> I'm not sure you're correct about that.  If you look at the lockdep splat:
+> 
+> >  -> #2 (sb_writers#14){.+.+}-{0:0}:
+> 
+> The sb_writers lock is "personalised" to the filesystem type (the "#14"
+> annotation) which is set here:
+> 
+> 	for (i = 0; i < SB_FREEZE_LEVELS; i++) {
+> 		if (__percpu_init_rwsem(&s->s_writers.rw_sem[i],
+> 					sb_writers_name[i],
+> 					&type->s_writers_key[i]))  <----
+> 			goto fail;
+> 	}
+> 
+> in fs/super.c.
 
+Right, forgot about that. Thanks for correction! So after pondering about
+this some more, this is actually a real problem and deadlockable. See
+below.
+
+> I think the problem is (1) that on one side, you've got, say, sys_setxattr()
+> taking an sb_writers lock and then accessing a userspace buffer, which (a) may
+> take mm->mmap_lock and vma->vm_lock and (b) may cause reading or writeback
+> from the netfs-based filesystem via an mmapped xattr name buffer].
+
+Yes, we agree on that. I was just pointing out that:
+
+vfs_write()
+  file_start_write() -> grabs sb_writers
+  generic_file_write_iter()
+    generic_perform_write()
+      fault_in_iov_iter_readable()
+
+is another path which enforces exactly the same lock ordering.
+
+> Then (2) on the other side, you have a read or a write to the network
+> filesystem through netfslib which may invoke the cache, which may require
+> cachefiles to check the xattr on the cache file and maybe set/remove it -
+> which requires the sb_writers lock on the cache filesystem.
+> 
+> So if ->read_folio(), ->readahead() or ->writepages() can ever be called with
+> mm->mmap_lock or vma->vm_lock held, netfslib may call down to cachefiles and
+> ultimately, it should[*] then take the sb_writers lock on the backing
+> filesystem to perform xattr manipulation.
+
+Well, ->read_folio() under mm->mmap_lock is a standard thing to happen in a
+page fault. Now grabbing sb_writers (of any filesystem) in that path is
+problematic and can deadlock though:
+
+page fault
+  grab mm->mmap_lock
+  filemap_fault()
+    if (unlikely(!folio_test_uptodate(folio))) {
+      filemap_read_folio() on fs A
+        now if you grab sb_writers on fs B:
+			freeze_super() on fs B		write(2) on fs B
+							  sb_start_write(fs B)
+			  sb->s_writers.frozen = SB_FREEZE_WRITE;
+			  sb_wait_write(sb, SB_FREEZE_WRITE);
+			    - waits for write
+	sb_start_write(fs B) - blocked behind freeze_super()
+							  generic_perform_write()
+							    fault_in_iov_iter_readable()
+							      page fault
+							        grab mm->mmap_lock
+								  => deadlock
+
+Now this is not the deadlock your lockdep trace is showing but it is a
+similar one. Like:
+
+filemap_invalidate() on fs A	freeze_super() on fs B	page fault on fs A	write(2) on fs B
+  filemap_invalidate_lock()				  lock mm->mmap_lock	  sb_start_write(fs B)
+  filemap_fdatawrite_wbc()				  filemap_fault()
+    afs_writepages()					    filemap_invalidate_lock_shared()
+      cachefiles_issue_write()				      => blocks behind filemap_invalidate()
+				  sb->s_writers.frozen = SB_FREEZE_WRITE;
+				  sb_wait_write(sb, SB_FREEZE_WRITE);
+				    => blocks behind write(2)
+        sb_start_write() on fs B
+	  => blocks behind freeze_super()
+							  			  generic_perform_write()
+										    fault_in_iov_iter_readable()
+										      page fault
+										        grab mm->mmap_lock
+											  => deadlock
+
+So I still maintain that grabbing sb_start_write() from quite deep within
+locking hierarchy (like from writepages when having pages locked, but even
+holding invalidate_lock is enough for the problems) is problematic and
+prone to deadlocks.
+
+> [*] I say "should" because at the moment cachefiles calls vfs_set/removexattr
+>     functions which *don't* take this lock (which is a bug).  Is this an error
+>     on the part of vfs_set/removexattr()?  Should they take this lock
+>     analogously with vfs_truncate() and vfs_iocb_iter_write()?
+> 
+> However, as it doesn't it manages to construct a locking chain via the
+> mapping.invalidate_lock, the afs vnode->validate_lock and something in execve
+> that I don't exactly follow.
+> 
+> 
+> I wonder if this is might be deadlockable by a multithreaded process (ie. so
+> they share the mm locks) where one thread is writing to a cached file whilst
+> another thread is trying to set/remove the xattr on that file.
+
+Yep, see above. Now the hard question is how to fix this because what you
+are doing seems to be inherent in how cachefiles fs is designed to work.
+
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
