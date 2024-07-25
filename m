@@ -1,42 +1,41 @@
-Received: from andre.telenet-ops.be (andre.telenet-ops.be [195.130.132.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C0516F84C
-	for <netfs@lists.linux.dev>; Thu, 25 Jul 2024 08:05:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.132.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FD61F17B
+	for <netfs@lists.linux.dev>; Thu, 25 Jul 2024 22:02:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721894745; cv=none; b=VHYRzM2kUkpq3/dUE/WoPUuzhzinzPEnltZt5MR+yaRfRTmEUKWfaEYS1F7C6isi8F8NfbULVUhaM5J9GtTErWcPKBxJlRDaXrVSqFaSQNmSLCFgg2pF/pMY+3F1mJW0qFgXY7lesOtss89XjpbIp6yu3R3BnHSMFEpctqAcwCo=
+	t=1721944965; cv=none; b=SwvpQ3T+yGluxUfR2lZto031PovZ1pCmkYTEzA7pqKaAUIyy6JC+oXajz3QgtBuz6p0wizH5OECvAN0zxaaRoGbQkvj4SoUS/K+CkY/9yiCZkr9xXs/CmH4hOO2JwfyQcZvOrum7R27KRE1pFapaer2cuAGIGrLeqVIV46arwjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721894745; c=relaxed/simple;
-	bh=juiRPFb3ysJvYNyEc/viUX0sORvuirQqenTgO4aqjLA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DEZc/8fRiJTZlg2joWUAqRweKcD78NE7NFAKIiWyV1IqDoW4GrR368P0kQbmri+p1M16Bt7vROqqUKJjx0/FtgF+aj28F21EPqblIyF25sW/KhLoEcHglne6wDtKW3rYVCTNXnDbh/QbbwQ1um1lIJz0hoGGkt0IiEy1TXREJS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.132.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:9697:b0ae:59fa:9dc8])
-	by andre.telenet-ops.be with bizsmtp
-	id rk5b2C00730uYn301k5bjA; Thu, 25 Jul 2024 10:05:35 +0200
-Received: from rox.of.borg ([192.168.97.57])
-	by ramsan.of.borg with esmtp (Exim 4.95)
-	(envelope-from <geert@linux-m68k.org>)
-	id 1sWtTO-003PCh-6H;
-	Thu, 25 Jul 2024 10:05:35 +0200
-Received: from geert by rox.of.borg with local (Exim 4.95)
-	(envelope-from <geert@linux-m68k.org>)
-	id 1sWtTj-008liP-5u;
-	Thu, 25 Jul 2024 10:05:35 +0200
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-To: Christian Brauner <brauner@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>
-Cc: netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH] netfs: Fix dependency of NETFS_DEBUG
-Date: Thu, 25 Jul 2024 10:05:30 +0200
-Message-Id: <20240725080530.2089573-1-geert+renesas@glider.be>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1721944965; c=relaxed/simple;
+	bh=RdhYrF47gl93YNRu+47Uqwxo1c4co2U6ihvG3DGhLM4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KlhlcXz96yrUVbT1lqRl0feN6JTU9FGtd3HiCNLWXUaS5Kb+DnwJELIhdRwrbrHI1YE3HYOuuySAm2+Z9qCtvbT1fptbSa2RDGzMnik0shTwbMWtM/dJFaBJ+kJX72z3OiK7i9SY2QCErNtOh0/2XnztuSL8gH8Pkt9WYhHbPm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=H7d4ydoz; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="H7d4ydoz"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=jX0zXVXbovdEngmQrfxgWGePu4+ciky2sHO6Y73yTaI=; b=H7d4ydozf18jUX6dEUK7MUEdur
+	JRkkT3rSnwdqgeWUs9zHYGhM7Gc5b16HqrRc98uq8+bKhFE0RS9E4AZGkr339xzs1N9Df3bS/rYCn
+	rcipnfbkV7yoWclxlZCOtG5M7yaIDMOs9Vka4saQmeLdsvHueVIu/oewmIcu2mL79+3rvExkkGb4x
+	NnkcPAp/d/Be79mHSmUEL2HDfwwfTqrDl9N3HIeI5vbrbjBp5+mvdRXOxpwT6wgB4n0IA8BAihkAb
+	2OVlkxrgyfMUWBNwSd2GpRXo+f/CVU2lrtEK+Vipzt9p+Hf2COYBwdlCXSAmzPxh0+86RngPtYRR6
+	E73+G0fw==;
+Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1sX6Xo-00000009Qc3-3LGj;
+	Thu, 25 Jul 2024 22:02:40 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: David Howells <dhowells@redhat.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	netfs@lists.linux.dev
+Subject: [PATCH 1/2] netfs: Remove call to folio_index()
+Date: Thu, 25 Jul 2024 23:02:36 +0100
+Message-ID: <20240725220239.2247246-1-willy@infradead.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -45,28 +44,27 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The configuration symbol "NETFS" does not exist.
-Its proper name is "NETFS_SUPPORT".
+Calling folio_index() is pointless overhead; directly dereferencing
+folio->index is fine.
 
-Fixes: fcad93360df4d04b ("netfs: Rename CONFIG_FSCACHE_DEBUG to CONFIG_NETFS_DEBUG")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 ---
- fs/netfs/Kconfig | 2 +-
+ include/trace/events/netfs.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/netfs/Kconfig b/fs/netfs/Kconfig
-index 1b78e8b65ebc142d..7701c037c3283f27 100644
---- a/fs/netfs/Kconfig
-+++ b/fs/netfs/Kconfig
-@@ -24,7 +24,7 @@ config NETFS_STATS
+diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
+index da23484268df..5f199e01e888 100644
+--- a/include/trace/events/netfs.h
++++ b/include/trace/events/netfs.h
+@@ -420,7 +420,7 @@ TRACE_EVENT(netfs_folio,
+ 	    TP_fast_assign(
+ 		    __entry->ino = folio->mapping->host->i_ino;
+ 		    __entry->why = why;
+-		    __entry->index = folio_index(folio);
++		    __entry->index = folio->index;
+ 		    __entry->nr = folio_nr_pages(folio);
+ 			   ),
  
- config NETFS_DEBUG
- 	bool "Enable dynamic debugging netfslib and FS-Cache"
--	depends on NETFS
-+	depends on NETFS_SUPPORT
- 	help
- 	  This permits debugging to be dynamically enabled in the local caching
- 	  management module.  If this is set, the debugging output may be
 -- 
-2.34.1
+2.43.0
 
