@@ -1,44 +1,37 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D111F17B
-	for <netfs@lists.linux.dev>; Thu, 25 Jul 2024 22:02:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF88848C
+	for <netfs@lists.linux.dev>; Fri, 26 Jul 2024 02:01:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721944968; cv=none; b=Rbm7hAIjQQ7AoUyZSMNLc4Jbnd/rk8ldPpF/GDqkSNLfeMdwXY835zPera3ecHOxKq70yJw4UzFFWesUBG2NP5A+Bhr8BUrFCgsirzs1BUZrkfYiJO26eriPOcHqxQxlWIXq4xyJx6Bt2aOVPwABypfO2omLNOrZwtj8CAiJ/WI=
+	t=1721959267; cv=none; b=hMTw2aW1FrxN51vELRkRYLG1ZvyE+7AgYaefzTxI+SZpHI0QPbNiqlP8iNr0UcXQjtcVnJte96lSsd990tbrjYDfYgMfxlsXG87Cjc/XgYWR5yM7hLVxEyKWfdwJCeFKoikIG1soeyc0WYrjtT5g2kExC/g/10F9IiwAzmMUrTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721944968; c=relaxed/simple;
-	bh=WeYaRAM7IVObsPEOnInvvmRNdPRPLmOkGxERJROyOEg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uj2rp1KNjL5Yvx+3dKvxiREayN9UpbqtsyerLRc0jnR9FezpYRDnWt1BDSiO1O6QYrhLEylNzYa67IWEvuegyicT1/dPFZQbz+akis6Kparx6Ve37QwBheTI+fH8KWjRbHVaiyVnNQ0Yzif+zLu7T/mjqjsryldua48Zvv6SKtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=nQeOR0cs; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="nQeOR0cs"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=IP3CLecV8AwDf9AfaJmz1Uxqrl1hjacNx8SsGBhckIc=; b=nQeOR0csTWN9pzylhcpE7W2hj7
-	pGlrYDKlsNjJ1P0kAXiAxzH9qRpS/InkjDe2qgQMpqzKObvoE+JpBAojd1dA3qv0ZTMxCRuXGCQc7
-	qeHbKeLUyRwlmpas2yq3qN+DIqCC3dW7uBnoXYRl2YgachBqNZcWnrbdAVmUxBePpzR3VIyD2bJuX
-	yf8+sfwNRtU8fzUE3gKUKyKOfghLcGOco6qIuWeAITfa3X34Izvgtsf4VPa2j21FHWCNFn19/RaL+
-	6wyHNXaCItGUpsvbmwr4ggpT8hO1OVmAx0diWDpLMBEMc1R32wgNYivxsgpiWaywfWsZpJHTOAPP6
-	hVfI9q3A==;
-Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sX6Xp-00000009Qc5-0AaY;
-	Thu, 25 Jul 2024 22:02:41 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: David Howells <dhowells@redhat.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	netfs@lists.linux.dev
-Subject: [PATCH 2/2] netfs: Remove unnecessary references to pages
-Date: Thu, 25 Jul 2024 23:02:37 +0100
-Message-ID: <20240725220239.2247246-2-willy@infradead.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240725220239.2247246-1-willy@infradead.org>
-References: <20240725220239.2247246-1-willy@infradead.org>
+	s=arc-20240116; t=1721959267; c=relaxed/simple;
+	bh=uLHeE56sAXNlT7QmzybUJ7nePeKLEDZc2CIWB9L035o=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VRPO+5z/Xi09AS+2axFDyiXnc8dX4v9lC8FGicMVK4giiQU5yQOO3qZX6VPuRP7Tn+cyKEQY919bemMxOtGoZY4kYLX8oj/iXi0OMSGp+ZXizi4XRJEprTkLq4zzY9LH/yeAbA7Cm7t45BaG8cIBimHkYvTVVKmho9F2Kyy75VQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4WVWF42tGWzxTwk;
+	Fri, 26 Jul 2024 10:00:56 +0800 (CST)
+Received: from dggpeml500022.china.huawei.com (unknown [7.185.36.66])
+	by mail.maildlp.com (Postfix) with ESMTPS id E5BED18009F;
+	Fri, 26 Jul 2024 10:01:00 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by dggpeml500022.china.huawei.com
+ (7.185.36.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 26 Jul
+ 2024 10:01:00 +0800
+From: Hongbo Li <lihongbo22@huawei.com>
+To: <xiang@kernel.org>, <chao@kernel.org>, <huyue2@coolpad.com>,
+	<jefflexu@linux.alibaba.com>, <dhavale@google.com>, <dhowells@redhat.com>
+CC: <linux-erofs@lists.ozlabs.org>, <netfs@lists.linux.dev>,
+	<lihongbo22@huawei.com>
+Subject: [PATCH v2] erofs: support direct IO for ondemand mode
+Date: Fri, 26 Jul 2024 10:06:27 +0800
+Message-ID: <20240726020627.2873693-1-lihongbo22@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -46,131 +39,213 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpeml500022.china.huawei.com (7.185.36.66)
 
-These places should all use folios instead of pages.
+erofs over fscache cannot handle the direct read io. When the file
+is opened with O_DIRECT flag, -EINVAL will reback. We support the
+DIO in erofs over fscache by bypassing the erofs page cache and
+reading target data into ubuf from fscache's file directly.
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+The alignment for buffer memory, offset and size now is restricted
+by erofs, since `i_blocksize` is enough for the under filesystems.
+
+Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
+
 ---
- fs/netfs/buffered_read.c  | 10 +++++-----
- fs/netfs/buffered_write.c | 18 +++++++++---------
- 2 files changed, 14 insertions(+), 14 deletions(-)
+v2:
+  - Change the directIO helper name to erofs_fscache_direct_io
+  - Add some io interception when begin direct io
+  - Optimize the direct io logical in erofs_fscache_data_read_slice
 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index a6d5d07cd436..6f3e1f685e1f 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -38,7 +38,7 @@ void netfs_rreq_unlock_folios(struct netfs_io_request *rreq)
- 	/* Walk through the pagecache and the I/O request lists simultaneously.
- 	 * We may have a mixture of cached and uncached sections and we only
- 	 * really want to write out the uncached sections.  This is slightly
--	 * complicated by the possibility that we might have huge pages with a
-+	 * complicated by the possibility that we might have large folios with a
- 	 * mixture inside.
- 	 */
- 	subreq = list_first_entry(&rreq->subrequests,
-@@ -371,7 +371,7 @@ static bool netfs_skip_folio_read(struct folio *folio, loff_t pos, size_t len,
- 	if (unlikely(always_fill)) {
- 		if (pos - offset + len <= i_size)
- 			return false; /* Page entirely before EOF */
--		zero_user_segment(&folio->page, 0, plen);
-+		folio_zero_segment(folio, 0, plen);
- 		folio_mark_uptodate(folio);
- 		return true;
- 	}
-@@ -390,7 +390,7 @@ static bool netfs_skip_folio_read(struct folio *folio, loff_t pos, size_t len,
+v1:
+  - https://lore.kernel.org/linux-erofs/6f1a5c1c-d44d-4561-9377-b935ff4531f2@huawei.com/T/#t
+---
+ fs/erofs/data.c    |  3 ++
+ fs/erofs/fscache.c | 84 +++++++++++++++++++++++++++++++++++++++++-----
+ 2 files changed, 78 insertions(+), 9 deletions(-)
+
+diff --git a/fs/erofs/data.c b/fs/erofs/data.c
+index 8be60797ea2f..dbfafe358de4 100644
+--- a/fs/erofs/data.c
++++ b/fs/erofs/data.c
+@@ -391,6 +391,9 @@ static ssize_t erofs_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
+ 		     iov_iter_alignment(to)) & blksize_mask)
+ 			return -EINVAL;
  
- 	return false;
- zero_out:
--	zero_user_segments(&folio->page, 0, offset, offset + len, plen);
-+	folio_zero_segments(folio, 0, offset, offset + len, plen);
- 	return true;
++		if (erofs_is_fscache_mode(inode->i_sb))
++			return generic_file_read_iter(iocb, to);
++
+ 		return iomap_dio_rw(iocb, to, &erofs_iomap_ops,
+ 				    NULL, 0, NULL, 0);
+ 	}
+diff --git a/fs/erofs/fscache.c b/fs/erofs/fscache.c
+index fda16eedafb5..e3e6c579eb81 100644
+--- a/fs/erofs/fscache.c
++++ b/fs/erofs/fscache.c
+@@ -35,6 +35,8 @@ struct erofs_fscache_io {
+ 
+ struct erofs_fscache_rq {
+ 	struct address_space	*mapping;	/* The mapping being accessed */
++	struct iov_iter		*iter;		/* Destination for direct io */
++	struct completion	done;		/* Sync for direct io */
+ 	loff_t			start;		/* Start position */
+ 	size_t			len;		/* Length of the request */
+ 	size_t			submitted;	/* Length of submitted */
+@@ -76,7 +78,11 @@ static void erofs_fscache_req_put(struct erofs_fscache_rq *req)
+ {
+ 	if (!refcount_dec_and_test(&req->ref))
+ 		return;
+-	erofs_fscache_req_complete(req);
++
++	if (req->iter)
++		complete(&req->done);
++	else
++		erofs_fscache_req_complete(req);
+ 	kfree(req);
  }
  
-@@ -459,7 +459,7 @@ int netfs_write_begin(struct netfs_inode *ctx,
- 	if (folio_test_uptodate(folio))
- 		goto have_folio;
+@@ -88,6 +94,7 @@ static struct erofs_fscache_rq *erofs_fscache_req_alloc(struct address_space *ma
+ 	if (!req)
+ 		return NULL;
+ 	req->mapping = mapping;
++	req->iter = NULL;
+ 	req->start = start;
+ 	req->len = len;
+ 	refcount_set(&req->ref, 1);
+@@ -258,6 +265,7 @@ static int erofs_fscache_data_read_slice(struct erofs_fscache_rq *req)
+ 	struct address_space *mapping = req->mapping;
+ 	struct inode *inode = mapping->host;
+ 	struct super_block *sb = inode->i_sb;
++	struct iov_iter *dest_iter = req->iter;
+ 	struct erofs_fscache_io *io;
+ 	struct erofs_map_blocks map;
+ 	struct erofs_map_dev mdev;
+@@ -270,33 +278,45 @@ static int erofs_fscache_data_read_slice(struct erofs_fscache_rq *req)
+ 	if (ret)
+ 		return ret;
  
--	/* If the page is beyond the EOF, we want to clear it - unless it's
-+	/* If the folio is beyond the EOF, we want to clear it - unless it's
- 	 * within the cache granule containing the EOF, in which case we need
- 	 * to preload the granule.
- 	 */
-@@ -524,7 +524,7 @@ int netfs_write_begin(struct netfs_inode *ctx,
- EXPORT_SYMBOL(netfs_write_begin);
++	count = req->len - req->submitted;
+ 	if (map.m_flags & EROFS_MAP_META) {
+ 		struct erofs_buf buf = __EROFS_BUF_INITIALIZER;
+ 		struct iov_iter iter;
+-		size_t size = map.m_llen;
++		struct iov_iter *iterp;
++		size_t size = min_t(size_t, map.m_llen, count);
+ 		void *src;
++		ssize_t filled = 0;
  
- /*
-- * Preload the data into a page we're proposing to write into.
-+ * Preload the data into a folio we're proposing to write into.
-  */
- int netfs_prefetch_for_write(struct file *file, struct folio *folio,
- 			     size_t offset, size_t len)
-diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
-index 42d49abd4579..e770bc0e4e4a 100644
---- a/fs/netfs/buffered_write.c
-+++ b/fs/netfs/buffered_write.c
-@@ -21,7 +21,7 @@ enum netfs_how_to_modify {
- 	NETFS_JUST_PREFETCH,		/* We have to read the folio anyway */
- 	NETFS_WHOLE_FOLIO_MODIFY,	/* We're going to overwrite the whole folio */
- 	NETFS_MODIFY_AND_CLEAR,		/* We can assume there is no data to be downloaded. */
--	NETFS_STREAMING_WRITE,		/* Store incomplete data in non-uptodate page. */
-+	NETFS_STREAMING_WRITE,		/* Store incomplete data in non-uptodate folio. */
- 	NETFS_STREAMING_WRITE_CONT,	/* Continue streaming write. */
- 	NETFS_FLUSH_CONTENT,		/* Flush incompatible content. */
+ 		src = erofs_read_metabuf(&buf, sb, map.m_pa, EROFS_KMAP);
+ 		if (IS_ERR(src))
+ 			return PTR_ERR(src);
+ 
+ 		iov_iter_xarray(&iter, ITER_DEST, &mapping->i_pages, pos, PAGE_SIZE);
+-		if (copy_to_iter(src, size, &iter) != size) {
++		iterp = (dest_iter) ?: &iter;
++		if (copy_to_iter(src, size, iterp) != size) {
+ 			erofs_put_metabuf(&buf);
+ 			return -EFAULT;
+ 		}
+-		iov_iter_zero(PAGE_SIZE - size, &iter);
++
++		filled += size;
++		if (!dest_iter) {
++			iov_iter_zero(PAGE_SIZE - size, iterp);
++			filled += (PAGE_SIZE - size);
++		}
++
+ 		erofs_put_metabuf(&buf);
+-		req->submitted += PAGE_SIZE;
++		req->submitted += filled;
+ 		return 0;
+ 	}
+ 
+-	count = req->len - req->submitted;
+ 	if (!(map.m_flags & EROFS_MAP_MAPPED)) {
+ 		struct iov_iter iter;
+ 
+-		iov_iter_xarray(&iter, ITER_DEST, &mapping->i_pages, pos, count);
+-		iov_iter_zero(count, &iter);
++		if (!dest_iter) {
++			iov_iter_xarray(&iter, ITER_DEST, &mapping->i_pages, pos, count);
++			iov_iter_zero(count, &iter);
++		}
++
+ 		req->submitted += count;
+ 		return 0;
+ 	}
+@@ -315,9 +335,17 @@ static int erofs_fscache_data_read_slice(struct erofs_fscache_rq *req)
+ 	io = erofs_fscache_req_io_alloc(req);
+ 	if (!io)
+ 		return -ENOMEM;
+-	iov_iter_xarray(&io->iter, ITER_DEST, &mapping->i_pages, pos, count);
++
++	if (dest_iter)
++		iov_iter_ubuf(&io->iter, ITER_DEST,
++			dest_iter->ubuf + dest_iter->iov_offset, count);
++	else
++		iov_iter_xarray(&io->iter, ITER_DEST, &mapping->i_pages, pos, count);
++
+ 	ret = erofs_fscache_read_io_async(mdev.m_fscache->cookie,
+ 			mdev.m_pa + (pos - map.m_la), io);
++	if (dest_iter)
++		iov_iter_advance(dest_iter, io->iter.iov_offset);
+ 	erofs_fscache_req_io_put(io);
+ 
+ 	req->submitted += count;
+@@ -373,6 +401,43 @@ static void erofs_fscache_readahead(struct readahead_control *rac)
+ 	erofs_fscache_req_put(req);
+ }
+ 
++static ssize_t erofs_fscache_direct_io(struct kiocb *iocb, struct iov_iter *iter)
++{
++	struct file *file = iocb->ki_filp;
++	size_t count = iov_iter_count(iter);
++	size_t i_size = i_size_read(file->f_inode);
++	struct erofs_fscache_rq *req;
++	struct completion *ctr;
++	ssize_t rsize;
++	int ret;
++
++	if (unlikely(iov_iter_rw(iter) == WRITE))
++		return -EROFS;
++
++	if (unlikely(iocb->ki_pos >= i_size))
++		return 0;
++
++	if (count + iocb->ki_pos > i_size)
++		count = i_size - iocb->ki_pos;
++
++	if (!count)
++		return 0;
++
++	req = erofs_fscache_req_alloc(file->f_mapping, iocb->ki_pos, count);
++	if (!req)
++		return -ENOMEM;
++
++	req->iter = iter;
++	init_completion(&req->done);
++	ctr = &req->done;
++	ret = erofs_fscache_data_read(req);
++	rsize = (ret == 0) ? (ssize_t)req->submitted : ret;
++	erofs_fscache_req_put(req);
++	wait_for_completion(ctr);
++
++	return rsize;
++}
++
+ static const struct address_space_operations erofs_fscache_meta_aops = {
+ 	.read_folio = erofs_fscache_meta_read_folio,
  };
-@@ -152,13 +152,13 @@ static void netfs_update_i_size(struct netfs_inode *ctx, struct inode *inode,
-  * netfs_perform_write - Copy data into the pagecache.
-  * @iocb: The operation parameters
-  * @iter: The source buffer
-- * @netfs_group: Grouping for dirty pages (eg. ceph snaps).
-+ * @netfs_group: Grouping for dirty folios (eg. ceph snaps).
-  *
-- * Copy data into pagecache pages attached to the inode specified by @iocb.
-+ * Copy data into pagecache folios attached to the inode specified by @iocb.
-  * The caller must hold appropriate inode locks.
-  *
-- * Dirty pages are tagged with a netfs_folio struct if they're not up to date
-- * to indicate the range modified.  Dirty pages may also be tagged with a
-+ * Dirty folios are tagged with a netfs_folio struct if they're not up to date
-+ * to indicate the range modified.  Dirty folios may also be tagged with a
-  * netfs-specific grouping such that data from an old group gets flushed before
-  * a new one is started.
-  */
-@@ -286,7 +286,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 		case NETFS_STREAMING_WRITE_CONT:
- 			break;
- 		case NETFS_MODIFY_AND_CLEAR:
--			zero_user_segment(&folio->page, 0, offset);
-+			folio_zero_segment(folio, 0, offset);
- 			break;
- 		case NETFS_STREAMING_WRITE:
- 			ret = -EIO;
-@@ -325,7 +325,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 			netfs_set_group(folio, netfs_group);
- 			break;
- 		case NETFS_MODIFY_AND_CLEAR:
--			zero_user_segment(&folio->page, offset + copied, flen);
-+			folio_zero_segment(folio, offset + copied, flen);
- 			netfs_set_group(folio, netfs_group);
- 			folio_mark_uptodate(folio);
- 			break;
-@@ -432,7 +432,7 @@ EXPORT_SYMBOL(netfs_perform_write);
-  * netfs_buffered_write_iter_locked - write data to a file
-  * @iocb:	IO state structure (file, offset, etc.)
-  * @from:	iov_iter with data to write
-- * @netfs_group: Grouping for dirty pages (eg. ceph snaps).
-+ * @netfs_group: Grouping for dirty folios (eg. ceph snaps).
-  *
-  * This function does all the work needed for actually writing data to a
-  * file. It does all basic checks, removes SUID from the file, updates
-@@ -516,7 +516,7 @@ EXPORT_SYMBOL(netfs_file_write_iter);
+@@ -380,6 +445,7 @@ static const struct address_space_operations erofs_fscache_meta_aops = {
+ const struct address_space_operations erofs_fscache_access_aops = {
+ 	.read_folio = erofs_fscache_read_folio,
+ 	.readahead = erofs_fscache_readahead,
++	.direct_IO = erofs_fscache_direct_io,
+ };
  
- /*
-  * Notification that a previously read-only page is about to become writable.
-- * Note that the caller indicates a single page of a multipage folio.
-+ * Note that the caller indicates a single page of a folio.
-  */
- vm_fault_t netfs_page_mkwrite(struct vm_fault *vmf, struct netfs_group *netfs_group)
- {
+ static void erofs_fscache_domain_put(struct erofs_domain *domain)
 -- 
-2.43.0
+2.34.1
 
