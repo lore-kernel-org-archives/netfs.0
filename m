@@ -1,84 +1,241 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9B918AEA;
-	Fri, 26 Jul 2024 17:56:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1D12BAE5
+	for <netfs@lists.linux.dev>; Sun, 28 Jul 2024 10:50:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722016593; cv=none; b=u1lKiAFOxtErW8Dh9GKK6FJh4wQ1A5Unn/JJY4kgw1eA09vSVonZ2q86ZczTzcozpgWPHpH6WTXMexItPH2aebnf68+Y+nZil0UqRO8z8u0WrwOVaXr+6F/+Kayq5cc7r32GMRFt2/f78lalPnDC4dn/XKLnOtNsHTjhIiZjdCg=
+	t=1722163807; cv=none; b=MSSMh5rNd8GCVCzZn/9Xrkn+Xpmdz0BneRR7R2ves2xphpoJ5WbHDRNPOPuSWwskZgxRq3BBXxrUI6UOTGDD/uJzK8Emvui+deeBv+vFDlywaQ+38oJQtOH5+kYi+RDuAFgbqwtchroTi/7UttErfC+kMqY9sTrLBsprK/DL8bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722016593; c=relaxed/simple;
-	bh=7gew2TJiCIV3EXl/ZglhQ3Naz7+SUr6HaXCbbEnNGn0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fRwsiONH8hTT2rUoZIFXeItoxOIONYK0IjtslZLx1+Wc+moYz/SDt/62O+qaoHP/uvuH0bttFSl+JF7BOnn6j78sa2tBkSQhzt15rU0teGbMEJdZmvTNsAcrT/X6UHvrUYNn0klP6Zx1ESDqWotnzceAbNjs19oWZt6Q+xcX9B0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C66Y9G9F; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722163807; c=relaxed/simple;
+	bh=EoYaL+mLJByPrinJnBR2J5nYwvdm6u0KzhxQwIuie9A=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=fsSKd5bErvKVB3rEH66WCS57/oc0fohnmt1+vOMZFMiwarVZ0SXFB9UqNK4LH+EQE74nO+bUtgH425LSt1LwHdDajosfTPUp/MtfRP17cA73lJH4jr8dpP3H9XyJyZ4zb2zby9Jb9yjcRM+IgjCf6CMfBu1L6HEAOf1xgRnAcZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=Y4OffXp4; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C66Y9G9F"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F87FC4AF07;
-	Fri, 26 Jul 2024 17:56:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722016593;
-	bh=7gew2TJiCIV3EXl/ZglhQ3Naz7+SUr6HaXCbbEnNGn0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=C66Y9G9FUqqBcz0YAFgC5BIHpq5s27vuEfMGyx+cC3jBJlg/dRXF96Nm5mC1c5wEM
-	 03ZbYmIVWfIFoIOgGzcwvAR9pzZybfx1OgNkK5aiFAwLOnvgFSEw45xD4lGbhccpPn
-	 jevvRWszkOdn2uFSRSq/7WMuMfK9/Hr8xOw26CnkmMFB6c1yhQO+js7aOoPS40UR0b
-	 g4h6udzCGZiJ0pR4J6ewjgO6yEugXYOhjlrVx8kkiTICBNJs6JIjmg6cho1PZ4psO/
-	 PyKRt/EAXqTlACnmPenUZNTtRooi8dDASiL4ZKAIWzw7WtEYQ3qJiRy2hyWm+Wyn2X
-	 l3hbKymHQ9ZnQ==
-Message-ID: <1d5d8c10ccd94b3b69a8f7bff2e5c44da812c407.camel@kernel.org>
-Subject: Re: [PATCH] netfs: Fault in smaller chunks for non-large folio
- mappings
-From: Jeff Layton <jlayton@kernel.org>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, David Howells
-	 <dhowells@redhat.com>
-Cc: netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org, Xu Yang
-	 <xu.yang_2@nxp.com>
-Date: Fri, 26 Jul 2024 13:56:31 -0400
-In-Reply-To: <20240527201735.1898381-1-willy@infradead.org>
-References: <20240527201735.1898381-1-willy@infradead.org>
-Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="Y4OffXp4"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5a156556fb4so4519304a12.3
+        for <netfs@lists.linux.dev>; Sun, 28 Jul 2024 03:50:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1722163803; x=1722768603; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=09/k60kZWNc6aqMN9cbd3E96NZpZdb40JpW7ARPp7ik=;
+        b=Y4OffXp4D6+jaExEFRGakaGR6ZgWY3C2sEQ5uzwMzJT8xE3mp7jwlrg5NeGE5uj5UM
+         lyQ6nALHubrJh0044723H+kET0fepQuh6mhoanFvzdJuTsYTNj6PwzuVgXAOoM5BNCjh
+         zEqklDxoV4xgRHkhf0xd0qTTwEio7I41yzOHgNuI9DbEcEIBU6VNKYal5WBrbNhZAE2P
+         Z0ZgfKe8m4BCayzREGDFmivLKyIVyA0szUcSuBx7gPajrWhbhB1d1u67fMTHjkWRBbL1
+         PcwkGZdtSV0edQSq1SReoA4HSofyEdGfvMhDyYg1NAqG27+hQ63eh8mz8dFEcxW1Ud1P
+         CXFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722163803; x=1722768603;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=09/k60kZWNc6aqMN9cbd3E96NZpZdb40JpW7ARPp7ik=;
+        b=qbuTYZpa4uNJ9oLWI8iHJZJvEMrG3zeBybiNKqTDVW952a9RfxisUlHStdRWnYed+D
+         WQUSjZRDJDLGHCQB30deM/iERvdx2zEXOI1D0cFTwHeIcEK5VoS1PsQFafjWtYp8W/Dh
+         pXQzuaBHGA1ZTG6idu696eHITCDPvVT9h4NkI9YhlfdHDUGFSeksbxBNL6o2AZ/s53wN
+         JRb0BerNw0crvkA/SSjmpTrLzG8RAWa3ewXZUcCnoartRiaajLGMMebGRccjlE8d6KCA
+         X5Lb/XmuTgPoiT4CYO0kgtFezJR4Ej9dEw/5fltNA6CcjMr32c5K2IGimPiAn4UHG6oS
+         EYoA==
+X-Forwarded-Encrypted: i=1; AJvYcCXlAsUK+rGbA94R0BDDGsi303JvTtRC7q8bbLgv34rkuCQjgigth6jwUaERfLirRtEOTF4sUwR1944MHIHM6tiPRxV1U2I=
+X-Gm-Message-State: AOJu0YwWPG/TH5Cqo+BnTkqKjqHY0a1XyzdfFgnsm8uEdYTNbf1wev3u
+	102tN4Nkkhp6rbgeaihaEtnxQHbArSxfshuX5oQkXgQsZO0Tu3tEuFYE3pmHDtD3a8bDribROto
+	2MqJ20YpuNtoL6mk59ALIXUqI+1U0WQE2V36kVsXugqXfO3f55A0=
+X-Google-Smtp-Source: AGHT+IF7iV4aj1iGM8VKKufqx8ukGL7Ctkzc7F5g55X0WhODVsuBbmrl6ZsbAl2rIFwuUbPuJ+W/jhWfJJ1rABEn/24=
+X-Received: by 2002:a17:906:c115:b0:a7d:35d7:4aa9 with SMTP id
+ a640c23a62f3a-a7d4005781dmr321416866b.34.1722163802681; Sun, 28 Jul 2024
+ 03:50:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+From: Max Kellermann <max.kellermann@ionos.com>
+Date: Sun, 28 Jul 2024 12:49:51 +0200
+Message-ID: <CAKPOu+_DA8XiMAA2ApMj7Pyshve_YWknw8Hdt1=zCy9Y87R1qw@mail.gmail.com>
+Subject: RCU stalls and GPFs in ceph/netfs
+To: David Howells <dhowells@redhat.com>
+Cc: Jeff Layton <jlayton@kernel.org>, netfs@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	ceph-devel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 2024-05-27 at 21:17 +0100, Matthew Wilcox (Oracle) wrote:
-> As in commit 4e527d5841e2 ("iomap: fault in smaller chunks for non-
-> large
-> folio mappings"), we can see a performance loss for filesystems
-> which have not yet been converted to large folios.
->=20
-> Fixes: c38f4e96e605 ("netfs: Provide func to copy data to pagecache
-> for buffered write")
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> ---
-> =C2=A0fs/netfs/buffered_write.c | 2 +-
-> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
-> index 07bc1fd43530..3288561e98dd 100644
-> --- a/fs/netfs/buffered_write.c
-> +++ b/fs/netfs/buffered_write.c
-> @@ -184,7 +184,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb,
-> struct iov_iter *iter,
-> =C2=A0	unsigned int bdp_flags =3D (iocb->ki_flags & IOCB_NOWAIT) ?
-> BDP_ASYNC : 0;
-> =C2=A0	ssize_t written =3D 0, ret, ret2;
-> =C2=A0	loff_t i_size, pos =3D iocb->ki_pos, from, to;
-> -	size_t max_chunk =3D PAGE_SIZE << MAX_PAGECACHE_ORDER;
-> +	size_t max_chunk =3D mapping_max_folio_size(mapping);
-> =C2=A0	bool maybe_trouble =3D false;
-> =C2=A0
-> =C2=A0	if (unlikely(test_bit(NETFS_ICTX_WRITETHROUGH, &ctx->flags)
-> ||
+Hi David,
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
+in the last few days, I have been chasing a 6.10 regression. After
+updating one of our servers from 6.9.10 to 6.10.1, I found various
+problems that may or may not be caused by the same code change
+(abbreviated):
+
+[  108.043488] WARNING: CPU: 0 PID: 2860 at fs/ceph/caps.c:3386
+ceph_put_wrbuffer_cap_refs+0x1bb/0x1f0
+[  108.043498] Modules linked in:
+[  108.043500] CPU: 0 PID: 2860 Comm: rsync Not tainted 6.10.1-cm4all1-vm+ #117
+[  108.043505] RIP: 0010:ceph_put_wrbuffer_cap_refs+0x1bb/0x1f0
+[  108.043526] Call Trace:
+[  108.043573]  ? ceph_put_wrbuffer_cap_refs+0x27/0x1f0
+[  108.043575]  ceph_invalidate_folio+0x9a/0xc0
+[  108.043577]  truncate_cleanup_folio+0x52/0x90
+[  108.043583]  truncate_inode_pages_range+0xfe/0x400
+[  108.043585]  ? __rseq_handle_notify_resume+0x25b/0x480
+[  108.043589]  ? vfs_read+0x246/0x340
+
+[  108.043705] BUG: kernel NULL pointer dereference, address: 0000000000000356
+[  108.043948] #PF: supervisor write access in kernel mode
+[  108.044166] #PF: error_code(0x0002) - not-present page
+[  108.044341] PGD 0 P4D 0
+[  108.044465] Oops: Oops: 0002 [#1] SMP PTI
+[  108.048393] Call Trace:
+[  108.050002]  ? ceph_put_snap_context+0xf/0x30
+[  108.050178]  ceph_invalidate_folio+0xa2/0xc0
+[  108.050356]  truncate_cleanup_folio+0x52/0x90
+[  108.050532]  truncate_inode_pages_range+0xfe/0x400
+[  108.050711]  ? __rseq_handle_notify_resume+0x25b/0x480
+[  108.050896]  ? vfs_read+0x246/0x340
+
+[  104.587469] Oops: general protection fault, probably for
+non-canonical address 0xe01ffbf110207cde: 0000 [#1] SMP KASAN PTI
+[  104.588429] KASAN: maybe wild-memory-access in range
+[0x00ffff888103e6f0-0x00ffff888103e6f7]
+[  104.588663] CPU: 6 PID: 2882 Comm: php-cgi8.1 Not tainted
+6.10.1-cm4all1-vm+ #120
+[  104.591880] Call Trace:
+[  104.592015]  <TASK>
+[  104.592207]  ? die_addr+0x3c/0xa0
+[  104.592411]  ? exc_general_protection+0x113/0x200
+[  104.592650]  ? asm_exc_general_protection+0x22/0x30
+[  104.592876]  ? netfs_alloc_request+0x761/0xbd0
+[  104.593099]  ? netfs_read_folio+0x11f/0xad0
+[  104.593318]  ? netfs_read_folio+0xf6/0xad0
+[  104.593498]  ? filemap_get_read_batch+0x2dd/0x650
+[  104.593677]  ? __pfx_netfs_read_folio+0x10/0x10
+[  104.593854]  filemap_read_folio+0xb2/0x210
+[  104.594042]  ? __pfx_filemap_read_folio+0x10/0x10
+[  104.594226]  ? __pfx_stack_trace_save+0x10/0x10
+[  104.594417]  ? stack_depot_save_flags+0x24/0x690
+[  104.594616]  filemap_get_pages+0xaf8/0x1200
+[  104.594821]  ? __pfx_filemap_get_pages+0x10/0x10
+[  104.595012]  ? _raw_spin_lock+0x7a/0xd0
+
+ rcu: INFO: rcu_sched self-detected stall on CPU
+ rcu:         7-....: (2099 ticks this GP)
+idle=4874/1/0x4000000000000000 softirq=1503/1503 fqs=1049
+ rcu:         (t=2100 jiffies g=4053 q=344 ncpus=16)
+ CPU: 7 PID: 3443 Comm: php-was Not tainted 6.9.0-vm+ #139
+ Call Trace:
+  <IRQ>
+  ? rcu_dump_cpu_stacks+0xed/0x170
+  ? rcu_sched_clock_irq+0x558/0xbc0
+  ? __smp_call_single_queue+0x8b/0xe0
+  ? update_process_times+0x69/0xa0
+  ? tick_nohz_handler+0x87/0x120
+  ? __pfx_tick_nohz_handler+0x10/0x10
+  ? __hrtimer_run_queues+0x110/0x250
+  ? hrtimer_interrupt+0xf6/0x230
+  ? __sysvec_apic_timer_interrupt+0x51/0x120
+  ? sysvec_apic_timer_interrupt+0x60/0x80
+  </IRQ>
+  <TASK>
+  ? asm_sysvec_apic_timer_interrupt+0x16/0x20
+  ? __xas_next+0xc6/0xe0
+  filemap_get_read_batch+0x163/0x240
+  filemap_get_pages+0x9a/0x5c0
+  filemap_read+0xd9/0x310
+  ? __ceph_get_caps+0xd5/0x580
+  ? __ceph_caps_issued_mask+0x156/0x210
+
+These servers have Ceph mounts with fscache.
+
+At first, it looked like these bugs could be triggered easily and I
+did a bisect; however the WARNING in Ceph code went away, and going
+back further in the git history made reproducing the problem less
+likely. I tried KASAN but it didn't give any more information.
+
+After a few dead ends (due to some false "good" commits), the bisect
+arrived at your commit 2e9d7e4b984a61 ("mm: Remove the PG_fscache
+alias for PG_private_2"). This commit easily reproduces the RCU stalls
+on my server. The preceding commit 2ff1e97587f4d3 ("netfs: Replace
+PG_fscache by setting folio->private and marking dirty") never did,
+not even after an hour of rebooting and retrying.
+
+This is how the RCU stall looks like on 2e9d7e4b984a61:
+
+ rcu: INFO: rcu_sched self-detected stall on CPU
+ rcu:         6-....: (46220 ticks this GP)
+idle=4bfc/1/0x4000000000000000 softirq=1594/1594 fqs=21190
+ rcu:         (t=46221 jiffies g=2577 q=7220 ncpus=16)
+ CPU: 6 PID: 3119 Comm: wordpress-manag Not tainted
+6.9.0-rc6-vm-00004-gae678317b95e #160
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.14.0-2 04/01/2014
+ RIP: 0010:filemap_get_read_batch+0x7b/0x240
+ Code: 48 c7 44 24 30 00 00 00 00 48 89 e7 e8 ee d4 99 00 48 85 c0 0f
+84 bf 00 00 00 48 89 c7 48 81 ff 06 04 00 00 0f 84 fd 00 00 00 <48> 81
+ff 02 04 00 00 0f 84 ca 00 00 00 48 3b 6c 24 08 0f 82 97 00
+ RSP: 0018:ffffbb2500fef8f8 EFLAGS: 00000296
+ RAX: ffffefa30509c740 RBX: ffffbb2500fefa50 RCX: 0000000000000000
+ RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffefa30509c740
+ RBP: 0000000000000003 R08: 0000000000000000 R09: ffffbb2500fefaec
+ R10: ffff9acb4a77ec80 R11: 0000000000000000 R12: ffffbb2500fefc58
+ R13: ffff9acb5c381d00 R14: 0000000000000000 R15: ffffbb2500fefc80
+ FS:  00007f5f6b6eeb80(0000) GS:ffff9ad64ef80000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 00005623dea2b3d8 CR3: 000000011b658003 CR4: 00000000001706b0
+ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+ DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+ Call Trace:
+  <IRQ>
+  ? rcu_dump_cpu_stacks+0xed/0x170
+  ? rcu_sched_clock_irq+0x558/0xbc0
+  ? __smp_call_single_queue+0x8b/0xe0
+  ? update_process_times+0x69/0xa0
+  ? tick_nohz_handler+0x87/0x120
+  ? __pfx_tick_nohz_handler+0x10/0x10
+  ? __hrtimer_run_queues+0x110/0x250
+  ? hrtimer_interrupt+0xf6/0x230
+  ? __sysvec_apic_timer_interrupt+0x51/0x120
+  ? sysvec_apic_timer_interrupt+0x60/0x80
+  </IRQ>
+  <TASK>
+  ? asm_sysvec_apic_timer_interrupt+0x16/0x20
+  ? filemap_get_read_batch+0x7b/0x240
+  ? filemap_get_read_batch+0x163/0x240
+  filemap_get_pages+0x9a/0x5c0
+  ? __call_rcu_common.constprop.0+0x87/0x220
+  filemap_read+0xd9/0x310
+  ? __ceph_get_caps+0xd5/0x580
+  ? terminate_walk+0x95/0x100
+  ? path_openat+0xca3/0xf10
+  ceph_read_iter+0x3e1/0x620
+  vfs_read+0x23a/0x330
+  ksys_read+0x63/0xe0
+  do_syscall_64+0x66/0x100
+  ? __alloc_pages+0x176/0x2e0
+  ? __count_memcg_events+0x4e/0xb0
+  ? __pte_offset_map_lock+0x60/0xe0
+  ? __mod_memcg_lruvec_state+0x89/0x110
+  ? __lruvec_stat_mod_folio+0x41/0x70
+  ? do_anonymous_page+0x6dc/0x840
+  ? __handle_mm_fault+0x936/0x1250
+  ? __count_memcg_events+0x4e/0xb0
+  ? handle_mm_fault+0xa2/0x2a0
+  ? do_user_addr_fault+0x308/0x5d0
+  ? exc_page_fault+0x62/0x120
+  ? irqentry_exit_to_user_mode+0x40/0xf0
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+When that happens, the process is at 100% CPU usage, but gdb/strace
+cannot attach, and /proc/PID/stack is empty. I tried "perf record" and
+found the process was busy-looping inside filemap_get_pages(), calling
+filemap_get_read_batch() over and over, saw some xas_ calls but
+nothing else.
+
+Your commit 2e9d7e4b984a61 is too obscure for me, I don't know that
+part of the kernel, and I can't imagine how it can cause such a
+regression, but maybe you have an idea?
+
+I can get you more information or try patches with more debugging code
+if you want.
+
+Max
