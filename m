@@ -1,97 +1,118 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9648C1A6197
-	for <netfs@lists.linux.dev>; Tue, 30 Jul 2024 16:28:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37621A76A5;
+	Tue, 30 Jul 2024 17:32:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356931; cv=none; b=ZXw1vrKcCED8zZzgp0Fn2sJPoNJ6ZfpdR+AGH169XO/k9yapeoM1XlyGTJ+qvcLiS63P7p3DA8cF1uoH4gJ7U5J4Ou2+Jj0mZlZzG+x59zf8/UU+JFS9wAYJTQCiRUxsVJHcCQDJ5eZ14Ymhb3hTYFQ6Qc8ZquPu4P7p42mKaQk=
+	t=1722360751; cv=none; b=HxeuOrgUKaR2o0MuM7Mp2cf6RvQ6lbe8RI+mtC/hOLu3Y4nr8ujRtt6zusb7/4YM5zYfXygwCTcFa8wOagTmVw40XsTvncVn/2kBG1bHGp9ds4Nr1mexO1P/QgVBSLEQi03CCaqVs6zir8OgEf6cJoOl6Bmtlnp15fFXF+vquFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356931; c=relaxed/simple;
-	bh=/WrqX39V/EGZlU7gkM+jA9j7Jyn0OjEJ1Mehdy12oxs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LUw9lEXt3DjadspNYD9GtdHaBaQlasr+FpTjyZk/zvwBPirsExteCaaNclGyptIbrr0Juw8DQZOH0sww/K1HnoLioj6bKhGB3ATSG1sKMtXRYyeeJs0Fzu29UQ34nA3TUg+SH7F+cVA+ammA44pkxZeDMERStEuwKo/W+artd3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=KeQOePq/; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+	s=arc-20240116; t=1722360751; c=relaxed/simple;
+	bh=6HKrVpCh038ALVGKfmwKomASOXh2xU4n+pSFA20jBoE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=O8dXhhdPKinS4BI2HHz4uy8gqEhiVNTpQb3xTurU2V6epW1dBhmEv/zDiKwFZix57U4XvLq9fXIzUKpcI/IEhc2ZxnXcfEhKt6ixtvGtveoXQjHUIDcbTj9oIEAcyepTkGpAV/Yc8WW9U/a43OlYED0s9p2ELq6lSXfO9D5Y7Ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eqV86MCT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="KeQOePq/"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a7b2dbd81e3so618729166b.1
-        for <netfs@lists.linux.dev>; Tue, 30 Jul 2024 09:28:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1722356928; x=1722961728; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IfuNs9RJBxSHtgXaAG8xtdh6dR8/ZJRWqaxb2ZGOGQw=;
-        b=KeQOePq/lBMgI2XZFUJGY9ItM2CaOfFAXUyfdIzlH1ZhVKezC0mGQ5MxMtyD4ozk1p
-         gWjKKvENu2XLWGnQX+8VbTyz6Q3D+kzcoIuD9CL6BpSapHvPFBG/PMEslgZKaHgansl2
-         +5XM8XLOvN+oRZjal6r9YJePGhSXXyBmj3GWJm8cytMXJvijwhezgk7fu/Rvf/r5mcWM
-         R38a5mSJd+SkVAip98kTF8xRyNTFu9ZMEJA+Slpsq6Rm/Eg4CukdrSyNryMw71EA2O0p
-         XGbqk0iCJAeyizNI8eocPKYuflqp4OMRVJzP1MDLeE8DyQaQdO5PZIF13cTcW8VlP6uX
-         4Ayg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722356928; x=1722961728;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IfuNs9RJBxSHtgXaAG8xtdh6dR8/ZJRWqaxb2ZGOGQw=;
-        b=iGkzR6gzv4bkdpOWvm+TDBbEJeQzv9+ducXGlPKHCEsCHPO2OlwmYffozT+/C9Uj6w
-         D6BPvjwixFVrdduvEOMwplC+XjajQfzfiqs8JDTpNRYlnMjITJEOJ/et81XL8q2uLbuj
-         /OzXB+K+CjF3XISckcqIYWV3h8dIstOHSZIuw+AP2zjMIL/+BpzIQyOcTsNjRVUYslvr
-         QaGYrEm65aSkyo1oRS0+lAI3pZmYR05PeKblQDJ+x9UAuDFY2zD6Bm/Lyysl7/Ug7NfD
-         fGn7IuRKCMdbUWXzIq+Z/VbBwz80fFEeYDHqwEanIGv1PoiFOijjszPELlYVf+winmFs
-         cPQA==
-X-Forwarded-Encrypted: i=1; AJvYcCV/zoZxWhvC9bCtJv1QB2COe9H7GvG47WVLtzWE9OpZTkSYHKlUXzKt2CWHJ2HxkFTpHH0x+vemAZH4WWIjH1Tg3uSYNs4=
-X-Gm-Message-State: AOJu0YzDf4PLgqxfXvNxCv+u+bjfcfnP+AWlMMkVtUZ8Bdle6zYkIEwO
-	Q8kaK3JdGNuZkVT8FJ9pBdR8au8WC8CzjMM4mYdM49iK8X8V6wNcqyGaUac4uMU00BKPOEGCRzk
-	LfL9PVb2KIeHYZpaVX1uPQ2xL2H166UXiMt8Smw==
-X-Google-Smtp-Source: AGHT+IG1VcMHenRJE4OMv8Wdwm4JETBLEpAvJgISa1/m5vlwH5K/nlA4PdfCRxYRpOU0UfdTVOnSQCZN39wxbmaGSUY=
-X-Received: by 2002:a17:907:96a0:b0:a72:7da4:267c with SMTP id
- a640c23a62f3a-a7d3ffa612bmr940477966b.12.1722356927933; Tue, 30 Jul 2024
- 09:28:47 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eqV86MCT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C54C32782;
+	Tue, 30 Jul 2024 17:32:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1722360751;
+	bh=6HKrVpCh038ALVGKfmwKomASOXh2xU4n+pSFA20jBoE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=eqV86MCTJ+hB0ZomRFVF4M80A+tJVsiX05ChH9oMnpxr/TCJ6/0wErjGVEyA/hDyE
+	 2qr7aIWiiP1NjKQZCV2Pp/of35Lq1dmNMQxHTlBvHhVeT+YonphJ7Foa7b58Ph3Ajb
+	 uFylVhPgUqDiIY2Akzbhd/nNXxCKY65wnxJ/NXVY=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	David Howells <dhowells@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 765/809] netfs: Fix writeback that needs to go to both server and cache
+Date: Tue, 30 Jul 2024 17:50:41 +0200
+Message-ID: <20240730151755.181800045@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240729091532.855688-1-max.kellermann@ionos.com> <3575457.1722355300@warthog.procyon.org.uk>
-In-Reply-To: <3575457.1722355300@warthog.procyon.org.uk>
-From: Max Kellermann <max.kellermann@ionos.com>
-Date: Tue, 30 Jul 2024 18:28:36 +0200
-Message-ID: <CAKPOu+9_TQx8XaB2gDKzwN-YoN69uKoZGiCDPQjz5fO-2ztdFQ@mail.gmail.com>
-Subject: Re: [PATCH] netfs, ceph: Revert "netfs: Remove deprecated use of
- PG_private_2 as a second writeback flag"
-To: David Howells <dhowells@redhat.com>
-Cc: Ilya Dryomov <idryomov@gmail.com>, Xiubo Li <xiubli@redhat.com>, 
-	Jeff Layton <jlayton@kernel.org>, willy@infradead.org, ceph-devel@vger.kernel.org, 
-	netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 30, 2024 at 6:01=E2=80=AFPM David Howells <dhowells@redhat.com>=
- wrote:
-> Can you try this patch instead of either of yours?
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
-I booted it on one of the servers, and no problem so far. All tests
-complete successfully, even the one with copy_file_range that crashed
-with my patch. I'll let you know when problems occur later, but until
-then, I agree with merging your revert instead of my patches.
+------------------
 
-If I understand this correctly, my other problem (the
-folio_attach_private conflict between netfs and ceph) I posted in
-https://lore.kernel.org/ceph-devel/CAKPOu+8q_1rCnQndOj3KAitNY2scPQFuSS-AxeG=
-ru02nP9ZO0w@mail.gmail.com/
-was caused by my (bad) patch after all, wasn't it?
+From: David Howells <dhowells@redhat.com>
 
-> For the moment, ceph has to continue using PG_private_2.  It doesn't use
-> netfs_writepages().  I have mostly complete patches to fix that, but they=
- got
-> popped onto the back burner for a bit.
+[ Upstream commit 212be98aa19303cbf376d61faf9de3ec9997c1cd ]
 
-When you're done with those patches, Cc me on those if you want me to
-help test them.
+When netfslib is performing writeback (ie. ->writepages), it maintains two
+parallel streams of writes, one to the server and one to the cache, but it
+doesn't mark either stream of writes as active until it gets some data that
+needs to be written to that stream.
 
-Max
+This is done because some folios will only be written to the cache
+(e.g. copying to the cache on read is done by marking the folios and
+letting writeback do the actual work) and sometimes we'll only be writing
+to the server (e.g. if there's no cache).
+
+Now, since we don't actually dispatch uploads and cache writes in parallel,
+but rather flip between the streams, depending on which has the lowest
+so-far-issued offset, and don't wait for the subreqs to finish before
+flipping, we can end up in a situation where, say, we issue a write to the
+server and this completes before we start the write to the cache.
+
+But because we only activate a stream when we first add a subreq to it, the
+result collection code may run before we manage to activate the stream -
+resulting in the folio being cleaned and having the writeback-in-progress
+mark removed.  At this point, the folio no longer belongs to us.
+
+This is only really a problem for folios that need to be written to both
+streams - and in that case, the upload to the server is started first,
+followed by the write to the cache - and the cache write may see a bad
+folio.
+
+Fix this by activating the cache stream up front if there's a cache
+available.  If there's a cache, then all data is going to be written to it.
+
+Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/1599053.1721398818@warthog.procyon.org.uk
+cc: Jeff Layton <jlayton@kernel.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/netfs/write_issue.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
+index d7c971df88660..32bc88bee5d18 100644
+--- a/fs/netfs/write_issue.c
++++ b/fs/netfs/write_issue.c
+@@ -122,6 +122,7 @@ struct netfs_io_request *netfs_create_write_req(struct address_space *mapping,
+ 	wreq->io_streams[1].transferred		= LONG_MAX;
+ 	if (fscache_resources_valid(&wreq->cache_resources)) {
+ 		wreq->io_streams[1].avail	= true;
++		wreq->io_streams[1].active	= true;
+ 		wreq->io_streams[1].prepare_write = wreq->cache_resources.ops->prepare_write_subreq;
+ 		wreq->io_streams[1].issue_write = wreq->cache_resources.ops->issue_write;
+ 	}
+-- 
+2.43.0
+
+
+
