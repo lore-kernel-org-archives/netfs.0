@@ -1,53 +1,35 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56491193084
-	for <netfs@lists.linux.dev>; Mon, 29 Jul 2024 16:23:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9C919EED3;
+	Tue, 30 Jul 2024 10:37:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722270207; cv=none; b=LyFzx6e1K4rOQcysyhPs7JB6GJhYeWiuz2ZdwJzgUsef5NpjndG4legJ5XGLAFDJezQIPSpWIYik3y5jn33mdDk97GJqvj/PnDRWembHJx3Njeq+4ATyVHS1L8QDXX+Jcjm7CXf2TWyYH2QzTBJMZDbZBoChu/qq5Yr0U2xVp7Q=
+	t=1722335833; cv=none; b=FLJZJ+ngMITkPFQCyeqlBM9u6zv1zGlXtQeXr+rJwj9NcVCd6LvigNi4M0gvDMcpLdjx3vZCtNA6vjCip3v6euW4PhA7XhpXLtLWNlLPa/lH+vR7zdynOU5iHoUH2QDl4dyib1+d0OOxuKWgvf1ImgfuW+BaSBilQBLkmF/yUPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722270207; c=relaxed/simple;
-	bh=7EJT5FBCdwGirnjLuTy4MWaS3dLZ6ItNJ7hGR3xr5wA=;
+	s=arc-20240116; t=1722335833; c=relaxed/simple;
+	bh=M4eg2RA2dVioVZclF6JHvBR8dH2//m8JYd+0R0imYZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CK8Wk1/0BIbD0jbBvXHwQoB4y9C3k+nfq2ozwDZJXi1AabQX0CJzpHMc7nITliT9KJ09Tg4p9SPWANHhREnVPdtP5jqBrsszlj/qTuRj/WbNop3ibLYruw9apBTA2JbUIcKfOy6/J6ZuAeOWmzW6fjaGCh1+rLLbwIk82OMY0Nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XopDiKoJ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 MIME-Version:Content-Type; b=oS4hArUrx6Prr7CfWwKMfARlYg2SgGEowgRNKc8G/IaU0+Ek/SWet4JPz1Amuc+VJ8asIALEFWKUv8+HRgypCEEYvEqySjIv4Mtc6ACfdTp+12yC4uyukGBnJ/DXpnhjbpxm/Aa64HrZUV18RdhceKCUPjTatH9jViqlNv2EBtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N9qFpIo0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XopDiKoJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722270205;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=R2k6li9/r5cEcbpMZCeQm71pTBPmJTS708jWII1Wsr4=;
-	b=XopDiKoJQn2iyxnqtgMVA5XFOZ0tr9cgndD7kbL4HQsp7Zoih4cZm2xvtsVa19zF4lqF6v
-	nnVPbYPG4Sg7O2PnPr5LckySatjVw9DedeHzg83+oaClVAktaKof8CgriK9NnHnKS08xjz
-	fxr+VMBIqKFY+r3hO2a0NO2//dmFnlI=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-281-ggb6HApwM0-NT275O_fz1g-1; Mon,
- 29 Jul 2024 12:23:20 -0400
-X-MC-Unique: ggb6HApwM0-NT275O_fz1g-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 744701955D47;
-	Mon, 29 Jul 2024 16:23:12 +0000 (UTC)
-Received: from warthog.procyon.org.uk.com (unknown [10.42.28.216])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 29B481955D42;
-	Mon, 29 Jul 2024 16:23:05 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>,
-	Steve French <smfrench@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>
-Cc: David Howells <dhowells@redhat.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N9qFpIo0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FF37C4AF09;
+	Tue, 30 Jul 2024 10:37:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722335832;
+	bh=M4eg2RA2dVioVZclF6JHvBR8dH2//m8JYd+0R0imYZA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=N9qFpIo0XG2+as2sCBNP421gFXLGXitO22buNn5D+6stzkGoS9HaPxRMQqxX3xjf9
+	 5e0x5+W/0YeRenNHJORfGa8KySj2GvC6/qYC74VKf3edqHJZtBdtU5wUEgxTiZIys7
+	 dtAHSf71IblUjBJwJH68PfzO3Oy280ihPuDRIAMonzaoO+YKFYnoMFsAqUi1uDtKS/
+	 ThKrqUheO+S2RtVhc0ZR4X0gXngw7CFN4oA0Dkj1d8hCBRHiH9HWcB81smZLZRrvxd
+	 nLBYxt6mb/TF5Zv0aaFYjMjJ9kKYa+4zqrmAkyowfILhIoIbYwVRdRFZFEBp1JM1j5
+	 LqOnkS4Ymt4sw==
+From: Christian Brauner <brauner@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>,
 	Jeff Layton <jlayton@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Dominique Martinet <asmadeus@codewreck.org>,
 	Marc Dionne <marc.dionne@auristor.com>,
 	Paulo Alcantara <pc@manguebit.com>,
@@ -66,11 +48,13 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-mm@kvack.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Steve French <sfrench@samba.org>,
-	Enzo Matsumiya <ematsumiya@suse.de>
-Subject: [PATCH 24/24] cifs: Don't support ITER_XARRAY
-Date: Mon, 29 Jul 2024 17:19:53 +0100
-Message-ID: <20240729162002.3436763-25-dhowells@redhat.com>
+	Gao Xiang <xiang@kernel.org>,
+	Steve French <smfrench@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>
+Subject: Re: (subset) [PATCH 00/24] netfs: Read/write improvements
+Date: Tue, 30 Jul 2024 12:36:50 +0200
+Message-ID: <20240730-kaschieren-glitten-89d803c5d4ae@brauner>
+X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240729162002.3436763-1-dhowells@redhat.com>
 References: <20240729162002.3436763-1-dhowells@redhat.com>
 Precedence: bulk
@@ -79,160 +63,31 @@ List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=961; i=brauner@kernel.org; h=from:subject:message-id; bh=M4eg2RA2dVioVZclF6JHvBR8dH2//m8JYd+0R0imYZA=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaStOOQfILK00PPW9Etftt1+ufrx1Tc7OsPuXM7c9UVy9 72fTsfXtXaUsjCIcTHIiimyOLSbhMst56nYbJSpATOHlQlkCAMXpwBM5PF/RobHbwN1fQ3vrlPe zSXvY39gUXmtoiHrhCNck4/oH0uNlIph+MO777/y1U2XvSv+ZVQlPeSt+/k3J6znVvq6zOVlMw5 vUuYBAA==
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
-There's now no need to support ITER_XARRAY in cifs as netfslib hands down
-ITER_FOLIOQ instead - and that's simpler to use with iterate_and_advance()
-as it doesn't hold the RCU read lock over the step function.
+On Mon, 29 Jul 2024 17:19:29 +0100, David Howells wrote:
+> This set of patches includes one fscache fix and one cachefiles fix
+> 
+>  (1) Fix a cookie access race in fscache.
+> [...]
 
-This is part of the process of phasing out ITER_XARRAY.
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Steve French <sfrench@samba.org>
-cc: Paulo Alcantara <pc@manguebit.com>
-cc: Tom Talpey <tom@talpey.com>
-cc: Enzo Matsumiya <ematsumiya@suse.de>
-cc: linux-cifs@vger.kernel.org
----
- fs/smb/client/cifsencrypt.c | 51 -------------------------------------
- fs/smb/client/smbdirect.c   | 49 -----------------------------------
- 2 files changed, 100 deletions(-)
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-diff --git a/fs/smb/client/cifsencrypt.c b/fs/smb/client/cifsencrypt.c
-index 991a1ab047e7..7481b21a0489 100644
---- a/fs/smb/client/cifsencrypt.c
-+++ b/fs/smb/client/cifsencrypt.c
-@@ -25,54 +25,6 @@
- #include "../common/arc4.h"
- #include <crypto/aead.h>
- 
--/*
-- * Hash data from an XARRAY-type iterator.
-- */
--static ssize_t cifs_shash_xarray(const struct iov_iter *iter, ssize_t maxsize,
--				 struct shash_desc *shash)
--{
--	struct folio *folios[16], *folio;
--	unsigned int nr, i, j, npages;
--	loff_t start = iter->xarray_start + iter->iov_offset;
--	pgoff_t last, index = start / PAGE_SIZE;
--	ssize_t ret = 0;
--	size_t len, offset, foffset;
--	void *p;
--
--	if (maxsize == 0)
--		return 0;
--
--	last = (start + maxsize - 1) / PAGE_SIZE;
--	do {
--		nr = xa_extract(iter->xarray, (void **)folios, index, last,
--				ARRAY_SIZE(folios), XA_PRESENT);
--		if (nr == 0)
--			return -EIO;
--
--		for (i = 0; i < nr; i++) {
--			folio = folios[i];
--			npages = folio_nr_pages(folio);
--			foffset = start - folio_pos(folio);
--			offset = foffset % PAGE_SIZE;
--			for (j = foffset / PAGE_SIZE; j < npages; j++) {
--				len = min_t(size_t, maxsize, PAGE_SIZE - offset);
--				p = kmap_local_page(folio_page(folio, j));
--				ret = crypto_shash_update(shash, p, len);
--				kunmap_local(p);
--				if (ret < 0)
--					return ret;
--				maxsize -= len;
--				if (maxsize <= 0)
--					return 0;
--				start += len;
--				offset = 0;
--				index++;
--			}
--		}
--	} while (nr == ARRAY_SIZE(folios));
--	return 0;
--}
--
- static size_t cifs_shash_step(void *iter_base, size_t progress, size_t len,
- 			      void *priv, void *priv2)
- {
-@@ -96,9 +48,6 @@ static int cifs_shash_iter(const struct iov_iter *iter, size_t maxsize,
- 	struct iov_iter tmp_iter = *iter;
- 	int err = -EIO;
- 
--	if (iov_iter_type(iter) == ITER_XARRAY)
--		return cifs_shash_xarray(iter, maxsize, shash);
--
- 	if (iterate_and_advance_kernel(&tmp_iter, maxsize, shash, &err,
- 				       cifs_shash_step) != maxsize)
- 		return err;
-diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
-index 52acead63d9d..ee63c570d505 100644
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -2584,52 +2584,6 @@ static ssize_t smb_extract_folioq_to_rdma(struct iov_iter *iter,
- 	return ret;
- }
- 
--/*
-- * Extract folio fragments from an XARRAY-class iterator and add them to an
-- * RDMA list.  The folios are not pinned.
-- */
--static ssize_t smb_extract_xarray_to_rdma(struct iov_iter *iter,
--					  struct smb_extract_to_rdma *rdma,
--					  ssize_t maxsize)
--{
--	struct xarray *xa = iter->xarray;
--	struct folio *folio;
--	loff_t start = iter->xarray_start + iter->iov_offset;
--	pgoff_t index = start / PAGE_SIZE;
--	ssize_t ret = 0;
--	size_t off, len;
--	XA_STATE(xas, xa, index);
--
--	rcu_read_lock();
--
--	xas_for_each(&xas, folio, ULONG_MAX) {
--		if (xas_retry(&xas, folio))
--			continue;
--		if (WARN_ON(xa_is_value(folio)))
--			break;
--		if (WARN_ON(folio_test_hugetlb(folio)))
--			break;
--
--		off = offset_in_folio(folio, start);
--		len = min_t(size_t, maxsize, folio_size(folio) - off);
--
--		if (!smb_set_sge(rdma, folio_page(folio, 0), off, len)) {
--			rcu_read_unlock();
--			return -EIO;
--		}
--
--		maxsize -= len;
--		ret += len;
--		if (rdma->nr_sge >= rdma->max_sge || maxsize <= 0)
--			break;
--	}
--
--	rcu_read_unlock();
--	if (ret > 0)
--		iov_iter_advance(iter, ret);
--	return ret;
--}
--
- /*
-  * Extract page fragments from up to the given amount of the source iterator
-  * and build up an RDMA list that refers to all of those bits.  The RDMA list
-@@ -2657,9 +2611,6 @@ static ssize_t smb_extract_iter_to_rdma(struct iov_iter *iter, size_t len,
- 	case ITER_FOLIOQ:
- 		ret = smb_extract_folioq_to_rdma(iter, rdma, len);
- 		break;
--	case ITER_XARRAY:
--		ret = smb_extract_xarray_to_rdma(iter, rdma, len);
--		break;
- 	default:
- 		WARN_ON_ONCE(1);
- 		return -EIO;
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[01/24] fs/netfs/fscache_cookie: add missing "n_accesses" check
+        https://git.kernel.org/vfs/vfs/c/965a561e4026
