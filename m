@@ -1,434 +1,406 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805C91A2C14;
-	Tue, 30 Jul 2024 12:45:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C317B183CBF
+	for <netfs@lists.linux.dev>; Tue, 30 Jul 2024 16:01:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722343559; cv=none; b=CzdKRl8G0Cf0o1xh6fTvMpRSNOtZMsEjpa48AoZiBALqYm3yygHeMlJWDTK1VAYBzHGDZh67sRkS3ZbztbIVrjWPiR/bQpMJTq5oLeEp6lf46bqgyotJSA1vjJvXO2mh5Xk1Mv7entBPvf9dAOYFLOcugqaxvbu6f6N6wWiFQC0=
+	t=1722355315; cv=none; b=D9zAkEyds53aWPFWppRNEcbEfIr6YgAR3iDySyUvv9UkiswGSlA4SRx09j0w92eMHRgK0c30cXF+9UVyDk+KPHC4lCDOrd1+wxSJTw8CxHVWIGHqhpuPIUGKo0UJfMqDSQFj2BbvToxRg/tTSiWBSsP5oY7IH7shraRfRGKCQ1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722343559; c=relaxed/simple;
-	bh=IZKSodE4x39prW/QSJJpCsqXEdDhgbfD4jO8l1kXIEA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=if8Pm8RAp/63+bdAoSPPeRqHSBswm5mtXWFl7+OFYIJ0frl0OxfC//0JdosoHXJ+DUzOkZvyFxRLwOZ4upPJnPuKEh7QWSVGvnjz8cvyPeuz2cqb0FBkTrMSGbJ8VRmiZXVcjou3H2L+thT016aJDCuqEAETsjM7BrbfR3OqdZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SDQ+YgGh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722355315; c=relaxed/simple;
+	bh=kEiJTulm3FtbnBHqoSdF2BGkegAgL3rSrlaITn/ZiMY=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=jaqOWolFp5KChjS3QYNHsVyNnUh0V2hUH09EzqFonpW3Znau6rA/jQTsBtbcdyPDKJQJOhg3uj9U8YVsZG8cbEiOe8B52tbd8pjpvj4JRLLuf8AdeJiQ4cTxd8dVm7oNH/XqpBKPir+NRJitL8UK0yXQdqkgM6XSuyRS4gDd0SE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BPPeRHOQ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SDQ+YgGh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99367C4AF0C;
-	Tue, 30 Jul 2024 12:45:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722343559;
-	bh=IZKSodE4x39prW/QSJJpCsqXEdDhgbfD4jO8l1kXIEA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SDQ+YgGh6EY8NxfUB+FbaKJG29nIjxbFFTFQM36lXFiZsE5A+nM/IaPd/3QkGLunS
-	 cj15WO0balSsNJFjHakWghVb4EchQ+S+DdgWH8WSS8+nRTiHltQQVPQ4Bl3HB0Ca0e
-	 DeB1pNfUJmBW1ar2eqT0VB82hx+B8v/cZRZTtXLTy9vQ2Ypr5tOEgcxGcuwaTXVkyK
-	 8swZcj8d5kn5Kp6UPwZafMbrTAYFet1dbhGY6k6QqUyzORydtmkEgINVhkbd62mVk4
-	 7Q3CuOkZ8crqdAW7+6GI5UGFd+B6IBZFDwZS+ptgecO5i2manCYMuPbeEY590ZQImk
-	 b+COxxJu40+QA==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Jeff Layton <jlayton@kernel.org>,
-	Gao Xiang <xiang@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	netfs@lists.linux.dev,
-	linux-erofs@lists.ozlabs.org,
-	linux-fsdevel@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.6 7/7] vfs: Fix potential circular locking through setxattr() and removexattr()
-Date: Tue, 30 Jul 2024 08:45:37 -0400
-Message-ID: <20240730124542.3095044-7-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240730124542.3095044-1-sashal@kernel.org>
-References: <20240730124542.3095044-1-sashal@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BPPeRHOQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1722355312;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gB2say6OeTQRsXVKscO54NC+vbE/2x1QIUKKLmVc6Do=;
+	b=BPPeRHOQK2puZzI1j/R5MDFQeZfB4MfzEbifnw8JoymA3r8obS8URZPiIcnTwBpIWJMD8T
+	u3R7RhqMPQhjXAZvZ630485SUbUf7ga4L54fejWGSaRjJgIAOnJc4a1bsxG6rxXlGiGHcN
+	Jq8QBCEIlTkWxS7TiPk+YFl/kHpaqME=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-182-AN2sbCrVO_WLFhNEbcSfsA-1; Tue,
+ 30 Jul 2024 12:01:46 -0400
+X-MC-Unique: AN2sbCrVO_WLFhNEbcSfsA-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 51C6B19560BF;
+	Tue, 30 Jul 2024 16:01:44 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.216])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6EE03195605F;
+	Tue, 30 Jul 2024 16:01:41 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20240729091532.855688-1-max.kellermann@ionos.com>
+References: <20240729091532.855688-1-max.kellermann@ionos.com>
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: dhowells@redhat.com, Ilya Dryomov <idryomov@gmail.com>,
+    Xiubo Li <xiubli@redhat.com>, Jeff Layton <jlayton@kernel.org>,
+    willy@infradead.org, ceph-devel@vger.kernel.org,
+    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: [PATCH] netfs, ceph: Revert "netfs: Remove deprecated use of PG_private_2 as a second writeback flag"
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.43
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <3575456.1722355300.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 30 Jul 2024 17:01:40 +0100
+Message-ID: <3575457.1722355300@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-From: David Howells <dhowells@redhat.com>
+Hi Max,
 
-[ Upstream commit c3a5e3e872f3688ae0dc57bb78ca633921d96a91 ]
+Can you try this patch instead of either of yours?
 
-When using cachefiles, lockdep may emit something similar to the circular
-locking dependency notice below.  The problem appears to stem from the
-following:
-
- (1) Cachefiles manipulates xattrs on the files in its cache when called
-     from ->writepages().
-
- (2) The setxattr() and removexattr() system call handlers get the name
-     (and value) from userspace after taking the sb_writers lock, putting
-     accesses of the vma->vm_lock and mm->mmap_lock inside of that.
-
- (3) The afs filesystem uses a per-inode lock to prevent multiple
-     revalidation RPCs and in writeback vs truncate to prevent parallel
-     operations from deadlocking against the server on one side and local
-     page locks on the other.
-
-Fix this by moving the getting of the name and value in {get,remove}xattr()
-outside of the sb_writers lock.  This also has the minor benefits that we
-don't need to reget these in the event of a retry and we never try to take
-the sb_writers lock in the event we can't pull the name and value into the
-kernel.
-
-Alternative approaches that might fix this include moving the dispatch of a
-write to the cache off to a workqueue or trying to do without the
-validation lock in afs.  Note that this might also affect other filesystems
-that use netfslib and/or cachefiles.
-
- ======================================================
- WARNING: possible circular locking dependency detected
- 6.10.0-build2+ #956 Not tainted
- ------------------------------------------------------
- fsstress/6050 is trying to acquire lock:
- ffff888138fd82f0 (mapping.invalidate_lock#3){++++}-{3:3}, at: filemap_fault+0x26e/0x8b0
-
- but task is already holding lock:
- ffff888113f26d18 (&vma->vm_lock->lock){++++}-{3:3}, at: lock_vma_under_rcu+0x165/0x250
-
- which lock already depends on the new lock.
-
- the existing dependency chain (in reverse order) is:
-
- -> #4 (&vma->vm_lock->lock){++++}-{3:3}:
-        __lock_acquire+0xaf0/0xd80
-        lock_acquire.part.0+0x103/0x280
-        down_write+0x3b/0x50
-        vma_start_write+0x6b/0xa0
-        vma_link+0xcc/0x140
-        insert_vm_struct+0xb7/0xf0
-        alloc_bprm+0x2c1/0x390
-        kernel_execve+0x65/0x1a0
-        call_usermodehelper_exec_async+0x14d/0x190
-        ret_from_fork+0x24/0x40
-        ret_from_fork_asm+0x1a/0x30
-
- -> #3 (&mm->mmap_lock){++++}-{3:3}:
-        __lock_acquire+0xaf0/0xd80
-        lock_acquire.part.0+0x103/0x280
-        __might_fault+0x7c/0xb0
-        strncpy_from_user+0x25/0x160
-        removexattr+0x7f/0x100
-        __do_sys_fremovexattr+0x7e/0xb0
-        do_syscall_64+0x9f/0x100
-        entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
- -> #2 (sb_writers#14){.+.+}-{0:0}:
-        __lock_acquire+0xaf0/0xd80
-        lock_acquire.part.0+0x103/0x280
-        percpu_down_read+0x3c/0x90
-        vfs_iocb_iter_write+0xe9/0x1d0
-        __cachefiles_write+0x367/0x430
-        cachefiles_issue_write+0x299/0x2f0
-        netfs_advance_write+0x117/0x140
-        netfs_write_folio.isra.0+0x5ca/0x6e0
-        netfs_writepages+0x230/0x2f0
-        afs_writepages+0x4d/0x70
-        do_writepages+0x1e8/0x3e0
-        filemap_fdatawrite_wbc+0x84/0xa0
-        __filemap_fdatawrite_range+0xa8/0xf0
-        file_write_and_wait_range+0x59/0x90
-        afs_release+0x10f/0x270
-        __fput+0x25f/0x3d0
-        __do_sys_close+0x43/0x70
-        do_syscall_64+0x9f/0x100
-        entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
- -> #1 (&vnode->validate_lock){++++}-{3:3}:
-        __lock_acquire+0xaf0/0xd80
-        lock_acquire.part.0+0x103/0x280
-        down_read+0x95/0x200
-        afs_writepages+0x37/0x70
-        do_writepages+0x1e8/0x3e0
-        filemap_fdatawrite_wbc+0x84/0xa0
-        filemap_invalidate_inode+0x167/0x1e0
-        netfs_unbuffered_write_iter+0x1bd/0x2d0
-        vfs_write+0x22e/0x320
-        ksys_write+0xbc/0x130
-        do_syscall_64+0x9f/0x100
-        entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
- -> #0 (mapping.invalidate_lock#3){++++}-{3:3}:
-        check_noncircular+0x119/0x160
-        check_prev_add+0x195/0x430
-        __lock_acquire+0xaf0/0xd80
-        lock_acquire.part.0+0x103/0x280
-        down_read+0x95/0x200
-        filemap_fault+0x26e/0x8b0
-        __do_fault+0x57/0xd0
-        do_pte_missing+0x23b/0x320
-        __handle_mm_fault+0x2d4/0x320
-        handle_mm_fault+0x14f/0x260
-        do_user_addr_fault+0x2a2/0x500
-        exc_page_fault+0x71/0x90
-        asm_exc_page_fault+0x22/0x30
-
- other info that might help us debug this:
-
- Chain exists of:
-   mapping.invalidate_lock#3 --> &mm->mmap_lock --> &vma->vm_lock->lock
-
-  Possible unsafe locking scenario:
-
-        CPU0                    CPU1
-        ----                    ----
-   rlock(&vma->vm_lock->lock);
-                                lock(&mm->mmap_lock);
-                                lock(&vma->vm_lock->lock);
-   rlock(mapping.invalidate_lock#3);
-
-  *** DEADLOCK ***
-
- 1 lock held by fsstress/6050:
-  #0: ffff888113f26d18 (&vma->vm_lock->lock){++++}-{3:3}, at: lock_vma_under_rcu+0x165/0x250
-
- stack backtrace:
- CPU: 0 PID: 6050 Comm: fsstress Not tainted 6.10.0-build2+ #956
- Hardware name: ASUS All Series/H97-PLUS, BIOS 2306 10/09/2014
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x57/0x80
-  check_noncircular+0x119/0x160
-  ? queued_spin_lock_slowpath+0x4be/0x510
-  ? __pfx_check_noncircular+0x10/0x10
-  ? __pfx_queued_spin_lock_slowpath+0x10/0x10
-  ? mark_lock+0x47/0x160
-  ? init_chain_block+0x9c/0xc0
-  ? add_chain_block+0x84/0xf0
-  check_prev_add+0x195/0x430
-  __lock_acquire+0xaf0/0xd80
-  ? __pfx___lock_acquire+0x10/0x10
-  ? __lock_release.isra.0+0x13b/0x230
-  lock_acquire.part.0+0x103/0x280
-  ? filemap_fault+0x26e/0x8b0
-  ? __pfx_lock_acquire.part.0+0x10/0x10
-  ? rcu_is_watching+0x34/0x60
-  ? lock_acquire+0xd7/0x120
-  down_read+0x95/0x200
-  ? filemap_fault+0x26e/0x8b0
-  ? __pfx_down_read+0x10/0x10
-  ? __filemap_get_folio+0x25/0x1a0
-  filemap_fault+0x26e/0x8b0
-  ? __pfx_filemap_fault+0x10/0x10
-  ? find_held_lock+0x7c/0x90
-  ? __pfx___lock_release.isra.0+0x10/0x10
-  ? __pte_offset_map+0x99/0x110
-  __do_fault+0x57/0xd0
-  do_pte_missing+0x23b/0x320
-  __handle_mm_fault+0x2d4/0x320
-  ? __pfx___handle_mm_fault+0x10/0x10
-  handle_mm_fault+0x14f/0x260
-  do_user_addr_fault+0x2a2/0x500
-  exc_page_fault+0x71/0x90
-  asm_exc_page_fault+0x22/0x30
-
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/2136178.1721725194@warthog.procyon.org.uk
-cc: Alexander Viro <viro@zeniv.linux.org.uk>
-cc: Christian Brauner <brauner@kernel.org>
-cc: Jan Kara <jack@suse.cz>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: Gao Xiang <xiang@kernel.org>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: netfs@lists.linux.dev
-cc: linux-erofs@lists.ozlabs.org
-cc: linux-fsdevel@vger.kernel.org
-[brauner: fix minor issues]
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+David
 ---
- fs/xattr.c | 91 ++++++++++++++++++++++++++++--------------------------
- 1 file changed, 48 insertions(+), 43 deletions(-)
 
-diff --git a/fs/xattr.c b/fs/xattr.c
-index efd4736bc94b0..c20046548f218 100644
---- a/fs/xattr.c
-+++ b/fs/xattr.c
-@@ -631,10 +631,9 @@ int do_setxattr(struct mnt_idmap *idmap, struct dentry *dentry,
- 			ctx->kvalue, ctx->size, ctx->flags);
- }
- 
--static long
--setxattr(struct mnt_idmap *idmap, struct dentry *d,
--	const char __user *name, const void __user *value, size_t size,
--	int flags)
-+static int path_setxattr(const char __user *pathname,
-+			 const char __user *name, const void __user *value,
-+			 size_t size, int flags, unsigned int lookup_flags)
- {
- 	struct xattr_name kname;
- 	struct xattr_ctx ctx = {
-@@ -644,33 +643,20 @@ setxattr(struct mnt_idmap *idmap, struct dentry *d,
- 		.kname    = &kname,
- 		.flags    = flags,
- 	};
-+	struct path path;
- 	int error;
- 
- 	error = setxattr_copy(name, &ctx);
- 	if (error)
- 		return error;
- 
--	error = do_setxattr(idmap, d, &ctx);
--
--	kvfree(ctx.kvalue);
--	return error;
--}
--
--static int path_setxattr(const char __user *pathname,
--			 const char __user *name, const void __user *value,
--			 size_t size, int flags, unsigned int lookup_flags)
--{
--	struct path path;
--	int error;
--
- retry:
- 	error = user_path_at(AT_FDCWD, pathname, lookup_flags, &path);
- 	if (error)
--		return error;
-+		goto out;
- 	error = mnt_want_write(path.mnt);
- 	if (!error) {
--		error = setxattr(mnt_idmap(path.mnt), path.dentry, name,
--				 value, size, flags);
-+		error = do_setxattr(mnt_idmap(path.mnt), path.dentry, &ctx);
- 		mnt_drop_write(path.mnt);
- 	}
- 	path_put(&path);
-@@ -678,6 +664,9 @@ static int path_setxattr(const char __user *pathname,
- 		lookup_flags |= LOOKUP_REVAL;
- 		goto retry;
- 	}
-+
-+out:
-+	kvfree(ctx.kvalue);
- 	return error;
- }
- 
-@@ -698,20 +687,32 @@ SYSCALL_DEFINE5(lsetxattr, const char __user *, pathname,
- SYSCALL_DEFINE5(fsetxattr, int, fd, const char __user *, name,
- 		const void __user *,value, size_t, size, int, flags)
- {
--	struct fd f = fdget(fd);
--	int error = -EBADF;
-+	struct xattr_name kname;
-+	struct xattr_ctx ctx = {
-+		.cvalue   = value,
-+		.kvalue   = NULL,
-+		.size     = size,
-+		.kname    = &kname,
-+		.flags    = flags,
-+	};
-+	int error;
- 
-+	CLASS(fd, f)(fd);
- 	if (!f.file)
--		return error;
-+		return -EBADF;
-+
- 	audit_file(f.file);
-+	error = setxattr_copy(name, &ctx);
-+	if (error)
-+		return error;
-+
- 	error = mnt_want_write_file(f.file);
- 	if (!error) {
--		error = setxattr(file_mnt_idmap(f.file),
--				 f.file->f_path.dentry, name,
--				 value, size, flags);
-+		error = do_setxattr(file_mnt_idmap(f.file),
-+				    f.file->f_path.dentry, &ctx);
- 		mnt_drop_write_file(f.file);
- 	}
--	fdput(f);
-+	kvfree(ctx.kvalue);
- 	return error;
- }
- 
-@@ -900,9 +901,17 @@ SYSCALL_DEFINE3(flistxattr, int, fd, char __user *, list, size_t, size)
-  * Extended attribute REMOVE operations
-  */
- static long
--removexattr(struct mnt_idmap *idmap, struct dentry *d,
--	    const char __user *name)
-+removexattr(struct mnt_idmap *idmap, struct dentry *d, const char *name)
- {
-+	if (is_posix_acl_xattr(name))
-+		return vfs_remove_acl(idmap, d, name);
-+	return vfs_removexattr(idmap, d, name);
+This reverts commit ae678317b95e760607c7b20b97c9cd4ca9ed6e1a.
+
+Revert the patch that removes the deprecated use of PG_private_2 in
+netfslib for the moment as Ceph is actually still using this to track
+data copied to the cache.
+
+Fixes: ae678317b95e ("netfs: Remove deprecated use of PG_private_2 as a se=
+cond writeback flag")
+Reported-by: Max Kellermann <max.kellermann@ionos.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Ilya Dryomov <idryomov@gmail.com>
+cc: Xiubo Li <xiubli@redhat.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: ceph-devel@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+cc: linux-mm@kvack.org
+---
+ fs/ceph/addr.c               |   19 +++++
+ fs/netfs/buffered_read.c     |    8 ++
+ fs/netfs/io.c                |  144 +++++++++++++++++++++++++++++++++++++=
+++++++
+ include/trace/events/netfs.h |    1 =
+
+ 4 files changed, 170 insertions(+), 2 deletions(-)
+
+diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+index 8c16bc5250ef..73b5a07bf94d 100644
+--- a/fs/ceph/addr.c
++++ b/fs/ceph/addr.c
+@@ -498,6 +498,11 @@ const struct netfs_request_ops ceph_netfs_ops =3D {
+ };
+ =
+
+ #ifdef CONFIG_CEPH_FSCACHE
++static void ceph_set_page_fscache(struct page *page)
++{
++	folio_start_private_2(page_folio(page)); /* [DEPRECATED] */
 +}
 +
-+static int path_removexattr(const char __user *pathname,
-+			    const char __user *name, unsigned int lookup_flags)
-+{
-+	struct path path;
- 	int error;
- 	char kname[XATTR_NAME_MAX + 1];
- 
-@@ -911,25 +920,13 @@ removexattr(struct mnt_idmap *idmap, struct dentry *d,
- 		error = -ERANGE;
- 	if (error < 0)
- 		return error;
--
--	if (is_posix_acl_xattr(kname))
--		return vfs_remove_acl(idmap, d, kname);
--
--	return vfs_removexattr(idmap, d, kname);
--}
--
--static int path_removexattr(const char __user *pathname,
--			    const char __user *name, unsigned int lookup_flags)
--{
--	struct path path;
--	int error;
- retry:
- 	error = user_path_at(AT_FDCWD, pathname, lookup_flags, &path);
- 	if (error)
- 		return error;
- 	error = mnt_want_write(path.mnt);
- 	if (!error) {
--		error = removexattr(mnt_idmap(path.mnt), path.dentry, name);
-+		error = removexattr(mnt_idmap(path.mnt), path.dentry, kname);
- 		mnt_drop_write(path.mnt);
- 	}
- 	path_put(&path);
-@@ -955,15 +952,23 @@ SYSCALL_DEFINE2(lremovexattr, const char __user *, pathname,
- SYSCALL_DEFINE2(fremovexattr, int, fd, const char __user *, name)
+ static void ceph_fscache_write_terminated(void *priv, ssize_t error, bool=
+ was_async)
  {
- 	struct fd f = fdget(fd);
-+	char kname[XATTR_NAME_MAX + 1];
- 	int error = -EBADF;
- 
- 	if (!f.file)
- 		return error;
- 	audit_file(f.file);
+ 	struct inode *inode =3D priv;
+@@ -515,6 +520,10 @@ static void ceph_fscache_write_to_cache(struct inode =
+*inode, u64 off, u64 len, b
+ 			       ceph_fscache_write_terminated, inode, true, caching);
+ }
+ #else
++static inline void ceph_set_page_fscache(struct page *page)
++{
++}
 +
-+	error = strncpy_from_user(kname, name, sizeof(kname));
-+	if (error == 0 || error == sizeof(kname))
-+		error = -ERANGE;
-+	if (error < 0)
-+		return error;
-+
- 	error = mnt_want_write_file(f.file);
- 	if (!error) {
- 		error = removexattr(file_mnt_idmap(f.file),
--				    f.file->f_path.dentry, name);
-+				    f.file->f_path.dentry, kname);
- 		mnt_drop_write_file(f.file);
+ static inline void ceph_fscache_write_to_cache(struct inode *inode, u64 o=
+ff, u64 len, bool caching)
+ {
+ }
+@@ -706,6 +715,8 @@ static int writepage_nounlock(struct page *page, struc=
+t writeback_control *wbc)
+ 		len =3D wlen;
+ =
+
+ 	set_page_writeback(page);
++	if (caching)
++		ceph_set_page_fscache(page);
+ 	ceph_fscache_write_to_cache(inode, page_off, len, caching);
+ =
+
+ 	if (IS_ENCRYPTED(inode)) {
+@@ -789,6 +800,8 @@ static int ceph_writepage(struct page *page, struct wr=
+iteback_control *wbc)
+ 		return AOP_WRITEPAGE_ACTIVATE;
  	}
- 	fdput(f);
--- 
-2.43.0
+ =
+
++	folio_wait_private_2(page_folio(page)); /* [DEPRECATED] */
++
+ 	err =3D writepage_nounlock(page, wbc);
+ 	if (err =3D=3D -ERESTARTSYS) {
+ 		/* direct memory reclaimer was killed by SIGKILL. return 0
+@@ -1062,7 +1075,8 @@ static int ceph_writepages_start(struct address_spac=
+e *mapping,
+ 				unlock_page(page);
+ 				break;
+ 			}
+-			if (PageWriteback(page)) {
++			if (PageWriteback(page) ||
++			    PagePrivate2(page) /* [DEPRECATED] */) {
+ 				if (wbc->sync_mode =3D=3D WB_SYNC_NONE) {
+ 					doutc(cl, "%p under writeback\n", page);
+ 					unlock_page(page);
+@@ -1070,6 +1084,7 @@ static int ceph_writepages_start(struct address_spac=
+e *mapping,
+ 				}
+ 				doutc(cl, "waiting on writeback %p\n", page);
+ 				wait_on_page_writeback(page);
++				folio_wait_private_2(page_folio(page)); /* [DEPRECATED] */
+ 			}
+ =
+
+ 			if (!clear_page_dirty_for_io(page)) {
+@@ -1254,6 +1269,8 @@ static int ceph_writepages_start(struct address_spac=
+e *mapping,
+ 			}
+ =
+
+ 			set_page_writeback(page);
++			if (caching)
++				ceph_set_page_fscache(page);
+ 			len +=3D thp_size(page);
+ 		}
+ 		ceph_fscache_write_to_cache(inode, offset, len, caching);
+diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
+index a688d4c75d99..424048f9ed1f 100644
+--- a/fs/netfs/buffered_read.c
++++ b/fs/netfs/buffered_read.c
+@@ -466,7 +466,7 @@ int netfs_write_begin(struct netfs_inode *ctx,
+ 	if (!netfs_is_cache_enabled(ctx) &&
+ 	    netfs_skip_folio_read(folio, pos, len, false)) {
+ 		netfs_stat(&netfs_n_rh_write_zskip);
+-		goto have_folio;
++		goto have_folio_no_wait;
+ 	}
+ =
+
+ 	rreq =3D netfs_alloc_request(mapping, file,
+@@ -507,6 +507,12 @@ int netfs_write_begin(struct netfs_inode *ctx,
+ 	netfs_put_request(rreq, false, netfs_rreq_trace_put_return);
+ =
+
+ have_folio:
++	if (test_bit(NETFS_ICTX_USE_PGPRIV2, &ctx->flags)) {
++		ret =3D folio_wait_private_2_killable(folio);
++		if (ret < 0)
++			goto error;
++	}
++have_folio_no_wait:
+ 	*_folio =3D folio;
+ 	_leave(" =3D 0");
+ 	return 0;
+diff --git a/fs/netfs/io.c b/fs/netfs/io.c
+index c93851b98368..c179a1c73fa7 100644
+--- a/fs/netfs/io.c
++++ b/fs/netfs/io.c
+@@ -98,6 +98,146 @@ static void netfs_rreq_completed(struct netfs_io_reque=
+st *rreq, bool was_async)
+ 	netfs_put_request(rreq, was_async, netfs_rreq_trace_put_complete);
+ }
+ =
+
++/*
++ * [DEPRECATED] Deal with the completion of writing the data to the cache=
+.  We
++ * have to clear the PG_fscache bits on the folios involved and release t=
+he
++ * caller's ref.
++ *
++ * May be called in softirq mode and we inherit a ref from the caller.
++ */
++static void netfs_rreq_unmark_after_write(struct netfs_io_request *rreq,
++					  bool was_async)
++{
++	struct netfs_io_subrequest *subreq;
++	struct folio *folio;
++	pgoff_t unlocked =3D 0;
++	bool have_unlocked =3D false;
++
++	rcu_read_lock();
++
++	list_for_each_entry(subreq, &rreq->subrequests, rreq_link) {
++		XA_STATE(xas, &rreq->mapping->i_pages, subreq->start / PAGE_SIZE);
++
++		xas_for_each(&xas, folio, (subreq->start + subreq->len - 1) / PAGE_SIZE=
+) {
++			if (xas_retry(&xas, folio))
++				continue;
++
++			/* We might have multiple writes from the same huge
++			 * folio, but we mustn't unlock a folio more than once.
++			 */
++			if (have_unlocked && folio->index <=3D unlocked)
++				continue;
++			unlocked =3D folio_next_index(folio) - 1;
++			trace_netfs_folio(folio, netfs_folio_trace_end_copy);
++			folio_end_private_2(folio);
++			have_unlocked =3D true;
++		}
++	}
++
++	rcu_read_unlock();
++	netfs_rreq_completed(rreq, was_async);
++}
++
++static void netfs_rreq_copy_terminated(void *priv, ssize_t transferred_or=
+_error,
++				       bool was_async) /* [DEPRECATED] */
++{
++	struct netfs_io_subrequest *subreq =3D priv;
++	struct netfs_io_request *rreq =3D subreq->rreq;
++
++	if (IS_ERR_VALUE(transferred_or_error)) {
++		netfs_stat(&netfs_n_rh_write_failed);
++		trace_netfs_failure(rreq, subreq, transferred_or_error,
++				    netfs_fail_copy_to_cache);
++	} else {
++		netfs_stat(&netfs_n_rh_write_done);
++	}
++
++	trace_netfs_sreq(subreq, netfs_sreq_trace_write_term);
++
++	/* If we decrement nr_copy_ops to 0, the ref belongs to us. */
++	if (atomic_dec_and_test(&rreq->nr_copy_ops))
++		netfs_rreq_unmark_after_write(rreq, was_async);
++
++	netfs_put_subrequest(subreq, was_async, netfs_sreq_trace_put_terminated)=
+;
++}
++
++/*
++ * [DEPRECATED] Perform any outstanding writes to the cache.  We inherit =
+a ref
++ * from the caller.
++ */
++static void netfs_rreq_do_write_to_cache(struct netfs_io_request *rreq)
++{
++	struct netfs_cache_resources *cres =3D &rreq->cache_resources;
++	struct netfs_io_subrequest *subreq, *next, *p;
++	struct iov_iter iter;
++	int ret;
++
++	trace_netfs_rreq(rreq, netfs_rreq_trace_copy);
++
++	/* We don't want terminating writes trying to wake us up whilst we're
++	 * still going through the list.
++	 */
++	atomic_inc(&rreq->nr_copy_ops);
++
++	list_for_each_entry_safe(subreq, p, &rreq->subrequests, rreq_link) {
++		if (!test_bit(NETFS_SREQ_COPY_TO_CACHE, &subreq->flags)) {
++			list_del_init(&subreq->rreq_link);
++			netfs_put_subrequest(subreq, false,
++					     netfs_sreq_trace_put_no_copy);
++		}
++	}
++
++	list_for_each_entry(subreq, &rreq->subrequests, rreq_link) {
++		/* Amalgamate adjacent writes */
++		while (!list_is_last(&subreq->rreq_link, &rreq->subrequests)) {
++			next =3D list_next_entry(subreq, rreq_link);
++			if (next->start !=3D subreq->start + subreq->len)
++				break;
++			subreq->len +=3D next->len;
++			list_del_init(&next->rreq_link);
++			netfs_put_subrequest(next, false,
++					     netfs_sreq_trace_put_merged);
++		}
++
++		ret =3D cres->ops->prepare_write(cres, &subreq->start, &subreq->len,
++					       subreq->len, rreq->i_size, true);
++		if (ret < 0) {
++			trace_netfs_failure(rreq, subreq, ret, netfs_fail_prepare_write);
++			trace_netfs_sreq(subreq, netfs_sreq_trace_write_skip);
++			continue;
++		}
++
++		iov_iter_xarray(&iter, ITER_SOURCE, &rreq->mapping->i_pages,
++				subreq->start, subreq->len);
++
++		atomic_inc(&rreq->nr_copy_ops);
++		netfs_stat(&netfs_n_rh_write);
++		netfs_get_subrequest(subreq, netfs_sreq_trace_get_copy_to_cache);
++		trace_netfs_sreq(subreq, netfs_sreq_trace_write);
++		cres->ops->write(cres, subreq->start, &iter,
++				 netfs_rreq_copy_terminated, subreq);
++	}
++
++	/* If we decrement nr_copy_ops to 0, the usage ref belongs to us. */
++	if (atomic_dec_and_test(&rreq->nr_copy_ops))
++		netfs_rreq_unmark_after_write(rreq, false);
++}
++
++static void netfs_rreq_write_to_cache_work(struct work_struct *work) /* [=
+DEPRECATED] */
++{
++	struct netfs_io_request *rreq =3D
++		container_of(work, struct netfs_io_request, work);
++
++	netfs_rreq_do_write_to_cache(rreq);
++}
++
++static void netfs_rreq_write_to_cache(struct netfs_io_request *rreq) /* [=
+DEPRECATED] */
++{
++	rreq->work.func =3D netfs_rreq_write_to_cache_work;
++	if (!queue_work(system_unbound_wq, &rreq->work))
++		BUG();
++}
++
+ /*
+  * Handle a short read.
+  */
+@@ -275,6 +415,10 @@ static void netfs_rreq_assess(struct netfs_io_request=
+ *rreq, bool was_async)
+ 	clear_bit_unlock(NETFS_RREQ_IN_PROGRESS, &rreq->flags);
+ 	wake_up_bit(&rreq->flags, NETFS_RREQ_IN_PROGRESS);
+ =
+
++	if (test_bit(NETFS_RREQ_COPY_TO_CACHE, &rreq->flags) &&
++	    test_bit(NETFS_RREQ_USE_PGPRIV2, &rreq->flags))
++		return netfs_rreq_write_to_cache(rreq);
++
+ 	netfs_rreq_completed(rreq, was_async);
+ }
+ =
+
+diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
+index da23484268df..24ec3434d32e 100644
+--- a/include/trace/events/netfs.h
++++ b/include/trace/events/netfs.h
+@@ -145,6 +145,7 @@
+ 	EM(netfs_folio_trace_clear_g,		"clear-g")	\
+ 	EM(netfs_folio_trace_clear_s,		"clear-s")	\
+ 	EM(netfs_folio_trace_copy_to_cache,	"mark-copy")	\
++	EM(netfs_folio_trace_end_copy,		"end-copy")	\
+ 	EM(netfs_folio_trace_filled_gaps,	"filled-gaps")	\
+ 	EM(netfs_folio_trace_kill,		"kill")		\
+ 	EM(netfs_folio_trace_kill_cc,		"kill-cc")	\
 
