@@ -1,149 +1,141 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E954C18CC09
-	for <netfs@lists.linux.dev>; Tue, 30 Jul 2024 20:00:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A3D1A76A9
+	for <netfs@lists.linux.dev>; Wed, 31 Jul 2024 07:39:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722369644; cv=none; b=kqv0PB4pNDQ/xiWJ9BGJv9hOvIhmqHZOajU+XHQc56Cae5kkrpKKuqHALrkwnFL3PL/wmtbjWIrZC5pIRXReG4i+KsFKBDp76gZwR7P6AhEyO98hpPM4tW9i5yiRM7/g3sVqeI2NKzvGAUv7a+iK298ZYDW++ObMwSYtro3maQc=
+	t=1722411560; cv=none; b=CYB314QiTQzUSNO9TzLRxZG6mXf8fE2cOWh9f0Vjt/5iFDIViHDzFvmy+qwL/n5Yi0fuYiP4lTaqB+9QT/aVkXdLMKcl282pRILlHU2AoRC72L9kV6tk7uq23xVB0trZMiLPZQno8JM5cXzsCWJZql0gIT8Y72R5BJev0lrf9QM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722369644; c=relaxed/simple;
-	bh=KW8P1f9QtLpNiOED/9q/P8RZi+voxvllnMDRlZd/H2A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GC8GAnQ38glqUeZ873vwq8HtcPkobjQlXPnnwDF+pAIhgUatmsEkjy2k9GddGWMYUemp8f2rwXsqU9OD2c7s1HpIb5zu3C32w0wbGPkhobxwpNJjoURPobyta8eqlLviq5PSMJ2UZEeAqFyb64OvbWz3nn77/mgAL46SVu/busI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=JzY14QuL; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+	s=arc-20240116; t=1722411560; c=relaxed/simple;
+	bh=fFZMF3NiaRR6TpVbELAswq4kkn1Pf0ZbDbb3nw54F6Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GPpnF4odybprB3FWz+q8eNV4BCsP2DFr51VEHqHk60mAAlX5YYDI3PKIWAkho5IMLxk07CdYencoWoYGfnTYZqIMiYR2pZ3q6hCsAB6w9GQvTZDJtDwSXxKGDjuct/HZ1vYxXdfDVl6pgJWLiAWbedvLh+p6scm6OahuLQWvYgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WPFrjdP4; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="JzY14QuL"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-59f9f59b827so7531946a12.1
-        for <netfs@lists.linux.dev>; Tue, 30 Jul 2024 13:00:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1722369640; x=1722974440; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VbPZYMLRnlwPHtoaKt4K6dn+FyDOOUhmY8EoiLqybE0=;
-        b=JzY14QuLcPijm1OEYsrEKbQ5+fTHrLlN6jhDjBR4S6r/xFBFDkUw07eTjd/lSJhscw
-         XahNXjlZedriWM/N52jmzlRLbSCMN/spapkTgqKXZk4E1TOfiX1Ug2Q2pQaGh//MeL3P
-         yzQ7a+O7vYN+dW7X/Sq841sCpVtxBzfuAO5wP2OXHuXBCs2vp59fWfA7m+KXnB+HNSSr
-         f2LYcbUh+OO2R3nWFH7x6AY5SJoWqGSfNcTVAQnXhC7vHiobx+Bf5Mr56vyp937A9iCd
-         kD2UC0jbU1OtoruwlH+VjnRl9rQIMQViCU7R1y5gvBiyWwZxp+SSmLZZ0QPA4aCG4VBt
-         itLA==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WPFrjdP4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1722411557;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=t8p7PLZp26QdCSQ6mdeX8yU1Tl2ZcAQTz+tPUUyqyK8=;
+	b=WPFrjdP4CjWw3/Pd9sUTH6e73nvA+g+bRl3M2Sr4voK4BcXsD44QYqUtl1dnobR5gPnDQc
+	bdYhgvYj8ozig1iwKRPyGhizcyY0uNWeEBVzVV9fX+51MVRTTvSIBRHp/BMOnfSB0wq/2o
+	R9825YtdK9l75PG8OdQGZJJtylcqKZA=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-475-OQz7mtCHNm6Qo1o7eGaYwA-1; Wed, 31 Jul 2024 03:39:13 -0400
+X-MC-Unique: OQz7mtCHNm6Qo1o7eGaYwA-1
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-a7d63fbf4afso329232766b.2
+        for <netfs@lists.linux.dev>; Wed, 31 Jul 2024 00:39:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722369640; x=1722974440;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VbPZYMLRnlwPHtoaKt4K6dn+FyDOOUhmY8EoiLqybE0=;
-        b=c2vAbkcSxBFQ9M7iG5TxJFZHgPl7JDEj+KueFbb6UEmlYk7lt8NORZsf6qTvqi2zMd
-         j1slP81nUPbtsOFCf3YmqALApgp5FG2mMu/Fc6FxNqzkq/oEK5plKOxvYmkkxfmzMKRv
-         UB4LVXUgV7mMF7bclYP8COHmcp1R9858ZdZquKsn9+WTy5qdXgW7AwGyaOoCw9tIR7PJ
-         2Y3LVJH3A2r3LzwmyD/nMOAsNi9A/ltrJihFIj1D/l/NL5PcHnx3sUFoI9DCsb/aaKJ5
-         o8SU10XSSArur/fjz6xJrkmUhLMQXFKKplwtLIXbvRnc2Lq6g8uS0yUfI5qNCDaU/JCb
-         V1oQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXR2iTPUjaprfuU/Fcr9emyTA7TZsj0DiDxDgzaIlTmuq4H9ELBX5clIovfIC95Zg6anOZBh3z2BnRxJD/+2Sm5hIWCYh4=
-X-Gm-Message-State: AOJu0YwYriaVpX3B1Q91lxbCbAyI3WB7XDZdRfYWIxAm7aJe41t9wwgA
-	q1n99j0v5lc+SzjAIGbdOA1+OG1c3b/VLkmfr1g8TULrGq7E4YibY6eH9ixHfYiAuVt0AJygIWA
-	68+5NKZFutgm4uWDIcNRv/DR/ctg0bdui5OpJsA==
-X-Google-Smtp-Source: AGHT+IEE5EzRjQgQf7OLsadPZRVm5wfpMjhdtPXwM5eAo5BtDg8quTA9PAyUuMV7aPlhtR9I5OqiC7L3/3tTJkE4oTA=
-X-Received: by 2002:a17:907:a80d:b0:a6f:6126:18aa with SMTP id
- a640c23a62f3a-a7d40173b7emr694439966b.67.1722369640184; Tue, 30 Jul 2024
- 13:00:40 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1722411552; x=1723016352;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=t8p7PLZp26QdCSQ6mdeX8yU1Tl2ZcAQTz+tPUUyqyK8=;
+        b=ItMPAHNW5pLaL3uCguXUPn9r2LS+s3rJaIqAfkkCI/4DcorCxSOFR8F2ySWlAsFnNU
+         VVtvO78YVdF2ik1CzqQXGK4exm4ryQFMh8wWOi9ZbUBlntntknbeZ7iMIiIHSvTpt+V6
+         55FOhEQueyPecueBpSg1JxyUfrBmxIljdBoJmZGj9nfx3b9dIEjEfrJT7AYPtdmh9xvv
+         dyCN3S4zpP8zhgLZHzPDnPQAfzLZnxZeoyCmqs5Qxer/Lr1EzjlFmdxJG2NDcjUP/lXr
+         QkNyuIcLrpBm8DGJuFiR7N3jbKh18RuuZpRs3B7m7hLn+M8Xt2rA/NG9TKRM/rLEsYcE
+         n8cw==
+X-Forwarded-Encrypted: i=1; AJvYcCWw1mproWRGpv904ginLegOcmYn5jLjlilL5OnIK+8nxGaSWeyk1oIBgSGYXxCekTHUtOQx5YBRoJcfKR/2iCBbzFwpROY=
+X-Gm-Message-State: AOJu0Yyo+b/YnrI3FoiDtRNctagZtwYY+IdcEzCzTEXyzQmUP01fdbt/
+	BEldbuv4Nt7e9Bkh2IB1ng7ySLB46wRcvovQiP45vjqVAU2HwR7HPQ4/0KpqnlWCQfKqkjhttND
+	Cg5uvCMQPqexg19UARnfDtKal3aBhyU2tJn8JW0JKnv68YZnmsESC
+X-Received: by 2002:a17:906:6a0f:b0:a77:dafb:2bf9 with SMTP id a640c23a62f3a-a7d4017958emr935767966b.49.1722411552488;
+        Wed, 31 Jul 2024 00:39:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFtcaFjOt9xSfQUez2BWgFX52e9aHax58DcvCguPN8jHiEXgVGDi0rjSjC1wDm9eFWQJzoLUA==
+X-Received: by 2002:a17:906:6a0f:b0:a77:dafb:2bf9 with SMTP id a640c23a62f3a-a7d4017958emr935766166b.49.1722411551964;
+        Wed, 31 Jul 2024 00:39:11 -0700 (PDT)
+Received: from lbulwahn-thinkpadx1carbongen9.rmtde.csb ([2a02:810d:7e40:14b0:4ce1:e394:7ac0:6905])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7acab23704sm735377266b.3.2024.07.31.00.39.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 31 Jul 2024 00:39:11 -0700 (PDT)
+From: Lukas Bulwahn <lbulwahn@redhat.com>
+X-Google-Original-From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+To: David Howells <dhowells@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Lukas Bulwahn <lukas.bulwahn@redhat.com>
+Subject: [PATCH] netfs: clean up after renaming FSCACHE_DEBUG config
+Date: Wed, 31 Jul 2024 09:39:02 +0200
+Message-ID: <20240731073902.69262-1-lukas.bulwahn@redhat.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240729091532.855688-1-max.kellermann@ionos.com>
- <3575457.1722355300@warthog.procyon.org.uk> <CAKPOu+9_TQx8XaB2gDKzwN-YoN69uKoZGiCDPQjz5fO-2ztdFQ@mail.gmail.com>
-In-Reply-To: <CAKPOu+9_TQx8XaB2gDKzwN-YoN69uKoZGiCDPQjz5fO-2ztdFQ@mail.gmail.com>
-From: Max Kellermann <max.kellermann@ionos.com>
-Date: Tue, 30 Jul 2024 22:00:29 +0200
-Message-ID: <CAKPOu+-qJR08WMfP0ZKCyWzXO6EgPGiKH1F_SB5S+v=sgNGeOQ@mail.gmail.com>
-Subject: Re: [PATCH] netfs, ceph: Revert "netfs: Remove deprecated use of
- PG_private_2 as a second writeback flag"
-To: David Howells <dhowells@redhat.com>
-Cc: Ilya Dryomov <idryomov@gmail.com>, Xiubo Li <xiubli@redhat.com>, 
-	Jeff Layton <jlayton@kernel.org>, willy@infradead.org, ceph-devel@vger.kernel.org, 
-	netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-On Tue, Jul 30, 2024 at 6:28=E2=80=AFPM Max Kellermann <max.kellermann@iono=
-s.com> wrote:
-> I'll let you know when problems occur later, but until
-> then, I agree with merging your revert instead of my patches.
+From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
 
-Not sure if that's the same bug/cause (looks different), but 6.10.2
-with your patch is still unstable:
+Commit fcad93360df4 ("netfs: Rename CONFIG_FSCACHE_DEBUG to
+CONFIG_NETFS_DEBUG") renames the config, but introduces two issues: First,
+NETFS_DEBUG mistakenly depends on the non-existing config NETFS, whereas
+the actual intended config is called NETFS_SUPPORT. Second, the config
+renaming misses to adjust the documentation of the functionality of this
+config.
 
- rcu: INFO: rcu_sched detected expedited stalls on CPUs/tasks: {
-9-.... 15-.... } 521399 jiffies s: 2085 root: 0x1/.
- rcu: blocking rcu_node structures (internal RCU debug): l=3D1:0-15:0x8200/=
-.
- Sending NMI from CPU 3 to CPUs 9:
- NMI backtrace for cpu 9
- CPU: 9 PID: 2756 Comm: kworker/9:2 Tainted: G      D
-6.10.2-cm4all2-vm+ #171
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.14.0-2 04/01=
-/2014
- Workqueue: ceph-msgr ceph_con_workfn
- RIP: 0010:native_queued_spin_lock_slowpath+0x80/0x260
- Code: 57 85 c0 74 10 0f b6 03 84 c0 74 09 f3 90 0f b6 03 84 c0 75 f7
-b8 01 00 00 00 66 89 03 5b 5d 41 5c 41 5d c3 cc cc cc cc f3 90 <eb> 93
-8b 37 b8 00 02 00 00 81 fe 00 01 00 00 74 07 eb a1 83 e8 01
- RSP: 0018:ffffaf5880c03bb8 EFLAGS: 00000202
- RAX: 0000000000000001 RBX: ffffa02bc37c9e98 RCX: ffffaf5880c03c90
- RDX: 0000000000000001 RSI: 0000000000000001 RDI: ffffa02bc37c9e98
- RBP: ffffa02bc2f94000 R08: ffffaf5880c03c90 R09: 0000000000000010
- R10: 0000000000000514 R11: 0000000000000000 R12: ffffaf5880c03c90
- R13: ffffffffb4bcb2f0 R14: ffffa036c9e7e8e8 R15: ffffa02bc37c9e98
- FS:  0000000000000000(0000) GS:ffffa036cf040000(0000) knlGS:00000000000000=
-00
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 000055fecac48568 CR3: 000000030d82c002 CR4: 00000000001706b0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
- Call Trace:
-  <NMI>
-  ? nmi_cpu_backtrace+0x83/0xf0
-  ? nmi_cpu_backtrace_handler+0xd/0x20
-  ? nmi_handle+0x56/0x120
-  ? default_do_nmi+0x40/0x100
-  ? exc_nmi+0xdc/0x100
-  ? end_repeat_nmi+0xf/0x53
-  ? __pfx_ceph_ino_compare+0x10/0x10
-  ? native_queued_spin_lock_slowpath+0x80/0x260
-  ? native_queued_spin_lock_slowpath+0x80/0x260
-  ? native_queued_spin_lock_slowpath+0x80/0x260
-  </NMI>
-  <TASK>
-  ? __pfx_ceph_ino_compare+0x10/0x10
-  _raw_spin_lock+0x1e/0x30
-  find_inode+0x6e/0xc0
-  ? __pfx_ceph_ino_compare+0x10/0x10
-  ? __pfx_ceph_set_ino_cb+0x10/0x10
-  ilookup5_nowait+0x6d/0xa0
-  ? __pfx_ceph_ino_compare+0x10/0x10
-  iget5_locked+0x33/0xe0
-  ceph_get_inode+0xb8/0xf0
-  mds_dispatch+0xfe8/0x1ff0
-  ? inet_recvmsg+0x4d/0xf0
-  ceph_con_process_message+0x66/0x80
-  ceph_con_v1_try_read+0xcfc/0x17c0
-  ? __switch_to_asm+0x39/0x70
-  ? finish_task_switch.isra.0+0x78/0x240
-  ? __schedule+0x32a/0x1440
-  ceph_con_workfn+0x339/0x4f0
-  process_one_work+0x138/0x2e0
-  worker_thread+0x2b9/0x3d0
-  ? __pfx_worker_thread+0x10/0x10
-  kthread+0xba/0xe0
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork+0x30/0x50
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork_asm+0x1a/0x30
- </TASK>
+Clean up those two points.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+---
+ Documentation/filesystems/caching/fscache.rst | 8 ++++----
+ fs/netfs/Kconfig                              | 2 +-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/Documentation/filesystems/caching/fscache.rst b/Documentation/filesystems/caching/fscache.rst
+index a74d7b052dc1..de1f32526cc1 100644
+--- a/Documentation/filesystems/caching/fscache.rst
++++ b/Documentation/filesystems/caching/fscache.rst
+@@ -318,10 +318,10 @@ where the columns are:
+ Debugging
+ =========
+ 
+-If CONFIG_FSCACHE_DEBUG is enabled, the FS-Cache facility can have runtime
+-debugging enabled by adjusting the value in::
++If CONFIG_NETFS_DEBUG is enabled, the FS-Cache facility and NETFS support can
++have runtime debugging enabled by adjusting the value in::
+ 
+-	/sys/module/fscache/parameters/debug
++	/sys/module/netfs/parameters/debug
+ 
+ This is a bitmask of debugging streams to enable:
+ 
+@@ -343,6 +343,6 @@ This is a bitmask of debugging streams to enable:
+ The appropriate set of values should be OR'd together and the result written to
+ the control file.  For example::
+ 
+-	echo $((1|8|512)) >/sys/module/fscache/parameters/debug
++	echo $((1|8|512)) >/sys/module/netfs/parameters/debug
+ 
+ will turn on all function entry debugging.
+diff --git a/fs/netfs/Kconfig b/fs/netfs/Kconfig
+index 1b78e8b65ebc..7701c037c328 100644
+--- a/fs/netfs/Kconfig
++++ b/fs/netfs/Kconfig
+@@ -24,7 +24,7 @@ config NETFS_STATS
+ 
+ config NETFS_DEBUG
+ 	bool "Enable dynamic debugging netfslib and FS-Cache"
+-	depends on NETFS
++	depends on NETFS_SUPPORT
+ 	help
+ 	  This permits debugging to be dynamically enabled in the local caching
+ 	  management module.  If this is set, the debugging output may be
+-- 
+2.45.2
+
