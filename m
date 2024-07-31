@@ -1,89 +1,82 @@
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079571AE843
-	for <netfs@lists.linux.dev>; Wed, 31 Jul 2024 11:37:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8A61DDC9;
+	Wed, 31 Jul 2024 14:41:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722425835; cv=none; b=n5y7Z7cbtzzSD+Xu8wXlypiRaYNHwvuQH6NTFrC61zYGhC3lKcLZ7dUhFlNA1Cbx6euaUsYapXW02QsXYE3r8AO4H3uy6sqsQhG/xXFG7lgAeDRt98N4s9c1D5f69PoZ0X9m5mzA+LB5LM0Fk0vQVV0poy4qmNy+uLlAXjcHQJw=
+	t=1722436861; cv=none; b=hakB3NgFo5TCizcfMfdrTuKvWgqKivO+JGYpO3AanSannn27+rqIgzhUMADZnk9FNUz7KBkANSoB5PkbNK+yKQLmyZ0XWuPGE8znoI0TDZvNuMa93ddcsR0zTPgY+XD1t+nO2QXkxejh5jzm/epY8UC+4igjucKn8WmCM7nPSk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722425835; c=relaxed/simple;
-	bh=gmAAodUXdgnNESvRXNAekJJqooqvvUxv3wuMM+/4RoA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qdE4VETWwp2DFrFL41pRN8mSSd3S3wnTg1hl4C1Zcz8yLFy2S4Cs5IQNAduptirLBSXw/GHzTZ16JcSEhQZBkaQcBN6ByKcZp8x8Y98r/TEDusspRX62VWlWkQY2+lAJY27b8Q9SR6qoCPgUA2jzzlfmC+WkVC2AicV92ySBSg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=gGpzGmNu; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+	s=arc-20240116; t=1722436861; c=relaxed/simple;
+	bh=bnW6xuwZRXMhJrERIAI3wU1Z7HMnXzuTTSgYcobJcNA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=okTHcMOMiRNG37p08piEEM+WxyDARTuNZgAz38qXqyWOnR/oAEKS3YWHqSXvC8y2LIlY+/UinPMunBfcbUQYwhLfBV1Q+jN8MN7ALT8hibB6bj8Xbo4Y6MGIcJCFWV6SWfoc7JgM6gxV84gODmTBEbGPRle242y9k83TWVL/Vhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=amDNhx/D; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="gGpzGmNu"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a7a83a968ddso785720766b.0
-        for <netfs@lists.linux.dev>; Wed, 31 Jul 2024 04:37:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1722425831; x=1723030631; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5iVqiOcI/Lm61Kn6z1In0PhQoNC9BfNgfzLWAbxhDSI=;
-        b=gGpzGmNuu1/uVLrO89JLjO+2MjW5P9jWpFsyF7CwGwHSoHDKeLagqgdc/fFJnTkbXB
-         ADz27dOk/VP7zxJjGYe9UaqReZVJvimAFhjDddOEInUJwBUH/NKU1nDmR51lqQV/jqYN
-         GyTtIFOXgFMPu89dB0ZOAcH6apMJPuzhUeTrlIw5jDpUyRGDRzVQd/73R0rQJBaPwpmZ
-         oiXe9U9nP5DrhbbUT1t8twnmlQRYSg+FOQATNV6FDh0yFCGgh4wMyib9hgleFPPu3lDP
-         mCeuJYdt6M9FxlX88r7B7I+Kzan4bmuOKbKf/LSWmlxhCJWVoZTpXUL6thn+kXFeTs7/
-         uTEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722425831; x=1723030631;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5iVqiOcI/Lm61Kn6z1In0PhQoNC9BfNgfzLWAbxhDSI=;
-        b=VohwpmeJWbedPMI0mDIxQgTfikCH+CE6pobITy8LlRCOO0BeyjKKTOmr0rfUWcSVDG
-         SW5+Ms31rvl1Vf2yETHH5bRunRYR5eqhn+AyqU2EMrXkVOd6xagm5p9bxjwTYgZ8gzeK
-         NsZdQwZ69neC2XPVBXAAgDnsq8tJ/7rbndYpXZzMNdMQtB6JIwmU5gGOWnbJ8l8mN3mT
-         /XF6Xv89fo32HVFIpA9CktQjHbVp+AyBuzZS8EgbqS3hhqvr3QCYgjSr3v3Y6czJkRDT
-         yoRbzMvdF2JiVIadzvqbEUeevpOYDzZmzbncnbnbLy1pvEFIyamZzthMYnt5V2NzfE7i
-         gkgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXwD0NlkQXEFlyPQbXveYCM34/KIGf7c9T6wbMCMIIPKlU0FHVogeuz57xtahrXOgduAiLiRPfZ6iawz9Tmq9wTYNdoZ0I=
-X-Gm-Message-State: AOJu0YybjPLCbDBYoq1xrkVYdIRWwsTY1RBbsusLDaq3olFJNTIC6gBT
-	Z5PBfNLv2qRBukzug/ucmUfFdzGkAQo1E8j+qS7Dhf/Hl5R+UBDZw5abCo8sRh6z4bwhziVUuQb
-	YEWaruHcNQW0y2Z+c8pjc4k+7YfRFbIEJfM3wiA==
-X-Google-Smtp-Source: AGHT+IGKzF7L3tGT7YjvoFGJDwdINXnVaS2Vxa/MttoDWTfIP0ZESkvvOTXarzXIGvRKUq2y7x6k6CcvXSEnf4eYun4=
-X-Received: by 2002:a17:907:6d1b:b0:a77:e55a:9e8c with SMTP id
- a640c23a62f3a-a7d40128ab4mr796501666b.47.1722425831422; Wed, 31 Jul 2024
- 04:37:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="amDNhx/D"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE70BC4AF0B;
+	Wed, 31 Jul 2024 14:40:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722436861;
+	bh=bnW6xuwZRXMhJrERIAI3wU1Z7HMnXzuTTSgYcobJcNA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=amDNhx/D9q3Te2VaVhD7jTIzAn6vhUMsTpFFXj/sbot7JZIo24T3EyYxqVD2450a9
+	 rOk9dmf4/Viw/ibNSVrYZqjNIQrcndTSe8H1Nat3tkBXW9iIAxr6upd9Dn4JM63lD+
+	 3O1Le2Wvn02sLYrmGGfVlU59ykSFdSMRvpXyazO7pjoixeX3BO7vr939kNIe49OTiL
+	 7n8Hbwut99cxMna36XlGHd6Z6flRLHbix3cfZTNh+bzl9fEsPygXCQXnY9rfgykH81
+	 p3yqWzLNhNjwRg3GkaJ8LKcOnBVCaAf7d9j/b+YHVgtWcyUpdZgmKc7CAKjijCON1G
+	 d+zd0DDFltTeg==
+From: Christian Brauner <brauner@kernel.org>
+To: David Howells <dhowells@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Lukas Bulwahn <lbulwahn@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Lukas Bulwahn <lukas.bulwahn@redhat.com>
+Subject: Re: [PATCH] netfs: clean up after renaming FSCACHE_DEBUG config
+Date: Wed, 31 Jul 2024 16:40:50 +0200
+Message-ID: <20240731-denken-marzipan-d7c2a89e8375@brauner>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240731073902.69262-1-lukas.bulwahn@redhat.com>
+References: <20240731073902.69262-1-lukas.bulwahn@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240729091532.855688-1-max.kellermann@ionos.com>
- <3575457.1722355300@warthog.procyon.org.uk> <CAKPOu+9_TQx8XaB2gDKzwN-YoN69uKoZGiCDPQjz5fO-2ztdFQ@mail.gmail.com>
- <CAKPOu+-4C7qPrOEe=trhmpqoC-UhCLdHGmeyjzaUymg=k93NEA@mail.gmail.com> <3717298.1722422465@warthog.procyon.org.uk>
-In-Reply-To: <3717298.1722422465@warthog.procyon.org.uk>
-From: Max Kellermann <max.kellermann@ionos.com>
-Date: Wed, 31 Jul 2024 13:37:00 +0200
-Message-ID: <CAKPOu+-4LQM2-Ciro0LbbhVPa+YyHD3BnLL+drmG5Ca-b4wmLg@mail.gmail.com>
-Subject: Re: [PATCH] netfs, ceph: Revert "netfs: Remove deprecated use of
- PG_private_2 as a second writeback flag"
-To: David Howells <dhowells@redhat.com>
-Cc: Ilya Dryomov <idryomov@gmail.com>, Xiubo Li <xiubli@redhat.com>, 
-	Jeff Layton <jlayton@kernel.org>, willy@infradead.org, ceph-devel@vger.kernel.org, 
-	netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1215; i=brauner@kernel.org; h=from:subject:message-id; bh=bnW6xuwZRXMhJrERIAI3wU1Z7HMnXzuTTSgYcobJcNA=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaSt8vkmc/DXYsfL6x+HRv66+uG/Ie+c8LgGz/LnJ4od+ SMmM7EGdpSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzEVIiR4dqk3i47bxmlZ6eO 8nyQYE6Zu3Kv3NbD5vybr7S+enY0/CsjwzTWe/qpWZM3lyz52uB43dB+1w3OXQvOz7Q8bHGT10P sChsA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 31, 2024 at 12:41=E2=80=AFPM David Howells <dhowells@redhat.com=
-> wrote:
+On Wed, 31 Jul 2024 09:39:02 +0200, Lukas Bulwahn wrote:
+> Commit fcad93360df4 ("netfs: Rename CONFIG_FSCACHE_DEBUG to
+> CONFIG_NETFS_DEBUG") renames the config, but introduces two issues: First,
+> NETFS_DEBUG mistakenly depends on the non-existing config NETFS, whereas
+> the actual intended config is called NETFS_SUPPORT. Second, the config
+> renaming misses to adjust the documentation of the functionality of this
+> config.
+> 
+> [...]
 
-> >  ------------[ cut here ]------------
-> >  WARNING: CPU: 13 PID: 3621 at fs/ceph/caps.c:3386
-> > ceph_put_wrbuffer_cap_refs+0x416/0x500
->
-> Is that "WARN_ON_ONCE(ci->i_auth_cap);" for you?
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-Yes, and that happens because no "capsnap" was found, because the
-"snapc" parameter is 0x356 (NETFS_FOLIO_COPY_TO_CACHE); no
-snap_context with address 0x356 could be found, of course.
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-Max
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[1/1] netfs: clean up after renaming FSCACHE_DEBUG config
+      https://git.kernel.org/vfs/vfs/c/c9bffce5f3f5
