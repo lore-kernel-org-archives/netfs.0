@@ -1,534 +1,367 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29828286A
-	for <netfs@lists.linux.dev>; Wed,  7 Aug 2024 20:18:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723061888; cv=none; b=IUVlW0pvQRv9m/J7bxNoCpy433UuL6jIBLFXtsLJvheYVs5+COX5UQa0DL/E53TQjYnZEXJlAxliZoon/AElwtuL7r3a2q5xSmZDA4fyEFiwtAV1IeKLB5Zj0j8pdxVi33xBfaMsBU/QXVUfxxAx/fKD6S4SPn3K5LTcmrjIKFc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723061888; c=relaxed/simple;
-	bh=3oZmI4Bk2FG6XWDFzjxcfPmaEjo1nrh01Kq43vuvXBo=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=DNM00aba9DZaRqZz5/dQQ51agUsIoT5+k/yo9lfgXjQw+rX+WE1/VWXzsSXe2Cj6cD2a6qiOGR1w6jEKiPqfr/gzPIbi9LdZJOCgOftL2t8lcnJMhPG2AV0WL9/gvaScirriLmRIj8XqhZ7bfkY1f8pDE/8jiJ2lVu/q/i60OXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bC5FrRG1; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C707189900;
+	Thu,  8 Aug 2024 08:48:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723106941; cv=fail; b=Q1GGVE6dq3jX6k9hSRNUqWLyMZqdPdWlNlUDCEDcKpx9G133jos5yq4lCgOrYYepWdN7NhbkFHRWFtJkCEypb7jUtePFURbx/pSUI0zoFZ6Eqnhs+e+WGaVboJCE43pICe169YE2etCW+n4aRlHFU1m8wcPBbXH0N0mWGoPg3dM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723106941; c=relaxed/simple;
+	bh=2YpxokX5giLhbd5mUoa4KhJMkESNr24hUCGJkJq2A1M=;
+	h=Date:From:To:CC:Subject:Message-ID:Content-Type:
+	 Content-Disposition:MIME-Version; b=uM6WuJin4VNgUx/3PeoewBEsU8lODNub9L9DOUfpHNXwLlEQFkpFO3gLVLflOd4NswOEPPSEeTZkQqMxKakOuTHhX2yXv8ECti69+oJteSY/yvjywXjQ582tzbXZ8MlSmZGGAuJ3S2AQ76Bgu6vZAdppTkZYz9Ymy7hLX/uFpYI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D41RdabG; arc=fail smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bC5FrRG1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723061883;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PB7jDj4g6YqOIndRvSsTnVMDnIANmZYWu0a84ms3HyI=;
-	b=bC5FrRG1NGBTe1r9BSovNQxK8n4LPBC0S3kQoA01U5MPr/h4KK17fur3DLC0GP1oKjpwKz
-	u9J9psLqUrZsO7d//8ldOhLVEBxW/9VwGi4S9vtqAqMfPMhMeDvUAR/2dtheM/ceTU2V7X
-	C0EQpSqfs2DuMB1idvbOb8xdN/gdXJM=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-680-8jQ4ErJNP96l7RqN3XcAIg-1; Wed,
- 07 Aug 2024 16:18:00 -0400
-X-MC-Unique: 8jQ4ErJNP96l7RqN3XcAIg-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 592AA1955D65;
-	Wed,  7 Aug 2024 20:17:58 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.216])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3256C300018D;
-	Wed,  7 Aug 2024 20:17:55 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <CAKPOu+-4LQM2-Ciro0LbbhVPa+YyHD3BnLL+drmG5Ca-b4wmLg@mail.gmail.com>
-References: <CAKPOu+-4LQM2-Ciro0LbbhVPa+YyHD3BnLL+drmG5Ca-b4wmLg@mail.gmail.com> <20240729091532.855688-1-max.kellermann@ionos.com> <3575457.1722355300@warthog.procyon.org.uk> <CAKPOu+9_TQx8XaB2gDKzwN-YoN69uKoZGiCDPQjz5fO-2ztdFQ@mail.gmail.com> <CAKPOu+-4C7qPrOEe=trhmpqoC-UhCLdHGmeyjzaUymg=k93NEA@mail.gmail.com> <3717298.1722422465@warthog.procyon.org.uk>
-To: Max Kellermann <max.kellermann@ionos.com>,
-    Hristo Venev <hristo@venev.name>
-Cc: dhowells@redhat.com, Ilya Dryomov <idryomov@gmail.com>,
-    Xiubo Li <xiubli@redhat.com>, Jeff Layton <jlayton@kernel.org>,
-    willy@infradead.org, ceph-devel@vger.kernel.org,
-    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: [RFC][PATCH] netfs: Fix handling of USE_PGPRIV2 and WRITE_TO_CACHE flags
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D41RdabG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723106939; x=1754642939;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=2YpxokX5giLhbd5mUoa4KhJMkESNr24hUCGJkJq2A1M=;
+  b=D41RdabGQSfBtaL3Z6ZkcWJjeB5X6Vbq8ll5JiYw8Ng8Z71E2Q3aS66Y
+   kQHtlM+txaWS/MTek5YRgKpknLGnvkU/MW/sMM1HBCmrF4CQ9i5gVUA8u
+   8nm7dNXZszE87JWWwkkcCJZDjD8U8+s+Q2zwVX3QXkVDi10I2l+slLW+W
+   MZ+4Nc6SpnofrOjrzCJPFK+lmaJZoOzoLrbS+la/5otKrVvhpb1sgSxlS
+   Wu/GIXgGiB8Qze87QPtyejNWYNtkyVppxoJNG/5WXGVHCc63v67WgptJl
+   MOGW77PKmTfsBKHooOqFiRzDGI/41a6P3t+6yyyObGPJivQxhHjax8fPz
+   Q==;
+X-CSE-ConnectionGUID: uObbIGX5QSW9xiJCneuzMA==
+X-CSE-MsgGUID: BiYXGlMeTiKXJMJu5bLLwQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11157"; a="46622196"
+X-IronPort-AV: E=Sophos;i="6.09,272,1716274800"; 
+   d="scan'208";a="46622196"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 01:48:59 -0700
+X-CSE-ConnectionGUID: YIq3fznkQlCLFEocmZFNOQ==
+X-CSE-MsgGUID: gnQlgGuiQ6i/rwJACnGsIA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,272,1716274800"; 
+   d="scan'208";a="87802921"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by orviesa002.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 08 Aug 2024 01:48:58 -0700
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Thu, 8 Aug 2024 01:48:57 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Thu, 8 Aug 2024 01:48:57 -0700
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Thu, 8 Aug 2024 01:48:57 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.169)
+ by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 8 Aug 2024 01:48:56 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xAHdqbjqJTq9i5G9JIWM7bk1d9s34DdN6MCIUaiG6bgLIFrKynduAL3IdbRXMQoVDreTO+lP57K2ZsO6CEaMBgmZ9B7t/xsM4aJQjGeedfrt3k1F3d5HTrWi+UUVVpo9bAVhbdWb3CHB+gW+hnZp5IT+qD3sMrCAdBSsHhJaIeD46PvckiH6MG/rRzvZujfjYmxgoqKRwxGhqjUFg0VErLHrLFX8WZvv9V+d92OqeTEsxWC/JZiWh4+RIbzE4URr+aXA3Ok/bp6SBOEyIMkHHo9isLI7SBlaDSYjWie5p5n42JVs14DxWUaPF32idYk+giO2p2AdJrGKYNI7IJ3QeA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fGeUWOGr7iytDdAK993crEJcAneC0D6ncAAUaNuYh7M=;
+ b=aGMLZJ6YyqZJ/dQWYtfvNyLqmu70R1aLcuLUvjcmgAXthA/FoV2bKtAnk0WjwzGhSvEKUpJ3GEHvmdcm4uARm8ywwddI0Y3PBbEh8lj9MUQ1nke6ojMJLs/PPLAJZVUmStFLlmPo8Hf48d1N7EnuwVp5PTThLlVzcAPvgkZHI1+EguAmxHcnedh/dTQ6W4NiN25+edpW6YoYA6GjcAElNRPjHpVsmmwmu718NAvfj/HKs8X9fnwdm7s2qZrEiT7pqwBVxVbHGYihoAUsVa65G8CQmpJjzLmFFybhNH3GUPrrhWFsu+Vm/zjNEGCVQTT4CsajCLsTOPj5ML27TPhwkQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from LV3PR11MB8603.namprd11.prod.outlook.com (2603:10b6:408:1b6::9)
+ by IA0PR11MB7884.namprd11.prod.outlook.com (2603:10b6:208:3dc::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.27; Thu, 8 Aug
+ 2024 08:48:49 +0000
+Received: from LV3PR11MB8603.namprd11.prod.outlook.com
+ ([fe80::4622:29cf:32b:7e5c]) by LV3PR11MB8603.namprd11.prod.outlook.com
+ ([fe80::4622:29cf:32b:7e5c%5]) with mapi id 15.20.7828.023; Thu, 8 Aug 2024
+ 08:48:49 +0000
+Date: Thu, 8 Aug 2024 16:48:39 +0800
+From: kernel test robot <oliver.sang@intel.com>
+To: David Howells <dhowells@redhat.com>
+CC: <oe-lkp@lists.linux.dev>, <lkp@intel.com>, Jeff Layton
+	<jlayton@kernel.org>, <netfs@lists.linux.dev>,
+	<linux-fsdevel@vger.kernel.org>, <oliver.sang@intel.com>
+Subject: [dhowells-fs:netfs-writeback] [netfs]  6afe9feeb3:
+ BUG:KASAN:slab-use-after-free_in_copy_from_iter
+Message-ID: <202408081649.796e7bd-oliver.sang@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+X-ClientProxiedBy: SI1PR02CA0016.apcprd02.prod.outlook.com
+ (2603:1096:4:1f4::17) To LV3PR11MB8603.namprd11.prod.outlook.com
+ (2603:10b6:408:1b6::9)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <861628.1723061874.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 07 Aug 2024 21:17:54 +0100
-Message-ID: <861629.1723061874@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR11MB8603:EE_|IA0PR11MB7884:EE_
+X-MS-Office365-Filtering-Correlation-Id: 428bb70c-a83c-4588-2367-08dcb786ebc4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?Enojrgy2pOHliDBv6vjwHqB5li2/VHSKpvkVoe5IB/8KGJjiygQp/nc8t1nx?=
+ =?us-ascii?Q?6gP2P2fic4qLU8CX3tm2HYtULkFHdHGsQFwNRLrc+cKh10+d9/5Zk3ByLq4p?=
+ =?us-ascii?Q?0HEZsPwiCHG/QHEPv5W+xALOX0HCJlmIoQc4kKzAEd/kM5KAZQiJpI9QWNPn?=
+ =?us-ascii?Q?1WHT1fd0vducGpiOLRB4RAChCJGFFyJPpLnSX6KkFxZfdwOXOynUHal0yjRz?=
+ =?us-ascii?Q?SXXw7M3pJTzblYTcAba5givkXpaflxXLL9UWDyBp2fSutA0uKWKnnF3jIhI4?=
+ =?us-ascii?Q?rqKqna1vHe0Uqx2oDkI15JAhTOlkzFzdk2wrydn6B9z0D88f7VNB26HyHrMT?=
+ =?us-ascii?Q?UGJCiB0G1ABfeLGiGfJ0GrhiKEUAj9Sd5ZqEKapjqJyiLllQI4kC75kXDOJF?=
+ =?us-ascii?Q?z+jauR8mv26mujLPxNtUDscU7y/73idFEmPJBce5l18VMn3blVne3V42QCGE?=
+ =?us-ascii?Q?5YRZAPMKrSqsGBMTVU6QF67x1FLsnvMk+t2AoLIgysX7BDUqQ6AyIHsab+Jc?=
+ =?us-ascii?Q?BWL8FhlBtoVWB8ToqSz+MLOSOBTrYHVxRyHc0YTjYVvAU+47KvD5Bfo7scjF?=
+ =?us-ascii?Q?jn8oAtZPzuJxg+rvc/tIkbhezyII57z5U1hAnGS8jw2II8Ley+qr9L75WTzF?=
+ =?us-ascii?Q?i3mw/UjoT1S4ysKmbB9Zw1bQ1sK0lKu4LhfnsAZm1WaoB36GqzGoiBKewlRr?=
+ =?us-ascii?Q?7yfbj79NCLqHJmQAbL6PH9qYH3EhDt3RlBf01c1PBol7m2/XvOchs6G6r1h0?=
+ =?us-ascii?Q?hPxwedzRpGBdWJ7saWLo5eXDRoi7M2souJEtXzwMnIf7Y3Ubbn5+G7pUOUzb?=
+ =?us-ascii?Q?eZm8p7yBpnI1cg2YSOfIdFIxqGG+nYBupBmPymfB7HiM+zfp9e7r2aoXkFjX?=
+ =?us-ascii?Q?m5Sms8d69HLT604sF1xp6u+rTHGi6SnPpCUV3e3ljuDzpH4+YT+UbX1EEApH?=
+ =?us-ascii?Q?wgCNSTxT0Q6wkbZTO6zlWFjvdSwiVkdXkOSgDuwr2jizMuZgU+PujvhWuvpS?=
+ =?us-ascii?Q?SkivRRG8bnDMMirGYVTr51J8t58N3BdAEIlPieCBJCj+itH2QFR/KxMUPHVG?=
+ =?us-ascii?Q?SRLnz8VVNk9I0QMZC8UTHssBnH0KqWHb6b31O/oq4w6i+CWm1fARsguHroqu?=
+ =?us-ascii?Q?93awLjI2WYi8P2DOJLH2nZecompMVQ40XEVGHpKCIJ7ryublTOrh3C45ozgl?=
+ =?us-ascii?Q?mIaodRb8foS7wDgg7fOQ0co73AXnyRtm5WROgCliAknjbITipyOns6ZJkFPY?=
+ =?us-ascii?Q?ZgGg3kenUTu0RcDO1idJRfzU8NoOqrb3s0F4mJtLj14HKSmUBpqo6Nvpwmzu?=
+ =?us-ascii?Q?MRKbwTMhc7Q7d0qi8zoVvAXA?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8603.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?TomakKbmr3o4jB7bt5XTD0sab+UjkT8Cgt6RDMCc19atCigP+TWLHz0vX6Ua?=
+ =?us-ascii?Q?qqWw3M9EuvE+KR6Wm7gkxUPInZawj/VzaMWu/CoVP9BvM1CmGI31VFdZCIX5?=
+ =?us-ascii?Q?Nvrqt2t8kmjtpovdRt3M3SxGv+kohDD0xkV6PZ3SRZ8He1CbhFyQOGrqIRfw?=
+ =?us-ascii?Q?B6ohyzVv/rEpAKouj3Qr9jBxZknuH4UuXw7keXSCBVG4UDC7RnJ8NelzmZvK?=
+ =?us-ascii?Q?D/ESCz8rV0pbpU373s2Vg79PFn9h+zQ5U/6l2NDbzTTPO29Tr4C8kIM1JO1j?=
+ =?us-ascii?Q?w+QjWUjXG4NNDSj3b+PILkG6fAVgxS8KFpsbKul5jsAuUWxGrong1vvCKUw5?=
+ =?us-ascii?Q?TbgGIepDMTWBJ7rZuwjnp42aQUcjVNycBisYXl1O0BUYezexoZu7GTFfX9Tk?=
+ =?us-ascii?Q?FzaUV87yI8L46J518HVNGdNV1aDfO2uX5N/5CkZkXYsx6hfRfGKRPc+hUC/J?=
+ =?us-ascii?Q?kT44EWZdLL//mRsX570cGL5RvXHEHR2+tv0Ytlu4rX+sSJtzQa3bq7jcYwOP?=
+ =?us-ascii?Q?+E4jcr0KWbmSG+tPHymzfno7txxD7UWV8GVziehIjTXKV8wWg1A/gFTTg7gC?=
+ =?us-ascii?Q?LqCyuGDxFCl4C0eztqbWwLRgxUn/iaFjkY1eKxk0i6Z9MCKKZzrZgiixWaUM?=
+ =?us-ascii?Q?Sz8y1MATepn94Xa9q/JcZQn5icfhkCwvOfMZvxXrCyaGuH0lLHc1PkN6bPr/?=
+ =?us-ascii?Q?W3iQGc23HQNQPD5ucuWqz/3xbDNtiAhmOKDnv/t/MecrULU/xEhNcn5O05F/?=
+ =?us-ascii?Q?T5JComlxyzS1pnrho8bipu3XxLiSwMF84VhfkXdqDJRJcLQHnTPPxInqt+JO?=
+ =?us-ascii?Q?scSXD4laFxsKfa9YKqHaca74c8e7REyZfwxhGERnZXHBdMP+ZfgJ5T6NqsRn?=
+ =?us-ascii?Q?RtLUPxDFZn+AUckpc3ypWON2+QW93e5/iVjSDgBzaeqwgO0DVc/+zWD302ap?=
+ =?us-ascii?Q?dtL4q3Lq1xJgdP0K1Ua1CbBB05R/sxrsFp0TcmdH3bI2U5FUuIKHVXJRYyFo?=
+ =?us-ascii?Q?3sC2np+HAKGPscAQa8Ge+UTJ8YjN9nL3rdfg2fyq/GvVz+2YnjRut8EHw+8x?=
+ =?us-ascii?Q?4T4sN4u65ZOkF+G+GuX/YnIe+//sijgVZUaDOkpczkNkSS7HcGG3KP7f06DG?=
+ =?us-ascii?Q?siZXLWW2Lks+TYaCbTe2q+byjEqawYERPNN0gRlRojuzub5hav3WxVuFB/u2?=
+ =?us-ascii?Q?pKKKEe0fD83fNSf5RCtAQh2QWnR6UCvFeyFrF+t0jbtZa1bKrrSzKQHB+tFg?=
+ =?us-ascii?Q?S4298670kZ9mKYEpc7XG4d4JjKuGKS9jc9U0T1sW6u0lIUS8gWEDAyBxcK5g?=
+ =?us-ascii?Q?lXbs6BBdMTDiq3eKsEOthlPy0PNMZKOSzfr4dtMdLRk5HGF+F/hD68rtPcks?=
+ =?us-ascii?Q?bP5F7fEBwQOlT0fbpLm5tQNhLuPoxfoG6cHMOD/RW60S6HEUyNNkLyrkSYxg?=
+ =?us-ascii?Q?HnUp0qi9pHqE2THQz/3TnISPx1W/agK95h2oo+udCKH7V+RGGaU5ifr/3rBQ?=
+ =?us-ascii?Q?aN9iBA1bWN1d7he9ogtmtEdDL8eJq/zj02GfBCUqdiIA5KZwBerMKmENbLgp?=
+ =?us-ascii?Q?Pt4i8K0iuU8/AaQXaCfpjIoKQsMfUuNOHcmq740bfppoABh7Iww6IVLxrY9A?=
+ =?us-ascii?Q?wg=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 428bb70c-a83c-4588-2367-08dcb786ebc4
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8603.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Aug 2024 08:48:49.1746
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: F7Hmw0iqFLmpkL/DgQ8bbH68y9Awmkw53D/4XmogOsMiDGL3SfKxwtKolXBkF05E+QU4vD6XOdum0SFwBiP+rw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7884
+X-OriginatorOrg: intel.com
 
-The attached patch gets me most of the way there, applied on the top of th=
-e
-reversion one.  See:
 
-	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log=
-/?h=3Dnetfs-fixes
 
-There's still an occasional slab-use-after-free that pops up:
+Hello,
 
-	BUG: KASAN: slab-use-after-free in xa_head+0xe/0x70
-	Read of size 8 at addr ffff8881b2cf6df8 by task kworker/0:1/9
-	...
-	 xa_head+0xe/0x70
-	 xas_start+0xca/0x140
-	 xas_load+0x16/0x110
-	 xas_find+0x84/0x1f0
-	 __fscache_clear_page_bits+0x136/0x340
-	...
+kernel test robot noticed "BUG:KASAN:slab-use-after-free_in_copy_from_iter" on:
 
-where the thing being allocated is a ceph inode.
+commit: 6afe9feeb377343e805b41bf08504bba6fcbaa7b ("netfs: Use new folio_queue data type and iterator instead of xarray iter")
+https://git.kernel.org/cgit/linux/kernel/git/dhowells/linux-fs.git netfs-writeback
 
-Note that Hristo's patch is not sufficient.
+in testcase: xfstests
+version: xfstests-x86_64-b3b32377-1_20240729
+with following parameters:
 
-David
----
-    netfs: Fix handling of USE_PGPRIV2 and WRITE_TO_CACHE flags
-    =
+	disk: 4HDD
+	fs: ext4
+	fs2: smbv2
+	test: generic-group-13
 
-    The NETFS_RREQ_USE_PGPRIV2 and NETFS_RREQ_WRITE_TO_CACHE flags aren't =
-used
-    correctly.  The problem is that we try to set them up in the request
-    initialisation, but we the cache may be in the process of setting up s=
-till,
-    and so the state may not be correct.  Further, we secondarily sample t=
-he
-    cache state and make contradictory decisions later.
-    =
 
-    The issue arises because we set up the cache resources, which allows t=
-he
-    cache's ->prepare_read() to switch on NETFS_SREQ_COPY_TO_CACHE - which
-    triggers cache writing even if we didn't set the flags when allocating=
-.
-    =
 
-    Fix this in the following way:
-    =
+compiler: gcc-13
+test machine: 4 threads Intel(R) Core(TM) i5-6500 CPU @ 3.20GHz (Skylake) with 32G memory
 
-     (1) Drop NETFS_ICTX_USE_PGPRIV2 and instead set NETFS_RREQ_USE_PGPRIV=
-2 in
-         ->init_request() rather than trying to juggle that in
-         netfs_alloc_request().
-    =
+(please refer to attached dmesg/kmsg for entire log/backtrace)
 
-     (2) Repurpose NETFS_RREQ_USE_PGPRIV2 to merely indicate that if cachi=
-ng is
-         to be done, then PG_private_2 is to be used rather than only sett=
-ing
-         it if we decide to cache and then having netfs_rreq_unlock_folios=
-()
-         set the non-PG_private_2 writeback-to-cache if it wasn't set.
-    =
 
-     (3) Split netfs_rreq_unlock_folios() into two functions, one of which
-         contains the deprecated code for using PG_private_2 to avoid
-         accidentally doing the writeback path - and always use it if
-         USE_PGPRIV2 is set.
-    =
 
-     (4) As NETFS_ICTX_USE_PGPRIV2 is removed, make netfs_write_begin() al=
-ways
-         wait for PG_private_2.  This function is deprecated and only used=
- by
-         ceph anyway, and so label it so.
-    =
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <oliver.sang@intel.com>
+| Closes: https://lore.kernel.org/oe-lkp/202408081649.796e7bd-oliver.sang@intel.com
 
-     (5) Drop the NETFS_RREQ_WRITE_TO_CACHE flag and use
-         fscache_operation_valid() on the cache_resources instead.  This h=
-as
-         the advantage of picking up the result of netfs_begin_cache_read(=
-) and
-         fscache_begin_write_operation() - which are called after the obje=
-ct is
-         initialised and will wait for the cache to come to a usable state=
-.
-    =
 
-    Just reverting ae678317b95e[1] isn't a sufficient fix, so this need to=
- be
-    applied on top of that.  Without this as well, things like:
-    =
+[ 388.136673][ T2650] BUG: KASAN: slab-use-after-free in _copy_from_iter (include/linux/iov_iter.h:157 include/linux/iov_iter.h:308 include/linux/iov_iter.h:328 lib/iov_iter.c:249 lib/iov_iter.c:260) 
+[  388.144431][ T2650] Read of size 8 at addr ffff88813dc6b520 by task xfs_io/2650
+[  388.151751][ T2650]
+[  388.153947][ T2650] CPU: 0 UID: 0 PID: 2650 Comm: xfs_io Not tainted 6.11.0-rc1-00018-g6afe9feeb377 #1
+[  388.163269][ T2650] Hardware name: Dell Inc. OptiPlex 7040/0Y7WYT, BIOS 1.8.1 12/05/2017
+[  388.171372][ T2650] Call Trace:
+[  388.174524][ T2650]  <TASK>
+[ 388.177328][ T2650] dump_stack_lvl (lib/dump_stack.c:122) 
+[ 388.181698][ T2650] print_address_description+0x30/0x410 
+[ 388.188158][ T2650] ? _copy_from_iter (include/linux/iov_iter.h:157 include/linux/iov_iter.h:308 include/linux/iov_iter.h:328 lib/iov_iter.c:249 lib/iov_iter.c:260) 
+[ 388.193126][ T2650] print_report (mm/kasan/report.c:489) 
+[ 388.197400][ T2650] ? kasan_addr_to_slab (mm/kasan/common.c:37) 
+[ 388.202195][ T2650] ? _copy_from_iter (include/linux/iov_iter.h:157 include/linux/iov_iter.h:308 include/linux/iov_iter.h:328 lib/iov_iter.c:249 lib/iov_iter.c:260) 
+[ 388.207164][ T2650] kasan_report (mm/kasan/report.c:603) 
+[ 388.211436][ T2650] ? _copy_from_iter (include/linux/iov_iter.h:157 include/linux/iov_iter.h:308 include/linux/iov_iter.h:328 lib/iov_iter.c:249 lib/iov_iter.c:260) 
+[ 388.216409][ T2650] _copy_from_iter (include/linux/iov_iter.h:157 include/linux/iov_iter.h:308 include/linux/iov_iter.h:328 lib/iov_iter.c:249 lib/iov_iter.c:260) 
+[ 388.221204][ T2650] ? __pfx_try_charge_memcg (mm/memcontrol.c:2158) 
+[ 388.226434][ T2650] ? __pfx__copy_from_iter (lib/iov_iter.c:254) 
+[ 388.231593][ T2650] ? __mod_memcg_state (mm/memcontrol.c:555 (discriminator 1) mm/memcontrol.c:669 (discriminator 1)) 
+[ 388.236566][ T2650] ? check_heap_object (arch/x86/include/asm/bitops.h:206 (discriminator 1) arch/x86/include/asm/bitops.h:238 (discriminator 1) include/asm-generic/bitops/instrumented-non-atomic.h:142 (discriminator 1) include/linux/page-flags.h:827 (discriminator 1) include/linux/page-flags.h:848 (discriminator 1) include/linux/mm.h:1122 (discriminator 1) include/linux/mm.h:2138 (discriminator 1) mm/usercopy.c:199 (discriminator 1)) 
+[  388.241552][ T2650]  ? 0xffffffff81000000
+[ 388.245567][ T2650] ? __check_object_size (mm/memremap.c:167) 
+[ 388.251246][ T2650] skb_do_copy_data_nocache (include/linux/uio.h:213 include/linux/uio.h:230 include/net/sock.h:2167) 
+[ 388.256655][ T2650] ? __pfx_skb_do_copy_data_nocache (include/net/sock.h:2158) 
+[ 388.262594][ T2650] ? __sk_mem_schedule (net/core/sock.c:3194) 
+[ 388.267406][ T2650] tcp_sendmsg_locked (include/net/sock.h:2195 net/ipv4/tcp.c:1218) 
+[ 388.272463][ T2650] ? cifs_flush (fs/smb/client/file.c:2726) cifs
+[ 388.277444][ T2650] ? filp_flush (fs/open.c:1526) 
+[ 388.281720][ T2650] ? __pfx_tcp_sendmsg_locked (net/ipv4/tcp.c:1049) 
+[ 388.287126][ T2650] ? filp_close (fs/open.c:1540) 
+[ 388.291315][ T2650] ? _raw_spin_lock_bh (arch/x86/include/asm/atomic.h:107 (discriminator 4) include/linux/atomic/atomic-arch-fallback.h:2170 (discriminator 4) include/linux/atomic/atomic-instrumented.h:1302 (discriminator 4) include/asm-generic/qspinlock.h:111 (discriminator 4) include/linux/spinlock.h:187 (discriminator 4) include/linux/spinlock_api_smp.h:127 (discriminator 4) kernel/locking/spinlock.c:178 (discriminator 4)) 
+[ 388.296113][ T2650] ? __pfx__raw_spin_lock_bh (kernel/locking/spinlock.c:177) 
+[ 388.301431][ T2650] tcp_sendmsg (net/ipv4/tcp.c:1355) 
+[ 388.305533][ T2650] sock_sendmsg (net/socket.c:730 (discriminator 1) net/socket.c:745 (discriminator 1) net/socket.c:768 (discriminator 1)) 
+[ 388.309897][ T2650] ? stack_trace_save (kernel/stacktrace.c:123) 
+[ 388.314623][ T2650] ? __pfx_sock_sendmsg (net/socket.c:757) 
+[ 388.319529][ T2650] ? recalc_sigpending (arch/x86/include/asm/bitops.h:75 include/asm-generic/bitops/instrumented-atomic.h:42 include/linux/thread_info.h:94 kernel/signal.c:178 kernel/signal.c:175) 
+[ 388.324509][ T2650] smb_send_kvec (fs/smb/client/transport.c:215) cifs
+[ 388.329725][ T2650] __smb_send_rqst (fs/smb/client/transport.c:361) cifs
+[ 388.335056][ T2650] ? __pfx___smb_send_rqst (fs/smb/client/transport.c:274) cifs
+[ 388.340915][ T2650] ? __pfx_mempool_alloc_noprof (mm/mempool.c:385) 
+[ 388.346499][ T2650] ? __asan_memset (mm/kasan/shadow.c:84 (discriminator 2)) 
+[ 388.350949][ T2650] ? _raw_spin_lock (arch/x86/include/asm/atomic.h:107 (discriminator 4) include/linux/atomic/atomic-arch-fallback.h:2170 (discriminator 4) include/linux/atomic/atomic-instrumented.h:1302 (discriminator 4) include/asm-generic/qspinlock.h:111 (discriminator 4) include/linux/spinlock.h:187 (discriminator 4) include/linux/spinlock_api_smp.h:134 (discriminator 4) kernel/locking/spinlock.c:154 (discriminator 4)) 
+[ 388.355488][ T2650] ? __pfx__raw_spin_lock (kernel/locking/spinlock.c:153) 
+[ 388.360546][ T2650] ? smb2_setup_async_request (fs/smb/client/smb2transport.c:903) cifs
+[ 388.366873][ T2650] cifs_call_async (fs/smb/client/transport.c:841) cifs
+[ 388.372196][ T2650] ? __pfx_cifs_call_async (fs/smb/client/transport.c:787) cifs
+[ 388.378041][ T2650] ? _raw_spin_lock (arch/x86/include/asm/atomic.h:107 (discriminator 4) include/linux/atomic/atomic-arch-fallback.h:2170 (discriminator 4) include/linux/atomic/atomic-instrumented.h:1302 (discriminator 4) include/asm-generic/qspinlock.h:111 (discriminator 4) include/linux/spinlock.h:187 (discriminator 4) include/linux/spinlock_api_smp.h:134 (discriminator 4) kernel/locking/spinlock.c:154 (discriminator 4)) 
+[ 388.382596][ T2650] ? __asan_memset (mm/kasan/shadow.c:84 (discriminator 2)) 
+[ 388.387047][ T2650] ? __smb2_plain_req_init (arch/x86/include/asm/atomic.h:53 include/linux/atomic/atomic-arch-fallback.h:992 include/linux/atomic/atomic-instrumented.h:436 fs/smb/client/smb2pdu.c:552) cifs
+[ 388.393155][ T2650] smb2_async_writev (fs/smb/client/smb2pdu.c:5014) cifs
+[ 388.398744][ T2650] ? __pfx_smb2_async_writev (fs/smb/client/smb2pdu.c:4881) cifs
+[ 388.404765][ T2650] ? _raw_spin_lock (arch/x86/include/asm/atomic.h:107 (discriminator 4) include/linux/atomic/atomic-arch-fallback.h:2170 (discriminator 4) include/linux/atomic/atomic-instrumented.h:1302 (discriminator 4) include/asm-generic/qspinlock.h:111 (discriminator 4) include/linux/spinlock.h:187 (discriminator 4) include/linux/spinlock_api_smp.h:134 (discriminator 4) kernel/locking/spinlock.c:154 (discriminator 4)) 
+[ 388.409306][ T2650] ? cifs_prepare_write (fs/smb/client/file.c:77) cifs
+[ 388.415061][ T2650] ? netfs_advance_write (fs/netfs/write_issue.c:298) 
+[ 388.420208][ T2650] netfs_advance_write (fs/netfs/write_issue.c:298) 
+[ 388.425181][ T2650] ? netfs_buffer_append_folio (arch/x86/include/asm/bitops.h:206 (discriminator 1) arch/x86/include/asm/bitops.h:238 (discriminator 1) include/asm-generic/bitops/instrumented-non-atomic.h:142 (discriminator 1) include/linux/page-flags.h:827 (discriminator 1) include/linux/page-flags.h:848 (discriminator 1) include/linux/mm.h:1122 (discriminator 1) include/linux/folio_queue.h:102 (discriminator 1) fs/netfs/misc.c:43 (discriminator 1)) 
+[ 388.430848][ T2650] netfs_write_folio (fs/netfs/write_issue.c:466) 
+[ 388.435733][ T2650] ? writeback_get_folio (mm/page-writeback.c:2502) 
+[ 388.440882][ T2650] netfs_writepages (fs/netfs/write_issue.c:538 (discriminator 1)) 
+[ 388.445598][ T2650] ? __kernel_text_address (kernel/extable.c:79 (discriminator 1)) 
+[ 388.450759][ T2650] ? __pfx_netfs_writepages (fs/netfs/write_issue.c:497) 
+[ 388.455994][ T2650] ? arch_stack_walk (arch/x86/kernel/stacktrace.c:26) 
+[ 388.460707][ T2650] do_writepages (mm/page-writeback.c:2683) 
+[ 388.465157][ T2650] ? stack_trace_save (kernel/stacktrace.c:123) 
+[ 388.469868][ T2650] ? __pfx_do_writepages (mm/page-writeback.c:2673) 
+[ 388.474839][ T2650] ? stack_depot_save_flags (lib/stackdepot.c:609) 
+[ 388.480158][ T2650] ? kasan_save_track (arch/x86/include/asm/current.h:49 (discriminator 1) mm/kasan/common.c:60 (discriminator 1) mm/kasan/common.c:69 (discriminator 1)) 
+[ 388.484867][ T2650] ? kasan_save_free_info (mm/kasan/generic.c:582 (discriminator 1)) 
+[ 388.489928][ T2650] ? _raw_spin_lock (arch/x86/include/asm/atomic.h:107 (discriminator 4) include/linux/atomic/atomic-arch-fallback.h:2170 (discriminator 4) include/linux/atomic/atomic-instrumented.h:1302 (discriminator 4) include/asm-generic/qspinlock.h:111 (discriminator 4) include/linux/spinlock.h:187 (discriminator 4) include/linux/spinlock_api_smp.h:134 (discriminator 4) kernel/locking/spinlock.c:154 (discriminator 4)) 
+[ 388.494465][ T2650] ? __pfx__raw_spin_lock (kernel/locking/spinlock.c:153) 
+[ 388.499522][ T2650] ? __kasan_record_aux_stack (mm/kasan/generic.c:541 (discriminator 1)) 
+[ 388.504926][ T2650] ? wbc_attach_and_unlock_inode (arch/x86/include/asm/jump_label.h:27 include/linux/backing-dev.h:176 fs/fs-writeback.c:737) 
+[ 388.510679][ T2650] filemap_fdatawrite_wbc (mm/filemap.c:398 mm/filemap.c:387) 
+[ 388.515912][ T2650] __filemap_fdatawrite_range (mm/filemap.c:422) 
+[ 388.521317][ T2650] ? __pfx___filemap_fdatawrite_range (mm/filemap.c:422) 
+[ 388.527424][ T2650] ? __pfx_task_work_add (kernel/task_work.c:54) 
+[ 388.532395][ T2650] filemap_write_and_wait_range (mm/filemap.c:685 mm/filemap.c:676) 
+[ 388.537977][ T2650] cifs_flush (fs/smb/client/file.c:2729 (discriminator 2)) cifs
+[ 388.542863][ T2650] filp_flush (fs/open.c:1526) 
+[ 388.546967][ T2650] filp_close (fs/open.c:1540) 
+[ 388.550983][ T2650] put_files_struct (fs/file.c:438 fs/file.c:452 fs/file.c:449) 
+[ 388.555700][ T2650] do_exit (kernel/exit.c:878) 
+[ 388.559651][ T2650] ? __pfx_do_exit (kernel/exit.c:821) 
+[ 388.564106][ T2650] ? update_load_avg (kernel/sched/fair.c:4410 kernel/sched/fair.c:4747) 
+[ 388.569001][ T2650] ? _raw_spin_lock_irq (arch/x86/include/asm/atomic.h:107 (discriminator 4) include/linux/atomic/atomic-arch-fallback.h:2170 (discriminator 4) include/linux/atomic/atomic-instrumented.h:1302 (discriminator 4) include/asm-generic/qspinlock.h:111 (discriminator 4) include/linux/spinlock.h:187 (discriminator 4) include/linux/spinlock_api_smp.h:120 (discriminator 4) kernel/locking/spinlock.c:170 (discriminator 4)) 
+[ 388.573892][ T2650] do_group_exit (kernel/exit.c:1012) 
+[ 388.578264][ T2650] get_signal (kernel/signal.c:746 kernel/signal.c:2794) 
+[ 388.582648][ T2650] ? finish_task_switch+0x1b3/0x750 
+[ 388.588319][ T2650] ? __pfx_get_signal (kernel/signal.c:2682) 
+[ 388.593031][ T2650] ? __schedule (kernel/sched/core.c:6399) 
+[ 388.597485][ T2650] arch_do_signal_or_restart (arch/x86/kernel/signal.c:310 (discriminator 1)) 
+[ 388.602893][ T2650] ? __pfx_arch_do_signal_or_restart (arch/x86/kernel/signal.c:307) 
+[ 388.608910][ T2650] syscall_exit_to_user_mode (kernel/entry/common.c:111 include/linux/entry-common.h:328 kernel/entry/common.c:207 kernel/entry/common.c:218) 
+[ 388.614407][ T2650] do_syscall_64 (arch/x86/entry/common.c:102) 
+[ 388.618771][ T2650] entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130) 
+[  388.624527][ T2650] RIP: 0033:0x7f877d125d32
+[ 388.628802][ T2650] Code: Unable to access opcode bytes at 0x7f877d125d08.
 
-     rcu: INFO: rcu_sched detected expedited stalls on CPUs/tasks: {
-    =
+Code starting with the faulting instruction
+===========================================
+[  388.635684][ T2650] RSP: 002b:00007f877cdffdb0 EFLAGS: 00000293 ORIG_RAX: 0000000000000022
+[  388.643958][ T2650] RAX: fffffffffffffdfe RBX: 00007f877ce006c0 RCX: 00007f877d125d32
+[  388.651794][ T2650] RDX: 0000000000000002 RSI: 0000000000000000 RDI: 0000000000000000
+[  388.659642][ T2650] RBP: 0000000000000000 R08: 0000000000000000 R09: 00007ffe43b01d37
+[  388.667478][ T2650] R10: 00007f877d06bf80 R11: 0000000000000293 R12: ffffffffffffff80
+[  388.675314][ T2650] R13: 0000000000000002 R14: 00007ffe43b01c40 R15: 00007f877c600000
+[  388.683154][ T2650]  </TASK>
+[  388.686037][ T2650]
+[  388.688226][ T2650] Allocated by task 2650:
+[ 388.692414][ T2650] kasan_save_stack (mm/kasan/common.c:48) 
+[ 388.696948][ T2650] kasan_save_track (arch/x86/include/asm/current.h:49 (discriminator 1) mm/kasan/common.c:60 (discriminator 1) mm/kasan/common.c:69 (discriminator 1)) 
+[ 388.701485][ T2650] __kasan_kmalloc (mm/kasan/common.c:370 mm/kasan/common.c:387) 
+[ 388.705934][ T2650] netfs_buffer_append_folio (include/linux/slab.h:681 fs/netfs/misc.c:25) 
+[ 388.711424][ T2650] netfs_write_folio (fs/netfs/write_issue.c:432) 
+[ 388.716307][ T2650] netfs_writepages (fs/netfs/write_issue.c:538 (discriminator 1)) 
+[ 388.721017][ T2650] do_writepages (mm/page-writeback.c:2683) 
+[ 388.725468][ T2650] filemap_fdatawrite_wbc (mm/filemap.c:398 mm/filemap.c:387) 
+[ 388.730699][ T2650] __filemap_fdatawrite_range (mm/filemap.c:422) 
+[ 388.736107][ T2650] filemap_write_and_wait_range (mm/filemap.c:685 mm/filemap.c:676) 
+[ 388.741687][ T2650] cifs_flush (fs/smb/client/file.c:2729 (discriminator 2)) cifs
+[ 388.746589][ T2650] filp_flush (fs/open.c:1526) 
+[ 388.750690][ T2650] filp_close (fs/open.c:1540) 
+[ 388.754704][ T2650] put_files_struct (fs/file.c:438 fs/file.c:452 fs/file.c:449) 
+[ 388.759411][ T2650] do_exit (kernel/exit.c:878) 
+[ 388.763339][ T2650] do_group_exit (kernel/exit.c:1012) 
+[ 388.767702][ T2650] get_signal (kernel/signal.c:746 kernel/signal.c:2794) 
+[ 388.772066][ T2650] arch_do_signal_or_restart (arch/x86/kernel/signal.c:310 (discriminator 1)) 
+[ 388.777478][ T2650] syscall_exit_to_user_mode (kernel/entry/common.c:111 include/linux/entry-common.h:328 kernel/entry/common.c:207 kernel/entry/common.c:218) 
+[ 388.782973][ T2650] do_syscall_64 (arch/x86/entry/common.c:102) 
+[ 388.787338][ T2650] entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130) 
+[  388.793091][ T2650]
+[  388.795282][ T2650] Freed by task 2622:
+[ 388.799128][ T2650] kasan_save_stack (mm/kasan/common.c:48) 
+[ 388.803669][ T2650] kasan_save_track (arch/x86/include/asm/current.h:49 (discriminator 1) mm/kasan/common.c:60 (discriminator 1) mm/kasan/common.c:69 (discriminator 1)) 
+[ 388.808211][ T2650] kasan_save_free_info (mm/kasan/generic.c:582 (discriminator 1)) 
+[ 388.813103][ T2650] poison_slab_object (mm/kasan/common.c:242) 
+[ 388.817993][ T2650] __kasan_slab_free (mm/kasan/common.c:256 (discriminator 1)) 
+[ 388.822642][ T2650] kfree (mm/slub.c:4474 mm/slub.c:4594) 
+[ 388.826311][ T2650] netfs_delete_buffer_head (fs/netfs/misc.c:60) 
+[ 388.831650][ T2650] netfs_writeback_unlock_folios (fs/netfs/write_collect.c:137) 
+[ 388.837489][ T2650] netfs_collect_write_results (fs/netfs/write_collect.c:551) 
+[ 388.843241][ T2650] netfs_write_collection_worker (include/linux/instrumented.h:68 include/asm-generic/bitops/instrumented-non-atomic.h:141 fs/netfs/write_collect.c:641) 
+[ 388.849080][ T2650] process_one_work (kernel/workqueue.c:3231) 
+[ 388.853878][ T2650] worker_thread (kernel/workqueue.c:3306 (discriminator 2) kernel/workqueue.c:3390 (discriminator 2)) 
+[ 388.858415][ T2650] kthread (kernel/kthread.c:389) 
+[ 388.862343][ T2650] ret_from_fork (arch/x86/kernel/process.c:147) 
+[ 388.866627][ T2650] ret_from_fork_asm (arch/x86/entry/entry_64.S:257) 
+[  388.871249][ T2650]
+[  388.873436][ T2650] The buggy address belongs to the object at ffff88813dc6b400
+[  388.873436][ T2650]  which belongs to the cache kmalloc-512 of size 512
 
-    and:
-    =
 
-     WARNING: CPU: 13 PID: 3621 at fs/ceph/caps.c:3386
-    =
+The kernel config and materials to reproduce are available at:
+https://download.01.org/0day-ci/archive/20240808/202408081649.796e7bd-oliver.sang@intel.com
 
-    may happen, along with some UAFs due to PG_private_2 not getting used =
-to
-    wait on writeback completion.
-    =
 
-    Fixes: 2ff1e97587f4 ("netfs: Replace PG_fscache by setting folio->priv=
-ate and marking dirty")
-    Reported-by: Max Kellermann <max.kellermann@ionos.com>
-    Signed-off-by: David Howells <dhowells@redhat.com>
-    cc: Ilya Dryomov <idryomov@gmail.com>
-    cc: Xiubo Li <xiubli@redhat.com>
-    cc: Hristo Venev <hristo@venev.name>
-    cc: Jeff Layton <jlayton@kernel.org>
-    cc: Matthew Wilcox <willy@infradead.org>
-    cc: ceph-devel@vger.kernel.org
-    cc: netfs@lists.linux.dev
-    cc: linux-fsdevel@vger.kernel.org
-    cc: linux-mm@kvack.org
-    Link: https://lore.kernel.org/r/3575457.1722355300@warthog.procyon.org=
-.uk/ [1]
 
-diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-index 73b5a07bf94d..cc0a2240de98 100644
---- a/fs/ceph/addr.c
-+++ b/fs/ceph/addr.c
-@@ -424,6 +424,9 @@ static int ceph_init_request(struct netfs_io_request *=
-rreq, struct file *file)
- 	struct ceph_netfs_request_data *priv;
- 	int ret =3D 0;
- =
-
-+	/* [DEPRECATED] Use PG_private_2 to mark folio being written to the cach=
-e. */
-+	__set_bit(NETFS_RREQ_USE_PGPRIV2, &rreq->flags);
-+
- 	if (rreq->origin !=3D NETFS_READAHEAD)
- 		return 0;
- =
-
-diff --git a/fs/ceph/inode.c b/fs/ceph/inode.c
-index 8f8de8f33abb..71cd70514efa 100644
---- a/fs/ceph/inode.c
-+++ b/fs/ceph/inode.c
-@@ -577,8 +577,6 @@ struct inode *ceph_alloc_inode(struct super_block *sb)
- =
-
- 	/* Set parameters for the netfs library */
- 	netfs_inode_init(&ci->netfs, &ceph_netfs_ops, false);
--	/* [DEPRECATED] Use PG_private_2 to mark folio being written to the cach=
-e. */
--	__set_bit(NETFS_ICTX_USE_PGPRIV2, &ci->netfs.flags);
- =
-
- 	spin_lock_init(&ci->i_ceph_lock);
- =
-
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index 424048f9ed1f..79d83abb655b 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -9,6 +9,97 @@
- #include <linux/task_io_accounting_ops.h>
- #include "internal.h"
- =
-
-+/*
-+ * [DEPRECATED] Unlock the folios in a read operation for when the filesy=
-stem
-+ * is using PG_private_2 and direct writing to the cache from here rather=
- than
-+ * marking the page for writeback.
-+ *
-+ * Note that we don't touch folio->private in this code.
-+ */
-+static void netfs_rreq_unlock_folios_pgpriv2(struct netfs_io_request *rre=
-q)
-+{
-+	struct netfs_io_subrequest *subreq;
-+	struct folio *folio;
-+	pgoff_t start_page =3D rreq->start / PAGE_SIZE;
-+	pgoff_t last_page =3D ((rreq->start + rreq->len) / PAGE_SIZE) - 1;
-+	size_t account =3D 0;
-+	bool subreq_failed =3D false;
-+
-+	XA_STATE(xas, &rreq->mapping->i_pages, start_page);
-+
-+	/* Walk through the pagecache and the I/O request lists simultaneously.
-+	 * We may have a mixture of cached and uncached sections and we only
-+	 * really want to write out the uncached sections.  This is slightly
-+	 * complicated by the possibility that we might have huge pages with a
-+	 * mixture inside.
-+	 */
-+	subreq =3D list_first_entry(&rreq->subrequests,
-+				  struct netfs_io_subrequest, rreq_link);
-+	subreq_failed =3D (subreq->error < 0);
-+
-+	trace_netfs_rreq(rreq, netfs_rreq_trace_unlock_pgpriv2);
-+
-+	rcu_read_lock();
-+	xas_for_each(&xas, folio, last_page) {
-+		loff_t pg_end;
-+		bool pg_failed =3D false;
-+		bool folio_started =3D false;
-+
-+		if (xas_retry(&xas, folio))
-+			continue;
-+
-+		pg_end =3D folio_pos(folio) + folio_size(folio) - 1;
-+
-+		for (;;) {
-+			loff_t sreq_end;
-+
-+			if (!subreq) {
-+				pg_failed =3D true;
-+				break;
-+			}
-+
-+			if (!folio_started &&
-+			    test_bit(NETFS_SREQ_COPY_TO_CACHE, &subreq->flags) &&
-+			    fscache_operation_valid(&rreq->cache_resources)) {
-+				trace_netfs_folio(folio, netfs_folio_trace_copy_to_cache);
-+				folio_start_private_2(folio);
-+				folio_started =3D true;
-+			}
-+
-+			pg_failed |=3D subreq_failed;
-+			sreq_end =3D subreq->start + subreq->len - 1;
-+			if (pg_end < sreq_end)
-+				break;
-+
-+			account +=3D subreq->transferred;
-+			if (!list_is_last(&subreq->rreq_link, &rreq->subrequests)) {
-+				subreq =3D list_next_entry(subreq, rreq_link);
-+				subreq_failed =3D (subreq->error < 0);
-+			} else {
-+				subreq =3D NULL;
-+				subreq_failed =3D false;
-+			}
-+
-+			if (pg_end =3D=3D sreq_end)
-+				break;
-+		}
-+
-+		if (!pg_failed) {
-+			flush_dcache_folio(folio);
-+			folio_mark_uptodate(folio);
-+		}
-+
-+		if (!test_bit(NETFS_RREQ_DONT_UNLOCK_FOLIOS, &rreq->flags)) {
-+			if (folio->index =3D=3D rreq->no_unlock_folio &&
-+			    test_bit(NETFS_RREQ_NO_UNLOCK_FOLIO, &rreq->flags))
-+				kdebug("no unlock");
-+			else
-+				folio_unlock(folio);
-+		}
-+	}
-+	rcu_read_unlock();
-+}
-+
- /*
-  * Unlock the folios in a read operation.  We need to set PG_writeback on=
- any
-  * folios we're going to write back before we unlock them.
-@@ -35,6 +126,12 @@ void netfs_rreq_unlock_folios(struct netfs_io_request =
-*rreq)
- 		}
- 	}
- =
-
-+	/* Handle deprecated PG_private_2 case. */
-+	if (test_bit(NETFS_RREQ_USE_PGPRIV2, &rreq->flags)) {
-+		netfs_rreq_unlock_folios_pgpriv2(rreq);
-+		goto out;
-+	}
-+
- 	/* Walk through the pagecache and the I/O request lists simultaneously.
- 	 * We may have a mixture of cached and uncached sections and we only
- 	 * really want to write out the uncached sections.  This is slightly
-@@ -52,7 +149,6 @@ void netfs_rreq_unlock_folios(struct netfs_io_request *=
-rreq)
- 		loff_t pg_end;
- 		bool pg_failed =3D false;
- 		bool wback_to_cache =3D false;
--		bool folio_started =3D false;
- =
-
- 		if (xas_retry(&xas, folio))
- 			continue;
-@@ -66,17 +162,8 @@ void netfs_rreq_unlock_folios(struct netfs_io_request =
-*rreq)
- 				pg_failed =3D true;
- 				break;
- 			}
--			if (test_bit(NETFS_RREQ_USE_PGPRIV2, &rreq->flags)) {
--				if (!folio_started && test_bit(NETFS_SREQ_COPY_TO_CACHE,
--							       &subreq->flags)) {
--					trace_netfs_folio(folio, netfs_folio_trace_copy_to_cache);
--					folio_start_private_2(folio);
--					folio_started =3D true;
--				}
--			} else {
--				wback_to_cache |=3D
--					test_bit(NETFS_SREQ_COPY_TO_CACHE, &subreq->flags);
--			}
-+
-+			wback_to_cache |=3D test_bit(NETFS_SREQ_COPY_TO_CACHE, &subreq->flags)=
-;
- 			pg_failed |=3D subreq_failed;
- 			sreq_end =3D subreq->start + subreq->len - 1;
- 			if (pg_end < sreq_end)
-@@ -124,6 +211,7 @@ void netfs_rreq_unlock_folios(struct netfs_io_request =
-*rreq)
- 	}
- 	rcu_read_unlock();
- =
-
-+out:
- 	task_io_account_read(account);
- 	if (rreq->netfs_ops->done)
- 		rreq->netfs_ops->done(rreq);
-@@ -395,7 +483,7 @@ static bool netfs_skip_folio_read(struct folio *folio,=
- loff_t pos, size_t len,
- }
- =
-
- /**
-- * netfs_write_begin - Helper to prepare for writing
-+ * netfs_write_begin - Helper to prepare for writing [DEPRECATED]
-  * @ctx: The netfs context
-  * @file: The file to read from
-  * @mapping: The mapping to read from
-@@ -426,6 +514,9 @@ static bool netfs_skip_folio_read(struct folio *folio,=
- loff_t pos, size_t len,
-  * inode before calling this.
-  *
-  * This is usable whether or not caching is enabled.
-+ *
-+ * Note that this should be considered deprecated and netfs_perform_write=
-()
-+ * used instead.
-  */
- int netfs_write_begin(struct netfs_inode *ctx,
- 		      struct file *file, struct address_space *mapping,
-@@ -507,11 +598,9 @@ int netfs_write_begin(struct netfs_inode *ctx,
- 	netfs_put_request(rreq, false, netfs_rreq_trace_put_return);
- =
-
- have_folio:
--	if (test_bit(NETFS_ICTX_USE_PGPRIV2, &ctx->flags)) {
--		ret =3D folio_wait_private_2_killable(folio);
--		if (ret < 0)
--			goto error;
--	}
-+	ret =3D folio_wait_private_2_killable(folio);
-+	if (ret < 0)
-+		goto error;
- have_folio_no_wait:
- 	*_folio =3D folio;
- 	_leave(" =3D 0");
-diff --git a/fs/netfs/objects.c b/fs/netfs/objects.c
-index f4a642727479..0faea0cee179 100644
---- a/fs/netfs/objects.c
-+++ b/fs/netfs/objects.c
-@@ -57,10 +57,6 @@ struct netfs_io_request *netfs_alloc_request(struct add=
-ress_space *mapping,
- =
-
- 	__set_bit(NETFS_RREQ_IN_PROGRESS, &rreq->flags);
- 	if (cached) {
--		__set_bit(NETFS_RREQ_WRITE_TO_CACHE, &rreq->flags);
--		if (test_bit(NETFS_ICTX_USE_PGPRIV2, &ctx->flags))
--			/* Filesystem uses deprecated PG_private_2 marking. */
--			__set_bit(NETFS_RREQ_USE_PGPRIV2, &rreq->flags);
- 	}
- 	if (file && file->f_flags & O_NONBLOCK)
- 		__set_bit(NETFS_RREQ_NONBLOCK, &rreq->flags);
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index 9258d30cffe3..d35bb0f25d69 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -102,7 +102,7 @@ struct netfs_io_request *netfs_create_write_req(struct=
- address_space *mapping,
- 	_enter("R=3D%x", wreq->debug_id);
- =
-
- 	ictx =3D netfs_inode(wreq->inode);
--	if (test_bit(NETFS_RREQ_WRITE_TO_CACHE, &wreq->flags))
-+	if (fscache_operation_valid(&wreq->cache_resources))
- 		fscache_begin_write_operation(&wreq->cache_resources, netfs_i_cookie(ic=
-tx));
- =
-
- 	wreq->contiguity =3D wreq->start;
-diff --git a/fs/nfs/fscache.c b/fs/nfs/fscache.c
-index 7202ce84d0eb..bf29a65c5027 100644
---- a/fs/nfs/fscache.c
-+++ b/fs/nfs/fscache.c
-@@ -265,6 +265,8 @@ static int nfs_netfs_init_request(struct netfs_io_requ=
-est *rreq, struct file *fi
- {
- 	rreq->netfs_priv =3D get_nfs_open_context(nfs_file_open_context(file));
- 	rreq->debug_id =3D atomic_inc_return(&nfs_netfs_debug_id);
-+	/* [DEPRECATED] Use PG_private_2 to mark folio being written to the cach=
-e. */
-+	__set_bit(NETFS_RREQ_USE_PGPRIV2, &rreq->flags);
- =
-
- 	return 0;
- }
-diff --git a/fs/nfs/fscache.h b/fs/nfs/fscache.h
-index fbed0027996f..e8adae1bc260 100644
---- a/fs/nfs/fscache.h
-+++ b/fs/nfs/fscache.h
-@@ -81,8 +81,6 @@ static inline void nfs_netfs_put(struct nfs_netfs_io_dat=
-a *netfs)
- static inline void nfs_netfs_inode_init(struct nfs_inode *nfsi)
- {
- 	netfs_inode_init(&nfsi->netfs, &nfs_netfs_ops, false);
--	/* [DEPRECATED] Use PG_private_2 to mark folio being written to the cach=
-e. */
--	__set_bit(NETFS_ICTX_USE_PGPRIV2, &nfsi->netfs.flags);
- }
- extern void nfs_netfs_initiate_read(struct nfs_pgio_header *hdr);
- extern void nfs_netfs_read_completion(struct nfs_pgio_header *hdr);
-diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-index 5d0288938cc2..983816608f15 100644
---- a/include/linux/netfs.h
-+++ b/include/linux/netfs.h
-@@ -73,8 +73,6 @@ struct netfs_inode {
- #define NETFS_ICTX_ODIRECT	0		/* The file has DIO in progress */
- #define NETFS_ICTX_UNBUFFERED	1		/* I/O should not use the pagecache */
- #define NETFS_ICTX_WRITETHROUGH	2		/* Write-through caching */
--#define NETFS_ICTX_USE_PGPRIV2	31		/* [DEPRECATED] Use PG_private_2 to ma=
-rk
--						 * write to cache on read */
- };
- =
-
- /*
-@@ -269,7 +267,6 @@ struct netfs_io_request {
- #define NETFS_RREQ_DONT_UNLOCK_FOLIOS	3	/* Don't unlock the folios on com=
-pletion */
- #define NETFS_RREQ_FAILED		4	/* The request failed */
- #define NETFS_RREQ_IN_PROGRESS		5	/* Unlocked when the request completes =
-*/
--#define NETFS_RREQ_WRITE_TO_CACHE	7	/* Need to write to the cache */
- #define NETFS_RREQ_UPLOAD_TO_SERVER	8	/* Need to write to the server */
- #define NETFS_RREQ_NONBLOCK		9	/* Don't block if possible (O_NONBLOCK) */
- #define NETFS_RREQ_BLOCKED		10	/* We blocked */
-diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
-index 24ec3434d32e..606b4a0f92da 100644
---- a/include/trace/events/netfs.h
-+++ b/include/trace/events/netfs.h
-@@ -51,6 +51,7 @@
- 	EM(netfs_rreq_trace_resubmit,		"RESUBMT")	\
- 	EM(netfs_rreq_trace_set_pause,		"PAUSE  ")	\
- 	EM(netfs_rreq_trace_unlock,		"UNLOCK ")	\
-+	EM(netfs_rreq_trace_unlock_pgpriv2,	"UNLCK-2")	\
- 	EM(netfs_rreq_trace_unmark,		"UNMARK ")	\
- 	EM(netfs_rreq_trace_wait_ip,		"WAIT-IP")	\
- 	EM(netfs_rreq_trace_wait_pause,		"WT-PAUS")	\
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
