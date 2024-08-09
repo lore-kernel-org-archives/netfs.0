@@ -1,61 +1,62 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9B02575F
-	for <netfs@lists.linux.dev>; Thu,  8 Aug 2024 21:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A6A7195FD1
+	for <netfs@lists.linux.dev>; Fri,  9 Aug 2024 13:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723152696; cv=none; b=ECckvAGKluCJUEAZ1sDpoNf0zJqsDMO/ta1MnoKEWlXtrMFMc++UwrjysLt8x7t4b6rDXwDI0Yp8RHrtY58KBKNta/S0INVbhUYwWiWOc7W0zyjnhsBptqbU5fZzhbFGu0Hj52GzVVXowX/zDYEgyj3DVdp4KH0jlJalB1/kFF0=
+	t=1723211788; cv=none; b=THecNMHyS33iObSZbeYQ1r10zW2zMYcGJZkIrbXmga4ew7f7G2iRdQMl6AVFtuPrto3bStv/ZWZeWMxEKXPToE5HZxGM5XH65joidCJ9CA+KINkSVUf9reGeoT75YzQ++RADdSPlr//udGJZte9qgpsDnxrAH4wyR/EA5elMRZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723152696; c=relaxed/simple;
-	bh=MyNWyii6bU5O8DpARyOzkQUWO+hxrWUPkyfZ2UadKhA=;
-	h=From:In-Reply-To:References:Cc:Subject:MIME-Version:Content-Type:
-	 Date:Message-ID; b=QUDK7IKP+YSPUxfCTCTvKQv7rE1CusHApPIBtVG3BqUMoi97anBcCnmgVIDkavgFHWvtRKMRWW9GNMIg+ZSm/oFEwC213uLv3SH1npRWEmiYSDnM9nzOyW4IL/57NXyqyfeKiXnkIto5uDDZRg9PhO5Ywz87ZhYvLNCNJRhTNBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=euBRxjIO; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1723211788; c=relaxed/simple;
+	bh=GLNnkj1oYbZiZy4j5Eu0TSV+NeDFNL5rcs9PdWBpS6M=;
+	h=To:cc:Subject:MIME-Version:Content-Type:From:Date:Message-ID; b=FGPLD3z6yEmM3PrbVtisM6LYvqtXk8iDA2G3WHsEemM5Sn2DnFc9YyySEbkWIGMd4M+Aqi19ew93T+p21uf4agDlH3v6HXOhwoTqftvICQJ2fdVcOJXJD2E7gQl++02R8GnzPzx+BYjXTvHmTMLTqYSy6TY3hQFHX0eWnggqg9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QpfoHd3s; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="euBRxjIO"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QpfoHd3s"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723152693;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lBew0DBZPcSI+nscYqrappS6bJzFQOs+iJhXYUlkzgU=;
-	b=euBRxjIOTCuImYWM/kqtMU+F8JRgBq9HFNjcD+KmckaTZ92DcHhUP2GBmncozK+IZC0Xhp
-	7g4ChqXWw/Otp9uidWX85ngnoztSXdxw9EuoENtTrvuqaBjAeBNtvmed9pTLziExW64KK6
-	x1PyOUsNTt0OAGSVhJL1VFWOC3JM3Bw=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+	s=mimecast20190719; t=1723211786;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=apin+9jgzFuDXSZ4CuNnU6Ut/Wa48SE7YgICxGZt4k8=;
+	b=QpfoHd3sACnvAkwr6pfm6slLLlN5U9FzO6HtWIoTXjuXr8b9YNqtljqMsSzPJ4R8IB/vnu
+	E7WCUtX1lJCz5/q14UVKfvfR3q1CLkP/urHwwq1SssE2gv9rfTutT5HR8/wIG9FXJ0Y5H+
+	Gt91VYlyDMl1cKwoOb+vfAh+9m+Gfrk=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-452-YVN5bS2tPDqGoFi0NMMKPA-1; Thu,
- 08 Aug 2024 17:31:30 -0400
-X-MC-Unique: YVN5bS2tPDqGoFi0NMMKPA-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-424-65E9MiYgO2Ox1Cz4ptHNCA-1; Fri,
+ 09 Aug 2024 09:56:20 -0400
+X-MC-Unique: 65E9MiYgO2Ox1Cz4ptHNCA-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 810CA1954225;
-	Thu,  8 Aug 2024 21:31:27 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 589471944B2C;
+	Fri,  9 Aug 2024 13:56:17 +0000 (UTC)
 Received: from warthog.procyon.org.uk (unknown [10.42.28.216])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E898B19560A3;
-	Thu,  8 Aug 2024 21:31:23 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E820F300018D;
+	Fri,  9 Aug 2024 13:56:10 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
 	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
 	Kingdom.
 	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <861629.1723061874@warthog.procyon.org.uk>
-References: <861629.1723061874@warthog.procyon.org.uk> <CAKPOu+-4LQM2-Ciro0LbbhVPa+YyHD3BnLL+drmG5Ca-b4wmLg@mail.gmail.com> <20240729091532.855688-1-max.kellermann@ionos.com> <3575457.1722355300@warthog.procyon.org.uk> <CAKPOu+9_TQx8XaB2gDKzwN-YoN69uKoZGiCDPQjz5fO-2ztdFQ@mail.gmail.com> <CAKPOu+-4C7qPrOEe=trhmpqoC-UhCLdHGmeyjzaUymg=k93NEA@mail.gmail.com> <3717298.1722422465@warthog.procyon.org.uk>
-Cc: dhowells@redhat.com, Max Kellermann <max.kellermann@ionos.com>,
-    Hristo Venev <hristo@venev.name>, Ilya Dryomov <idryomov@gmail.com>,
-    Xiubo Li <xiubli@redhat.com>, Jeff Layton <jlayton@kernel.org>,
-    willy@infradead.org, Christian Brauner <brauner@kernel.org>,
-    ceph-devel@vger.kernel.org, netfs@lists.linux.dev,
-    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-    stable@vger.kernel.org
-Subject: [PATCH v3] netfs: Fix handling of USE_PGPRIV2 and WRITE_TO_CACHE flags
+To: Dominique Martinet <asmadeus@codewreck.org>,
+    Eric Van Hensbergen <ericvh@kernel.org>
+cc: dhowells@redhat.com, Latchesar Ionkov <lucho@ionkov.net>,
+    Christian Schoenebeck <linux_oss@crudebyte.com>,
+    Marc Dionne <marc.dionne@auristor.com>,
+    Ilya Dryomov <idryomov@gmail.com>, Steve French <sfrench@samba.org>,
+    Paulo Alcantara <pc@manguebit.com>,
+    Trond Myklebust <trond.myklebust@hammerspace.com>,
+    Christian Brauner <brauner@kernel.org>, v9fs@lists.linux.dev,
+    linux-afs@lists.infradead.org, ceph-devel@vger.kernel.org,
+    linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
+    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: [PATCH] 9p: Fix DIO read through netfs
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -63,468 +64,217 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1173208.1723152682.1@warthog.procyon.org.uk>
+Content-ID: <1229143.1723211707.1@warthog.procyon.org.uk>
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 08 Aug 2024 22:31:22 +0100
-Message-ID: <1173209.1723152682@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+From: David Howells <dhowells@redhat.com>
+Date: Fri, 09 Aug 2024 14:56:09 +0100
+Message-ID: <1229195.1723211769@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-It turned out that I had accidentally disabled caching for 9p, afs and cif=
-s,
-so here's a v3 that fixes that.
+From: Dominique Martinet <asmadeus@codewreck.org>
 
-David
----
-netfs: Fix handling of USE_PGPRIV2 and WRITE_TO_CACHE flags
+9p: Fix DIO read through netfs
 
-The NETFS_RREQ_USE_PGPRIV2 and NETFS_RREQ_WRITE_TO_CACHE flags aren't used
-correctly.  The problem is that we try to set them up in the request
-initialisation, but we the cache may be in the process of setting up still=
+If a program is watching a file on a 9p mount, it won't see any change in
+size if the file being exported by the server is changed directly in the
+source filesystem, presumably because 9p doesn't have change notifications=
 ,
-and so the state may not be correct.  Further, we secondarily sample the
-cache state and make contradictory decisions later.
+and because netfs skips the reads if the file is empty.
 
-The issue arises because we set up the cache resources, which allows the
-cache's ->prepare_read() to switch on NETFS_SREQ_COPY_TO_CACHE - which
-triggers cache writing even if we didn't set the flags when allocating.
+Fix this by attempting to read the full size specified when a DIO read is
+requested (such as when 9p is operating in unbuffered mode) and dealing
+with a short read if the EOF was less than the expected read.
 
-Fix this in the following way:
+To make this work, filesystems using netfslib must not set
+NETFS_SREQ_CLEAR_TAIL if performing a DIO read where that read hit the EOF=
+.
+I don't want to mandatorily clear this flag in netfslib for DIO because,
+say, ceph might make a read from an object that is not completely filled,
+but does not reside at the end of file - and so we need to clear the
+excess.
 
- (1) Drop NETFS_ICTX_USE_PGPRIV2 and instead set NETFS_RREQ_USE_PGPRIV2 in
-     ->init_request() rather than trying to juggle that in
-     netfs_alloc_request().
+This can be tested by watching an empty file over 9p within a VM (such as
+in the ktest framework):
 
- (2) Repurpose NETFS_RREQ_USE_PGPRIV2 to merely indicate that if caching i=
-s
-     to be done, then PG_private_2 is to be used rather than only setting
-     it if we decide to cache and then having netfs_rreq_unlock_folios()
-     set the non-PG_private_2 writeback-to-cache if it wasn't set.
+        while true; do read content; if [ -n "$content" ]; then echo $cont=
+ent; break; fi; done < /host/tmp/foo
 
- (3) Split netfs_rreq_unlock_folios() into two functions, one of which
-     contains the deprecated code for using PG_private_2 to avoid
-     accidentally doing the writeback path - and always use it if
-     USE_PGPRIV2 is set.
+then writing something into the empty file.  The watcher should immediatel=
+y
+display the file content and break out of the loop.  Without this fix, it
+remains in the loop indefinitely.
 
- (4) As NETFS_ICTX_USE_PGPRIV2 is removed, make netfs_write_begin() always
-     wait for PG_private_2.  This function is deprecated and only used by
-     ceph anyway, and so label it so.
-
- (5) Drop the NETFS_RREQ_WRITE_TO_CACHE flag and use
-     fscache_operation_valid() on the cache_resources instead.  This has
-     the advantage of picking up the result of netfs_begin_cache_read() an=
-d
-     fscache_begin_write_operation() - which are called after the object i=
-s
-     initialised and will wait for the cache to come to a usable state.
-
-Just reverting ae678317b95e[1] isn't a sufficient fix, so this need to be
-applied on top of that.  Without this as well, things like:
-
- rcu: INFO: rcu_sched detected expedited stalls on CPUs/tasks: {
-
-and:
-
- WARNING: CPU: 13 PID: 3621 at fs/ceph/caps.c:3386
-
-may happen, along with some UAFs due to PG_private_2 not getting used to
-wait on writeback completion.
-
-Fixes: 2ff1e97587f4 ("netfs: Replace PG_fscache by setting folio->private =
-and marking dirty")
-Reported-by: Max Kellermann <max.kellermann@ionos.com>
+Fixes: 80105ed2fd27 ("9p: Use netfslib read/write_iter")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D218916
+Written-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Eric Van Hensbergen <ericvh@kernel.org>
+cc: Latchesar Ionkov <lucho@ionkov.net>
+cc: Christian Schoenebeck <linux_oss@crudebyte.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
 cc: Ilya Dryomov <idryomov@gmail.com>
-cc: Xiubo Li <xiubli@redhat.com>
-cc: Hristo Venev <hristo@venev.name>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: Matthew Wilcox <willy@infradead.org>
+cc: Steve French <sfrench@samba.org>
+cc: Paulo Alcantara <pc@manguebit.com>
+cc: Trond Myklebust <trond.myklebust@hammerspace.com>
+cc: v9fs@lists.linux.dev
+cc: linux-afs@lists.infradead.org
 cc: ceph-devel@vger.kernel.org
+cc: linux-cifs@vger.kernel.org
+cc: linux-nfs@vger.kernel.org
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
-cc: linux-mm@kvack.org
-Link: https://lore.kernel.org/r/3575457.1722355300@warthog.procyon.org.uk/=
- [1]
 ---
- fs/ceph/addr.c               |    3 +
- fs/ceph/inode.c              |    2 =
+ fs/9p/vfs_addr.c     |    3 ++-
+ fs/afs/file.c        |    3 ++-
+ fs/ceph/addr.c       |    6 ++++--
+ fs/netfs/io.c        |   17 +++++++++++------
+ fs/nfs/fscache.c     |    3 ++-
+ fs/smb/client/file.c |    3 ++-
+ 6 files changed, 23 insertions(+), 12 deletions(-)
 
- fs/netfs/buffered_read.c     |  125 ++++++++++++++++++++++++++++++++++++-=
-------
- fs/netfs/objects.c           |   10 ---
- fs/netfs/write_issue.c       |    4 +
- fs/nfs/fscache.c             |    2 =
+diff --git a/fs/9p/vfs_addr.c b/fs/9p/vfs_addr.c
+index a97ceb105cd8..24fdc74caeba 100644
+--- a/fs/9p/vfs_addr.c
++++ b/fs/9p/vfs_addr.c
+@@ -75,7 +75,8 @@ static void v9fs_issue_read(struct netfs_io_subrequest *=
+subreq)
+ =
 
- fs/nfs/fscache.h             |    2 =
+ 	/* if we just extended the file size, any portion not in
+ 	 * cache won't be on server and is zeroes */
+-	__set_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags);
++	if (subreq->rreq->origin !=3D NETFS_DIO_READ)
++		__set_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags);
+ =
 
- include/linux/netfs.h        |    3 -
- include/trace/events/netfs.h |    1 =
+ 	netfs_subreq_terminated(subreq, err ?: total, false);
+ }
+diff --git a/fs/afs/file.c b/fs/afs/file.c
+index c3f0c45ae9a9..ec1be0091fdb 100644
+--- a/fs/afs/file.c
++++ b/fs/afs/file.c
+@@ -242,7 +242,8 @@ static void afs_fetch_data_notify(struct afs_operation=
+ *op)
+ =
 
- 9 files changed, 116 insertions(+), 36 deletions(-)
-
+ 	req->error =3D error;
+ 	if (subreq) {
+-		__set_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags);
++		if (subreq->rreq->origin !=3D NETFS_DIO_READ)
++			__set_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags);
+ 		netfs_subreq_terminated(subreq, error ?: req->actual_len, false);
+ 		req->subreq =3D NULL;
+ 	} else if (req->done) {
 diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-index 73b5a07bf94d..cc0a2240de98 100644
+index cc0a2240de98..c4744a02db75 100644
 --- a/fs/ceph/addr.c
 +++ b/fs/ceph/addr.c
-@@ -424,6 +424,9 @@ static int ceph_init_request(struct netfs_io_request *=
-rreq, struct file *file)
- 	struct ceph_netfs_request_data *priv;
- 	int ret =3D 0;
+@@ -246,7 +246,8 @@ static void finish_netfs_read(struct ceph_osd_request =
+*req)
+ 	if (err >=3D 0) {
+ 		if (sparse && err > 0)
+ 			err =3D ceph_sparse_ext_map_end(op);
+-		if (err < subreq->len)
++		if (err < subreq->len &&
++		    subreq->rreq->origin !=3D NETFS_DIO_READ)
+ 			__set_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags);
+ 		if (IS_ENCRYPTED(inode) && err > 0) {
+ 			err =3D ceph_fscrypt_decrypt_extents(inode,
+@@ -282,7 +283,8 @@ static bool ceph_netfs_issue_op_inline(struct netfs_io=
+_subrequest *subreq)
+ 	size_t len;
+ 	int mode;
  =
 
-+	/* [DEPRECATED] Use PG_private_2 to mark folio being written to the cach=
-e. */
-+	__set_bit(NETFS_RREQ_USE_PGPRIV2, &rreq->flags);
-+
- 	if (rreq->origin !=3D NETFS_READAHEAD)
- 		return 0;
+-	__set_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags);
++	if (rreq->origin !=3D NETFS_DIO_READ)
++		__set_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags);
+ 	__clear_bit(NETFS_SREQ_COPY_TO_CACHE, &subreq->flags);
  =
 
-diff --git a/fs/ceph/inode.c b/fs/ceph/inode.c
-index 8f8de8f33abb..71cd70514efa 100644
---- a/fs/ceph/inode.c
-+++ b/fs/ceph/inode.c
-@@ -577,8 +577,6 @@ struct inode *ceph_alloc_inode(struct super_block *sb)
+ 	if (subreq->start >=3D inode->i_size)
+diff --git a/fs/netfs/io.c b/fs/netfs/io.c
+index c179a1c73fa7..5367caf3fa28 100644
+--- a/fs/netfs/io.c
++++ b/fs/netfs/io.c
+@@ -530,7 +530,8 @@ void netfs_subreq_terminated(struct netfs_io_subreques=
+t *subreq,
  =
 
- 	/* Set parameters for the netfs library */
- 	netfs_inode_init(&ci->netfs, &ceph_netfs_ops, false);
--	/* [DEPRECATED] Use PG_private_2 to mark folio being written to the cach=
-e. */
--	__set_bit(NETFS_ICTX_USE_PGPRIV2, &ci->netfs.flags);
- =
-
- 	spin_lock_init(&ci->i_ceph_lock);
- =
-
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index 424048f9ed1f..27c750d39476 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -9,6 +9,97 @@
- #include <linux/task_io_accounting_ops.h>
- #include "internal.h"
- =
-
-+/*
-+ * [DEPRECATED] Unlock the folios in a read operation for when the filesy=
-stem
-+ * is using PG_private_2 and direct writing to the cache from here rather=
- than
-+ * marking the page for writeback.
-+ *
-+ * Note that we don't touch folio->private in this code.
-+ */
-+static void netfs_rreq_unlock_folios_pgpriv2(struct netfs_io_request *rre=
-q,
-+					     size_t *account)
-+{
-+	struct netfs_io_subrequest *subreq;
-+	struct folio *folio;
-+	pgoff_t start_page =3D rreq->start / PAGE_SIZE;
-+	pgoff_t last_page =3D ((rreq->start + rreq->len) / PAGE_SIZE) - 1;
-+	bool subreq_failed =3D false;
-+
-+	XA_STATE(xas, &rreq->mapping->i_pages, start_page);
-+
-+	/* Walk through the pagecache and the I/O request lists simultaneously.
-+	 * We may have a mixture of cached and uncached sections and we only
-+	 * really want to write out the uncached sections.  This is slightly
-+	 * complicated by the possibility that we might have huge pages with a
-+	 * mixture inside.
-+	 */
-+	subreq =3D list_first_entry(&rreq->subrequests,
-+				  struct netfs_io_subrequest, rreq_link);
-+	subreq_failed =3D (subreq->error < 0);
-+
-+	trace_netfs_rreq(rreq, netfs_rreq_trace_unlock_pgpriv2);
-+
-+	rcu_read_lock();
-+	xas_for_each(&xas, folio, last_page) {
-+		loff_t pg_end;
-+		bool pg_failed =3D false;
-+		bool folio_started =3D false;
-+
-+		if (xas_retry(&xas, folio))
-+			continue;
-+
-+		pg_end =3D folio_pos(folio) + folio_size(folio) - 1;
-+
-+		for (;;) {
-+			loff_t sreq_end;
-+
-+			if (!subreq) {
-+				pg_failed =3D true;
-+				break;
-+			}
-+
-+			if (!folio_started &&
-+			    test_bit(NETFS_SREQ_COPY_TO_CACHE, &subreq->flags) &&
-+			    fscache_operation_valid(&rreq->cache_resources)) {
-+				trace_netfs_folio(folio, netfs_folio_trace_copy_to_cache);
-+				folio_start_private_2(folio);
-+				folio_started =3D true;
-+			}
-+
-+			pg_failed |=3D subreq_failed;
-+			sreq_end =3D subreq->start + subreq->len - 1;
-+			if (pg_end < sreq_end)
-+				break;
-+
-+			*account +=3D subreq->transferred;
-+			if (!list_is_last(&subreq->rreq_link, &rreq->subrequests)) {
-+				subreq =3D list_next_entry(subreq, rreq_link);
-+				subreq_failed =3D (subreq->error < 0);
-+			} else {
-+				subreq =3D NULL;
-+				subreq_failed =3D false;
-+			}
-+
-+			if (pg_end =3D=3D sreq_end)
-+				break;
-+		}
-+
-+		if (!pg_failed) {
-+			flush_dcache_folio(folio);
-+			folio_mark_uptodate(folio);
-+		}
-+
-+		if (!test_bit(NETFS_RREQ_DONT_UNLOCK_FOLIOS, &rreq->flags)) {
-+			if (folio->index =3D=3D rreq->no_unlock_folio &&
-+			    test_bit(NETFS_RREQ_NO_UNLOCK_FOLIO, &rreq->flags))
-+				_debug("no unlock");
-+			else
-+				folio_unlock(folio);
-+		}
-+	}
-+	rcu_read_unlock();
-+}
-+
- /*
-  * Unlock the folios in a read operation.  We need to set PG_writeback on=
- any
-  * folios we're going to write back before we unlock them.
-@@ -35,6 +126,12 @@ void netfs_rreq_unlock_folios(struct netfs_io_request =
-*rreq)
+ 	if (transferred_or_error =3D=3D 0) {
+ 		if (__test_and_set_bit(NETFS_SREQ_NO_PROGRESS, &subreq->flags)) {
+-			subreq->error =3D -ENODATA;
++			if (rreq->origin !=3D NETFS_DIO_READ)
++				subreq->error =3D -ENODATA;
+ 			goto failed;
  		}
- 	}
- =
-
-+	/* Handle deprecated PG_private_2 case. */
-+	if (test_bit(NETFS_RREQ_USE_PGPRIV2, &rreq->flags)) {
-+		netfs_rreq_unlock_folios_pgpriv2(rreq, &account);
-+		goto out;
-+	}
-+
- 	/* Walk through the pagecache and the I/O request lists simultaneously.
- 	 * We may have a mixture of cached and uncached sections and we only
- 	 * really want to write out the uncached sections.  This is slightly
-@@ -52,7 +149,6 @@ void netfs_rreq_unlock_folios(struct netfs_io_request *=
-rreq)
- 		loff_t pg_end;
- 		bool pg_failed =3D false;
- 		bool wback_to_cache =3D false;
--		bool folio_started =3D false;
- =
-
- 		if (xas_retry(&xas, folio))
- 			continue;
-@@ -66,17 +162,8 @@ void netfs_rreq_unlock_folios(struct netfs_io_request =
-*rreq)
- 				pg_failed =3D true;
- 				break;
+ 	} else {
+@@ -601,9 +602,14 @@ netfs_rreq_prepare_read(struct netfs_io_request *rreq=
+,
  			}
--			if (test_bit(NETFS_RREQ_USE_PGPRIV2, &rreq->flags)) {
--				if (!folio_started && test_bit(NETFS_SREQ_COPY_TO_CACHE,
--							       &subreq->flags)) {
--					trace_netfs_folio(folio, netfs_folio_trace_copy_to_cache);
--					folio_start_private_2(folio);
--					folio_started =3D true;
--				}
--			} else {
--				wback_to_cache |=3D
--					test_bit(NETFS_SREQ_COPY_TO_CACHE, &subreq->flags);
--			}
+ 			if (subreq->len > ictx->zero_point - subreq->start)
+ 				subreq->len =3D ictx->zero_point - subreq->start;
 +
-+			wback_to_cache |=3D test_bit(NETFS_SREQ_COPY_TO_CACHE, &subreq->flags)=
-;
- 			pg_failed |=3D subreq_failed;
- 			sreq_end =3D subreq->start + subreq->len - 1;
- 			if (pg_end < sreq_end)
-@@ -124,6 +211,7 @@ void netfs_rreq_unlock_folios(struct netfs_io_request =
-*rreq)
- 	}
- 	rcu_read_unlock();
++			/* We limit buffered reads to the EOF, but let the
++			 * server deal with larger-than-EOF DIO/unbuffered
++			 * reads.
++			 */
++			if (subreq->len > rreq->i_size - subreq->start)
++				subreq->len =3D rreq->i_size - subreq->start;
+ 		}
+-		if (subreq->len > rreq->i_size - subreq->start)
+-			subreq->len =3D rreq->i_size - subreq->start;
+ 		if (rreq->rsize && subreq->len > rreq->rsize)
+ 			subreq->len =3D rreq->rsize;
  =
 
-+out:
- 	task_io_account_read(account);
- 	if (rreq->netfs_ops->done)
- 		rreq->netfs_ops->done(rreq);
-@@ -395,7 +483,7 @@ static bool netfs_skip_folio_read(struct folio *folio,=
- loff_t pos, size_t len,
- }
- =
-
- /**
-- * netfs_write_begin - Helper to prepare for writing
-+ * netfs_write_begin - Helper to prepare for writing [DEPRECATED]
-  * @ctx: The netfs context
-  * @file: The file to read from
-  * @mapping: The mapping to read from
-@@ -426,6 +514,9 @@ static bool netfs_skip_folio_read(struct folio *folio,=
- loff_t pos, size_t len,
-  * inode before calling this.
-  *
-  * This is usable whether or not caching is enabled.
-+ *
-+ * Note that this should be considered deprecated and netfs_perform_write=
-()
-+ * used instead.
-  */
- int netfs_write_begin(struct netfs_inode *ctx,
- 		      struct file *file, struct address_space *mapping,
-@@ -507,11 +598,9 @@ int netfs_write_begin(struct netfs_inode *ctx,
- 	netfs_put_request(rreq, false, netfs_rreq_trace_put_return);
- =
-
- have_folio:
--	if (test_bit(NETFS_ICTX_USE_PGPRIV2, &ctx->flags)) {
--		ret =3D folio_wait_private_2_killable(folio);
--		if (ret < 0)
--			goto error;
--	}
-+	ret =3D folio_wait_private_2_killable(folio);
-+	if (ret < 0)
-+		goto error;
- have_folio_no_wait:
- 	*_folio =3D folio;
- 	_leave(" =3D 0");
-diff --git a/fs/netfs/objects.c b/fs/netfs/objects.c
-index f4a642727479..0294df70c3ff 100644
---- a/fs/netfs/objects.c
-+++ b/fs/netfs/objects.c
-@@ -24,10 +24,6 @@ struct netfs_io_request *netfs_alloc_request(struct add=
-ress_space *mapping,
- 	struct netfs_io_request *rreq;
- 	mempool_t *mempool =3D ctx->ops->request_pool ?: &netfs_request_pool;
- 	struct kmem_cache *cache =3D mempool->pool_data;
--	bool is_unbuffered =3D (origin =3D=3D NETFS_UNBUFFERED_WRITE ||
--			      origin =3D=3D NETFS_DIO_READ ||
--			      origin =3D=3D NETFS_DIO_WRITE);
--	bool cached =3D !is_unbuffered && netfs_is_cache_enabled(ctx);
- 	int ret;
- =
-
- 	for (;;) {
-@@ -56,12 +52,6 @@ struct netfs_io_request *netfs_alloc_request(struct add=
-ress_space *mapping,
- 	refcount_set(&rreq->ref, 1);
- =
-
- 	__set_bit(NETFS_RREQ_IN_PROGRESS, &rreq->flags);
--	if (cached) {
--		__set_bit(NETFS_RREQ_WRITE_TO_CACHE, &rreq->flags);
--		if (test_bit(NETFS_ICTX_USE_PGPRIV2, &ctx->flags))
--			/* Filesystem uses deprecated PG_private_2 marking. */
--			__set_bit(NETFS_RREQ_USE_PGPRIV2, &rreq->flags);
--	}
- 	if (file && file->f_flags & O_NONBLOCK)
- 		__set_bit(NETFS_RREQ_NONBLOCK, &rreq->flags);
- 	if (rreq->netfs_ops->init_request) {
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index 9258d30cffe3..3f7e37e50c7d 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -94,6 +94,8 @@ struct netfs_io_request *netfs_create_write_req(struct a=
-ddress_space *mapping,
- {
- 	struct netfs_io_request *wreq;
- 	struct netfs_inode *ictx;
-+	bool is_buffered =3D (origin =3D=3D NETFS_WRITEBACK ||
-+			    origin =3D=3D NETFS_WRITETHROUGH);
- =
-
- 	wreq =3D netfs_alloc_request(mapping, file, start, 0, origin);
- 	if (IS_ERR(wreq))
-@@ -102,7 +104,7 @@ struct netfs_io_request *netfs_create_write_req(struct=
- address_space *mapping,
- 	_enter("R=3D%x", wreq->debug_id);
- =
-
- 	ictx =3D netfs_inode(wreq->inode);
--	if (test_bit(NETFS_RREQ_WRITE_TO_CACHE, &wreq->flags))
-+	if (is_buffered && netfs_is_cache_enabled(ictx))
- 		fscache_begin_write_operation(&wreq->cache_resources, netfs_i_cookie(ic=
-tx));
- =
-
- 	wreq->contiguity =3D wreq->start;
+@@ -739,11 +745,10 @@ int netfs_begin_read(struct netfs_io_request *rreq, =
+bool sync)
+ 	do {
+ 		_debug("submit %llx + %llx >=3D %llx",
+ 		       rreq->start, rreq->submitted, rreq->i_size);
+-		if (rreq->origin =3D=3D NETFS_DIO_READ &&
+-		    rreq->start + rreq->submitted >=3D rreq->i_size)
+-			break;
+ 		if (!netfs_rreq_submit_slice(rreq, &io_iter))
+ 			break;
++		if (test_bit(NETFS_SREQ_NO_PROGRESS, &rreq->flags))
++			break;
+ 		if (test_bit(NETFS_RREQ_BLOCKED, &rreq->flags) &&
+ 		    test_bit(NETFS_RREQ_NONBLOCK, &rreq->flags))
+ 			break;
 diff --git a/fs/nfs/fscache.c b/fs/nfs/fscache.c
-index 7202ce84d0eb..bf29a65c5027 100644
+index bf29a65c5027..7a558dea75c4 100644
 --- a/fs/nfs/fscache.c
 +++ b/fs/nfs/fscache.c
-@@ -265,6 +265,8 @@ static int nfs_netfs_init_request(struct netfs_io_requ=
-est *rreq, struct file *fi
- {
- 	rreq->netfs_priv =3D get_nfs_open_context(nfs_file_open_context(file));
- 	rreq->debug_id =3D atomic_inc_return(&nfs_netfs_debug_id);
-+	/* [DEPRECATED] Use PG_private_2 to mark folio being written to the cach=
-e. */
-+	__set_bit(NETFS_RREQ_USE_PGPRIV2, &rreq->flags);
+@@ -363,7 +363,8 @@ void nfs_netfs_read_completion(struct nfs_pgio_header =
+*hdr)
+ 		return;
  =
 
- 	return 0;
- }
-diff --git a/fs/nfs/fscache.h b/fs/nfs/fscache.h
-index fbed0027996f..e8adae1bc260 100644
---- a/fs/nfs/fscache.h
-+++ b/fs/nfs/fscache.h
-@@ -81,8 +81,6 @@ static inline void nfs_netfs_put(struct nfs_netfs_io_dat=
-a *netfs)
- static inline void nfs_netfs_inode_init(struct nfs_inode *nfsi)
- {
- 	netfs_inode_init(&nfsi->netfs, &nfs_netfs_ops, false);
--	/* [DEPRECATED] Use PG_private_2 to mark folio being written to the cach=
-e. */
--	__set_bit(NETFS_ICTX_USE_PGPRIV2, &nfsi->netfs.flags);
- }
- extern void nfs_netfs_initiate_read(struct nfs_pgio_header *hdr);
- extern void nfs_netfs_read_completion(struct nfs_pgio_header *hdr);
-diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-index 5d0288938cc2..983816608f15 100644
---- a/include/linux/netfs.h
-+++ b/include/linux/netfs.h
-@@ -73,8 +73,6 @@ struct netfs_inode {
- #define NETFS_ICTX_ODIRECT	0		/* The file has DIO in progress */
- #define NETFS_ICTX_UNBUFFERED	1		/* I/O should not use the pagecache */
- #define NETFS_ICTX_WRITETHROUGH	2		/* Write-through caching */
--#define NETFS_ICTX_USE_PGPRIV2	31		/* [DEPRECATED] Use PG_private_2 to ma=
-rk
--						 * write to cache on read */
- };
+ 	sreq =3D netfs->sreq;
+-	if (test_bit(NFS_IOHDR_EOF, &hdr->flags))
++	if (test_bit(NFS_IOHDR_EOF, &hdr->flags) &&
++	    sreq->rreq->origin !=3D NETFS_DIO_READ)
+ 		__set_bit(NETFS_SREQ_CLEAR_TAIL, &sreq->flags);
  =
 
- /*
-@@ -269,7 +267,6 @@ struct netfs_io_request {
- #define NETFS_RREQ_DONT_UNLOCK_FOLIOS	3	/* Don't unlock the folios on com=
-pletion */
- #define NETFS_RREQ_FAILED		4	/* The request failed */
- #define NETFS_RREQ_IN_PROGRESS		5	/* Unlocked when the request completes =
-*/
--#define NETFS_RREQ_WRITE_TO_CACHE	7	/* Need to write to the cache */
- #define NETFS_RREQ_UPLOAD_TO_SERVER	8	/* Need to write to the server */
- #define NETFS_RREQ_NONBLOCK		9	/* Don't block if possible (O_NONBLOCK) */
- #define NETFS_RREQ_BLOCKED		10	/* We blocked */
-diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
-index 24ec3434d32e..606b4a0f92da 100644
---- a/include/trace/events/netfs.h
-+++ b/include/trace/events/netfs.h
-@@ -51,6 +51,7 @@
- 	EM(netfs_rreq_trace_resubmit,		"RESUBMT")	\
- 	EM(netfs_rreq_trace_set_pause,		"PAUSE  ")	\
- 	EM(netfs_rreq_trace_unlock,		"UNLOCK ")	\
-+	EM(netfs_rreq_trace_unlock_pgpriv2,	"UNLCK-2")	\
- 	EM(netfs_rreq_trace_unmark,		"UNMARK ")	\
- 	EM(netfs_rreq_trace_wait_ip,		"WAIT-IP")	\
- 	EM(netfs_rreq_trace_wait_pause,		"WT-PAUS")	\
+ 	if (hdr->error)
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index b2405dd4d4d4..3f3842e7b44a 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -217,7 +217,8 @@ static void cifs_req_issue_read(struct netfs_io_subreq=
+uest *subreq)
+ 			goto out;
+ 	}
+ =
+
+-	__set_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags);
++	if (subreq->rreq->origin !=3D NETFS_DIO_READ)
++		__set_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags);
+ =
+
+ 	rc =3D rdata->server->ops->async_readv(rdata);
+ out:
 
