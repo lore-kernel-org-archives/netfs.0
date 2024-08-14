@@ -1,81 +1,145 @@
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F24618E06
-	for <netfs@lists.linux.dev>; Sun, 11 Aug 2024 22:43:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3237B1BE25F
+	for <netfs@lists.linux.dev>; Wed, 14 Aug 2024 19:50:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723416184; cv=none; b=DdF40rXwXjjj8xrK3dtzuAL9TZU0oxK46byT1878KwRdLC7UgDYBq71VBk+dzy6h8pg7vJ7d70ZhJdMSFeMu2DtJLpUDtsdhbA4+reNb2zDIIwlRScN86hD9LxY1yLd6k1DoNKUIkrd8ALWrIVl7lSH5FFoeCrh4AcWL8PQSPGk=
+	t=1723665018; cv=none; b=YXncFtGR6kd2J+WPrr5KDU/TDgH+rUwAI56Yg5L/wEGNge4rCR/xKZQEAP9S+AlklstpkJTZ5YZWxLEy5tHUFgqsfuM8/1Py3B5LZIjgfex3j3Vbc8sfDoAaxzMe2tVUmee0VAaCJWGpB1vP7sm39vM740lR/S+KJq9vi7x8aG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723416184; c=relaxed/simple;
-	bh=L4Lv+V3TAvpIqLu3MSz4+YFRq/dbvUKkqeQBE+ixKpw=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=uRQe39dxrJIBpEBACkFU8Gm4BjTejfsP4IWcggor0riQ4DaK6koWQtJ/UkEq5WMwdEPuJR8IQqpjcKhaFpv8ULz9CrHvahjkKLu+wnx5aYYLkpn/aa9JdCKLJbt+66XXIar0YOwCJxKxuONSXnHvjrQPW8wbyGFzT3gBaYKzVvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-39b3cd1813aso48427625ab.0
-        for <netfs@lists.linux.dev>; Sun, 11 Aug 2024 15:43:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723416182; x=1724020982;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vVqFzBryEujNvLyT47tPqWQBFIh9FtkAq+KHfk8fPj4=;
-        b=ocK+KRcXnRHTZqA7U9KFAb3q8NXHVonXum79mfRwoDks+nC3WTmy6fGw6gSItqpeU8
-         o6PR5ja9PCjOKOPkLEmIMv+ymGVdcDZ3ScQDroxvHDRJ6MWvWBLIyrPObMCtZglVCkzh
-         PizKkvUCMWbSrGEG7n3u/UPER2poU3vQ6A3/VYjh5ceRWXzGGPRlCfognlMLHyOWI2bc
-         6tSnPiUl16tUYef3qmi/618iamfq8krL7ux4DFNFHrrGIfeS791lPI+M96D4Gf2KFyvw
-         xYO10mFL9KmpWroinE3K2ZYCQX0iVqGaqOsv0Vlibx5IztNfYt3UfebTX8c/DPEFs0Wr
-         Eglw==
-X-Forwarded-Encrypted: i=1; AJvYcCWA4qZEg0HGEPyZ5el1xdT08ic6084/+umtvkk9QfZhn3IdLLc+qkBILTXr6k2lTxIC48KbDdTH260gxlAXST0SA0WKK8Y=
-X-Gm-Message-State: AOJu0Yz0pVIoS7betHqydrwQ4iSlsxf28AuJbOG9WkZJfgafhv4V8zLu
-	4Pz7mGXrpBtLNrSNvCPSObkF6JijKRgBP2a6Zs+690Ppa5XLzaQC+pvix4b1qk4QWx51gRxbgVx
-	Fm1HlocNhtqJ4v6sEQvIgrKq5oMHHMc9m8QY7pvwqFaFTLDv0sC32nd4=
-X-Google-Smtp-Source: AGHT+IF7jkF4oBqJtIkn6QuGeZP/SaW+o6WVuB+UpJ1Q7K+E62/xT80ADTCE4nj7LwY0M348sXjLlvffGGJyVNNQbX8hhCmM1l+c
+	s=arc-20240116; t=1723665018; c=relaxed/simple;
+	bh=0IJfcZS7r6EPJLniVsMkD68/yY+O53iik/ZnogU9/aw=;
+	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=EimKMACetXvPIYOUBpomAaFJcHrnSsRmTa0XzOqXkE32AXCF9Lh7jOJMJn1ksB2b+tagBwIraM5b31MQTVm/IOlqFV/0VNJ9znQFEqtPq7SvZe+6pgMAWTvHaei52jogzbeAuWWBlMMD9KzQB/vL50pKQZ1KIE/gc9+wgBJUhJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Cj15zXkb; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Cj15zXkb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1723665013;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=/f2tGiDB/aYV2fKGojac/R/nY51VPmqymykpR+kaL+k=;
+	b=Cj15zXkb4dX33uPtpNkN/lH+5xnlksvjwftGBekbKQVZqqhhNr/TLG++7E4UnkM/M33jP6
+	20xfIVD3JZva4IcwYTXUs5O0mqBKiVsYKk8amdY4seHSFlTcG3qaWKxatuWZ2RfLJHjNuh
+	amn4Ihgs0pkrWhY+MD8rGW0Ib6dlHqI=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-411-GYkvsiM6PluIyAv1x30gAA-1; Wed,
+ 14 Aug 2024 15:50:09 -0400
+X-MC-Unique: GYkvsiM6PluIyAv1x30gAA-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C148E1953942;
+	Wed, 14 Aug 2024 19:50:07 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.30])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 37E9E19560AA;
+	Wed, 14 Aug 2024 19:50:04 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <brauner@kernel.org>
+cc: dhowells@redhat.com, Max Kellermann <max.kellermann@ionos.com>,
+    Ilya Dryomov <idryomov@gmail.com>, Xiubo Li <xiubli@redhat.com>,
+    Jeff Layton <jlayton@kernel.org>,
+    Matthew Wilcox <willy@infradead.org>, ceph-devel@vger.kernel.org,
+    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+    linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] netfs, ceph: Partially revert "netfs: Replace PG_fscache by setting folio->private and marking dirty"
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:219d:b0:376:1fae:4604 with SMTP id
- e9e14a558f8ab-39b8709bc57mr6384475ab.4.1723416182349; Sun, 11 Aug 2024
- 15:43:02 -0700 (PDT)
-Date: Sun, 11 Aug 2024 15:43:02 -0700
-In-Reply-To: <0000000000002fd2de0618de2e65@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000005971a8061f70191d@google.com>
-Subject: Re: [syzbot] [fs?] general protection fault in iter_file_splice_write
-From: syzbot <syzbot+d2125fcb6aa8c4276fd2@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, brauner@kernel.org, dhowells@redhat.com, 
-	eadavis@qq.com, ericvh@kernel.org, jack@suse.cz, jlayton@kernel.org, 
-	linux-afs@lists.infradead.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux_oss@crudebyte.com, lizhi.xu@windriver.com, 
-	lucho@ionkov.net, marc.dionne@auristor.com, netfs@lists.linux.dev, 
-	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev, 
-	viro@zeniv.linux.org.uk
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2181766.1723665003.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 14 Aug 2024 20:50:03 +0100
+Message-ID: <2181767.1723665003@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-syzbot has bisected this issue to:
+    =
 
-commit 2df86547b23dabcd02ab000a24ed7813606c269f
-Author: David Howells <dhowells@redhat.com>
-Date:   Fri Mar 8 12:36:05 2024 +0000
+This partially reverts commit 2ff1e97587f4d398686f52c07afde3faf3da4e5c.
 
-    netfs: Cut over to using new writeback code
+In addition to reverting the removal of PG_private_2 wrangling from the
+buffered read code[1][2], the removal of the waits for PG_private_2 from
+netfs_release_folio() and netfs_invalidate_folio() need reverting too.
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=148b014b980000
-start commit:   5189dafa4cf9 Merge tag 'nfsd-6.11-1' of git://git.kernel.o..
-git tree:       upstream
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=168b014b980000
-console output: https://syzkaller.appspot.com/x/log.txt?x=128b014b980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e8a2eef9745ade09
-dashboard link: https://syzkaller.appspot.com/bug?extid=d2125fcb6aa8c4276fd2
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16828c5d980000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=103c7805980000
+It also adds a wait into ceph_evict_inode() to wait for netfs read and
+copy-to-cache ops to complete.
 
-Reported-by: syzbot+d2125fcb6aa8c4276fd2@syzkaller.appspotmail.com
-Fixes: 2df86547b23d ("netfs: Cut over to using new writeback code")
+Fixes: 2ff1e97587f4 ("netfs: Replace PG_fscache by setting folio->private =
+and marking dirty")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Max Kellermann <max.kellermann@ionos.com>
+cc: Ilya Dryomov <idryomov@gmail.com>
+cc: Xiubo Li <xiubli@redhat.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: ceph-devel@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+cc: linux-mm@kvack.org
+Link: https://lore.kernel.org/r/3575457.1722355300@warthog.procyon.org.uk =
+[1]
+Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/c=
+ommit/?id=3D8e5ced7804cb9184c4a23f8054551240562a8eda [2]
+---
+ fs/ceph/inode.c |    1 +
+ fs/netfs/misc.c |    7 +++++++
+ 2 files changed, 8 insertions(+)
 
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+diff --git a/fs/ceph/inode.c b/fs/ceph/inode.c
+index 71cd70514efa..4a8eec46254b 100644
+--- a/fs/ceph/inode.c
++++ b/fs/ceph/inode.c
+@@ -695,6 +695,7 @@ void ceph_evict_inode(struct inode *inode)
+ =
+
+ 	percpu_counter_dec(&mdsc->metric.total_inodes);
+ =
+
++	netfs_wait_for_outstanding_io(inode);
+ 	truncate_inode_pages_final(&inode->i_data);
+ 	if (inode->i_state & I_PINNING_NETFS_WB)
+ 		ceph_fscache_unuse_cookie(inode, true);
+diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
+index 83e644bd518f..554a1a4615ad 100644
+--- a/fs/netfs/misc.c
++++ b/fs/netfs/misc.c
+@@ -101,6 +101,8 @@ void netfs_invalidate_folio(struct folio *folio, size_=
+t offset, size_t length)
+ =
+
+ 	_enter("{%lx},%zx,%zx", folio->index, offset, length);
+ =
+
++	folio_wait_private_2(folio); /* [DEPRECATED] */
++
+ 	if (!folio_test_private(folio))
+ 		return;
+ =
+
+@@ -165,6 +167,11 @@ bool netfs_release_folio(struct folio *folio, gfp_t g=
+fp)
+ =
+
+ 	if (folio_test_private(folio))
+ 		return false;
++	if (unlikely(folio_test_private_2(folio))) { /* [DEPRECATED] */
++		if (current_is_kswapd() || !(gfp & __GFP_FS))
++			return false;
++		folio_wait_private_2(folio);
++	}
+ 	fscache_note_page_release(netfs_i_cookie(ctx));
+ 	return true;
+ }
+
