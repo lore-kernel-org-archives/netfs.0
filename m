@@ -1,176 +1,104 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B643418DF6F;
-	Tue, 20 Aug 2024 13:03:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50D51C8FB4
+	for <netfs@lists.linux.dev>; Tue, 20 Aug 2024 23:21:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724159029; cv=none; b=DMgJGRctztZP/Z0GRxA1/5HWOnCwXzo9QWTz/4MQ3McypE1LbVm/MpIkV4xpH0gEAm+WBGwKkPNRazekAPYMqrvy4rvaH7wGbcxw/VbTXIV6MV4YFPfHkyt+K+ObsUsjAwzGE6uSkcbXQoTaZ0+q6RfXG5eYey5bVFgaOCbeW9c=
+	t=1724196084; cv=none; b=B/P1fUssHGFrcrNP60Z+jSawB4XDW6IAZxBmzEbkGfOgpdcSuPQLWOiq6EH9uOwttH4Bkh8q/wkCbn0D5ywkGPJK7ygET7ES28LdCQwdwN3ghqysYp9Big6Czqp/ajPT1faUeymRWmEKdO2nmHYfdqcHfL7eyCsXrSRM15tk634=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724159029; c=relaxed/simple;
-	bh=w6hRjDJ3yafIcbZnpdNQYFv3oHEqNh6DZlxKaKdRU8Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bzZYTRpkBNNJKG3hXhwc86nbLngoquE/bo9usZD4Hy8xUqERyCCG94AqPNpDzu9WyRXUH2IyUfbV1SUHx8p7IlhYk6M81J8VnZWkni21fBy4pbrKmLLDkED6h2ALKVMXU27HvtZv4hP5neIYakBgiM31ipOJoxcCuLW8zoc02Us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Thx34V12; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1724196084; c=relaxed/simple;
+	bh=VIiPmwmjpJuuOg36PkDA9EDqjYYvPo2xpfcKotIB4Uc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R47TOaP/XaiAc4BqqinP3l2//dIRLSRm24L1Snb7k4s7vQhqfLb328EiQpUpWnz+vNi6yofgxHgCJ5PffVkPa2hCz2euJSshZ+4p3ermd0zI+3HWbnuS2rY02HV2FtlA005hUfaNfqXO5h35qiMfPHmWiWJBVVgla3s2YwJfvhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZgAfOfHr; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Thx34V12"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-52f04c29588so7361450e87.3;
-        Tue, 20 Aug 2024 06:03:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724159026; x=1724763826; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=awAU/8j1nfeNdkyYYcksFXZ+w3rbcsEiJfjnpMbgCt4=;
-        b=Thx34V12kY5cACvlvsaokRPaXqfTw1e4lk8kmJ/TwEfgL8nXSVGRJW+a47uVFqxpWO
-         15QZmn6rjgGkGlKqqOa+6J3DV6/D4IRqxT/sRfPFvvQRRtOk4/SY+ldv2Frn94KzPm8v
-         3xf32IuqRjNG6QDBmikTqBTymMZnO3z0jKC42cmf7tvhdNc0jIHufV/pSgSPASyFGTV1
-         4ME1s15wDBDtFtzNgmopOSLWxBlf26rAJbFpSj0HHDhROA/kEYNB/mt8nOVLxqOdjLOK
-         QBK6BSuClO4fGwtZPr1NuAhnB19WY1DZuBdgj5bnl7Y2pX667dPMZ3iLjMxO7Oas+a4Z
-         P1Tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724159026; x=1724763826;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=awAU/8j1nfeNdkyYYcksFXZ+w3rbcsEiJfjnpMbgCt4=;
-        b=X081NtLk+VFylxAU5M6tZ30MKzrtsVrT1l3XQ9uiSAsTe1BiuOMM+ZdsvcwfTwb+y6
-         7x25RfMsd/vrmD0/cEWvsQ24/tRmXQm4z7+fr90LrcYG9/Uhe+a83R0wOLEpc1abzxi6
-         MjPZSkKreaCupucCk2Tm7Dn0oLwwpQ0q6T0huWMEbrcMbCvgp7FHXp+4PaZptGVp8wa3
-         KXOYa3Osu8bN56/7zxvsRJH2ZV36NI5CwrD8IxGmw5pw2DdiFyMmpGNNyJO9i3B3dmHm
-         LshWuV0sJW8xU/9+77brPouaQOaINImf7g/RdrwwRWzwUum2+FsxR5Y7uPeNursmm3yp
-         CqkA==
-X-Forwarded-Encrypted: i=1; AJvYcCUMCcqS1vEsnScuAwaAMHuL+At25ioGuM8uqZl2BEy8sZtA3zzU8lCY63EbAU4R3e0B9DEaXhXP@lists.linux.dev, AJvYcCUbqlxwdewkUyLhxzCwNRYB2MRUEKaOn17+VlGBpPkkRXBU7CzbV+FDFK1WnuwlTfDePBz+YQ==@lists.linux.dev, AJvYcCXdYIfL+yeyAPBbmTn4BPBNRjjCOXf6TF6ggSG0bYonOW96/dH2RZ8PpUEBXhVwl+/ijAT4xg==@lists.linux.dev
-X-Gm-Message-State: AOJu0YwrO5WotscWHeahm+StL0mJY9kP/jel0SUShHJYDLiM+uI00mGE
-	FcN/zqb4Z/dcegTbd/CZUkQS+hTVgVjFqXqVe6cTMaaegOluRMIZKw5EhtzjA0xN+V6osCJeQ97
-	kpy/5Vj9fY/xdwy/vofVEevkKxMDeSg==
-X-Google-Smtp-Source: AGHT+IE5G7lBUkb59Tw6MSWX1/GxCWDgjFEGErERFXVC5Rbunu+hdmsvVYYihhwM4SHPcVX7CL91YlwOrwKcBjYHKFM=
-X-Received: by 2002:a05:6512:6ce:b0:52f:d0f0:e37e with SMTP id
- 2adb3069b0e04-5331c6dca58mr9000627e87.42.1724159025365; Tue, 20 Aug 2024
- 06:03:45 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZgAfOfHr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1724196081;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=fCjK9t7HkWPXdjZnzcV3YJhj3lK29P+RVZIMnJ9iM+Q=;
+	b=ZgAfOfHrMkkFDoPPjzFuEM75a+Egh7BcCkfucIThmMGPsr0t8FWlKX4GhoPHBeT+ifHoXV
+	VlMxv5u6YKnI8Czai42C9JqIpFbOYwEM4HLBp/8wQ6ynwxHSSfp6sifHMpelMWuUAUlVAl
+	QaVhjcFqVy5A1lpPa61rXG35a6yX/KY=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-617-IHAldsebOD2s3EiBWC1CDA-1; Tue,
+ 20 Aug 2024 19:21:16 -0400
+X-MC-Unique: IHAldsebOD2s3EiBWC1CDA-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 259D41955F40;
+	Tue, 20 Aug 2024 23:21:13 +0000 (UTC)
+Received: from warthog.procyon.org.uk.com (unknown [10.42.28.30])
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C53DE19560AA;
+	Tue, 20 Aug 2024 23:21:07 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>
+Cc: David Howells <dhowells@redhat.com>,
+	Pankaj Raghav <p.raghav@samsung.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/4] mm, netfs, afs: Truncation fixes
+Date: Wed, 21 Aug 2024 00:20:54 +0100
+Message-ID: <20240820232105.3792638-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <202408201441.9e7177d2-oliver.sang@intel.com>
-In-Reply-To: <202408201441.9e7177d2-oliver.sang@intel.com>
-From: Steve French <smfrench@gmail.com>
-Date: Tue, 20 Aug 2024 08:03:34 -0500
-Message-ID: <CAH2r5ms-jpA5-h2EtgLb82D1hYboaKU3P4W=7_22zRd_gQK_Cw@mail.gmail.com>
-Subject: Re: [linus:master] [9p] e3786b29c5: xfstests.generic.465.fail
-To: kernel test robot <oliver.sang@intel.com>
-Cc: Dominique Martinet <asmadeus@codewreck.org>, oe-lkp@lists.linux.dev, lkp@intel.com, 
-	linux-kernel@vger.kernel.org, Christian Brauner <brauner@kernel.org>, 
-	David Howells <dhowells@redhat.com>, Eric Van Hensbergen <ericvh@kernel.org>, 
-	Latchesar Ionkov <lucho@ionkov.net>, Christian Schoenebeck <linux_oss@crudebyte.com>, 
-	Marc Dionne <marc.dionne@auristor.com>, Ilya Dryomov <idryomov@gmail.com>, 
-	Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.com>, 
-	Trond Myklebust <trond.myklebust@hammerspace.com>, v9fs@lists.linux.dev, 
-	linux-afs@lists.infradead.org, ceph-devel@vger.kernel.org, 
-	netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
-	samba-technical@lists.samba.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
-Yes - I can also reproduce this regression on generic/465 and at least
-two other xfstests (works with that patch removed)
+Hi Christian,
 
-On Tue, Aug 20, 2024 at 2:08=E2=80=AFAM kernel test robot <oliver.sang@inte=
-l.com> wrote:
->
->
->
-> Hello,
->
-> kernel test robot noticed "xfstests.generic.465.fail" on:
->
-> commit: e3786b29c54cdae3490b07180a54e2461f42144c ("9p: Fix DIO read throu=
-gh netfs")
-> https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
->
-> in testcase: xfstests
-> version: xfstests-x86_64-f5ada754-1_20240812
-> with following parameters:
->
->         disk: 4HDD
->         fs: ext4
->         fs2: smbv3
->         test: generic-465
->
->
->
-> compiler: gcc-12
-> test machine: 4 threads Intel(R) Core(TM) i5-6500 CPU @ 3.20GHz (Skylake)=
- with 32G memory
->
-> (please refer to attached dmesg/kmsg for entire log/backtrace)
->
->
->
->
-> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
-ion of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <oliver.sang@intel.com>
-> | Closes: https://lore.kernel.org/oe-lkp/202408201441.9e7177d2-oliver.san=
-g@intel.com
->
-> 2024-08-17 02:14:44 mount /dev/sda1 /fs/sda1
-> 2024-08-17 02:14:44 mkdir -p /smbv3//cifs/sda1
-> 2024-08-17 02:14:44 export FSTYP=3Dcifs
-> 2024-08-17 02:14:44 export TEST_DEV=3D//localhost/fs/sda1
-> 2024-08-17 02:14:44 export TEST_DIR=3D/smbv3//cifs/sda1
-> 2024-08-17 02:14:44 export CIFS_MOUNT_OPTIONS=3D-ousername=3Droot,passwor=
-d=3Dpass,noperm,vers=3D3.0,mfsymlinks,actimeo=3D0
-> 2024-08-17 02:14:44 echo generic/465
-> 2024-08-17 02:14:44 ./check -E tests/cifs/exclude.incompatible-smb3.txt -=
-E tests/cifs/exclude.very-slow.txt generic/465
-> FSTYP         -- cifs
-> PLATFORM      -- Linux/x86_64 lkp-skl-d05 6.11.0-rc1-00012-ge3786b29c54c =
-#1 SMP PREEMPT_DYNAMIC Fri Aug 16 01:36:30 CST 2024
->
-> generic/465       - output mismatch (see /lkp/benchmarks/xfstests/results=
-//generic/465.out.bad)
->     --- tests/generic/465.out   2024-08-12 20:11:27.000000000 +0000
->     +++ /lkp/benchmarks/xfstests/results//generic/465.out.bad   2024-08-1=
-7 02:15:42.471144932 +0000
->     @@ -1,3 +1,597 @@
->      QA output created by 465
->      non-aio dio test
->     +read file: No data available
->     +read file: Invalid argument
->     +read file: No data available
->     +read file: Invalid argument
->     +read file: No data available
->     ...
->     (Run 'diff -u /lkp/benchmarks/xfstests/tests/generic/465.out /lkp/ben=
-chmarks/xfstests/results//generic/465.out.bad'  to see the entire diff)
-> Ran: generic/465
-> Failures: generic/465
-> Failed 1 of 1 tests
->
->
->
->
-> The kernel config and materials to reproduce are available at:
-> https://download.01.org/0day-ci/archive/20240820/202408201441.9e7177d2-ol=
-iver.sang@intel.com
->
->
->
-> --
-> 0-DAY CI Kernel Test Service
-> https://github.com/intel/lkp-tests/wiki
->
->
+Here are some fixes for truncation, netfslib and afs that I discovered whilst
+trying Pankaj Raghav's minimum folio order patchset:
 
+ (1) Fix truncate to make it honour AS_RELEASE_ALWAYS in a couple of places
+     that got missed.
 
---=20
+ (2) Fix duplicated editing of a partially invalidated folio in afs's
+     post-setattr edit phase.
+
+ (3) Fix netfs_release_folio() to indicate that the folio is busy if the
+     folio is dirty (as does iomap).
+
+ (4) Fix the trimming of a folio that contain streaming-write data when
+     truncation occurs into or past that folio
+
+The patches can also be found here:
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-fixes
+
 Thanks,
+David
 
-Steve
+David Howells (4):
+  mm: Fix missing folio invalidation calls during truncation
+  afs: Fix post-setattr file edit to do truncation correctly
+  netfs: Fix netfs_release_folio() to say no if folio dirty
+  netfs: Fix trimming of streaming-write folios in netfs_inval_folio()
+
+ fs/afs/inode.c  | 11 +++++++---
+ fs/netfs/misc.c | 53 +++++++++++++++++++++++++++++++++++--------------
+ mm/truncate.c   |  4 ++--
+ 3 files changed, 48 insertions(+), 20 deletions(-)
+
