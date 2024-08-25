@@ -1,102 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from d.mail.sonic.net (d.mail.sonic.net [64.142.111.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772FA186A;
-	Sat, 24 Aug 2024 14:13:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F320746BF
+	for <netfs@lists.linux.dev>; Sun, 25 Aug 2024 02:01:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.142.111.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724508792; cv=none; b=RNiPCYaDCJYzmma3ylxOyymnW5vUOgcoF1yRwdweq6voOJxp8jVHAV1qb3Rwy9RmqwfBEYkYSR0A85E4q8dzxOYqRBPtosr+zNzhAS8gemagAMiieKQkOlGLjQuBPbJiWxR2nmfHv8z4GWkFYb9hy+tGXypmxkVGzaDh1S0zWtY=
+	t=1724551303; cv=none; b=T04kkuluyUDiGgUgKt645HKPWgR1URj1AUDYPZBg8mBaO/v+kNOiZ7LikXud2P/wc+R/S2f4ijyCqMkGT+Hp6LyXKh9gR2IW6z47LyuDImPPnLEmXkcJbvk6NIAMEqge5cMPaY2nb+vIAzI84rqzXBlyeUMQVrNmB8tJN2CCv0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724508792; c=relaxed/simple;
-	bh=1RROgoMoiIURZrgBI0u+sQOi22mVdm5uhe2i5PEaJ7Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cpUhtYmy0EtfIXIVOOPpeNQpvpLG9ECsf0a8eI25Ckxg2XhYseB7e1Om0fs2TISNGbmh5A7e5JNZB79Mdne7XoTKuXvdfLRrOYaAC3sq8Y0ryiL4g5Bl6oZlJJ1SHKCX702vIol854Y5lqXg9TCi3oB86RxHChrDUk+EtBKVG6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TSGnLKAX; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TSGnLKAX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A59C32781;
-	Sat, 24 Aug 2024 14:13:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724508792;
-	bh=1RROgoMoiIURZrgBI0u+sQOi22mVdm5uhe2i5PEaJ7Q=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TSGnLKAXbEucvWAQfLpYFzmykp5QeFdt9IGLO+QBd3M9TQsdDcpmVFe8sIb1ZSi0l
-	 +xUKZvMbaYbGjtogaGv09XTXzAuo3HtUW2ICNSKj9fMMR27DBbK2E1mYlZ8J2gyerm
-	 /1PL8xB02z5ButNd1qgVUbpCElWMbZ1P1wArc2W84/S5cKlHRjHUEhfBiwOjHiEORA
-	 DrUX7VJMPECqiLrCo6LNitskmpC6nLf+zytSgeFiVmlaE/DoS2qzaGEi+wgkLOLxVK
-	 IaO8KNkckCOjIhYKAqG+j4ZySWSAQ7nLPL5KSegXJ7SMcBj+z2/inWTDbW9aFUtA0+
-	 eYCtNddeZ/ciw==
-From: Christian Brauner <brauner@kernel.org>
-To: David Howells <dhowells@redhat.com>,
-	Steve French <sfrench@samba.org>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Pankaj Raghav <p.raghav@samsung.com>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	v9fs@lists.linux.dev,
-	linux-erofs@lists.ozlabs.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: (subset) [PATCH 0/9] netfs, cifs: Combined repost of fixes for truncation, DIO read and read-retry
-Date: Sat, 24 Aug 2024 16:09:51 +0200
-Message-ID: <20240824-ohrwurm-kernaufgabe-6253ce9cb620@brauner>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240823200819.532106-1-dhowells@redhat.com>
-References: <20240823200819.532106-1-dhowells@redhat.com>
+	s=arc-20240116; t=1724551303; c=relaxed/simple;
+	bh=4xAUDQ5Xa1nBWD0nbczHkPr0m3ym6tcLEMSWnybSeoM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Ambr1+HI6brwwb3tMCqa6HfRVRyDhgXidd7bTtkbGiJMaAet4oMkvMJiNTgcK05WIbJs9yF9wIR629ToDMBQ0/naoBz3MJekH1eMgpOBDPaAV2yhdSsf94IcYnO3+BGl93DQy9KKRyzB3qS2B10OUeiCxzXoOmIBPedaeiu5vJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nom.one; spf=pass smtp.mailfrom=nom.one; arc=none smtp.client-ip=64.142.111.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nom.one
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nom.one
+Received: from 192-184-190-65.static.sonic.net (192-184-190-65.static.sonic.net [192.184.190.65])
+	(authenticated bits=0)
+	by d.mail.sonic.net (8.16.1/8.16.1) with ESMTPA id 47P1oeJg025924;
+	Sat, 24 Aug 2024 18:50:41 -0700
+From: Forest <forestix@nom.one>
+To: David Howells <dhowells@redhat.com>, Steve French <sfrench@samba.org>,
+        Shyam Prasad N <nspmangalore@gmail.com>,
+        Rohith Surabattula <rohiths.msft@gmail.com>,
+        Jeff Layton <jlayton@kernel.org>
+Cc: linux-cifs@vger.kernel.org, netfs@lists.linux.dev,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        stable@vger.kernel.org, regressions@lists.linux.dev
+Subject: [REGRESSION] cifs: triggers bad flatpak & ostree signatures, corrupts ffmpeg & mkvmerge outputs
+Date: Sat, 24 Aug 2024 18:50:40 -0700
+Message-ID: <pv2lcjhveti4sfua95o0u6r4i73r39srra@sonic.net>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1823; i=brauner@kernel.org; h=from:subject:message-id; bh=1RROgoMoiIURZrgBI0u+sQOi22mVdm5uhe2i5PEaJ7Q=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaSdfJVffXKaT/8Pjqu3GVvfLH2vu2VCaW5K1dO7uq5zj 7TqHFq0s6OUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAiD5IZGRo7T3+Ld/D4IPp9 k8KLx7tbnO8x+ez5wfR20v6496lRfS4M/11XbSi+/6B3pnG0bXW1kq909nHuDUFrV6Rdv7zltM8 eB24A
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Sonic-CAuth: UmFuZG9tSVbLHoUERX1vtYlwpdseB4XYWtL2dShvfjUov/JNCh945aBnRL4VeQXkDwI4V2nIoHpMTu1rLsWf2EGRvohwCNK8
+X-Sonic-ID: C;pEX8boRi7xGqg65Sr7edkQ== M;NEsRb4Ri7xGqg65Sr7edkQ==
+X-Spam-Flag: No
+X-Sonic-Spam-Details: -0.0/5.0 by cerberusd
 
-On Fri, 23 Aug 2024 21:08:08 +0100, David Howells wrote:
-> Firstly, there are some fixes for truncation, netfslib and afs that I
-> discovered whilst trying Pankaj Raghav's minimum folio order patchset:
-> 
->  (1) Fix truncate to make it honour AS_RELEASE_ALWAYS in a couple of places
->      that got missed.
-> 
->  (2) Fix duplicated editing of a partially invalidated folio in afs's
->      post-setattr edit phase.
-> 
-> [...]
+#regzbot introduced: 3ee1a1fc3981
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
+Dear maintainers,
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+I think I have found a cifs regression in the 6.10 kernel series, which leads
+certain programs to write corrupt data.
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+After upgrading from kernel 6.9.12 to 6.10.6, flatpak and ostree are now
+writing bad gpg signatures when exporting signed packages or signing their
+repository metadata/summary files, whenever the repository is on a cifs mount.
+Instead of writing the signature data, null bytes are written in its place.
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+Furthermore, ffmpeg and mkvmerge are now intermittently writing corrupt files
+to cifs mounts.
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
+No error is reported by the applications or the kernel when it happens.
+In the case of flatpak, the problem isn't revealed until something tries to use
+the repository and finds signatures full of null bytes. (Of course, this means
+the affected repositories have been rendered useless.) In the case of ffmpeg
+and mkvmerge, the problem isn't revealed until someone plays the video file and
+reaches a corrupt section.
 
-[1/9] mm: Fix missing folio invalidation calls during truncation
-      https://git.kernel.org/vfs/vfs/c/0aa2e1b2fb7a
-[2/9] afs: Fix post-setattr file edit to do truncation correctly
-      https://git.kernel.org/vfs/vfs/c/a74ee0e878e2
-[3/9] netfs: Fix netfs_release_folio() to say no if folio dirty
-      https://git.kernel.org/vfs/vfs/c/7dfc8f0c6144
-[4/9] netfs: Fix trimming of streaming-write folios in netfs_inval_folio()
-      https://git.kernel.org/vfs/vfs/c/cce6bfa6ca0e
-[5/9] netfs: Fix missing iterator reset on retry of short read
-      https://git.kernel.org/vfs/vfs/c/950b03d0f664
-[10/10] netfs: Fix interaction of streaming writes with zero-point tracker
-        https://git.kernel.org/vfs/vfs/c/e00e99ba6c6b
+
+A kernel bisect reveals this:
+
+3ee1a1fc39819906f04d6c62c180e760cd3a689d is the first bad commit
+commit 3ee1a1fc39819906f04d6c62c180e760cd3a689d
+Author: David Howells <dhowells@redhat.com>
+Date:   Fri Oct 6 18:29:59 2023 +0100
+    cifs: Cut over to using netfslib
+
+I was unable to determine whether 6.11.0-rc4 fixes it, due to another cifs bug
+in that version (which I hope to report soon).
+
+
+An strace of flatpak (which uses libostree) shows it generating correct
+signatures internally, but behaving differently on cifs vs. ext4 when working
+with memory-mapped temp files, in which the signatures are stored before being
+written to their final outputs. Here's where I reported my initial findings to
+those projects:
+https://github.com/flatpak/flatpak/issues/5911
+https://github.com/ostreedev/ostree/issues/3288
+
+Debian Testing and Unstable kernels (6.10.4-1 and 6.10.6-1) are affected:
+https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1079394
+
+
+The following reproducer script consistently triggers the problem for me. Run
+it with two arguments: a path on a cifs mount where an ostree repo should be
+created, and a GPG key ID with which to sign a commit.
+
+
+#!/bin/sh
+set -e
+
+if [ "$#" -lt 2 ] || [ "$1" = "-h" ] ; then
+    echo "usage: $(basename "$0") <repo-dir> <gpg-key-id>"
+    exit 2
+fi
+
+repo=$1
+keyid=$2
+src="./foo"
+
+echo "creating ostree repo at $repo"
+ostree init --repo="$repo"
+
+echo "creating source file tree at $src"
+mkdir -p "$src"
+echo hi > "$src"/hello
+
+ostree commit --repo="$repo" --branch=foo --gpg-sign="$keyid" "$src"
+
+if ostree show --repo="$repo" foo; then
+    echo ---
+    echo success!
+else
+    echo ---
+    ostree show --repo="$repo" --print-detached-metadata-key=ostree.gpgsigs foo
+    echo failure!
+    echo look for null bytes in the above commit signature
+fi
+
+
