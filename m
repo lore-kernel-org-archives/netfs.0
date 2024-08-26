@@ -1,27 +1,27 @@
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E7B1514F8
-	for <netfs@lists.linux.dev>; Mon, 26 Aug 2024 11:22:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D611482E3
+	for <netfs@lists.linux.dev>; Mon, 26 Aug 2024 11:35:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724671325; cv=none; b=GHjICrYWG92umia3TftARVvACB7aoTT4T/igDQ0HGJ69xDU8vKsUD5qcjp16I9UeZgv/W10gg8rz9BiFYLG6HDBa9VCo2TaMjbhiztsdu8Ddm0sSSAxfBL7k9hSoxKasaJpCgqexm/ItpfYcmpg9xx9RzLd+H032HPq8w3IwwDo=
+	t=1724672114; cv=none; b=NNi5KBf82iEuxqH1vT4o/5CPZLoEMLCIRLP74uNxzi9WkgKr50FAzmmvvjryq0DbIKFNlxa7uWOArkrY4vUNPhI1DH0kUX6mHmSiBQVzm2WPShzN0GmFGojX7VWjcdEMt8ykSYdEPc7B8M4/23K6F212udCoxnwcE+v+SsWtyzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724671325; c=relaxed/simple;
-	bh=9Mcm07rBqfuT8tea4RySSWqB1/PjWBvd0/M5LrdbZqs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EWFreQc4ZyHBD7yoyNTAf0thTcJk75xcNnQ8TPZiJihtnBT+Mi0tRzVe3WqF07HYAk44KeLidBRmpuWKJnm9RjOjB4xx1qr7dzCFZOb3lxgfmSmdlyjz6eC8NjY/VV4xoTzrEKWQRe1xc5sGCiba75C1ctEjPTFlRItkMeD69CI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+	s=arc-20240116; t=1724672114; c=relaxed/simple;
+	bh=mLBT6mTdBJnwc+dF9PGzGVBQ3Av2W02Ffrkq0yV/usw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rzeP4oXzKg8r88RTvmUQgvY1Hz7zVzyk+gDSggIr8kYL3wX9+iAH8TLu0U7glUPZHM/6Etm0uQK9P9ED1suO8gjNwNc0eEQa2v9Ng4XGxcz537BwH0zfgnX+Qk90NOQa+Z4vqAj/WkKWdPK3vnPc7LkSmb7T5lYB8XN+wp9Wxg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=none smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4WspCr1d25z4f3jM9
-	for <netfs@lists.linux.dev>; Mon, 26 Aug 2024 19:21:44 +0800 (CST)
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4WspW0073pz4f3nKS
+	for <netfs@lists.linux.dev>; Mon, 26 Aug 2024 19:34:52 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id AB8D91A0359
-	for <netfs@lists.linux.dev>; Mon, 26 Aug 2024 19:21:58 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTP id 5F41A1A14F1
+	for <netfs@lists.linux.dev>; Mon, 26 Aug 2024 19:35:07 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.175.104.67])
-	by APP4 (Coremail) with SMTP id gCh0CgBHboRUZcxmYWMSCw--.22588S4;
-	Mon, 26 Aug 2024 19:21:58 +0800 (CST)
+	by APP4 (Coremail) with SMTP id gCh0CgB3n4VoaMxmkUITCw--.22524S4;
+	Mon, 26 Aug 2024 19:35:07 +0800 (CST)
 From: libaokun@huaweicloud.com
 To: netfs@lists.linux.dev,
 	dhowells@redhat.com,
@@ -39,9 +39,9 @@ Cc: hsiangkao@linux.alibaba.com,
 	wozizhi@huawei.com,
 	Baokun Li <libaokun1@huawei.com>,
 	stable@kernel.org
-Subject: [PATCH] fscache: delete fscache_cookie_lru_timer when fscache exits to avoid UAF
-Date: Mon, 26 Aug 2024 19:20:56 +0800
-Message-Id: <20240826112056.2458299-1-libaokun@huaweicloud.com>
+Subject: [PATCH] netfs: Delete subtree of 'fs/netfs' when netfs module exits
+Date: Mon, 26 Aug 2024 19:34:04 +0800
+Message-Id: <20240826113404.3214786-1-libaokun@huaweicloud.com>
 X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
@@ -50,85 +50,77 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgBHboRUZcxmYWMSCw--.22588S4
-X-Coremail-Antispam: 1UD129KBjvJXoW7Aw1UWrWxKrW8WF13ZFWUJwb_yoW8Kr43pr
-	ZIk34xAr4kX34jqF4rXa1UXw18ZF9rK3WUXws7Ar47A3y7Xr1UJr1Iyw45tFy7G34jyrWI
-	yF13tw13K34UJaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID:gCh0CgB3n4VoaMxmkUITCw--.22524S4
+X-Coremail-Antispam: 1UD129KBjvJXoW7uF4xXr1kCFyxXr1UCrWxJFb_yoW8ZFWxp3
+	ZrZryxGr1jqryUJF45Ja1Utr1UZF1qg3W7GryxCr1fZan7Aw1UX3W0qr15ZFy2kF48AFs8
+	t3W8trnYvr15Z3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
 	9KBjDU0xBIdaVrnRJUUU9E14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
 	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
 	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+	2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
 	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
 	Y2ka0xkIwI1lw4CEc2x0rVAKj4xxMxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI4
 	8JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xv
 	wVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjx
 	v20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20E
 	Y4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267
-	AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbTGQDUUUUU==
-X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAQAHBWbMPH8P-wAAsa
+	AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VU1bdb5UUUUU==
+X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAgADBWbFpZhEIwADs+
 
 From: Baokun Li <libaokun1@huawei.com>
 
-The fscache_cookie_lru_timer is initialized when the fscache module
-is inserted, but is not deleted when the fscache module is removed.
-If timer_reduce() is called before removing the fscache module,
-the fscache_cookie_lru_timer will be added to the timer list of
-the current cpu. Afterwards, a use-after-free will be triggered
-in the softIRQ after removing the fscache module, as follows:
+In netfs_init() or fscache_proc_init(), we create dentry under 'fs/netfs',
+but in netfs_exit(), we only delete the proc entry of 'fs/netfs' without
+deleting its subtree. This triggers the following WARNING:
 
 ==================================================================
-BUG: unable to handle page fault for address: fffffbfff803c9e9
- PF: supervisor read access in kernel mode
- PF: error_code(0x0000) - not-present page
-PGD 21ffea067 P4D 21ffea067 PUD 21ffe6067 PMD 110a7c067 PTE 0
-Oops: Oops: 0000 [#1] PREEMPT SMP KASAN PTI
-CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Tainted: G W 6.11.0-rc3 #855
-Tainted: [W]=WARN
-RIP: 0010:__run_timer_base.part.0+0x254/0x8a0
+remove_proc_entry: removing non-empty directory 'fs/netfs', leaking at least 'requests'
+WARNING: CPU: 4 PID: 566 at fs/proc/generic.c:717 remove_proc_entry+0x160/0x1c0
+Modules linked in: netfs(-)
+CPU: 4 UID: 0 PID: 566 Comm: rmmod Not tainted 6.11.0-rc3 #860
+RIP: 0010:remove_proc_entry+0x160/0x1c0
 Call Trace:
- <IRQ>
- tmigr_handle_remote_up+0x627/0x810
- __walk_groups.isra.0+0x47/0x140
- tmigr_handle_remote+0x1fa/0x2f0
- handle_softirqs+0x180/0x590
- irq_exit_rcu+0x84/0xb0
- sysvec_apic_timer_interrupt+0x6e/0x90
- </IRQ>
  <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20
-RIP: 0010:default_idle+0xf/0x20
- default_idle_call+0x38/0x60
- do_idle+0x2b5/0x300
- cpu_startup_entry+0x54/0x60
- start_secondary+0x20d/0x280
- common_startup_64+0x13e/0x148
- </TASK>
-Modules linked in: [last unloaded: netfs]
+ netfs_exit+0x12/0x620 [netfs]
+ __do_sys_delete_module.isra.0+0x14c/0x2e0
+ do_syscall_64+0x4b/0x110
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 ==================================================================
 
-Therefore delete fscache_cookie_lru_timer when removing the fscahe module.
+Therefore use remove_proc_subtree instead() of remove_proc_entry() to
+fix the above problem.
 
-Fixes: 12bb21a29c19 ("fscache: Implement cookie user counting and resource pinning")
+Fixes: 7eb5b3e3a0a5 ("netfs, fscache: Move /proc/fs/fscache to /proc/fs/netfs and put in a symlink")
 Cc: stable@kernel.org
 Signed-off-by: Baokun Li <libaokun1@huawei.com>
 ---
- fs/netfs/fscache_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/netfs/main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/netfs/fscache_main.c b/fs/netfs/fscache_main.c
-index 42e98bb523e3..49849005eb7c 100644
---- a/fs/netfs/fscache_main.c
-+++ b/fs/netfs/fscache_main.c
-@@ -103,6 +103,7 @@ void __exit fscache_exit(void)
+diff --git a/fs/netfs/main.c b/fs/netfs/main.c
+index 5f0f438e5d21..9d6b49dc6694 100644
+--- a/fs/netfs/main.c
++++ b/fs/netfs/main.c
+@@ -142,7 +142,7 @@ static int __init netfs_init(void)
  
- 	kmem_cache_destroy(fscache_cookie_jar);
- 	fscache_proc_cleanup();
-+	timer_shutdown_sync(&fscache_cookie_lru_timer);
- 	destroy_workqueue(fscache_wq);
- 	pr_notice("FS-Cache unloaded\n");
- }
+ error_fscache:
+ error_procfile:
+-	remove_proc_entry("fs/netfs", NULL);
++	remove_proc_subtree("fs/netfs", NULL);
+ error_proc:
+ 	mempool_exit(&netfs_subrequest_pool);
+ error_subreqpool:
+@@ -159,7 +159,7 @@ fs_initcall(netfs_init);
+ static void __exit netfs_exit(void)
+ {
+ 	fscache_exit();
+-	remove_proc_entry("fs/netfs", NULL);
++	remove_proc_subtree("fs/netfs", NULL);
+ 	mempool_exit(&netfs_subrequest_pool);
+ 	kmem_cache_destroy(netfs_subrequest_slab);
+ 	mempool_exit(&netfs_request_pool);
 -- 
 2.39.2
 
