@@ -1,27 +1,27 @@
 Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A7029CE7
-	for <netfs@lists.linux.dev>; Mon, 26 Aug 2024 04:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E7B1514F8
+	for <netfs@lists.linux.dev>; Mon, 26 Aug 2024 11:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724645125; cv=none; b=ZDDI0Puf23BlwbELYUL+FA3EBAE2BATGY+sH145tfLVwGmkK9wg7d6h1Hezzt2HLnZeBmUJ178VEDimcHxpOb+UEKKog9cjfIO85zK9Y9RpLgqdVK0vskGS3+KuDQYK3tMhDtodH6rg7UlBgC8/JSAhbDPu1MODtpAHcROL/Hy0=
+	t=1724671325; cv=none; b=GHjICrYWG92umia3TftARVvACB7aoTT4T/igDQ0HGJ69xDU8vKsUD5qcjp16I9UeZgv/W10gg8rz9BiFYLG6HDBa9VCo2TaMjbhiztsdu8Ddm0sSSAxfBL7k9hSoxKasaJpCgqexm/ItpfYcmpg9xx9RzLd+H032HPq8w3IwwDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724645125; c=relaxed/simple;
-	bh=fPfRbYjyDO34aJFbbBoB95r71qblCD+PaqR0mwZcbkI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SK/JsA352MAX0U7AwK1H66ha85N0pNxnMSYHQARC20Aj5CUW/jsYlpnR8/j2SBFSJJU7TfC6lmhI9y/TnQp4pZL8XHUu70yRVwuKEsaXYuEV9zGe5O4PbcHvmNtV6cPX25XwiwKCGlmpH4ucUHah4J2Ny+9f/y5rpu/3ZAK599I=
+	s=arc-20240116; t=1724671325; c=relaxed/simple;
+	bh=9Mcm07rBqfuT8tea4RySSWqB1/PjWBvd0/M5LrdbZqs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EWFreQc4ZyHBD7yoyNTAf0thTcJk75xcNnQ8TPZiJihtnBT+Mi0tRzVe3WqF07HYAk44KeLidBRmpuWKJnm9RjOjB4xx1qr7dzCFZOb3lxgfmSmdlyjz6eC8NjY/VV4xoTzrEKWQRe1xc5sGCiba75C1ctEjPTFlRItkMeD69CI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4WscWz16Wmz4f3jLy
-	for <netfs@lists.linux.dev>; Mon, 26 Aug 2024 12:05:03 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.93.142])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4WspCr1d25z4f3jM9
+	for <netfs@lists.linux.dev>; Mon, 26 Aug 2024 19:21:44 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 976711A0568
-	for <netfs@lists.linux.dev>; Mon, 26 Aug 2024 12:05:17 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTP id AB8D91A0359
+	for <netfs@lists.linux.dev>; Mon, 26 Aug 2024 19:21:58 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.175.104.67])
-	by APP4 (Coremail) with SMTP id gCh0CgCHr4X7_stmGK71Cg--.11259S4;
-	Mon, 26 Aug 2024 12:05:17 +0800 (CST)
+	by APP4 (Coremail) with SMTP id gCh0CgBHboRUZcxmYWMSCw--.22588S4;
+	Mon, 26 Aug 2024 19:21:58 +0800 (CST)
 From: libaokun@huaweicloud.com
 To: netfs@lists.linux.dev,
 	dhowells@redhat.com,
@@ -39,9 +39,9 @@ Cc: hsiangkao@linux.alibaba.com,
 	wozizhi@huawei.com,
 	Baokun Li <libaokun1@huawei.com>,
 	stable@kernel.org
-Subject: [PATCH] cachefiles: fix dentry leak in cachefiles_open_file()
-Date: Mon, 26 Aug 2024 12:00:18 +0800
-Message-Id: <20240826040018.2990763-1-libaokun@huaweicloud.com>
+Subject: [PATCH] fscache: delete fscache_cookie_lru_timer when fscache exits to avoid UAF
+Date: Mon, 26 Aug 2024 19:20:56 +0800
+Message-Id: <20240826112056.2458299-1-libaokun@huaweicloud.com>
 X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
@@ -50,89 +50,85 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgCHr4X7_stmGK71Cg--.11259S4
-X-Coremail-Antispam: 1UD129KBjvJXoW7Kry7Cw1xCr4rWr43Gw1UAwb_yoW8uw4fpF
-	ZIyryxGryrury8Gr48JF1rtr1rJ347JF4qqw1kXr18Ar1DZr1rXr17tr1FqryUGrWUZr42
-	qF1UK343Jr1jk3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9K14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+X-CM-TRANSID:gCh0CgBHboRUZcxmYWMSCw--.22588S4
+X-Coremail-Antispam: 1UD129KBjvJXoW7Aw1UWrWxKrW8WF13ZFWUJwb_yoW8Kr43pr
+	ZIk34xAr4kX34jqF4rXa1UXw18ZF9rK3WUXws7Ar47A3y7Xr1UJr1Iyw45tFy7G34jyrWI
+	yF13tw13K34UJaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9E14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-	n2kIc2xKxwAKzVCY07xG64k0F24lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr4
-	1l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK
-	67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI
-	8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAv
-	wI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14
-	v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUYpnQUUUUU
-X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAQAHBWbK6v869gAAs2
+	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
+	Y2ka0xkIwI1lw4CEc2x0rVAKj4xxMxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI4
+	8JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xv
+	wVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjx
+	v20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20E
+	Y4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267
+	AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbTGQDUUUUU==
+X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAQAHBWbMPH8P-wAAsa
 
 From: Baokun Li <libaokun1@huawei.com>
 
-In ondemand mode, dentry leaks may be caused when the mount has the
-following concurrency with cull:
-
-            P1             |             P2
------------------------------------------------------------
-cachefiles_lookup_cookie
-  cachefiles_look_up_object
-    lookup_one_positive_unlocked
-     // get dentry
-                            cachefiles_cull
-                              inode->i_flags |= S_KERNEL_FILE;
-    cachefiles_open_file
-      cachefiles_mark_inode_in_use
-        __cachefiles_mark_inode_in_use
-          can_use = false
-          if (!(inode->i_flags & S_KERNEL_FILE))
-            can_use = true
-	  return false
-        return false
-        // Returns an error but doesn't put dentry
-
-After that the following WARNING will be triggered when the backend folder
-is umounted:
+The fscache_cookie_lru_timer is initialized when the fscache module
+is inserted, but is not deleted when the fscache module is removed.
+If timer_reduce() is called before removing the fscache module,
+the fscache_cookie_lru_timer will be added to the timer list of
+the current cpu. Afterwards, a use-after-free will be triggered
+in the softIRQ after removing the fscache module, as follows:
 
 ==================================================================
-BUG: Dentry 000000008ad87947{i=7a,n=Dx_1_1.img}  still in use (1) [unmount of ext4 sda]
-WARNING: CPU: 4 PID: 359261 at fs/dcache.c:1767 umount_check+0x5d/0x70
-CPU: 4 PID: 359261 Comm: umount Not tainted 6.6.0-dirty #25
-RIP: 0010:umount_check+0x5d/0x70
+BUG: unable to handle page fault for address: fffffbfff803c9e9
+ PF: supervisor read access in kernel mode
+ PF: error_code(0x0000) - not-present page
+PGD 21ffea067 P4D 21ffea067 PUD 21ffe6067 PMD 110a7c067 PTE 0
+Oops: Oops: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Tainted: G W 6.11.0-rc3 #855
+Tainted: [W]=WARN
+RIP: 0010:__run_timer_base.part.0+0x254/0x8a0
 Call Trace:
+ <IRQ>
+ tmigr_handle_remote_up+0x627/0x810
+ __walk_groups.isra.0+0x47/0x140
+ tmigr_handle_remote+0x1fa/0x2f0
+ handle_softirqs+0x180/0x590
+ irq_exit_rcu+0x84/0xb0
+ sysvec_apic_timer_interrupt+0x6e/0x90
+ </IRQ>
  <TASK>
- d_walk+0xda/0x2b0
- do_one_tree+0x20/0x40
- shrink_dcache_for_umount+0x2c/0x90
- generic_shutdown_super+0x20/0x160
- kill_block_super+0x1a/0x40
- ext4_kill_sb+0x22/0x40
- deactivate_locked_super+0x35/0x80
- cleanup_mnt+0x104/0x160
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20
+RIP: 0010:default_idle+0xf/0x20
+ default_idle_call+0x38/0x60
+ do_idle+0x2b5/0x300
+ cpu_startup_entry+0x54/0x60
+ start_secondary+0x20d/0x280
+ common_startup_64+0x13e/0x148
+ </TASK>
+Modules linked in: [last unloaded: netfs]
 ==================================================================
 
-Add the missing dput() to cachefiles_open_file() for a quick fix.
+Therefore delete fscache_cookie_lru_timer when removing the fscahe module.
 
-Fixes: 1f08c925e7a3 ("cachefiles: Implement backing file wrangling")
+Fixes: 12bb21a29c19 ("fscache: Implement cookie user counting and resource pinning")
 Cc: stable@kernel.org
 Signed-off-by: Baokun Li <libaokun1@huawei.com>
 ---
- fs/cachefiles/namei.c | 1 +
+ fs/netfs/fscache_main.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/fs/cachefiles/namei.c b/fs/cachefiles/namei.c
-index f53977169db4..0bd2f367c3ff 100644
---- a/fs/cachefiles/namei.c
-+++ b/fs/cachefiles/namei.c
-@@ -554,6 +554,7 @@ static bool cachefiles_open_file(struct cachefiles_object *object,
- 	if (!cachefiles_mark_inode_in_use(object, d_inode(dentry))) {
- 		pr_notice("cachefiles: Inode already in use: %pd (B=%lx)\n",
- 			  dentry, d_inode(dentry)->i_ino);
-+		dput(dentry);
- 		return false;
- 	}
+diff --git a/fs/netfs/fscache_main.c b/fs/netfs/fscache_main.c
+index 42e98bb523e3..49849005eb7c 100644
+--- a/fs/netfs/fscache_main.c
++++ b/fs/netfs/fscache_main.c
+@@ -103,6 +103,7 @@ void __exit fscache_exit(void)
  
+ 	kmem_cache_destroy(fscache_cookie_jar);
+ 	fscache_proc_cleanup();
++	timer_shutdown_sync(&fscache_cookie_lru_timer);
+ 	destroy_workqueue(fscache_wq);
+ 	pr_notice("FS-Cache unloaded\n");
+ }
 -- 
 2.39.2
 
