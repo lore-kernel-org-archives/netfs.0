@@ -1,108 +1,239 @@
-Received: from mout.web.de (mout.web.de [212.227.15.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B508188588;
-	Mon, 26 Aug 2024 13:56:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F321805E;
+	Tue, 27 Aug 2024 03:32:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724680582; cv=none; b=jAtGZ2tdgWSRHEVQjjNJ1ctrecCGeoCTBLuXrVQjGZ/bbGK2PoA/M4D6yD7rWjJCb9xaLvrQ1mYkNs198EkriPNMoieJbQKSE4zr/b7M2X7ZRmqkD2LoTucb9UQoe2MfWxOO4c/ULMwfzyFib37ESVe7m1qr7VlLWTC5qTHz6Ao=
+	t=1724729572; cv=none; b=Sf3D1SURD5Vws9kxwLFvHHmjbPI5u9h2rqu2j42OrVtpKwnLt0t5dkzjZIXQW/w3IDVrM8M4xO+iPd94RhqkcmVXCXdmUqB899pVSwMxpmocm3lW0djpyA3PyuE6beLdTuGYCx1bBXuOxQKD7T8VUb+4+e1K2w6rM85lyRMxHwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724680582; c=relaxed/simple;
-	bh=yUh/PbjdVDRxVpF/67lzvzXYxBudQEH3r7sO0dX3+oo=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=Gt9JhKu14hq74OJMnq386SD7cRCfymbO/RUZe6TrBtp7DYsZBrNMzVeMl1vVEL5gef5I0XpQ71s8RjSU2iXy4akRHJ3dOIJg7QKwUPfwb4JgNGkqD0pNKpmmAr50AfRWlS2Ze2QjRdi0d8jqLKNAJ7DGYG2LbTek9TnfwaC9Uo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=Nvgrh7RX; arc=none smtp.client-ip=212.227.15.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	s=arc-20240116; t=1724729572; c=relaxed/simple;
+	bh=4vgGJ/I77/7/F8MH5TlN3hIe1E8PB0zznMpQ11UTzCw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kxlsG0LJeJUwJWOf0fEXhNJQ4a9WvyMCWhjsRGZwqRlnQIss+fm1gd2x7IJtkbmFA598DHuIrpe5L++kdxgLJWqnC3Ef0pZY7srO889PHZXPmNcANo6aRvYsHsysJbRcNuI14zjmt42JzKo6/pekFoBWmr0yIXdYC1sey5U5ONg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mwNCqfA9; arc=none smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="Nvgrh7RX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1724680549; x=1725285349; i=markus.elfring@web.de;
-	bh=ljutM5Y53a9lGEfXooTYa7wadR0GIhj1IYjFGa40WFg=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=Nvgrh7RX15Ac31PPghZGdKOtpIxEnMvv7UtmkCjPDo3tDIehXJ38ynLuZNMIqSTT
-	 gc3O4cK0jg/p7FCovMLQEX2/9DEcqWD54h1hOAnax2bH56eZ3L+wT8MIBZQ7BGlcQ
-	 lHgDWkKAuPpX++rRzsa5lEA8+79Sf/wr+A843Uqlz/HsCL77pSnRzuja/MiNhbIZj
-	 Q0wg6cLaBBSLjbnLsxfgxWMQBd3OMuEzRXQPbd2HuJtSEHkPU82clAqWQE9t9corM
-	 PGhKxZCHs3UGd2uA5RakNaQE/X/9lK8o8N1MohoEjNz9y8/4PivscpAzoG7OpyCZH
-	 Wm0R+pfCwDY286V2yw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.85.95]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1M43KW-1siaCD2eYq-0014VI; Mon, 26
- Aug 2024 15:55:49 +0200
-Message-ID: <467d9b9b-34b4-4a94-95c1-1d41f0a91e05@web.de>
-Date: Mon, 26 Aug 2024 15:55:44 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mwNCqfA9"
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-533488ffaf7so6667925e87.0;
+        Mon, 26 Aug 2024 20:32:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724729567; x=1725334367; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2xbzKRYt6Qy3ZNV+HFmoHf+KHGRhq2St3sDinQito6s=;
+        b=mwNCqfA9qC25B90pPxPBbDGNhnTL2Lb3ihoG2eu7+IMtPBKNkl7VDnro7I81Y+HKSw
+         w84E8jKex1sc3Ui3+kEV9VUdmAYxP6eMV+hUZ/WQVJui8HIfByWPUw0868V/D8IUTFCp
+         CEaDcvaVivUx+3jOl+uoNoDTuOLrSXtEfCZInjGjrMRunFE5m/Qp+N9wQBSZE3nGBEJU
+         AZrQx1lJTIDYkRCRo4Dm2jXt/aRB4OMqdt4FVXYxjdpG8i6hAHA3kuvXaCDYwMkPg4c6
+         jNPJjN7M4fbG5CVJDzhvvwhbl70lKFZBZcI3XRv8P+Y2Vo6OIYlikRKxrExtWs95DU/C
+         FoaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724729567; x=1725334367;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2xbzKRYt6Qy3ZNV+HFmoHf+KHGRhq2St3sDinQito6s=;
+        b=aSWl9ysOdyRPGYfc6B/slqPos7ehwXzqlZyeo3kJ91eqxvSVR7E5WSP03MDkwt6z4K
+         giByM3p6SuBz74fYlVw/5jKjs/UucuW1afEvF/ZQOxEjwhYcz1Jdz6/LDE+dRGWQyM9H
+         kFeV/QYjwvKB15v1Wn3BQ3ckD6kYKZpyR7MTTRkbc4uE0nPV/zEIkuSJ422QFfbDHRPj
+         VF0yCIqZPgxDXHNf93KN4SdRb3GylOyswkelMfS56Nci3QWE9gyeWpiWxmwMyeFDmOF6
+         oyk+S1UOSDz+B17AcGzWYSB36NCGPiBbDaCwPCIAYvJCbiVuGOE/JXxvvE4wblUbM86+
+         FD0A==
+X-Forwarded-Encrypted: i=1; AJvYcCXgV6+igfNgu1NOFW00UftutK5jRilfA9zLtDj/noBsC6G8NClBkWrO3rrj/lP/jFBgiS03o9XjbfP7OsU=@lists.linux.dev, AJvYcCXip64GV1RM3gtJgoENRWQ6xM8ebxcC/ehfn//Is0Ch/ECXVFuH5PXDWq+6nDi4YjSfhLt18g==@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxh68f9lZpTefDrrjmhNb98pE6oI8WvI3mkAIbGYNw0JjEzBTIq
+	Miyrmznf+Xg0VHiG3DtYh+iFCC/6NCjM0yj6OOT/CoF1XtOYsx36BxJhEqEg8lWq9X0h0jXZ4A+
+	0nxyK+hy3cFo93CyQo00cjVn36MY=
+X-Google-Smtp-Source: AGHT+IGlOWGqqXh1+AAccZrVim+pgf7gaTU+IPPNG2QORVDEu9THbJF91fyJWwiE2/xBAQh6UFqMh3R4jhgIzDZyGwA=
+X-Received: by 2002:a05:6512:230a:b0:52b:9c8a:734f with SMTP id
+ 2adb3069b0e04-5344e500664mr813134e87.50.1724729566569; Mon, 26 Aug 2024
+ 20:32:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Baokun Li <libaokun1@huawei.com>, netfs@lists.linux.dev,
- linux-fsdevel@vger.kernel.org, linux-erofs@lists.ozlabs.org,
- David Howells <dhowells@redhat.com>, Jeff Layton <jlayton@kernel.org>
-Cc: stable@kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Christian Brauner <brauner@kernel.org>,
- Gao Xiang <hsiangkao@linux.alibaba.com>, Hou Tao <houtao1@huawei.com>,
- Jingbo Xu <jefflexu@linux.alibaba.com>, Yang Erkun <yangerkun@huawei.com>,
- Yu Kuai <yukuai3@huawei.com>, Zizhi Wo <wozizhi@huawei.com>
-References: <20240826040018.2990763-1-libaokun@huaweicloud.com>
-Subject: Re: [PATCH] cachefiles: fix dentry leak in cachefiles_open_file()
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20240826040018.2990763-1-libaokun@huaweicloud.com>
-Content-Type: text/plain; charset=UTF-8
+References: <37fncjpgsq45becdf2pdju0idf3hj3dtmb@sonic.net>
+In-Reply-To: <37fncjpgsq45becdf2pdju0idf3hj3dtmb@sonic.net>
+From: Steve French <smfrench@gmail.com>
+Date: Mon, 26 Aug 2024 22:32:35 -0500
+Message-ID: <CAH2r5mtZAGg4kC8ERMog=X8MRoup3Wcp1YC7j+d08pXsifXCCg@mail.gmail.com>
+Subject: Re: [REGRESSION] cifs: Subreq overread in dmesg, invalid argument &
+ no data available in apps
+To: Forest <forestix@nom.one>
+Cc: David Howells <dhowells@redhat.com>, Steve French <sfrench@samba.org>, 
+	Shyam Prasad N <nspmangalore@gmail.com>, Rohith Surabattula <rohiths.msft@gmail.com>, 
+	Jeff Layton <jlayton@kernel.org>, linux-cifs@vger.kernel.org, netfs@lists.linux.dev, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	regressions@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:PSLR65nK0lrzwvj7aCO9Q5QQ575PH5NO4WNx1CzaS5+UEojxG7C
- buOAAyDAT148MNNGAPB7xBJ8yvQGIgFXKtemIZahq3sIoRu9TpbjYfhDWiq+2ktNs987Keo
- 1+2gCpSu6fysH172XTpXZ4C+6SZnII/EcJ5sqwSd4/lyi7+m1fnLlcngJGrqkqv6gNvD60N
- jihrE3BDCtu4jgWe+UA1g==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:kWz6dCq+QCA=;Oev0cpJj8SFp3IYWlRmTfc+vk6x
- ULO5y1OqDNMz9dgmRY7vwVAyRoJCQMdbPS7xd+Z/zqQas36onHhj0yAYtqwRjLMiBvnDBUngC
- u12pYqjEnR6DEx7t5hnYHonHFZZ9PVmjmxoWLX3NxdzlHcqm6kx5LjWH0TUh5rJ4V+CFsin6v
- AxSrBF0WEYYxLYczmL++hgyl5rZaoMMtcYYaVJhIJ+pYYiOZQm8DbjlqHli06u0QPL2ivd9h0
- pWpSC0233evlVhZ7JSvTZJbtkOdIzDduw08vp7iXOivwFoLHsGXEkYn7iUl8zSo8xjOuT6oGi
- QmszX8Qv86Nv4s4DCxhp47gAPo4cbf4/29IkLWy6WRnbjtRV5dDmNFbp/0jwxKbAoE8wa+kpv
- jAkS4P4zGS50IWFq3KYlArx4RA2Cz6T2d5gaghQqo+K8ya5i6JLPipZQwYVj64ihz2AE+dAMC
- CYuB1A8eaCiQfDNczZbLUgmGHoWQS3gHCJg4stYda0QadFGU2LCcO1Y4DPUsS5CJ7GQW4Rxu7
- oZwNL16rJvuyYDOay7dzNtmeMOzqZmwGzZGPAOWA5wdxZPeuTw1bbvTMM79zEa1oOw6IUAR1r
- R9jQmn3D1jrtcEKcpIDB/PyAEgsg+plOhNJK5FLxZRKcq5YUxN3FRtlhrX2gC1bOoqEjOtXbY
- 81mCG86t3onqhoS3fJXwUUOk9uqHtdDf3iHOOrx7UE+7JWV3lgcLoTf7YZLHbz7v4fTpI89zf
- m+dgLrBNv3CNRAt6ByUM/qZobRtQl3HO+/YcFw9pJB7ST7nPeO8iI/eaSfh7579pnWIR+ycob
- TG3aXi4nrhj76LWaJuy1v+zw==
 
-=E2=80=A6
-> Add the missing dput() to cachefiles_open_file() for a quick fix.
+Yes - thanks for reporting this.  I can reproduce this (although
+slightly different error on "cat foo" with 6.11-rc5 vs. later patches
+in for-next - I get ""No data available" now with some of David's
+additional patches instead of "Invalid argument" which you get on
+6.11-rc5).
 
-I suggest to use a goto chain accordingly.
+This problem looks related to something that David has discussed
+earlier - on the wire (with 6.11-rc5) we see SMB3 READ with the server
+returning  "STATUS_INVALID_PARAMETER" - there are actually two reads
+in a row that are similar (1MB at offset 0), the first succeeds, the
+second request  has a "credit charge" of 1 (instead of 16 which is
+what I would have expected)  which is likely related to the cause of
+the problem (and the second read fails).
+
+It looks like some of this is fixed with David's patch:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/commi=
+t/?h=3Dnetfs-fixes&id=3D78d0d91398ad7bc37e73cdda65602ac8b6d675bb
+
+0014-cifs-Fix-lack-of-credit-renegotiation-on-read-retry.patch
+
+It is possible that the second part of this is fixed with:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/commi=
+t/?h=3Dnetfs-fixes&id=3De81de4d9db1c25dc3e9feb21548fc5f3e2b3ad8e
+
+Is there an easy way for you to retry with those two patches?
+
+On Sun, Aug 25, 2024 at 6:26=E2=80=AFPM Forest <forestix@nom.one> wrote:
+>
+> #regzbot introduced: e3786b29c54c
+>
+> Dear maintainers,
+>
+> Recent kernel release candidates have a cifs regression that produces
+> unexpected errors in userspace and a WARNING (with stack trace) in dmesg.
+>
+> I can consistently reproduce it with these commands on a mounted Samba
+> share:
+>
+>
+> $ echo hello > foo
+> $ ls -l foo
+> -rw-r----- 1 user user 6 Aug 25 15:41 foo
+> $ cat foo
+> cat: foo: Invalid argument
+> $ xxd foo
+> 00000000: 6865 6c6c 6f0a 0000 0000 0000 0000 0000  hello...........
+> 00000010: 0000 0000 0000 0000 0000 0000 0000 0000  ................
+> (...more null bytes...)
+> 00001fe0: 0000 0000 0000 0000 0000 0000 0000 0000  ................
+> 00001ff0: 0000 0000 0000 0000 0000 0000 0000 0000  ................
+> xxd: No data available
+>
+>
+> The xxd command above also triggers these kernel log messages...
+>
+>   Subreq overread: R3[1] 312 > 8192 - 7956
+>   WARNING: CPU: 30 PID: 421 at fs/netfs/io.c:495
+>
+> ...followed by the usual module list and stack trace.
+>
+>
+> The bug is present in kernel v6.11-rc5, but not the 6.10 series.
+>
+> Git bisect says:
+>
+> e3786b29c54cdae3490b07180a54e2461f42144c is the first bad commit
+> commit e3786b29c54cdae3490b07180a54e2461f42144c
+> Author: Dominique Martinet <asmadeus@codewreck.org>
+> Date:   Thu Aug 8 14:29:38 2024 +0100
+>     9p: Fix DIO read through netfs
+>
+>
+> Here's the full dmesg output when I run xxd on kernel v6.11-rc5:
+>
+> [   48.137018] ------------[ cut here ]------------
+> [   48.137021] Subreq overread: R3[1] 312 > 8192 - 7956
+> [   48.137029] WARNING: CPU: 30 PID: 421 at fs/netfs/io.c:495 netfs_subre=
+q_terminated+0x276/0x2d0 [netfs]
+> [   48.137046] Modules linked in: rfcomm algif_hash algif_skcipher af_alg=
+ cmac nls_utf8 cifs cifs_arc4 nls_ucs2_utils cifs_md4 dns_resolver netfs nf=
+t_masq nft_chain_nat nf_nat
+> nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 bridge stp llc nf_tables nfnet=
+link nvme_fabrics essiv authenc crypto_null snd_seq_dummy snd_hrtimer snd_s=
+eq snd_seq_device qrtr zstd
+> zram bnep binfmt_misc nls_ascii nls_cp437 vfat fat mt7921e snd_hda_codec_=
+realtek mt7921_common snd_hda_codec_generic mt792x_lib snd_hda_scodec_compo=
+nent mt76_connac_lib
+> snd_hda_codec_hdmi mt76 btusb snd_hda_intel amd_atl btrtl intel_rapl_msr =
+snd_intel_dspcfg intel_rapl_common snd_intel_sdw_acpi btintel amd64_edac ed=
+ac_mce_amd mac80211 btbcm
+> snd_hda_codec asus_nb_wmi eeepc_wmi btmtk asus_wmi kvm_amd snd_hda_core s=
+parse_keymap bluetooth libarc4 snd_hwdep platform_profile kvm cfg80211 snd_=
+pcm battery wmi_bmof rapl
+> snd_timer sp5100_tco ccp pcspkr watchdog snd k10temp rfkill soundcore joy=
+dev sg evdev nct6775 nct6775_core hwmon_vid msr parport_pc ppdev lp parport=
+ loop efi_pstore
+> [   48.137103]  configfs ip_tables x_tables autofs4 ext4 mbcache jbd2 btr=
+fs dm_crypt dm_mod efivarfs raid10 raid456 async_raid6_recov async_memcpy a=
+sync_pq async_xor async_tx
+> xor raid6_pq libcrc32c crc32c_generic raid1 raid0 md_mod hid_generic usbh=
+id hid amdgpu amdxcp drm_exec gpu_sched drm_buddy i2c_algo_bit drm_suballoc=
+_helper drm_display_helper
+> sd_mod cec crct10dif_pclmul rc_core crc32_pclmul xhci_pci drm_ttm_helper =
+crc32c_intel ttm ahci xhci_hcd drm_kms_helper libahci r8169 ghash_clmulni_i=
+ntel libata sha512_ssse3
+> realtek nvme mdio_devres sha256_ssse3 drm usbcore scsi_mod sha1_ssse3 i2c=
+_piix4 libphy video nvme_core i2c_smbus usb_common scsi_common crc16 wmi gp=
+io_amdpt gpio_generic button
+> aesni_intel gf128mul crypto_simd cryptd
+> [   48.137148] CPU: 30 UID: 0 PID: 421 Comm: kworker/30:1 Not tainted 6.1=
+1.0-rc5 #3
+> [   48.137150] Hardware name: ASUS System XXXXXXXXXX
+> [   48.137151] Workqueue: cifsiod smb2_readv_worker [cifs]
+> [   48.137176] RIP: 0010:netfs_subreq_terminated+0x276/0x2d0 [netfs]
+> [   48.137182] Code: 66 ff ff ff 0f 1f 44 00 00 e9 5c ff ff ff 48 89 f1 0=
+f b7 93 86 00 00 00 8b b5 ac 01 00 00 48 c7 c7 78 81 7a c2 e8 ba 68 2f da <=
+0f> 0b 48 8b 43 70 31 d2 4c
+> 8d ab 98 00 00 00 66 89 93 84 00 00 00
+> [   48.137183] RSP: 0018:ffffad8942637e58 EFLAGS: 00010282
+> [   48.137185] RAX: 0000000000000000 RBX: ffff9d09639a7200 RCX: 000000000=
+0000027
+> [   48.137186] RDX: ffff9d107e721788 RSI: 0000000000000001 RDI: ffff9d107=
+e721780
+> [   48.137187] RBP: ffff9d094bf38a00 R08: 0000000000000000 R09: 000000000=
+0000003
+> [   48.137187] R10: ffffad8942637ce8 R11: ffff9d109de3cfe8 R12: 000000000=
+0000001
+> [   48.137188] R13: ffff9d095fcf6000 R14: ffff9d09639a7208 R15: 000000000=
+0000000
+> [   48.137189] FS:  0000000000000000(0000) GS:ffff9d107e700000(0000) knlG=
+S:0000000000000000
+> [   48.137190] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   48.137191] CR2: 000055d1a3402760 CR3: 00000006b0222000 CR4: 000000000=
+0750ef0
+> [   48.137192] PKRU: 55555554
+> [   48.137193] Call Trace:
+> [   48.137194]  <TASK>
+> [   48.137197]  ? __warn+0x80/0x120
+> [   48.137201]  ? netfs_subreq_terminated+0x276/0x2d0 [netfs]
+> [   48.137207]  ? report_bug+0x164/0x190
+> [   48.137210]  ? prb_read_valid+0x1b/0x30
+> [   48.137213]  ? handle_bug+0x41/0x70
+> [   48.137215]  ? exc_invalid_op+0x17/0x70
+> [   48.137216]  ? asm_exc_invalid_op+0x1a/0x20
+> [   48.137220]  ? netfs_subreq_terminated+0x276/0x2d0 [netfs]
+> [   48.137225]  ? netfs_subreq_terminated+0x276/0x2d0 [netfs]
+> [   48.137230]  process_one_work+0x179/0x390
+> [   48.137233]  worker_thread+0x249/0x350
+> [   48.137235]  ? __pfx_worker_thread+0x10/0x10
+> [   48.137237]  kthread+0xcf/0x100
+> [   48.137240]  ? __pfx_kthread+0x10/0x10
+> [   48.137242]  ret_from_fork+0x31/0x50
+> [   48.137244]  ? __pfx_kthread+0x10/0x10
+> [   48.137246]  ret_from_fork_asm+0x1a/0x30
+> [   48.137250]  </TASK>
+> [   48.137251] ---[ end trace 0000000000000000 ]---
+>
 
 
-=E2=80=A6
-> +++ b/fs/cachefiles/namei.c
-> @@ -554,6 +554,7 @@ static bool cachefiles_open_file(struct cachefiles_o=
-bject *object,
->  	if (!cachefiles_mark_inode_in_use(object, d_inode(dentry))) {
->  		pr_notice("cachefiles: Inode already in use: %pd (B=3D%lx)\n",
->  			  dentry, d_inode(dentry)->i_ino);
-> +		dput(dentry);
->  		return false;
+--=20
+Thanks,
 
-Please replace two statements by the statement =E2=80=9Cgoto put_dentry;=
-=E2=80=9D.
-
-
-=E2=80=A6
-> error:
-> 	cachefiles_do_unmark_inode_in_use(object, d_inode(dentry));
-+put_dentry:
-> 	dput(dentry);
-> 	return false;
-> }
-
-Regards,
-Markus
+Steve
