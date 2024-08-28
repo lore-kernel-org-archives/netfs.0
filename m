@@ -1,92 +1,84 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC8816EBE2
-	for <netfs@lists.linux.dev>; Wed, 28 Aug 2024 13:02:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5424A1D554;
+	Wed, 28 Aug 2024 13:37:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724850130; cv=none; b=CBtldL4RUA6jh/7J7kt8r2GokXqeEmbpubVL+v01A8/PagAqQwm4rMvjsZcUIQ3EktywBmHum1HjVQExHmSXzaGwptEKgbBHMgX1ZxRSnuy2KGm9WIrviRxNMqrnLHCAQe5YJdM44bW6xWTPB4mTnGMP9aH8cvjjoqMF+2zC5h0=
+	t=1724852241; cv=none; b=fmVF2OMeboeRF2W1VJMxoedLsTxL7o0NarG7B3Njrvu20wOc7AEG54as3JXdoPXjf8Cp59JCp0SY6FPQiM9xKsCyznP+Ko6L60HuOaH0xzxxi6qCUqkF5s9+dASGOCEcEhlSkoLapcpPBaWWgIkHsLhZz50YLsP0H8uJLEV4WIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724850130; c=relaxed/simple;
-	bh=6z9573j1PRy0mQEVayeHkT7XEBmXChvpYifI+rJKeeI=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=e4XVCHA/gUoYOHyp9v0eLvs4xSSdC1TvZUeep3nDsxIv8Y9gmMOGNrguTacox1EF9TBNraGXIfDr5wmSJsVPRg6mOToVcQq5RVL977ttIZ2bZhHwhq5bZOOqb7tf6R6tiZGLc8Wg07qbgjcxw2e7ge60GLFkyb/titUoDvN5RbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VCFZJ/y2; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1724852241; c=relaxed/simple;
+	bh=Nwfs3yfaGGyfcG5dJ5lnEqC4M+ztIXz0KzLCPLezTec=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eQ5A0a/oXGcbC5rJ/qZFZXEOhTKDGM6ZJw8W3H+vfIqb7yzesCiUwvFBg7Y+OkLbT6D9gD0pUIva8FNekinC2MsqESxy7vTAWlDE/XyLuKwbGornLXFhZvIi6eyqsAmv0hUKpvCAthngtG6VS/GQ6LiCmJuiXMA98GOWN62LHBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=izPSZ7ol; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VCFZJ/y2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1724850128;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6z9573j1PRy0mQEVayeHkT7XEBmXChvpYifI+rJKeeI=;
-	b=VCFZJ/y22JqrUCRrcIg6PDuFxnFFeLdMihqrDk8lYHrCGLr0hMEX0pRDsIJMqFI7e2bLLg
-	fk0XycEsEMAEkgfH3Brs6DNfe82nEpmPRPo8Ff+A4p/Zc8i+sHGeePFZUDaOGxFFgi50nC
-	9kUYVP4ASKW9TUd1rjb5tyQKvDYnXbs=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-616-dmP1IjVvOrejjqwGLa5RLQ-1; Wed,
- 28 Aug 2024 09:02:04 -0400
-X-MC-Unique: dmP1IjVvOrejjqwGLa5RLQ-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 96FC41955D47;
-	Wed, 28 Aug 2024 13:02:00 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.30])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AF17219560A3;
-	Wed, 28 Aug 2024 13:01:54 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <5b7455f8-4637-4ec0-a016-233827131fb2@huaweicloud.com>
-References: <5b7455f8-4637-4ec0-a016-233827131fb2@huaweicloud.com> <20240826040018.2990763-1-libaokun@huaweicloud.com> <467d9b9b-34b4-4a94-95c1-1d41f0a91e05@web.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="izPSZ7ol"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4E87C55DF2;
+	Wed, 28 Aug 2024 13:37:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724852240;
+	bh=Nwfs3yfaGGyfcG5dJ5lnEqC4M+ztIXz0KzLCPLezTec=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=izPSZ7ol/PohfSmOweUqSXMko8ZTEPHGZfHXUIsi2RP3lpEVM/G+vFKV/ACwpkaS5
+	 hFE08LtePrNuFEshcL9aIbQslaCjTwVecGwp2xUVrUwSbBRf1q+iSB8S8uGnGuOnYN
+	 icXCLbFhXRF2UaWeVtojUd345KHrrfY/dPbzCbMbvvbJUc+oVVWjWzfM51/dsNapP5
+	 MtH0GBOuRLnB3UE/60ci9ZKpIOjCUyUDHgZ148q18YRVitmP2YM0mA7uFp75JaM7L0
+	 sQ72IgHlgZt9Dztnc/o8mdexjEKbuQfSTvJVBhRgwmjyDA0occw2qHMKfmDrRaLdEt
+	 EvXvFOgLiANTw==
+Date: Wed, 28 Aug 2024 15:37:14 +0200
+From: Christian Brauner <brauner@kernel.org>
 To: Baokun Li <libaokun@huaweicloud.com>
-Cc: dhowells@redhat.com, Markus Elfring <Markus.Elfring@web.de>,
-    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-    linux-erofs@lists.ozlabs.org, Jeff Layton <jlayton@kernel.org>,
-    stable@kernel.org, LKML <linux-kernel@vger.kernel.org>,
-    Christian Brauner <brauner@kernel.org>,
-    Gao Xiang <hsiangkao@linux.alibaba.com>,
-    Hou Tao <houtao1@huawei.com>, Jingbo Xu <jefflexu@linux.alibaba.com>,
-    Yang Erkun <yangerkun@huawei.com>, Yu Kuai <yukuai3@huawei.com>,
-    Zizhi Wo <wozizhi@huawei.com>, Baokun Li <libaokun1@huawei.com>
-Subject: Re: [PATCH] cachefiles: fix dentry leak in cachefiles_open_file()
+Cc: dhowells@redhat.com, jlayton@kernel.org, netfs@lists.linux.dev, 
+	jefflexu@linux.alibaba.com, linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, yangerkun@huawei.com, houtao1@huawei.com, yukuai3@huawei.com, 
+	wozizhi@huawei.com, Baokun Li <libaokun1@huawei.com>, stable@kernel.org, 
+	Gao Xiang <xiang@kernel.org>
+Subject: Re: [PATCH] netfs: Delete subtree of 'fs/netfs' when netfs module
+ exits
+Message-ID: <20240828-federn-testreihe-97c4f6ec5772@brauner>
+References: <20240826113404.3214786-1-libaokun@huaweicloud.com>
+ <20240828-fuhren-platzen-fc6210881103@brauner>
+ <b003bb7c-7af0-484f-a6d9-da15b09e3a96@huaweicloud.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <988771.1724850113.1@warthog.procyon.org.uk>
-Date: Wed, 28 Aug 2024 14:01:53 +0100
-Message-ID: <988772.1724850113@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <b003bb7c-7af0-484f-a6d9-da15b09e3a96@huaweicloud.com>
 
-Baokun Li <libaokun@huaweicloud.com> wrote:
+On Wed, Aug 28, 2024 at 08:13:54PM GMT, Baokun Li wrote:
+> On 2024/8/28 19:22, Christian Brauner wrote:
+> > On Mon, 26 Aug 2024 19:34:04 +0800, libaokun@huaweicloud.com wrote:
+> > > In netfs_init() or fscache_proc_init(), we create dentry under 'fs/netfs',
+> > > but in netfs_exit(), we only delete the proc entry of 'fs/netfs' without
+> > > deleting its subtree. This triggers the following WARNING:
+> > > 
+> > > ==================================================================
+> > > remove_proc_entry: removing non-empty directory 'fs/netfs', leaking at least 'requests'
+> > > WARNING: CPU: 4 PID: 566 at fs/proc/generic.c:717 remove_proc_entry+0x160/0x1c0
+> > > Modules linked in: netfs(-)
+> > > CPU: 4 UID: 0 PID: 566 Comm: rmmod Not tainted 6.11.0-rc3 #860
+> > > RIP: 0010:remove_proc_entry+0x160/0x1c0
+> > > Call Trace:
+> > >   <TASK>
+> > >   netfs_exit+0x12/0x620 [netfs]
+> > >   __do_sys_delete_module.isra.0+0x14c/0x2e0
+> > >   do_syscall_64+0x4b/0x110
+> > >   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> > > ==================================================================
+> 
+> Hi Christian,
+> 
+> 
+> Thank you for applying this patch!
+> 
+> I just realized that the parentheses are in the wrong place here,
+> could you please help me correct them?
+> > > Therefore use remove_proc_subtree instead() of remove_proc_entry() to
+> ^^ remove_proc_subtree() instead
 
-> Actually, at first I was going to release the reference count of the
-> dentry uniformly in cachefiles_look_up_object() and delete all dput()
-> in cachefiles_open_file(),
-
-You couldn't do that anyway, since kernel_file_open() steals the caller's ref
-if successful.
-
-> but this may conflict when backporting the code to stable. So just keep it
-> simple to facilitate backporting to stable.
-
-Prioritise upstream, please.
-
-I think Markus's suggestion of inserting a label and switching to a goto is
-better.
-
-Thanks,
-David
-
+Sure, done.
