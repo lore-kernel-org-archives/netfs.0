@@ -1,162 +1,173 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E5C51CA85;
-	Thu, 29 Aug 2024 02:47:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4387718A6C8
+	for <netfs@lists.linux.dev>; Thu, 29 Aug 2024 08:35:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724899679; cv=none; b=UXTetcTcRHvjHgUodardTZISOxJZz82bP2lOPbAROTDs+eNXLIfwj8c/1vrOmgq3rJfVjUJRaVn7euCwxYckFp2WVj8mo8IrlDy5NeCFUg8bz1Yxgf8UkRn89oFNxdKRWTDOjWMeHK88XJbVwg1xhiEOJJJv7NikjznLVVmndZA=
+	t=1724920536; cv=none; b=U0PITyGVADPBpKtCQSdX7u5L7qvE+gCr0K3XVjhytS9yzgNQBjiVxN9WDaD5FLaMgFdc2oZyOS3ONBAWrkEbt+qQXUrgYjIUAq58lpuNIbt0OqoD71c8/srmFF0kL6s7H14vqoATlvCc22Hhl8smWAms2tLjPMRtLBTy7gjJkOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724899679; c=relaxed/simple;
-	bh=yZBj6yB+vdP8EWPB8Ad9fGdRR9EORM7UbpU9Y+Lq7WQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=acGFilNVWQ0uWQ11M9jEl13zbPzu5bd/Glm3GU+TuM+OlkE6ged7HljzojZZV4dfqpSnpaLson/P6dKjm+WQO9bQCx54+lf10tmAiV7oOqJ+UAiQFllDB3bXwMfyugBDQGsQksFHQW1XFuLBqSwj777mp0DiW9tlCexrmLaYjNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TCi2jXOI; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TCi2jXOI"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5334adf7249so181980e87.3;
-        Wed, 28 Aug 2024 19:47:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724899676; x=1725504476; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=j8nW60xbKKK3BMmTEpx1vfAUyDbucJTsTqvhOF4FZ8U=;
-        b=TCi2jXOIUVty5Emv5/rtm72wdSjxnK5lwtvYOl3MIqBd5omnZpFKPrVyoT5/yxf/Bl
-         y+8vj+bYiBecwS1Hhksmozr0EYtqbpNj/oaDNBJ4TfRktbp0jPb76gCM4wALVRiFIEi8
-         3YFF65uSql9RC5Smokam42lAthvZNtQzqOYnaYEa8H8Y7F4Uicf+BOChQkLs6FM5OAMr
-         uA+qSICpx6QkVPze6kk4zQo+J5kbZ4P59tPleSRoH2EC/sDZmJlr81Y8ZMBkabiVVDi0
-         NjoBytcuWI8eIbPPhgqqVb/dzPy5RURu7/rMHdVC54upMxvZshVOrpjtTpA0NlHd0AsU
-         wrIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724899676; x=1725504476;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=j8nW60xbKKK3BMmTEpx1vfAUyDbucJTsTqvhOF4FZ8U=;
-        b=rn/olq5G4CqAA0Qz0hxKjlEUrQAjOwAl7c0SwsVEIVbnS4l9kToBwpI7iyw+mSZmHy
-         tqSJYvT2gmTs/IgRicpemA7vnGQWLYSZwrmJTbagCzossWtQP7kI5Kv8BizX99nB7pQh
-         B0n0W7KY2G7Q8sg6MtwusavoI26YE7BNm6D3iae3w45+2eoQrqTuMIW0aijovqtl5d9A
-         eMOXm/2cXITqgP/EvtQPnQ4P92aHKArSO2FtEJwjj10SQxpKDr+DDD2dMkqlK5eq1pjD
-         P0ZiGn1N63eq9/CJWyS8vuxIPiSoBn891FkkZoPe4VVYG/u9wdSHBc0Fjezd8c88GhVz
-         Zi4g==
-X-Forwarded-Encrypted: i=1; AJvYcCVbIGv1A9+m5T5g6GZkNWu/xboMh7uJCHUzLbyXESQqUErrNYlmrWnBsWht1tGtlvUP40Xctw==@lists.linux.dev, AJvYcCWXActOGvqUXl+9nSZOeSq9WjjTDLptAyEv688zuhT0JrcyOv5XU7mjRt6t6BZb/6rFGXd2xw==@lists.linux.dev
-X-Gm-Message-State: AOJu0YyflD0ptlgmQ5XV+9ZFaSxA+KsZdb19AQqXAMdllEm7pwsA0dGP
-	pJXdkzTBQCBoh/1/Vpqb1OgE6/FM1FMSQGpazppLGlkcQZyDpIVxfhh7p9mDBciWyX4QHeosMf8
-	wLXE74CBiReaGWHIO8Y2Slg6uRqw=
-X-Google-Smtp-Source: AGHT+IFw6YFPE4uQg6imkFHXMbxtDADWvwTRJd5bZLVgOFxAE0atjLaGwN/Y3Vs2U2TCttK/XyhsIPdmUPLmGEsItEg=
-X-Received: by 2002:a05:6512:1055:b0:52c:db0a:a550 with SMTP id
- 2adb3069b0e04-5353e5aae01mr710771e87.42.1724899675197; Wed, 28 Aug 2024
- 19:47:55 -0700 (PDT)
+	s=arc-20240116; t=1724920536; c=relaxed/simple;
+	bh=08PKGA+fUzd0s7QRwGYtG0cpzGpgl+u8V4qYLR6fTnM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UdvK0Kc8dJwvjnef7s93zVtoKSdGOyfHrXjpxeYlrYnjGAEooXXJ+egZGnSEAFUFAGRJjM38biFpaohVxbSb+lDc6mmUaWToAM8VG0dEuCT7XekKINJY4rXs1c7l8BEBGyOs6RqMhxjDH/cjVoi+Rqtj9ZQU+b1N9G1DoApzsVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.93.142])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4WvZNL1fd8z4f3mJH
+	for <netfs@lists.linux.dev>; Thu, 29 Aug 2024 16:35:14 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id BAA961A0359
+	for <netfs@lists.linux.dev>; Thu, 29 Aug 2024 16:35:29 +0800 (CST)
+Received: from huaweicloud.com (unknown [10.175.104.67])
+	by APP4 (Coremail) with SMTP id gCh0CgB3n4XNMtBmyzYkDA--.10163S4;
+	Thu, 29 Aug 2024 16:35:27 +0800 (CST)
+From: libaokun@huaweicloud.com
+To: netfs@lists.linux.dev
+Cc: dhowells@redhat.com,
+	jlayton@kernel.org,
+	brauner@kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	hsiangkao@linux.alibaba.com,
+	jefflexu@linux.alibaba.com,
+	linux-erofs@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	libaokun@huaweicloud.com,
+	yangerkun@huawei.com,
+	houtao1@huawei.com,
+	yukuai3@huawei.com,
+	wozizhi@huawei.com,
+	Baokun Li <libaokun1@huawei.com>,
+	stable@kernel.org
+Subject: [PATCH v2] cachefiles: fix dentry leak in cachefiles_open_file()
+Date: Thu, 29 Aug 2024 16:34:09 +0800
+Message-Id: <20240829083409.3788142-1-libaokun@huaweicloud.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240828210249.1078637-1-dhowells@redhat.com>
-In-Reply-To: <20240828210249.1078637-1-dhowells@redhat.com>
-From: Steve French <smfrench@gmail.com>
-Date: Wed, 28 Aug 2024 21:47:43 -0500
-Message-ID: <CAH2r5muvO8+Es4Y8d=VtWEp-vcC62TYEZc3W1Y0r+6ro6d9yxQ@mail.gmail.com>
-Subject: Re: [PATCH 0/6] mm, netfs, cifs: Miscellaneous fixes
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <christian@brauner.io>, Steve French <sfrench@samba.org>, 
-	Paulo Alcantara <pc@manguebit.com>, Tom Talpey <tom@talpey.com>, 
-	Dominique Martinet <asmadeus@codewreck.org>, Jeff Layton <jlayton@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, netfs@lists.linux.dev, linux-afs@lists.infradead.org, 
-	linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org, 
-	ceph-devel@vger.kernel.org, v9fs@lists.linux.dev, 
-	linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:gCh0CgB3n4XNMtBmyzYkDA--.10163S4
+X-Coremail-Antispam: 1UD129KBjvJXoWxury8ZF45AFW8Zw1DCw4kJFb_yoW5ZF15pF
+	ZayFyxJryrWrWkGr48AFnYqr1rA3yjqF1DX3Z5Wr1kAr1qvr1aqr17tr1Fqry5GrZ7Ar42
+	qF1UCa43JryjkrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9E14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
+	Y2ka0xkIwI1lw4CEc2x0rVAKj4xxMxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI4
+	8JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xv
+	wVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjx
+	v20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20E
+	Y4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267
+	AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbTGQDUUUUU==
+X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAQAKBWbO339ALgABsp
 
-testing is going fine so far with David's series ontop of current mainline
+From: Baokun Li <libaokun1@huawei.com>
 
-(I see one possible intermittent server bug failure - on test
-generic/728 - but no red flags testing so far)
+A dentry leak may be caused when a lookup cookie and a cull are concurrent:
 
-http://smb311-linux-testing.southcentralus.cloudapp.azure.com/#/builders/3/=
-builds/207
+            P1             |             P2
+-----------------------------------------------------------
+cachefiles_lookup_cookie
+  cachefiles_look_up_object
+    lookup_one_positive_unlocked
+     // get dentry
+                            cachefiles_cull
+                              inode->i_flags |= S_KERNEL_FILE;
+    cachefiles_open_file
+      cachefiles_mark_inode_in_use
+        __cachefiles_mark_inode_in_use
+          can_use = false
+          if (!(inode->i_flags & S_KERNEL_FILE))
+            can_use = true
+	  return false
+        return false
+        // Returns an error but doesn't put dentry
 
-On Wed, Aug 28, 2024 at 4:03=E2=80=AFPM David Howells <dhowells@redhat.com>=
- wrote:
->
-> Hi Christian, Steve,
->
-> Firstly, here are some fixes to DIO read handling and the retrying of
-> reads, particularly in relation to cifs:
->
->  (1) Fix the missing credit renegotiation in cifs on the retrying of read=
-s.
->      The credits we had ended with the original read (or the last retry)
->      and to perform a new read we need more credits otherwise the server
->      can reject our read with EINVAL.
->
->  (2) Fix the handling of short DIO reads to avoid ENODATA when the read
->      retry tries to access a portion of the file after the EOF.
->
-> Secondly, some patches fixing cifs copy and zero offload:
->
->  (3) Fix cifs_file_copychunk_range() to not try to partially invalidate
->      folios that are only partly covered by the range, but rather flush
->      them back and invalidate them.
->
->  (4) Fix filemap_invalidate_inode() to use the correct invalidation
->      function so that it doesn't leave partially invalidated folios hangi=
-ng
->      around (which may hide part of the result of an offloaded copy).
->
->  (5) Fix smb3_zero_data() to correctly handle zeroing of data that's
->      buffered locally but not yet written back and with the EOF position =
-on
->      the server short of the local EOF position.
->
->      Note that this will also affect afs and 9p, particularly with regard
->      to direct I/O writes.
->
-> And finally, here's an adjustment to debugging statements:
->
->  (6) Adjust three debugging output statements.  Not strictly a fix, so
->      could be dropped.  Including the subreq ID in some extra debug lines
->      helps a bit, though.
->
-> The patches can also be found here:
->
->         https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs=
-.git/log/?h=3Dnetfs-fixes
->
-> Thanks,
-> David
->
-> David Howells (6):
->   cifs: Fix lack of credit renegotiation on read retry
->   netfs, cifs: Fix handling of short DIO read
->   cifs: Fix copy offload to flush destination region
->   mm: Fix filemap_invalidate_inode() to use
->     invalidate_inode_pages2_range()
->   cifs: Fix FALLOC_FL_ZERO_RANGE to preflush buffered part of target
->     region
->   netfs, cifs: Improve some debugging bits
->
->  fs/netfs/io.c            | 21 +++++++++++++-------
->  fs/smb/client/cifsfs.c   | 21 ++++----------------
->  fs/smb/client/cifsglob.h |  1 +
->  fs/smb/client/file.c     | 37 ++++++++++++++++++++++++++++++++----
->  fs/smb/client/smb2ops.c  | 26 +++++++++++++++++++------
->  fs/smb/client/smb2pdu.c  | 41 +++++++++++++++++++++++++---------------
->  fs/smb/client/trace.h    |  1 +
->  include/linux/netfs.h    |  1 +
->  mm/filemap.c             |  2 +-
->  9 files changed, 101 insertions(+), 50 deletions(-)
->
->
+After that the following WARNING will be triggered when the backend folder
+is umounted:
 
+==================================================================
+BUG: Dentry 000000008ad87947{i=7a,n=Dx_1_1.img}  still in use (1) [unmount of ext4 sda]
+WARNING: CPU: 4 PID: 359261 at fs/dcache.c:1767 umount_check+0x5d/0x70
+CPU: 4 PID: 359261 Comm: umount Not tainted 6.6.0-dirty #25
+RIP: 0010:umount_check+0x5d/0x70
+Call Trace:
+ <TASK>
+ d_walk+0xda/0x2b0
+ do_one_tree+0x20/0x40
+ shrink_dcache_for_umount+0x2c/0x90
+ generic_shutdown_super+0x20/0x160
+ kill_block_super+0x1a/0x40
+ ext4_kill_sb+0x22/0x40
+ deactivate_locked_super+0x35/0x80
+ cleanup_mnt+0x104/0x160
+==================================================================
 
---=20
-Thanks,
+Whether cachefiles_open_file() returns true or false, the reference count
+obtained by lookup_positive_unlocked() in cachefiles_look_up_object()
+should be released.
 
-Steve
+Therefore release that reference count in cachefiles_look_up_object() to
+fix the above issue and simplify the code.
+
+Fixes: 1f08c925e7a3 ("cachefiles: Implement backing file wrangling")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+---
+v1->v2:
+	Use of new solution.
+
+v1: https://lore.kernel.org/r/20240826040018.2990763-1-libaokun@huaweicloud.com
+
+ fs/cachefiles/namei.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/fs/cachefiles/namei.c b/fs/cachefiles/namei.c
+index f53977169db4..2b3f9935dbb4 100644
+--- a/fs/cachefiles/namei.c
++++ b/fs/cachefiles/namei.c
+@@ -595,14 +595,12 @@ static bool cachefiles_open_file(struct cachefiles_object *object,
+ 	 * write and readdir but not lookup or open).
+ 	 */
+ 	touch_atime(&file->f_path);
+-	dput(dentry);
+ 	return true;
+ 
+ check_failed:
+ 	fscache_cookie_lookup_negative(object->cookie);
+ 	cachefiles_unmark_inode_in_use(object, file);
+ 	fput(file);
+-	dput(dentry);
+ 	if (ret == -ESTALE)
+ 		return cachefiles_create_file(object);
+ 	return false;
+@@ -611,7 +609,6 @@ static bool cachefiles_open_file(struct cachefiles_object *object,
+ 	fput(file);
+ error:
+ 	cachefiles_do_unmark_inode_in_use(object, d_inode(dentry));
+-	dput(dentry);
+ 	return false;
+ }
+ 
+@@ -654,7 +651,9 @@ bool cachefiles_look_up_object(struct cachefiles_object *object)
+ 		goto new_file;
+ 	}
+ 
+-	if (!cachefiles_open_file(object, dentry))
++	ret = cachefiles_open_file(object, dentry);
++	dput(dentry);
++	if (!ret)
+ 		return false;
+ 
+ 	_leave(" = t [%lu]", file_inode(object->file)->i_ino);
+-- 
+2.39.2
+
