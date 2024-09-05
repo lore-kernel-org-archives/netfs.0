@@ -1,87 +1,117 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7094B136657
-	for <netfs@lists.linux.dev>; Wed,  4 Sep 2024 22:02:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C8542C0B;
+	Thu,  5 Sep 2024 06:46:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725487325; cv=none; b=ZtqYP4/PWwsTyzZSGAs+s/hkiYhMOBrA4bIL2LlxzIpPKm+PNl8igzzpEWFRdVnUevvdc75LJonVXy4Qq8XX8BOS4V0R/8abTQsF6ibZ1X0+9WQG3zJ5QUxVlxdk6eOp32fjbGoyK8Wuzb4qoVoEieMCVfH7bnZcOT6ToFIFK00=
+	t=1725518810; cv=none; b=JGscI+2Nl+RF/o4F5uxKN3xsSGpMu2DyrqS1OLHbR7adssVcOh1yAg5rap3cwSfdYqqrYrsqXfo5fKwrsTMWOA987iodKHbjLUk1r4vgxkiWnMPJIInle1iDnGfZDkj+RIPGF5eDGySueIvcDnxT8rRm6ycu5jk7ZIGljJsFVqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725487325; c=relaxed/simple;
-	bh=f393uc7UEhviBqg4GZHZUDOa2j7FR50YPbzgdwHy8Pk=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=sSyswox9na+iRe/GUGj2VsQK8nM7ZMBgiSKxCxszoev2/w/DBb12qwNhigvJ/KqxALc+eyfPgro0kycoBUvHJO1N/FF6sgttzAPXk+ONBStmYpDlBqV9TNTRh1KUqpxv+WVoxUPuqhIK6fXwfZHS/J/xvrgCIs8PnIFIXWAoI00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZWM6SnEl; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1725518810; c=relaxed/simple;
+	bh=38JsQ1Jq63ahIUMQOrTKd3e8gtJecngXzxRxlfLO/d8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Vp+A8rS9TzoMBZCKZAM19CSVHkzSsjbHlsAWKOfhphfjEIbK53A7z6esdXHScenJ5fUlmpJbfOqOnFzE9LeaGkLEZBvyTgYkz9iUucYU5E2dKOKd8P3SReK8YqvUzCn+4Xzx+7w6kuq4z9yTSbmSNY0Plzo5/fqC2mjftpVamk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QegYRVrb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZWM6SnEl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1725487323;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IHF0Ph21ttcF9eggr2GftptTjTXE6YMP3K7gdGsE7Iw=;
-	b=ZWM6SnElpkXKZtNW75nIOUIqUFV+O/LM8OkQhz/6WtD4Es0XL80zc0M0mhshfE12uBi0ou
-	ire798A7j8s9lGxtXZxkvyehofd+TU7kzpROREJT3iZjAMZVswnNzdIc0nuM+PD/fEbXO4
-	NvwtXeDE5wlu2aixEZnGns/LaxIax8Q=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-541-85Pv1Um6OvuNedHLe-QKlA-1; Wed,
- 04 Sep 2024 18:01:57 -0400
-X-MC-Unique: 85Pv1Um6OvuNedHLe-QKlA-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 715C81953959;
-	Wed,  4 Sep 2024 22:01:55 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.30])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CC46D19560AA;
-	Wed,  4 Sep 2024 22:01:52 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <1dihdj9avrsvritngbtie92i5udsf28168@sonic.net>
-References: <1dihdj9avrsvritngbtie92i5udsf28168@sonic.net> <pv2lcjhveti4sfua95o0u6r4i73r39srra@sonic.net>
-To: Forest <forestix@nom.one>
-Cc: dhowells@redhat.com, Steve French <sfrench@samba.org>,
-    Shyam Prasad N <nspmangalore@gmail.com>,
-    Rohith Surabattula <rohiths.msft@gmail.com>,
-    Jeff Layton <jlayton@kernel.org>, linux-cifs@vger.kernel.org,
-    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-    linux-mm@kvack.org, stable@vger.kernel.org,
-    regressions@lists.linux.dev
-Subject: Re: [REGRESSION] cifs: triggers bad flatpak & ostree signatures, corrupts ffmpeg & mkvmerge outputs
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QegYRVrb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98CE5C4CEC4;
+	Thu,  5 Sep 2024 06:46:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1725518810;
+	bh=38JsQ1Jq63ahIUMQOrTKd3e8gtJecngXzxRxlfLO/d8=;
+	h=Subject:To:Cc:From:Date:From;
+	b=QegYRVrb2NzR7xvbBNcZMUcEpgA+F50GaPdJssc0XzamdfOhOHWA5Fiy4Qt0euORw
+	 EmY7BpOjlZdcsu7AGNtI+q3jQ2rOoypLHkQdzahAmzmkdMQ3+N5wFh5LL7Hg2d2I1p
+	 Fp/C9ouggfYndWW3efK6ag01QHtsF/zS51Z/P02M=
+Subject: Patch "mm: Fix filemap_invalidate_inode() to use invalidate_inode_pages2_range()" has been added to the 6.10-stable tree
+To: akpm@linux-foundation.org,brauner@kernel.org,devel@lists.orangefs.org,dhowells@redhat.com,gregkh@linuxfoundation.org,hch@lst.de,jlayton@kernel.org,linux-afs@lists.infradead.org,linux-mm@kvack.org,miklos@szeredi.hu,netfs@lists.linux.dev,trond.myklebust@hammerspace.com,v9fs@lists.linux.dev,viro@zeniv.linux.org.uk,willy@infradead.org
+Cc: <stable-commits@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 05 Sep 2024 08:46:46 +0200
+Message-ID: <2024090546-massive-repulsion-9ceb@gregkh>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2450248.1725487311.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 04 Sep 2024 23:01:51 +0100
-Message-ID: <2450249.1725487311@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-stable: commit
+X-Patchwork-Hint: ignore 
 
-Forest <forestix@nom.one> wrote:
 
-> Write corruption still exists in 6.11.0-rc6.
+This is a note to let you know that I've just added the patch titled
 
-Can you try adding this:
+    mm: Fix filemap_invalidate_inode() to use invalidate_inode_pages2_range()
 
-	https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit=
-/?id=3Dc26096ee0278c5e765009c5eee427bbafe6dc090
+to the 6.10-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
-Unfortunately, it managed to miss -rc6 because Linus released early before=
- the
-PR could be sent to him.
+The filename of the patch is:
+     mm-fix-filemap_invalidate_inode-to-use-invalidate_inode_pages2_range.patch
+and it can be found in the queue-6.10 subdirectory.
 
-David
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.
 
+
+From c26096ee0278c5e765009c5eee427bbafe6dc090 Mon Sep 17 00:00:00 2001
+From: David Howells <dhowells@redhat.com>
+Date: Wed, 28 Aug 2024 22:02:45 +0100
+Subject: mm: Fix filemap_invalidate_inode() to use invalidate_inode_pages2_range()
+
+From: David Howells <dhowells@redhat.com>
+
+commit c26096ee0278c5e765009c5eee427bbafe6dc090 upstream.
+
+Fix filemap_invalidate_inode() to use invalidate_inode_pages2_range()
+rather than truncate_inode_pages_range().  The latter clears the
+invalidated bit of a partial pages rather than discarding it entirely.
+This causes copy_file_range() to fail on cifs because the partial pages at
+either end of the destination range aren't evicted and reread, but rather
+just partly cleared.
+
+This causes generic/075 and generic/112 xfstests to fail.
+
+Fixes: 74e797d79cf1 ("mm: Provide a means of invalidation without using launder_folio")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20240828210249.1078637-5-dhowells@redhat.com
+cc: Matthew Wilcox <willy@infradead.org>
+cc: Miklos Szeredi <miklos@szeredi.hu>
+cc: Trond Myklebust <trond.myklebust@hammerspace.com>
+cc: Christoph Hellwig <hch@lst.de>
+cc: Andrew Morton <akpm@linux-foundation.org>
+cc: Alexander Viro <viro@zeniv.linux.org.uk>
+cc: Christian Brauner <brauner@kernel.org>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-mm@kvack.org
+cc: linux-fsdevel@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: v9fs@lists.linux.dev
+cc: linux-afs@lists.infradead.org
+cc: ceph-devel@vger.kernel.org
+cc: linux-cifs@vger.kernel.org
+cc: linux-nfs@vger.kernel.org
+cc: devel@lists.orangefs.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ mm/filemap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -4221,7 +4221,7 @@ int filemap_invalidate_inode(struct inod
+ 	}
+ 
+ 	/* Wait for writeback to complete on all folios and discard. */
+-	truncate_inode_pages_range(mapping, start, end);
++	invalidate_inode_pages2_range(mapping, start / PAGE_SIZE, end / PAGE_SIZE);
+ 
+ unlock:
+ 	filemap_invalidate_unlock(mapping);
+
+
+Patches currently in stable-queue which might be from dhowells@redhat.com are
+
+queue-6.10/mm-fix-filemap_invalidate_inode-to-use-invalidate_inode_pages2_range.patch
