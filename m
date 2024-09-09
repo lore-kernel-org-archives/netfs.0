@@ -1,96 +1,70 @@
-Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com [209.85.222.49])
+Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75FF918E754
-	for <netfs@lists.linux.dev>; Mon,  9 Sep 2024 23:55:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C8918DF8F
+	for <netfs@lists.linux.dev>; Mon,  9 Sep 2024 23:57:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725926102; cv=none; b=M+6EL+CN1gglTSmz8s2A3P/GdJNYkxwOuHpvi20qlWSNc55ezdERQ2I7jDGOPJltW1mNi/KZ+CXjww1MDJ4eDaRKShH6TsX6wamegoDE7o5CEauHyd0qu64tqPwqPmOsbi+eMaMe9/D7L3HMrOd1Fyv2P3OcpGjAN6O84N4eHnk=
+	t=1725926281; cv=none; b=toMobHVbq1G5HqP/u+wCVmnfuf1MVbR45ln6QO6knxBJM/6sVD8EHwFAJEK/XR7e+2asnduvn/VktL8HJ4hRIHqPl+yHv7LKVx0LprjVqmdSdTn16XhZBHy44UQxLrLl+VjF288rVRMIomon79/OtQHCt4HetKSHnanW5vpGNCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725926102; c=relaxed/simple;
-	bh=M1KoFSpNUOLVXT1kP5VICXcC5Vs8wFtp9teskKlY70s=;
+	s=arc-20240116; t=1725926281; c=relaxed/simple;
+	bh=lQhn2uPJQmP5XiJdjuiIobzcSaZmDikyUT/yUvUX32w=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 Cc:Content-Type; b=jHdrLfatHS2EnrVSW1aOxh7Vi/JFR5Y1b1bg7UvYxAc+iWnfDG+U7vNLk0bwUH6RSgt3+Bdfo4N97PtYrnrMRppv+JhD9RtJrs6v3uoKS9gWzTCzdpjWnqUAp3xbWI0ABIKiLalfPDHWPQygld1DXyHa0SGan8ey90A2TLorouw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XZf/jN56; arc=none smtp.client-ip=209.85.222.49
+	 Cc:Content-Type; b=es3+UUElls3eCf481ej+4vlDcmx3o/L3v4WTVEfP+8ct6TBCGVPzHbCsOcCVKMPkrkDsLImxLtbxpegiAeXw4QCzWTWdiQI/Asiv242M9GHJpYQcuc/IDTU918yC7gdk1oIEiMATj+CYwgDMjG0NgsDvUp5CpJ4s5HOjB/I4Es8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T0+lIDdS; arc=none smtp.client-ip=209.85.217.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XZf/jN56"
-Received: by mail-ua1-f49.google.com with SMTP id a1e0cc1a2514c-846bc787856so1133262241.0
-        for <netfs@lists.linux.dev>; Mon, 09 Sep 2024 16:55:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T0+lIDdS"
+Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-49bc42bec6dso1341511137.0
+        for <netfs@lists.linux.dev>; Mon, 09 Sep 2024 16:57:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725926100; x=1726530900; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AxX5C1PVQFhcpEMOTxZjcoasZZvFqrJMsr5iTanZpSY=;
-        b=XZf/jN56c1y5PLl4Hsm+astbA5JzZ++vwlE9nfyXwRDvENZIyhxrwRg8VvUaWU7Sp0
-         w6AYeb5Lsk97QoJQaE9kDehvIfFhwi4S7kC9eEu26LQ25I0aMoeUurpoHQRgGctddYcS
-         kRSdlBDtt/w2JOlS9X14QZ02Ka1u9mEo0HBd4PM1z55Lcp2i5ePC+Zopczg6SQYmWBxs
-         lTU2xyQHItoGnGk9kmzjTV8xff0jOV3pNIu+36LAPF3Ys7rL66TIBhfHc9VNMJmY3CBp
-         vnW/c3cPn4BWFfsKRR69yZCDkcUFrVbCJW44AZGRJYD9m07oRmxl33PsPHndkMmP1b0e
-         ZJ9g==
+        d=gmail.com; s=20230601; t=1725926277; x=1726531077; darn=lists.linux.dev;
+        h=cc:subject:message-id:date:from:in-reply-to:references:mime-version
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lQhn2uPJQmP5XiJdjuiIobzcSaZmDikyUT/yUvUX32w=;
+        b=T0+lIDdSlc6B+WwELzpCfnWYwbPjA8CVCiWvzIEYtu/o3Tgvsji/wt/rk0oF5OhkCR
+         lFqnoqh7JM8cbz8LC8jxxz3OF1l8TfmX7MEBOnG0yAHY5X22ngAmcRoYSHDo5oJeMbKO
+         4U/JD33rXc+4JFFPaNSMZorNTge6MJ5PyHmJcF/NVHEqtTvrdcg/QPXi1RLlDm0Qcn7r
+         iqa9W4cE/8AkSak0xvdW0NhbZ/8xGvaWlivn+D7hRhxD2qCStLCIVB/r3z229h0lgvyq
+         pu9HAfbjvoGv/PBqqSu+kwVbqcGYlOrXKIV+YJF9XRdQHWp0Vti7q8ewUvhW/QeDrcZA
+         HI8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725926100; x=1726530900;
-        h=content-transfer-encoding:cc:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AxX5C1PVQFhcpEMOTxZjcoasZZvFqrJMsr5iTanZpSY=;
-        b=ars1xFvTccii01J4O1wSFcTjZ0/5qC6TN/VGnHHSTiC9JSDRORgskQnJ9FSpYg4Fr0
-         7rZetY4vBT6S+poB6sai3v+ZQcFb+CPgDx+wpyce6yARB+0sS8MSSUZSX05DluJVAdEd
-         J7s5urXODIaWtfXvgfhuzby3XzyvHp1a4+IlzMtDPD436DZMTH2MoTkDw9LVRGgk3Sx0
-         4u7583PdYMyYhNeMJyJ8crKaKAaSr0v3wLIy/ewbhz8YyqclnChgLNZn+ca+KLAmefgj
-         bjqKG0fN0Hu0UF52jMIknw/ghii/+iq9FPKx0sMXcRaluqmrPC8CWUyruVu7G1fzKkJg
-         UMxA==
-X-Gm-Message-State: AOJu0YzWESIfUejGQ6g/19QqmmjVLhUPnNdtl28SOoUEL9904i7zbElz
-	LS4k/SuCODCnApF+6JGgLhvZc6qP2yvT0GR/imWFQZhsVrwIbF1mp6n857oBewiw3c0ZTtbO1XA
-	baE89aOY+xtjC/YuIsd08SQNdfHX8H4eWurU=
-X-Received: by 2002:a05:6122:2a54:b0:501:1895:203a with SMTP id
- 71dfb90a1353d-502142032f9mt15753355e0c.7.1725926100090; Mon, 09 Sep 2024
- 16:55:00 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1725926277; x=1726531077;
+        h=cc:subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lQhn2uPJQmP5XiJdjuiIobzcSaZmDikyUT/yUvUX32w=;
+        b=PqGsjMyAxSMeMTgO7yG16i3erIwhtQaZejNZ01MoYxlWvp7Mf2Sdn1Sl5bI49Ch53P
+         lTFr1weEwGGkSDagA6e6HD8h9IDO0qpGMESZfYZ33iuRUdQoT8aFXa/Of1szY8rTVJfY
+         9HGHNw4v10RcIz2ELHC+Z3jw28Teclblnqupr0cJ+mtYuA7hz+pPFDO8LfXfBFn2w4WX
+         KVf2f5LwBNPEknzPQjj26yAZJhEyk5gTdJtqBv2SxOr0qQ2AF35DflmyvoerXT5AymJ1
+         F402a6DbxDcw3AMkRLzSsvl7Udk/a0NVUTL5W66JkOZEEISn5KKApjtx6B3igOBqivfS
+         NtQA==
+X-Gm-Message-State: AOJu0YxAG+RPPJHt8rLqI8xz/bXkuUMsDhzox24sED9poyrUdEVNSlBi
+	w/1I1bPrDX7TCTopmtpehrGpldq/4joeHH/tks6+KyFiLE6PVT1r81x3lfMzWYikqzHkFOkNyRY
+	7rjEBNdopC3zHxqUG4DRokuupc77NY0ug
+X-Received: by 2002:a05:6102:2ac6:b0:492:9ca1:d35e with SMTP id
+ ada2fe7eead31-49bde0f8b06mt9009670137.5.1725926277510; Mon, 09 Sep 2024
+ 16:57:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240908192307.20733-3-dennis.lamerice@gmail.com> <346199.1725873065@warthog.procyon.org.uk>
-In-Reply-To: <346199.1725873065@warthog.procyon.org.uk>
+References: <20240908192307.20733-3-dennis.lamerice@gmail.com>
+ <346199.1725873065@warthog.procyon.org.uk> <CAGZfcdkGw55MKTYxuOkCgu8kJU86jkERfLRJAP+J8Z6=0z1F+g@mail.gmail.com>
+In-Reply-To: <CAGZfcdkGw55MKTYxuOkCgu8kJU86jkERfLRJAP+J8Z6=0z1F+g@mail.gmail.com>
 From: Dennis Lam <dennis.lamerice@gmail.com>
-Date: Mon, 9 Sep 2024 19:54:49 -0400
-Message-ID: <CAGZfcdkGw55MKTYxuOkCgu8kJU86jkERfLRJAP+J8Z6=0z1F+g@mail.gmail.com>
+Date: Mon, 9 Sep 2024 19:57:46 -0400
+Message-ID: <CAGZfcdkCcjX0-xyR9UbhnnnnwZuRcKfah+FG+KkSNztj1EHKMw@mail.gmail.com>
 Subject: Re: [PATCH] docs:filesystems: fix spelling and grammar mistakes on
  netfs library page
 Cc: netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
 	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Thanks for the feedback. I'll be sure to revert the "fulfil" change
-and correct the pluralization in a new patch.
+For those reading the mailing list, sorry for the top post. I'll be
+more mindful in the future.
 
 Dennis
-
-On Mon, Sep 9, 2024 at 5:11=E2=80=AFAM David Howells <dhowells@redhat.com> =
-wrote:
->
-> Dennis Lam <dennis.lamerice@gmail.com> wrote:
->
-> > - * Allow the netfs to partially fulfil a read, which will then be resu=
-bmitted.
-> > + * Allow the netfs to partially fulfill a read, which will then be res=
-ubmitted.
->
-> "fulfil" is also correct:
->
->         https://en.wiktionary.org/wiki/fulfil
->
-> > - * Handle clearing of bufferage that aren't on the server.
-> > + * Handle clearing of bufferages that aren't on the server.
->
-> "bufferage" wouldn't be countable and can't be pluralised, so the fix sho=
-uld
-> be "aren't" -> "isn't" instead.
->
-> David
->
