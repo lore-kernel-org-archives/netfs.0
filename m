@@ -1,76 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0875A1AF4DC;
-	Mon,  9 Sep 2024 07:52:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E0F1B1500
+	for <netfs@lists.linux.dev>; Mon,  9 Sep 2024 09:11:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725868368; cv=none; b=baHKIOYopIogjQASMFZSJA5q3bfdiRt5/qmN9FLifDgNi0H5NIvOPZGX150r4LwLZtHbGjWJJocePPG24J6coyTLsNEfrPEQxq8TP9oiR/Dnqc09UBXWSjbKa3vJyQPyxqQKxffZ6XJY+WFRKlhD10SoRl9HweA3wCbKZ0nGdG8=
+	t=1725873077; cv=none; b=tj57P0r5CP4awp+HhODp/0QRytwpkr/Z6Q1TtGhMUiOHcI2rcZYbfKh9KIcqmHFcZZoqmj6RAeZZxlX8f2hcfSPD6zh1lm10TZduvFxsm1S81hp2S7I9RJv0+P1qCSObYMBiGqWey+GwEe2k7iu/mCBTDliHyZE8VYAsQWDsM18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725868368; c=relaxed/simple;
-	bh=qOaesh/TAKQrrzKDplHaxB6/8unPc3QHMjB/XOYRlec=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oBUOj1c2Vp1qmzxHoLe3N58p9Ir4WBt0M1wjaR9y7scQYZQx+J3Citmq0DGoTdVDdgI8zm0npaUAqYUpAKiW3Uu3WGC00ZTWsAYmdZJjOHqllBxot3QirBE/ifEyIHHEmm8EaO4erm5kbpJYkyWLsUDrI4ODhjAjKDekFtQWN+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ThRjNgdf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1725873077; c=relaxed/simple;
+	bh=4ekekTypLn8Rlo2M08m1D2eZciu+3wadsyUNEaZJjU8=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=baptfL77jRhXGklpR8HOmAjAzV70FFJ1RQR2nM7h5kjMFMjqSJ4HXTUFV54aJoVlTzd33UKGQxEtZwEJbMMR+eraw65AsE2YkSN7PWPURVG6/OvbRdC72tytfWxWeEBFLp/OZt9uGZ+ehY9AR5QxK2L43GCjDbOPUg+yDPMQzM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QCErFs0S; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ThRjNgdf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F9F2C4CEC5;
-	Mon,  9 Sep 2024 07:52:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725868367;
-	bh=qOaesh/TAKQrrzKDplHaxB6/8unPc3QHMjB/XOYRlec=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ThRjNgdfZsk/SqlPY4+gtwcBYkOWhvLjzicDqHP+hacZRi3wO6DkW1Bd5bCMwEfCz
-	 zl0Ukc4YGvII7kh871XU8j2OBKF6oPzYacXr23mXrp6g60PoYisGsmcd3dcx9QlTxy
-	 qZO7BFhr7p+ExjOOh/6xRBHT7eYbN6sFKow+Kcdbo4xqW3xu1VMiciWFZg2bwgIBjw
-	 8IkJ6c7mosalkDKHmdZGQ3ox2w3yWseHaN+2jf5bxysoyYJUUgpYh6i8aBKOLss7kJ
-	 Afpm61Z65OGWvb5WUF9Bn6RzE91tDcnvWJIeQzl5kK2eC0sncyoSWq50NBxkcBkJmk
-	 0PjoqB/TRx4nQ==
-From: Christian Brauner <brauner@kernel.org>
-To: Dennis Lam <dennis.lamerice@gmail.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	dhowells@redhat.com,
-	jlayton@kernel.org,
-	corbet@lwn.net
-Subject: Re: [PATCH] docs:filesystems: fix spelling and grammar mistakes on netfs library page
-Date: Mon,  9 Sep 2024 09:52:33 +0200
-Message-ID: <20240909-bebte-sonst-e4939ee628df@brauner>
-X-Mailer: git-send-email 2.45.2
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QCErFs0S"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1725873074;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9vtXlktka6Nj48pSJj/CVXF17j7ZU/bFy8NQQXgUyM0=;
+	b=QCErFs0SVbU38mUyWDTHG245yi+qrjHWrzRr7LgZRsHEBjJgEqk8eN45MR1jYpU3+6Pjl4
+	b1yBobb1rGNE9JEOb/2qfK29iBwr4ray88mQGhkWT2UeVf2CArbWWDPHR7BLNih94WVNY2
+	tFhkJtgymUtECr/QKlPvmPb4npl7UAQ=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-619-v2LRQ9qVNu6lhaIXjwxLsw-1; Mon,
+ 09 Sep 2024 05:11:11 -0400
+X-MC-Unique: v2LRQ9qVNu6lhaIXjwxLsw-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7A2EC193F078;
+	Mon,  9 Sep 2024 09:11:09 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.67])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 07A651955F45;
+	Mon,  9 Sep 2024 09:11:06 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
 In-Reply-To: <20240908192307.20733-3-dennis.lamerice@gmail.com>
 References: <20240908192307.20733-3-dennis.lamerice@gmail.com>
+To: Dennis Lam <dennis.lamerice@gmail.com>
+Cc: dhowells@redhat.com, jlayton@kernel.org, corbet@lwn.net,
+    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+    linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] docs:filesystems: fix spelling and grammar mistakes on netfs library page
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=849; i=brauner@kernel.org; h=from:subject:message-id; bh=qOaesh/TAKQrrzKDplHaxB6/8unPc3QHMjB/XOYRlec=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaTdW+m+9s36Gd5hDvM32Ezes1pbk/Py1yi3vgMWWiu4Q 2f0b7Ob2VHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCRWdMY/oc1yvLvr4lOYjDk 0jd9kXDl6Tvu1qvuqT7TJv8VPFy6IJnhr9Brx93r6s/HFLcuCDu/re9nhErV3OPmMu9fefxOcdD s5gcA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <346198.1725873065.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 09 Sep 2024 10:11:05 +0100
+Message-ID: <346199.1725873065@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-On Sun, 08 Sep 2024 15:23:09 -0400, Dennis Lam wrote:
-> 
+Dennis Lam <dennis.lamerice@gmail.com> wrote:
 
+> - * Allow the netfs to partially fulfil a read, which will then be resub=
+mitted.
+> + * Allow the netfs to partially fulfill a read, which will then be resu=
+bmitted.
 
-Applied to the vfs.netfs branch of the vfs/vfs.git tree.
-Patches in the vfs.netfs branch should appear in linux-next soon.
+"fulfil" is also correct:
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+	https://en.wiktionary.org/wiki/fulfil
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+> - * Handle clearing of bufferage that aren't on the server.
+> + * Handle clearing of bufferages that aren't on the server.
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+"bufferage" wouldn't be countable and can't be pluralised, so the fix shou=
+ld
+be "aren't" -> "isn't" instead.
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.netfs
+David
 
-[1/1] docs:filesystems: fix spelling and grammar mistakes on netfs library page
-      https://git.kernel.org/vfs/vfs/c/8bec52672c67
