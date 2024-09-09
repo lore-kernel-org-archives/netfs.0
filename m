@@ -1,99 +1,76 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AC4339A8
-	for <netfs@lists.linux.dev>; Sun,  8 Sep 2024 19:23:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0875A1AF4DC;
+	Mon,  9 Sep 2024 07:52:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725823436; cv=none; b=fs1euphGmcTO5NClmW30SKv8PxwbRGhgn+cIumxr35OtVory+EOlVL2sgnLLWK6RVbcRlK72D68u/lUiMJbU+3Rk5suDKqLkEJ7wx0Mjp+5FcOyhQ0UzcKjD6ww2421K2stfR313wi/dzeCgV/JDxRZEs/vnxaMWzEQpKqtobuE=
+	t=1725868368; cv=none; b=baHKIOYopIogjQASMFZSJA5q3bfdiRt5/qmN9FLifDgNi0H5NIvOPZGX150r4LwLZtHbGjWJJocePPG24J6coyTLsNEfrPEQxq8TP9oiR/Dnqc09UBXWSjbKa3vJyQPyxqQKxffZ6XJY+WFRKlhD10SoRl9HweA3wCbKZ0nGdG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725823436; c=relaxed/simple;
-	bh=m/W0s303G6CAVDATz7o5LzmdnZ3kzZdIQCH0Cbz1fgQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Mv75iY3ABj1JsWlWhXfp36/eN6Sz+mPBAph8Z0v4/rsO/fGlZ3+xpO79x5P7CwXImwmZRcj8NvlYhI2Ou9w9QfMwA5NriyU5GF4WSGsNjp7ClXRIwOPU61z3n9JcWTi7DnPvpa5V9PV0KlZTB8hWcKLTfmFF7grZCfq2jP3256k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e+B3hbpb; arc=none smtp.client-ip=209.85.222.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1725868368; c=relaxed/simple;
+	bh=qOaesh/TAKQrrzKDplHaxB6/8unPc3QHMjB/XOYRlec=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oBUOj1c2Vp1qmzxHoLe3N58p9Ir4WBt0M1wjaR9y7scQYZQx+J3Citmq0DGoTdVDdgI8zm0npaUAqYUpAKiW3Uu3WGC00ZTWsAYmdZJjOHqllBxot3QirBE/ifEyIHHEmm8EaO4erm5kbpJYkyWLsUDrI4ODhjAjKDekFtQWN+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ThRjNgdf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e+B3hbpb"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7a9aec89347so39744585a.0
-        for <netfs@lists.linux.dev>; Sun, 08 Sep 2024 12:23:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725823434; x=1726428234; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JXrFgzwbiTSr4Ylz2mlW0T8OOl+bUrZIiSty64NIZsA=;
-        b=e+B3hbpbQGaWa93K9tPJiuV28Z2+go3ZeNrEibsnZBnEO/pBUPo6QJTmmEp8dGeAz7
-         n1f7tNFyYcFaW0RGAyMqUsSr7ClWqmpJJ2x/o/3w8LzGBbN5Po9Q9+2tKehkXf6YjQZQ
-         E5M9O0K1FaV4EbCT0vIhO3JblastQWmabjprZyKoddztSvFHdvA1ZJl6wx1HUkAJkVUO
-         I24aCWvxluE+g61Q5epeoZL71yws0Tql0qGBz7J0Bp4lfsqOvLzbpIaGlGf3+j6jv07Y
-         a/e77q7Sa0HOh3jr4w55BMNvrjvl2sNDZ3OOLlX6KjpoCentBsVkn+MK8YjpUEpn+UaV
-         EKSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725823434; x=1726428234;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JXrFgzwbiTSr4Ylz2mlW0T8OOl+bUrZIiSty64NIZsA=;
-        b=VDPtuuBlkUBJiB7wujS11+d+cX3vM74DHLscsov3etaqJ3i7F9EfRxYzbXn+0LgXl7
-         8mafJN+V0HRl+uK/pkXBTHx+GnFYRs+KKYiyNqpWeWTw6B6Vz8h/RnJb+65oPTmP6V8y
-         fha0dwhveleixiQXfEsFUPf7mxyMYUD25wRLCYWD9OX1xJdPWN46Pts4inEVf8/B17Gr
-         dWErdHNnTDo5zFYKhB7AvR2Lbtr/oNqY9uUUv2xEDGN23yL0+JxYgsnkUZqm3UBC6yfj
-         yHbyknarcdh3sJLurMkqnw/KG5JC1OfcP3tGtHxa3W2jOnFRv9dIxvSCEGblmNbJ23u2
-         5aPQ==
-X-Gm-Message-State: AOJu0Yy9CeLGswmVjfQFz1w/6BHYo3e+Cfxca+fZPJVibPOsKl7HiGf8
-	UnhZkJa00gRvXDxsJSiKHJUvLuEGbPmvGPLVK3NYkUdvCZ9mARwi
-X-Google-Smtp-Source: AGHT+IGgKnSGL4uaFiJd97SurDl/WRYL/3PCh4JiAicvu+wT8MBh5XrPuZh99WHUqGS9aW7p6JSFXg==
-X-Received: by 2002:a05:620a:40cf:b0:79f:793:9a63 with SMTP id af79cd13be357-7a99737a8ffmr1464157785a.44.1725823434041;
-        Sun, 08 Sep 2024 12:23:54 -0700 (PDT)
-Received: from localhost.localdomain (d24-150-189-55.home.cgocable.net. [24.150.189.55])
-        by smtp.googlemail.com with ESMTPSA id af79cd13be357-7a9a7969043sm151309485a.44.2024.09.08.12.23.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Sep 2024 12:23:53 -0700 (PDT)
-From: Dennis Lam <dennis.lamerice@gmail.com>
-To: dhowells@redhat.com,
-	jlayton@kernel.org,
-	corbet@lwn.net
-Cc: netfs@lists.linux.dev,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ThRjNgdf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F9F2C4CEC5;
+	Mon,  9 Sep 2024 07:52:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725868367;
+	bh=qOaesh/TAKQrrzKDplHaxB6/8unPc3QHMjB/XOYRlec=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ThRjNgdfZsk/SqlPY4+gtwcBYkOWhvLjzicDqHP+hacZRi3wO6DkW1Bd5bCMwEfCz
+	 zl0Ukc4YGvII7kh871XU8j2OBKF6oPzYacXr23mXrp6g60PoYisGsmcd3dcx9QlTxy
+	 qZO7BFhr7p+ExjOOh/6xRBHT7eYbN6sFKow+Kcdbo4xqW3xu1VMiciWFZg2bwgIBjw
+	 8IkJ6c7mosalkDKHmdZGQ3ox2w3yWseHaN+2jf5bxysoyYJUUgpYh6i8aBKOLss7kJ
+	 Afpm61Z65OGWvb5WUF9Bn6RzE91tDcnvWJIeQzl5kK2eC0sncyoSWq50NBxkcBkJmk
+	 0PjoqB/TRx4nQ==
+From: Christian Brauner <brauner@kernel.org>
+To: Dennis Lam <dennis.lamerice@gmail.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	netfs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Dennis Lam <dennis.lamerice@gmail.com>
-Subject: [PATCH] docs:filesystems: fix spelling and grammar mistakes on netfs library page
-Date: Sun,  8 Sep 2024 15:23:09 -0400
-Message-ID: <20240908192307.20733-3-dennis.lamerice@gmail.com>
-X-Mailer: git-send-email 2.46.0
+	dhowells@redhat.com,
+	jlayton@kernel.org,
+	corbet@lwn.net
+Subject: Re: [PATCH] docs:filesystems: fix spelling and grammar mistakes on netfs library page
+Date: Mon,  9 Sep 2024 09:52:33 +0200
+Message-ID: <20240909-bebte-sonst-e4939ee628df@brauner>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240908192307.20733-3-dennis.lamerice@gmail.com>
+References: <20240908192307.20733-3-dennis.lamerice@gmail.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=849; i=brauner@kernel.org; h=from:subject:message-id; bh=qOaesh/TAKQrrzKDplHaxB6/8unPc3QHMjB/XOYRlec=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaTdW+m+9s36Gd5hDvM32Ezes1pbk/Py1yi3vgMWWiu4Q 2f0b7Ob2VHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCRWdMY/oc1yvLvr4lOYjDk 0jd9kXDl6Tvu1qvuqT7TJv8VPFy6IJnhr9Brx93r6s/HFLcuCDu/re9nhErV3OPmMu9fefxOcdD s5gcA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-Signed-off-by: Dennis Lam <dennis.lamerice@gmail.com>
----
- Documentation/filesystems/netfs_library.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On Sun, 08 Sep 2024 15:23:09 -0400, Dennis Lam wrote:
+> 
 
-diff --git a/Documentation/filesystems/netfs_library.rst b/Documentation/filesystems/netfs_library.rst
-index 4cc657d743f7..cc8e7a249de5 100644
---- a/Documentation/filesystems/netfs_library.rst
-+++ b/Documentation/filesystems/netfs_library.rst
-@@ -111,12 +111,12 @@ The following services are provided:
-  * Allow the netfs to expand a readahead request in both directions to meet its
-    needs.
- 
-- * Allow the netfs to partially fulfil a read, which will then be resubmitted.
-+ * Allow the netfs to partially fulfill a read, which will then be resubmitted.
- 
-  * Handle local caching, allowing cached data and server-read data to be
-    interleaved for a single request.
- 
-- * Handle clearing of bufferage that aren't on the server.
-+ * Handle clearing of bufferages that aren't on the server.
- 
-  * Handle retrying of reads that failed, switching reads from the cache to the
-    server as necessary.
--- 
-2.46.0
 
+Applied to the vfs.netfs branch of the vfs/vfs.git tree.
+Patches in the vfs.netfs branch should appear in linux-next soon.
+
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
+
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.netfs
+
+[1/1] docs:filesystems: fix spelling and grammar mistakes on netfs library page
+      https://git.kernel.org/vfs/vfs/c/8bec52672c67
