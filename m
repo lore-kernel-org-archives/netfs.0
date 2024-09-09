@@ -1,88 +1,96 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com [209.85.222.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E0F1B1500
-	for <netfs@lists.linux.dev>; Mon,  9 Sep 2024 09:11:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75FF918E754
+	for <netfs@lists.linux.dev>; Mon,  9 Sep 2024 23:55:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725873077; cv=none; b=tj57P0r5CP4awp+HhODp/0QRytwpkr/Z6Q1TtGhMUiOHcI2rcZYbfKh9KIcqmHFcZZoqmj6RAeZZxlX8f2hcfSPD6zh1lm10TZduvFxsm1S81hp2S7I9RJv0+P1qCSObYMBiGqWey+GwEe2k7iu/mCBTDliHyZE8VYAsQWDsM18=
+	t=1725926102; cv=none; b=M+6EL+CN1gglTSmz8s2A3P/GdJNYkxwOuHpvi20qlWSNc55ezdERQ2I7jDGOPJltW1mNi/KZ+CXjww1MDJ4eDaRKShH6TsX6wamegoDE7o5CEauHyd0qu64tqPwqPmOsbi+eMaMe9/D7L3HMrOd1Fyv2P3OcpGjAN6O84N4eHnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725873077; c=relaxed/simple;
-	bh=4ekekTypLn8Rlo2M08m1D2eZciu+3wadsyUNEaZJjU8=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=baptfL77jRhXGklpR8HOmAjAzV70FFJ1RQR2nM7h5kjMFMjqSJ4HXTUFV54aJoVlTzd33UKGQxEtZwEJbMMR+eraw65AsE2YkSN7PWPURVG6/OvbRdC72tytfWxWeEBFLp/OZt9uGZ+ehY9AR5QxK2L43GCjDbOPUg+yDPMQzM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QCErFs0S; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1725926102; c=relaxed/simple;
+	bh=M1KoFSpNUOLVXT1kP5VICXcC5Vs8wFtp9teskKlY70s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 Cc:Content-Type; b=jHdrLfatHS2EnrVSW1aOxh7Vi/JFR5Y1b1bg7UvYxAc+iWnfDG+U7vNLk0bwUH6RSgt3+Bdfo4N97PtYrnrMRppv+JhD9RtJrs6v3uoKS9gWzTCzdpjWnqUAp3xbWI0ABIKiLalfPDHWPQygld1DXyHa0SGan8ey90A2TLorouw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XZf/jN56; arc=none smtp.client-ip=209.85.222.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QCErFs0S"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1725873074;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9vtXlktka6Nj48pSJj/CVXF17j7ZU/bFy8NQQXgUyM0=;
-	b=QCErFs0SVbU38mUyWDTHG245yi+qrjHWrzRr7LgZRsHEBjJgEqk8eN45MR1jYpU3+6Pjl4
-	b1yBobb1rGNE9JEOb/2qfK29iBwr4ray88mQGhkWT2UeVf2CArbWWDPHR7BLNih94WVNY2
-	tFhkJtgymUtECr/QKlPvmPb4npl7UAQ=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-619-v2LRQ9qVNu6lhaIXjwxLsw-1; Mon,
- 09 Sep 2024 05:11:11 -0400
-X-MC-Unique: v2LRQ9qVNu6lhaIXjwxLsw-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7A2EC193F078;
-	Mon,  9 Sep 2024 09:11:09 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.67])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 07A651955F45;
-	Mon,  9 Sep 2024 09:11:06 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20240908192307.20733-3-dennis.lamerice@gmail.com>
-References: <20240908192307.20733-3-dennis.lamerice@gmail.com>
-To: Dennis Lam <dennis.lamerice@gmail.com>
-Cc: dhowells@redhat.com, jlayton@kernel.org, corbet@lwn.net,
-    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-    linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] docs:filesystems: fix spelling and grammar mistakes on netfs library page
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XZf/jN56"
+Received: by mail-ua1-f49.google.com with SMTP id a1e0cc1a2514c-846bc787856so1133262241.0
+        for <netfs@lists.linux.dev>; Mon, 09 Sep 2024 16:55:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725926100; x=1726530900; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AxX5C1PVQFhcpEMOTxZjcoasZZvFqrJMsr5iTanZpSY=;
+        b=XZf/jN56c1y5PLl4Hsm+astbA5JzZ++vwlE9nfyXwRDvENZIyhxrwRg8VvUaWU7Sp0
+         w6AYeb5Lsk97QoJQaE9kDehvIfFhwi4S7kC9eEu26LQ25I0aMoeUurpoHQRgGctddYcS
+         kRSdlBDtt/w2JOlS9X14QZ02Ka1u9mEo0HBd4PM1z55Lcp2i5ePC+Zopczg6SQYmWBxs
+         lTU2xyQHItoGnGk9kmzjTV8xff0jOV3pNIu+36LAPF3Ys7rL66TIBhfHc9VNMJmY3CBp
+         vnW/c3cPn4BWFfsKRR69yZCDkcUFrVbCJW44AZGRJYD9m07oRmxl33PsPHndkMmP1b0e
+         ZJ9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725926100; x=1726530900;
+        h=content-transfer-encoding:cc:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AxX5C1PVQFhcpEMOTxZjcoasZZvFqrJMsr5iTanZpSY=;
+        b=ars1xFvTccii01J4O1wSFcTjZ0/5qC6TN/VGnHHSTiC9JSDRORgskQnJ9FSpYg4Fr0
+         7rZetY4vBT6S+poB6sai3v+ZQcFb+CPgDx+wpyce6yARB+0sS8MSSUZSX05DluJVAdEd
+         J7s5urXODIaWtfXvgfhuzby3XzyvHp1a4+IlzMtDPD436DZMTH2MoTkDw9LVRGgk3Sx0
+         4u7583PdYMyYhNeMJyJ8crKaKAaSr0v3wLIy/ewbhz8YyqclnChgLNZn+ca+KLAmefgj
+         bjqKG0fN0Hu0UF52jMIknw/ghii/+iq9FPKx0sMXcRaluqmrPC8CWUyruVu7G1fzKkJg
+         UMxA==
+X-Gm-Message-State: AOJu0YzWESIfUejGQ6g/19QqmmjVLhUPnNdtl28SOoUEL9904i7zbElz
+	LS4k/SuCODCnApF+6JGgLhvZc6qP2yvT0GR/imWFQZhsVrwIbF1mp6n857oBewiw3c0ZTtbO1XA
+	baE89aOY+xtjC/YuIsd08SQNdfHX8H4eWurU=
+X-Received: by 2002:a05:6122:2a54:b0:501:1895:203a with SMTP id
+ 71dfb90a1353d-502142032f9mt15753355e0c.7.1725926100090; Mon, 09 Sep 2024
+ 16:55:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <346198.1725873065.1@warthog.procyon.org.uk>
+References: <20240908192307.20733-3-dennis.lamerice@gmail.com> <346199.1725873065@warthog.procyon.org.uk>
+In-Reply-To: <346199.1725873065@warthog.procyon.org.uk>
+From: Dennis Lam <dennis.lamerice@gmail.com>
+Date: Mon, 9 Sep 2024 19:54:49 -0400
+Message-ID: <CAGZfcdkGw55MKTYxuOkCgu8kJU86jkERfLRJAP+J8Z6=0z1F+g@mail.gmail.com>
+Subject: Re: [PATCH] docs:filesystems: fix spelling and grammar mistakes on
+ netfs library page
+Cc: netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 09 Sep 2024 10:11:05 +0100
-Message-ID: <346199.1725873065@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-Dennis Lam <dennis.lamerice@gmail.com> wrote:
+Thanks for the feedback. I'll be sure to revert the "fulfil" change
+and correct the pluralization in a new patch.
 
-> - * Allow the netfs to partially fulfil a read, which will then be resub=
-mitted.
-> + * Allow the netfs to partially fulfill a read, which will then be resu=
+Dennis
+
+On Mon, Sep 9, 2024 at 5:11=E2=80=AFAM David Howells <dhowells@redhat.com> =
+wrote:
+>
+> Dennis Lam <dennis.lamerice@gmail.com> wrote:
+>
+> > - * Allow the netfs to partially fulfil a read, which will then be resu=
 bmitted.
-
-"fulfil" is also correct:
-
-	https://en.wiktionary.org/wiki/fulfil
-
-> - * Handle clearing of bufferage that aren't on the server.
-> + * Handle clearing of bufferages that aren't on the server.
-
-"bufferage" wouldn't be countable and can't be pluralised, so the fix shou=
-ld
-be "aren't" -> "isn't" instead.
-
-David
-
+> > + * Allow the netfs to partially fulfill a read, which will then be res=
+ubmitted.
+>
+> "fulfil" is also correct:
+>
+>         https://en.wiktionary.org/wiki/fulfil
+>
+> > - * Handle clearing of bufferage that aren't on the server.
+> > + * Handle clearing of bufferages that aren't on the server.
+>
+> "bufferage" wouldn't be countable and can't be pluralised, so the fix sho=
+uld
+> be "aren't" -> "isn't" instead.
+>
+> David
+>
