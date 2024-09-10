@@ -1,44 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC47F186E4B;
-	Tue, 10 Sep 2024 09:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B97813AD09;
+	Tue, 10 Sep 2024 09:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961696; cv=none; b=sXeZcvs24KumWCnvwDIYhipIs+0wJ9QnoK6i8cophisqz28Px994VdfAd021OrD1kyAd33pgQ8NKaPYj8FiPPy0z0feyYhaxI3MeNrkX/np4vQtWKG5TBlBDg889yCMWN9sp739jYm2KnNW1iwlff2vnCIE4aYdHYQ3Z5wu9hss=
+	t=1725962070; cv=none; b=EfVcXsc92pNYm9F5mtYoTNhC6GkXXNJb4LDdIJ/ZOcKE4o6NKls2I5zbMCPv0iKRQ1Ep4lBStorRckHDm4Rh+ZYG1thziyq8tLWEnPWPhfOaLnTTomSH2w30BpeExoENp2kj/Y9zP5XO4bJTBLnWGdG56VyoVIkQNlRrWzs9r9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961696; c=relaxed/simple;
-	bh=NssVglAnEpOf7wNBYzta/B/OgCViezTjeBIvIZNA6ZM=;
+	s=arc-20240116; t=1725962070; c=relaxed/simple;
+	bh=275ct4EYOnTW30H/G/Z5IJpK46v7KMEYsYtplV0pPWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JhVYh9SGgkLltTcG9hF7XLCgdZ+D3u+lpad4SIwasR9D70zfuXxhVkifygYO1KU+Y2mjm5DnH6NO3CSCozzo/CWCTWSQgKkS+XmZupvaBewsnsI8Hm3tgGekEM3hFfFxcAx+yvGqP4ID608H9zyyCuwu5E6GYjT7gyrv3niUwvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1YbDw80B; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=kAy7ACgDNOaB7OmecD8PdDp++2RKZo5KWSuCZmXJXUAKSwDzG8e1Xd0NYgRNePB2jGGREnDScQN7X1Qa54rn98odpRQZJgA9NRbQU38W//CtD7Ks4BYSAzLDZ3eKR253Nz87fFV4ZbYBKkxPu6jcceV3gbMzKu7O9Kg3iLIPZY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tG1S8I0G; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1YbDw80B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA94C4CEC3;
-	Tue, 10 Sep 2024 09:48:16 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tG1S8I0G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30532C4CEC3;
+	Tue, 10 Sep 2024 09:54:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961696;
-	bh=NssVglAnEpOf7wNBYzta/B/OgCViezTjeBIvIZNA6ZM=;
+	s=korg; t=1725962069;
+	bh=275ct4EYOnTW30H/G/Z5IJpK46v7KMEYsYtplV0pPWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1YbDw80Bs9w+k7OA/kG9JH6/3M9FuX9TJ5b8kDQQj9Us46WX5FuLQN/RR1hAwcwbm
-	 udHROjRTHH9afPEbNc46ohPg0fFR5snpCfkR56vGHIuf7YJuXrQcbdKqwW9Wm1Exqr
-	 Tg7+A0f0ZgcN/dNWv0NR1Iu70wKwSu/91ujQwWbU=
+	b=tG1S8I0GNZUycaJkKjwSytfvbd/MzgkSDdtgUHGthn2LuVQ3dPa9aTtLePy0BGQkW
+	 Yi8PUjkkaNRR17WO58SDSJpc06NqpyAp5SY19O4iKSEz2MbmShKQGQA7Ub1ttdtcoK
+	 btgFJSuPP20qkTTm1GptfOgG5tORNzzt54HR9CXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	David Howells <dhowells@redhat.com>,
-	Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.com>,
 	Jeff Layton <jlayton@kernel.org>,
-	linux-cifs@vger.kernel.org,
 	netfs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 157/375] netfs, cifs: Fix handling of short DIO read
-Date: Tue, 10 Sep 2024 11:29:14 +0200
-Message-ID: <20240910092627.745601984@linuxfoundation.org>
+Subject: [PATCH 6.10 257/375] cachefiles: Set the max subreq size for cache writes to MAX_RW_COUNT
+Date: Tue, 10 Sep 2024 11:30:54 +0200
+Message-ID: <20240910092631.194962558@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
 References: <20240910092622.245959861@linuxfoundation.org>
@@ -59,135 +56,36 @@ Content-Transfer-Encoding: 8bit
 
 From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 1da29f2c39b67b846b74205c81bf0ccd96d34727 ]
+[ Upstream commit 51d37982bbac3ea0ca21b2797a9cb0044272b3aa ]
 
-Short DIO reads, particularly in relation to cifs, are not being handled
-correctly by cifs and netfslib.  This can be tested by doing a DIO read of
-a file where the size of read is larger than the size of the file.  When it
-crosses the EOF, it gets a short read and this gets retried, and in the
-case of cifs, the retry read fails, with the failure being translated to
-ENODATA.
+Set the maximum size of a subrequest that writes to cachefiles to be
+MAX_RW_COUNT so that we don't overrun the maximum write we can make to the
+backing filesystem.
 
-Fix this by the following means:
-
- (1) Add a flag, NETFS_SREQ_HIT_EOF, for the filesystem to set when it
-     detects that the read did hit the EOF.
-
- (2) Make the netfslib read assessment stop processing subrequests when it
-     encounters one with that flag set.
-
- (3) Return rreq->transferred, the accumulated contiguous amount read to
-     that point, to userspace for a DIO read.
-
- (4) Make cifs set the flag and clear the error if the read RPC returned
-     ENODATA.
-
- (5) Make cifs set the flag and clear the error if a short read occurred
-     without error and the read-to file position is now at the remote inode
-     size.
-
-Fixes: 69c3c023af25 ("cifs: Implement netfslib hooks")
 Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Steve French <sfrench@samba.org>
-cc: Paulo Alcantara <pc@manguebit.com>
+Link: https://lore.kernel.org/r/1599005.1721398742@warthog.procyon.org.uk
 cc: Jeff Layton <jlayton@kernel.org>
-cc: linux-cifs@vger.kernel.org
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/io.c           | 17 +++++++++++------
- fs/smb/client/smb2pdu.c | 13 +++++++++----
- include/linux/netfs.h   |  1 +
- 3 files changed, 21 insertions(+), 10 deletions(-)
+ fs/cachefiles/io.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/netfs/io.c b/fs/netfs/io.c
-index 2a5c22606fb1..c91e7b12bbf1 100644
---- a/fs/netfs/io.c
-+++ b/fs/netfs/io.c
-@@ -368,7 +368,8 @@ static void netfs_rreq_assess_dio(struct netfs_io_request *rreq)
- 		if (subreq->error || subreq->transferred == 0)
- 			break;
- 		transferred += subreq->transferred;
--		if (subreq->transferred < subreq->len)
-+		if (subreq->transferred < subreq->len ||
-+		    test_bit(NETFS_SREQ_HIT_EOF, &subreq->flags))
- 			break;
- 	}
+diff --git a/fs/cachefiles/io.c b/fs/cachefiles/io.c
+index e667dbcd20e8..a91acd03ee12 100644
+--- a/fs/cachefiles/io.c
++++ b/fs/cachefiles/io.c
+@@ -630,7 +630,7 @@ static void cachefiles_prepare_write_subreq(struct netfs_io_subrequest *subreq)
  
-@@ -503,7 +504,8 @@ void netfs_subreq_terminated(struct netfs_io_subrequest *subreq,
+ 	_enter("W=%x[%x] %llx", wreq->debug_id, subreq->debug_index, subreq->start);
  
- 	subreq->error = 0;
- 	subreq->transferred += transferred_or_error;
--	if (subreq->transferred < subreq->len)
-+	if (subreq->transferred < subreq->len &&
-+	    !test_bit(NETFS_SREQ_HIT_EOF, &subreq->flags))
- 		goto incomplete;
+-	subreq->max_len = ULONG_MAX;
++	subreq->max_len = MAX_RW_COUNT;
+ 	subreq->max_nr_segs = BIO_MAX_VECS;
  
- complete:
-@@ -777,10 +779,13 @@ int netfs_begin_read(struct netfs_io_request *rreq, bool sync)
- 			    TASK_UNINTERRUPTIBLE);
- 
- 		ret = rreq->error;
--		if (ret == 0 && rreq->submitted < rreq->len &&
--		    rreq->origin != NETFS_DIO_READ) {
--			trace_netfs_failure(rreq, NULL, ret, netfs_fail_short_read);
--			ret = -EIO;
-+		if (ret == 0) {
-+			if (rreq->origin == NETFS_DIO_READ) {
-+				ret = rreq->transferred;
-+			} else if (rreq->submitted < rreq->len) {
-+				trace_netfs_failure(rreq, NULL, ret, netfs_fail_short_read);
-+				ret = -EIO;
-+			}
- 		}
- 	} else {
- 		/* If we decrement nr_outstanding to 0, the ref belongs to us. */
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index 5f5f51bf9850..8e02e9f45e0e 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -4501,6 +4501,7 @@ static void
- smb2_readv_callback(struct mid_q_entry *mid)
- {
- 	struct cifs_io_subrequest *rdata = mid->callback_data;
-+	struct netfs_inode *ictx = netfs_inode(rdata->rreq->inode);
- 	struct cifs_tcon *tcon = tlink_tcon(rdata->req->cfile->tlink);
- 	struct TCP_Server_Info *server = rdata->server;
- 	struct smb2_hdr *shdr =
-@@ -4593,11 +4594,15 @@ smb2_readv_callback(struct mid_q_entry *mid)
- 				     rdata->got_bytes);
- 
- 	if (rdata->result == -ENODATA) {
--		/* We may have got an EOF error because fallocate
--		 * failed to enlarge the file.
--		 */
--		if (rdata->subreq.start < rdata->subreq.rreq->i_size)
-+		__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
-+		rdata->result = 0;
-+	} else {
-+		if (rdata->got_bytes < rdata->actual_len &&
-+		    rdata->subreq.start + rdata->subreq.transferred + rdata->got_bytes ==
-+		    ictx->remote_i_size) {
-+			__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
- 			rdata->result = 0;
-+		}
- 	}
- 	trace_smb3_rw_credits(rreq_debug_id, subreq_debug_index, rdata->credits.value,
- 			      server->credits, server->in_flight,
-diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-index 5d0288938cc2..d8892b1a2dd7 100644
---- a/include/linux/netfs.h
-+++ b/include/linux/netfs.h
-@@ -200,6 +200,7 @@ struct netfs_io_subrequest {
- #define NETFS_SREQ_NEED_RETRY		9	/* Set if the filesystem requests a retry */
- #define NETFS_SREQ_RETRYING		10	/* Set if we're retrying */
- #define NETFS_SREQ_FAILED		11	/* Set if the subreq failed unretryably */
-+#define NETFS_SREQ_HIT_EOF		12	/* Set if we hit the EOF */
- };
- 
- enum netfs_io_origin {
+ 	if (!cachefiles_cres_file(cres)) {
 -- 
 2.43.0
 
