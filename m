@@ -1,104 +1,154 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347B319049A
-	for <netfs@lists.linux.dev>; Thu, 12 Sep 2024 08:52:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3F11A263A
+	for <netfs@lists.linux.dev>; Thu, 12 Sep 2024 11:50:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726131145; cv=none; b=siEIAOuYncWoW/VjqQgTTloqrBm4+DMZ8e80e1CnMF3VhF1fOcrCGmLDZxJrvLIf4UU2G045ajVo/cOR1N8XLbpnyQ1mUh1paO48UVPFQHSiiKMeYOcT2/NIQDagN/j8aDjwOa2o/eimoPj4JXsEDTycfD63PJuxX/nCgDDQ9RQ=
+	t=1726141819; cv=none; b=gy//X/toXDZ2tKoVwimvUsXk5g1j4NCLpf4jghH4UeXr9y1ZUBKvgukLbXcYGuS5RcTbdFdGiTL6HIgQOvPQmGeg3EbpyM0bjja7divm4UEY0QISQIGA7/0NRhcIJX4SqgeWk14sbxg/n4IMET4lyZEilRczSg4N7i4VPsVRpDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726131145; c=relaxed/simple;
-	bh=+Uv1yRx1t/nh3AdvtaBsQpatvoFp9YWwQHVWraJdMZU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=L426VQrkLwCkfc++7IcTpCFvreMXc+4SgvHoFvYKt0896PO6WrhqODIN4O8ohtywozV5NOEhEP9fnwGx+Z2P2R0o8RlvMzXwJLx+aCAs5tbiVQP9x/FjXXdQBmgV0ChFYTF945ipsBjcvg5GZx/8EnrswdksgWwRUc2snJOSCJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RmebzCPI; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1726141819; c=relaxed/simple;
+	bh=Xl6nNLBK8GTBKxLIKD61vE0uvYByirFE263h76WjaRM=;
+	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=nAFRRC33WwiQcm8KJ901AmSx5gOwn+8W8J5hYXA4+lM0H1lsvlQF3C+ii8pbzjvZGwP7Z11S+P9ef7l5s6kU8EiGtdwLKnR38I2Fk6L7gRJSo25SgCIRlOLzMCCZHnbrpHII8nWlDB4MklKZ5x+0y+z607OAskP2T4pLRFT4kPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c60cbSQ6; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RmebzCPI"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-42cb57f8b41so7731985e9.0
-        for <netfs@lists.linux.dev>; Thu, 12 Sep 2024 01:52:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1726131140; x=1726735940; darn=lists.linux.dev;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Jfx4IHYM/f9TvrOy+r/MT0ESdhaPDLWNq6uOUg30aAY=;
-        b=RmebzCPIjzOTZpKZZ7eAF2tr2QqbjklSa20+yNqw5HJTV48Rc3ywg94FWPv6kPMy2s
-         K1RboM+LNtAWgoOivxBJbrHT0rmkeZ279DxFsIeaw4OCEKive5lZzUOXF5c7acPbT6cD
-         AjkmRTvkPYEaS7t08/ojwUgID3v8uRL8wRsUHbJ0uZd6llzL6/lf3lMyuXP4/D+U1/98
-         XYy2qc3sCwLTGfIfR8Snun9mAajTxBDNXqVNy656hqI811fNYr0d7dVhNC+c9sBMh48W
-         EGmxcnQlwb3am0LqOzSR544fQ3S7ZeZC0bfJTudljEfBCzsSDdBQlI1aGtNiBSLoO+Xk
-         /C/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726131140; x=1726735940;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Jfx4IHYM/f9TvrOy+r/MT0ESdhaPDLWNq6uOUg30aAY=;
-        b=m9kQx91IIFeUcZkfeDF5U3InkN6vI8F+fOONPbIPkAsQM4Mh4qRCBy382sgbpmXETZ
-         bn0makyvuUOFslu2jJQ0S+Q2GFbnoaqUNjAbwc4TS+3pRqFZyaEvlGz1bIAc0kRm1kdO
-         LS9S+40joO+llBKffvYFTv3TS0UQQZcV8QCK1Dy9PyMXEJpGPtvP9w8vzJIzBWZ0LviF
-         sqfZaXCbiGOiEegxVp2vdzn1lDeo8UuyoYrnXh2WkgnXVP+cHLRq1zfRrGS0CxAVZRW5
-         AKQKA5qz96WT+IBuMC4matsQ8XQZJiJoVrRFBpUuFzmuAtddPlc2V3MJqFvbYrOgBixS
-         fXMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXuOOEOBuu0qsOkMBBY9siDZqv7htlJCpmNk3c/0cEW8rOyoWV10Ew2RT+czLEQN130UIxtFg==@lists.linux.dev
-X-Gm-Message-State: AOJu0YzcTTWTEZTW+gz7PggBs+0UUjtmkbNmoUkeLaPC9I3v4CgOVH5g
-	yY4jSvIBZgvQ+yaWDBtgNB4nY5vtDOXam7PWEYBWUrLbHViGWyWPw1kyDY/IjAY=
-X-Google-Smtp-Source: AGHT+IE3JvQVI8H7Az2p7xH5qjI8YDyhtJ3aO9BUYYnl2AM0k/tr5zbW/XahZ19yePpZcAyKjxL+wA==
-X-Received: by 2002:a05:600c:35d2:b0:42c:b555:43dd with SMTP id 5b1f17b1804b1-42cdb5112eamr20411895e9.3.1726131140394;
-        Thu, 12 Sep 2024 01:52:20 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42cc01a8ee7sm86851825e9.0.2024.09.12.01.52.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Sep 2024 01:52:20 -0700 (PDT)
-Date: Thu, 12 Sep 2024 11:52:16 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Jeff Layton <jlayton@kernel.org>, netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: [PATCH] netfs: remove some unnecessary code in netfs_read_gaps()
-Message-ID: <df691112-1114-431a-8c71-09d1656f0771@stanley.mountain>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c60cbSQ6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1726141816;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=jLN3U1yZ7TMderZrIcQLdov+Z22mdFuW5sMvjEe338o=;
+	b=c60cbSQ6ECuz5CYf30bQT21XKzAF2vUr3AaRfycsazw8kc1hhv3LjCx63uQua0fynN39ni
+	IKxLHo1+o5sfXjqIl2HP2UQXzkaAurVjauw18Tn2FSNWeUFSAetouxrr0vfACo3Sd1/CMr
+	pOZetFAZcrH3qVJxk5u3rd/F5U8NzFs=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-615-FdrR9fltPha0VMOFb_6fTA-1; Thu,
+ 12 Sep 2024 07:50:13 -0400
+X-MC-Unique: FdrR9fltPha0VMOFb_6fTA-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F3217197702F;
+	Thu, 12 Sep 2024 11:50:10 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.67])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1FA4519560AA;
+	Thu, 12 Sep 2024 11:50:06 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <brauner@kernel.org>,
+    Steve French <stfrench@microsoft.com>
+cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.com>,
+    Jeff Layton <jlayton@kernel.org>,
+    Stephen Rothwell <sfr@canb.auug.org.au>, linux-cifs@vger.kernel.org,
+    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: [PATCH] cifs: Fix up netfs-writeback vs cifs fixes merge conflicts
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1131387.1726141806.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 12 Sep 2024 12:50:06 +0100
+Message-ID: <1131388.1726141806@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-We can remove the "sink" initialization and the check for NULL.  It was
-already checked for NULL ealier.
+    =
 
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fix up the conflicts between the netfslib development patches and cifs fix
+commits due to:
+
+        a68c74865f517e26728735aba0ae05055eaff76c
+        cifs: Fix SMB1 readv/writev callback in the same way as SMB2/3
+
+conflicting with:
+
+        ee4cdf7ba857
+        netfs: Speed up buffered reading"
+
+This will need to be applied if/when Christian's vfs.netfs branch is merge=
+d.
+
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Steve French <stfrench@microsoft.com>
+cc: Paulo Alcantara <pc@manguebit.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
 ---
- fs/netfs/buffered_read.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/smb/client/cifssmb.c |   14 +++++++-------
+ fs/smb/client/smb2pdu.c |    2 --
+ 2 files changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index c40e226053cc..9f96844205b1 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -481,7 +481,7 @@ static int netfs_read_gaps(struct file *file, struct folio *folio)
- 	struct address_space *mapping = folio->mapping;
- 	struct netfs_folio *finfo = netfs_folio_info(folio);
- 	struct netfs_inode *ctx = netfs_inode(mapping->host);
--	struct folio *sink = NULL;
-+	struct folio *sink;
- 	struct bio_vec *bvec;
- 	unsigned int from = finfo->dirty_offset;
- 	unsigned int to = from + finfo->dirty_len;
-@@ -540,8 +540,7 @@ static int netfs_read_gaps(struct file *file, struct folio *folio)
- 
- 	netfs_read_to_pagecache(rreq);
- 
--	if (sink)
--		folio_put(sink);
-+	folio_put(sink);
- 
- 	ret = netfs_wait_for_read(rreq);
- 	if (ret == 0) {
--- 
-2.45.2
+diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
+index 6ad22732c25c..d0df0c17b18f 100644
+--- a/fs/smb/client/cifssmb.c
++++ b/fs/smb/client/cifssmb.c
+@@ -1266,9 +1266,7 @@ static void cifs_readv_worker(struct work_struct *wo=
+rk)
+ 	struct cifs_io_subrequest *rdata =3D
+ 		container_of(work, struct cifs_io_subrequest, subreq.work);
+ =
+
+-	netfs_subreq_terminated(&rdata->subreq,
+-				(rdata->result =3D=3D 0 || rdata->result =3D=3D -EAGAIN) ?
+-				rdata->got_bytes : rdata->result, true);
++	netfs_read_subreq_terminated(&rdata->subreq, rdata->result, false);
+ }
+ =
+
+ static void
+@@ -1327,9 +1325,9 @@ cifs_readv_callback(struct mid_q_entry *mid)
+ 		__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
+ 		rdata->result =3D 0;
+ 	} else {
+-		if (rdata->got_bytes < rdata->actual_len &&
+-		    rdata->subreq.start + rdata->subreq.transferred + rdata->got_bytes =
+=3D=3D
+-		    ictx->remote_i_size) {
++		size_t trans =3D rdata->subreq.transferred + rdata->got_bytes;
++		if (trans < rdata->subreq.len &&
++		    rdata->subreq.start + trans =3D=3D ictx->remote_i_size) {
+ 			__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
+ 			rdata->result =3D 0;
+ 		}
+@@ -1337,7 +1335,9 @@ cifs_readv_callback(struct mid_q_entry *mid)
+ =
+
+ 	rdata->credits.value =3D 0;
+ 	rdata->subreq.transferred +=3D rdata->got_bytes;
+-	netfs_read_subreq_terminated(&rdata->subreq, rdata->result, false);
++	trace_netfs_sreq(&rdata->subreq, netfs_sreq_trace_io_progress);
++	INIT_WORK(&rdata->subreq.work, cifs_readv_worker);
++	queue_work(cifsiod_wq, &rdata->subreq.work);
+ 	release_mid(mid);
+ 	add_credits(server, &credits, 0);
+ }
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index 95377bb91950..bb8ecbbe78af 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -4614,8 +4614,6 @@ smb2_readv_callback(struct mid_q_entry *mid)
+ 			      0, cifs_trace_rw_credits_read_response_clear);
+ 	rdata->credits.value =3D 0;
+ 	rdata->subreq.transferred +=3D rdata->got_bytes;
+-	if (rdata->subreq.start + rdata->subreq.transferred >=3D rdata->subreq.r=
+req->i_size)
+-		__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
+ 	trace_netfs_sreq(&rdata->subreq, netfs_sreq_trace_io_progress);
+ 	INIT_WORK(&rdata->subreq.work, smb2_readv_worker);
+ 	queue_work(cifsiod_wq, &rdata->subreq.work);
 
