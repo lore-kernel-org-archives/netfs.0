@@ -1,91 +1,99 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A02918DF8B
-	for <netfs@lists.linux.dev>; Fri, 13 Sep 2024 07:59:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A415E13D625;
+	Fri, 13 Sep 2024 08:11:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726214370; cv=none; b=bpZDo38ZRqsW10V5gCouJD1fBuT7OhJcU1g0sCo/UoLyOefe54LgXXX1f6PTn1sfWX+KFMeYCY6Wl3Thw7X7X5uDXkLRd34r1ZkKftBM4atrCqKgcNoLKGOJYxmfMEUaj6RwhhbgESiGV9REjniPJkpeeSeuvRmGzYakm9ef+2w=
+	t=1726215092; cv=none; b=cb4wJzSvyRAVbya+q1djdHCzl8iwvdRnftI1DgxYgRG2NSBD0m7zl68HRmGPLD5+gf+PMuXbP8tS574y+GBuChGLGGZ+m7n1saArhHl96c2HS1KLV6LX5Nlm8dbV6ESTz2vj7Vg83vGaF1R50rXC8VD5PawvaEdiFlp9MjG/SpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726214370; c=relaxed/simple;
-	bh=kgtxvsYQ+THuJREDp/R0kMk6JWPfaY7Kq1aHhRJ3s8E=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=RGmwT8D9vD9CoMlS3GrBo+lDzD6w2fGQRj35lgoyRp0+ie82limdar/0I2WR7qpG7bw2NW5wV94vf3MDD70I7br19k+cZ4Rk04GGPDcvVv+78UcJ0TH5379bPBJix/Scrx1NmNNXqrccRADC02I1wbEKcwf3ZDwhQJS1F4ScmxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aTN0b4zl; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1726215092; c=relaxed/simple;
+	bh=AIKqGRT9z6TNOCU+Dxb1n/JCJbKQDW7PvIqp4JjiXGM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bukgTim3gaciBhKkYCCfdRfYot4nYMLfbRwmAUtgN+WNCb3o/r3+jZK2+zjmSY7eDtnsz+Ubo80BsWFP+uIANlIZgoIhAxUwmo1jmP5tqmdhGoz2ORkGuqq+1uJlUCQopsbG/8NqKBA/+eJ7SUnFduiWa2fPEfrflBBT1u08r6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ABuq6HTx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aTN0b4zl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1726214368;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AyeF+/WYzR3SYi9omjxf05OynwYJxePvZ/auujDdqu4=;
-	b=aTN0b4zlYVZHiJ1khOXj4B77PH8Zk5JoTocdgq7gkWuxnbyQx+LUA9DHmmExIQq7zJI8M8
-	CV39u3BWWxdX9pSasG3monZLx/sYBiRC0CpeP1IeuJFjk0I+6zCI0hNRRZ8nxrVwB/fjDD
-	yS6GZitT9Ifrsb91DCdb9zTp78zCJ74=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-611-OrTa6mQ8NEiM4VnKY-WhyQ-1; Fri,
- 13 Sep 2024 03:59:25 -0400
-X-MC-Unique: OrTa6mQ8NEiM4VnKY-WhyQ-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A94211956077;
-	Fri, 13 Sep 2024 07:59:23 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.67])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0215C30001AB;
-	Fri, 13 Sep 2024 07:59:20 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <202409131438.3f225fbf-oliver.sang@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ABuq6HTx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5AE4C4CEC0;
+	Fri, 13 Sep 2024 08:11:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726215091;
+	bh=AIKqGRT9z6TNOCU+Dxb1n/JCJbKQDW7PvIqp4JjiXGM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ABuq6HTxG/iCyFHmWishG138K96W6MpO9djxA1czxjfbuBBFg4fDWZalwjTT/Ae2X
+	 DWgrcLEmjYeVBCN0EjfMQqCW8seJCMNFrBwMzKPfH9zVT2bJH46HMcMxf/fDYeFzXh
+	 rGD7wuYjid9mqiRrj33ANoH0PtOXXxlffRaSKk4ZLTGrA5Rrrc29SxlhIf10xheaLN
+	 KTMz7yicy16S+Cb0Hlt1B+34FFadTpdOIKsgDIIQ+9uMP6aoVR0CO052BVkx0x/BOv
+	 fwAy+8AxdcAY9AcKl6fMrETWjDIHulvF1ymp4ha85lGM+68rrgWyRO9QrDh5jM0vhK
+	 3VBqQGOjfPj3A==
+Date: Fri, 13 Sep 2024 10:11:25 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: kernel test robot <oliver.sang@intel.com>, oe-lkp@lists.linux.dev, 
+	lkp@intel.com, Linux Memory Management List <linux-mm@kvack.org>, 
+	Jeff Layton <jlayton@kernel.org>, netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org
+Subject: Re: [linux-next:master] [netfs] a05b682d49:
+ BUG:KASAN:slab-use-after-free_in_copy_from_iter
+Message-ID: <20240913-felsen-nervig-7ea082a2702c@brauner>
 References: <202409131438.3f225fbf-oliver.sang@intel.com>
-To: kernel test robot <oliver.sang@intel.com>
-Cc: dhowells@redhat.com, oe-lkp@lists.linux.dev, lkp@intel.com,
-    Linux Memory Management List <linux-mm@kvack.org>,
-    Christian Brauner <brauner@kernel.org>,
-    Jeff Layton <jlayton@kernel.org>, netfs@lists.linux.dev,
-    linux-fsdevel@vger.kernel.org
-Subject: Re: [linux-next:master] [netfs] a05b682d49: BUG:KASAN:slab-use-after-free_in_copy_from_iter
+ <1263138.1726214359@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1263137.1726214359.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 13 Sep 2024 08:59:19 +0100
-Message-ID: <1263138.1726214359@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <1263138.1726214359@warthog.procyon.org.uk>
 
-Can you try with the attached change?  It'll get folded into Christian's
-vfs.netfs branch at some point.
+On Fri, Sep 13, 2024 at 08:59:19AM GMT, David Howells wrote:
+> Can you try with the attached change?  It'll get folded into Christian's
+> vfs.netfs branch at some point.
 
-David
----
+The fix you pasted below is already applied and folded into vfs.netfs.
+But what the kernel test robot tested was an old version of that branch.
+
+The commit hash that kernel test robot tested was:
+
+commit: a05b682d498a81ca12f1dd964f06f3aec48af595 ("netfs: Use new folio_queue data type and iterator instead of xarray iter")
+https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git master
+
+but in vfs.netfs we have:
+cd0277ed0c188dd40e7744e89299af7b78831ca4  ("netfs: Use new folio_queue data type and iterator instead of xarray iter")
+
+and the diff between the two is:
+
 diff --git a/lib/iov_iter.c b/lib/iov_iter.c
 index 84a517a0189d..97003155bfac 100644
 --- a/lib/iov_iter.c
 +++ b/lib/iov_iter.c
-@@ -1026,7 +1026,7 @@ static ssize_t iter_folioq_get_pages(struct iov_iter=
- *iter,
- 		iov_offset +=3D part;
- 		extracted +=3D part;
- =
+@@ -1026,7 +1026,7 @@ static ssize_t iter_folioq_get_pages(struct iov_iter *iter,
+                iov_offset += part;
+                extracted += part;
 
--		*pages =3D folio_page(folio, offset % PAGE_SIZE);
-+		*pages =3D folio_page(folio, offset / PAGE_SIZE);
- 		get_page(*pages);
- 		pages++;
- 		maxpages--;
+-               *pages = folio_page(folio, offset % PAGE_SIZE);
++               *pages = folio_page(folio, offset / PAGE_SIZE);
+                get_page(*pages);
+                pages++;
+                maxpages--;
 
+So this is a bug report for an old version of vfs.netfs.
+
+> 
+> David
+> ---
+> diff --git a/lib/iov_iter.c b/lib/iov_iter.c
+> index 84a517a0189d..97003155bfac 100644
+> --- a/lib/iov_iter.c
+> +++ b/lib/iov_iter.c
+> @@ -1026,7 +1026,7 @@ static ssize_t iter_folioq_get_pages(struct iov_iter *iter,
+>  		iov_offset += part;
+>  		extracted += part;
+>  
+> -		*pages = folio_page(folio, offset % PAGE_SIZE);
+> +		*pages = folio_page(folio, offset / PAGE_SIZE);
+>  		get_page(*pages);
+>  		pages++;
+>  		maxpages--;
+> 
