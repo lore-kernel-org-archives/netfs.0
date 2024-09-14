@@ -1,99 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A415E13D625;
-	Fri, 13 Sep 2024 08:11:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E777F83CC8
+	for <netfs@lists.linux.dev>; Sat, 14 Sep 2024 20:40:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726215092; cv=none; b=cb4wJzSvyRAVbya+q1djdHCzl8iwvdRnftI1DgxYgRG2NSBD0m7zl68HRmGPLD5+gf+PMuXbP8tS574y+GBuChGLGGZ+m7n1saArhHl96c2HS1KLV6LX5Nlm8dbV6ESTz2vj7Vg83vGaF1R50rXC8VD5PawvaEdiFlp9MjG/SpA=
+	t=1726346414; cv=none; b=Aoguc0ZLK4lZV0Djx0kwr/TfOloHYG0EGWuN+OnJJPO/sPODAvOuVf1qH4+CVhhb1pY31MILae58mbHxKV4qjSMdbDtPAWk1ZPqRND/tv65TZuMSsHzxPlXjwGaRHSBRmxx5jFezdNXIt5nnYkr3VPC2AmO56AHqYZb5Hi6EcWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726215092; c=relaxed/simple;
-	bh=AIKqGRT9z6TNOCU+Dxb1n/JCJbKQDW7PvIqp4JjiXGM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bukgTim3gaciBhKkYCCfdRfYot4nYMLfbRwmAUtgN+WNCb3o/r3+jZK2+zjmSY7eDtnsz+Ubo80BsWFP+uIANlIZgoIhAxUwmo1jmP5tqmdhGoz2ORkGuqq+1uJlUCQopsbG/8NqKBA/+eJ7SUnFduiWa2fPEfrflBBT1u08r6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ABuq6HTx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1726346414; c=relaxed/simple;
+	bh=8uxyuUaxJOkH8vX/RGr3kDFl9I63UzbJ+nTNCh6D+/U=;
+	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=lKSSSwDuKR5+bUgJubIYOrxW+LmkHqR4dxj0jE+sq/54Ap5Idg+yrn39iDRD1NQDwZGX5M0EiidYtaA2eHru/nPJCMAj6SrJZcsKUqco3P8kI+IRnesC3Oc5TD7vRzsDcyC+xua9dA095z2g1K9hp4p0z50otkgnP8I9aWsjvdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AvKh6HNk; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ABuq6HTx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5AE4C4CEC0;
-	Fri, 13 Sep 2024 08:11:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726215091;
-	bh=AIKqGRT9z6TNOCU+Dxb1n/JCJbKQDW7PvIqp4JjiXGM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ABuq6HTxG/iCyFHmWishG138K96W6MpO9djxA1czxjfbuBBFg4fDWZalwjTT/Ae2X
-	 DWgrcLEmjYeVBCN0EjfMQqCW8seJCMNFrBwMzKPfH9zVT2bJH46HMcMxf/fDYeFzXh
-	 rGD7wuYjid9mqiRrj33ANoH0PtOXXxlffRaSKk4ZLTGrA5Rrrc29SxlhIf10xheaLN
-	 KTMz7yicy16S+Cb0Hlt1B+34FFadTpdOIKsgDIIQ+9uMP6aoVR0CO052BVkx0x/BOv
-	 fwAy+8AxdcAY9AcKl6fMrETWjDIHulvF1ymp4ha85lGM+68rrgWyRO9QrDh5jM0vhK
-	 3VBqQGOjfPj3A==
-Date: Fri, 13 Sep 2024 10:11:25 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: kernel test robot <oliver.sang@intel.com>, oe-lkp@lists.linux.dev, 
-	lkp@intel.com, Linux Memory Management List <linux-mm@kvack.org>, 
-	Jeff Layton <jlayton@kernel.org>, netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org
-Subject: Re: [linux-next:master] [netfs] a05b682d49:
- BUG:KASAN:slab-use-after-free_in_copy_from_iter
-Message-ID: <20240913-felsen-nervig-7ea082a2702c@brauner>
-References: <202409131438.3f225fbf-oliver.sang@intel.com>
- <1263138.1726214359@warthog.procyon.org.uk>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AvKh6HNk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1726346411;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=RfizNILj8Bic7UhBJkx7foDXeeUTZejgV3kKoRryAVc=;
+	b=AvKh6HNkkNFslb1EhNUd7BzW0i/FspEuMc1N9g2r/5LFD3nbs0EQxr5KzfxCpgHAA8yEyk
+	lMAz9+DPGzPiQS7nB2LHVRHt77iQUWNVslCUd6wRkscVPk6ZDqpeTYKHa1+xXPig6XPV2u
+	cmZ7fmswYrBK68DqISbANVHA/jbI9NM=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-483-vDdsiWTFMj6PNxmjdDY64Q-1; Sat,
+ 14 Sep 2024 16:40:08 -0400
+X-MC-Unique: vDdsiWTFMj6PNxmjdDY64Q-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 800C71956089;
+	Sat, 14 Sep 2024 20:40:06 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.14])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D252D30001AB;
+	Sat, 14 Sep 2024 20:40:03 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: Marc Dionne <marc.dionne@auristor.com>
+cc: dhowells@redhat.com, "Dr. David Alan Gilbert" <linux@treblig.org>,
+    brauner@kernel.org, Jeff Layton <jlayton@kernel.org>,
+    linux-afs@lists.infradead.org, netfs@lists.linux.dev,
+    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] afs: Fix missing wire-up of afs_retry_request()
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1263138.1726214359@warthog.procyon.org.uk>
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1690846.1726346402.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 14 Sep 2024 21:40:02 +0100
+Message-ID: <1690847.1726346402@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On Fri, Sep 13, 2024 at 08:59:19AM GMT, David Howells wrote:
-> Can you try with the attached change?  It'll get folded into Christian's
-> vfs.netfs branch at some point.
+afs_retry_request() is supposed to be pointed to by the afs_req_ops netfs
+operations table, but the pointer got lost somewhere.  The function is use=
+d
+during writeback to rotate through the authentication keys that were in
+force when the file was modified locally.
 
-The fix you pasted below is already applied and folded into vfs.netfs.
-But what the kernel test robot tested was an old version of that branch.
+Fix this by adding the pointer to the function.
 
-The commit hash that kernel test robot tested was:
+Fixes: 1ecb146f7cd8 ("netfs, afs: Use writeback retry to deal with alterna=
+te keys")
+Reported-by: "Dr. David Alan Gilbert" <linux@treblig.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+---
+ fs/afs/file.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-commit: a05b682d498a81ca12f1dd964f06f3aec48af595 ("netfs: Use new folio_queue data type and iterator instead of xarray iter")
-https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git master
+diff --git a/fs/afs/file.c b/fs/afs/file.c
+index ec1be0091fdb..290f60460ec7 100644
+--- a/fs/afs/file.c
++++ b/fs/afs/file.c
+@@ -404,6 +404,7 @@ const struct netfs_request_ops afs_req_ops =3D {
+ 	.begin_writeback	=3D afs_begin_writeback,
+ 	.prepare_write		=3D afs_prepare_write,
+ 	.issue_write		=3D afs_issue_write,
++	.retry_request		=3D afs_retry_request,
+ };
+ =
 
-but in vfs.netfs we have:
-cd0277ed0c188dd40e7744e89299af7b78831ca4  ("netfs: Use new folio_queue data type and iterator instead of xarray iter")
+ static void afs_add_open_mmap(struct afs_vnode *vnode)
 
-and the diff between the two is:
-
-diff --git a/lib/iov_iter.c b/lib/iov_iter.c
-index 84a517a0189d..97003155bfac 100644
---- a/lib/iov_iter.c
-+++ b/lib/iov_iter.c
-@@ -1026,7 +1026,7 @@ static ssize_t iter_folioq_get_pages(struct iov_iter *iter,
-                iov_offset += part;
-                extracted += part;
-
--               *pages = folio_page(folio, offset % PAGE_SIZE);
-+               *pages = folio_page(folio, offset / PAGE_SIZE);
-                get_page(*pages);
-                pages++;
-                maxpages--;
-
-So this is a bug report for an old version of vfs.netfs.
-
-> 
-> David
-> ---
-> diff --git a/lib/iov_iter.c b/lib/iov_iter.c
-> index 84a517a0189d..97003155bfac 100644
-> --- a/lib/iov_iter.c
-> +++ b/lib/iov_iter.c
-> @@ -1026,7 +1026,7 @@ static ssize_t iter_folioq_get_pages(struct iov_iter *iter,
->  		iov_offset += part;
->  		extracted += part;
->  
-> -		*pages = folio_page(folio, offset % PAGE_SIZE);
-> +		*pages = folio_page(folio, offset / PAGE_SIZE);
->  		get_page(*pages);
->  		pages++;
->  		maxpages--;
-> 
