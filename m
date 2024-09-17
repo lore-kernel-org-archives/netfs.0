@@ -1,107 +1,85 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D6D1494D1
-	for <netfs@lists.linux.dev>; Tue, 17 Sep 2024 07:54:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B28155A4E;
+	Tue, 17 Sep 2024 08:59:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726559680; cv=none; b=bgy0mIo5SvapvX05wB03EF25S/DNCj1eEwbOX9GMKzvEs+fsG6P9b4fn4TTpXZ8mVjDM2WiK3K0mVssjgNOUwa7zyDjIbH0cR6q6Pj9NmmNijcgZ4xzf1KI0wL9lTGI25GzCZCwRj1InpDPayWZOWVqAlTWN5/ZiG6SWT5sN7Hk=
+	t=1726563566; cv=none; b=V/Z9vHZDEDMhJ/6wjOVH4UH49lG+HaE1g7ZG0O8pVqJ62yqVSR24OGSj0FlTqD+/QiS8pATeDQBrhSfoPKEO7WChvzOhHGssSTIRQzRBRNIaBDQCGESojEcz68VNpZHVq3coem6CDMg+skw9R+PrGrh/BNgZ/W3JM/DpFUmXbII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726559680; c=relaxed/simple;
-	bh=lhFZXlll59tKQPd51vvfW24mGo4UK5xcEDeJAGNp2xM=;
-	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=r39GmPgEXCDRxQUOtmxrgSn6fSby0VYRkY7WxSx3E36ZXclUm/me8RQ5r+3+2iAd4n5mQfYMzZfEFaIsSrEHfn0/1beGbzzCDPuL8NFmN+HoDohCkOqih9u+KwTwPSuzACrAVUQ0uQAeFsw0btQCP1In5PYJDywKfrxrjmiI+MU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=g5kjjArb; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1726563566; c=relaxed/simple;
+	bh=NKhckBMgwJKcDCDVH8R0awRFV2BdU7iPgvD+2gL7lgQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=V9lUlOZEVdCbkez3KlIIHLIuOSrJNqG/ijHdRRUngyGK5jmru+drcm15nOu31EZz5kZY7QtYo951hrdzgnfMUq3SdgSaSpSY2+SMwO/syEq+yxE/hSmvrd6Kj5yr6IgP2CwfH3RsFBiECWYYyz0YvpiLhTyXapQQ0FEGfffgM8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hkDNdmJI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="g5kjjArb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1726559677;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=5b27nr/SPZQcntuLJn+/QlhMwOaGHH4g8fVeuv0vl08=;
-	b=g5kjjArb5+uwSIyJaDUB7QjaX6FDyIf8hx/w/jLB7fpcJwarJ9iMpTkLqNLpAnmucBoINk
-	6mqYGmVG+e0vqWcIxHBxIPwSStHZPPkwUn1wUYxakKT1rpp4tXE6vI4t1wQdauc/TIYclQ
-	WA9XdrkcDOMc4ZYlpqiDA+YmNiE0Pgw=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-117-q1suRQZIOkqY5JEvP-PdiQ-1; Tue,
- 17 Sep 2024 03:54:34 -0400
-X-MC-Unique: q1suRQZIOkqY5JEvP-PdiQ-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A7BA61955EB2;
-	Tue, 17 Sep 2024 07:54:32 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.14])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 85D5F1956088;
-	Tue, 17 Sep 2024 07:54:29 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-To: Steve French <sfrench@samba.org>,
-    Christian Brauner <brauner@kernel.org>
-cc: dhowells@redhat.com, kernel test robot <oliver.sang@intel.com>,
-    Jeff Layton <jlayton@kernel.org>, Paulo Alcantara <pc@manguebit.com>,
-    linux-cifs@vger.kernel.org, netfs@lists.linux.dev,
-    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] netfs, cifs: Fix mtime/ctime update for mmapped writes
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hkDNdmJI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D740C4CEC5;
+	Tue, 17 Sep 2024 08:59:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726563565;
+	bh=NKhckBMgwJKcDCDVH8R0awRFV2BdU7iPgvD+2gL7lgQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=hkDNdmJIqrdgegnNnlNIX+KgWGmbQVXD0wGSGAL40K5YK6/9OiM77zzk8lTJJ/ey+
+	 pSQucHG+KwI3gBYSQQnMjr4N6r8Kxb6oo6opLTyN1j0bJ4zYr+9eRvqNG/oFa1BFVn
+	 0x73yZxa3S8ErYG/OOGjY+olVwnDwH1rUGx1j+dS7NyfDFIv5tJQpNTvgqlyRzEd5S
+	 GxqXgz8kDXz6jp5wuALWXxyaNKBnKagklUvt/wNOgRv+U7so1tOD1KnbykM3Om8IoU
+	 TL7E7p0M0xgIMiBmbUWh4aBopqjaiWmli6y+ndzwnRhx13WBhz6I7/NMJfOZXLLNtl
+	 XkieuQHSDBerQ==
+From: Christian Brauner <brauner@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	kernel test robot <oliver.sang@intel.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	linux-cifs@vger.kernel.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Steve French <sfrench@samba.org>
+Subject: Re: [PATCH] netfs, cifs: Fix mtime/ctime update for mmapped writes
+Date: Tue, 17 Sep 2024 10:59:01 +0200
+Message-ID: <20240917-hypen-advokat-2d384f761fde@brauner>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <2106017.1726559668@warthog.procyon.org.uk>
+References: <2106017.1726559668@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2106016.1726559668.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 17 Sep 2024 08:54:28 +0100
-Message-ID: <2106017.1726559668@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1242; i=brauner@kernel.org; h=from:subject:message-id; bh=NKhckBMgwJKcDCDVH8R0awRFV2BdU7iPgvD+2gL7lgQ=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaS9dHkifZuvafk8YU0el0MKa2IWePC8W985wW7OriN/9 2XPu96xrqOUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAiL94yMjwWaFw0J4T3h9QW b/us1ave1cQcyYt+2Rm32IXvYn5u5lGGf4b8a5pt1jjYmEn4OzLJ2SvwXZvXe0pr2b/I8Buaqhv sGAE=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-The cifs flag CIFS_INO_MODIFIED_ATTR, which indicates that the mtime and
-ctime need to be written back on close, got taken over by netfs as
-NETFS_ICTX_MODIFIED_ATTR to avoid the need to call a function pointer to
-set it.
+On Tue, 17 Sep 2024 08:54:28 +0100, David Howells wrote:
+> The cifs flag CIFS_INO_MODIFIED_ATTR, which indicates that the mtime and
+> ctime need to be written back on close, got taken over by netfs as
+> NETFS_ICTX_MODIFIED_ATTR to avoid the need to call a function pointer to
+> set it.
+> 
+> The flag gets set correctly on buffered writes, but doesn't get set by
+> netfs_page_mkwrite(), leading to occasional failures in generic/080 and
+> generic/215.
+> 
+> [...]
 
-The flag gets set correctly on buffered writes, but doesn't get set by
-netfs_page_mkwrite(), leading to occasional failures in generic/080 and
-generic/215.
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-Fix this by setting the flag in netfs_page_mkwrite().
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-Fixes: 73425800ac94 ("netfs, cifs: Move CIFS_INO_MODIFIED_ATTR to netfs_in=
-ode")
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202409161629.98887b2-oliver.sang@in=
-tel.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: Steve French <sfrench@samba.org>
-cc: Paulo Alcantara <pc@manguebit.com>
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
----
- fs/netfs/buffered_write.c |    1 +
- 1 file changed, 1 insertion(+)
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
-index d7eae597e54d..b3910dfcb56d 100644
---- a/fs/netfs/buffered_write.c
-+++ b/fs/netfs/buffered_write.c
-@@ -552,6 +552,7 @@ vm_fault_t netfs_page_mkwrite(struct vm_fault *vmf, st=
-ruct netfs_group *netfs_gr
- 		trace_netfs_folio(folio, netfs_folio_trace_mkwrite);
- 	netfs_set_group(folio, netfs_group);
- 	file_update_time(file);
-+	set_bit(NETFS_ICTX_MODIFIED_ATTR, &ictx->flags);
- 	if (ictx->ops->post_modify)
- 		ictx->ops->post_modify(inode);
- 	ret =3D VM_FAULT_LOCKED;
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[1/1] netfs, cifs: Fix mtime/ctime update for mmapped writes
+      https://git.kernel.org/vfs/vfs/c/edd297c2764c
