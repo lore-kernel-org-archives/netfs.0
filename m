@@ -1,60 +1,55 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB58189F5D
-	for <netfs@lists.linux.dev>; Wed, 18 Sep 2024 14:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D82188A1F
+	for <netfs@lists.linux.dev>; Wed, 18 Sep 2024 19:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726668235; cv=none; b=meFSFSiXcs96jMh1fNPsd9m+jC84rCfifMsTsW6VPdhmSLqxjqQtV8SS0/EDIY3WeJKiYChCPFK5dUpxhAi8LLnt3ilQiH62pP0w+ZXEMl5KcCCZRxekRVWJ4kM5GkC/8yyRpl3uT4UY0nIwp3gjplR/ExYHQ8AiUIfKDvpP5As=
+	t=1726687477; cv=none; b=oVIH3Cn3QdGlm+9qzM0tGET97dWyAOMLGNM2UJc+3iqwMsE4XsJGNu/HObdfsOPSa0G//olJWCEk53NL7yqZZ/29G1NX+PYyV6xpHAPEWQL4YPQLagmJC+LFZD/SsToGn3bCacsoG0SypFWjB/7V72ZQaSr18bNfznE7Ptjlihs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726668235; c=relaxed/simple;
-	bh=Kr3ea7knxR3K6ncu1yZFkSOzoV0ZNlUKfvGocBFxRZ4=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=bn1ptfr627WcNY+iNQj4tS1bjdEEWdUwjj5oH+Cw+NasoURGUqI9S2G0+3dHPdvUt/asuLbnG4asTva0lHKNLetSLNtjXKTh7i27ekEAKv6nWtjMosx4iEHi6/z4dSi34bdqRtXJ8Q7NO2Fvx6cZvV4Sw+EtLzOLJWnW+q790K0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ezbeZDM+; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1726687477; c=relaxed/simple;
+	bh=YdyFzy1jcfMaY51nnWIzBvWMvrJGWBsGOA35UGZoFfs=;
+	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=sUCETCYZvFVejzlGzdV6PV1kgjnGN6DzhfAxveRR/Vv0t+diJSupz/x9ygGRWE5pzAmNZ5R/DbllxB6H7F363bqst0MrRMQ9Zf6/79tUEWlk1u7qoZVHC38jgk7lp0IOuKwroz6GZxQdXm+AJoC6fnLEoDt/L606PKxTLMk+S+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ib5c/qfa; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ezbeZDM+"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ib5c/qfa"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1726668232;
+	s=mimecast20190719; t=1726687474;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+vDScTiHdr0sgOehdKhcZpjyeGo146YPJ6YCQDqIElU=;
-	b=ezbeZDM+aeALJzYxkmao/JkfCKxO9qNYQ+r5CNs3apufOo73d8s+y0DXkO9v7v3FMjEVC8
-	CSmtHfqWHRkIiQ98HO0GFE8BNUeWm6Sfqzy5qwFvROuGz0DtPJ3K7mLGp3m0vFXWF17Rs4
-	1XUMIBGb9pOx92nBxQMMRATWKbs6jZ4=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=13NcS5WBCHgSavsJ+5jrwMZ/ERpINeUvrEKrZx5QIkI=;
+	b=Ib5c/qfamL4VQ0HkxYS/2YMSo59o6HWGEa7HsAZYP7LT8VFD9WvMzbHNQgWkBIpmSoOahu
+	M44peVBqbGiUeHR9WvEIgzu+7C6FXUXFMcWRMP8Ywgb02eLAR8jI57cEwBGP8NHHhW0hup
+	twEYTeuYclUvUMZZ9ZI2xP/Om0R0i+A=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-166-7e-FGBkuNbGTNhpDoCvOxA-1; Wed,
- 18 Sep 2024 10:03:47 -0400
-X-MC-Unique: 7e-FGBkuNbGTNhpDoCvOxA-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-390-mbeDwEILOO-ofncEXk_s2g-1; Wed,
+ 18 Sep 2024 15:24:30 -0400
+X-MC-Unique: mbeDwEILOO-ofncEXk_s2g-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 70CF51955E99;
-	Wed, 18 Sep 2024 14:03:45 +0000 (UTC)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3F2A91953943;
+	Wed, 18 Sep 2024 19:24:28 +0000 (UTC)
 Received: from warthog.procyon.org.uk (unknown [10.42.28.14])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C67BB19560AA;
-	Wed, 18 Sep 2024 14:03:42 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9937F30001A1;
+	Wed, 18 Sep 2024 19:24:25 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
 	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
 	Kingdom.
 	Registered in England and Wales under Company Registration No. 3798903
 From: David Howells <dhowells@redhat.com>
-In-Reply-To: <202409131438.3f225fbf-oliver.sang@intel.com>
-References: <202409131438.3f225fbf-oliver.sang@intel.com>
-To: kernel test robot <oliver.sang@intel.com>
-Cc: dhowells@redhat.com, oe-lkp@lists.linux.dev, lkp@intel.com,
-    Linux Memory Management List <linux-mm@kvack.org>,
-    Christian Brauner <brauner@kernel.org>,
-    Jeff Layton <jlayton@kernel.org>, netfs@lists.linux.dev,
-    linux-fsdevel@vger.kernel.org
-Subject: Re: [linux-next:master] [netfs] a05b682d49: BUG:KASAN:slab-use-after-free_in_copy_from_iter
+To: Steve French <stfrench@microsoft.com>
+cc: dhowells@redhat.com, Paulo Alcantara (Red Hat) <pc@manguebit.com>,
+    Jeff Layton <jlayton@kernel.org>, linux-cifs@vger.kernel.org,
+    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: [PATCH] cifs: Make the write_{enter,done,err} tracepoints display netfs info
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -62,72 +57,158 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2377097.1726668218.1@warthog.procyon.org.uk>
+Content-ID: <2390623.1726687464.1@warthog.procyon.org.uk>
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 18 Sep 2024 15:03:38 +0100
-Message-ID: <2377098.1726668218@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Date: Wed, 18 Sep 2024 20:24:24 +0100
+Message-ID: <2390624.1726687464@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Hi Oliver,
+Make the write RPC tracepoints use the same trace macro complexes as the
+read tracepoints and display the netfs request and subrequest IDs where
+available (see commit 519be989717c "cifs: Add a tracepoint to track credit=
+s
+involved in R/W requests").
 
-The reproducer script doesn't manage to build (I'm using Fedora 39):
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Steve French <stfrench@microsoft.com>
+cc: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+---
+ fs/smb/client/smb2pdu.c |   22 +++++++++++++++-------
+ fs/smb/client/trace.h   |    6 +++---
+ 2 files changed, 18 insertions(+), 10 deletions(-)
 
-+ /usr/lib/rpm/check-rpaths
-**************************************************************************=
-*****
-*
-* WARNING: 'check-rpaths' detected a broken RPATH OR RUNPATH and will caus=
-e
-*          'rpmbuild' to fail. To ignore these errors, you can set the
-*          '$QA_RPATHS' environment variable which is a bitmask allowing t=
-he
-*          values below. The current value of QA_RPATHS is 0x0000.
-*
-*    0x0001 ... standard RPATHs (e.g. /usr/lib); such RPATHs are a minor
-*               issue but are introducing redundant searchpaths without
-*               providing a benefit. They can also cause errors in multili=
-b
-*               environments.
-*    0x0002 ... invalid RPATHs; these are RPATHs which are neither absolut=
-e
-*               nor relative filenames and can therefore be a SECURITY ris=
-k
-*    0x0004 ... insecure RPATHs; these are relative RPATHs which are a
-*               SECURITY risk
-*    0x0008 ... the special '$ORIGIN' RPATHs are appearing after other
-*               RPATHs; this is just a minor issue but usually unwanted
-*    0x0010 ... the RPATH is empty; there is no reason for such RPATHs
-*               and they cause unneeded work while loading libraries
-*    0x0020 ... an RPATH references '..' of an absolute path; this will br=
-eak
-*               the functionality when the path before '..' is a symlink
-*          =
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index bb8ecbbe78af..6544deac8069 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -4865,7 +4865,9 @@ smb2_writev_callback(struct mid_q_entry *mid)
+ #endif
+ 	if (result) {
+ 		cifs_stats_fail_inc(tcon, SMB2_WRITE_HE);
+-		trace_smb3_write_err(wdata->xid,
++		trace_smb3_write_err(wdata->rreq->debug_id,
++				     wdata->subreq.debug_index,
++				     wdata->xid,
+ 				     wdata->req->cfile->fid.persistent_fid,
+ 				     tcon->tid, tcon->ses->Suid, wdata->subreq.start,
+ 				     wdata->subreq.len, wdata->result);
+@@ -4873,7 +4875,9 @@ smb2_writev_callback(struct mid_q_entry *mid)
+ 			pr_warn_once("Out of space writing to %s\n",
+ 				     tcon->tree_name);
+ 	} else
+-		trace_smb3_write_done(0 /* no xid */,
++		trace_smb3_write_done(wdata->rreq->debug_id,
++				      wdata->subreq.debug_index,
++				      wdata->xid,
+ 				      wdata->req->cfile->fid.persistent_fid,
+ 				      tcon->tid, tcon->ses->Suid,
+ 				      wdata->subreq.start, wdata->subreq.len);
+@@ -4951,7 +4955,9 @@ smb2_async_writev(struct cifs_io_subrequest *wdata)
+ 				offsetof(struct smb2_write_req, Buffer));
+ 	req->RemainingBytes =3D 0;
+ =
 
-*
-* Examples:
-* - to ignore standard and empty RPATHs, execute 'rpmbuild' like
-*   $ QA_RPATHS=3D$(( 0x0001|0x0010 )) rpmbuild my-package.src.rpm
-* - to check existing files, set $RPM_BUILD_ROOT and execute check-rpaths =
-like
-*   $ RPM_BUILD_ROOT=3D<top-dir> /usr/lib/rpm/check-rpaths
-*  =
+-	trace_smb3_write_enter(wdata->xid,
++	trace_smb3_write_enter(wdata->rreq->debug_id,
++			       wdata->subreq.debug_index,
++			       wdata->xid,
+ 			       io_parms->persistent_fid,
+ 			       io_parms->tcon->tid,
+ 			       io_parms->tcon->ses->Suid,
+@@ -5027,7 +5033,9 @@ smb2_async_writev(struct cifs_io_subrequest *wdata)
+ 			     wdata, flags, &wdata->credits);
+ 	/* Can't touch wdata if rc =3D=3D 0 */
+ 	if (rc) {
+-		trace_smb3_write_err(xid,
++		trace_smb3_write_err(wdata->rreq->debug_id,
++				     wdata->subreq.debug_index,
++				     xid,
+ 				     io_parms->persistent_fid,
+ 				     io_parms->tcon->tid,
+ 				     io_parms->tcon->ses->Suid,
+@@ -5107,7 +5115,7 @@ SMB2_write(const unsigned int xid, struct cifs_io_pa=
+rms *io_parms,
+ 				offsetof(struct smb2_write_req, Buffer));
+ 	req->RemainingBytes =3D 0;
+ =
 
-**************************************************************************=
-*****
-ERROR   0002: file '/usr/local/sbin/fsck.f2fs' contains an invalid runpath=
- '/usr/local/lib' in [/usr/local/lib]
-ERROR   0002: file '/usr/local/sbin/mkfs.f2fs' contains an invalid runpath=
- '/usr/local/lib' in [/usr/local/lib]
-ERROR   0002: file '/usr/local/lib/libf2fs_format.so.9.0.0' contains an in=
-valid runpath '/usr/local/lib' in [/usr/local/lib]
-error: Bad exit status from /var/tmp/rpm-tmp.ASUBws (%install)
+-	trace_smb3_write_enter(xid, io_parms->persistent_fid,
++	trace_smb3_write_enter(0, 0, xid, io_parms->persistent_fid,
+ 		io_parms->tcon->tid, io_parms->tcon->ses->Suid,
+ 		io_parms->offset, io_parms->length);
+ =
 
-RPM build warnings:
-    source_date_epoch_from_changelog set but %changelog is missing
+@@ -5128,7 +5136,7 @@ SMB2_write(const unsigned int xid, struct cifs_io_pa=
+rms *io_parms,
+ 	rsp =3D (struct smb2_write_rsp *)rsp_iov.iov_base;
+ =
 
-RPM build errors:
-    Bad exit status from /var/tmp/rpm-tmp.ASUBws (%install)
-error: open of /mnt2/lkp-tests/programs/xfstests/pkg/rpm_build/RPMS/xfstes=
-ts-LKP.rpm failed: No such file or directory
-=3D=3D> WARNING: Failed to install built package(s).
+ 	if (rc) {
+-		trace_smb3_write_err(xid,
++		trace_smb3_write_err(0, 0, xid,
+ 				     req->PersistentFileId,
+ 				     io_parms->tcon->tid,
+ 				     io_parms->tcon->ses->Suid,
+@@ -5137,7 +5145,7 @@ SMB2_write(const unsigned int xid, struct cifs_io_pa=
+rms *io_parms,
+ 		cifs_dbg(VFS, "Send error in write =3D %d\n", rc);
+ 	} else {
+ 		*nbytes =3D le32_to_cpu(rsp->DataLength);
+-		trace_smb3_write_done(xid,
++		trace_smb3_write_done(0, 0, xid,
+ 				      req->PersistentFileId,
+ 				      io_parms->tcon->tid,
+ 				      io_parms->tcon->ses->Suid,
+diff --git a/fs/smb/client/trace.h b/fs/smb/client/trace.h
+index 8e9964001e2a..0b52d22a91a0 100644
+--- a/fs/smb/client/trace.h
++++ b/fs/smb/client/trace.h
+@@ -157,6 +157,7 @@ DEFINE_EVENT(smb3_rw_err_class, smb3_##name,    \
+ 	TP_ARGS(rreq_debug_id, rreq_debug_index, xid, fid, tid, sesid, offset, l=
+en, rc))
+ =
+
+ DEFINE_SMB3_RW_ERR_EVENT(read_err);
++DEFINE_SMB3_RW_ERR_EVENT(write_err);
+ =
+
+ /* For logging errors in other file I/O ops */
+ DECLARE_EVENT_CLASS(smb3_other_err_class,
+@@ -202,7 +203,6 @@ DEFINE_EVENT(smb3_other_err_class, smb3_##name, \
+ 		int	rc),			\
+ 	TP_ARGS(xid, fid, tid, sesid, offset, len, rc))
+ =
+
+-DEFINE_SMB3_OTHER_ERR_EVENT(write_err);
+ DEFINE_SMB3_OTHER_ERR_EVENT(query_dir_err);
+ DEFINE_SMB3_OTHER_ERR_EVENT(zero_err);
+ DEFINE_SMB3_OTHER_ERR_EVENT(falloc_err);
+@@ -370,6 +370,8 @@ DEFINE_EVENT(smb3_rw_done_class, smb3_##name,   \
+ =
+
+ DEFINE_SMB3_RW_DONE_EVENT(read_enter);
+ DEFINE_SMB3_RW_DONE_EVENT(read_done);
++DEFINE_SMB3_RW_DONE_EVENT(write_enter);
++DEFINE_SMB3_RW_DONE_EVENT(write_done);
+ =
+
+ /* For logging successful other op */
+ DECLARE_EVENT_CLASS(smb3_other_done_class,
+@@ -411,11 +413,9 @@ DEFINE_EVENT(smb3_other_done_class, smb3_##name,   \
+ 		__u32	len),			\
+ 	TP_ARGS(xid, fid, tid, sesid, offset, len))
+ =
+
+-DEFINE_SMB3_OTHER_DONE_EVENT(write_enter);
+ DEFINE_SMB3_OTHER_DONE_EVENT(query_dir_enter);
+ DEFINE_SMB3_OTHER_DONE_EVENT(zero_enter);
+ DEFINE_SMB3_OTHER_DONE_EVENT(falloc_enter);
+-DEFINE_SMB3_OTHER_DONE_EVENT(write_done);
+ DEFINE_SMB3_OTHER_DONE_EVENT(query_dir_done);
+ DEFINE_SMB3_OTHER_DONE_EVENT(zero_done);
+ DEFINE_SMB3_OTHER_DONE_EVENT(falloc_done);
 
