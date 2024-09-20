@@ -1,51 +1,51 @@
-Received: from mail-il1-f199.google.com (mail-il1-f199.google.com [209.85.166.199])
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB3A9171D2
-	for <netfs@lists.linux.dev>; Fri, 20 Sep 2024 17:00:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A359E17BB21
+	for <netfs@lists.linux.dev>; Fri, 20 Sep 2024 18:38:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726851635; cv=none; b=mAatu7XgaXUhlBN51oFl0pRI12ZcjQOwn1wfGZABJFpPUWvCPDUuLwb5ZT5Nvy8JF49VulSiw8ZeBC6ozAcvcuOh6qmQZeKOwFK4nsnqD80/mhpbo07lkSqZ9VmBeHgQVjcAPVYZb1z9Jm0aKktF+lrfazV8jLR2rHgbqUqLlTM=
+	t=1726857503; cv=none; b=mvoPgxcQmbB14crVLoCzzcR2UYUAJh1a3LkXFiUl9Z3QToecvinaF19HmRjnctXKfu27u6lvnIE8cHQ7puX85hsMy26hA1g7Y97KeYXwXNyYkUfbz1ET1MxboPbfDea+uSX6H/0beYaGPOMX7J4F6oq2W7UV2RhhDKRJcSF4GlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726851635; c=relaxed/simple;
-	bh=4j+fUHE3+805kbYfg1lYbt761J4oZtOOvdmszfKJ8RQ=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=M+/8ustbbdWjzb/Bf+VCOZsMhAnvflLIIuIXHIbMqzSty7cGmWrcXlvcvhuEFcTaDAi0pgMdOsTlrSPeAk6UocdSTWzNHVCtopKR49bk6nTCNunn/bZl9nrTwtl9eM3AqCsyMBn/kzSqFpgDrduhRpQC8zETr/pqnrGUH6XBXAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.199
+	s=arc-20240116; t=1726857503; c=relaxed/simple;
+	bh=dIu3SRweG+p0jrnTQvszdymDKKpSfksUdYhydrSDi5E=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=A0e0ZzQjv/2Ywos//nKoQt3E6YRUMA6NN3SARjCOwiMTIhCRSDsLk2MZ7UvrkXfDUp98O90vjUlS6uiFV7rh0mrDVgoX+UNz5/uylwBbLrc14ecL3tlKHjd5+wOCqR3BsPYzAtOvWTG60lY7biga2+kJ+TY5H28w2Z3rhJQIo0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-3a04af50632so23395765ab.2
-        for <netfs@lists.linux.dev>; Fri, 20 Sep 2024 10:00:33 -0700 (PDT)
+Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3a0a2c95e81so30034515ab.0
+        for <netfs@lists.linux.dev>; Fri, 20 Sep 2024 11:38:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726851633; x=1727456433;
+        d=1e100.net; s=20230601; t=1726857501; x=1727462301;
         h=to:from:subject:message-id:date:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=kfDdPHt9GI0mh8ly82kMMRpzmCBeMx53wohZf9EjjOU=;
-        b=PEI2ZB8JYslmsrAvPMha+dCkIZovbPVZSsgdSHUZlzErT6MwZhhRv5bEp0JtT+bByr
-         md46/rwktXpAhgR+zU/fgD+9GBH/7GPWMzbG8bnCtycznir46an+RfDryms1tdGO5zj0
-         diUcqeFPXWLSrBmgy+aJbm55wvYEzpKJ1Lg/es7QngcWep1XOZaraAuIspCGReldGfyo
-         rbILKe2DwPDS9RTBMOWUB8eu0qYhuJXzG81H9Qkb2b0n+h96bzfvf5gI6vUQniPgUuVz
-         yfy9kcUads194oLzoiCZ6Wz/xxtPxPI9VVkHzUU8vydwwkAbS+bFvzaoRRl+Gpoj8ztT
-         RXcg==
-X-Forwarded-Encrypted: i=1; AJvYcCU0gE4UNtcYyur1FDmWjg57GoB0qOHwVcWGJcRE0jB6UDO94DrF2faDbM9maSSz9LuaBTywjQ==@lists.linux.dev
-X-Gm-Message-State: AOJu0YxlvwB+r/9t3CiFrQPAnW6LvM2aZBcsmE9NsJ1TDGSv41kBwMN7
-	Z1pjgjJACLVHRn8HmU4J9MxoXEdRGpS3+5lfd+tcfWaK8bNFVuwQIpsyoSbc9N8e6m3uhlHoSlZ
-	ly0ZMRofZdU+AQbp9Go8p6sPycBN2w/XPXFx8rM1BbEsB5T7ggQ5tRqw=
-X-Google-Smtp-Source: AGHT+IGHQLJzZ3Fwb8rhyPaE93K4zYCduyO6cmykcNi4QNNVdsnzFUnAgaEPQ+1hPSwt7ObLXPFgHEAlZ0B43MJ/HEgM61DDf8E8
+        bh=1sy/nYfvKIhHvMi2nCIuLSMe20Sl3PixfNdK4qqzEJg=;
+        b=aouwgMkxnTy8iokqPviJZRriSGRN5srGzbpS2KYI4Rrr9RTXpezfcj4vzrvBwiVqVB
+         F0z4Lerhfe3blAcLOJQQddzCPv+1Ylhvr1HTz0nG2n4nWIb7H2gEtWUSsA6SCpd5VtlS
+         c309nbFKWgNmCiORH8lMYbYlB2WVMAYWrwSnfnVsh1mTTfIvHX6ZxO4/n82OwBbBQHGh
+         j8hQUWemJ7Hl8wc1hF0IGX6lJk5yyN7ne32p/wIfngyt5kF1sqoNcgftkhtsua11p5sK
+         QebKTXfz9vJC3UkZzeUubyHYroPuodKz2G7WdR/ySfh7m22OfqJ2Yzsr/iOhxLDtfKgq
+         nxkA==
+X-Forwarded-Encrypted: i=1; AJvYcCVY6Xyrjkuu2YhrHNQ4I6trKkWzg43p5gfAO/izQwyxVY8vSP80fhUQGZZl5cPctd7xoaVX0Q==@lists.linux.dev
+X-Gm-Message-State: AOJu0YxLrub04Zti9TPvjyTvDqneR0u5YbNWy+GcL42SNUtLxYzTnUi5
+	XjWAQ43+7ZJO0VEhj4FGf6h8jdnC3FayjqU4V6aZSnW4aTKVgR37BPwEtF1AChII7V+zHXVR+6H
+	UPVipkKPi6yak1Nul+Ihzd2XOMAMd6pV3wSpLpEqvrVjnmHOdUH9BiuQ=
+X-Google-Smtp-Source: AGHT+IE9sINK897BnzH/I22v+4+JYFkX46slu+qjkbO6bYiDMyk3Su8W+jmfVmRJ19vMrLjlPlrSudBT+XIMt6g/Z1ykrXxs/kso
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1a8e:b0:3a0:b1ea:816 with SMTP id
- e9e14a558f8ab-3a0c9db0144mr31192415ab.25.1726851632712; Fri, 20 Sep 2024
- 10:00:32 -0700 (PDT)
-Date: Fri, 20 Sep 2024 10:00:32 -0700
+X-Received: by 2002:a05:6e02:1fc7:b0:39f:5521:2cd4 with SMTP id
+ e9e14a558f8ab-3a0c8d3978amr41032215ab.26.1726857500796; Fri, 20 Sep 2024
+ 11:38:20 -0700 (PDT)
+Date: Fri, 20 Sep 2024 11:38:20 -0700
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <66edaa30.050a0220.25340c.0006.GAE@google.com>
-Subject: [syzbot] [netfs?] KMSAN: uninit-value in netfs_clear_buffer
-From: syzbot <syzbot+921873345a95f4dae7e9@syzkaller.appspotmail.com>
+Message-ID: <66edc11c.050a0220.3195df.0008.GAE@google.com>
+Subject: [syzbot] [netfs?] KASAN: slab-use-after-free Read in iov_iter_folioq_advance
+From: syzbot <syzbot+e6089e62b4d92c4a7792@syzkaller.appspotmail.com>
 To: dhowells@redhat.com, jlayton@kernel.org, linux-fsdevel@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, netfs@lists.linux.dev, 
 	syzkaller-bugs@googlegroups.com
@@ -55,68 +55,196 @@ Hello,
 
 syzbot found the following issue on:
 
-HEAD commit:    2f27fce67173 Merge tag 'sound-6.12-rc1' of git://git.kerne..
+HEAD commit:    adfc3ded5c33 Merge tag 'for-6.12/io_uring-discard-20240913..
 git tree:       upstream
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=10da7500580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=5d864366be695947
-dashboard link: https://syzkaller.appspot.com/bug?extid=921873345a95f4dae7e9
+console output: https://syzkaller.appspot.com/x/log.txt?x=102fa8a9980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=71033c66cc4b01c4
+dashboard link: https://syzkaller.appspot.com/bug?extid=e6089e62b4d92c4a7792
 compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12bdbfc7980000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17acc69f980000
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10bd5c07980000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12f2d500580000
 
 Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/c167a07d047b/disk-2f27fce6.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/a68ac6093374/vmlinux-2f27fce6.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/72a53f77d2bc/bzImage-2f27fce6.xz
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7bc7510fe41f/non_bootable_disk-adfc3ded.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/14d8d89edd95/vmlinux-adfc3ded.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/77b35977c15b/bzImage-adfc3ded.xz
 
 IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+921873345a95f4dae7e9@syzkaller.appspotmail.com
+Reported-by: syzbot+e6089e62b4d92c4a7792@syzkaller.appspotmail.com
 
-=====================================================
-BUG: KMSAN: uninit-value in netfs_clear_buffer+0x216/0x4e0 fs/netfs/misc.c:75
- netfs_clear_buffer+0x216/0x4e0 fs/netfs/misc.c:75
- netfs_free_request+0x51f/0x890 fs/netfs/objects.c:146
- netfs_put_request+0x161/0x360 fs/netfs/objects.c:170
- netfs_write_collection_worker+0x7337/0x7c20
- process_one_work kernel/workqueue.c:3231 [inline]
- process_scheduled_works+0xae0/0x1c40 kernel/workqueue.c:3312
- worker_thread+0xea7/0x14f0 kernel/workqueue.c:3393
- kthread+0x3e2/0x540 kernel/kthread.c:389
- ret_from_fork+0x6d/0x90 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+==================================================================
+BUG: KASAN: slab-use-after-free in iov_iter_folioq_advance+0x10c/0x360 lib/iov_iter.c:540
+Read of size 8 at addr ffff88801fd92520 by task syz-executor251/5100
 
-Uninit was created at:
- slab_post_alloc_hook mm/slub.c:3995 [inline]
- slab_alloc_node mm/slub.c:4038 [inline]
- __kmalloc_cache_noprof+0x4f0/0xb00 mm/slub.c:4185
- kmalloc_noprof include/linux/slab.h:690 [inline]
- netfs_buffer_append_folio+0x2cf/0x8b0 fs/netfs/misc.c:25
- netfs_write_folio+0x1120/0x3050 fs/netfs/write_issue.c:421
- netfs_writepages+0xe60/0x1670 fs/netfs/write_issue.c:541
- do_writepages+0x427/0xc30 mm/page-writeback.c:2683
- filemap_fdatawrite_wbc+0x1d8/0x270 mm/filemap.c:397
+CPU: 0 UID: 0 PID: 5100 Comm: syz-executor251 Not tainted 6.11.0-syzkaller-02520-gadfc3ded5c33 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:93 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:119
+ print_address_description mm/kasan/report.c:377 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:488
+ kasan_report+0x143/0x180 mm/kasan/report.c:601
+ iov_iter_folioq_advance+0x10c/0x360 lib/iov_iter.c:540
+ netfs_write_folio+0x154b/0x1fe0 fs/netfs/write_issue.c:481
+ netfs_writepages+0x89f/0xe80 fs/netfs/write_issue.c:541
+ do_writepages+0x35d/0x870 mm/page-writeback.c:2683
+ filemap_fdatawrite_wbc+0x125/0x180 mm/filemap.c:397
  __filemap_fdatawrite_range mm/filemap.c:430 [inline]
  __filemap_fdatawrite mm/filemap.c:436 [inline]
- filemap_fdatawrite+0xbf/0xf0 mm/filemap.c:441
- v9fs_dir_release+0x1f2/0x810 fs/9p/vfs_dir.c:219
- __fput+0x32c/0x1120 fs/file_table.c:431
- ____fput+0x25/0x30 fs/file_table.c:459
- task_work_run+0x268/0x310 kernel/task_work.c:228
+ filemap_fdatawrite+0xfb/0x160 mm/filemap.c:441
+ v9fs_dir_release+0x151/0x560 fs/9p/vfs_dir.c:219
+ __fput+0x23f/0x880 fs/file_table.c:431
+ task_work_run+0x24f/0x310 kernel/task_work.c:228
  exit_task_work include/linux/task_work.h:40 [inline]
- do_exit+0xd88/0x4050 kernel/exit.c:882
- do_group_exit+0x2fe/0x390 kernel/exit.c:1031
+ do_exit+0xa2f/0x27f0 kernel/exit.c:882
+ do_group_exit+0x207/0x2c0 kernel/exit.c:1031
  __do_sys_exit_group kernel/exit.c:1042 [inline]
  __se_sys_exit_group kernel/exit.c:1040 [inline]
- __x64_sys_exit_group+0x3c/0x50 kernel/exit.c:1040
- x64_sys_call+0x3b9a/0x3ba0 arch/x86/include/generated/asm/syscalls_64.h:232
+ __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1040
+ x64_sys_call+0x2634/0x2640 arch/x86/include/generated/asm/syscalls_64.h:232
  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f354c1210c9
+Code: Unable to access opcode bytes at 0x7f354c12109f.
+RSP: 002b:00007ffdcf751d08 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f354c1210c9
+RDX: 000000000000003c RSI: 00000000000000e7 RDI: 0000000000000000
+RBP: 00007f354c19c390 R08: ffffffffffffffb8 R09: 0000000000000006
+R10: 000000007ffff000 R11: 0000000000000246 R12: 00007f354c19c390
+R13: 0000000000000000 R14: 00007f354c19cde0 R15: 00007f354c0f20b0
+ </TASK>
+
+Allocated by task 5100:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
+ poison_kmalloc_redzone mm/kasan/common.c:370 [inline]
+ __kasan_kmalloc+0x98/0xb0 mm/kasan/common.c:387
+ kasan_kmalloc include/linux/kasan.h:211 [inline]
+ __kmalloc_cache_noprof+0x19c/0x2c0 mm/slub.c:4190
+ kmalloc_noprof include/linux/slab.h:690 [inline]
+ netfs_buffer_append_folio+0x1f1/0x8b0 fs/netfs/misc.c:25
+ netfs_write_folio+0xe69/0x1fe0 fs/netfs/write_issue.c:421
+ netfs_writepages+0x89f/0xe80 fs/netfs/write_issue.c:541
+ do_writepages+0x35d/0x870 mm/page-writeback.c:2683
+ filemap_fdatawrite_wbc+0x125/0x180 mm/filemap.c:397
+ __filemap_fdatawrite_range mm/filemap.c:430 [inline]
+ __filemap_fdatawrite mm/filemap.c:436 [inline]
+ filemap_fdatawrite+0xfb/0x160 mm/filemap.c:441
+ v9fs_dir_release+0x151/0x560 fs/9p/vfs_dir.c:219
+ __fput+0x23f/0x880 fs/file_table.c:431
+ task_work_run+0x24f/0x310 kernel/task_work.c:228
+ exit_task_work include/linux/task_work.h:40 [inline]
+ do_exit+0xa2f/0x27f0 kernel/exit.c:882
+ do_group_exit+0x207/0x2c0 kernel/exit.c:1031
+ __do_sys_exit_group kernel/exit.c:1042 [inline]
+ __se_sys_exit_group kernel/exit.c:1040 [inline]
+ __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1040
+ x64_sys_call+0x2634/0x2640 arch/x86/include/generated/asm/syscalls_64.h:232
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
  entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-CPU: 0 UID: 0 PID: 2945 Comm: kworker/u8:9 Not tainted 6.11.0-syzkaller-04557-g2f27fce67173 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/06/2024
-Workqueue: events_unbound netfs_write_collection_worker
-=====================================================
+Freed by task 1030:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
+ kasan_save_free_info+0x40/0x50 mm/kasan/generic.c:579
+ poison_slab_object+0xe0/0x150 mm/kasan/common.c:240
+ __kasan_slab_free+0x37/0x60 mm/kasan/common.c:256
+ kasan_slab_free include/linux/kasan.h:184 [inline]
+ slab_free_hook mm/slub.c:2250 [inline]
+ slab_free mm/slub.c:4474 [inline]
+ kfree+0x149/0x360 mm/slub.c:4595
+ netfs_delete_buffer_head+0x9f/0xd0 fs/netfs/misc.c:59
+ netfs_writeback_unlock_folios fs/netfs/write_collect.c:139 [inline]
+ netfs_collect_write_results fs/netfs/write_collect.c:493 [inline]
+ netfs_write_collection_worker+0x1b9a/0x4950 fs/netfs/write_collect.c:551
+ process_one_work kernel/workqueue.c:3231 [inline]
+ process_scheduled_works+0xa2c/0x1830 kernel/workqueue.c:3312
+ worker_thread+0x870/0xd30 kernel/workqueue.c:3393
+ kthread+0x2f0/0x390 kernel/kthread.c:389
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+
+The buggy address belongs to the object at ffff88801fd92400
+ which belongs to the cache kmalloc-512 of size 512
+The buggy address is located 288 bytes inside of
+ freed 512-byte region [ffff88801fd92400, ffff88801fd92600)
+
+The buggy address belongs to the physical page:
+page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1fd92
+head: order:1 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+flags: 0xfff00000000040(head|node=0|zone=1|lastcpupid=0x7ff)
+page_type: 0xfdffffff(slab)
+raw: 00fff00000000040 ffff88801ac41c80 dead000000000122 0000000000000000
+raw: 0000000000000000 0000000080080008 00000001fdffffff 0000000000000000
+head: 00fff00000000040 ffff88801ac41c80 dead000000000122 0000000000000000
+head: 0000000000000000 0000000080080008 00000001fdffffff 0000000000000000
+head: 00fff00000000001 ffffea00007f6481 ffffffffffffffff 0000000000000000
+head: 0000000000000002 0000000000000000 00000000ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 1, migratetype Unmovable, gfp_mask 0xd2040(__GFP_IO|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 5100, tgid 5100 (syz-executor251), ts 89108296142, free_ts 87555671864
+ set_page_owner include/linux/page_owner.h:32 [inline]
+ post_alloc_hook+0x1f3/0x230 mm/page_alloc.c:1500
+ prep_new_page mm/page_alloc.c:1508 [inline]
+ get_page_from_freelist+0x2e4c/0x2f10 mm/page_alloc.c:3446
+ __alloc_pages_noprof+0x256/0x6c0 mm/page_alloc.c:4702
+ __alloc_pages_node_noprof include/linux/gfp.h:269 [inline]
+ alloc_pages_node_noprof include/linux/gfp.h:296 [inline]
+ alloc_slab_page+0x5f/0x120 mm/slub.c:2319
+ allocate_slab+0x5a/0x2f0 mm/slub.c:2482
+ new_slab mm/slub.c:2535 [inline]
+ ___slab_alloc+0xcd1/0x14b0 mm/slub.c:3721
+ __slab_alloc+0x58/0xa0 mm/slub.c:3811
+ __slab_alloc_node mm/slub.c:3864 [inline]
+ slab_alloc_node mm/slub.c:4026 [inline]
+ __kmalloc_cache_noprof+0x1d5/0x2c0 mm/slub.c:4185
+ kmalloc_noprof include/linux/slab.h:690 [inline]
+ netfs_buffer_append_folio+0x1f1/0x8b0 fs/netfs/misc.c:25
+ netfs_write_folio+0xe69/0x1fe0 fs/netfs/write_issue.c:421
+ netfs_writepages+0x89f/0xe80 fs/netfs/write_issue.c:541
+ do_writepages+0x35d/0x870 mm/page-writeback.c:2683
+ filemap_fdatawrite_wbc+0x125/0x180 mm/filemap.c:397
+ __filemap_fdatawrite_range mm/filemap.c:430 [inline]
+ __filemap_fdatawrite mm/filemap.c:436 [inline]
+ filemap_fdatawrite+0xfb/0x160 mm/filemap.c:441
+ v9fs_dir_release+0x151/0x560 fs/9p/vfs_dir.c:219
+ __fput+0x23f/0x880 fs/file_table.c:431
+page last free pid 5094 tgid 5094 stack trace:
+ reset_page_owner include/linux/page_owner.h:25 [inline]
+ free_pages_prepare mm/page_alloc.c:1101 [inline]
+ free_unref_page+0xd22/0xea0 mm/page_alloc.c:2619
+ skb_free_frag include/linux/skbuff.h:3399 [inline]
+ skb_free_head net/core/skbuff.c:1096 [inline]
+ skb_release_data+0x6dc/0x8a0 net/core/skbuff.c:1125
+ skb_release_all net/core/skbuff.c:1190 [inline]
+ __napi_kfree_skb net/core/skbuff.c:1480 [inline]
+ kfree_skb_napi_cache net/core/skbuff.c:7115 [inline]
+ skb_attempt_defer_free+0x42f/0x5c0 net/core/skbuff.c:7137
+ tcp_eat_recv_skb net/ipv4/tcp.c:1526 [inline]
+ tcp_recvmsg_locked+0x2995/0x3c80 net/ipv4/tcp.c:2805
+ tcp_recvmsg+0x25d/0x920 net/ipv4/tcp.c:2851
+ inet_recvmsg+0x150/0x2d0 net/ipv4/af_inet.c:885
+ sock_recvmsg_nosec net/socket.c:1052 [inline]
+ sock_recvmsg+0x1ae/0x280 net/socket.c:1074
+ sock_read_iter+0x2c4/0x3d0 net/socket.c:1144
+ new_sync_read fs/read_write.c:488 [inline]
+ vfs_read+0x9bb/0xbc0 fs/read_write.c:569
+ ksys_read+0x1a0/0x2c0 fs/read_write.c:712
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Memory state around the buggy address:
+ ffff88801fd92400: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff88801fd92480: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>ffff88801fd92500: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                               ^
+ ffff88801fd92580: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff88801fd92600: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+==================================================================
 
 
 ---
