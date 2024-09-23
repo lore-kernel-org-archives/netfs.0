@@ -1,107 +1,93 @@
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6C684A36
-	for <netfs@lists.linux.dev>; Mon, 23 Sep 2024 22:20:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B27D1448C5
+	for <netfs@lists.linux.dev>; Mon, 23 Sep 2024 22:34:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727130050; cv=none; b=iyZnFdG0E2MNMK8SpbIJi6oU5tm/qQQ/Wn4T/h1fyqI9lKtYHnxHoY1826XaPtmAewSjPVovHr/VWX7DcStarrbTrnUbQ8O7ejUsuQfytdKf0xTba3996VPB3qVpcETOUHTMrMzRGAlxaFoiDDQVTSM8VuzqEwU1T6b3BapR7hY=
+	t=1727130847; cv=none; b=Il/l+W7XIGv7nVEHuErC6B6NWRf7SyW6VWQjsd9axaKtoJ7ERvTEluAKf0ZmZgBD6yxnVYsgurlUvRtp3si2Dd2UJvPgeUnPm85POyWCg5oNgBaGWRCEPTiqZKIKx/6aERTxwJGzICCYWlEY54YaD0DP5L87sjxaCjCqreLouQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727130050; c=relaxed/simple;
-	bh=I39zkW/kbT3Ufd9pmx9Uzp6ZFsPoalu4/LQvA0A1FO0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AMgBij/E1W6SzQ7XilNLC01ywn5ghUpg0S6JozoS2djRaGhHUVfyvzM0k1vEt97XGFkgPZr847juhn0StmHvBauDdHa61r0R36auMSOoqaSXYOaZzL15xZ5viZlRWhGw0d+vTM2n7TUUkf/EoGce4YJCRMYa/EEItCI9Crjzd7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jG1RZlDh; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727130847; c=relaxed/simple;
+	bh=N7+o7khx1jf67s1hBqcR1Ne4Otvu61IbH27PLtV3oCw=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=R46mq/YtoVGpwI5ybB8/jAZ8fOAbjMBJ+GjFNKwd2pJR/ZdgbsrzO7BOeg0C8XLifHtBxj0y028t3imQS1VHxZaYEyfTIe4Is9G0DMkrLS3MUb6+kvsAIOi2CyyzMebr7KID0dDNE1XeYMyjzRxgYeQlr6hwOXHbJw/IbGrUELk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eePA8gnV; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jG1RZlDh"
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-53654dbde59so5461894e87.1
-        for <netfs@lists.linux.dev>; Mon, 23 Sep 2024 15:20:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727130047; x=1727734847; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rNMtJL71ZDx/2MpgXo8xbuzvbC5cBg0WyIL0f1AlPoU=;
-        b=jG1RZlDhqzK9SJHPSDp/eZROhN/V6yR/00P3m4cGS94Vz9BJ6OTisPd7ZPGkZQEmXW
-         Huknotzhv1UUMOSgKGZuy8LXFAnCNAMwtulcNFyOq1EptTGmg7Zfow4p6chjzsUcg9Td
-         x7t1opFyNF9RwTMYHCekCCvk4BNXJNQGTiPSRkyh3RU4aZ6TnAe1CqSF+iWnKnVVvDyG
-         UNfDh9VB5QZT3vswH+l/PTFJp5NeXJ5pFMIFVqr9dcCHiWhfP9Z1vF2QprTAZXdZQnoA
-         zstHPdG9r0K2z4Zglz9d82c5Z+t8O86EYvfqFTdh8Ze6opW8ZtoGB9edtLZQEQC/yTSQ
-         ovew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727130047; x=1727734847;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rNMtJL71ZDx/2MpgXo8xbuzvbC5cBg0WyIL0f1AlPoU=;
-        b=v/XELJl/d4tJypplGCN+D6w47ndK50NMGIGDBOpDLYSg69Ow29eX8bKeLYWYEikbKt
-         l/NX8GILJvWDSeArFx3Ge+V7AG5oAyUGsiDFVU2zcYbxbqxNBMmjziXmBTcbKGdeqKJC
-         /et8gEteuXqc8R9FmvpV2xANk62HekmW6/+oY8mVOT/oInj2fg6RQcc+t8lHaURyFmiU
-         5+c0K2FBF2PF6KoOeZpE13Nonc2wmTcldDj9Muq2gLec5Vbltk5Lm3uSkR0+feH37TLG
-         PCB6q0x1Vem5NRtnpL89qxtTV+xkxKkHxaRI6SH1fopvKYm9X8vPMiO0kGQLCLUowBJ+
-         aTkw==
-X-Forwarded-Encrypted: i=1; AJvYcCXV7xPv7QO24RIMtEy7UnWB4JEVkQVB0zBenOF41tS80sV9+ObADKcVCdew0rZVBTLmqPZKFw==@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywn6O6mrKrnJ9gw7m4YZSoqFJYEowSILJNt/rBXWqjUqjKOOlS4
-	t9s5iAqQSd+zkcr8YOhBEF8pyDUWDGd4hyTpCxKp7/raI0KqQSkM6SWKVD8Td2bKcENxBfCnP7G
-	spNKf/AA17KgKz8xW1GghQsWJetI=
-X-Google-Smtp-Source: AGHT+IFSbGoovaCTItwXPKaGxT+vP85QVsKRZkmCJA5rZZuojl9Rce9M7PI4TZVkGutC62+PVBjxG313v9PS8/TSX14=
-X-Received: by 2002:a05:6512:3510:b0:537:a82c:42ec with SMTP id
- 2adb3069b0e04-537a82c44d1mr81547e87.4.1727130046730; Mon, 23 Sep 2024
- 15:20:46 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eePA8gnV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1727130844;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jTkM6enpKsq/HPP1aWcd0UHOFBRJuXPpDuW+0fAnEgU=;
+	b=eePA8gnVy+KpeSID2jCvQ93ToonI1G/92XpJFo8sviMmcByFNBU8/QP4LByxwkc2JIWZc7
+	9+pR157GGaaL/A575t2qQkg02BiYUKEpBoz3s38Si/QVXV/Oh/5A5aiuDaDE6SmvcguIdB
+	gJAZgWLfnvhkj2c5Zgp6vam1jIozw2s=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-178-vMyy1_3ZP0WVkfaK3Q6znA-1; Mon,
+ 23 Sep 2024 18:34:01 -0400
+X-MC-Unique: vMyy1_3ZP0WVkfaK3Q6znA-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (unknown [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2BEF4190C4DA;
+	Mon, 23 Sep 2024 22:33:58 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.145])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8F15319560AA;
+	Mon, 23 Sep 2024 22:33:51 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <0f6afef57196cb308aa90be5b06a64793aa24682.camel@gmail.com>
+References: <0f6afef57196cb308aa90be5b06a64793aa24682.camel@gmail.com> <20240814203850.2240469-20-dhowells@redhat.com> <20240923183432.1876750-1-chantr4@gmail.com> <670794146059f85a30efd7cf9d6650375d987077.camel@gmail.com>
+To: Eduard Zingerman <eddyz87@gmail.com>
+Cc: dhowells@redhat.com, Manu Bretelle <chantr4@gmail.com>,
+    asmadeus@codewreck.org, ceph-devel@vger.kernel.org,
+    christian@brauner.io, ericvh@kernel.org, hsiangkao@linux.alibaba.com,
+    idryomov@gmail.com, jlayton@kernel.org,
+    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+    linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+    linux-nfs@vger.kernel.org, marc.dionne@auristor.com,
+    netdev@vger.kernel.org, netfs@lists.linux.dev, pc@manguebit.com,
+    smfrench@gmail.com, sprasad@microsoft.com, tom@talpey.com,
+    v9fs@lists.linux.dev, willy@infradead.org
+Subject: Re: [PATCH v2 19/25] netfs: Speed up buffered reading
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <2390624.1726687464@warthog.procyon.org.uk> <31d3465bbb306b7390dd7be15e174671@manguebit.com>
-In-Reply-To: <31d3465bbb306b7390dd7be15e174671@manguebit.com>
-From: Steve French <smfrench@gmail.com>
-Date: Mon, 23 Sep 2024 17:20:35 -0500
-Message-ID: <CAH2r5muENv0sQ0+Q6xtDA-ThVu8B1W9=3-Yy0nOhX3onVVUXFA@mail.gmail.com>
-Subject: Re: [PATCH] cifs: Make the write_{enter,done,err} tracepoints display
- netfs info
-To: Paulo Alcantara <pc@manguebit.com>
-Cc: David Howells <dhowells@redhat.com>, Steve French <stfrench@microsoft.com>, 
-	Jeff Layton <jlayton@kernel.org>, linux-cifs@vger.kernel.org, netfs@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <961633.1727130830.1@warthog.procyon.org.uk>
+Date: Mon, 23 Sep 2024 23:33:50 +0100
+Message-ID: <961634.1727130830@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-added to cifs-2.6.git for-next since it is important as it fixes a
-regression affecting cifs.ko
+Eduard Zingerman <eddyz87@gmail.com> wrote:
 
-On Thu, Sep 19, 2024 at 11:01=E2=80=AFAM Paulo Alcantara <pc@manguebit.com>=
- wrote:
->
-> David Howells <dhowells@redhat.com> writes:
->
-> > Make the write RPC tracepoints use the same trace macro complexes as th=
-e
-> > read tracepoints and display the netfs request and subrequest IDs where
-> > available (see commit 519be989717c "cifs: Add a tracepoint to track cre=
-dits
-> > involved in R/W requests").
-> >
-> > Signed-off-by: David Howells <dhowells@redhat.com>
-> > cc: Steve French <stfrench@microsoft.com>
-> > cc: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-> > cc: Jeff Layton <jlayton@kernel.org>
-> > cc: linux-cifs@vger.kernel.org
-> > cc: netfs@lists.linux.dev
-> > cc: linux-fsdevel@vger.kernel.org
-> > ---
-> >  fs/smb/client/smb2pdu.c |   22 +++++++++++++++-------
-> >  fs/smb/client/trace.h   |    6 +++---
-> >  2 files changed, 18 insertions(+), 10 deletions(-)
->
-> Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
->
+> - null-ptr-deref is triggered by access to page->pcp_list.next
+>   when list_del() is called from page_alloc.c:__rmqueue_pcplist(),
 
+Can you tell me what the upstream commit ID of your kernel is?  (before any
+patches are stacked on it)
 
---=20
-Thanks,
+If you can modify your kernel, can you find the following in fs/netfs/:
 
-Steve
+buffered_read.c:127:			new = kmalloc(sizeof(*new), GFP_NOFS);
+buffered_read.c:353:	folioq = kmalloc(sizeof(*folioq), GFP_KERNEL);
+buffered_read.c:458:	folioq = kmalloc(sizeof(*folioq), GFP_KERNEL);
+misc.c:25:		tail = kmalloc(sizeof(*tail), GFP_NOFS);
+
+and change the kmalloc to kzalloc?
+
+David
+
