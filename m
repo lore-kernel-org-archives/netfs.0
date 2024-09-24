@@ -1,59 +1,60 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E2DC17557
-	for <netfs@lists.linux.dev>; Tue, 24 Sep 2024 21:40:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A5713CF8E
+	for <netfs@lists.linux.dev>; Tue, 24 Sep 2024 21:47:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727214020; cv=none; b=FkFfBdjYI4M1AToN7yM6KRvg71bzhCC7JSAPkATaq7i9qeJonC0dmVMib75J7Xo95RUEDB22X0cqavLmCnyNdW9w99ePEs9auigMIIuagfPm2H4NCMyJQ2zMeBh4gglBYq5B5HeREKqLn0zmgSXFmlKE+r3z60gtUOPg103QA0g=
+	t=1727214461; cv=none; b=ivxDy1a7RjRXwQKSYAoqMfZr4PNZ6RsHdgstZ8/Bn9/0QDU8FPet4DVXOptezzAPbqhqpRLccPuojvrvOGxMCFK6f83AhpTwI6OkWuFF6XpH/ajljkWoH2yskvI9kGqubp5mcHbogWJqMgKDizsZJdlTBOQnftOLZyM7xWjG2U0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727214020; c=relaxed/simple;
-	bh=NOCzssKF1ltxpw8jzkk2cHKivIBjlFOK0IasGaWzmUw=;
+	s=arc-20240116; t=1727214461; c=relaxed/simple;
+	bh=RzMDat2jCUdEYF2DnfDsVKXmkT7BoJN9XmL0G4Tsvj8=;
 	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=FhVSdmZHLFmH91Hrl7h6nr4v7zSFtwbb5QS9aXqirNSECfjtEB8eR9PF6cAWS3uCcYTz/Li3pN8pgYGtGr1G+mdBW/oLZ/kdrcb3+lQ2qIHr4WVuvLWULRqzGz3TOrQt1fz4bqrmZmh3C9b73v4HP24piw0B09KGtkWPRKmscRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LBq39K0u; arc=none smtp.client-ip=170.10.133.124
+	 Content-Type:Date:Message-ID; b=pK9sEa9rzIC5PkPmpjWRMLgH2aqP++nVMknpxuKcBynbcjXwtq07gN6lVWj3gzejN4SocVslufMkxzmAtAh5CBEGtGvzArKHu0W2c/pThREEngqT7qEWNw2uUIEW8K+6fcaFqIF00RQv9BG+/KfNcVz6MyCHyDsW698Si2TIz2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KpJ3O+F7; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LBq39K0u"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KpJ3O+F7"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1727214016;
+	s=mimecast20190719; t=1727214459;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sDHykGRLveHtmjkJOROB9PdK3BCI4esypIvCqt4ILLo=;
-	b=LBq39K0uFp68EaJdhGOvB3W/R00bcya6Xqq3i+a4W1AGvmjWCFKS0QfzLZofmShWp3VnDs
-	W7zhnAwCwDBRsoGJLuE7vyKNWy29qiL12b5m4sQIs7FWtjGhT+9Si/eGuB2mk5KIeQdMDm
-	genWkmeLp93pLirC4fCVHqJ8VN35SlQ=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+	bh=jUJ0vrx87M3w3+0vUJFMFBHdvfV1NNHDLDEL89XUivk=;
+	b=KpJ3O+F7CSMaWrChY8EdMr9+1oUUMFfFDEazK7kh0nh+2vJ2hrJ+Af8N9apQoup+9mu9Kt
+	DUuJ4vhRXz1Dk36+GFfqciYQlWUZUb4fqrZTqyBVjACWQRHIMSwSUarrj2oa5q2Q2zUYZw
+	7MeES0SxWl64o8abWVFO4OZyLrxghHw=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-586-fAWq3_5DNxer3aWWs1T-EQ-1; Tue,
- 24 Sep 2024 17:40:12 -0400
-X-MC-Unique: fAWq3_5DNxer3aWWs1T-EQ-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (unknown [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-689-a7Sys6XcOP6TOETi1aI9Qg-1; Tue,
+ 24 Sep 2024 17:47:35 -0400
+X-MC-Unique: a7Sys6XcOP6TOETi1aI9Qg-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown [10.30.177.15])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 19B4B1945114;
-	Tue, 24 Sep 2024 21:40:11 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 78D3A18B651B;
+	Tue, 24 Sep 2024 21:47:34 +0000 (UTC)
 Received: from warthog.procyon.org.uk (unknown [10.42.28.145])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C84E319560AA;
-	Tue, 24 Sep 2024 21:40:08 +0000 (UTC)
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 14CCA1956088;
+	Tue, 24 Sep 2024 21:47:31 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
 	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
 	Kingdom.
 	Registered in England and Wales under Company Registration No. 3798903
 From: David Howells <dhowells@redhat.com>
-In-Reply-To: <202409180928.f20b5a08-oliver.sang@intel.com>
-References: <202409180928.f20b5a08-oliver.sang@intel.com>
+In-Reply-To: <202409131438.3f225fbf-oliver.sang@intel.com>
+References: <202409131438.3f225fbf-oliver.sang@intel.com>
 To: kernel test robot <oliver.sang@intel.com>
 Cc: dhowells@redhat.com, oe-lkp@lists.linux.dev, lkp@intel.com,
-    linux-kernel@vger.kernel.org, Christian Brauner <brauner@kernel.org>,
+    Linux Memory Management List <linux-mm@kvack.org>,
+    Christian Brauner <brauner@kernel.org>,
     Jeff Layton <jlayton@kernel.org>, netfs@lists.linux.dev,
     linux-fsdevel@vger.kernel.org
-Subject: Re: [linus:master] [netfs] cd0277ed0c: BUG:KASAN:slab-use-after-free_in_copy_from_iter
+Subject: Re: [linux-next:master] [netfs] a05b682d49: BUG:KASAN:slab-use-after-free_in_copy_from_iter
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -61,17 +62,14 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1191670.1727214007.1@warthog.procyon.org.uk>
+Content-ID: <1191932.1727214450.1@warthog.procyon.org.uk>
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 24 Sep 2024 22:40:07 +0100
-Message-ID: <1191671.1727214007@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Date: Tue, 24 Sep 2024 22:47:30 +0100
+Message-ID: <1191933.1727214450@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
-Hi Oliver,
+Does the attached fix the problem?
 
-Can you try the attached?
-
-Thanks,
 David
 ---
 netfs: Fix write oops in generic/346 (9p) and maybe generic/074 (cifs)
