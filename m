@@ -1,132 +1,83 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5EB1D86D8;
-	Wed, 25 Sep 2024 12:01:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD04719F10D
+	for <netfs@lists.linux.dev>; Wed, 25 Sep 2024 12:47:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265686; cv=none; b=MkEjgAxDV86PHjXxMv4WcnGniTkXp7tJARmInG+mJKLgE14RBLij7gm33udgk0LGe75TVbTCHsP97tTTNAUfoeLxeao2KT4XVxNMKHb9gVWWP4PZ11uAMf1EItldKEITN6+cv4mpBmJejxIeVlM/BmAXhRM8t1RZkmNKTsO0G/4=
+	t=1727268450; cv=none; b=qSUNnhAdQX9Dxbdzgo7xMoLM7WqU4bSR8TD29d1203ET4EZOWfAjDI9jUcKXNYmWSVIkHx5CuLvDnADfaUBTaWrZzDfv6gDnlLhTpsTRPHEuzTo1grvNtKQ83u6//ebOGgn17JjgsCo4tp6s0lk9lPFZiKSrb4VKSYgZr5YeIgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265686; c=relaxed/simple;
-	bh=siFgHDU3+DIfq5cAByMJnmPETN9KVVCUrvCYwmjKU9s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BMO6yWsvmBzwtQk71NpQwS5fMSsDDvb+AHWxIGcvuoq/ls9yG9oD1TdbZ/kB0p2J8Ln53t7F5/euT7w9YFAHLMpejCvo6O/lu+sIaYc/Q/W9v7JkTjUSLdM9Azz/1ZH3MPKh8uCk+f8QzencyNG3+CHJWvB8p3QGqUERfJCbJek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cjAs29vZ; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cjAs29vZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E49C4CEC7;
-	Wed, 25 Sep 2024 12:01:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265686;
-	bh=siFgHDU3+DIfq5cAByMJnmPETN9KVVCUrvCYwmjKU9s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cjAs29vZE6mNBj00nqpNSSlO6+whgvx0r+t6lRpCGZDthNJ0No9GPjIlOK/mwqWEm
-	 LdQx4G7vS4Vs8YrjjbHnY/nxoEZzR9EHgyvRp2exj4Mt/34YmkEA9IPut8e9VfAvK4
-	 b2vXDrIvC70MLkLhfLnn4m8v9XIHINOUqmpbC24ySzbxvm+hOq4n3g19p01g4BAAeE
-	 xTo0vSD7sc/zRMLRdZsEI4BJOAnZ+RtU9+y4Q5G/atwLcIF8FhuVG9aUZUFMRhhrQl
-	 HRn4IoDNJEHFKM+o5X8dA21aLgoSyZHcy6znHPEJgF53NAmt9iyT0I3HEKT5zzv/SY
-	 /u7F+1St/2rSQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	rostedt@goodmis.org,
-	mhiramat@kernel.org,
-	linux-trace-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 071/197] netfs: Cancel dirty folios that have no storage destination
-Date: Wed, 25 Sep 2024 07:51:30 -0400
-Message-ID: <20240925115823.1303019-71-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
-References: <20240925115823.1303019-1-sashal@kernel.org>
+	s=arc-20240116; t=1727268450; c=relaxed/simple;
+	bh=NCzsW4E2ZZ2FzA20ISpl6xFoETKKdSaYRdl/64ktIa4=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=aiv3gtvVrTtLRQThosYHl+/XcMl1b/fPbc9UxOQUqjE4D9aeI5esctDl/elcywO+wgWexX0UIfeeljkLySaD7UuzFNINZ4s2P8pMuQ7ohgprG/FuUzdqV3SdcU7hqOVVSwQIBE1xaHtfGHw4+Kim3Ub93M+bxblGdRftjYUEqF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-82ce2629e40so587227239f.2
+        for <netfs@lists.linux.dev>; Wed, 25 Sep 2024 05:47:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727268448; x=1727873248;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=cbe2GuJNvu3f+dUwcul28DEfPY70yqUucRe+UoOSEdk=;
+        b=mW1ZaZzo1XDcVogF3ARwutZjm6UB/gxmyXp/AOhLDPMUxHnnXUA4BVr+ZXSDQDYrlh
+         Q98Imq+DN2vftiFFVB8jCXq4UkCkjlKCyI4JPTvuW7euchUhzvMn6QOYH4XklGzHpIxz
+         sIzWbSYPgI0dAoXjZa8mqWF60Lce03QuIKbMXlb5feyArwqibH3fPoiu0S2VXa609m5b
+         8i1i1bUhiqPqefA+00NgXIqtDIafVjNbmTI7OVjQMSiah40bxfjf6I1fSUcZrdpishI6
+         eWsP3h7Bw4fDLJYDH7u1w0yOWOmOfVwebYDpyIo7O1P78KogwgpkLCLMxGNuiv5xDpKG
+         EyIg==
+X-Forwarded-Encrypted: i=1; AJvYcCVfz4zNF2877fao2SFPgSd53E6+hj2dc3lDUPvSKdQA8hWYAjstCeK4/+J/76SwGyFR7Qi3JQ==@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyq9DXQim50uLqxYhSyGw1QhK6CPkOqiCzQbA3BU09raC3MH3o2
+	l5lumujgkBFqtUopOq+Y//wWqPwkipalX2Ejul/WjK8f+RbBFZWsZaxFtbhLJ37CCT5KEKzkETN
+	bYxyOhJOGt2DbtFjX+Aa6XBCVKw18j5vMrBuhSmDAUU5IzfqrbnntJYk=
+X-Google-Smtp-Source: AGHT+IGdu7jW53gAtty/Z8NYGmjy8KYYIM6G1e9GE6nxm3CZKmYKiP6EgzQqN3JbkSSMi6X1O4s5yrtQ+d4EB/sGl5OX5h7p1fnO
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.10.11
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6e02:1564:b0:3a0:c820:c5f0 with SMTP id
+ e9e14a558f8ab-3a26d7f11admr28720545ab.24.1727268447974; Wed, 25 Sep 2024
+ 05:47:27 -0700 (PDT)
+Date: Wed, 25 Sep 2024 05:47:27 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <66f4065f.050a0220.211276.002b.GAE@google.com>
+Subject: [syzbot] Monthly netfs report (Sep 2024)
+From: syzbot <syzbot+list6282f492642ca904f394@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, netfs@lists.linux.dev, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-From: David Howells <dhowells@redhat.com>
+Hello netfs maintainers/developers,
 
-[ Upstream commit 8f246b7c0a1be0882374f2ff831a61f0dbe77678 ]
+This is a 31-day syzbot report for the netfs subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/netfs
 
-Kafs wants to be able to cache the contents of directories (and symlinks),
-but whilst these are downloaded from the server with the FS.FetchData RPC
-op and similar, the same as for regular files, they can't be updated by
-FS.StoreData, but rather have special operations (FS.MakeDir, etc.).
+During the period, 5 new issues were detected and 0 were fixed.
+In total, 6 issues are still open.
 
-Now, rather than redownloading a directory's content after each change made
-to that directory, kafs modifies the local blob.  This blob can be saved
-out to the cache, and since it's using netfslib, kafs just marks the folios
-dirty and lets ->writepages() on the directory take care of it, as for an
-regular file.
+Some of the still happening issues:
 
-This is fine as long as there's a cache as although the upload stream is
-disabled, there's a cache stream to drive the procedure.  But if the cache
-goes away in the meantime, suddenly there's no way do any writes and the
-code gets confused, complains "R=%x: No submit" to dmesg and leaves the
-dirty folio hanging.
+Ref Crashes Repro Title
+<1> 11      Yes   KASAN: slab-use-after-free Read in iov_iter_folioq_advance
+                  https://syzkaller.appspot.com/bug?extid=e6089e62b4d92c4a7792
+<2> 12      No    possible deadlock in lock_mm_and_find_vma (2)
+                  https://syzkaller.appspot.com/bug?extid=b02bbe0ff80a09a08c1b
+<3> 4       Yes   KASAN: slab-use-after-free Read in iov_iter_revert
+                  https://syzkaller.appspot.com/bug?extid=2625ce08c2659fb9961a
 
-Fix this by just cancelling the store of the folio if neither stream is
-active.  (If there's no cache at the time of dirtying, we should just not
-mark the folio dirty).
-
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Link: https://lore.kernel.org/r/20240814203850.2240469-23-dhowells@redhat.com/ # v2
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/write_issue.c       | 6 +++++-
- include/trace/events/netfs.h | 1 +
- 2 files changed, 6 insertions(+), 1 deletion(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index 32bc88bee5d18..3c7eb43a2ec69 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -408,13 +408,17 @@ static int netfs_write_folio(struct netfs_io_request *wreq,
- 	folio_unlock(folio);
- 
- 	if (fgroup == NETFS_FOLIO_COPY_TO_CACHE) {
--		if (!fscache_resources_valid(&wreq->cache_resources)) {
-+		if (!cache->avail) {
- 			trace_netfs_folio(folio, netfs_folio_trace_cancel_copy);
- 			netfs_issue_write(wreq, upload);
- 			netfs_folio_written_back(folio);
- 			return 0;
- 		}
- 		trace_netfs_folio(folio, netfs_folio_trace_store_copy);
-+	} else if (!upload->avail && !cache->avail) {
-+		trace_netfs_folio(folio, netfs_folio_trace_cancel_store);
-+		netfs_folio_written_back(folio);
-+		return 0;
- 	} else if (!upload->construct) {
- 		trace_netfs_folio(folio, netfs_folio_trace_store);
- 	} else {
-diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
-index 24ec3434d32ee..102696abe8c9e 100644
---- a/include/trace/events/netfs.h
-+++ b/include/trace/events/netfs.h
-@@ -140,6 +140,7 @@
- 	EM(netfs_streaming_cont_filled_page,	"mod-streamw-f+") \
- 	/* The rest are for writeback */			\
- 	EM(netfs_folio_trace_cancel_copy,	"cancel-copy")	\
-+	EM(netfs_folio_trace_cancel_store,	"cancel-store")	\
- 	EM(netfs_folio_trace_clear,		"clear")	\
- 	EM(netfs_folio_trace_clear_cc,		"clear-cc")	\
- 	EM(netfs_folio_trace_clear_g,		"clear-g")	\
--- 
-2.43.0
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
