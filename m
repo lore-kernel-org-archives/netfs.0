@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C411AED4D;
-	Wed, 25 Sep 2024 11:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5EB1D86D8;
+	Wed, 25 Sep 2024 12:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727264415; cv=none; b=af5YQ90PGUohIa0FaAzeypOWm/v9jp6THo7F+a+d7iHKOJCJRcdb1v6IgbMTJM1pkrH1C5OuLDmzxWPhj2hB46jUIoexzMKb2Me0AtQBhDc8rh12hgpUg7UqDe+Te5C8TsMq4Ga7B0DXrRzjd0VkvxdcdU8kpDRrpFnC2sqAIek=
+	t=1727265686; cv=none; b=MkEjgAxDV86PHjXxMv4WcnGniTkXp7tJARmInG+mJKLgE14RBLij7gm33udgk0LGe75TVbTCHsP97tTTNAUfoeLxeao2KT4XVxNMKHb9gVWWP4PZ11uAMf1EItldKEITN6+cv4mpBmJejxIeVlM/BmAXhRM8t1RZkmNKTsO0G/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727264415; c=relaxed/simple;
-	bh=29/0Evw/Ct649xv2s42Fn0NvJ7869yMChaP7sa3u7PI=;
+	s=arc-20240116; t=1727265686; c=relaxed/simple;
+	bh=siFgHDU3+DIfq5cAByMJnmPETN9KVVCUrvCYwmjKU9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uy+hrO6Oms2xgFoa3Njq16UKRRlqHtyCBUBdiX7BC7o67vetJ8RogG6PkdH9+IuUhbjHsdWQiE97YdXk0ZC/3gGSW0D6UbIP+KpWMeCOIZ0+M5W2PNYR50NFcwLgwSQLYCLfZC2xq9dtzrKsLZCZMRQXNioSlTMZLadiwnMqo7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ulNxVt6B; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=BMO6yWsvmBzwtQk71NpQwS5fMSsDDvb+AHWxIGcvuoq/ls9yG9oD1TdbZ/kB0p2J8Ln53t7F5/euT7w9YFAHLMpejCvo6O/lu+sIaYc/Q/W9v7JkTjUSLdM9Azz/1ZH3MPKh8uCk+f8QzencyNG3+CHJWvB8p3QGqUERfJCbJek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cjAs29vZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ulNxVt6B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 954FAC4CECD;
-	Wed, 25 Sep 2024 11:40:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cjAs29vZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E49C4CEC7;
+	Wed, 25 Sep 2024 12:01:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727264415;
-	bh=29/0Evw/Ct649xv2s42Fn0NvJ7869yMChaP7sa3u7PI=;
+	s=k20201202; t=1727265686;
+	bh=siFgHDU3+DIfq5cAByMJnmPETN9KVVCUrvCYwmjKU9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ulNxVt6BohzdJYEbAIPZCxGx+WQ1mWpnPqGyE5CAU/zYIyIski/MU/Vc1YLG25ixj
-	 C1tlE8QHkHd4YExzsFZPe7u0jP8zYjCjBdjHLD6jMt9CCNLm8jLI1WoR4KkRxYAwZM
-	 x+UEejPfhGROULYlLyUDu23GAzetRVA+MAKs93p06nCEyjNf5YgZV1cGfS31dfeIDM
-	 0HJ2S+csUIsfJEIwSou4KHNz1Q9fO7guXEwhlSHhJBOL70FTg/KoY5dl9ytBdTUyyf
-	 4fkSjuQw2IwjZc/1sG/MCEDt3oaOV/DW057gSRPN1So4htEor9oMXw1KnChROlrLke
-	 lEZ+AFOW2ThGw==
+	b=cjAs29vZE6mNBj00nqpNSSlO6+whgvx0r+t6lRpCGZDthNJ0No9GPjIlOK/mwqWEm
+	 LdQx4G7vS4Vs8YrjjbHnY/nxoEZzR9EHgyvRp2exj4Mt/34YmkEA9IPut8e9VfAvK4
+	 b2vXDrIvC70MLkLhfLnn4m8v9XIHINOUqmpbC24ySzbxvm+hOq4n3g19p01g4BAAeE
+	 xTo0vSD7sc/zRMLRdZsEI4BJOAnZ+RtU9+y4Q5G/atwLcIF8FhuVG9aUZUFMRhhrQl
+	 HRn4IoDNJEHFKM+o5X8dA21aLgoSyZHcy6znHPEJgF53NAmt9iyT0I3HEKT5zzv/SY
+	 /u7F+1St/2rSQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -38,12 +38,12 @@ Cc: David Howells <dhowells@redhat.com>,
 	rostedt@goodmis.org,
 	mhiramat@kernel.org,
 	linux-trace-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 086/244] netfs: Cancel dirty folios that have no storage destination
-Date: Wed, 25 Sep 2024 07:25:07 -0400
-Message-ID: <20240925113641.1297102-86-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 071/197] netfs: Cancel dirty folios that have no storage destination
+Date: Wed, 25 Sep 2024 07:51:30 -0400
+Message-ID: <20240925115823.1303019-71-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
-References: <20240925113641.1297102-1-sashal@kernel.org>
+In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
+References: <20240925115823.1303019-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -52,7 +52,7 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.11
+X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
 From: David Howells <dhowells@redhat.com>
@@ -93,10 +93,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index 3f7e37e50c7d0..3ae287bb19a0a 100644
+index 32bc88bee5d18..3c7eb43a2ec69 100644
 --- a/fs/netfs/write_issue.c
 +++ b/fs/netfs/write_issue.c
-@@ -410,13 +410,17 @@ static int netfs_write_folio(struct netfs_io_request *wreq,
+@@ -408,13 +408,17 @@ static int netfs_write_folio(struct netfs_io_request *wreq,
  	folio_unlock(folio);
  
  	if (fgroup == NETFS_FOLIO_COPY_TO_CACHE) {
@@ -116,10 +116,10 @@ index 3f7e37e50c7d0..3ae287bb19a0a 100644
  		trace_netfs_folio(folio, netfs_folio_trace_store);
  	} else {
 diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
-index 606b4a0f92dae..edcc3b3a3ecf8 100644
+index 24ec3434d32ee..102696abe8c9e 100644
 --- a/include/trace/events/netfs.h
 +++ b/include/trace/events/netfs.h
-@@ -141,6 +141,7 @@
+@@ -140,6 +140,7 @@
  	EM(netfs_streaming_cont_filled_page,	"mod-streamw-f+") \
  	/* The rest are for writeback */			\
  	EM(netfs_folio_trace_cancel_copy,	"cancel-copy")	\
