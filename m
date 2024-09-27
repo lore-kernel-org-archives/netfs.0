@@ -1,337 +1,93 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6105FEED
-	for <netfs@lists.linux.dev>; Thu, 26 Sep 2024 13:58:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A4F188CB7;
+	Fri, 27 Sep 2024 08:06:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727359129; cv=none; b=SFxJBPlc+T+gGovMeREp7kjmlllBy64Lgx3lGDcnCVTBEfRdiVr1EqNDU8eY+u3x353OhYJC9IFKYgZpIHLZi4wA7AVF7iwGuEtGyVxhGPHLD8F5at+AvVNQ2VydvpkFQ81cI4i/0w5vSjPHNlSd2weWUHGdQnjTN3ZIS0WGfyU=
+	t=1727424365; cv=none; b=qPCl7zYfDTxdMNqYt5TiXbxOnhNiU1leP+L5ANK9L0RnhVhpFIgZMM+0aBnuzO4KndZ4baX+B5d4Blz3agLsNofS6ywPaI8j10TSVtG7FZJlGSdE0ES3mE8c6yfqD3kAxYT3SxTa1xCxcxp7qJwDsFfZzy1NPxavpu4BQMnGxlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727359129; c=relaxed/simple;
-	bh=BmKsy447qfTZkmqED2io7CsW2wGm9JTCUegBiGXCQQs=;
-	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=umWz63K9GF9JB/h/MhZJSmchcPPCJN33ZGEOB4Ncib9Rb1eIpj/KJdVExgha+2aYhi16W6NHZDzosi/HkV1tzc8QI9PDq1RVCR0H27awdPw1WP4UwHEkPDRQOPtn3oPBMfVLdygLUaDSnxQeAfrf+hIIVqcG5ZfNmmeSoMjS+qQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=I2Z/z6c1; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1727424365; c=relaxed/simple;
+	bh=KjsjOpufVwVtvtG9C4bCus2/XmKmDXOmFJWmSRq/BY0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sVECCzO6ZT6P5v8TGkhZAg9Lv4sJKFjSsN6wTrxv98//XX39N3/DR6pvlNvDxzDea0KVrkjtrDZM+qDlf9hw0F1HXCXjOWVh2JfEVbu6YNLZJjEf5KmUNs93NwGgLiy+pzb2+v1gzNm9x9eBcUIEJrgsQpfkJ1fcJ0RObzps/iM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HaAIXMic; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="I2Z/z6c1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1727359126;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=o7/kil+xjw4maLZPNLuJn91aeQutoUItV4ovgkzR5wM=;
-	b=I2Z/z6c1UQxlHPrDCMWxGNnUiSfaK1GLbo+5vD2u3BMvCZbFo1GrV2iJleaU8Hijua//PQ
-	mgKDe8hCin5GmJJDD7Bwyz62Dfn363zfEZUqZt0hxsGbrbP8wp6Uqi4NhuY4lAQAFCalM9
-	R2GtvntB1hwgWWRI1hxFnA2Q251hjnY=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-449-b2RVQBzENZSsUBJUc6OyOg-1; Thu,
- 26 Sep 2024 09:58:44 -0400
-X-MC-Unique: b2RVQBzENZSsUBJUc6OyOg-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (unknown [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 729CF18F379E;
-	Thu, 26 Sep 2024 13:58:39 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.145])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4CAD518B9061;
-	Thu, 26 Sep 2024 13:58:31 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-To: Steve French <smfrench@gmail.com>
-cc: dhowells@redhat.com, Steve French <sfrench@samba.org>,
-    Christian Brauner <brauner@kernel.org>,
-    kernel test robot <oliver.sang@intel.com>,
-    Eric Van Hensbergen <ericvh@kernel.org>,
-    Latchesar Ionkov <lucho@ionkov.net>,
-    Dominique Martinet <asmadeus@codewreck.org>,
-    Christian Schoenebeck <linux_oss@crudebyte.com>,
-    Paulo Alcantara <pc@manguebit.com>, Jeff Layton <jlayton@kernel.org>,
-    v9fs@lists.linux.dev, linux-cifs@vger.kernel.org,
-    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Subject: [PATCH v2] netfs: Fix write oops in generic/346 (9p) and generic/074 (cifs)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HaAIXMic"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8945C4CEC4;
+	Fri, 27 Sep 2024 08:06:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727424364;
+	bh=KjsjOpufVwVtvtG9C4bCus2/XmKmDXOmFJWmSRq/BY0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=HaAIXMict1VrTe7i8TwVZ5W3EQ/WTegi8/OHOEkwPr173UnrLezn4mPejbmDGj2Va
+	 JzClZWAAEFXfx5vFVFkjx+3Bkn30tc+SssdrENLR5FslHOsVouXCdLzMO+adoH9tnc
+	 zkXNylEWRwKw5LUIOdH0peE5GHb2oq7StB/T/R1ZqX2rjLg3gyt73TQdT9CGlK1e1y
+	 +0R1PmoplUYpYy45bYv/DHBqbVebHLvqJ+Zj3yrLJO2EGsPMgBdMR6uK6DZ+/mXWG2
+	 BnuUyJDVL64zGvygjtGlvBwmLB3O/DZn15DHVuse1YXw/gPPN/DLf8Erpw19GuMUJ6
+	 BIWbB7FwYdy7Q==
+From: Christian Brauner <brauner@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Markus Suvanto <markus.suvanto@gmail.com>,
+	Steve French <sfrench@samba.org>,
+	Marc Dionne <marc.dionne@auristor.com>
+Subject: Re: (subset) [PATCH 5/8] afs: Fix possible infinite loop with unresponsive servers
+Date: Fri, 27 Sep 2024 10:05:44 +0200
+Message-ID: <20240927-raunt-gekrochen-aa4fd2c2e59b@brauner>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240923150756.902363-6-dhowells@redhat.com>
+References: <20240923150756.902363-1-dhowells@redhat.com> <20240923150756.902363-6-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2050098.1727359110.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 26 Sep 2024 14:58:30 +0100
-Message-ID: <2050099.1727359110@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1319; i=brauner@kernel.org; h=from:subject:message-id; bh=KjsjOpufVwVtvtG9C4bCus2/XmKmDXOmFJWmSRq/BY0=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaR9S0+55/AnN86X/6qh8Jnw2/fN3txs/vdb88Csxor51 h0HFWpKOkpZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACbCv4SR4f4hM23PS4ZOM4SW /uIJzdp91vHK3XmrQzc7J2s8lPYT0GT4Z2t0NERa9/mHUpZlb9KM7mza0TV9pafR+8KMuYvUDR4 GMAEA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-In netfslib, a buffered writeback operation has a 'write queue' of folios
-that are being written, held in a linear sequence of folio_queue structs.
-The 'issuer' adds new folio_queues on the leading edge of the queue and
-populates each one progressively; the 'collector' pops them off the
-trailing edge and discards them and the folios they point to as they are
-consumed.
+On Mon, 23 Sep 2024 16:07:49 +0100, David Howells wrote:
+> A return code of 0 from afs_wait_for_one_fs_probe is an indication
+> that the endpoint state attached to the operation is stale and has
+> been superseded.  In that case the iteration needs to be restarted
+> so that the newer probe result state gets used.
+> 
+> Failure to do so can result in an tight infinite loop around the
+> iterate_address label, where all addresses are thought to be responsive
+> and have been tried, with nothing to refresh the endpoint state.
+> 
+> [...]
 
-The queue is required to always retain at least one folio_queue structure.
-This allows the queue to be accessed without locking and with just a bit o=
-f
-barriering.
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-When a new subrequest is prepared, its ->io_iter iterator is pointed at th=
-e
-current end of the write queue and then the iterator is extended as more
-data is added to the queue until the subrequest is committed.
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-Now, the problem is that the folio_queue at the leading edge of the write
-queue when a subrequest is prepared might have been entirely consumed - bu=
-t
-not yet removed from the queue as it is the only remaining one and is
-preventing the queue from collapsing.
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-So, what happens is that subreq->io_iter is pointed at the spent
-folio_queue, then a new folio_queue is added, and, at that point, the
-collector is at entirely at liberty to immediately delete the spent
-folio_queue.
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
-This leaves the subreq->io_iter pointing at a freed object.  If the system
-is lucky, iterate_folioq() sees ->io_iter, sees the as-yet uncorrupted
-freed object and advances to the next folio_queue in the queue.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
 
-In the case seen, however, the freed object gets recycled and put back ont=
-o
-the queue at the tail and filled to the end.  This confuses
-iterate_folioq() and it tries to step ->next, which may be NULL - resultin=
-g
-in an oops.
-
-Fix this by the following means:
-
- (1) When preparing a write subrequest, make sure there's a folio_queue
-     struct with space in it at the leading edge of the queue.  A function
-     to make space is split out of the function to append a folio so that
-     it can be called for this purpose.
-
- (2) If the request struct iterator is pointing to a completely spent
-     folio_queue when we make space, then advance the iterator to the newl=
-y
-     allocated folio_queue.  The subrequest's iterator will then be set
-     from this.
-
-The oops could be triggered using the generic/346 xfstest with a filesyste=
-m
-on9P over TCP with cache=3Dloose.  The oops looked something like:
-
- BUG: kernel NULL pointer dereference, address: 0000000000000008
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- ...
- RIP: 0010:_copy_from_iter+0x2db/0x530
- ...
- Call Trace:
-  <TASK>
- ...
-  p9pdu_vwritef+0x3d8/0x5d0
-  p9_client_prepare_req+0xa8/0x140
-  p9_client_rpc+0x81/0x280
-  p9_client_write+0xcf/0x1c0
-  v9fs_issue_write+0x87/0xc0
-  netfs_advance_write+0xa0/0xb0
-  netfs_write_folio.isra.0+0x42d/0x500
-  netfs_writepages+0x15a/0x1f0
-  do_writepages+0xd1/0x220
-  filemap_fdatawrite_wbc+0x5c/0x80
-  v9fs_mmap_vm_close+0x7d/0xb0
-  remove_vma+0x35/0x70
-  vms_complete_munmap_vmas+0x11a/0x170
-  do_vmi_align_munmap+0x17d/0x1c0
-  do_vmi_munmap+0x13e/0x150
-  __vm_munmap+0x92/0xd0
-  __x64_sys_munmap+0x17/0x20
-  do_syscall_64+0x80/0xe0
-  entry_SYSCALL_64_after_hwframe+0x71/0x79
-
-This also fixed a similar-looking issue with cifs and generic/074.
-
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202409180928.f20b5a08-oliver.sang@i=
-ntel.com
-Closes: https://lore.kernel.org/oe-lkp/202409131438.3f225fbf-oliver.sang@i=
-ntel.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-Tested-by: kernel test robot <oliver.sang@intel.com>
-cc: Eric Van Hensbergen <ericvh@kernel.org>
-cc: Latchesar Ionkov <lucho@ionkov.net>
-cc: Dominique Martinet <asmadeus@codewreck.org>
-cc: Christian Schoenebeck <linux_oss@crudebyte.com>
-cc: Steve French <sfrench@samba.org>
-cc: Paulo Alcantara <pc@manguebit.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: v9fs@lists.linux.dev
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
----
- Changes:
- v2)
- - Drop netfs_folioq_alloc() and code what it did directly in the caller.
-   The cleanup can be done in a follow-up patch.
-
- fs/netfs/internal.h    |    1 =
-
- fs/netfs/misc.c        |   74 +++++++++++++++++++++++++++++++++++--------=
-------
- fs/netfs/write_issue.c |   12 +++++++
- 3 files changed, 65 insertions(+), 22 deletions(-)
-
-diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
-index c7f23dd3556a..3bf370576f89 100644
---- a/fs/netfs/internal.h
-+++ b/fs/netfs/internal.h
-@@ -58,6 +58,7 @@ static inline void netfs_proc_del_rreq(struct netfs_io_r=
-equest *rreq) {}
- /*
-  * misc.c
-  */
-+struct folio_queue *netfs_buffer_make_space(struct netfs_io_request *rreq=
-);
- int netfs_buffer_append_folio(struct netfs_io_request *rreq, struct folio=
- *folio,
- 			      bool needs_put);
- struct folio_queue *netfs_delete_buffer_head(struct netfs_io_request *wre=
-q);
-diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
-index 0ad0982ce0e2..63280791de3b 100644
---- a/fs/netfs/misc.c
-+++ b/fs/netfs/misc.c
-@@ -9,34 +9,66 @@
- #include "internal.h"
- =
-
- /*
-- * Append a folio to the rolling queue.
-+ * Make sure there's space in the rolling queue.
-  */
--int netfs_buffer_append_folio(struct netfs_io_request *rreq, struct folio=
- *folio,
--			      bool needs_put)
-+struct folio_queue *netfs_buffer_make_space(struct netfs_io_request *rreq=
-)
- {
--	struct folio_queue *tail =3D rreq->buffer_tail;
--	unsigned int slot, order =3D folio_order(folio);
-+	struct folio_queue *tail =3D rreq->buffer_tail, *prev;
-+	unsigned int prev_nr_slots =3D 0;
- =
-
- 	if (WARN_ON_ONCE(!rreq->buffer && tail) ||
- 	    WARN_ON_ONCE(rreq->buffer && !tail))
--		return -EIO;
--
--	if (!tail || folioq_full(tail)) {
--		tail =3D kmalloc(sizeof(*tail), GFP_NOFS);
--		if (!tail)
--			return -ENOMEM;
--		netfs_stat(&netfs_n_folioq);
--		folioq_init(tail);
--		tail->prev =3D rreq->buffer_tail;
--		if (tail->prev)
--			tail->prev->next =3D tail;
--		rreq->buffer_tail =3D tail;
--		if (!rreq->buffer) {
--			rreq->buffer =3D tail;
--			iov_iter_folio_queue(&rreq->io_iter, ITER_SOURCE, tail, 0, 0, 0);
-+		return ERR_PTR(-EIO);
-+
-+	prev =3D tail;
-+	if (prev) {
-+		if (!folioq_full(tail))
-+			return tail;
-+		prev_nr_slots =3D folioq_nr_slots(tail);
-+	}
-+
-+	tail =3D kmalloc(sizeof(*tail), GFP_NOFS);
-+	if (!tail)
-+		return ERR_PTR(-ENOMEM);
-+	netfs_stat(&netfs_n_folioq);
-+	folioq_init(tail);
-+	tail->prev =3D prev;
-+	if (prev)
-+		/* [!] NOTE: After we set prev->next, the consumer is entirely
-+		 * at liberty to delete prev.
-+		 */
-+		WRITE_ONCE(prev->next, tail);
-+
-+	rreq->buffer_tail =3D tail;
-+	if (!rreq->buffer) {
-+		rreq->buffer =3D tail;
-+		iov_iter_folio_queue(&rreq->io_iter, ITER_SOURCE, tail, 0, 0, 0);
-+	} else {
-+		/* Make sure we don't leave the master iterator pointing to a
-+		 * block that might get immediately consumed.
-+		 */
-+		if (rreq->io_iter.folioq =3D=3D prev &&
-+		    rreq->io_iter.folioq_slot =3D=3D prev_nr_slots) {
-+			rreq->io_iter.folioq =3D tail;
-+			rreq->io_iter.folioq_slot =3D 0;
- 		}
--		rreq->buffer_tail_slot =3D 0;
- 	}
-+	rreq->buffer_tail_slot =3D 0;
-+	return tail;
-+}
-+
-+/*
-+ * Append a folio to the rolling queue.
-+ */
-+int netfs_buffer_append_folio(struct netfs_io_request *rreq, struct folio=
- *folio,
-+			      bool needs_put)
-+{
-+	struct folio_queue *tail;
-+	unsigned int slot, order =3D folio_order(folio);
-+
-+	tail =3D netfs_buffer_make_space(rreq);
-+	if (IS_ERR(tail))
-+		return PTR_ERR(tail);
- =
-
- 	rreq->io_iter.count +=3D PAGE_SIZE << order;
- =
-
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index 04e66d587f77..0929d9fd4ce7 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -153,12 +153,22 @@ static void netfs_prepare_write(struct netfs_io_requ=
-est *wreq,
- 				loff_t start)
- {
- 	struct netfs_io_subrequest *subreq;
-+	struct iov_iter *wreq_iter =3D &wreq->io_iter;
-+
-+	/* Make sure we don't point the iterator at a used-up folio_queue
-+	 * struct being used as a placeholder to prevent the queue from
-+	 * collapsing.  In such a case, extend the queue.
-+	 */
-+	if (iov_iter_is_folioq(wreq_iter) &&
-+	    wreq_iter->folioq_slot >=3D folioq_nr_slots(wreq_iter->folioq)) {
-+		netfs_buffer_make_space(wreq);
-+	}
- =
-
- 	subreq =3D netfs_alloc_subrequest(wreq);
- 	subreq->source		=3D stream->source;
- 	subreq->start		=3D start;
- 	subreq->stream_nr	=3D stream->stream_nr;
--	subreq->io_iter		=3D wreq->io_iter;
-+	subreq->io_iter		=3D *wreq_iter;
- =
-
- 	_enter("R=3D%x[%x]", wreq->debug_id, subreq->debug_index);
- =
-
+[5/8] afs: Fix possible infinite loop with unresponsive servers
+      https://git.kernel.org/vfs/vfs/c/6e45740867ee
