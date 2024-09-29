@@ -1,134 +1,161 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D701B655F;
-	Fri, 27 Sep 2024 23:22:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE89143C5A
+	for <netfs@lists.linux.dev>; Sun, 29 Sep 2024 09:12:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727479328; cv=none; b=tAV/iOG108HqQBDwCmkXjLaMTuoEv8B6rVzcNgncp2st9u+bFJRg+G/b/n/bbueHmYZlS+mvgaMpq0oaqa+Cm52b/6wouFZGwBqhQAhv+P/b4kjbKv5TvvpSoWI3DmSTv5Aqba3yseJvQ5ZveW7wUNX0OI0QhYqyrT0Jsle8NmE=
+	t=1727601173; cv=none; b=GLGVVcMVdtk2o4ltJ3gffvLjraa0w/Gq0bCY8+ncFyFHU24f9UqRd08Jb4VFGvM+VqXvXwzOEJ1Ot5XD0DH00cr1v6tVTpFV66fywt45fz2iNPeI9Wd8p46bW2sC7KxFT5vI2ZpjxG4O+wMyP1ao2KMFQ8t4d1JpoXVaavIzP94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727479328; c=relaxed/simple;
-	bh=Ni1PSWIgWkGtc+GXe+ot0cv4W+TUNKSABP3D+pYXhYY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Aljw4uJHbpowFPGlo/yKGUFcKY2flch0V+zTq1LYKG8Ldds/ppo7Lzz9Fbang/eVpz83DRfWHPPNXqSUdSP8UiwAYGfaUMQPdXb7jNOAq0DaQSHhuGv+fXxSyylg4/ryNSdrP7Y7Ef3EK0apqzCSoTWqPajSKjtNlx4NttEthSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f97y8UWV; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727601173; c=relaxed/simple;
+	bh=f9dQE09AdUkmncuy/YNZ8fl3PlvEKyh1yrqvan2WfdA=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=ATr+TAsKD/8fAuWQH4mPnYGSEAHqkm9ld6g7jvl45JT/iANDht7Eb7yAFDUfGCv3W6Ec8xKIomEBZAQuj25E7BS/cd0vpL35qo9rsTYobkDJyBl7ueUVW2QIzhTM0uLYDkfnqp3Po2D+eh3EbsRxoLwoMOmoMegy9AhSLTeeu+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hfMTFcZa; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f97y8UWV"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-20afdad26f5so34270755ad.1;
-        Fri, 27 Sep 2024 16:22:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727479327; x=1728084127; darn=lists.linux.dev;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=7LAvOZp6Vqb9AO/+VS+wUvq7SL5EIr/lbn9RL5sF1d0=;
-        b=f97y8UWVs7POs29tyvSSsxqFU12StlYTFY9aRiYg2JoNttiBlzDLIMMqaKeo/lawcU
-         XTvCKh4jM3ItYZofQsYk9M/ZnoSMBXSSUeqlejuIHzOXO2H3XVsIsiUmvMjkao0upktK
-         QuHyzE/9gc3gj5t8E5NMjKU7mRtGXVxm1pJwVk9fUp0V4bQnYMm7YceT6Lbbjh4zYirk
-         gIka6+aDPDIOBrzE9cDySmICX6kQCbCdsqWz52jmmdKAwAr0AmVQa/X02SRIqY9C1Z7X
-         oUPkAEty0d2c+WB43DTRx6XS4piyfQu1LtZSIZFnVHQKpV/qshA18othpsyVJ33izedP
-         BM1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727479327; x=1728084127;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7LAvOZp6Vqb9AO/+VS+wUvq7SL5EIr/lbn9RL5sF1d0=;
-        b=h7ieg8b2PerHsU9u38/hWrv5A715/Lu9GYDOLbcbXqY7CHr1iF5fJuIIMDuxw/HIoy
-         1Rf8HPzXHGEzW+Mjk3cAVo1C3dTTn9bSUr5L1NqF6BU0kUKqDVsUfbfrPrLjsupdFuFP
-         bCh0OmvcMOW6ceQ62NYGtrsoDMWWW40mFHa+Xo3e4TDRx0GTlpJX+j8MOpXIoVMQtHoP
-         CDHDymgBmhZ3fAlU405VmVDWNSmREN/HouHu+n7gdqe0LTO/vZAfUKxq/lO/s9GK4/mH
-         Vy8s4VB3VY55LW3ZqiB8+9CWqNQhgEQOoFyvE6nx6NtxxmCl5nYyCnX/SHyRO/MFdxK2
-         cGvw==
-X-Forwarded-Encrypted: i=1; AJvYcCUVlBPwbRN4w5NwOv/kNK7ytyUWEAWcjG27i4wE6qJiXsf6hjyKIbd2qEutCScCD9BPWXtNtw==@lists.linux.dev, AJvYcCXukGQUnuKh7FdRvfQdY/PyI09nTnT2yclG/lkTVVrddtTd42kUbvnJ5g2MugBK0WgGZACCTg==@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx2MAiQSMPBWI+LFf6QF/gZEE38lEMfwbRKO7awXWscPGcXq6D+
-	0zE5u10/Y4sFtMJTDzKZXnK0tifSO7zQbn4QgYGFUN2vtio4zrlS
-X-Google-Smtp-Source: AGHT+IFXTEMtPJJpJatKRUAfPM6/3maacD+r+Yf+RlOH8FPWHZYjxB+hsah3pGiJOGYuet3l4rSHvQ==
-X-Received: by 2002:a17:902:e74e:b0:206:bbaa:84e9 with SMTP id d9443c01a7336-20b37b9b53cmr81601675ad.47.1727479326584;
-        Fri, 27 Sep 2024 16:22:06 -0700 (PDT)
-Received: from [192.168.0.235] ([38.34.87.7])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20b37e5169csm18253515ad.238.2024.09.27.16.22.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Sep 2024 16:22:06 -0700 (PDT)
-Message-ID: <d87e3b4dfd4624d182d3d23992eacb7b9ffeff90.camel@gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hfMTFcZa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1727601170;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JiqqlxmQYH/fiwHpJ0K7lC2A6lz/Rw3eIk1FtzNUMEY=;
+	b=hfMTFcZalAUmLNq214pNh+0PQJfHj64vMbRVOY+X0O2nurOkgHHRTOpqyAGKsIYyVtpv3b
+	7PQZe1xCA25e3NmAxPvpVnXAXy+/nOJyZt2BHX1SjJkEfHaJIG4IZ44IBJ3BOhEI5JYDCP
+	o3Yie3mu9xi4RDBiXIl4qT175GV7QuQ=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-263-ngDjsBEOMcCfzSSWO9NFYQ-1; Sun,
+ 29 Sep 2024 05:12:45 -0400
+X-MC-Unique: ngDjsBEOMcCfzSSWO9NFYQ-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (unknown [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3F5D4195FE25;
+	Sun, 29 Sep 2024 09:12:42 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.145])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F1CB519560AE;
+	Sun, 29 Sep 2024 09:12:34 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20240925103118.GE967758@unreal>
+References: <20240925103118.GE967758@unreal> <20240923183432.1876750-1-chantr4@gmail.com> <20240814203850.2240469-20-dhowells@redhat.com> <1279816.1727220013@warthog.procyon.org.uk> <4b5621958a758da830c1cf09c6f6893aed371f9d.camel@gmail.com>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: dhowells@redhat.com, Eduard Zingerman <eddyz87@gmail.com>,
+    Christian Brauner <brauner@kernel.org>,
+    Manu Bretelle <chantr4@gmail.com>, asmadeus@codewreck.org,
+    ceph-devel@vger.kernel.org, christian@brauner.io, ericvh@kernel.org,
+    hsiangkao@linux.alibaba.com, idryomov@gmail.com, jlayton@kernel.org,
+    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+    linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+    linux-nfs@vger.kernel.org, marc.dionne@auristor.com,
+    netdev@vger.kernel.org, netfs@lists.linux.dev, pc@manguebit.com,
+    smfrench@gmail.com, sprasad@microsoft.com, tom@talpey.com,
+    v9fs@lists.linux.dev, willy@infradead.org
 Subject: Re: [PATCH v2 19/25] netfs: Speed up buffered reading
-From: Eduard Zingerman <eddyz87@gmail.com>
-To: David Howells <dhowells@redhat.com>
-Cc: Manu Bretelle <chantr4@gmail.com>, asmadeus@codewreck.org, 
- ceph-devel@vger.kernel.org, christian@brauner.io, ericvh@kernel.org, 
- hsiangkao@linux.alibaba.com, idryomov@gmail.com, jlayton@kernel.org, 
- linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org, 
- linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-nfs@vger.kernel.org,  marc.dionne@auristor.com,
- netdev@vger.kernel.org, netfs@lists.linux.dev,  pc@manguebit.com,
- smfrench@gmail.com, sprasad@microsoft.com, tom@talpey.com, 
- v9fs@lists.linux.dev, willy@infradead.org
-Date: Fri, 27 Sep 2024 16:22:01 -0700
-In-Reply-To: <2668612.1727471502@warthog.procyon.org.uk>
-References: <55cef4bef5a14a70b97e104c4ddd8ef64430f168.camel@gmail.com>
-	 <20240923183432.1876750-1-chantr4@gmail.com>
-	 <20240814203850.2240469-20-dhowells@redhat.com>
-	 <2663729.1727470216@warthog.procyon.org.uk>
-	 <2668612.1727471502@warthog.procyon.org.uk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2808174.1727601153.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Sun, 29 Sep 2024 10:12:33 +0100
+Message-ID: <2808175.1727601153@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Fri, 2024-09-27 at 22:11 +0100, David Howells wrote:
+Can you try the attached?  I've also put it on my branch here:
 
-[...]
+https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/=
+?h=3Dnetfs-fixes
 
-> If you look here:
->=20
-> 	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/lo=
-g/?h=3Dnetfs-fixes
->=20
-> you can see some patches I've added.  If you can try this branch or cherr=
-y
-> pick:
->=20
-> 	netfs: Fix write oops in generic/346 (9p) and generic/074 (cifs)
-> 	netfs: Advance iterator correctly rather than jumping it
-> 	netfs: Use a folio_queue allocation and free functions
-> 	netfs: Add a tracepoint to log the lifespan of folio_queue structs
+David
+---
+9p: Don't revert the I/O iterator after reading
 
-I used your branch netfs-fixes, namely at the following commit:
-8e18fe180b0a ("netfs: Abstract out a rolling folio buffer implementation")
+Don't revert the I/O iterator before returning from p9_client_read_once().
+netfslib doesn't require the reversion and nor doed 9P directory reading.
 
-> And then turn on the following "netfs" tracepoints:
->=20
-> 	read,sreq,rreq,failure,write,write_iter,folio,folioq,progress,donate
->
+Make p9_client_read() use a temporary iterator to call down into
+p9_client_read_once(), and advance that by the amount read.
 
-System can't boot, so I used the following kernel command line:
-... trace_event=3D:netfs_read,:netfs_sreq,:netfs_rreq,:netfs_failure,:netfs=
-_write,:netfs_write_iter,:netfs_folio,:netfs_folioq,:netfs_progress,:netfs_=
-donate
+Reported-by: Manu Bretelle <chantr4@gmail.com>
+Reported-by: Eduard Zingerman <eddyz87@gmail.com>
+Reported-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Eric Van Hensbergen <ericvh@kernel.org>
+cc: Latchesar Ionkov <lucho@ionkov.net>
+cc: Dominique Martinet <asmadeus@codewreck.org>
+cc: Christian Schoenebeck <linux_oss@crudebyte.com>
+cc: v9fs@lists.linux.dev
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+---
+ net/9p/client.c |   10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-No warnings like "Failed to enable trace event ...", so I assume it worked
-as expected.
+diff --git a/net/9p/client.c b/net/9p/client.c
+index 5cd94721d974..be59b0a94eaf 100644
+--- a/net/9p/client.c
++++ b/net/9p/client.c
+@@ -1519,13 +1519,15 @@ p9_client_read(struct p9_fid *fid, u64 offset, str=
+uct iov_iter *to, int *err)
+ 	*err =3D 0;
+ =
 
-A fresh dmesg is here:
-https://gist.github.com/eddyz87/e8f4780d833675a7e58854596394a70f
+ 	while (iov_iter_count(to)) {
++		struct iov_iter tmp =3D *to;
+ 		int count;
+ =
 
-Don't see any tracepoint output there, so something is probably missing.
+-		count =3D p9_client_read_once(fid, offset, to, err);
++		count =3D p9_client_read_once(fid, offset, &tmp, err);
+ 		if (!count || *err)
+ 			break;
+ 		offset +=3D count;
+ 		total +=3D count;
++		iov_iter_advance(to, count);
+ 	}
+ 	return total;
+ }
+@@ -1567,16 +1569,12 @@ p9_client_read_once(struct p9_fid *fid, u64 offset=
+, struct iov_iter *to,
+ 	}
+ 	if (IS_ERR(req)) {
+ 		*err =3D PTR_ERR(req);
+-		if (!non_zc)
+-			iov_iter_revert(to, count - iov_iter_count(to));
+ 		return 0;
+ 	}
+ =
 
-> > Alternatively I can pack this thing in a dockerfile, so that you would
-> > be able to reproduce locally (but that would have to wait till my eveni=
-ng).
->=20
-> I don't have Docker set up, so I'm not sure how easy that would be for me=
- to
-> use.
-
-What's your preferred setup for the repro?
+ 	*err =3D p9pdu_readf(&req->rc, clnt->proto_version,
+ 			   "D", &received, &dataptr);
+ 	if (*err) {
+-		if (!non_zc)
+-			iov_iter_revert(to, count - iov_iter_count(to));
+ 		trace_9p_protocol_dump(clnt, &req->rc);
+ 		p9_req_put(clnt, req);
+ 		return 0;
+@@ -1596,8 +1594,6 @@ p9_client_read_once(struct p9_fid *fid, u64 offset, =
+struct iov_iter *to,
+ 			p9_req_put(clnt, req);
+ 			return n;
+ 		}
+-	} else {
+-		iov_iter_revert(to, count - received - iov_iter_count(to));
+ 	}
+ 	p9_req_put(clnt, req);
+ 	return received;
 
