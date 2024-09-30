@@ -1,93 +1,77 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD5318DF75
-	for <netfs@lists.linux.dev>; Mon, 30 Sep 2024 11:59:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC9F18E75F;
+	Mon, 30 Sep 2024 12:11:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727697566; cv=none; b=gvw/WHHNR926khmsEwT8lTwZgHWcnRbl0RUQ47pn3aIoiDQwFwFedI/nKyXfJlgYIobtWurkFSH5hTbywGpegQVe/g6vuc21jlrMY3/nLcFw1Xcnxst89SF5BmwFdfrA1NlJQKl8tR7LHcCg3779szYuLAMRsi6PX3CcQXPNHIw=
+	t=1727698289; cv=none; b=cATqNJYXEfFQlqnVBQgov4x6GAcXzH1W60KEjVpQiei6vZIYJPlXvJZkFpzqEKtKsOKAvEKBVPaT++kOASzHhpmnxHXahF4eR63AQbSekJMQac8HjiI6EsWmkZhzzOra7lNJaWSyc/90Jxr4EtV0JGa4HwpLWG/0I4N+pWadyZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727697566; c=relaxed/simple;
-	bh=aR8fuX0sS/gP3baIn1zrYghBAN/naNyugogMmnjaR9E=;
-	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=R5LqnTi8ycYqR7X29da8vuAPHfIRJPOSCD92pofifTAR54co9ObbvYmapEeouyqQzXKMWhCLZS6mZ2kCftVPXuXE4LxGkLTwH65bUylifYdfOlQY7uF7snz1L051L7qAKAzK+zsc+nW+TtwaRoprV9Zd9hYgevDbTcEHeFnJcmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ey6FQ4ug; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1727698289; c=relaxed/simple;
+	bh=9tWYCp4vpeMn12EPX2msoogZdQh1CDg3ECXvFAwQFrI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NOSh5C7FALJBMvvpAplGktuPNAvdLb+I1PY4uhtADjfFxr8quaIQ8es3Y1pEIRwqeuXZzP6KFj61cz6AqnWeI6EonRvnbBgAQEeZhephJAcVOLftNFTjVP/igaEMGwi+GD82I+n0yAt4kCNnM2ZBaC2/Prm7iHpSFjp2s2R7AVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DtW7/GyH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ey6FQ4ug"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1727697563;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=p89utsEeZ8Hq5QclqXs3qm169w5HW3XznuekAkHcl9E=;
-	b=ey6FQ4ugi305A+2m5NomzG9m9QVYTvb0J7ATp3397l4LJJr25ZSymwF7n4iK8zE2/+9Lt9
-	px1ggJglEHbpOCNr6Sbj6I+MWmUAVtEj5JmJrTd1ltUFFBtSmPrmXVlDMLjc9gLbmk8Dgj
-	WHFNDb9dFO0EcZBTvnvb/g3B+4QUIi8=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-448-l80_EacyPOW-ZeIoWvgOkg-1; Mon,
- 30 Sep 2024 07:59:20 -0400
-X-MC-Unique: l80_EacyPOW-ZeIoWvgOkg-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (unknown [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 71FE41953941;
-	Mon, 30 Sep 2024 11:59:19 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.145])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E97881955DC7;
-	Mon, 30 Sep 2024 11:59:17 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-To: Christian Brauner <brauner@kernel.org>
-cc: dhowells@redhat.com, Jeff Layton <jlayton@kernel.org>,
-    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Subject: [PATCH] netfs: Fix the netfs_folio tracepoint to handle NULL mapping
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DtW7/GyH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FD78C4CEC7;
+	Mon, 30 Sep 2024 12:11:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727698288;
+	bh=9tWYCp4vpeMn12EPX2msoogZdQh1CDg3ECXvFAwQFrI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=DtW7/GyH4g10ziUg9s5F+jREy77B0GIPKsSrEPcpFH/JvNCzMKcqs/ItrlREKtPOa
+	 9EC2ctjfh70STkNZ+tsJnmRGjatdPOuPWCDdWE4IGrVvIl2AKu/Ro0G1C+HnK5W36H
+	 QUj5ZwxlzYekodauDrU1eZb+/58mU7nZu/LBi0U0Qv/7b36tqPXYBpdysyO7UGYTt7
+	 W89lQv3L+DWhbvWMPJTSpNOQbglEptxhyshUWWtWCihXybRSsiVP/ipqkvd9XYLgCN
+	 U1vNvcV6GZ9Xyz73AUnbFuq8zTZKh6XLr72tZ76vtYF0/LXi3ooi1x1C/r9zbt9ZPA
+	 WcKdMeHzLvFBg==
+From: Christian Brauner <brauner@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	netfs@lists.linux.dev,
+	linux-doc@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] netfs: Add folio_queue API documentation
+Date: Mon, 30 Sep 2024 14:11:17 +0200
+Message-ID: <20240930-baubranche-unbewusst-8646dc251e66@brauner>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <2912369.1727691281@warthog.procyon.org.uk>
+References: <2912369.1727691281@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2917422.1727697556.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 30 Sep 2024 12:59:16 +0100
-Message-ID: <2917423.1727697556@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=867; i=brauner@kernel.org; h=from:subject:message-id; bh=9tWYCp4vpeMn12EPX2msoogZdQh1CDg3ECXvFAwQFrI=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaT9mpq5rcmS6R738hc6YjnHHuYeOG3aydDfI1zH7v1Ef PU1oW6ZjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIks12VkOLfhfUIsh7aUqpXB XSOlVuPS0Ozrr86lWDfPkXzdddRal+F/jnGGeca7dab+op9eRe78Jtlp9S1+X9/OSzpCr2TLdj7 iBQA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-Fix the netfs_folio tracepoint to handle folios that have a NULL mapping
-pointer.  In such a case, just substitute a zero inode number.
+On Mon, 30 Sep 2024 11:14:41 +0100, David Howells wrote:
+> 
+> Add API documentation for folio_queue.
+> 
+> 
 
-Fixes: c38f4e96e605 ("netfs: Provide func to copy data to pagecache for bu=
-ffered write")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
----
- include/trace/events/netfs.h |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
-index 76bd42a96815..1d7c52821e55 100644
---- a/include/trace/events/netfs.h
-+++ b/include/trace/events/netfs.h
-@@ -448,7 +448,8 @@ TRACE_EVENT(netfs_folio,
- 			     ),
- =
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
- 	    TP_fast_assign(
--		    __entry->ino =3D folio->mapping->host->i_ino;
-+		    struct address_space *__m =3D READ_ONCE(folio->mapping);
-+		    __entry->ino =3D __m ? __m->host->i_ino : 0;
- 		    __entry->why =3D why;
- 		    __entry->index =3D folio_index(folio);
- 		    __entry->nr =3D folio_nr_pages(folio);
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[1/1] netfs: Add folio_queue API documentation
+      https://git.kernel.org/vfs/vfs/c/28e8c5c095ec
