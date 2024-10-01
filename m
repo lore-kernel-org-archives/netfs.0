@@ -1,85 +1,77 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C621C245F
-	for <netfs@lists.linux.dev>; Tue,  1 Oct 2024 12:54:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DADB28F4;
+	Tue,  1 Oct 2024 14:03:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727787260; cv=none; b=teJDHczLf7xEUdaY+HB9WbW3zcfzNTrLxGy1HMEdbgh55/nCaSppgGTtTaVqy/3yBxA8V8lQbdwU1ayF0P33iw63AIeZ5nBU8IeLKySSmJlj2tkz6T/mMkWUBfBp/a9M+Ob6JbOwRuiM+Bp8h2njDWL7c3A5+X7Afw9AMhiwOIc=
+	t=1727791428; cv=none; b=luFQk6JZ+AwjB1CTDTq/ZZp+h5JfcFETXeOzExLU3NImIN8YnjtCgZJWvyVwbjbmRiesdDzf5WZiyrNPaZeymtfaE9viFj/0yMs/E41M9iQ064raO2M/lRwxwZkIMZYDkkpQuvK0Yt8N/LUeYty8uD0NF2Jck5fcMuXiWD/wwLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727787260; c=relaxed/simple;
-	bh=SlgkcT3VIvsR9xt5rJ/ZZZ2NrD2d4Bg54ZZmbv8EgXY=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=Ba1ahWQZfQIr0CD65IGEhHRksEDmbMZme+XVm0H5+/pvslaPSKUzdnRMXhu+SNkePS5L7jVc/7piDs3w5EiLaBZFBEqCZYCWokesludwmZ9FWdHeZ7aQTtY4Yp3QNmV9YEmBXcT5M9JTotJTNaWji6wHG6rNyHtcsjCWAacApfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GKqIfl9C; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1727791428; c=relaxed/simple;
+	bh=/nhn+SWprwiztlWKYdYqdvIVtsJh5dygDuCJ0NZz6XQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IGGBNNd2Xs5hb54QKDCY5Tql1SChWBgadd5eaXYLgxvfV7oqtC+DzIeyc+9/bq9U+Mv6bpXiAYQ7kNEl3A5nZG5vZqbsf/XlJsTZ1fE/acmIC71Jogm1+TlMsbqp4ScwZFmW6clyqIRlscKXFi8jOJb+452RcR4DJuxEsAL8PoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wh7MHN2W; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GKqIfl9C"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1727787258;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SlgkcT3VIvsR9xt5rJ/ZZZ2NrD2d4Bg54ZZmbv8EgXY=;
-	b=GKqIfl9CZYH9TsgK5e/YfkmEUjQ7PrzmKweMnVPjSF9HfGZISQcm6rm3kNKcSUjBpEqmtY
-	tsCp7WshtE4/TnkYtnI59l/9W5/N54MZ/aFWx2+Sv2fNf8lVtuBS+DEdpolbXjbGOZfRcM
-	RtZUP16dQkFFtCK1T+ZiBtxPancIkR0=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-554-52vA4fYgNJig4i_2LyBlIQ-1; Tue,
- 01 Oct 2024 08:54:15 -0400
-X-MC-Unique: 52vA4fYgNJig4i_2LyBlIQ-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (unknown [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E563A19626FC;
-	Tue,  1 Oct 2024 12:54:13 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.145])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 01371195605A;
-	Tue,  1 Oct 2024 12:54:11 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wh7MHN2W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BCD4C4CEC7;
+	Tue,  1 Oct 2024 14:03:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727791428;
+	bh=/nhn+SWprwiztlWKYdYqdvIVtsJh5dygDuCJ0NZz6XQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Wh7MHN2WYalSL7SA8PvpNjeaBafbTlCGjSOjtpXQv3Mizs/MgcwCGBaEoRpU124R7
+	 Uks6JHchwRlMszJr2Tkmz1beRSvmO74JgQnuTOLXrls2y21dDEWPgG6Z1ApCB8jf03
+	 nPbwpEiOJOFJwsDmSqgdD+YOlTL90yXiLdYbW0SNyp/1Fuk98Y1mNosnrRPPC3VcH4
+	 qQ9D3+LOvq9U4egKnUA+Y8PymE6jzP6mjMaapECbknPXHZUjVIjzLB+Esv8/c1FR0X
+	 3SKHlK+gKzr6XwxSqcCK+6MDwK9WEcjchPTYpFbYAGAfzViFkSovmEFK+PKNYyLpWb
+	 CwJIRIr1j1Q7w==
+From: Christian Brauner <brauner@kernel.org>
+To: dhowells@redhat.com,
+	Chang Yu <marcus.yu.56@gmail.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	jlayton@kernel.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	skhan@linuxfoundation.org
+Subject: Re: [PATCH v2] netfs: Fix a KMSAN uninit-value error in netfs_clear_buffer
+Date: Tue,  1 Oct 2024 16:03:40 +0200
+Message-ID: <20241001-parade-futter-776bcefe0ce5@brauner>
+X-Mailer: git-send-email 2.45.2
 In-Reply-To: <ZvuXWC2bYpvQsWgS@gmail.com>
 References: <ZvuXWC2bYpvQsWgS@gmail.com>
-To: Christian Brauner <brauner@kernel.org>
-Cc: dhowells@redhat.com, Chang Yu <marcus.yu.56@gmail.com>,
-    jlayton@kernel.org, netfs@lists.linux.dev,
-    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-    skhan@linuxfoundation.org
-Subject: Re: [PATCH v2] netfs: Fix a KMSAN uninit-value error in netfs_clear_buffer
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3115999.1727787250.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 01 Oct 2024 13:54:10 +0100
-Message-ID: <3116000.1727787250@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=941; i=brauner@kernel.org; h=from:subject:message-id; bh=/nhn+SWprwiztlWKYdYqdvIVtsJh5dygDuCJ0NZz6XQ=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaT9YbSbFeb1TUNE7ZjgtkVWFybI7ai53X6YdeNaK3lJf d/yH28yO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACbyPJSRoTUtxsJodZuLolBy w6ElTHIfJs5bcLP4IotMxzOjjHixyYwMa6NzDv+dGdlmkbIy5jPvLEGj0DvebMcKp/ge/bTmv2o XIwA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-Chang Yu <marcus.yu.56@gmail.com> wrote:
-
+On Mon, 30 Sep 2024 23:31:52 -0700, Chang Yu wrote:
 > Use folioq_count instead of folioq_nr_slots to fix a KMSAN uninit-value
 > error in netfs_clear_buffer
-> =
+> 
+> 
 
-> Signed-off-by: Chang Yu <marcus.yu.56@gmail.com>
-> Reported-by: syzbot+921873345a95f4dae7e9@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=3D921873345a95f4dae7e9
-> Fixes: cd0277ed0c18 ("netfs: Use new folio_queue data type and iterator =
-instead of xarray iter")
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-Acked-by: David Howells <dhowells@redhat.com>
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-Christian: Can you pick this up?
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[1/1] netfs: Fix a KMSAN uninit-value error in netfs_clear_buffer
+      https://git.kernel.org/vfs/vfs/c/f6023535b52f
