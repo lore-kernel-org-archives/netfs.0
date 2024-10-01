@@ -1,102 +1,85 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1D229CFE
-	for <netfs@lists.linux.dev>; Tue,  1 Oct 2024 06:31:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C621C245F
+	for <netfs@lists.linux.dev>; Tue,  1 Oct 2024 12:54:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727764316; cv=none; b=dUeJkfImKy9sCO+Q2QU6WYfp3swG2qCwiKfdoOjcNtc6T2G/F1gHX8Sc7jzJDcAOYBTEAwRpD29saycl1mWzH7BAWWL0U7VfDc+x7Ahhbn2YiuY/Dz8szzH6ZdhNZ/2BhcMAAfiZQHlCWBGQSQu4AqlMMskUWY3ffEyAM8VTL8Y=
+	t=1727787260; cv=none; b=teJDHczLf7xEUdaY+HB9WbW3zcfzNTrLxGy1HMEdbgh55/nCaSppgGTtTaVqy/3yBxA8V8lQbdwU1ayF0P33iw63AIeZ5nBU8IeLKySSmJlj2tkz6T/mMkWUBfBp/a9M+Ob6JbOwRuiM+Bp8h2njDWL7c3A5+X7Afw9AMhiwOIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727764316; c=relaxed/simple;
-	bh=V7IE8NHdwZvkG7MqnoCNEa+e9sLgurK9Qa5ui+9fzqM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=tW/i2eZfVuJlVI4BJmwjqGl4NU29iJAhq1bfj0Iwxt6q6GSYdNJ8P7ClmZO3+c4rbu74+VcliPIqfdqsC9PwSvtvXUjOxq8cm+NUBVWo3FfogPz2X0U6RE67U9QXKzcNM3fn/3S3aN/3j7PApba5bkIMsAYLeK/rYJVcxu21730=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bwneyrZd; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727787260; c=relaxed/simple;
+	bh=SlgkcT3VIvsR9xt5rJ/ZZZ2NrD2d4Bg54ZZmbv8EgXY=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=Ba1ahWQZfQIr0CD65IGEhHRksEDmbMZme+XVm0H5+/pvslaPSKUzdnRMXhu+SNkePS5L7jVc/7piDs3w5EiLaBZFBEqCZYCWokesludwmZ9FWdHeZ7aQTtY4Yp3QNmV9YEmBXcT5M9JTotJTNaWji6wHG6rNyHtcsjCWAacApfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GKqIfl9C; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bwneyrZd"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-20b49ee353cso34940485ad.2
-        for <netfs@lists.linux.dev>; Mon, 30 Sep 2024 23:31:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727764315; x=1728369115; darn=lists.linux.dev;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ietMyAYw6+fPlNA9nxxGMDX+EjbWGZRBErvoQIibJ1M=;
-        b=bwneyrZdexyLhUWl5rN29gklbnkYxIpyoEO60zIFlvXu0fHHc71z3h/FhQrh2IMmV7
-         GC6gUhpASY5to4xJEM/qDgQagfZMcXjLkqEsrnvAzZzhCr3jnv4U/uUvmSxdmQ3cQSDi
-         Q+xcwsrf5GV2gFWU7U3pmg6Ar4ZOtvn0I0nfySfIdu58SqwsvmqPgzmAeHhhzWFaLKrK
-         n0ZwdA3U1sTkN/XU35Zr0M0fTzqQWU8R8eAJYyjwmUXPLoYVQBOMwrgR4/Zhzt9VWZSw
-         yQ/97LLWXutWFqdWnYutt1Yv04jG16ov9djrT/ZawCMnSy/tsRinF8d0xCu+GRt4k4W2
-         /7nA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727764315; x=1728369115;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ietMyAYw6+fPlNA9nxxGMDX+EjbWGZRBErvoQIibJ1M=;
-        b=wibmVOTagtyDePnz2suw0jCSCrDTi/DuPFawrLvpVmGg89E0i++e1mUeQf4VcMuFOC
-         JRvC8z027jj4WMBZyLc36TMjkeIiGMNIJ4sT7kpU4TC0NTS0p0qyBjRNvjyuYftRX9Ct
-         88MeD+Kps0wo9/TfTCewOBH12o6A0wzOAXIXABtWxPgLUKX+UGQMi25qZwrV4zHesQgL
-         nlVdZnn++rtSmmDX5zwAwZIMsA5gCf/DZAgmLBfSzZUnTgd0t3GWVqYtT+tVtNq0iRqV
-         UcE0OTT02d7nS5+bTC2M5BsW/BXRLEV2Dlxbc9TsMQnBFG03OjImFYoTSS/pFRirS/R9
-         3cfg==
-X-Forwarded-Encrypted: i=1; AJvYcCXhqc6mMYCbHhaz2eZltQYm13P7/ksSOwp1+ku4IfWQ/wcMWqFmSw42kbxpr3KL8XoFLsP5GQ==@lists.linux.dev
-X-Gm-Message-State: AOJu0YzBX6C52JfVq/F5jy8SGCqmOcpVChbWIGYWWVKLvVsUpnKB1LFy
-	On0KJnZTUqPvj7aslpID0I8OPT4XxoNrVElxjMjgHFcZ7mc9XuYl
-X-Google-Smtp-Source: AGHT+IHgLTXQFOm2nfas7td6RKKxViMS3TnkaZ/ETwRUZ8C4GfYVvBwNgF/ge/Jym6wTwcUXDwn93g==
-X-Received: by 2002:a17:902:e743:b0:201:e7c2:bd03 with SMTP id d9443c01a7336-20b37bdc6a4mr193337525ad.60.1727764314723;
-        Mon, 30 Sep 2024 23:31:54 -0700 (PDT)
-Received: from gmail.com ([24.130.68.0])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20b37e4e632sm63809895ad.230.2024.09.30.23.31.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Sep 2024 23:31:54 -0700 (PDT)
-Date: Mon, 30 Sep 2024 23:31:52 -0700
-From: Chang Yu <marcus.yu.56@gmail.com>
-To: dhowells@redhat.com
-Cc: jlayton@kernel.org, netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	skhan@linuxfoundation.org, marcus.yu.56@gmail.com
-Subject: [PATCH v2] netfs: Fix a KMSAN uninit-value error in
- netfs_clear_buffer
-Message-ID: <ZvuXWC2bYpvQsWgS@gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GKqIfl9C"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1727787258;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SlgkcT3VIvsR9xt5rJ/ZZZ2NrD2d4Bg54ZZmbv8EgXY=;
+	b=GKqIfl9CZYH9TsgK5e/YfkmEUjQ7PrzmKweMnVPjSF9HfGZISQcm6rm3kNKcSUjBpEqmtY
+	tsCp7WshtE4/TnkYtnI59l/9W5/N54MZ/aFWx2+Sv2fNf8lVtuBS+DEdpolbXjbGOZfRcM
+	RtZUP16dQkFFtCK1T+ZiBtxPancIkR0=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-554-52vA4fYgNJig4i_2LyBlIQ-1; Tue,
+ 01 Oct 2024 08:54:15 -0400
+X-MC-Unique: 52vA4fYgNJig4i_2LyBlIQ-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (unknown [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E563A19626FC;
+	Tue,  1 Oct 2024 12:54:13 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.145])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 01371195605A;
+	Tue,  1 Oct 2024 12:54:11 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <ZvuXWC2bYpvQsWgS@gmail.com>
+References: <ZvuXWC2bYpvQsWgS@gmail.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: dhowells@redhat.com, Chang Yu <marcus.yu.56@gmail.com>,
+    jlayton@kernel.org, netfs@lists.linux.dev,
+    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+    skhan@linuxfoundation.org
+Subject: Re: [PATCH v2] netfs: Fix a KMSAN uninit-value error in netfs_clear_buffer
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <3115999.1727787250.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 01 Oct 2024 13:54:10 +0100
+Message-ID: <3116000.1727787250@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-Use folioq_count instead of folioq_nr_slots to fix a KMSAN uninit-value
-error in netfs_clear_buffer
+Chang Yu <marcus.yu.56@gmail.com> wrote:
 
-Signed-off-by: Chang Yu <marcus.yu.56@gmail.com>
-Reported-by: syzbot+921873345a95f4dae7e9@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=921873345a95f4dae7e9
-Fixes: cd0277ed0c18 ("netfs: Use new folio_queue data type and iterator instead of xarray iter")
----
-Changes since v2:
-  - Use folioq_count when putting pointers. This avoids touching
-    uninitialized pointer and is a deeper fix than just using
-    kzalloc.
+> Use folioq_count instead of folioq_nr_slots to fix a KMSAN uninit-value
+> error in netfs_clear_buffer
+> =
 
- fs/netfs/misc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Signed-off-by: Chang Yu <marcus.yu.56@gmail.com>
+> Reported-by: syzbot+921873345a95f4dae7e9@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3D921873345a95f4dae7e9
+> Fixes: cd0277ed0c18 ("netfs: Use new folio_queue data type and iterator =
+instead of xarray iter")
 
-diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
-index 63280791de3b..78fe5796b2b2 100644
---- a/fs/netfs/misc.c
-+++ b/fs/netfs/misc.c
-@@ -102,7 +102,7 @@ void netfs_clear_buffer(struct netfs_io_request *rreq)
- 
- 	while ((p = rreq->buffer)) {
- 		rreq->buffer = p->next;
--		for (int slot = 0; slot < folioq_nr_slots(p); slot++) {
-+		for (int slot = 0; slot < folioq_count(p); slot++) {
- 			struct folio *folio = folioq_folio(p, slot);
- 			if (!folio)
- 				continue;
--- 
-2.46.2
+Acked-by: David Howells <dhowells@redhat.com>
+
+Christian: Can you pick this up?
 
