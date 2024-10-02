@@ -1,184 +1,83 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C38198A1A
-	for <netfs@lists.linux.dev>; Wed,  2 Oct 2024 14:46:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EEB81CABF;
+	Wed,  2 Oct 2024 14:56:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880370; cv=none; b=NA4owPwoRpHX/fmYkMO3STgrPuu1A3KU6RlIA1NnEZxjTkqB2bLE7/ROoS4CEPypXwsMOHdlTR2o1FbHFY60ZA3l5Nd8ACVJQHvKG6KclllX0Y6JiSnkfr/PGbudG9X9Bj1qpZ7SRNlq7cws7ggOnMpcTSFh/sIDKvrlOWxYh3U=
+	t=1727880998; cv=none; b=NXhhcpioK7a4VywTMvYeTx5vVEe6IT2kIytheziOUjO9f6E+lBZVhlGbjgosS3K12uTWNw9P/2l+jv6FTTQbp1GSmdUtI3wSRC0ysRm0pLkfDFy704PSI9rH3M5hYkZSFfVJ+InezguAy47Sfy9Dhv3BPsb1Ru0ecK5dxnbcsWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880370; c=relaxed/simple;
-	bh=sNh/AIa+JnaRrSjGaa32yEPyaI6KwqBpjQs1HPPeD+s=;
-	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=BDGMaqlwaABMt1A5ZmMQNA9lZ0ZBMW7H5nZeU8h3zb5agiS3JelzU2fuGrBgBF7DdlMzFXwb7wSTnKuKcVGv9Nqj3pyBGY9KuL5u860YRmeV2gx9TD7OHDhy1ee01UVCzoe0gnCFfEhvDAgfwD6+FwXCGKBrJqKjuIVadVhZsFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Q164X5Iv; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1727880998; c=relaxed/simple;
+	bh=xulxLHbslotqnPo0cfD7hXxtB//PfW37BKDUJN5XFp8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hsF5kzoELxm7YZiPK7BTKU9da9W86wihdu5JHozxx84xou5Az6yy+o1jRiwOD2zI4FIuWos9RKRBDNWpKsAfCYZ6tS44JID88+DAR2fr7e4swpiQGxjWjGXJ2qE6qYJV5qYFZ065fn/gy0MuEsYG0cJUX+urt6FakBVqmAKIg0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uacwZ6Rb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q164X5Iv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1727880367;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=wx+Qy/zl06Mj2fY6S2Q/NqjkDcK+6NpSkSBNzQEim2o=;
-	b=Q164X5Iv6f1tNWZ21OXFYAR1c22D7gqqUH1zmRpuxW40rNZ/v5yT7lBRc0lMsbPCxGqTxH
-	hzGpQlncHSy0OCuewx9ts+AIhWq5oNMfLoMYT59NNOvXS+dzXFWFF/LQUr0saSyKoQPSki
-	wORhQbf9wpI7PNzDjfN/fL+I26+ctgA=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-8-Kr-4CUsINVKkZ5xCKWvUgQ-1; Wed,
- 02 Oct 2024 10:45:57 -0400
-X-MC-Unique: Kr-4CUsINVKkZ5xCKWvUgQ-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BEFCB1955DE0;
-	Wed,  2 Oct 2024 14:45:52 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.145])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0AA043000198;
-	Wed,  2 Oct 2024 14:45:50 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-To: Christian Brauner <brauner@kernel.org>
-cc: dhowells@redhat.com, Jeff Layton <jlayton@kernel.org>,
-    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Subject: [PATCH] netfs: Fix missing wakeup after issuing writes
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uacwZ6Rb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF23C4CECD;
+	Wed,  2 Oct 2024 14:56:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727880998;
+	bh=xulxLHbslotqnPo0cfD7hXxtB//PfW37BKDUJN5XFp8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uacwZ6RbH9djys8CgyBcpTpi+RLWZkAp4/BgrCJe6x+/jVoYj2PBOy9Cay1TMa3zD
+	 2Jo2XWhRlAvmbivi1ctjB2UUOSxxEMCLJadlGy3Xnlo7N2PtAOjb5CfDHpVqUz+hsN
+	 8Pm0uUgy7u9PPDqZWdlUMdlwfVp4qQ4JxqeBMMApAQEZ7G8AOPFWZSpSzEqSJ1Qok3
+	 5rwx9jvhN1+8B6/1hF7duRXaMLB7SWH2Z3fePfH/B5AysZTKgiwkQTT5SOV5/zHDcb
+	 8RKxLTSuqOuLcP3dcwnFv7EXr2Q07umByGQ6PLPPYS9Vt9DB9jttHTc8ypxYW29+ux
+	 S1TRuN+15eZTA==
+From: Christian Brauner <brauner@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] netfs: Fix missing wakeup after issuing writes
+Date: Wed,  2 Oct 2024 16:56:30 +0200
+Message-ID: <20241002-sendung-rausch-9c589b8d09e8@brauner>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <3317784.1727880350@warthog.procyon.org.uk>
+References: <3317784.1727880350@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3317783.1727880350.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 02 Oct 2024 15:45:50 +0100
-Message-ID: <3317784.1727880350@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1433; i=brauner@kernel.org; h=from:subject:message-id; bh=xulxLHbslotqnPo0cfD7hXxtB//PfW37BKDUJN5XFp8=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaT9jZcvtD+8IbBfofZ13baX6zf5uViFWNdmsOnIpUo7v L5x0jiio5SFQYyLQVZMkcWh3SRcbjlPxWajTA2YOaxMIEMYuDgFYCIvtBn+mV87pfj9xZbCg1/P Vz6uD8n7YD9H74sq568Nn6duWJdfasfIcOJafcBP7SbGe8UfZi43MjjM7WG2oaMwgyF+wauEB7v 9OQA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-After dividing up a proposed write into subrequests, netfslib sets
-NETFS_RREQ_ALL_QUEUED to indicate to the collector that it can move on to
-the final cleanup once it has emptied the subrequest queues.
+On Wed, 02 Oct 2024 15:45:50 +0100, David Howells wrote:
+> After dividing up a proposed write into subrequests, netfslib sets
+> NETFS_RREQ_ALL_QUEUED to indicate to the collector that it can move on to
+> the final cleanup once it has emptied the subrequest queues.
+> 
+> Now, whilst the collector will normally end up running at least once after
+> this bit is set just because it takes a while to process all the write
+> subrequests before the collector runs out of subrequests, there exists the
+> possibility that the issuing thread will be forced to sleep and the
+> collector thread will clean up all the subrequests before ALL_QUEUED gets
+> set.
+> 
+> [...]
 
-Now, whilst the collector will normally end up running at least once after
-this bit is set just because it takes a while to process all the write
-subrequests before the collector runs out of subrequests, there exists the
-possibility that the issuing thread will be forced to sleep and the
-collector thread will clean up all the subrequests before ALL_QUEUED gets
-set.
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-In such a case, the collector thread will not get triggered again and will
-never clear NETFS_RREQ_IN_PROGRESS thus leaving a request uncompleted and
-causing a potential futute hang.
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-Fix this by scheduling the write collector if all the subrequest queues ar=
-e
-empty (and thus no writes pending issuance).
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-Note that we'd do this ideally before queuing the subrequest, but in the
-case of buffered writeback, at least, we can't find out that we've run out
-of folios until after we've called writeback_iter() and it has returned
-NULL - at which point we might not actually have any subrequests still
-under construction.
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
-Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
----
- fs/netfs/write_issue.c |   42 +++++++++++++++++++++++++++---------------
- 1 file changed, 27 insertions(+), 15 deletions(-)
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
 
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index 6293f547e4c3..bf6d507578e5 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -508,6 +508,30 @@ static int netfs_write_folio(struct netfs_io_request =
-*wreq,
- 	return 0;
- }
- =
-
-+/*
-+ * End the issuing of writes, letting the collector know we're done.
-+ */
-+static void netfs_end_issue_write(struct netfs_io_request *wreq)
-+{
-+	bool needs_poke =3D true;
-+
-+	smp_wmb(); /* Write subreq lists before ALL_QUEUED. */
-+	set_bit(NETFS_RREQ_ALL_QUEUED, &wreq->flags);
-+
-+	for (int s =3D 0; s < NR_IO_STREAMS; s++) {
-+		struct netfs_io_stream *stream =3D &wreq->io_streams[s];
-+
-+		if (!stream->active)
-+			continue;
-+		if (!list_empty(&stream->subrequests))
-+			needs_poke =3D false;
-+		netfs_issue_write(wreq, stream);
-+	}
-+
-+	if (needs_poke)
-+		netfs_wake_write_collector(wreq, false);
-+}
-+
- /*
-  * Write some of the pending data back to the server
-  */
-@@ -559,10 +583,7 @@ int netfs_writepages(struct address_space *mapping,
- 			break;
- 	} while ((folio =3D writeback_iter(mapping, wbc, folio, &error)));
- =
-
--	for (int s =3D 0; s < NR_IO_STREAMS; s++)
--		netfs_issue_write(wreq, &wreq->io_streams[s]);
--	smp_wmb(); /* Write lists before ALL_QUEUED. */
--	set_bit(NETFS_RREQ_ALL_QUEUED, &wreq->flags);
-+	netfs_end_issue_write(wreq);
- =
-
- 	mutex_unlock(&ictx->wb_lock);
- =
-
-@@ -650,10 +671,7 @@ int netfs_end_writethrough(struct netfs_io_request *w=
-req, struct writeback_contr
- 	if (writethrough_cache)
- 		netfs_write_folio(wreq, wbc, writethrough_cache);
- =
-
--	netfs_issue_write(wreq, &wreq->io_streams[0]);
--	netfs_issue_write(wreq, &wreq->io_streams[1]);
--	smp_wmb(); /* Write lists before ALL_QUEUED. */
--	set_bit(NETFS_RREQ_ALL_QUEUED, &wreq->flags);
-+	netfs_end_issue_write(wreq);
- =
-
- 	mutex_unlock(&ictx->wb_lock);
- =
-
-@@ -699,13 +717,7 @@ int netfs_unbuffered_write(struct netfs_io_request *w=
-req, bool may_wait, size_t
- 			break;
- 	}
- =
-
--	netfs_issue_write(wreq, upload);
--
--	smp_wmb(); /* Write lists before ALL_QUEUED. */
--	set_bit(NETFS_RREQ_ALL_QUEUED, &wreq->flags);
--	if (list_empty(&upload->subrequests))
--		netfs_wake_write_collector(wreq, false);
--
-+	netfs_end_issue_write(wreq);
- 	_leave(" =3D %d", error);
- 	return error;
- }
-
+[1/1] netfs: Fix missing wakeup after issuing writes
+      https://git.kernel.org/vfs/vfs/c/1ca4169c391c
