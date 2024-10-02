@@ -1,77 +1,73 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DADB28F4;
-	Tue,  1 Oct 2024 14:03:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A79197A67
+	for <netfs@lists.linux.dev>; Wed,  2 Oct 2024 09:25:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727791428; cv=none; b=luFQk6JZ+AwjB1CTDTq/ZZp+h5JfcFETXeOzExLU3NImIN8YnjtCgZJWvyVwbjbmRiesdDzf5WZiyrNPaZeymtfaE9viFj/0yMs/E41M9iQ064raO2M/lRwxwZkIMZYDkkpQuvK0Yt8N/LUeYty8uD0NF2Jck5fcMuXiWD/wwLI=
+	t=1727861126; cv=none; b=R64xBSIpc5o40NGfwG9mnte2R1QM3Z6bG6ZyxfwgRDTn/VmU/yGv1Y0GcLEip5lLwN8udnJHTnUTjjUcHKMs7z1qWTOzaIqcs3SeaeYAuVVJ+NsQc6qWPzHsNMnsXeXC+yTwfM5OJMIDXol4y5nmKoVadvuxkMW9XKzD4qmDzJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727791428; c=relaxed/simple;
-	bh=/nhn+SWprwiztlWKYdYqdvIVtsJh5dygDuCJ0NZz6XQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IGGBNNd2Xs5hb54QKDCY5Tql1SChWBgadd5eaXYLgxvfV7oqtC+DzIeyc+9/bq9U+Mv6bpXiAYQ7kNEl3A5nZG5vZqbsf/XlJsTZ1fE/acmIC71Jogm1+TlMsbqp4ScwZFmW6clyqIRlscKXFi8jOJb+452RcR4DJuxEsAL8PoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wh7MHN2W; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wh7MHN2W"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BCD4C4CEC7;
-	Tue,  1 Oct 2024 14:03:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727791428;
-	bh=/nhn+SWprwiztlWKYdYqdvIVtsJh5dygDuCJ0NZz6XQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wh7MHN2WYalSL7SA8PvpNjeaBafbTlCGjSOjtpXQv3Mizs/MgcwCGBaEoRpU124R7
-	 Uks6JHchwRlMszJr2Tkmz1beRSvmO74JgQnuTOLXrls2y21dDEWPgG6Z1ApCB8jf03
-	 nPbwpEiOJOFJwsDmSqgdD+YOlTL90yXiLdYbW0SNyp/1Fuk98Y1mNosnrRPPC3VcH4
-	 qQ9D3+LOvq9U4egKnUA+Y8PymE6jzP6mjMaapECbknPXHZUjVIjzLB+Esv8/c1FR0X
-	 3SKHlK+gKzr6XwxSqcCK+6MDwK9WEcjchPTYpFbYAGAfzViFkSovmEFK+PKNYyLpWb
-	 CwJIRIr1j1Q7w==
-From: Christian Brauner <brauner@kernel.org>
-To: dhowells@redhat.com,
-	Chang Yu <marcus.yu.56@gmail.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	jlayton@kernel.org,
+	s=arc-20240116; t=1727861126; c=relaxed/simple;
+	bh=ooWI9Kow8SyrKEFCiL3cPo9bca2M49dCLq8dXZid/uo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rMVUo/f/SPv+yTxCFbTCM7vbqbv7HHMmOfU71u8jq8XDBTVXmalLMUUsgTKAJENftNoAeQ3BPyjnc2C4OjAu24+Ptrg98WR6sBVOvsi2VuuCT3eQPbfIJpYaJBF8tAZ4GptC1IjojzV3Kp6dZe5LAWgPoZyAl4Auh/j1AXuycCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=exkc.moe; spf=pass smtp.mailfrom=getgoogleoff.me; arc=none smtp.client-ip=178.21.23.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=exkc.moe
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=getgoogleoff.me
+Received: from mail01.disroot.lan (localhost [127.0.0.1])
+	by disroot.org (Postfix) with ESMTP id A9A5C23DF6;
+	Wed,  2 Oct 2024 11:25:22 +0200 (CEST)
+X-Virus-Scanned: SPAM Filter at disroot.org
+Received: from layka.disroot.org ([127.0.0.1])
+ by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
+ id CLSUwjgbG1w9; Wed,  2 Oct 2024 11:25:21 +0200 (CEST)
+From: exkc <exkc@exkc.moe>
+To: exxxxkc@gmail.com
+Cc: David Howells <dhowells@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
 	netfs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	skhan@linuxfoundation.org
-Subject: Re: [PATCH v2] netfs: Fix a KMSAN uninit-value error in netfs_clear_buffer
-Date: Tue,  1 Oct 2024 16:03:40 +0200
-Message-ID: <20241001-parade-futter-776bcefe0ce5@brauner>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <ZvuXWC2bYpvQsWgS@gmail.com>
-References: <ZvuXWC2bYpvQsWgS@gmail.com>
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH] netfs: Fix the netfs_folio tracepoint to handle NULL mapping
+Date: Wed,  2 Oct 2024 17:23:43 +0800
+Message-ID: <20241002092343.823-1-exkc@exkc.moe>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=941; i=brauner@kernel.org; h=from:subject:message-id; bh=/nhn+SWprwiztlWKYdYqdvIVtsJh5dygDuCJ0NZz6XQ=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaT9YbSbFeb1TUNE7ZjgtkVWFybI7ai53X6YdeNaK3lJf d/yH28yO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACbyPJSRoTUtxsJodZuLolBy w6ElTHIfJs5bcLP4IotMxzOjjHixyYwMa6NzDv+dGdlmkbIy5jPvLEGj0DvebMcKp/ge/bTmv2o XIwA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-On Mon, 30 Sep 2024 23:31:52 -0700, Chang Yu wrote:
-> Use folioq_count instead of folioq_nr_slots to fix a KMSAN uninit-value
-> error in netfs_clear_buffer
-> 
-> 
+From: David Howells <dhowells@redhat.com>
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
+Fix the netfs_folio tracepoint to handle folios that have a NULL mapping
+pointer.  In such a case, just substitute a zero inode number.
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+Fixes: c38f4e96e605 ("netfs: Provide func to copy data to pagecache for buffered write")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/2917423.1727697556@warthog.procyon.org.uk
+cc: Jeff Layton <jlayton@kernel.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+---
+ include/trace/events/netfs.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
+index 76bd42a96815..1d7c52821e55 100644
+--- a/include/trace/events/netfs.h
++++ b/include/trace/events/netfs.h
+@@ -448,7 +448,8 @@ TRACE_EVENT(netfs_folio,
+ 			     ),
+ 
+ 	    TP_fast_assign(
+-		    __entry->ino = folio->mapping->host->i_ino;
++		    struct address_space *__m = READ_ONCE(folio->mapping);
++		    __entry->ino = __m ? __m->host->i_ino : 0;
+ 		    __entry->why = why;
+ 		    __entry->index = folio_index(folio);
+ 		    __entry->nr = folio_nr_pages(folio);
+-- 
+2.46.1
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
-
-[1/1] netfs: Fix a KMSAN uninit-value error in netfs_clear_buffer
-      https://git.kernel.org/vfs/vfs/c/f6023535b52f
