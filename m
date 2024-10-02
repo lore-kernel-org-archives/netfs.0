@@ -1,73 +1,53 @@
 Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A79197A67
-	for <netfs@lists.linux.dev>; Wed,  2 Oct 2024 09:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BBC1CBE9C
+	for <netfs@lists.linux.dev>; Wed,  2 Oct 2024 09:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727861126; cv=none; b=R64xBSIpc5o40NGfwG9mnte2R1QM3Z6bG6ZyxfwgRDTn/VmU/yGv1Y0GcLEip5lLwN8udnJHTnUTjjUcHKMs7z1qWTOzaIqcs3SeaeYAuVVJ+NsQc6qWPzHsNMnsXeXC+yTwfM5OJMIDXol4y5nmKoVadvuxkMW9XKzD4qmDzJM=
+	t=1727861607; cv=none; b=Tic+sFuZWPuJE3Hz0pvWqkDGFfrVMtQJSfMQoUMpn9pW2zsQnLa6S61SpRKhNEvEemPNVuo5rn0pPCGZEmol0Z4O5WqDbNBPSVdtyikp/b2AixsUqiqNhAz1HtbuYU6HxzfZ2gFconHDIeoXqcRBBlwoQXlrqC5vGYH64g4RkSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727861126; c=relaxed/simple;
-	bh=ooWI9Kow8SyrKEFCiL3cPo9bca2M49dCLq8dXZid/uo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rMVUo/f/SPv+yTxCFbTCM7vbqbv7HHMmOfU71u8jq8XDBTVXmalLMUUsgTKAJENftNoAeQ3BPyjnc2C4OjAu24+Ptrg98WR6sBVOvsi2VuuCT3eQPbfIJpYaJBF8tAZ4GptC1IjojzV3Kp6dZe5LAWgPoZyAl4Auh/j1AXuycCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=exkc.moe; spf=pass smtp.mailfrom=getgoogleoff.me; arc=none smtp.client-ip=178.21.23.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=exkc.moe
+	s=arc-20240116; t=1727861607; c=relaxed/simple;
+	bh=1EP1SXtR8GMY60GTFp6YWsMa8oFAibWNIly5Yyoh2ck=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=cXfctPQU0FBR5PdPYVgTKlkegC1MOUldnHGKLhwDvsWK3HJNDBlAtupKj5NbdKsDF3hknlSHA4fszSSXWaSNB65Rpc7rrZy6B7G/2lRxKmCvr2qtHm8X7ObsuSw1bmmsjRjeRzdeuQj/J7oDMEoH57YbUGUR51UjpMDIGwdbMb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=getgoogleoff.me; spf=pass smtp.mailfrom=getgoogleoff.me; dkim=pass (2048-bit key) header.d=getgoogleoff.me header.i=@getgoogleoff.me header.b=Hlfb/brV; arc=none smtp.client-ip=178.21.23.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=getgoogleoff.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=getgoogleoff.me
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=getgoogleoff.me header.i=@getgoogleoff.me header.b="Hlfb/brV"
 Received: from mail01.disroot.lan (localhost [127.0.0.1])
-	by disroot.org (Postfix) with ESMTP id A9A5C23DF6;
-	Wed,  2 Oct 2024 11:25:22 +0200 (CEST)
+	by disroot.org (Postfix) with ESMTP id 0780823CB8
+	for <netfs@lists.linux.dev>; Wed,  2 Oct 2024 11:33:23 +0200 (CEST)
 X-Virus-Scanned: SPAM Filter at disroot.org
 Received: from layka.disroot.org ([127.0.0.1])
  by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
- id CLSUwjgbG1w9; Wed,  2 Oct 2024 11:25:21 +0200 (CEST)
-From: exkc <exkc@exkc.moe>
-To: exxxxkc@gmail.com
-Cc: David Howells <dhowells@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH] netfs: Fix the netfs_folio tracepoint to handle NULL mapping
-Date: Wed,  2 Oct 2024 17:23:43 +0800
-Message-ID: <20241002092343.823-1-exkc@exkc.moe>
+ id PIrTC_I7Azg2 for <netfs@lists.linux.dev>;
+ Wed,  2 Oct 2024 11:33:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=getgoogleoff.me;
+	s=mail; t=1727861588;
+	bh=1EP1SXtR8GMY60GTFp6YWsMa8oFAibWNIly5Yyoh2ck=;
+	h=Date:To:From:Subject;
+	b=Hlfb/brVBp1TH8ilr5svL0XoWrvnnAbZVMX60ILPyvD1OKsW0eAk0V2KbmSrSz8Fn
+	 SrOZB2TAMfJMuAbnHkBQk1RWwrfSS/9DOKb18QkFNh/8aMZOH5JXWA4gtWjTUUqF4c
+	 ZPFut+StERXdFzz/ZX4Bdr00rO150Zl6BlyLfPwlIKHSnmplWc7Qdg1usB/a2HbFIR
+	 yPyux9+M6e+TKRuIX+DI7425UuY4tlaF2BL8Z20w6ASSu3ej1/tr+Iies4BpP7W96H
+	 v6htuLOTxvmaUxcpJoX9HJ6I760tQ0yl6zUEVPEUhCr5WExAte+y/b/Zs7fDELymSY
+	 KGUK8ncCOsLFA==
+Message-ID: <6265b94c-af8a-45df-b81d-c3957d5d75a9@getgoogleoff.me>
+Date: Wed, 2 Oct 2024 17:31:45 +0800
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+To: netfs@lists.linux.dev
+From: exxxxkc <exxxxkc@getgoogleoff.me>
+Subject: Re:[PATCH] netfs: Fix the netfs_folio tracepoint to handle NULL
+ mapping
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: David Howells <dhowells@redhat.com>
-
-Fix the netfs_folio tracepoint to handle folios that have a NULL mapping
-pointer.  In such a case, just substitute a zero inode number.
-
-Fixes: c38f4e96e605 ("netfs: Provide func to copy data to pagecache for buffered write")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/2917423.1727697556@warthog.procyon.org.uk
-cc: Jeff Layton <jlayton@kernel.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
----
- include/trace/events/netfs.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
-index 76bd42a96815..1d7c52821e55 100644
---- a/include/trace/events/netfs.h
-+++ b/include/trace/events/netfs.h
-@@ -448,7 +448,8 @@ TRACE_EVENT(netfs_folio,
- 			     ),
- 
- 	    TP_fast_assign(
--		    __entry->ino = folio->mapping->host->i_ino;
-+		    struct address_space *__m = READ_ONCE(folio->mapping);
-+		    __entry->ino = __m ? __m->host->i_ino : 0;
- 		    __entry->why = why;
- 		    __entry->index = folio_index(folio);
- 		    __entry->nr = folio_nr_pages(folio);
--- 
-2.46.1
+hi sry i misstakenly sended the patch to the maililst.
 
