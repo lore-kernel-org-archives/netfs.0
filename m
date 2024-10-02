@@ -1,83 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EEB81CABF;
-	Wed,  2 Oct 2024 14:56:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860EC748F
+	for <netfs@lists.linux.dev>; Wed,  2 Oct 2024 15:22:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880998; cv=none; b=NXhhcpioK7a4VywTMvYeTx5vVEe6IT2kIytheziOUjO9f6E+lBZVhlGbjgosS3K12uTWNw9P/2l+jv6FTTQbp1GSmdUtI3wSRC0ysRm0pLkfDFy704PSI9rH3M5hYkZSFfVJ+InezguAy47Sfy9Dhv3BPsb1Ru0ecK5dxnbcsWE=
+	t=1727882526; cv=none; b=mVX/KjtnWt6feIrSaWSkGX+zpd0nevOaJmCZk5Nycib93Uou2ehG5UwpwaIZ/uqDODTIJ6+CDDWwijPi7Ed34zWlbkfqUpXQtzqu6nasV4z+kvdn+RMvy9mbAwNjEGRwTW2lI64992NhpDbcPXG4n/5Oo14N4CP34Ka3Z/gteqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880998; c=relaxed/simple;
-	bh=xulxLHbslotqnPo0cfD7hXxtB//PfW37BKDUJN5XFp8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hsF5kzoELxm7YZiPK7BTKU9da9W86wihdu5JHozxx84xou5Az6yy+o1jRiwOD2zI4FIuWos9RKRBDNWpKsAfCYZ6tS44JID88+DAR2fr7e4swpiQGxjWjGXJ2qE6qYJV5qYFZ065fn/gy0MuEsYG0cJUX+urt6FakBVqmAKIg0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uacwZ6Rb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727882526; c=relaxed/simple;
+	bh=mIPzMdl/U8Z+2nAHifwWJDYD7x1PHUmm+NxHQypeHLQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sTcZBmJdGrN0kUYYrh9LCKzbk0AfoWplgZpv2dGIbJS/6otH1BlcDZ0yc4Y1j542FpNeNkrrXxdjS8YfB5Yn8DQlWWnnPUvEs4qCaYeJC/IKdyzOn9qoYemFu5rovW96PTJ2HYv+YWZbDgnkFQ3V++h1PjY1/FsP2gZNKr79YUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NEy6Lvsa; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uacwZ6Rb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF23C4CECD;
-	Wed,  2 Oct 2024 14:56:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727880998;
-	bh=xulxLHbslotqnPo0cfD7hXxtB//PfW37BKDUJN5XFp8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uacwZ6RbH9djys8CgyBcpTpi+RLWZkAp4/BgrCJe6x+/jVoYj2PBOy9Cay1TMa3zD
-	 2Jo2XWhRlAvmbivi1ctjB2UUOSxxEMCLJadlGy3Xnlo7N2PtAOjb5CfDHpVqUz+hsN
-	 8Pm0uUgy7u9PPDqZWdlUMdlwfVp4qQ4JxqeBMMApAQEZ7G8AOPFWZSpSzEqSJ1Qok3
-	 5rwx9jvhN1+8B6/1hF7duRXaMLB7SWH2Z3fePfH/B5AysZTKgiwkQTT5SOV5/zHDcb
-	 8RKxLTSuqOuLcP3dcwnFv7EXr2Q07umByGQ6PLPPYS9Vt9DB9jttHTc8ypxYW29+ux
-	 S1TRuN+15eZTA==
-From: Christian Brauner <brauner@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] netfs: Fix missing wakeup after issuing writes
-Date: Wed,  2 Oct 2024 16:56:30 +0200
-Message-ID: <20241002-sendung-rausch-9c589b8d09e8@brauner>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <3317784.1727880350@warthog.procyon.org.uk>
-References: <3317784.1727880350@warthog.procyon.org.uk>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NEy6Lvsa"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a83562f9be9so147154166b.0
+        for <netfs@lists.linux.dev>; Wed, 02 Oct 2024 08:22:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727882523; x=1728487323; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=fPlNQhOvyf3KzT1RAY+EhO/JN1lsJ3MMWmC/Lsg86Ts=;
+        b=NEy6Lvsaic024MrxGflC+UluZ8+PmU9WeUX45+mWh7nK3PwaKWkm1ADz2tRmZTvaqm
+         xtiJmgpr5veDhijqpWDK4IBVjIKkZgxmet0fI57LauH4MmIjucgJzNm1m69Q1rGHVKF1
+         2NGpRRKNaPr8ic0bG3ipd90l30ICSm5NEyLbx26XEM1Y4l9NrsNgnuggFAzLuV+Qow+H
+         z/xIToQgTpIAt0dcYlyTbDb3vdGzKUePQ0zs9nNgum6ioX7VmY4vZzuCtAJVD15KLclB
+         dd5PQyDtwQO0lBflz7jC5GWpgXjh1xF5YTswsVpXgnoG41CRU5tTnGRnSHD0L5HTiIMF
+         D3XA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727882523; x=1728487323;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fPlNQhOvyf3KzT1RAY+EhO/JN1lsJ3MMWmC/Lsg86Ts=;
+        b=w9oFg8dqvH6zPHJq39fRC3oWECPGet2PkFDsoc1ryiS3wnXsEyY516zMqQdf0t7ySW
+         jhYsQ8gpBrPxFgs3e+rqpksSZIZsJukxZ2naBqiMb/S4e0n+5L39aWXOogbhdLeypHbt
+         vaqXnU2VaAHqTclKRq0JL6BwPNgr4C2oj724hs7JSgcLJxoE0kGvQk2YYtVZ/GoEECvS
+         lhlSgTeOrxIENQLEsNrF0HtIVl30xO/pRYqln/OvYmM+JS8+UEJF5+kLHeOmGndNXVPL
+         9167PmMhtUkjX+3w0tHMyyFj21l1dH5NBINB4BP7QSkrVbmvaf55TStbkTlKN81nNrmu
+         lBRA==
+X-Forwarded-Encrypted: i=1; AJvYcCXnR3dhHv2JMTarVrfeKsIH83xC7kTqu8LfQmpd9UR1dlGmeW/8OtHMulMnc0IpxaqbJs0BOQ==@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywu0qx+glmkTAj1s583ENS0eeaVeKZ56F3R8hNS0j1Rvg4PD0iO
+	sy9JO1YqBsXi3Y+6uh4WqKf/sGgy/Eb3dcTQLk42Z+j3xWA0nkH/
+X-Google-Smtp-Source: AGHT+IHChd4yZg8or3ejXPCRc62DPxCE+1UcZY128I/imN4nrDzdsUJuzZtRJdwyo/VQpRbow33hHA==
+X-Received: by 2002:a17:907:1c16:b0:a8d:250a:52b2 with SMTP id a640c23a62f3a-a98f8207a97mr309787766b.6.1727882522847;
+        Wed, 02 Oct 2024 08:22:02 -0700 (PDT)
+Received: from gmail.com ([45.250.247.85])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a93c294821bsm872863766b.104.2024.10.02.08.22.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Oct 2024 08:22:02 -0700 (PDT)
+Date: Wed, 2 Oct 2024 20:51:57 +0530
+From: Brahmajit <brahmajit.xyz@gmail.com>
+To: dhowells@redhat.com
+Cc: jlayton@kernel.org, netfs@lists.linux.dev
+Subject: Re: [PATCH 1/1] fs: netfs: making arrays non-null terminated and
+ fixing build with GCC 15
+Message-ID: <tta2mtxd6n3g4ommh5wakf6y3lwze6a2cvt5jrowbcqtxj62tw@zh4lpfid4woo>
+References: <20241002140810.1333092-1-brahmajit.xyz@gmail.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1433; i=brauner@kernel.org; h=from:subject:message-id; bh=xulxLHbslotqnPo0cfD7hXxtB//PfW37BKDUJN5XFp8=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaT9jZcvtD+8IbBfofZ13baX6zf5uViFWNdmsOnIpUo7v L5x0jiio5SFQYyLQVZMkcWh3SRcbjlPxWajTA2YOaxMIEMYuDgFYCIvtBn+mV87pfj9xZbCg1/P Vz6uD8n7YD9H74sq568Nn6duWJdfasfIcOJafcBP7SbGe8UfZi43MjjM7WG2oaMwgyF+wauEB7v 9OQA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241002140810.1333092-1-brahmajit.xyz@gmail.com>
 
-On Wed, 02 Oct 2024 15:45:50 +0100, David Howells wrote:
-> After dividing up a proposed write into subrequests, netfslib sets
-> NETFS_RREQ_ALL_QUEUED to indicate to the collector that it can move on to
-> the final cleanup once it has emptied the subrequest queues.
+On 02.10.2024 19:38, Brahmajit Das wrote:
+> My patch fixes the issue by separating the contents of the array into
+> each character, this excludes the NUL character thus the string (-PAEW
+> or -LCAIFUWRD) being able to fit into thir respective arrays.
 > 
-> Now, whilst the collector will normally end up running at least once after
-> this bit is set just because it takes a while to process all the write
-> subrequests before the collector runs out of subrequests, there exists the
-> possibility that the issuing thread will be forced to sleep and the
-> collector thread will clean up all the subrequests before ALL_QUEUED gets
-> set.
-> 
-> [...]
+> I'm open to better indeas, such as increasing the size of the array by
+> one and others.
+After writing this initial version of the patch it came to my mind we
+can do something like  
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
+diff --git a/fs/netfs/fscache_cache.c b/fs/netfs/fscache_cache.c
+index 9397ed39b0b4..f6b1f7b890a6 100644
+--- a/fs/netfs/fscache_cache.c
++++ b/fs/netfs/fscache_cache.c
+@@ -372,7 +372,7 @@ void fscache_withdraw_cache(struct fscache_cache *cache)
+ EXPORT_SYMBOL(fscache_withdraw_cache);
+ 
+ #ifdef CONFIG_PROC_FS
+-static const char fscache_cache_states[NR__FSCACHE_CACHE_STATE] = "-PAEW";
++static const char *fscache_cache_states = "-PAEW";
+ 
+ /*
+  * Generate a list of caches in /proc/fs/fscache/caches
+diff --git a/fs/netfs/fscache_cookie.c b/fs/netfs/fscache_cookie.c
+index d4d4b3a8b106..8c82c1f9070f 100644
+--- a/fs/netfs/fscache_cookie.c
++++ b/fs/netfs/fscache_cookie.c
+@@ -29,7 +29,7 @@ static LIST_HEAD(fscache_cookie_lru);
+ static DEFINE_SPINLOCK(fscache_cookie_lru_lock);
+ DEFINE_TIMER(fscache_cookie_lru_timer, fscache_cookie_lru_timed_out);
+ static DECLARE_WORK(fscache_cookie_lru_work, fscache_cookie_lru_worker);
+-static const char fscache_cookie_states[FSCACHE_COOKIE_STATE__NR] = "-LCAIFUWRD";
++static const char *fscache_cookie_states = "-LCAIFUWRD";
+ static unsigned int fscache_lru_cookie_timeout = 10 * HZ;
+ 
+ void fscache_print_cookie(struct fscache_cookie *cookie, char prefix)
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
-
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
-
-[1/1] netfs: Fix missing wakeup after issuing writes
-      https://git.kernel.org/vfs/vfs/c/1ca4169c391c
+This approach would be a bit cleaner and shorter, would really like some
+opinion on the either of the approaches.
+-- 
+Regards,
+Brahmajit
