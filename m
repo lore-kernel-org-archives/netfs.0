@@ -1,82 +1,79 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F1511D0F78;
-	Mon,  7 Oct 2024 11:48:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F261D54E3
+	for <netfs@lists.linux.dev>; Mon,  7 Oct 2024 14:14:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728301732; cv=none; b=JX2Gzpo/uQiqoWyvN+igkBal30tf8mwles44mma1lWkzrlVO80ulfEz7ZVmomickyroGkyZIhHDsCrpWg89pcV3YKVEPQVJ+B7bi6hGj6RMxPydezR3j8WagQwvLERUpvHcfL9R+xik4evvqicOaRMwMNosh4A8D2Eq1j2FpyCw=
+	t=1728310444; cv=none; b=bR3h2ARe89ZYdlC2kdhXPB1kxhyq0p15pfH3WcmvbDRw7/yGDrw0iMUKKnLZiIAguscDw4QIcQnsXZYWrKxcWULk1+olVWscTG5PO4NgviRplIDODqJa0SwqT59VZW/BS6lw7jotFu/61Ivz7lPIBq0WIrXBqWFqNOHzJAC6AwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728301732; c=relaxed/simple;
-	bh=kbc4xmfeNAfmBlWlHAJaCe/u2AgE7q7Q3kDpNlK08bA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U+07mlcwunh+mm+ESE/wlv1a7zmevVBLfbOgra5qGKpFyCGjO0PPYFWiaoaWzK28nowE6WrhCTPbtsW4FtlFabWl7k0tvS6+QUoZIbgFljOjv+OkCFtl6+98hX4MCLUJyANjajNJFYqaf72FKELekLzNwcWYnSIWttkiu9/ivV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oxKpbxMD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1728310444; c=relaxed/simple;
+	bh=3uebTxn9YgI6i5zfpZtkhSyh67xtURKm0fPZi4CKTd0=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=CpC+/bIrSDX8zFUEvXJqczhIib1f+RPjkdK5kCfUne0tQKUlZ5i6r/cjQHVqgzyFgSCIehVq4U+4wWlCFh4PvZGDxYg4HuP1ypklmxU9DDkcRhMt1WuMj6Ri51pBuXkWVXb7TujUTao48v/xPGrZT/S4T7unmV9rF+Et+ckrNQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hrsZrCSJ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oxKpbxMD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F142C4CEC6;
-	Mon,  7 Oct 2024 11:48:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728301731;
-	bh=kbc4xmfeNAfmBlWlHAJaCe/u2AgE7q7Q3kDpNlK08bA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oxKpbxMDJbiODH7UoCcd4X3j37d15s6MHNSxk+RBdoLqwklaofqnvd6FSkNyuDRuP
-	 3GyyDz4IErGrK2ZzrvWoHfKc0D7iRjnqJj9BCPbuKeWbhnKTh7jXJTwH1HjbsHQdli
-	 bzQhbJ0xmsDYqBXeeQ/MskSAGTI8HaY8FkUXa9E3S3fTGXGm4QbM+e5MRZvXA7c3Ke
-	 BnDOyEt+l4zqLHnn8aDY8gl2lvQmE9docZ2Y5dy9rQ+KuEgJ2zpnbjJpQL0r+rO6Cw
-	 rIr0v6PK5a5nxw1ehzNMZQMR0mazqAYBwY2bm4S/Fh4jhiH2qPXrJetSXL9DMiluxT
-	 TlmkAHDtWZSPA==
-From: Christian Brauner <brauner@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] netfs: In readahead, put the folio refs as soon extracted
-Date: Mon,  7 Oct 2024 13:48:46 +0200
-Message-ID: <20241007-eifrig-zinsniveau-7b31e4c4a4ab@brauner>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <3771538.1728052438@warthog.procyon.org.uk>
-References: <3771538.1728052438@warthog.procyon.org.uk>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hrsZrCSJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1728310441;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3uebTxn9YgI6i5zfpZtkhSyh67xtURKm0fPZi4CKTd0=;
+	b=hrsZrCSJmpULZNkkDiTN4ROHUeqWVtstpkmIFhylcsY+2Z6P267yoxMPe+JXZWl7byqqaF
+	MdwMec+SxRMIgJxiP6JSW7C59I5NCLeWrpON5ITx+Y8/eHl4AzGd+b4RUURghuHFlldFez
+	aCsyHPzT/T2DWvBvhCVzC6ehc9FQ19A=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-81-iH58uYBVOJyWEmBMdLxVuw-1; Mon,
+ 07 Oct 2024 10:13:57 -0400
+X-MC-Unique: iH58uYBVOJyWEmBMdLxVuw-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3D77C19560A5;
+	Mon,  7 Oct 2024 14:13:56 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.145])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C148C19560A2;
+	Mon,  7 Oct 2024 14:13:54 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20241005182307.3190401-2-willy@infradead.org>
+References: <20241005182307.3190401-2-willy@infradead.org> <20241005182307.3190401-1-willy@infradead.org>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: dhowells@redhat.com, netfs@lists.linux.dev,
+    linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 1/3] netfs: Remove call to folio_index()
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1311; i=brauner@kernel.org; h=from:subject:message-id; bh=kbc4xmfeNAfmBlWlHAJaCe/u2AgE7q7Q3kDpNlK08bA=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaQzn5r34bC/ncwk9j0bbnic1/j5Sbyfjy+EKYDhYENH1 IqOMtZbHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABMJWcDwh9fIcNuTD/2lmdzB cf/n+O44qXpC9/rH+IXRPM9UxO98UWX4H1CztLvXW+R1zt263wpTHhy1KDt8tFe0QfyvpPtCx6k WPAA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <4027692.1728310433.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 07 Oct 2024 15:13:53 +0100
+Message-ID: <4027693.1728310433@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Fri, 04 Oct 2024 15:33:58 +0100, David Howells wrote:
-> netfslib currently defers dropping the ref on the folios it obtains during
-> readahead to after it has started I/O on the basis that we can do it whilst
-> we wait for the I/O to complete, but this runs the risk of the I/O
-> collection racing with this in future.
-> 
-> Furthermore, Matthew Wilcox strongly suggests that the refs should be
-> dropped immediately, as readahead_folio() does (netfslib is using
-> __readahead_batch() which doesn't drop the refs).
-> 
-> [...]
+Matthew Wilcox (Oracle) <willy@infradead.org> wrote:
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
+> Calling folio_index() is pointless overhead; directly dereferencing
+> folio->index is fine.
+> =
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+Fixes: c38f4e96e605 ("netfs: Provide func to copy data to pagecache for bu=
+ffered write")
+Acked-by: David Howells <dhowells@redhat.com>
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
-
-[1/1] netfs: In readahead, put the folio refs as soon extracted
-      https://git.kernel.org/vfs/vfs/c/796a4049640b
