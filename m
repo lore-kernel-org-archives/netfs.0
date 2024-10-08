@@ -1,28 +1,28 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9266718FC70;
-	Tue,  8 Oct 2024 12:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4621779B1;
+	Tue,  8 Oct 2024 12:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728389917; cv=none; b=j8QTt9DLYsLURs1SwYYPIVrjSpPijjWKhkcD9/aVYBbtbmwpS9pMvojmqnRx6wK3hWbLgN3uvkIrPbLyGi5/RHhTThhQ4wt9MdFRVNRMkZnQLCglHgR05ewpUcuIbKDRP4raERijT7HbfX1LO8fI3nvH44rkyRQDHjqw4I2LGSQ=
+	t=1728391220; cv=none; b=Raa81CXtvodiWlB3qO/rAysorWcKdr2EeZ9viA35MVDGcwL2uUan1YrS7oo5+t9onrQefWjoJkgAvCprOSZzvjMLLZOi8C55tOdRrAkjKfVBU/PjL3EdeNj2CbSqErrPK/0kFoFFHLwjWn8oZpuuquYvx8ggt/qJiq+morzJOKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728389917; c=relaxed/simple;
-	bh=MJiiLp5BSQTssGxUEupObe+503qObYvaSDb6oGqhEWE=;
+	s=arc-20240116; t=1728391220; c=relaxed/simple;
+	bh=aUiYHLp/o8JLjU62RMmPFXZDYB4HPfzQzoDzzMWrvLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PqxwidH9GDpjs3mYkHv/zJb2+9H1CiaSKhsXNOwtvSQbsnEWfh0GcCVjnw8Hadi3fBCx1F0yIGTD+RGEFWq8qudPUpJVrILEeqhFyQBG5PSciXQZkPMvNCATmGaN5iJnhwVz5QIC+YVDnksammhR9WzMk6UD9OafCLhs21naD4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNY9HUHE; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=shd5v46X8UY2n2gW0S01uHYBHrj9g62mB/p/bOwP5/u55KCODDQjriDs9qM1i/GyuRiUBpNlX7z1fhCY0WxKS5kt69i2GnnpOFKj2QafAfLSFub5ahiWixGjyB9Wy2F9G85O2e9xKd4WkUhT+g0SQKdfd1eh14nAjHGso3qMgrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zdKSjkxY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNY9HUHE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F9C7C4CEC7;
-	Tue,  8 Oct 2024 12:18:36 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zdKSjkxY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17AA7C4CEC7;
+	Tue,  8 Oct 2024 12:40:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728389917;
-	bh=MJiiLp5BSQTssGxUEupObe+503qObYvaSDb6oGqhEWE=;
+	s=korg; t=1728391220;
+	bh=aUiYHLp/o8JLjU62RMmPFXZDYB4HPfzQzoDzzMWrvLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eNY9HUHEc1yI8qeUUerDbcG90ASm6jlE25GOQH99kc6OC01tq9A5B1YLHDTGS0aVA
-	 4/1JJLPkzgHRGPoNSqyFw0pS9beZlXm5xwKelsdvzG5xY1KtxojHMiCZXWgxq/KQNb
-	 r1qiwIuXLF71DnCd6SMID16wusPEIXFOKtLzXNaI=
+	b=zdKSjkxYzDzodRW0PRYSBcdBobLIryTIWfsh0G/ufZ9HKUPEbmn+YzeYIJd3wwn3N
+	 T2p8VKlEleaMKmZH1+g/traQHAm9X/K7nfzvnZoQi1jji5pMo++UHgc14QdCCoixm0
+	 swk1DV6IF0MhrrTPdCRFIkBVS+6GF1TzPJCABMZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -33,12 +33,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	linux-fsdevel@vger.kernel.org,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 136/482] netfs: Cancel dirty folios that have no storage destination
-Date: Tue,  8 Oct 2024 14:03:19 +0200
-Message-ID: <20241008115653.655669652@linuxfoundation.org>
+Subject: [PATCH 6.11 046/558] netfs: Fix missing wakeup after issuing writes
+Date: Tue,  8 Oct 2024 14:01:16 +0200
+Message-ID: <20241008115704.035944529@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
-References: <20241008115648.280954295@linuxfoundation.org>
+In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
+References: <20241008115702.214071228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,82 +50,124 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 8f246b7c0a1be0882374f2ff831a61f0dbe77678 ]
+[ Upstream commit 1ca4169c391c370e0f3a92938df2862900575096 ]
 
-Kafs wants to be able to cache the contents of directories (and symlinks),
-but whilst these are downloaded from the server with the FS.FetchData RPC
-op and similar, the same as for regular files, they can't be updated by
-FS.StoreData, but rather have special operations (FS.MakeDir, etc.).
+After dividing up a proposed write into subrequests, netfslib sets
+NETFS_RREQ_ALL_QUEUED to indicate to the collector that it can move on to
+the final cleanup once it has emptied the subrequest queues.
 
-Now, rather than redownloading a directory's content after each change made
-to that directory, kafs modifies the local blob.  This blob can be saved
-out to the cache, and since it's using netfslib, kafs just marks the folios
-dirty and lets ->writepages() on the directory take care of it, as for an
-regular file.
+Now, whilst the collector will normally end up running at least once after
+this bit is set just because it takes a while to process all the write
+subrequests before the collector runs out of subrequests, there exists the
+possibility that the issuing thread will be forced to sleep and the
+collector thread will clean up all the subrequests before ALL_QUEUED gets
+set.
 
-This is fine as long as there's a cache as although the upload stream is
-disabled, there's a cache stream to drive the procedure.  But if the cache
-goes away in the meantime, suddenly there's no way do any writes and the
-code gets confused, complains "R=%x: No submit" to dmesg and leaves the
-dirty folio hanging.
+In such a case, the collector thread will not get triggered again and will
+never clear NETFS_RREQ_IN_PROGRESS thus leaving a request uncompleted and
+causing a potential futute hang.
 
-Fix this by just cancelling the store of the folio if neither stream is
-active.  (If there's no cache at the time of dirtying, we should just not
-mark the folio dirty).
+Fix this by scheduling the write collector if all the subrequest queues are
+empty (and thus no writes pending issuance).
 
+Note that we'd do this ideally before queuing the subrequest, but in the
+case of buffered writeback, at least, we can't find out that we've run out
+of folios until after we've called writeback_iter() and it has returned
+NULL - at which point we might not actually have any subrequests still
+under construction.
+
+Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
 Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/3317784.1727880350@warthog.procyon.org.uk
 cc: Jeff Layton <jlayton@kernel.org>
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
-Link: https://lore.kernel.org/r/20240814203850.2240469-23-dhowells@redhat.com/ # v2
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/write_issue.c       | 6 +++++-
- include/trace/events/netfs.h | 1 +
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ fs/netfs/write_issue.c | 42 +++++++++++++++++++++++++++---------------
+ 1 file changed, 27 insertions(+), 15 deletions(-)
 
 diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index 32bc88bee5d18..3c7eb43a2ec69 100644
+index 3f7e37e50c7d0..9486e54b1e563 100644
 --- a/fs/netfs/write_issue.c
 +++ b/fs/netfs/write_issue.c
-@@ -408,13 +408,17 @@ static int netfs_write_folio(struct netfs_io_request *wreq,
- 	folio_unlock(folio);
+@@ -494,6 +494,30 @@ static int netfs_write_folio(struct netfs_io_request *wreq,
+ 	return 0;
+ }
  
- 	if (fgroup == NETFS_FOLIO_COPY_TO_CACHE) {
--		if (!fscache_resources_valid(&wreq->cache_resources)) {
-+		if (!cache->avail) {
- 			trace_netfs_folio(folio, netfs_folio_trace_cancel_copy);
- 			netfs_issue_write(wreq, upload);
- 			netfs_folio_written_back(folio);
- 			return 0;
- 		}
- 		trace_netfs_folio(folio, netfs_folio_trace_store_copy);
-+	} else if (!upload->avail && !cache->avail) {
-+		trace_netfs_folio(folio, netfs_folio_trace_cancel_store);
-+		netfs_folio_written_back(folio);
-+		return 0;
- 	} else if (!upload->construct) {
- 		trace_netfs_folio(folio, netfs_folio_trace_store);
- 	} else {
-diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
-index 24ec3434d32ee..102696abe8c9e 100644
---- a/include/trace/events/netfs.h
-+++ b/include/trace/events/netfs.h
-@@ -140,6 +140,7 @@
- 	EM(netfs_streaming_cont_filled_page,	"mod-streamw-f+") \
- 	/* The rest are for writeback */			\
- 	EM(netfs_folio_trace_cancel_copy,	"cancel-copy")	\
-+	EM(netfs_folio_trace_cancel_store,	"cancel-store")	\
- 	EM(netfs_folio_trace_clear,		"clear")	\
- 	EM(netfs_folio_trace_clear_cc,		"clear-cc")	\
- 	EM(netfs_folio_trace_clear_g,		"clear-g")	\
++/*
++ * End the issuing of writes, letting the collector know we're done.
++ */
++static void netfs_end_issue_write(struct netfs_io_request *wreq)
++{
++	bool needs_poke = true;
++
++	smp_wmb(); /* Write subreq lists before ALL_QUEUED. */
++	set_bit(NETFS_RREQ_ALL_QUEUED, &wreq->flags);
++
++	for (int s = 0; s < NR_IO_STREAMS; s++) {
++		struct netfs_io_stream *stream = &wreq->io_streams[s];
++
++		if (!stream->active)
++			continue;
++		if (!list_empty(&stream->subrequests))
++			needs_poke = false;
++		netfs_issue_write(wreq, stream);
++	}
++
++	if (needs_poke)
++		netfs_wake_write_collector(wreq, false);
++}
++
+ /*
+  * Write some of the pending data back to the server
+  */
+@@ -541,10 +565,7 @@ int netfs_writepages(struct address_space *mapping,
+ 			break;
+ 	} while ((folio = writeback_iter(mapping, wbc, folio, &error)));
+ 
+-	for (int s = 0; s < NR_IO_STREAMS; s++)
+-		netfs_issue_write(wreq, &wreq->io_streams[s]);
+-	smp_wmb(); /* Write lists before ALL_QUEUED. */
+-	set_bit(NETFS_RREQ_ALL_QUEUED, &wreq->flags);
++	netfs_end_issue_write(wreq);
+ 
+ 	mutex_unlock(&ictx->wb_lock);
+ 
+@@ -632,10 +653,7 @@ int netfs_end_writethrough(struct netfs_io_request *wreq, struct writeback_contr
+ 	if (writethrough_cache)
+ 		netfs_write_folio(wreq, wbc, writethrough_cache);
+ 
+-	netfs_issue_write(wreq, &wreq->io_streams[0]);
+-	netfs_issue_write(wreq, &wreq->io_streams[1]);
+-	smp_wmb(); /* Write lists before ALL_QUEUED. */
+-	set_bit(NETFS_RREQ_ALL_QUEUED, &wreq->flags);
++	netfs_end_issue_write(wreq);
+ 
+ 	mutex_unlock(&ictx->wb_lock);
+ 
+@@ -680,13 +698,7 @@ int netfs_unbuffered_write(struct netfs_io_request *wreq, bool may_wait, size_t
+ 			break;
+ 	}
+ 
+-	netfs_issue_write(wreq, upload);
+-
+-	smp_wmb(); /* Write lists before ALL_QUEUED. */
+-	set_bit(NETFS_RREQ_ALL_QUEUED, &wreq->flags);
+-	if (list_empty(&upload->subrequests))
+-		netfs_wake_write_collector(wreq, false);
+-
++	netfs_end_issue_write(wreq);
+ 	_leave(" = %d", error);
+ 	return error;
+ }
 -- 
 2.43.0
 
