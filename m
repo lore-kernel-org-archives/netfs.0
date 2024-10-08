@@ -1,73 +1,102 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9322E1D61B6
-	for <netfs@lists.linux.dev>; Mon,  7 Oct 2024 14:17:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60091DED4D;
+	Tue,  8 Oct 2024 12:12:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728310630; cv=none; b=oBCG2Rz66HpPmGvOeLi0hC4SaXdmwCqTedqc4ycaNIsLVtw9obVMUb5rfXMycB1Tyq4zGz79EmHJObFN9Lt0etp7w9M5K6hvqiFJaCCUrqMTm8C8WOG27srbewahciaqrv/J169hVBzCXpb5Nv7IVVrAtDeXBCfaPocaeDlZ0rc=
+	t=1728389564; cv=none; b=dij4RrGt61fsmmWTby/VbhCmZSqmQ8V4IxGJ2UmKJykRGoUbJtxJ5IrgyBWDQnedfSyJqaw6dUbAZ2LfF0a3xKPGjnWhgGJRrjMNjZ6kDwDPcE/nZD3Qkppi/yG7Sa9yC2dwk2Xlu4/AZhg8YSiBILMb3hwugpP9lQZ7VbCBxGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728310630; c=relaxed/simple;
-	bh=u7ClgkijmuDdJzVEGH1EwztG5dTCm4cEuSWarOKj7/0=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=Zp8Y4p/9XJu2MBw5PVIn9ridsl1qFULusRwrUgcEvdTI5EOUvl0U37tIiSmw8ldzvzi/t49hZ1HDAg9cKounXbIBYnHn/6N8LD2Yqv+xj9er9dy2+kXuUwR1OiTilc0kXjmcmyF4yMsVhwS/+BFf0WnyrEZgaQy/GM2BGtTykZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IryR0X3p; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1728389564; c=relaxed/simple;
+	bh=9OZSG/DQ+vm/Wy4qKHJNMCqT64wOmS0vE+hgWFR3ShM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=O+XSQc+FXA5gkqzU9/EDmCfYmhEr7WoyNVwbOvI0RcMSCia9p13Trp2kimf0JbQlqb3t99fI8ICkQX0ltmVhPuZTj8gA0VSkr8JpigcBzv/IMb+n8MNb2XDL7npnS8GPZa4fX2BPFhrMIauLUi9BanfdbuqMhBO/5cSUR8FXO5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kN05klGi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IryR0X3p"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1728310622;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Nt9+NMCe54ZPgr5XEk6vy7KjRpiXDO4UoWJRSikZ5Do=;
-	b=IryR0X3pmMoSDpcH4m8YqzXEmSx7oI+6MfLb6RXcHz4a8xavdnlwcMDg1Yy1n/c4HjsKHv
-	KTEaQeT6Daxmy40aIiLYE1fZSQTGlVysTwhbk2HbDm5ZU3C6CuOGcYQQCDYLVX/tkSm0ZT
-	EstTWj3TS8nhQrzdpzQMLhuxb0ofEd4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-696-yB7DJzB4PWm2nlTBjPjt2w-1; Mon,
- 07 Oct 2024 10:14:54 -0400
-X-MC-Unique: yB7DJzB4PWm2nlTBjPjt2w-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 31BD3197731F;
-	Mon,  7 Oct 2024 14:14:49 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.145])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 120AD19560B2;
-	Mon,  7 Oct 2024 14:14:47 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20241005182307.3190401-4-willy@infradead.org>
-References: <20241005182307.3190401-4-willy@infradead.org> <20241005182307.3190401-1-willy@infradead.org>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: dhowells@redhat.com, netfs@lists.linux.dev,
-    linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 3/3] netfs: Remove unnecessary references to pages
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kN05klGi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48832C4CECC;
+	Tue,  8 Oct 2024 12:12:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1728389563;
+	bh=9OZSG/DQ+vm/Wy4qKHJNMCqT64wOmS0vE+hgWFR3ShM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=kN05klGikCdplj92XIAKpBJnamgi4qIjhXcRFwONa1AzAct8Tw96BkumSxkrNyAJr
+	 MPAW8mm8QJEDni7qeQ+03PDyAXJUVAMtMMjsVKdipR7MTtTeePtPlQIff7olbaA4QQ
+	 WDZand/G8tGqudEN8OHHHmJ8UdQdXclyG/9gLJ10=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	"Dr. David Alan Gilbert" <linux@treblig.org>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-afs@lists.infradead.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 031/482] afs: Fix missing wire-up of afs_retry_request()
+Date: Tue,  8 Oct 2024 14:01:34 +0200
+Message-ID: <20241008115649.525603250@linuxfoundation.org>
+X-Mailer: git-send-email 2.46.2
+In-Reply-To: <20241008115648.280954295@linuxfoundation.org>
+References: <20241008115648.280954295@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <4027733.1728310486.1@warthog.procyon.org.uk>
-Date: Mon, 07 Oct 2024 15:14:46 +0100
-Message-ID: <4027734.1728310486@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Transfer-Encoding: 8bit
 
-Matthew Wilcox (Oracle) <willy@infradead.org> wrote:
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
-> These places should all use folios instead of pages.
-> 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+------------------
 
-Acked-by: David Howells <dhowells@redhat.com>
+From: David Howells <dhowells@redhat.com>
+
+[ Upstream commit 2cf36327ee1e47733aba96092d7bd082a4056ff5 ]
+
+afs_retry_request() is supposed to be pointed to by the afs_req_ops netfs
+operations table, but the pointer got lost somewhere.  The function is used
+during writeback to rotate through the authentication keys that were in
+force when the file was modified locally.
+
+Fix this by adding the pointer to the function.
+
+Fixes: 1ecb146f7cd8 ("netfs, afs: Use writeback retry to deal with alternate keys")
+Reported-by: Dr. David Alan Gilbert <linux@treblig.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/1690847.1726346402@warthog.procyon.org.uk
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/afs/file.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/fs/afs/file.c b/fs/afs/file.c
+index c3f0c45ae9a9b..e0885cfeb72a7 100644
+--- a/fs/afs/file.c
++++ b/fs/afs/file.c
+@@ -403,6 +403,7 @@ const struct netfs_request_ops afs_req_ops = {
+ 	.begin_writeback	= afs_begin_writeback,
+ 	.prepare_write		= afs_prepare_write,
+ 	.issue_write		= afs_issue_write,
++	.retry_request		= afs_retry_request,
+ };
+ 
+ static void afs_add_open_mmap(struct afs_vnode *vnode)
+-- 
+2.43.0
+
+
 
