@@ -1,133 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA79183CB8;
-	Tue,  8 Oct 2024 12:46:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E845A17C228
+	for <netfs@lists.linux.dev>; Thu, 10 Oct 2024 03:08:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728391594; cv=none; b=kLzwjh6LNen2iqFkGpf7VzHA9GcL/WW65Zuvkj9zI/cjRb6A1TAW7IcdjWjn7m3bURWaTjCGTFEIOi6gMMdaDxn+4vPsq++fLKdbonUkf+SEWO9lz9NDaEQEg45f0AZ870nbRQ/UVYpNLLYO5oDasWykLHeDXiLgsDMEovZCVIs=
+	t=1728529718; cv=none; b=KL3IsWpGIpGcZ2GNKTfMjcGJIN2ULxw2edQSw3dPMD6uGOfeE7gaUlYZK5LGBGa08Tw/Y6Dp1rP8qHBuiv/0161B5PobCJ3e1a8RS7vttcxiN6FhrC+j3xesWXg0FJl4iotCZzwwvprkVf6ilOBpliMNgUfVHmj7WR39WPUfTGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728391594; c=relaxed/simple;
-	bh=7BkutiVyB04IBNjI6GLaVpa4RxD2t0aFOJ/N6jkWcYM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tlcsifrRbTWYNPhA5CNuScnQ0jQ832gp/Nt6L2HoxoYl1PM3cN8woyfyZiIuHHAHkspUCUSvw/1Isslxl/a1JGQpHAlHS+Tz3hogeisRVzD4lkf7npX2SrCvY/XEZpxx4mzYsfNA4bWDVH0NHH+D0LdUsV11zKUf5aaAANRrFh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t4Gvm20H; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t4Gvm20H"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6F03C4CEC7;
-	Tue,  8 Oct 2024 12:46:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728391594;
-	bh=7BkutiVyB04IBNjI6GLaVpa4RxD2t0aFOJ/N6jkWcYM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t4Gvm20HPNWYKUzo2gBhUNUxnkYCLI8SEw0DDRJ/sDWdIo8aQTMPUHSaomoz7PBNk
-	 gxPLIogk+sK3hQaQ9HkQAMrUpiCjRQRX7iLz/McEMRjdsSGxCbULtydCeeBTJnZmkb
-	 NhaSH258yMk7jew5LP7Lkv/ajPP6CrqDJwkOny6M=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 163/558] netfs: Cancel dirty folios that have no storage destination
-Date: Tue,  8 Oct 2024 14:03:13 +0200
-Message-ID: <20241008115708.772965997@linuxfoundation.org>
-X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241008115702.214071228@linuxfoundation.org>
-References: <20241008115702.214071228@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1728529718; c=relaxed/simple;
+	bh=Lxfp7RU/RhZnU5IWgrLQzC+0QltIKYSvJmjwzgbPXbk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=f9gbrHql/0sPjHS5GUtv2e14OEZabN77I8+uq9xn7QOnZzst76lOo0cGyQ9J+7i1pGfHfd0I4qR+wxp+vpN2defZ4LAUA3Lrq2FibgAqvL0GCFFV6l/lrQM/EHaeZfyUzOu3P+n6gUTuCC1ieKBBVjr4qVX3lvTaxTtjPypS/30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4XPF3G00dnz1HK3D;
+	Thu, 10 Oct 2024 11:04:25 +0800 (CST)
+Received: from kwepemf100017.china.huawei.com (unknown [7.202.181.16])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6E027140392;
+	Thu, 10 Oct 2024 11:08:32 +0800 (CST)
+Received: from [10.174.176.88] (10.174.176.88) by
+ kwepemf100017.china.huawei.com (7.202.181.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 10 Oct 2024 11:08:31 +0800
+Message-ID: <827d5f2e-d6a7-43ca-8034-5e2508d89f22@huawei.com>
+Date: Thu, 10 Oct 2024 11:08:30 +0800
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/8] netfs/cachefiles: Some bugfixes
+To: <netfs@lists.linux.dev>, <dhowells@redhat.com>, <jlayton@kernel.org>,
+	<brauner@kernel.org>
+CC: <hsiangkao@linux.alibaba.com>, <jefflexu@linux.alibaba.com>,
+	<zhujia.zj@bytedance.com>, <linux-erofs@lists.ozlabs.org>,
+	<linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<libaokun1@huawei.com>, <yangerkun@huawei.com>, <houtao1@huawei.com>,
+	<yukuai3@huawei.com>
+References: <20240821024301.1058918-1-wozizhi@huawei.com>
+From: Zizhi Wo <wozizhi@huawei.com>
+In-Reply-To: <20240821024301.1058918-1-wozizhi@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemf100017.china.huawei.com (7.202.181.16)
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+Hi!
 
-------------------
+This patchset involves some general cachefiles workflows and the on-
+demand loading process. For example, the eighth patch fixes a memory
+ordering issue in cachefiles, and the fifth patch includes some cleanup.
+These all related to changes in the general cachefiles workflow, and I
+think these deserve some attention.
 
-From: David Howells <dhowells@redhat.com>
+Additionally, although the current EROFS on-demand loading mode based on
+cachefiles interaction might be considered for switching to the fanotify
+mode in the future, I believe the code based on the current cachefiles
+on-demand loading mode still requires maintenance. The first few patches
+here are bugfixes specifically for that.
 
-[ Upstream commit 8f246b7c0a1be0882374f2ff831a61f0dbe77678 ]
+Therefore, I would greatly appreciate it if anyone could take some time
+to review these patches. So friendly ping.
 
-Kafs wants to be able to cache the contents of directories (and symlinks),
-but whilst these are downloaded from the server with the FS.FetchData RPC
-op and similar, the same as for regular files, they can't be updated by
-FS.StoreData, but rather have special operations (FS.MakeDir, etc.).
-
-Now, rather than redownloading a directory's content after each change made
-to that directory, kafs modifies the local blob.  This blob can be saved
-out to the cache, and since it's using netfslib, kafs just marks the folios
-dirty and lets ->writepages() on the directory take care of it, as for an
-regular file.
-
-This is fine as long as there's a cache as although the upload stream is
-disabled, there's a cache stream to drive the procedure.  But if the cache
-goes away in the meantime, suddenly there's no way do any writes and the
-code gets confused, complains "R=%x: No submit" to dmesg and leaves the
-dirty folio hanging.
-
-Fix this by just cancelling the store of the folio if neither stream is
-active.  (If there's no cache at the time of dirtying, we should just not
-mark the folio dirty).
-
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Link: https://lore.kernel.org/r/20240814203850.2240469-23-dhowells@redhat.com/ # v2
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/netfs/write_issue.c       | 6 +++++-
- include/trace/events/netfs.h | 1 +
- 2 files changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index 9486e54b1e563..b08673d97470c 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -410,13 +410,17 @@ static int netfs_write_folio(struct netfs_io_request *wreq,
- 	folio_unlock(folio);
- 
- 	if (fgroup == NETFS_FOLIO_COPY_TO_CACHE) {
--		if (!fscache_resources_valid(&wreq->cache_resources)) {
-+		if (!cache->avail) {
- 			trace_netfs_folio(folio, netfs_folio_trace_cancel_copy);
- 			netfs_issue_write(wreq, upload);
- 			netfs_folio_written_back(folio);
- 			return 0;
- 		}
- 		trace_netfs_folio(folio, netfs_folio_trace_store_copy);
-+	} else if (!upload->avail && !cache->avail) {
-+		trace_netfs_folio(folio, netfs_folio_trace_cancel_store);
-+		netfs_folio_written_back(folio);
-+		return 0;
- 	} else if (!upload->construct) {
- 		trace_netfs_folio(folio, netfs_folio_trace_store);
- 	} else {
-diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
-index 606b4a0f92dae..edcc3b3a3ecf8 100644
---- a/include/trace/events/netfs.h
-+++ b/include/trace/events/netfs.h
-@@ -141,6 +141,7 @@
- 	EM(netfs_streaming_cont_filled_page,	"mod-streamw-f+") \
- 	/* The rest are for writeback */			\
- 	EM(netfs_folio_trace_cancel_copy,	"cancel-copy")	\
-+	EM(netfs_folio_trace_cancel_store,	"cancel-store")	\
- 	EM(netfs_folio_trace_clear,		"clear")	\
- 	EM(netfs_folio_trace_clear_cc,		"clear-cc")	\
- 	EM(netfs_folio_trace_clear_g,		"clear-g")	\
--- 
-2.43.0
+Thanks,
+Zizhi Wo
 
 
-
+在 2024/8/21 10:42, Zizhi Wo 写道:
+> Hi!
+> 
+> We recently discovered some bugs through self-discovery and testing in
+> erofs ondemand loading mode, and this patchset is mainly used to fix
+> them. These patches are relatively simple changes, and I would be excited
+> to discuss them together with everyone. Below is a brief introduction to
+> each patch:
+> 
+> Patch 1: Fix for wrong block_number calculated in ondemand write.
+> 
+> Patch 2: Fix for wrong length return value in ondemand write.
+> 
+> Patch 3: Fix missing position update in ondemand write, for scenarios
+> involving read-ahead, invoking the write syscall.
+> 
+> Patch 4: Previously, the last redundant data was cleared during the umount
+> phase. This patch remove unnecessary data in advance.
+> 
+> Patch 5: Code clean up for cachefiles_commit_tmpfile().
+> 
+> Patch 6: Modify error return value in cachefiles_daemon_secctx().
+> 
+> Patch 7: Fix object->file Null-pointer-dereference problem.
+> 
+> Patch 8: Fix for memory out of order in fscache_create_volume().
+> 
+> 
+> Zizhi Wo (8):
+>    cachefiles: Fix incorrect block calculations in
+>      __cachefiles_prepare_write()
+>    cachefiles: Fix incorrect length return value in
+>      cachefiles_ondemand_fd_write_iter()
+>    cachefiles: Fix missing pos updates in
+>      cachefiles_ondemand_fd_write_iter()
+>    cachefiles: Clear invalid cache data in advance
+>    cachefiles: Clean up in cachefiles_commit_tmpfile()
+>    cachefiles: Modify inappropriate error return value in
+>      cachefiles_daemon_secctx()
+>    cachefiles: Fix NULL pointer dereference in object->file
+>    netfs/fscache: Add a memory barrier for FSCACHE_VOLUME_CREATING
+> 
+>   fs/cachefiles/daemon.c    |  2 +-
+>   fs/cachefiles/interface.c |  3 +++
+>   fs/cachefiles/io.c        | 10 +++++-----
+>   fs/cachefiles/namei.c     | 23 +++++++++++++----------
+>   fs/cachefiles/ondemand.c  | 38 +++++++++++++++++++++++++++++---------
+>   fs/netfs/fscache_volume.c |  3 +--
+>   6 files changed, 52 insertions(+), 27 deletions(-)
+> 
