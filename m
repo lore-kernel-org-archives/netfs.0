@@ -1,31 +1,31 @@
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16CF21C1757
-	for <netfs@lists.linux.dev>; Thu, 10 Oct 2024 12:17:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C17C2209B
+	for <netfs@lists.linux.dev>; Thu, 10 Oct 2024 13:15:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728562653; cv=none; b=i8B4o8DCjJSLm1G/lCpu95nH2mG6mDbqqjNu4K4haDuDx+IxMapi1OZZnEUh5lsxeFJXuie7lJhznMqXg3/RO1OXqU6MbWv9YU11QIzDP32gm5u4yBU4pcDNt0d1qB5xs9Ivka4Tg6Eq/tOI9Uxe/aWnBFJ/nX/4iNHlPXrfSGw=
+	t=1728566156; cv=none; b=hhC3DJZD6ZhiboUC7I+xkY1doKGG/6SV1M79+VlmC7gJTta5hFs/NAO1yX33NsqWHl7BGeGfCZvgxDBlJ1fQ95Tg/YAbll+FZZJhiFc3ULq+XEPPj1OLqsYQbEEuuJnYr+di+m7LlUnMtc3H4FyddNeXVzuwzpBtC4e1u/ERGDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728562653; c=relaxed/simple;
-	bh=VsRAS0pMW9QEFEGhtZrE8/hrQkXl1KS0owvA6HihTWA=;
+	s=arc-20240116; t=1728566156; c=relaxed/simple;
+	bh=j9rvBLK5DNkaG0SsQhJKznK+8rXaTNDvib029k1ChZ0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=s5umSyjSUfuGMwq7hQiGzoWrrc7aQwhUuwpJ3N7fKamWXCh7DLyt6CihbUrKpmFMVU5bKsM0t/9w5RtM33VCgJ4HHvaWutFPEoEu3PjAWkvNZICW2zN0vVdVKyPrb3uZ9LtTWRgkUBA5VNcKctlgvVgWGduSqM44wfq4ynGHVVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+	 In-Reply-To:Content-Type; b=fuCj/fi1AT9eSU1E70F9JU1EIQ64uETipzYU77XjEhGZMgTIrzi3czo//hyKNIZHq/k7cYk2xAbjm7N84ywIiiKGKUnRc0DnTtihOqegK1Yx+0Tn8H7Tdx/6oEgEpHIq/PNyyKejp2UMAUeI/Rjz8dC0WzFYyY5CqZ4pOd4i9Aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4XPTH452PPzpWjL;
-	Thu, 10 Oct 2024 20:15:28 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4XPVcr1KgGz2KXwr;
+	Thu, 10 Oct 2024 21:15:56 +0800 (CST)
 Received: from kwepemf100017.china.huawei.com (unknown [7.202.181.16])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4619C18007C;
-	Thu, 10 Oct 2024 20:17:28 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 7BA30180041;
+	Thu, 10 Oct 2024 21:15:51 +0800 (CST)
 Received: from [10.174.176.88] (10.174.176.88) by
  kwepemf100017.china.huawei.com (7.202.181.16) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 10 Oct 2024 20:17:27 +0800
-Message-ID: <32717f03-634a-4f39-9f46-e73cca8da46d@huawei.com>
-Date: Thu, 10 Oct 2024 20:17:26 +0800
+ 15.2.1544.11; Thu, 10 Oct 2024 21:15:50 +0800
+Message-ID: <14905d87-9fc4-45c8-b845-d3f4badecf46@huawei.com>
+Date: Thu, 10 Oct 2024 21:15:49 +0800
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -51,7 +51,7 @@ From: Zizhi Wo <wozizhi@huawei.com>
 In-Reply-To: <304311.1728560215@warthog.procyon.org.uk>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
  kwepemf100017.china.huawei.com (7.202.181.16)
 
 
@@ -68,10 +68,33 @@ X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
 > 
 > David
 > 
-> 
 
-Then I was wrong. Thank you for pointing it out. I'll be thinking about
-new solutions for non-PAGE_SIZE scenarios.
+Sorry, I might have a slightly different idea now. The EROFS process
+based on fscache is similar to NFS and others, supporting only
+PAGE_SIZE-granularity reads/writes, which is fine. The issue now lies in
+the __cachefiles_prepare_write() function, specifically in the block
+count calculation when calling cachefiles_has_space(). By default, the
+block size used there is PAGE_SIZE.
+
+If the block size of the underlying cache filesystem is not PAGE_SIZE
+(for example, smaller than PAGE_SIZE), it leads to an incorrect
+calculation of the required block count, which makes the system think
+there is enough space when there might not be. This should be the same
+problem for all network file systems that specify the back-end cache
+file system mode.
+
+For example, assume len=12k, pagesize=4k, and the underlying cache
+filesystem block size is 1k. The currently available blocks are 4, with
+4k of space remaining. However, cachefiles_has_space() calculates the
+block count as 12k/4k=3, and since 4 > 3, it incorrectly returns that
+there is enough space.
+
+Therefore, I believe this could be a general issue. If
+cachefiles_add_cache() is part of a common workflow, then using
+cache->bsize here might be more appropriate? Looking forward to your
+reply.
 
 Thanks,
 Zizhi Wo
+
+> 
