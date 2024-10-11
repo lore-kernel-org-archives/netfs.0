@@ -1,108 +1,101 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 134711E284A
-	for <netfs@lists.linux.dev>; Thu, 10 Oct 2024 14:52:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CDE08F58
+	for <netfs@lists.linux.dev>; Fri, 11 Oct 2024 01:31:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728571956; cv=none; b=hQf3U8IhXHDm0kPrE9+RVu9k6O5Lt7ARGH/kX8rwBKLt/NX4zOpWi8aoS/fYqyeCWCouIw4yAtHUbVBGM3H2VCqQrd3+A2aGiNE32iaJTC0AJ/Tl8HIzBrUzDUhcQ+EdYP/Bm3h/Otu+qMg8izKeK+OapWS8Qj9333uPJMwxqwM=
+	t=1728610320; cv=none; b=GLst8ScNNzPO+t5X41pTfqkH9SVUv23t/eCO1Pzy0dU432z3n4NfXu1LnX1qJX9pWg6v2G1tb+q7xb1WGraI9+a0cAcHLVTDkdkGJMeDEyM9/0zEiWi4owIssvDwuj2Aah0/Hp9Lwu7XopOOT92xUyDOY0Q//UYGVbZjON0JbTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728571956; c=relaxed/simple;
-	bh=+WVT1NE80MQ2tJEJ6OJMW6GCdodvz/z2J4VPtuujUAY=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=AMszPXBf7WW10Ge4qhnMtpAtkFkdg6BsYdtG+gCkoZYIY+eeePlmlypeyEMOO4X7zWzHOvs9/zF4N8o6NiqF7KCTQREXDCJafb6/rIpY1l9I5ve0iP/kzmMc1u5FGGX3JbNNZ0I6zVqqQIGP/upwqFNXfBRGyF1zszLVQM4XXpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Rp+S7wE0; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Rp+S7wE0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1728571954;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s/rzIBijz35TvrQXNNS/JV1cr2x4Od/FDIZTbeen1ZA=;
-	b=Rp+S7wE04LLMshu9VxhBCHeKunfSruVumjDUTK7rioroIMWl0FYsQ5cD9wgczngS5cBZXS
-	mrQrX3u3aIhV09/o67YESRBivaCmVUq1nGGBAOF4j6G+fyKw0Z5W7KwEKmPdV8hbwcSEEB
-	qqZrAR1dy+6SXzevhYNxlJxdk2AqSwU=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-407-cLA6nZKQNX2jBcl9sJatzw-1; Thu,
- 10 Oct 2024 10:52:28 -0400
-X-MC-Unique: cLA6nZKQNX2jBcl9sJatzw-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 154261956046;
-	Thu, 10 Oct 2024 14:52:26 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.4])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E14DE1956052;
-	Thu, 10 Oct 2024 14:52:21 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <8d05cae1-55d2-415b-810e-3fb14c8566fd@huawei.com>
-References: <8d05cae1-55d2-415b-810e-3fb14c8566fd@huawei.com> <20240821024301.1058918-8-wozizhi@huawei.com> <20240821024301.1058918-1-wozizhi@huawei.com> <303977.1728559565@warthog.procyon.org.uk>
-To: Zizhi Wo <wozizhi@huawei.com>
-Cc: dhowells@redhat.com, netfs@lists.linux.dev, jlayton@kernel.org,
-    hsiangkao@linux.alibaba.com, jefflexu@linux.alibaba.com,
-    zhujia.zj@bytedance.com, linux-erofs@lists.ozlabs.org,
-    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-    libaokun1@huawei.com, yangerkun@huawei.com, houtao1@huawei.com,
-    yukuai3@huawei.com
-Subject: Re: [PATCH 7/8] cachefiles: Fix NULL pointer dereference in object->file
+	s=arc-20240116; t=1728610320; c=relaxed/simple;
+	bh=WLIZqd8dlb1m7im5zIyPaUymXTbEoBm4AkPS9EzR/ks=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=uRBkimVwJhMtDP9Q2Q6Qw3B5I+4WzwEBj2w2pINIcz+EdjK1LzpeYhA7Rl8bFxYM4vEGQOug3V4h2UcSW5JHMY0xaiQO3t9KU2FbrZ68pvaq/7d6V/FBjNfjtdFJ9n7I67yI49KFCp86OEsGtxd6WZ6BlWpJIs9fVB1QYbJpwzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4XPpy82zS0z2VRTp;
+	Fri, 11 Oct 2024 09:32:00 +0800 (CST)
+Received: from kwepemf100017.china.huawei.com (unknown [7.202.181.16])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9C2C8140202;
+	Fri, 11 Oct 2024 09:31:55 +0800 (CST)
+Received: from [10.174.176.88] (10.174.176.88) by
+ kwepemf100017.china.huawei.com (7.202.181.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 11 Oct 2024 09:31:54 +0800
+Message-ID: <94004b36-01ae-4c62-ad74-0bad5992eb7c@huawei.com>
+Date: Fri, 11 Oct 2024 09:31:53 +0800
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 10 Oct 2024 15:52:20 +0100
-Message-ID: <443969.1728571940@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7/8] cachefiles: Fix NULL pointer dereference in
+ object->file
+To: David Howells <dhowells@redhat.com>
+CC: <netfs@lists.linux.dev>, <jlayton@kernel.org>,
+	<hsiangkao@linux.alibaba.com>, <jefflexu@linux.alibaba.com>,
+	<zhujia.zj@bytedance.com>, <linux-erofs@lists.ozlabs.org>,
+	<linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<libaokun1@huawei.com>, <yangerkun@huawei.com>, <houtao1@huawei.com>,
+	<yukuai3@huawei.com>
+References: <8d05cae1-55d2-415b-810e-3fb14c8566fd@huawei.com>
+ <20240821024301.1058918-8-wozizhi@huawei.com>
+ <20240821024301.1058918-1-wozizhi@huawei.com>
+ <303977.1728559565@warthog.procyon.org.uk>
+ <443969.1728571940@warthog.procyon.org.uk>
+From: Zizhi Wo <wozizhi@huawei.com>
+In-Reply-To: <443969.1728571940@warthog.procyon.org.uk>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemf100017.china.huawei.com (7.202.181.16)
 
-Zizhi Wo <wozizhi@huawei.com> wrote:
 
-> =E5=9C=A8 2024/10/10 19:26, David Howells =E5=86=99=E9=81=93:
-> > Zizhi Wo <wozizhi@huawei.com> wrote:
-> >=20
-> >> +	spin_lock(&object->lock);
-> >>   	if (object->file) {
-> >>   		fput(object->file);
-> >>   		object->file =3D NULL;
-> >>   	}
-> >> +	spin_unlock(&object->lock);
-> > I would suggest stashing the file pointer in a local var and then doing=
- the
-> > fput() outside of the locks.
-> > David
-> >=20
->=20
-> If fput() is executed outside the lock, I am currently unsure how to
-> guarantee that file in __cachefiles_write() does not trigger null
-> pointer dereference...
 
-I'm not sure why there's a problem here.  I was thinking along the lines of:
+在 2024/10/10 22:52, David Howells 写道:
+> Zizhi Wo <wozizhi@huawei.com> wrote:
+> 
+>> 在 2024/10/10 19:26, David Howells 写道:
+>>> Zizhi Wo <wozizhi@huawei.com> wrote:
+>>>
+>>>> +	spin_lock(&object->lock);
+>>>>    	if (object->file) {
+>>>>    		fput(object->file);
+>>>>    		object->file = NULL;
+>>>>    	}
+>>>> +	spin_unlock(&object->lock);
+>>> I would suggest stashing the file pointer in a local var and then doing the
+>>> fput() outside of the locks.
+>>> David
+>>>
+>>
+>> If fput() is executed outside the lock, I am currently unsure how to
+>> guarantee that file in __cachefiles_write() does not trigger null
+>> pointer dereference...
+> 
+> I'm not sure why there's a problem here.  I was thinking along the lines of:
+> 
+> 	struct file *tmp;
+> 	spin_lock(&object->lock);
+>   	tmp = object->file)
+> 	object->file = NULL;
+> 	spin_unlock(&object->lock);
+> 	if (tmp)
+> 		fput(tmp);
+> 
+> Note that fput() may defer the actual work if the counter hits zero, so the
+> cleanup may not happen inside the lock; further, the cleanup done by __fput()
+> may sleep.
+> 
+> David
+> 
+> 
+Oh, I see what you mean. I will sort it out and issue the second patch
+as soon as possible.
 
-	struct file *tmp;
-	spin_lock(&object->lock);
- 	tmp =3D object->file)
-	object->file =3D NULL;
-	spin_unlock(&object->lock);
-	if (tmp)
-		fput(tmp);
-
-Note that fput() may defer the actual work if the counter hits zero, so the
-cleanup may not happen inside the lock; further, the cleanup done by __fput=
-()
-may sleep.
-
-David
-
+Thanks,
+Zizhi Wo
