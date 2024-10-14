@@ -1,101 +1,159 @@
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CDE08F58
-	for <netfs@lists.linux.dev>; Fri, 11 Oct 2024 01:31:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8507513D52C
+	for <netfs@lists.linux.dev>; Mon, 14 Oct 2024 06:10:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728610320; cv=none; b=GLst8ScNNzPO+t5X41pTfqkH9SVUv23t/eCO1Pzy0dU432z3n4NfXu1LnX1qJX9pWg6v2G1tb+q7xb1WGraI9+a0cAcHLVTDkdkGJMeDEyM9/0zEiWi4owIssvDwuj2Aah0/Hp9Lwu7XopOOT92xUyDOY0Q//UYGVbZjON0JbTc=
+	t=1728886231; cv=none; b=XKA8+sdlUrxdRg95l8uQLMFYr0g3aM3CDqqr3h36qIR0vgdTXsncVM7cqb7ArCmmJ7Xt8BQPm7KACphOCzLhzg17FC2mCFhj+qBOVNmF9anW0Ey1hAw8GIAEqYrAMopohohT5w2WDYf4PX2Tc30LazIPoIR88DxDxdBtYkqh92Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728610320; c=relaxed/simple;
-	bh=WLIZqd8dlb1m7im5zIyPaUymXTbEoBm4AkPS9EzR/ks=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=uRBkimVwJhMtDP9Q2Q6Qw3B5I+4WzwEBj2w2pINIcz+EdjK1LzpeYhA7Rl8bFxYM4vEGQOug3V4h2UcSW5JHMY0xaiQO3t9KU2FbrZ68pvaq/7d6V/FBjNfjtdFJ9n7I67yI49KFCp86OEsGtxd6WZ6BlWpJIs9fVB1QYbJpwzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4XPpy82zS0z2VRTp;
-	Fri, 11 Oct 2024 09:32:00 +0800 (CST)
-Received: from kwepemf100017.china.huawei.com (unknown [7.202.181.16])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9C2C8140202;
-	Fri, 11 Oct 2024 09:31:55 +0800 (CST)
-Received: from [10.174.176.88] (10.174.176.88) by
- kwepemf100017.china.huawei.com (7.202.181.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 11 Oct 2024 09:31:54 +0800
-Message-ID: <94004b36-01ae-4c62-ad74-0bad5992eb7c@huawei.com>
-Date: Fri, 11 Oct 2024 09:31:53 +0800
+	s=arc-20240116; t=1728886231; c=relaxed/simple;
+	bh=do0VxF7OqQ6ake4Ma2eDjCtwPUt1cvw4UHN2k71Uk8M=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=DSx+iGSAL2JXC8xQKxGz6gIs2A/ZCegYFMp6SzSIsVvhCImw156q08AT6c0NKMV8rhthK+iS+yn+r5yYO5+ubyR99XKAuHAzIhNT8js8IuubscMnI8ifOYtwvAOaHE3PvNxmnVRFutqCVhvILusQbdsZVioWP6cWqMO2phg5f6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-3a1a8b992d3so33987725ab.0
+        for <netfs@lists.linux.dev>; Sun, 13 Oct 2024 23:10:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728886228; x=1729491028;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TPfhhO5qUG9J5CacmHWLOTkZYLLMWoOolVBwmexxbAo=;
+        b=QK3Z+1gmw9tWUTBoySkCV1WtXAj1+RH54MT5cBUV7IOZ42M3sGVnkQe6wU9yU4USbJ
+         1WHhoe13nPyZ1C/80BwgG+NoDkBcxSjbTj07SeQBibGDFNyIhWpgrKV58XJfM6jrTmU6
+         49tDz8Ar41E2fc8+TCHnA+6tlEZxto434kf6XDll8ekt35mDOFcFzwVoWzg1BM6LnSQF
+         8+bROkhbKj2WId87rDvAcZWQVTfgTy2vObPQexmKzyvwpLpgoyaCLSDn0Rp3WyUS+njy
+         TdHBdplhGtVhY8MPsJDEgofeCpw09D3OS8gGY262zvYVVDdZIwbkTidWqp8OGBtD3QXb
+         991g==
+X-Forwarded-Encrypted: i=1; AJvYcCXuIxFvTTjMeXBnKJsQT4RfhOp7mJ44MU/8JMAauG43KYmjRuef10SiBfhlT33KxLvZnvAZqg==@lists.linux.dev
+X-Gm-Message-State: AOJu0YygSpaN7TgCySsBDW8g00fZ6jP1emo1jFbAJqFvG8YUKh9XtzrW
+	cDjYCte7G0ActSkXBAuxZPiSjO6Lnr9cqILbURCMEIPS3A+JXfZwcPC4PUahpF+ZBhfALkiGS+0
+	hLyipWDIlmvOq9jNLZsG1EpaohVfKA8+z0OmKGO6AEpjO9bUHt5BGH6w=
+X-Google-Smtp-Source: AGHT+IFApPwVNettqVx2RNTBBzNIzdL6X9KJnsnP2BNNDCvJzplW4pmK1ALW9Kfvozlx/dcq9OMvSBFxgy39Ng6Sm07ptCY7cMxW
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7/8] cachefiles: Fix NULL pointer dereference in
- object->file
-To: David Howells <dhowells@redhat.com>
-CC: <netfs@lists.linux.dev>, <jlayton@kernel.org>,
-	<hsiangkao@linux.alibaba.com>, <jefflexu@linux.alibaba.com>,
-	<zhujia.zj@bytedance.com>, <linux-erofs@lists.ozlabs.org>,
-	<linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<libaokun1@huawei.com>, <yangerkun@huawei.com>, <houtao1@huawei.com>,
-	<yukuai3@huawei.com>
-References: <8d05cae1-55d2-415b-810e-3fb14c8566fd@huawei.com>
- <20240821024301.1058918-8-wozizhi@huawei.com>
- <20240821024301.1058918-1-wozizhi@huawei.com>
- <303977.1728559565@warthog.procyon.org.uk>
- <443969.1728571940@warthog.procyon.org.uk>
-From: Zizhi Wo <wozizhi@huawei.com>
-In-Reply-To: <443969.1728571940@warthog.procyon.org.uk>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemf100017.china.huawei.com (7.202.181.16)
+X-Received: by 2002:a92:c26c:0:b0:3a0:8e7c:b4ae with SMTP id
+ e9e14a558f8ab-3a3b5844ab8mr75164165ab.2.1728886228400; Sun, 13 Oct 2024
+ 23:10:28 -0700 (PDT)
+Date: Sun, 13 Oct 2024 23:10:28 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <670cb5d4.050a0220.3e960.0054.GAE@google.com>
+Subject: [syzbot] [netfs?] general protection fault in netfs_write_collection_worker
+From: syzbot <syzbot+af5c06208fa71bf31b16@syzkaller.appspotmail.com>
+To: dhowells@redhat.com, jlayton@kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netfs@lists.linux.dev, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+
+Hello,
+
+syzbot found the following issue on:
+
+HEAD commit:    e32cde8d2bd7 Merge tag 'sched_ext-for-6.12-rc1-fixes-1' of..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=136ae580580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=1b5201b91035a876
+dashboard link: https://syzkaller.appspot.com/bug?extid=af5c06208fa71bf31b16
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7feb34a89c2a/non_bootable_disk-e32cde8d.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/b8759dd370e1/vmlinux-e32cde8d.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/c770fb4b8507/bzImage-e32cde8d.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+af5c06208fa71bf31b16@syzkaller.appspotmail.com
+
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+CPU: 0 UID: 0 PID: 1109 Comm: kworker/u32:8 Not tainted 6.12.0-rc1-syzkaller-00031-ge32cde8d2bd7 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Workqueue: events_unbound netfs_write_collection_worker
+RIP: 0010:folioq_folio include/linux/folio_queue.h:277 [inline]
+RIP: 0010:netfs_writeback_unlock_folios fs/netfs/write_collect.c:107 [inline]
+RIP: 0010:netfs_collect_write_results fs/netfs/write_collect.c:493 [inline]
+RIP: 0010:netfs_write_collection_worker+0x1c97/0x4780 fs/netfs/write_collect.c:551
+Code: 4c 39 fb 0f 83 25 04 00 00 e8 e5 94 54 ff 44 8b 2c 24 41 83 fd 1e 0f 87 77 23 00 00 4a 8d 44 ed 08 48 89 44 24 30 48 c1 e8 03 <42> 80 3c 30 00 0f 85 4f 23 00 00 4a 8b 5c ed 08 48 89 df e8 d1 da
+RSP: 0018:ffffc90005d6fae8 EFLAGS: 00010202
+RAX: 0000000000000001 RBX: 0000000000000000 RCX: ffffffff8238f165
+RDX: ffff888026c4a440 RSI: ffffffff8238f40b RDI: 0000000000000005
+RBP: 0000000000000000 R08: ffff88805f4fc600 R09: 000000000000001e
+R10: 0000000000000000 R11: 0000000000000000 R12: 000000000000002c
+R13: 0000000000000000 R14: dffffc0000000000 R15: ffff88805f4fc5fa
+FS:  0000000000000000(0000) GS:ffff88806a600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000055960e035c38 CR3: 0000000056af8000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ process_one_work+0x9c5/0x1ba0 kernel/workqueue.c:3229
+ process_scheduled_works kernel/workqueue.c:3310 [inline]
+ worker_thread+0x6c8/0xf00 kernel/workqueue.c:3391
+ kthread+0x2c1/0x3a0 kernel/kthread.c:389
+ ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:folioq_folio include/linux/folio_queue.h:277 [inline]
+RIP: 0010:netfs_writeback_unlock_folios fs/netfs/write_collect.c:107 [inline]
+RIP: 0010:netfs_collect_write_results fs/netfs/write_collect.c:493 [inline]
+RIP: 0010:netfs_write_collection_worker+0x1c97/0x4780 fs/netfs/write_collect.c:551
+Code: 4c 39 fb 0f 83 25 04 00 00 e8 e5 94 54 ff 44 8b 2c 24 41 83 fd 1e 0f 87 77 23 00 00 4a 8d 44 ed 08 48 89 44 24 30 48 c1 e8 03 <42> 80 3c 30 00 0f 85 4f 23 00 00 4a 8b 5c ed 08 48 89 df e8 d1 da
+RSP: 0018:ffffc90005d6fae8 EFLAGS: 00010202
+RAX: 0000000000000001 RBX: 0000000000000000 RCX: ffffffff8238f165
+RDX: ffff888026c4a440 RSI: ffffffff8238f40b RDI: 0000000000000005
+RBP: 0000000000000000 R08: ffff88805f4fc600 R09: 000000000000001e
+R10: 0000000000000000 R11: 0000000000000000 R12: 000000000000002c
+R13: 0000000000000000 R14: dffffc0000000000 R15: ffff88805f4fc5fa
+FS:  0000000000000000(0000) GS:ffff88806a800000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f989f7fd870 CR3: 000000000df7c000 CR4: 0000000000352ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+----------------
+Code disassembly (best guess):
+   0:	4c 39 fb             	cmp    %r15,%rbx
+   3:	0f 83 25 04 00 00    	jae    0x42e
+   9:	e8 e5 94 54 ff       	call   0xff5494f3
+   e:	44 8b 2c 24          	mov    (%rsp),%r13d
+  12:	41 83 fd 1e          	cmp    $0x1e,%r13d
+  16:	0f 87 77 23 00 00    	ja     0x2393
+  1c:	4a 8d 44 ed 08       	lea    0x8(%rbp,%r13,8),%rax
+  21:	48 89 44 24 30       	mov    %rax,0x30(%rsp)
+  26:	48 c1 e8 03          	shr    $0x3,%rax
+* 2a:	42 80 3c 30 00       	cmpb   $0x0,(%rax,%r14,1) <-- trapping instruction
+  2f:	0f 85 4f 23 00 00    	jne    0x2384
+  35:	4a 8b 5c ed 08       	mov    0x8(%rbp,%r13,8),%rbx
+  3a:	48 89 df             	mov    %rbx,%rdi
+  3d:	e8                   	.byte 0xe8
+  3e:	d1 da                	rcr    %edx
 
 
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-在 2024/10/10 22:52, David Howells 写道:
-> Zizhi Wo <wozizhi@huawei.com> wrote:
-> 
->> 在 2024/10/10 19:26, David Howells 写道:
->>> Zizhi Wo <wozizhi@huawei.com> wrote:
->>>
->>>> +	spin_lock(&object->lock);
->>>>    	if (object->file) {
->>>>    		fput(object->file);
->>>>    		object->file = NULL;
->>>>    	}
->>>> +	spin_unlock(&object->lock);
->>> I would suggest stashing the file pointer in a local var and then doing the
->>> fput() outside of the locks.
->>> David
->>>
->>
->> If fput() is executed outside the lock, I am currently unsure how to
->> guarantee that file in __cachefiles_write() does not trigger null
->> pointer dereference...
-> 
-> I'm not sure why there's a problem here.  I was thinking along the lines of:
-> 
-> 	struct file *tmp;
-> 	spin_lock(&object->lock);
->   	tmp = object->file)
-> 	object->file = NULL;
-> 	spin_unlock(&object->lock);
-> 	if (tmp)
-> 		fput(tmp);
-> 
-> Note that fput() may defer the actual work if the counter hits zero, so the
-> cleanup may not happen inside the lock; further, the cleanup done by __fput()
-> may sleep.
-> 
-> David
-> 
-> 
-Oh, I see what you mean. I will sort it out and issue the second patch
-as soon as possible.
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-Thanks,
-Zizhi Wo
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
