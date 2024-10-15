@@ -1,78 +1,95 @@
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CD21B2187
-	for <netfs@lists.linux.dev>; Tue, 15 Oct 2024 13:36:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [20.231.56.155])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDB771AF0B9
+	for <netfs@lists.linux.dev>; Tue, 15 Oct 2024 13:41:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=20.231.56.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728999413; cv=none; b=szOexSTtLk1D2VYiKGbVKaY9gOzvbelV/vyJ1dAjVTRs8rzOOeTUcJ+2KbbE57XbBXG2QjbPr6KrbDsAmH+go0iVcNr3768pq4JFvvELZLd1J8G7x8S5wIHVKAebxKWHHNL9njMcXvcYDCyUuGcSGQ5SXqPl26EgRYmyG3ADNUg=
+	t=1728999666; cv=none; b=PYV4B/PtS4kYNFto7CaoIPRCL/c8Hd0cimokjAuCVeGnVpxwa8JOPLlcEaEBMmWkXR7DefyW8ZzR2wrKPRb4+LuauYSuiuIk3EOyclSKRFRKuXBE+wktzDFfu7qLB2RDVn5avmtnbsz7fnfHTgLEj2IuMp0l8Z+L3wHTECs1mK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728999413; c=relaxed/simple;
-	bh=1o+mpm3TwP32msRXHLP7zEzdbkFDP0OejQgTcO9tZqA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=j6hnkt9TSe5gcpGo0Mx4B8gms5VthHSCXKU/aNJvznsjGn2IoNWooJidySCod1RaGGGnu+s6/e8tpyJYUOk8l/swejl20C0/e7coAvseZmbqKKzabjxuSd/gUGzxMZZH7MnNOy1FCOS4/HoRNulju/ictD9vurO087WCZlaaIH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=aCtdZ9mg; arc=none smtp.client-ip=45.79.88.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="aCtdZ9mg"
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net D1CF6418B6
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1728999410; bh=/9PBSSXDLd3URlyiOb3FwjVfJcT0hVdJJ4SMwSlMcI0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=aCtdZ9mgJcGC4FCS+8I43hg5h8/oRvOS9p40s1OLNt8VfVgetMFkDZrT26qvg4dBQ
-	 LWco3ljJS9e8RRMNWRYNbsFMCo+sQM5fiZEPg+xPoLLZ3khJUd+nt4/JhNUnz6eJiy
-	 OxMmgZyh3RfaO7qddLM6xM27S+Ah7NTAM2dNxHpQz82EI4ReOPwOwW5NRGfL6/xULI
-	 /iRcbQTm3jEBMKFs9M0k5s1G3yxvc5lyM0fr1KiG6TYX/Jw2O4ZgeE0KiR5Ju1UC6J
-	 KJ7eq1K+d+MHQCAWfKIYCTbEJK13mOBYHvblKmB4XfWOmUPjLkDTVt+RnCaXTSyxdW
-	 /DbtTJAQS9hTA==
-Received: from localhost (unknown [IPv6:2601:280:5e00:625::1fe])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id D1CF6418B6;
-	Tue, 15 Oct 2024 13:36:49 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Dongliang Mu <dzm91@hust.edu.cn>, David Howells <dhowells@redhat.com>,
- Jeff Layton <jlayton@kernel.org>
-Cc: hust-os-kernel-patches@googlegroups.com, Dongliang Mu
- <dzm91@hust.edu.cn>, netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] docs: fix a reference of a removed file
-In-Reply-To: <20241015092356.1526387-1-dzm91@hust.edu.cn>
-References: <20241015092356.1526387-1-dzm91@hust.edu.cn>
-Date: Tue, 15 Oct 2024 07:36:49 -0600
-Message-ID: <87jze9qyha.fsf@trenco.lwn.net>
+	s=arc-20240116; t=1728999666; c=relaxed/simple;
+	bh=BzYWAhoI0axCue+kv6wY0di0ivbwBcXcR4ZVqGGktH0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=luXxQNvRCA250AnmX+3cat+MzCiCXuxeAMY1L3MOxgEMGkXSdJEG9/46DDQRijVsD4aQDt7Dg+bPbiyvobvkxPPcmkwbfYKfIeODT03n/M/ZIcfw+b54CJw27EqQv8M9LBxNRA277kaeRs5yWUv+Yw+2rdJH5vkjF3x9FDthzmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn; spf=pass smtp.mailfrom=hust.edu.cn; arc=none smtp.client-ip=20.231.56.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hust.edu.cn
+Received: from hust.edu.cn (unknown [172.16.0.50])
+	by app1 (Coremail) with SMTP id HgEQrACHjjrDcA5n9TrMBw--.6015S2;
+	Tue, 15 Oct 2024 21:40:19 +0800 (CST)
+Received: from [10.12.164.29] (unknown [10.12.164.29])
+	by gateway (Coremail) with SMTP id _____wAHckLBcA5nX5dIAA--.51398S2;
+	Tue, 15 Oct 2024 21:40:18 +0800 (CST)
+Message-ID: <769f0267-f09d-46e8-854f-52f6c65996f8@hust.edu.cn>
+Date: Tue, 15 Oct 2024 21:40:17 +0800
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] docs: fix a reference of a removed file
+To: Jonathan Corbet <corbet@lwn.net>, David Howells <dhowells@redhat.com>,
+ Jeff Layton <jlayton@kernel.org>
+Cc: hust-os-kernel-patches@googlegroups.com, netfs@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20241015092356.1526387-1-dzm91@hust.edu.cn>
+ <87jze9qyha.fsf@trenco.lwn.net>
+Content-Language: en-US
+From: Dongliang Mu <dzm91@hust.edu.cn>
+In-Reply-To: <87jze9qyha.fsf@trenco.lwn.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:HgEQrACHjjrDcA5n9TrMBw--.6015S2
+Authentication-Results: app1; spf=neutral smtp.mail=dzm91@hust.edu.cn;
+X-Coremail-Antispam: 1UD129KBjvdXoWrZrWDJF48tw48ur43Zr1xAFb_yoWDJFb_JF
+	97AFs3ZryDArs7AF18KFn8WF13A3WxCry8Xw1fAws3ta4UJ395CF93J3sYyr43Wrs29rn5
+	JFWkZr9xXFy2gjkaLaAFLSUrUUUUbb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbDAYjsxI4VWxJwAYFVCjjxCrM7CY07I20VC2zVCF04k26cxKx2IY
+	s7xG6rWj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI
+	8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJwA2z4x0Y4vE
+	x4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAac4AC62xK8x
+	CEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0U
+	Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VACjcxG62k0Y48FwI0_Cr0_Gr1UMcIj6x8Erc
+	xFaVAv8VW8uFyUJr1UMcIj6xkF7I0En7xvr7AKxVW8Jr0_Cr1UMcvjeVCFs4IE7xkEbVWU
+	JVW8JwACjcxG0xvEwIxGrwCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r4fZr
+	1UJr1l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jw0_GFylx2IqxVAqx4xG
+	67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MI
+	IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
+	14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
+	W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07UQzVbU
+	UUUU=
+X-CM-SenderInfo: asqsiiirqrkko6kx23oohg3hdfq/
 
-Dongliang Mu <dzm91@hust.edu.cn> writes:
 
-> Since 86b374d061ee ("netfs: Remove fs/netfs/io.c") removed
-> fs/netfs/io.c, we need to delete its reference in the documentation.
+On 10/15/24 21:36, Jonathan Corbet wrote:
+> Dongliang Mu <dzm91@hust.edu.cn> writes:
 >
-> Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
-> ---
->  Documentation/filesystems/netfs_library.rst | 1 -
->  1 file changed, 1 deletion(-)
+>> Since 86b374d061ee ("netfs: Remove fs/netfs/io.c") removed
+>> fs/netfs/io.c, we need to delete its reference in the documentation.
+>>
+>> Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
+>> ---
+>>   Documentation/filesystems/netfs_library.rst | 1 -
+>>   1 file changed, 1 deletion(-)
+>>
+>> diff --git a/Documentation/filesystems/netfs_library.rst b/Documentation/filesystems/netfs_library.rst
+>> index f0d2cb257bb8..73f0bfd7e903 100644
+>> --- a/Documentation/filesystems/netfs_library.rst
+>> +++ b/Documentation/filesystems/netfs_library.rst
+>> @@ -592,4 +592,3 @@ API Function Reference
+>>   
+>>   .. kernel-doc:: include/linux/netfs.h
+>>   .. kernel-doc:: fs/netfs/buffered_read.c
+>> -.. kernel-doc:: fs/netfs/io.c
+> Already fixed by 368196e50194 in linux-next.
+
+Okay, I see. Thanks for the reminder.
+
+Dongliang Mu
+
 >
-> diff --git a/Documentation/filesystems/netfs_library.rst b/Documentation/filesystems/netfs_library.rst
-> index f0d2cb257bb8..73f0bfd7e903 100644
-> --- a/Documentation/filesystems/netfs_library.rst
-> +++ b/Documentation/filesystems/netfs_library.rst
-> @@ -592,4 +592,3 @@ API Function Reference
->  
->  .. kernel-doc:: include/linux/netfs.h
->  .. kernel-doc:: fs/netfs/buffered_read.c
-> -.. kernel-doc:: fs/netfs/io.c
+> Thanks,
+>
+> jon
 
-Already fixed by 368196e50194 in linux-next.
-
-Thanks,
-
-jon
