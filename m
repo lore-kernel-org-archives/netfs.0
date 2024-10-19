@@ -1,69 +1,104 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DABF31DB546
-	for <netfs@lists.linux.dev>; Thu, 17 Oct 2024 11:04:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB5F1CC15E
+	for <netfs@lists.linux.dev>; Sat, 19 Oct 2024 07:16:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.34.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729163046; cv=none; b=oFXsL7Wqnwg+XFX7ZJ29yxim8qvjjSKudRd+Jw4RfTh6pqnxmWwzXOLB2vnqCyLhLBfjJns5ibx5BxMZGwZfl3NCykWaVk7XM58gSUlwRAs6TYByrL1U1EQCB3L+iEx4G1KHUIpZVYzSYIpYFWqhs9xrD2yetEFoAl2fwoSuWOE=
+	t=1729322209; cv=none; b=myGouYEeH06EgdCZpSsR9rmhKx74BI6DEDqDf7KtusstEPjSjsnAKjJpUo5eLPmcl2hP7m1x4QRa0HNyG2x2RFHp988Ms2Zb2ZQpWkOAFaUCNYx6XhE2PFctOpOBtbg7XvXsCBxUR8BorxOuzQewPWnwxdrOszqk7Rm8nIkUGy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729163046; c=relaxed/simple;
-	bh=Uozh1w9LZoXr6ha27kAfa1WuCkzQONJaDgQPc6sczFA=;
-	h=From:In-Reply-To:References:Cc:Subject:MIME-Version:Content-Type:
-	 Date:Message-ID; b=LFkWtCD4Yfx76gv1UeBD3jORWwFKu0Pq0Da4s/WB6+wn4Kiwauj7FMpwM1P/Ow8mWgXaOYU2X0UUgFwgQUL4Px5jyT7Ou8n4H9qqYKNt525720JKEdBYB3QqDb23i6x6/IPBJm8XdpoJTgtMOl67WNOCLZNdFVLbAYyZljF4xFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TGbWLYJA; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TGbWLYJA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729163043;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Uozh1w9LZoXr6ha27kAfa1WuCkzQONJaDgQPc6sczFA=;
-	b=TGbWLYJASrl5d9qh91ganu4+4j1DveTydhS8xTSXfpO0aH22beIEV8GhgJrj5TL3wC/chN
-	kqTn6yU6yyprQUf0+05O0Iwkz9ROrj/yODMecYR5NAEwu3xLbXpPH+qyMhELMeSl2tRa/L
-	4/cfjkk13i5fnF5kidwIGDc5yhFiH04=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-531-Pi1RK835NXed1iR06uqpVA-1; Thu,
- 17 Oct 2024 07:04:00 -0400
-X-MC-Unique: Pi1RK835NXed1iR06uqpVA-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 755D01955F45;
-	Thu, 17 Oct 2024 11:03:59 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.218])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0AE1419560A3;
-	Thu, 17 Oct 2024 11:03:57 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <1292002.1729090128@warthog.procyon.org.uk>
-References: <1292002.1729090128@warthog.procyon.org.uk>
-Cc: dhowells@redhat.com, Christian Brauner <brauner@kernel.org>,
-    Jeff Layton <jlayton@kernel.org>, netfs@lists.linux.dev,
-    linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH] netfs: Fix kdoc of netfs_read_subreq_progress()
+	s=arc-20240116; t=1729322209; c=relaxed/simple;
+	bh=Z5Q8B4bck1mews/VXCUSRyo4bdvk5UfW/acuCx1L4IE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=YzXoHeC1NaecUABXvoOgOqfjLXsdXCkJ4ye/NGQ7yevjALpVl/Rnr1kt9P9XxTRTaTV9sETTt3YHQnyhfGarDw8rsuvJu3Pe5RMuAtZOJ/aM4IbMhw8/6Lx89VmIIM2z1c1e6T0PJg62Mv6Pe+OwA1l/IKjBeuV0VjYUS4Y4qAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chenxiaosong.com; spf=pass smtp.mailfrom=chenxiaosong.com; arc=none smtp.client-ip=54.206.34.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chenxiaosong.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chenxiaosong.com
+X-QQ-mid: bizesmtpsz10t1729322177tbh1ui
+X-QQ-Originating-IP: gaImgFu32Uh/c26jfCC4kBP+8UkdjHLBLPOMsCWpONg=
+Received: from sonvhi-TianYi510S-07IMB.. ( [116.128.244.171])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Sat, 19 Oct 2024 15:16:10 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 16716936677098621295
+From: chenxiaosong@chenxiaosong.com
+To: corbet@lwn.net,
+	dhowells@redhat.com,
+	jlayton@kernel.org,
+	brauner@kernel.org,
+	rostedt@goodmis.org,
+	mhiramat@kernel.org,
+	mathieu.desnoyers@efficios.com,
+	trondmy@kernel.org,
+	anna@kernel.org,
+	chuck.lever@oracle.com,
+	neilb@suse.de,
+	okorniev@redhat.com,
+	Dai.Ngo@oracle.com,
+	tom@talpey.com
+Cc: linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ChenXiaoSong <chenxiaosong@kylinos.cn>
+Subject: [PATCH 2/3] docs: filesystems: fix compile error in netfs_library.rst
+Date: Sat, 19 Oct 2024 15:15:38 +0800
+Message-Id: <20241019071539.125934-3-chenxiaosong@chenxiaosong.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241019071539.125934-1-chenxiaosong@chenxiaosong.com>
+References: <20241019071539.125934-1-chenxiaosong@chenxiaosong.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1395128.1729163036.1@warthog.procyon.org.uk>
-Date: Thu, 17 Oct 2024 12:03:56 +0100
-Message-ID: <1395129.1729163036@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtpsz:chenxiaosong.com:qybglogicsvrsz:qybglogicsvrsz4a-0
+X-QQ-XMAILINFO: NT41pJDfQPFSB9F9kKdcq/EHqcrOjJ4FF9S9GguAtHWY6cx1LXVlEUS5
+	hRngvoljSm3tCOwLYIZTXZcBs8K6ifg9EL05m/NNy9hrI2HWH/4hYPEu/bXWZIQlLX0VM05
+	63R6oME6aSrdLaanHy/fmqwC1zcH+P0VcEpx5wQfCDtkND704glWMyRZxq0z3e8uTgaPBd0
+	IVLCrGJ65Wi4E4YIiVEw2BfKy9Qndbj//vmHtMEiRFwWbKM70TrKMi7NWQ+gzhUt7i4zIGw
+	aik+ZCX4rSoX8c3KUTf62q2dVS+dUlPG0F6jrMnPBmS+b1gK3s2dPSyoUN0B388HJ3Yy91w
+	O8qJICvmaLKHnedf5sHv3g5eeLu1pw7yQqfagxeG4bZZtCtoTYQCMO8vcNGDxioNYKmbbat
+	ohcRzjqM2raicxFhDwjdfDgx7ct6hZrpfO58PRfp4EDQER7PXPo2IKOVjbCAs7RUFzVqJbv
+	FmfRXM6S/jYNAzm75WSPrgGZFQE0ylvnOtLPyXA8hvWRe9w5eUZ1JnyI6TyGxyLWkq9XKjs
+	6mkogKHMucrmOpnAtqmab0hX8oqh2AwSQLWGT9hecupIa15sfOb1kRloS4doMzSSHawDxgl
+	lKGXq7JpktBmD7zsBJ1mU7YHNhBJ5i0LiZPZTHmbePFDIS3jLj+P4IYr3ViqJUo+LKk7GLo
+	ltkJQOKfCDRddg0HkMXmMeBlYDZ0MfxYH91q0APl0fuFp75EKlFoSun7m8T3AtSoBYxiTca
+	lDiuVzI4wo96wkDgyxIzdvEgDzQhHQ8jEq/msIfM4L94jbI0SjNaWI/7K1J6TcF9sjBgPdJ
+	UgHLyRLWs/aLq5pGTd7zNF4yWSi6BDx3HkrbE3UGFLQwXnDCKDC4Q73/ctDgqhJO8v05Ek4
+	Xp5HEEho8BJqsml5AZ/fDipH3YFu82pA0312v6AWTFCYrcDKrHG/BpbRd947QAwt
+X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
+X-QQ-RECHKSPAM: 0
 
-Ignore this, the fix needs to be applied to patches I haven't upstreamed yet.
+From: ChenXiaoSong <chenxiaosong@kylinos.cn>
 
-David
+`make htmldocs` reports the following error:
+
+  Error: Cannot open file fs/netfs/io.c
+
+Fix it by removing the unused kernel-doc reference.
+
+Fixes: 86b374d061ee ("netfs: Remove fs/netfs/io.c")
+Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+---
+ Documentation/filesystems/netfs_library.rst | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/Documentation/filesystems/netfs_library.rst b/Documentation/filesystems/netfs_library.rst
+index f0d2cb257bb8..73f0bfd7e903 100644
+--- a/Documentation/filesystems/netfs_library.rst
++++ b/Documentation/filesystems/netfs_library.rst
+@@ -592,4 +592,3 @@ API Function Reference
+ 
+ .. kernel-doc:: include/linux/netfs.h
+ .. kernel-doc:: fs/netfs/buffered_read.c
+-.. kernel-doc:: fs/netfs/io.c
+-- 
+2.34.1
 
