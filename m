@@ -1,106 +1,86 @@
-Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 858171D54D3
-	for <netfs@lists.linux.dev>; Sat, 19 Oct 2024 07:17:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A113E42A97
+	for <netfs@lists.linux.dev>; Sat, 19 Oct 2024 16:31:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729322234; cv=none; b=mKdUKsD20rEuW+y/Tvx84AV1gtontZhTs6wuG+algtvAcA4gb80/ZhxBwvBZpg1yKQ4u3rFCIXQvrhyX+PGPp8kfC/qIfHl9/SF/B/A51nYRDC8Q7hrJH3aHJFF/uk6GZq5tP2P4TQlLFismrh0Xs5XM670ODamy+6TYcbgyAfM=
+	t=1729355505; cv=none; b=YioA5biSZtlGnLbb8FCMHh89gX73WV8zCPf8zTyJ6+rh+biCeFje4RSznqoFtkkbcbmtjs99WSlMRlj/eYkBzny6qnrJZRvahxDFQLRMPWRraiMJNf+HTmWZ9U7nbAWUnhP6/8zpIgqrjUjzfH2AReAi4OcAySjVgV6rPEgFlX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729322234; c=relaxed/simple;
-	bh=x77Leu//zcELEFm/jviPtto7y+OnBK4QnxtY2HQIYU0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=i1ie3jCwz03wJwqSeNB5ZMYbkY9KrozhIl36cc3ye3W/kTYoBtV8/vNqyQIuNdqCFPh6EV009+m+AdLoBr1BkEr77zXWgqA2c3opCkynoLEPBZGy9sTX+fu7TvHlwAzr4r0uU+ifYR3iDSCo/6WOfDtPh3XqUcGLUAi9FnlGYlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chenxiaosong.com; spf=none smtp.mailfrom=chenxiaosong.com; arc=none smtp.client-ip=54.92.39.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chenxiaosong.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=chenxiaosong.com
-X-QQ-mid: bizesmtpsz10t1729322183tmx9pd
-X-QQ-Originating-IP: 2wrtZZMSoIeiW4tN+ltGHjUUxkkLFPmvDWr8Q0tu8H4=
-Received: from sonvhi-TianYi510S-07IMB.. ( [116.128.244.171])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sat, 19 Oct 2024 15:16:18 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 15998112844559155357
-From: chenxiaosong@chenxiaosong.com
-To: corbet@lwn.net,
-	dhowells@redhat.com,
-	jlayton@kernel.org,
-	brauner@kernel.org,
-	rostedt@goodmis.org,
-	mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com,
-	trondmy@kernel.org,
-	anna@kernel.org,
-	chuck.lever@oracle.com,
-	neilb@suse.de,
-	okorniev@redhat.com,
-	Dai.Ngo@oracle.com,
-	tom@talpey.com
-Cc: linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>
-Subject: [PATCH 3/3] tracing/Documentation: fix compile warning in debugging.rst
-Date: Sat, 19 Oct 2024 15:15:39 +0800
-Message-Id: <20241019071539.125934-4-chenxiaosong@chenxiaosong.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1729355505; c=relaxed/simple;
+	bh=bGQ6l3gd1wlwXvzvtjxQAsAk+OvHn/ryuoFhSXq2t0Q=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=fFmFNtkpy/IR+loHFZ2QHunZCq6syaRXZFwUlysY51ECaIrpJrKohD7cQyuJSiS6XATdfXCbA5cbt70EUpEWJqU/gSVx1ya9p3+O30gjRYkffWgzfN/IKZdljxfjHpsFVm+z7RCvmEnBwPOiE0dp4eKpNAHppj1AJoTdeC8+xU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=sv2VGM39; arc=none smtp.client-ip=45.79.88.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="sv2VGM39"
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net B0E9342B3A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1729355501; bh=WDxADfReoLe67ZxoBdxB2RBOIZMEtqF+3tEF74+v2f8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=sv2VGM39/oJiwBPdyQHHOLESCQSPRTIj8PegObGVtEi+IDDklqdK2mRj9ynU5y0mV
+	 vQujMzXR4/8gGX4UdO+whCE+dNV5SV+N4ADXI6PHRgqyHiYNeJvKBLE6QjOzuNcJEA
+	 kryGx88tLBc5wZofuAlFrHVapgvMo5pjg9yc4pBQVPCaLKeCOj9Muy/KSh395NEpPQ
+	 VfJga7l4QmvjP1K+E74IcF6SwNMo7Twp8HgkffWDVKUZzSH0yYRmIha9eCCvF0DW2X
+	 2D5BYKsTXI9OgeAXAd+/ldDJg9SJQUQrLVC9E3epzxqd3l9XbuCFNFJmnFdxZliP8L
+	 mDZVtUeIFWFMQ==
+Received: from localhost (unknown [IPv6:2601:280:5e00:625::1fe])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id B0E9342B3A;
+	Sat, 19 Oct 2024 16:31:41 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: chenxiaosong@chenxiaosong.com, dhowells@redhat.com, jlayton@kernel.org,
+ brauner@kernel.org, rostedt@goodmis.org, mhiramat@kernel.org,
+ mathieu.desnoyers@efficios.com, trondmy@kernel.org, anna@kernel.org,
+ chuck.lever@oracle.com, neilb@suse.de, okorniev@redhat.com,
+ Dai.Ngo@oracle.com, tom@talpey.com
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
+ ChenXiaoSong <chenxiaosong@kylinos.cn>
+Subject: Re: [PATCH 0/3] Documentation: update nfs idmapper doc and fix
+ compile issues
 In-Reply-To: <20241019071539.125934-1-chenxiaosong@chenxiaosong.com>
 References: <20241019071539.125934-1-chenxiaosong@chenxiaosong.com>
+Date: Sat, 19 Oct 2024 10:31:40 -0600
+Message-ID: <87jze4vytv.fsf@trenco.lwn.net>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpsz:chenxiaosong.com:qybglogicsvrsz:qybglogicsvrsz4a-0
-X-QQ-XMAILINFO: ML8hOghqQD+0/XlLMPZYyEW0x1ZBxbHmjrEen821kLJ3+EqgbZQLh6Cy
-	UkRLh36+wxHT7KAAgoyj7eJ8swsbAQYzMcdcqPAKg5uMJiOUPAxCS+Jdu9NW1N8Y7Cn2y5y
-	M/kHE3rY/sraBmR5uYHJ/GvL4mJEgOOHB3euVodIhelLhReAy9iYv94GVt0IOjpmgLWVcVx
-	w95IZuuX4muGZbdQOXhHr458oRZ6nbSjxHAOsqHLREkmoiSI6Sb5FqCn6RMIDV/gIRbvm02
-	CroCN8cJXutCHZIFvNLXpaV+y/zFRdk1jKFVkuRKXDnNqq1XXajNxExcVsgbPnLC52j7D/D
-	q8vh201husHxCpjjdY/nuFQrrGuF7jJLFhEt6G490NI2Mhe1SzeCrSDFz29ti7+V7H8keD9
-	86MTTsjjm16rY0ZnIHP+qj6QOxQhOHMgadsQ+ICh/AUOA3oiwocHWY1JZHGHe0kM7Xs0yMo
-	vZrAw+ERTmuwM4DwvZLNTBI1an50mQn+eRP3T0TCUQrJdIwsgRDF89jgJlObYHcRB3kW0FV
-	OVssBpf1nx/tbhNPx8gsi1ZddwNJe/r1QOazlNTZ5D+gfm1frvBlCQ1APhSW8Xiw4R2ep0y
-	RfiP0gtSUDtVwRf1T1o4QpLMKMnqyKQGgerzuK6bixjiyev9xucpWWZ5wMPLudypNJWm6q+
-	slQY8ciSVublXTprzNgUJ+qUSr6uUMeZNoTL7VCUVPtbBYOnYi+ttpWcU7DL6lxqoRQfXcd
-	GtW2bPrbDSNfCdODYNbWDgI+HZNrwUZaeUzeH5b0nH3RI3rXpg5cAhhU9FZwxIURRXFFrV+
-	ggV3+YpWJ+4SQxJKa5sso81BakSjpQzb84vjEKxZZCFInb1slSrfaCxDJ6Pwkv8pfHyTHZc
-	x5xLKYDdeOFyq6O3AJ2lrd0Yox+JtGOpjjmY7Ep7QIJtnF1YVszQM/jkWaj4V5oJBcqtpCR
-	V2y9gS7RQn6uUQDkezFSnnQN6R7x+qaU7Lp4=
-X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain
 
-From: ChenXiaoSong <chenxiaosong@kylinos.cn>
+chenxiaosong@chenxiaosong.com writes:
 
-`make htmldocs` reports the following warning:
+> From: ChenXiaoSong <chenxiaosong@kylinos.cn>
+>
+> Keep usage of `nfsidmap` consistent with nfsidmap manual.
+>
+> Additionally, fix compile error and warning when running `make htmldocs`.
 
-  Documentation/trace/debugging.rst: WARNING: document isn't included \
-    in any toctree
+These are logically separate patches and do not need to be grouped
+together. Additionally...
 
-Fix it by adding debugging.rst to toctree.
+> ChenXiaoSong (3):
+>   Documentation: nfs: idmapper: keep consistent with nfsidmap manual
+>   docs: filesystems: fix compile error in netfs_library.rst
+>   tracing/Documentation: fix compile warning in debugging.rst
+>
+>  Documentation/admin-guide/nfs/nfs-idmapper.rst | 59 ++++++++++++++++++++++++++++++++---------------------------
+>  Documentation/filesystems/netfs_library.rst    |  1 -
 
-Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
----
- Documentation/trace/index.rst | 1 +
- 1 file changed, 1 insertion(+)
+This is already fixed in linux-next
 
-diff --git a/Documentation/trace/index.rst b/Documentation/trace/index.rst
-index 0b300901fd75..2827292f8f34 100644
---- a/Documentation/trace/index.rst
-+++ b/Documentation/trace/index.rst
-@@ -36,3 +36,4 @@ Linux Tracing Technologies
-    user_events
-    rv/index
-    hisi-ptt
-+   debugging
--- 
-2.34.1
+>  Documentation/trace/index.rst                  |  1 +
 
+...as is this one.
 
+Thanks,
+
+jon
