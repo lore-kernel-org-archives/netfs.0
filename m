@@ -1,26 +1,27 @@
-Received: from smtpbg150.qq.com (smtpbg150.qq.com [18.132.163.193])
+Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D561D54D3
-	for <netfs@lists.linux.dev>; Sat, 19 Oct 2024 07:16:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.132.163.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD691D63DC
+	for <netfs@lists.linux.dev>; Sat, 19 Oct 2024 07:16:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729322214; cv=none; b=jCPJd3UJOceK5c4YiY7SkLcDz+iSs5Gj4CdYtZG2MHFPutlxEr/UHk8u/p0pWDes9JDgn04hO/3L2oeG3zzXxkcaDkrB42F/dQe9P8okQQ1oo5/JdfBj+VqpEZ3O7okdZ5tcVI6aO4309Oag5PQ1hMZFmCtU86Yp8Xm8mnDJ3s8=
+	t=1729322218; cv=none; b=Kv3khAfWyEyDveKXDNwHgx+LwejGqKfzry1hldsFl97R4VFs/CXUr17Fo7Ts7nfIZ3yWaJyvpsvc57dNyLRLVtZiY/zxK6AT9OKFiN0Ggt9CrDlTrJAhOuZvsgXRntVJcdieDMyRH/I7mb5eDDTAnsNzdKKXjV22787QxA2p/ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729322214; c=relaxed/simple;
-	bh=8Ci7FKbEJ8wfLsbm3P5p52CFIcHLE48XvNrbxWMT8WY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LpZRSTqXQktBHJ4Xf56p4QvuX9SyknYXreXTpbixX0c9Q8G0+oKyLTuhYdxodnhtohHqjMcKoTHqwREMOlofuqLQGdukoGf2263PUvZVcNQF7J/iDql2kx7cfDpc9/cDaFmWEuqObtX8UpORnYhq0fcJBFCPsxZlopOdg0ok2go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chenxiaosong.com; spf=pass smtp.mailfrom=chenxiaosong.com; arc=none smtp.client-ip=18.132.163.193
+	s=arc-20240116; t=1729322218; c=relaxed/simple;
+	bh=pjx16WCMw/sQrrsCxHRbpEFWf5y2yLaA1KolqpC+Wjc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=k+CkYHLPNglYLyr5FQwnrMCLl4A2PWfsNNoQjRcPwbUq5HuG8UBUf8Srj96bLv8AxzGMOfs9xy8aK0zUF1UmZfMT4odsLbZyLJ6cnWTcZgcbcXtCaqS8JcECxeaL6BqVImBLwFqnlokPE4zLQKMQVaUvEZmRHT7wzCCjERJlZs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chenxiaosong.com; spf=none smtp.mailfrom=chenxiaosong.com; arc=none smtp.client-ip=54.207.22.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chenxiaosong.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chenxiaosong.com
-X-QQ-mid: bizesmtpsz10t1729322145t2gcni
-X-QQ-Originating-IP: MmLkSV7nZrQb/cnEymHleci7bWjXBsTzQKwQIpxawNo=
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=chenxiaosong.com
+X-QQ-mid: bizesmtpsz10t1729322168tw3qsh
+X-QQ-Originating-IP: Eh4zX456hZMGcfuxgcpGlK9/0p8Mh8Jxw52RkerpuR4=
 Received: from sonvhi-TianYi510S-07IMB.. ( [116.128.244.171])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sat, 19 Oct 2024 15:15:42 +0800 (CST)
+	id ; Sat, 19 Oct 2024 15:15:48 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 11545662678210868571
+X-BIZMAIL-ID: 3942789612294147170
 From: chenxiaosong@chenxiaosong.com
 To: corbet@lwn.net,
 	dhowells@redhat.com,
@@ -43,10 +44,12 @@ Cc: linux-doc@vger.kernel.org,
 	linux-trace-kernel@vger.kernel.org,
 	linux-nfs@vger.kernel.org,
 	ChenXiaoSong <chenxiaosong@kylinos.cn>
-Subject: [PATCH 0/3] Documentation: update nfs idmapper doc and fix compile issues
-Date: Sat, 19 Oct 2024 15:15:36 +0800
-Message-Id: <20241019071539.125934-1-chenxiaosong@chenxiaosong.com>
+Subject: [PATCH 1/3] Documentation: nfs: idmapper: keep consistent with nfsidmap manual
+Date: Sat, 19 Oct 2024 15:15:37 +0800
+Message-Id: <20241019071539.125934-2-chenxiaosong@chenxiaosong.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241019071539.125934-1-chenxiaosong@chenxiaosong.com>
+References: <20241019071539.125934-1-chenxiaosong@chenxiaosong.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -56,40 +59,127 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: bizesmtpsz:chenxiaosong.com:qybglogicsvrsz:qybglogicsvrsz4a-0
-X-QQ-XMAILINFO: Nw9C1WBu09hPdCMjm3icCXpfeyjCQaodp2I5YTDrJHsrcn8xhLBKMF2S
-	jss/mTxLIdYwoqUhTV+A8wzvbS/5fkPPa1jwPcSkGTtcEurbjwC+T+HBu3yINtn63O2pGq8
-	TG57/8axVh83YurLZQLhs1JmcyReSbcOOyLyZ6AJ0VbAfiEUcrP7mVtzg9WLcSXlvza1ELs
-	RGSm+RrVPFqP8YkLZgqSCLjXKhmhTr7WNul/M2napRa1bF6SbXOgjZRwVXlGfzWJUAH7uJx
-	PgJCHhxsa+Git/805R5YfRewA3RF4/U4oAlZaFuGEOwSYv6ABqjbvdb8BblFA1Knde11jXX
-	2bH2w1OAXqHMCPRvhsteeJVMkzjICxFGeghCc6GZVN5skeCMBXKZbN8heDxiy3OW0C9DrJL
-	Vlm0D3Y5Whcl6EFiYg5i9VjxRIHUbbeVfRfODQJ73cwjzt/OXuToFuOaNVEKNLuzEu808Gg
-	MRLchYKwl+G0/O5tCrA56Y51BxI1ugWAIOe6JtmG7O8e4Prkj9Fb6JLjR7tPp3bO6pDx4N4
-	BzeZ4bknxMqWrvo50XZiNaxSvmqKSZqr+NQ8iZ1iKEgicUXNBecGp/ScW6p5dIrsqWIPxZj
-	YgSS7ywvMJkp1GGMWpYBK7OfRMN8pcnLeObD09GFYwaadifqrH7+klDpuF8nlWQARXRUD2n
-	yKTdSjcXb/Cs6tiEgcL5HeLGhG9fXZkJ2aWy7uT+wGQVdhjo0+DOOmUsAW7sh4JGQu1mgNt
-	1eY3tnOa18IwOMOq0fNDZEGrhsPc1liollacCI+rXw0iHm+nS0gLDyKzsTYRXCwA3HzsiS0
-	jwOQYRkvo33JkmMSJM+voY4lyWakScEFoiTU0f7NJnJB37ef28mgKfvZkay+Nd+wG4QOEmP
-	SK6IvaPqzXBTR/84iG2ij0rG7kZliI4DLYKpm+/PP0MFeJK+hpQuq7Sa4wR7HaVYc8o9pTG
-	oUmk=
-X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
+X-QQ-XMAILINFO: M3ziZXKDk+iOsjm9mH5d8oiRCkBzKEtIIucugsMBUMQ55Qpcs0Vu5/nF
+	jh380GYPkKGRjKRY+9KiCfo+R6eo86AcouDlMcp9K5VgCvz4eCjNENksuVdC2CRie94Mn9G
+	5WTszOitSep0BTjrWXb/48bVXlUCXCyycTG1JiXcyU6kYK94m2qVPnaP6UXMi680/2DGMKd
+	2TExRoJGs1KCkFTO9Q5oXx5x65VVI2cXCi5AUvpGSyVjGTZTpgbMEdakLlW/ypicWcDN9qG
+	edBBTVjdGN+XDVlTTFZAIMpmB5fk9GsxHy+LF7XWohk4TbykhZ43cyNWaAFJGMNLx1lSTZS
+	ULb6wynlDG09NO2fNBR5GXOJr+Lgq68WTC7SOKguspcb5ZkBvS7ocxY/pQBC1WRUfq9IQBf
+	V3Nm+SMY9jJlqWasK/cCMRhHpvwFV3yULijxq7y0Jqns5bC/E+zXsfYQ15+fZfuTVZG7V8F
+	uIOhEEGi0BdtBF7RNwEXIJ7K5DF2NCaR0LKp/gXIgtuTTWy2SCniOeMZV5CncWP3KByQXRT
+	n9y4vLBs70+FPYfkXYvHfFY8ubXPj8t/zxAlu2d2rwIEx/ca+rm5FriKJn0/38xlgvtYX87
+	nygNGL6q+AQrVJbvw9+FGMvTgxQUmlhbO6Or9PC0cAC+F2WDr8V66TZ/VcaB6KV/kcvixjm
+	yneJ5V2k56faGXsfT0+StU54YmGk4wQs6TDcdNHRKDS9vL0h3NRrbedqjQZumtExacx2NLP
+	a/zgEEdOyx2DZVMdJjtfNlFa90uVu8KufV4cDx653xwFyraHlJO0CV/rjAv9G4QaHliuSZK
+	85BH3vEfj9qgcCJ9P2/NgoxJSvKG4Z2BSbjyJM161cct7qJhUbw8ayxrjjWCDERjIdcLI4a
+	4tabA75lY9EW3VLuD6/nIcSfumGnzU/Lem+6miMkkkt6O0Gje0ZDubKmZ+qFHLKoWBeqNx4
+	zaXmtwCwACQK6LE3+tGYOVswiHtA2V1K5uPc=
+X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
 X-QQ-RECHKSPAM: 0
 
 From: ChenXiaoSong <chenxiaosong@kylinos.cn>
 
-Keep usage of `nfsidmap` consistent with nfsidmap manual.
+The usage of `nfsidmap` has been updated(e.g., use `-t 600` set the
+expiration timer), keep it consistent with nfsidmap manual (Link[1]).
 
-Additionally, fix compile error and warning when running `make htmldocs`.
-
-ChenXiaoSong (3):
-  Documentation: nfs: idmapper: keep consistent with nfsidmap manual
-  docs: filesystems: fix compile error in netfs_library.rst
-  tracing/Documentation: fix compile warning in debugging.rst
-
+Link[1]: https://git.kernel.org/pub/scm/linux/kernel/git/rw/nfs-utils.git/tree/utils/nfsidmap/nfsidmap.man
+Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+---
  Documentation/admin-guide/nfs/nfs-idmapper.rst | 59 ++++++++++++++++++++++++++++++++---------------------------
- Documentation/filesystems/netfs_library.rst    |  1 -
- Documentation/trace/index.rst                  |  1 +
- 3 files changed, 33 insertions(+), 28 deletions(-)
+ 1 file changed, 32 insertions(+), 27 deletions(-)
 
+diff --git a/Documentation/admin-guide/nfs/nfs-idmapper.rst b/Documentation/admin-guide/nfs/nfs-idmapper.rst
+index 58b8e63412d5..0b72fd3a38af 100644
+--- a/Documentation/admin-guide/nfs/nfs-idmapper.rst
++++ b/Documentation/admin-guide/nfs/nfs-idmapper.rst
+@@ -24,55 +24,60 @@ Configuring
+ ===========
+ 
+ The file /etc/request-key.conf will need to be modified so /sbin/request-key can
+-direct the upcall.  The following line should be added:
++properly direct the upcall. The following line should be added before a call to
++keyctl negate:
+ 
+-``#OP	TYPE	DESCRIPTION	CALLOUT INFO	PROGRAM ARG1 ARG2 ARG3 ...``
+-``#======	=======	===============	===============	===============================``
+-``create	id_resolver	*	*		/usr/sbin/nfs.idmap %k %d 600``
++.. code-block:: none
+ 
++	#OP	TYPE		DESCRIPTION	CALLOUT INFO	PROGRAM ARG1 ARG2 ARG3 ...
++	#======	===============	===============	===============	===============================
++	create	id_resolver	*		*		/usr/sbin/nfsidmap -t 600 %k %d
+ 
+-This will direct all id_resolver requests to the program /usr/sbin/nfs.idmap.
+-The last parameter, 600, defines how many seconds into the future the key will
+-expire.  This parameter is optional for /usr/sbin/nfs.idmap.  When the timeout
+-is not specified, nfs.idmap will default to 600 seconds.
++This will direct all id_resolver requests to the program /usr/sbin/nfsidmap.
++The -t 600 defines how many seconds into the future the key will expire.
++This is an optional parameter for  /usr/sbin/nfsidmap  and  will default to 600
++seconds when not specified.
+ 
+-id mapper uses for key descriptions::
++The idmapper system uses four key descriptions:
+ 
+-	  uid:  Find the UID for the given user
+-	  gid:  Find the GID for the given group
+-	 user:  Find the user  name for the given UID
+-	group:  Find the group name for the given GID
++.. code-block:: none
+ 
+-You can handle any of these individually, rather than using the generic upcall
+-program.  If you would like to use your own program for a uid lookup then you
+-would edit your request-key.conf so it look similar to this:
++	  uid: Find the UID for the given user
++	  gid: Find the GID for the given group
++	 user: Find the user name for the given UID
++	group: Find the group name for the given GID
+ 
+-``#OP	TYPE	DESCRIPTION	CALLOUT INFO	PROGRAM ARG1 ARG2 ARG3 ...``
+-``#======	=======	===============	===============	===============================``
+-``create	id_resolver	uid:*	*		/some/other/program %k %d 600``
+-``create	id_resolver	*	*		/usr/sbin/nfs.idmap %k %d 600``
++You can choose to handle any of these individually, rather than using the
++generic upcall program.  If you would like to use your own program for a uid
++lookup then you would edit your request-key.conf so it looks similar to this:
+ 
++.. code-block:: none
++
++	#OP	TYPE		DESCRIPTION	CALLOUT INFO	PROGRAM ARG1 ARG2 ARG3 ...
++	#======	===============	===============	===============	==========================
++	create	id_resolver	uid:*		*		/some/other/program %k %d
++	create	id_resolver	*		*		/usr/sbin/nfsidmap %k %d
+ 
+ Notice that the new line was added above the line for the generic program.
+-request-key will find the first matching line and corresponding program.  In
+-this case, /some/other/program will handle all uid lookups and
+-/usr/sbin/nfs.idmap will handle gid, user, and group lookups.
++request-key will find the first matching line and run the corresponding program.
++In this case,  /some/other/program  will  handle  all  uid lookups,
++and /usr/sbin/nfsidmap will handle gid, user, and group lookups.
+ 
+ See Documentation/security/keys/request-key.rst for more information
+ about the request-key function.
+ 
+ 
+-nfs.idmap
++nfsidmap
+ =========
+ 
+-nfs.idmap is designed to be called by request-key, and should not be run "by
++nfsidmap is designed to be called by request-key, and should not be run "by
+ hand".  This program takes two arguments, a serialized key and a key
+ description.  The serialized key is first converted into a key_serial_t, and
+ then passed as an argument to keyctl_instantiate (both are part of keyutils.h).
+ 
+-The actual lookups are performed by functions found in nfsidmap.h.  nfs.idmap
++The actual lookups are performed by functions found in nfsidmap.h.  nfsidmap
+ determines the correct function to call by looking at the first part of the
+ description string.  For example, a uid lookup description will appear as
+ "uid:user@domain".
+ 
+-nfs.idmap will return 0 if the key was instantiated, and non-zero otherwise.
++nfsidmap will return 0 if the key was instantiated, and non-zero otherwise.
 -- 
 2.34.1
 
