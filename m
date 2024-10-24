@@ -1,46 +1,46 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3433D1F5845
-	for <netfs@lists.linux.dev>; Thu, 24 Oct 2024 14:08:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2769420CCDB
+	for <netfs@lists.linux.dev>; Thu, 24 Oct 2024 14:09:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729778939; cv=none; b=mfp3a3Gj8zDMp74L4yGON2WjyKWmcIHYp0Y6t8qFXckWHjV1vhrTfix0f0XQbqy73h6gyPXkUwxkcrgz3HdjIgnguPcDBHnk0VnnlIT5Kn9ZgzmKIuJaih3Tp95FymsR4qOQ/wJyE6m9r7Yw5h0bvVCSk0QHLAffAeErVHzbN8E=
+	t=1729778954; cv=none; b=IiTLOorLpFHrQwWmJ4fP5ls0pzwd1dcpx3bA7uxA3OJOPOFwbjZ22vCim37bjP0jA623g1iXagniaPYSwEoDF0yOQTBRFppPtsPSTvG29fvXAAO9v4joH09Y7/b9pwud9dR4YQ1s0oRXI6wHkoxih5zn3vIrAzWM/keCTFto/vY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729778939; c=relaxed/simple;
-	bh=8jadsMa670dRt6BvyVbplXRaNlh+591Cm6fNqY+LTio=;
+	s=arc-20240116; t=1729778954; c=relaxed/simple;
+	bh=YxPB8ZN1yIfxiq/5bdqhL20jCSdTs4ja7EDx9ZBIE6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KbmKwpDzs/ESl8qIQNTcMnad0u5mIJE3QoU6Ksg5zxQG8mQugehC5IMMXEbSboZ0ig6tm1zqhC/buFwSg0eHgcLtg4nX/oHis8Wfo7fAUd1dbwc3uTJ43VWKglrvpwfQl8nC9xgt7IKXWH4LjqtH0Th3wWF9Ya6t9yK2UV9k6as=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZRbHw5+d; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=VOitnX07VC/wRvRyd0VOPXd4kBAQ2hXf5FsDgXfeTb4kzXpbHGzl678vq7GufzK6hXfUAVG3F3ZJGa22Dytm57LBqKgDcTFhOu70tN1INt49WdHgX5QFBS/86sgOlHCzOB6fjRU5YfWbTZKOayKzWnrL/4sjsLtjrCkO/eiVpbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IDz8eIy1; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZRbHw5+d"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IDz8eIy1"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729778935;
+	s=mimecast20190719; t=1729778950;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=W7zYjNvXTa+DouJa38s/xpWc0NJHXd1mJpy+zTMcLyQ=;
-	b=ZRbHw5+dnpnZt0MYwN2j6BQSI9TFyJ5VKHKU7FeAX4sTN4bd9+g0ZsTeMMqYpAQcfX3XS9
-	2zpjeOA4Fz2CGIVyXJB1uA+5HUWe/dOYdzZY188NTTUTnmatJT5MLsLlFic+50+gVwb+yI
-	JYqorSVg9OZSbM4/7+T9DOYhQG8OWcQ=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+	bh=tRd0Nhb3yGtu5VQWGgXymCPm7LcbWAmM7MrJDAvDuiQ=;
+	b=IDz8eIy1BB3qktaPfBj6ezFQDrIxfupKsfdJHHpbpVlhdHhUDOtmaRFEehKwXyx8QwCOhv
+	hC9zZYDqoBCZN9Cm2ijjJ41zqzm4TCJcurFnxeWqRzqbJVxsRxmjpaOn8AzVkyJgOwjoWw
+	CI0MYYt6WD64Y/whGNOXzZrczJU76cc=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-499-QLcN7krUM66cKfwR--SXiQ-1; Thu,
- 24 Oct 2024 10:08:49 -0400
-X-MC-Unique: QLcN7krUM66cKfwR--SXiQ-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-372-in_XcD5xMBmX5sxJEKu7fw-1; Thu,
+ 24 Oct 2024 10:09:04 -0400
+X-MC-Unique: in_XcD5xMBmX5sxJEKu7fw-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 14CBA19560A6;
-	Thu, 24 Oct 2024 14:08:47 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 735CC1955F68;
+	Thu, 24 Oct 2024 14:09:01 +0000 (UTC)
 Received: from warthog.procyon.org.uk.com (unknown [10.42.28.231])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 87DCC1956046;
-	Thu, 24 Oct 2024 14:08:41 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9779C1956056;
+	Thu, 24 Oct 2024 14:08:55 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>,
 	Steve French <smfrench@gmail.com>,
@@ -66,9 +66,9 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-mm@kvack.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 23/27] afs: Use netfslib for symlinks, allowing them to be cached
-Date: Thu, 24 Oct 2024 15:05:21 +0100
-Message-ID: <20241024140539.3828093-24-dhowells@redhat.com>
+Subject: [PATCH 25/27] afs: Make {Y,}FS.FetchData an asynchronous operation
+Date: Thu, 24 Oct 2024 15:05:23 +0100
+Message-ID: <20241024140539.3828093-26-dhowells@redhat.com>
 In-Reply-To: <20241024140539.3828093-1-dhowells@redhat.com>
 References: <20241024140539.3828093-1-dhowells@redhat.com>
 Precedence: bulk
@@ -78,264 +78,366 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Use netfslib to read symlinks, thereby allowing them to be cached by
-fscache and cachefiles.
+Make FS.FetchData and YFS.FetchData an asynchronous operation in that the
+request is queued in AF_RXRPC and then we return to the caller rather than
+waiting.  Processing of the returning packets is then done inline if it's a
+synchronous VFS/VM call (readdir, read_folio, sync DIO, prep for write) or
+offloaded to a workqueue if asynchronous VM calls (eg. readahead, async
+DIO).
+
+This reduces the chain of workqueues invoking workqueues and cuts out some
+of the overhead, driving rxrpc data extraction and netfslib read collection
+from a thread that's going to block to completion anyway if possible.
 
 Signed-off-by: David Howells <dhowells@redhat.com>
 cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeff Layton <jlayton@kernel.org>
 cc: linux-afs@lists.infradead.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
 ---
- fs/afs/file.c              | 32 --------------------
- fs/afs/inode.c             | 62 +++++++++++++++++++++++++++++++++++---
- fs/afs/internal.h          |  4 ++-
- fs/afs/mntpt.c             | 22 +++++++-------
- include/trace/events/afs.h |  1 +
- 5 files changed, 72 insertions(+), 49 deletions(-)
+ fs/afs/file.c         | 109 ++++++++++++++++++++++++++++++++++++++----
+ fs/afs/fs_operation.c |   2 +-
+ fs/afs/fsclient.c     |   6 ++-
+ fs/afs/internal.h     |   7 +++
+ fs/afs/main.c         |   2 +-
+ fs/afs/rxrpc.c        |   8 ++--
+ fs/afs/write.c        |  12 +++++
+ fs/afs/yfsclient.c    |   5 +-
+ 8 files changed, 135 insertions(+), 16 deletions(-)
 
 diff --git a/fs/afs/file.c b/fs/afs/file.c
-index 5bc36bfaa173..48695a50d2f9 100644
+index b996f4419c0c..6c1ec3b2411d 100644
 --- a/fs/afs/file.c
 +++ b/fs/afs/file.c
-@@ -20,7 +20,6 @@
- #include "internal.h"
- 
- static int afs_file_mmap(struct file *file, struct vm_area_struct *vma);
--static int afs_symlink_read_folio(struct file *file, struct folio *folio);
- 
- static ssize_t afs_file_read_iter(struct kiocb *iocb, struct iov_iter *iter);
- static ssize_t afs_file_splice_read(struct file *in, loff_t *ppos,
-@@ -61,13 +60,6 @@ const struct address_space_operations afs_file_aops = {
- 	.writepages	= afs_writepages,
+@@ -239,12 +239,91 @@ const struct afs_operation_ops afs_fetch_data_operation = {
+ 	.put		= afs_fetch_data_put,
  };
  
--const struct address_space_operations afs_symlink_aops = {
--	.read_folio	= afs_symlink_read_folio,
--	.release_folio	= netfs_release_folio,
--	.invalidate_folio = netfs_invalidate_folio,
--	.migrate_folio	= filemap_migrate_folio,
--};
--
- static const struct vm_operations_struct afs_vm_ops = {
- 	.open		= afs_vm_open,
- 	.close		= afs_vm_close,
-@@ -346,30 +338,6 @@ static void afs_issue_read(struct netfs_io_subrequest *subreq)
- 	queue_work(system_long_wq, &subreq->work);
++static void afs_issue_read_call(struct afs_operation *op)
++{
++	op->call_responded = false;
++	op->call_error = 0;
++	op->call_abort_code = 0;
++	if (test_bit(AFS_SERVER_FL_IS_YFS, &op->server->flags))
++		yfs_fs_fetch_data(op);
++	else
++		afs_fs_fetch_data(op);
++}
++
++static void afs_end_read(struct afs_operation *op)
++{
++	if (op->call_responded && op->server)
++		set_bit(AFS_SERVER_FL_RESPONDING, &op->server->flags);
++
++	if (!afs_op_error(op))
++		afs_fetch_data_success(op);
++	else if (op->cumul_error.aborted)
++		afs_fetch_data_aborted(op);
++	else
++		afs_fetch_data_notify(op);
++
++	afs_end_vnode_operation(op);
++	afs_put_operation(op);
++}
++
++/*
++ * Perform I/O processing on an asynchronous call.  The work item carries a ref
++ * to the call struct that we either need to release or to pass on.
++ */
++static void afs_read_receive(struct afs_call *call)
++{
++	struct afs_operation *op = call->op;
++	enum afs_call_state state;
++
++	_enter("");
++
++	state = READ_ONCE(call->state);
++	if (state == AFS_CALL_COMPLETE)
++		return;
++
++	while (state < AFS_CALL_COMPLETE && READ_ONCE(call->need_attention)) {
++		WRITE_ONCE(call->need_attention, false);
++		afs_deliver_to_call(call);
++		state = READ_ONCE(call->state);
++	}
++
++	if (state < AFS_CALL_COMPLETE) {
++		netfs_read_subreq_progress(op->fetch.subreq);
++		if (rxrpc_kernel_check_life(call->net->socket, call->rxcall))
++			return;
++		/* rxrpc terminated the call. */
++		afs_set_call_complete(call, call->error, call->abort_code);
++	}
++
++	op->call_abort_code	= call->abort_code;
++	op->call_error		= call->error;
++	op->call_responded	= call->responded;
++	afs_put_call(op->call);
++
++	/* If the call failed, then we need to crank the server rotation
++	 * handle and try the next.
++	 */
++	if (afs_select_fileserver(op)) {
++		afs_issue_read_call(op);
++		return;
++	}
++
++	afs_end_read(op);
++}
++
++void afs_fetch_data_async_rx(struct work_struct *work)
++{
++	struct afs_call *call = container_of(work, struct afs_call, async_work);
++
++	afs_read_receive(call);
++	afs_put_call(call);
++}
++
+ /*
+  * Fetch file data from the volume.
+  */
+-static void afs_read_worker(struct work_struct *work)
++static void afs_issue_read(struct netfs_io_subrequest *subreq)
+ {
+-	struct netfs_io_subrequest *subreq = container_of(work, struct netfs_io_subrequest, work);
+ 	struct afs_operation *op;
+ 	struct afs_vnode *vnode = AFS_FS_I(subreq->rreq->inode);
+ 	struct key *key = subreq->rreq->netfs_priv;
+@@ -269,13 +348,27 @@ static void afs_read_worker(struct work_struct *work)
+ 	op->ops		= &afs_fetch_data_operation;
+ 
+ 	trace_netfs_sreq(subreq, netfs_sreq_trace_submit);
+-	afs_do_sync_operation(op);
+-}
+ 
+-static void afs_issue_read(struct netfs_io_subrequest *subreq)
+-{
+-	INIT_WORK(&subreq->work, afs_read_worker);
+-	queue_work(system_long_wq, &subreq->work);
++	if (subreq->rreq->origin == NETFS_READAHEAD ||
++	    subreq->rreq->iocb) {
++		op->flags |= AFS_OPERATION_ASYNC;
++
++		if (!afs_begin_vnode_operation(op)) {
++			subreq->error = PTR_ERR(op);
++			netfs_read_subreq_terminated(subreq);
++			afs_put_operation(op);
++			return;
++		}
++
++		if (!afs_select_fileserver(op)) {
++			afs_end_read(op);
++			return;
++		}
++
++		afs_issue_read_call(op);
++	} else {
++		afs_do_sync_operation(op);
++	}
  }
  
--static int afs_symlink_read_folio(struct file *file, struct folio *folio)
--{
--	struct afs_vnode *vnode = AFS_FS_I(folio->mapping->host);
--	struct afs_read *fsreq;
--	int ret;
--
--	fsreq = afs_alloc_read(GFP_NOFS);
--	if (!fsreq)
--		return -ENOMEM;
--
--	fsreq->pos	= folio_pos(folio);
--	fsreq->len	= folio_size(folio);
--	fsreq->vnode	= vnode;
--	fsreq->iter	= &fsreq->def_iter;
--	iov_iter_xarray(&fsreq->def_iter, ITER_DEST, &folio->mapping->i_pages,
--			fsreq->pos, fsreq->len);
--
--	ret = afs_fetch_data(fsreq->vnode, fsreq);
--	if (ret == 0)
--		folio_mark_uptodate(folio);
--	folio_unlock(folio);
--	return ret;
--}
--
  static int afs_init_request(struct netfs_io_request *rreq, struct file *file)
+diff --git a/fs/afs/fs_operation.c b/fs/afs/fs_operation.c
+index 8488ff8183fa..0b1338d65ae6 100644
+--- a/fs/afs/fs_operation.c
++++ b/fs/afs/fs_operation.c
+@@ -256,7 +256,7 @@ bool afs_begin_vnode_operation(struct afs_operation *op)
+ /*
+  * Tidy up a filesystem cursor and unlock the vnode.
+  */
+-static void afs_end_vnode_operation(struct afs_operation *op)
++void afs_end_vnode_operation(struct afs_operation *op)
  {
- 	struct afs_vnode *vnode = AFS_FS_I(rreq->inode);
-diff --git a/fs/afs/inode.c b/fs/afs/inode.c
-index 0ed1e5c35fef..8c7aa759ad1b 100644
---- a/fs/afs/inode.c
-+++ b/fs/afs/inode.c
-@@ -25,8 +25,58 @@
- #include "internal.h"
- #include "afs_fs.h"
+ 	_enter("");
  
-+static void afs_put_link(void *arg)
-+{
-+	struct folio *folio = virt_to_folio(arg);
-+
-+	kunmap_local(arg);
-+	folio_put(folio);
-+}
-+
-+const char *afs_get_link(struct dentry *dentry, struct inode *inode,
-+			 struct delayed_call *callback)
-+{
-+	struct afs_vnode *vnode = AFS_FS_I(inode);
-+	struct folio *folio;
-+	char *content;
-+	ssize_t ret;
-+
-+	if (atomic64_read(&vnode->cb_expires_at) == AFS_NO_CB_PROMISE ||
-+	    !vnode->directory) {
-+		ret = afs_read_single(vnode, NULL);
-+		if (ret < 0)
-+			return ERR_PTR(ret);
-+	}
-+
-+	folio = folioq_folio(vnode->directory, 0);
-+	folio_get(folio);
-+	content = kmap_local_folio(folio, 0);
-+	set_delayed_call(callback, afs_put_link, content);
-+	return content;
-+}
-+
-+int afs_readlink(struct dentry *dentry, char __user *buffer, int buflen)
-+{
-+	DEFINE_DELAYED_CALL(done);
-+	const char *content;
-+	int len;
-+
-+	content = afs_get_link(dentry, d_inode(dentry), &done);
-+	if (IS_ERR(content)) {
-+		do_delayed_call(&done);
-+		return PTR_ERR(content);
-+	}
-+
-+	len = umin(strlen(content), buflen);
-+	if (copy_to_user(buffer, content, len))
-+		len = -EFAULT;
-+	do_delayed_call(&done);
-+	return len;
-+}
-+
- static const struct inode_operations afs_symlink_inode_operations = {
--	.get_link	= page_get_link,
-+	.get_link	= afs_get_link,
-+	.readlink	= afs_readlink,
- };
- 
- static noinline void dump_vnode(struct afs_vnode *vnode, struct afs_vnode *parent_vnode)
-@@ -124,13 +174,13 @@ static int afs_inode_init_from_status(struct afs_operation *op,
- 			inode->i_mode	= S_IFDIR | 0555;
- 			inode->i_op	= &afs_mntpt_inode_operations;
- 			inode->i_fop	= &afs_mntpt_file_operations;
--			inode->i_mapping->a_ops	= &afs_symlink_aops;
- 		} else {
- 			inode->i_mode	= S_IFLNK | status->mode;
- 			inode->i_op	= &afs_symlink_inode_operations;
--			inode->i_mapping->a_ops	= &afs_symlink_aops;
- 		}
-+		inode->i_mapping->a_ops	= &afs_dir_aops;
- 		inode_nohighmem(inode);
-+		mapping_set_release_always(inode->i_mapping);
- 		break;
- 	default:
- 		dump_vnode(vnode, op->file[0].vnode != vnode ? op->file[0].vnode : NULL);
-@@ -443,7 +493,8 @@ static void afs_get_inode_cache(struct afs_vnode *vnode)
- 	struct afs_vnode_cache_aux aux;
- 
- 	if (vnode->status.type != AFS_FTYPE_FILE &&
--	    vnode->status.type != AFS_FTYPE_DIR) {
-+	    vnode->status.type != AFS_FTYPE_DIR &&
-+	    vnode->status.type != AFS_FTYPE_SYMLINK) {
- 		vnode->netfs.cache = NULL;
- 		return;
- 	}
-@@ -657,7 +708,8 @@ void afs_evict_inode(struct inode *inode)
- 
- 	ASSERTCMP(inode->i_ino, ==, vnode->fid.vnode);
- 
--	if ((S_ISDIR(inode->i_mode)) &&
-+	if ((S_ISDIR(inode->i_mode) ||
-+	     S_ISLNK(inode->i_mode)) &&
- 	    (inode->i_state & I_DIRTY) &&
- 	    !sbi->dyn_root) {
- 		struct writeback_control wbc = {
-diff --git a/fs/afs/internal.h b/fs/afs/internal.h
-index ecf5df9ca12c..6fa3b1dd4c98 100644
---- a/fs/afs/internal.h
-+++ b/fs/afs/internal.h
-@@ -1115,7 +1115,6 @@ extern void afs_dynroot_depopulate(struct super_block *);
-  * file.c
-  */
- extern const struct address_space_operations afs_file_aops;
--extern const struct address_space_operations afs_symlink_aops;
- extern const struct inode_operations afs_file_inode_operations;
- extern const struct file_operations afs_file_operations;
- extern const struct netfs_request_ops afs_req_ops;
-@@ -1221,6 +1220,9 @@ extern void afs_fs_probe_cleanup(struct afs_net *);
-  */
- extern const struct afs_operation_ops afs_fetch_status_operation;
- 
-+const char *afs_get_link(struct dentry *dentry, struct inode *inode,
-+			 struct delayed_call *callback);
-+int afs_readlink(struct dentry *dentry, char __user *buffer, int buflen);
- extern void afs_vnode_commit_status(struct afs_operation *, struct afs_vnode_param *);
- extern int afs_fetch_status(struct afs_vnode *, struct key *, bool, afs_access_t *);
- extern int afs_ilookup5_test_by_fid(struct inode *, void *);
-diff --git a/fs/afs/mntpt.c b/fs/afs/mntpt.c
-index 297487ee8323..507c25a5b2cb 100644
---- a/fs/afs/mntpt.c
-+++ b/fs/afs/mntpt.c
-@@ -30,7 +30,7 @@ const struct file_operations afs_mntpt_file_operations = {
- 
- const struct inode_operations afs_mntpt_inode_operations = {
- 	.lookup		= afs_mntpt_lookup,
--	.readlink	= page_readlink,
-+	.readlink	= afs_readlink,
- 	.getattr	= afs_getattr,
- };
- 
-@@ -118,9 +118,9 @@ static int afs_mntpt_set_params(struct fs_context *fc, struct dentry *mntpt)
- 		ctx->volnamesz = sizeof(afs_root_volume) - 1;
- 	} else {
- 		/* read the contents of the AFS special symlink */
--		struct page *page;
-+		DEFINE_DELAYED_CALL(cleanup);
-+		const char *content;
- 		loff_t size = i_size_read(d_inode(mntpt));
--		char *buf;
- 
- 		if (src_as->cell)
- 			ctx->cell = afs_use_cell(src_as->cell, afs_cell_trace_use_mntpt);
-@@ -128,16 +128,16 @@ static int afs_mntpt_set_params(struct fs_context *fc, struct dentry *mntpt)
- 		if (size < 2 || size > PAGE_SIZE - 1)
- 			return -EINVAL;
- 
--		page = read_mapping_page(d_inode(mntpt)->i_mapping, 0, NULL);
--		if (IS_ERR(page))
--			return PTR_ERR(page);
-+		content = afs_get_link(mntpt, d_inode(mntpt), &cleanup);
-+		if (IS_ERR(content)) {
-+			do_delayed_call(&cleanup);
-+			return PTR_ERR(content);
-+		}
- 
--		buf = kmap(page);
- 		ret = -EINVAL;
--		if (buf[size - 1] == '.')
--			ret = vfs_parse_fs_string(fc, "source", buf, size - 1);
--		kunmap(page);
--		put_page(page);
-+		if (content[size - 1] == '.')
-+			ret = vfs_parse_fs_string(fc, "source", content, size - 1);
-+		do_delayed_call(&cleanup);
+diff --git a/fs/afs/fsclient.c b/fs/afs/fsclient.c
+index d9d224c95454..6380cdcfd4fc 100644
+--- a/fs/afs/fsclient.c
++++ b/fs/afs/fsclient.c
+@@ -352,7 +352,6 @@ static int afs_deliver_fs_fetch_data(struct afs_call *call)
+ 		ret = afs_extract_data(call, true);
+ 		subreq->transferred += count_before - call->iov_len;
+ 		call->remaining -= count_before - call->iov_len;
+-		netfs_read_subreq_progress(subreq);
  		if (ret < 0)
  			return ret;
  
-diff --git a/include/trace/events/afs.h b/include/trace/events/afs.h
-index d05f2c09efe3..49a749672e38 100644
---- a/include/trace/events/afs.h
-+++ b/include/trace/events/afs.h
-@@ -422,6 +422,7 @@ enum yfs_cm_operation {
- 	EM(afs_file_error_dir_over_end,		"DIR_ENT_OVER_END")	\
- 	EM(afs_file_error_dir_small,		"DIR_SMALL")		\
- 	EM(afs_file_error_dir_unmarked_ext,	"DIR_UNMARKED_EXT")	\
-+	EM(afs_file_error_symlink_big,		"SYM_BIG")		\
- 	EM(afs_file_error_mntpt,		"MNTPT_READ_FAILED")	\
- 	E_(afs_file_error_writeback_fail,	"WRITEBACK_FAILED")
+@@ -409,6 +408,7 @@ static int afs_deliver_fs_fetch_data(struct afs_call *call)
+ static const struct afs_call_type afs_RXFSFetchData = {
+ 	.name		= "FS.FetchData",
+ 	.op		= afs_FS_FetchData,
++	.async_rx	= afs_fetch_data_async_rx,
+ 	.deliver	= afs_deliver_fs_fetch_data,
+ 	.destructor	= afs_flat_call_destructor,
+ };
+@@ -416,6 +416,7 @@ static const struct afs_call_type afs_RXFSFetchData = {
+ static const struct afs_call_type afs_RXFSFetchData64 = {
+ 	.name		= "FS.FetchData64",
+ 	.op		= afs_FS_FetchData64,
++	.async_rx	= afs_fetch_data_async_rx,
+ 	.deliver	= afs_deliver_fs_fetch_data,
+ 	.destructor	= afs_flat_call_destructor,
+ };
+@@ -436,6 +437,9 @@ static void afs_fs_fetch_data64(struct afs_operation *op)
+ 	if (!call)
+ 		return afs_op_nomem(op);
  
++	if (op->flags & AFS_OPERATION_ASYNC)
++		call->async = true;
++
+ 	/* marshall the parameters */
+ 	bp = call->request;
+ 	bp[0] = htonl(FSFETCHDATA64);
+diff --git a/fs/afs/internal.h b/fs/afs/internal.h
+index 36125fce0590..c7f0d75eab7f 100644
+--- a/fs/afs/internal.h
++++ b/fs/afs/internal.h
+@@ -202,6 +202,9 @@ struct afs_call_type {
+ 	/* clean up a call */
+ 	void (*destructor)(struct afs_call *call);
+ 
++	/* Async receive processing function */
++	void (*async_rx)(struct work_struct *work);
++
+ 	/* Work function */
+ 	void (*work)(struct work_struct *work);
+ 
+@@ -941,6 +944,7 @@ struct afs_operation {
+ #define AFS_OPERATION_TRIED_ALL		0x0400	/* Set if we've tried all the fileservers */
+ #define AFS_OPERATION_RETRY_SERVER	0x0800	/* Set if we should retry the current server */
+ #define AFS_OPERATION_DIR_CONFLICT	0x1000	/* Set if we detected a 3rd-party dir change */
++#define AFS_OPERATION_ASYNC		0x2000	/* Set if should run asynchronously */
+ };
+ 
+ /*
+@@ -1103,6 +1107,7 @@ extern int afs_cache_wb_key(struct afs_vnode *, struct afs_file *);
+ extern void afs_put_wb_key(struct afs_wb_key *);
+ extern int afs_open(struct inode *, struct file *);
+ extern int afs_release(struct inode *, struct file *);
++void afs_fetch_data_async_rx(struct work_struct *work);
+ 
+ /*
+  * flock.c
+@@ -1154,6 +1159,7 @@ extern void afs_fs_store_acl(struct afs_operation *);
+ extern struct afs_operation *afs_alloc_operation(struct key *, struct afs_volume *);
+ extern int afs_put_operation(struct afs_operation *);
+ extern bool afs_begin_vnode_operation(struct afs_operation *);
++extern void afs_end_vnode_operation(struct afs_operation *op);
+ extern void afs_wait_for_operation(struct afs_operation *);
+ extern int afs_do_sync_operation(struct afs_operation *);
+ 
+@@ -1325,6 +1331,7 @@ extern void afs_charge_preallocation(struct work_struct *);
+ extern void afs_put_call(struct afs_call *);
+ void afs_deferred_put_call(struct afs_call *call);
+ void afs_make_call(struct afs_call *call, gfp_t gfp);
++void afs_deliver_to_call(struct afs_call *call);
+ void afs_wait_for_call_to_complete(struct afs_call *call);
+ extern struct afs_call *afs_alloc_flat_call(struct afs_net *,
+ 					    const struct afs_call_type *,
+diff --git a/fs/afs/main.c b/fs/afs/main.c
+index a14f6013e316..1ae0067f772d 100644
+--- a/fs/afs/main.c
++++ b/fs/afs/main.c
+@@ -177,7 +177,7 @@ static int __init afs_init(void)
+ 	afs_wq = alloc_workqueue("afs", 0, 0);
+ 	if (!afs_wq)
+ 		goto error_afs_wq;
+-	afs_async_calls = alloc_workqueue("kafsd", WQ_MEM_RECLAIM, 0);
++	afs_async_calls = alloc_workqueue("kafsd", WQ_MEM_RECLAIM | WQ_UNBOUND, 0);
+ 	if (!afs_async_calls)
+ 		goto error_async;
+ 	afs_lock_manager = alloc_workqueue("kafs_lockd", WQ_MEM_RECLAIM, 0);
+diff --git a/fs/afs/rxrpc.c b/fs/afs/rxrpc.c
+index 9f2a3bb56ec6..94fff4e214b0 100644
+--- a/fs/afs/rxrpc.c
++++ b/fs/afs/rxrpc.c
+@@ -149,7 +149,8 @@ static struct afs_call *afs_alloc_call(struct afs_net *net,
+ 	call->net = net;
+ 	call->debug_id = atomic_inc_return(&rxrpc_debug_id);
+ 	refcount_set(&call->ref, 1);
+-	INIT_WORK(&call->async_work, afs_process_async_call);
++	INIT_WORK(&call->async_work, type->async_rx ?: afs_process_async_call);
++	INIT_WORK(&call->work, call->type->work);
+ 	INIT_WORK(&call->free_work, afs_deferred_free_worker);
+ 	init_waitqueue_head(&call->waitq);
+ 	spin_lock_init(&call->state_lock);
+@@ -254,8 +255,6 @@ static struct afs_call *afs_get_call(struct afs_call *call,
+ static void afs_queue_call_work(struct afs_call *call)
+ {
+ 	if (call->type->work) {
+-		INIT_WORK(&call->work, call->type->work);
+-
+ 		afs_get_call(call, afs_call_trace_work);
+ 		if (!queue_work(afs_wq, &call->work))
+ 			afs_put_call(call);
+@@ -501,7 +500,7 @@ static void afs_log_error(struct afs_call *call, s32 remote_abort)
+ /*
+  * deliver messages to a call
+  */
+-static void afs_deliver_to_call(struct afs_call *call)
++void afs_deliver_to_call(struct afs_call *call)
+ {
+ 	enum afs_call_state state;
+ 	size_t len;
+@@ -803,6 +802,7 @@ static int afs_deliver_cm_op_id(struct afs_call *call)
+ 		return -ENOTSUPP;
+ 
+ 	trace_afs_cb_call(call);
++	call->work.func = call->type->work;
+ 
+ 	/* pass responsibility for the remainer of this message off to the
+ 	 * cache manager op */
+diff --git a/fs/afs/write.c b/fs/afs/write.c
+index 17d188aaf101..e87b55792aa8 100644
+--- a/fs/afs/write.c
++++ b/fs/afs/write.c
+@@ -193,6 +193,18 @@ void afs_retry_request(struct netfs_io_request *wreq, struct netfs_io_stream *st
+ 		list_first_entry(&stream->subrequests,
+ 				 struct netfs_io_subrequest, rreq_link);
+ 
++	switch (wreq->origin) {
++	case NETFS_READAHEAD:
++	case NETFS_READPAGE:
++	case NETFS_READ_GAPS:
++	case NETFS_READ_SINGLE:
++	case NETFS_READ_FOR_WRITE:
++	case NETFS_DIO_READ:
++		return;
++	default:
++		break;
++	}
++
+ 	switch (subreq->error) {
+ 	case -EACCES:
+ 	case -EPERM:
+diff --git a/fs/afs/yfsclient.c b/fs/afs/yfsclient.c
+index 3718d852fabc..4e7d93ee5a08 100644
+--- a/fs/afs/yfsclient.c
++++ b/fs/afs/yfsclient.c
+@@ -397,7 +397,6 @@ static int yfs_deliver_fs_fetch_data64(struct afs_call *call)
+ 
+ 		ret = afs_extract_data(call, true);
+ 		subreq->transferred += count_before - call->iov_len;
+-		netfs_read_subreq_progress(subreq);
+ 		if (ret < 0)
+ 			return ret;
+ 
+@@ -457,6 +456,7 @@ static int yfs_deliver_fs_fetch_data64(struct afs_call *call)
+ static const struct afs_call_type yfs_RXYFSFetchData64 = {
+ 	.name		= "YFS.FetchData64",
+ 	.op		= yfs_FS_FetchData64,
++	.async_rx	= afs_fetch_data_async_rx,
+ 	.deliver	= yfs_deliver_fs_fetch_data64,
+ 	.destructor	= afs_flat_call_destructor,
+ };
+@@ -486,6 +486,9 @@ void yfs_fs_fetch_data(struct afs_operation *op)
+ 	if (!call)
+ 		return afs_op_nomem(op);
+ 
++	if (op->flags & AFS_OPERATION_ASYNC)
++		call->async = true;
++
+ 	/* marshall the parameters */
+ 	bp = call->request;
+ 	bp = xdr_encode_u32(bp, YFSFETCHDATA64);
 
