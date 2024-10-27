@@ -1,113 +1,77 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC25217F4E
-	for <netfs@lists.linux.dev>; Sat, 26 Oct 2024 01:01:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869853F9D2
+	for <netfs@lists.linux.dev>; Sun, 27 Oct 2024 11:43:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.136.29.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729904471; cv=none; b=qxra0fFM1UrghenWGu55g03MgPBc/ZL+RBC/fQ0Id9krfZvwCLP3Gw5iMKBvgUb17fkkDp4sZ9WnO/7P0JmvFQuhFJqntorOCN3+eoPgp3c61NEQ0T05DwddSfKeKlk3h/J70Ei/NYvVP/fFakzQcIZ45MYIWN/AFuWwQhZgkSI=
+	t=1730029429; cv=none; b=ef12hk734wyDNmTLyLZxqK4AvXlrSascw9qFc546X6ZLy6UywFvuT3+K3k5qaag6y0ucsySZrABJC9bELgd7T4BvQvgaqHNyg/ns113AnVs5E4RpIofOl0+BcfvNL1MZew4bGxnU5hWFcthC5+xXmTbGWurpNoZlzXvtaqyzaP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729904471; c=relaxed/simple;
-	bh=74naCgbzblilLVmg2wQT4pdyCk+BiN3JSv/pOpMQSPM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dj7iOyICwrKvZcSiS9Onavzf5r+ZAAuUFL3K5ux8cqoUVkaC48WfGVzesU07D6+bKQOemimc9AzxJ1fVXjJ7OQJn+QE03G4wdKnhxn0Ok+PZwXt3QAPRuCBqD6wcptB8JYcYq6XJZKcowPSfk2BiKbbMNFoeMhHHZ48Z8dFCUEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bhufj3Y4; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bhufj3Y4"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7203c74e696so1871713b3a.0
-        for <netfs@lists.linux.dev>; Fri, 25 Oct 2024 18:01:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729904469; x=1730509269; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kp+8rpGshAmIc76TzwqKIgLwwjDzh58oBtEsaBWEayc=;
-        b=Bhufj3Y4LlxkezPnEF/TXreJEXht7n69kTS3x7oLtwABCMt7BhEG7BR9boUOzdqrLp
-         lvPZ5/2YqJn+CQ3myvp0jFveHUSA7Pwpmfmof0B3ZMpNQF/WllowUP0OX0DR5u+9bgMP
-         SPV9MxvC2aKAIr4y6eZpkfi628Uu5tjYjk00qoQ6/koYYodKamMPAGAHT84TTLfEVHR+
-         6hG9N+/RDhxrbzpZDGwUAQKbJstU84RTPn3NVlOgVonC+53c9ESLUHv3f2X2eKbUmxaI
-         9/etPQYCyBNntnpcesbMzptCs/tDwHGIrtF6FmsMJAn0ALJ0ynUfuEBRECBrS19E1H76
-         J8hA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729904469; x=1730509269;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kp+8rpGshAmIc76TzwqKIgLwwjDzh58oBtEsaBWEayc=;
-        b=ps+sk6ERHgKhXW8hj0l63lLRrggnrYjcJk2neJw7Jv4o2G0azmSfpX5GdCv9fJw+ky
-         tR/c4ZCzwTjG7PXrOpieGMTqxgw5h3AIL11kjaC8O+U5IYi/60k8ebvs+dCUTbFV9t9/
-         zeXXLaCSZJg/lVN7fkWwabAcuIh5pcCIQ8dgdrb0so5u+PeFLHPPSZtP520EYsKLPXem
-         3NdpJSWYVQikKuSZfcxfQ78pvWuVNTq7gML+gBpgmovUq9UDJ31if6BDPCflM6za4zYN
-         xCNm/OuhogUj5Q2ZhIV2eK9TlxCxQVLOrKmpq0Ewf30kBht0hGyIGxjD0d2DkSeXH+yf
-         svOg==
-X-Forwarded-Encrypted: i=1; AJvYcCXMmrkhsPPuGR2ZeHo3FS74eH5rGsY9Y8+9r8nRXojM3HVqD7ESf2bj6rT1goo9OXsKrwO1Dg==@lists.linux.dev
-X-Gm-Message-State: AOJu0YxpU96A2OMMgWsygMcP919vyA6zbrGiJOYX3u+RUpjxz2zY5Jtn
-	Q13a1KuufNBVbWCim4719JljN/d7C1+jKas5e24Ly9/BvKiSOvC6
-X-Google-Smtp-Source: AGHT+IFS9p5Ie6Pnt4Z3FtjjRose2pRphMsKXMbqemvY6B1XjtckJ8+MzcaKx5TFNSfJKuhYpk67oQ==
-X-Received: by 2002:aa7:870d:0:b0:71e:7604:a76 with SMTP id d2e1a72fcca58-72062f865a6mr1796148b3a.1.1729904468749;
-        Fri, 25 Oct 2024 18:01:08 -0700 (PDT)
-Received: from gmail.com ([24.130.68.0])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7edc89ffb51sm1734781a12.63.2024.10.25.18.01.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Oct 2024 18:01:08 -0700 (PDT)
-Date: Fri, 25 Oct 2024 18:01:06 -0700
-From: Chang Yu <marcus.yu.56@gmail.com>
-To: David Howells <dhowells@redhat.com>
-Cc: Chang Yu <marcus.yu.56@gmail.com>, jlayton@kernel.org,
-	netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+	s=arc-20240116; t=1730029429; c=relaxed/simple;
+	bh=VhaA53Zp+2mrXZXUnUwu3gnRPns6El5q4T/OURux8kQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SMElyFJDnOwoRY8dnIQfHUD2ag4nhua9YBkM3APAB57ExFbTliPi7TbPtR+lAMISrdLHIO7w/i/es/SELICpxCV2ne/+xVL2ZX0o1VobH0/ywLygGpPrN8Jh5a+d674kWlNlaalwz/oDbK57buDuue7DsS0tKP7bt7d8sBGgWfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass smtp.mailfrom=proxmox.com; arc=none smtp.client-ip=94.136.29.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id EF5A4435C4;
+	Sun, 27 Oct 2024 12:43:37 +0100 (CET)
+From: Christian Ebner <c.ebner@proxmox.com>
+To: dhowells@redhat.com,
+	jlayton@kernel.org,
+	stable@vger.kernel.org
+Cc: netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	syzbot+af5c06208fa71bf31b16@syzkaller.appspotmail.com,
-	skhan@linuxfoundation.org
-Subject: Re: [PATCH] netfs: Add a check for NULL folioq in
- netfs_writeback_unlock_folios
-Message-ID: <Zxw_UgtVWOHHfkoD@gmail.com>
-References: <ZxshMEW4U7MTgQYa@gmail.com>
- <3951592.1729843553@warthog.procyon.org.uk>
+	Christian Ebner <c.ebner@proxmox.com>
+Subject: [PATCH stable 6.11.y] netfs: reset subreq->iov_iter before netfs_clear_unread() tail clean
+Date: Sun, 27 Oct 2024 12:43:15 +0100
+Message-Id: <20241027114315.730407-1-c.ebner@proxmox.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3951592.1729843553@warthog.procyon.org.uk>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 25, 2024 at 09:05:53AM +0100, David Howells wrote:
-> Chang Yu <marcus.yu.56@gmail.com> wrote:
-> 
-> > syzkaller reported a null-pointer dereference bug
-> > (https://syzkaller.appspot.com/bug?extid=af5c06208fa71bf31b16) in
-> > netfs_writeback_unlock_folios caused by passing a NULL folioq to
-> > folioq_folio. Fix by adding a check before entering the loop.
-> 
-> And, of course, the preceding:
-> 
-> 	if (slot >= folioq_nr_slots(folioq)) {
-> 
-> doesn't oops because it doesn't actually dereference folioq.
-> 
-> However... if we get into this function, there absolutely *should* be at least
-> one folioq in the rolling buffer.  Part of the rolling buffer's method of
-> operation involves keeping at least one folioq around at all times so that we
-> don't need to use locks to add/remove from the queue.
-> 
-> Either the rolling buffer wasn't initialised yet (and it should be initialised
-> for all write requests by netfs_create_write_req()) or it has been destroyed
-> already.
-> 
-> Either way, your patch is, unfortunately, just covering up the symptoms rather
-> than fixing the root cause.  I suggest instead that we patch the function to
-> detect the empty rolling buffer up front, dump some information about the bad
-> request and return.
-> 
-> David
-> 
-I see. This might be a stupid question, but is it ever possible that we have
-exactly one folioq and at the same time
+Fixes file corruption issues when reading contents via ceph client.
 
-        slot >= folioq_nr_slots(folioq)
+Call netfs_reset_subreq_iter() to align subreq->io_iter before
+calling netfs_clear_unread() to clear tail, as subreq->io_iter count
+and subreq->transferred might not be aligned after incomplete I/O,
+having the subreq's NETFS_SREQ_CLEAR_TAIL set.
 
-is true? Then I imagine netfs_delete_buffer_head would return NULL and
-cause the bug to trigger as well?
+Based on ee4cdf7b ("netfs: Speed up buffered reading"), which
+introduces a fix for the issue in mainline.
+
+Fixes: 92b6cc5d ("netfs: Add iov_iters to (sub)requests to describe various buffers")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219237
+Signed-off-by: Christian Ebner <c.ebner@proxmox.com>
+---
+Sending this patch in an attempt to backport the fix introduced by
+commit ee4cdf7b ("netfs: Speed up buffered reading"), which however
+can not be cherry picked for older kernels, as the patch is not
+independent from other commits and touches a lot of unrelated (to
+the fix) code.
+
+ fs/netfs/io.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/fs/netfs/io.c b/fs/netfs/io.c
+index d6ada4eba744..500119285346 100644
+--- a/fs/netfs/io.c
++++ b/fs/netfs/io.c
+@@ -528,6 +528,7 @@ void netfs_subreq_terminated(struct netfs_io_subrequest *subreq,
+ 
+ incomplete:
+ 	if (test_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags)) {
++		netfs_reset_subreq_iter(rreq, subreq);
+ 		netfs_clear_unread(subreq);
+ 		subreq->transferred = subreq->len;
+ 		goto complete;
+-- 
+2.39.5
+
+
