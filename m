@@ -1,209 +1,283 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E581E260D
-	for <netfs@lists.linux.dev>; Wed, 30 Oct 2024 10:23:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06B019D064
+	for <netfs@lists.linux.dev>; Thu, 31 Oct 2024 12:58:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730283838; cv=none; b=g7qbCNFvN2yosqLR9V9+OssnnJVPKbHfXFu7MrLodLx57DdW208AzF+UUfF/pmSu3KqiXnH5Fy/M7ms6Ogj9Y47lAH4Q6hrBrOKqBLz1JgHiYuvEMlnDNOEx2qpRAzQoVP3FFVEQBWDc3lpdkjp7K1aS06dR5Gh/7tjYUrAe2nk=
+	t=1730379528; cv=none; b=PE89cmf70+N/xBO6ThkwDeNUw5A8DTtlVnC/UN6yFgfDY1YAoWhlIl2wFIdBnt4iR5xN68LpNPi/K3qIrncwer4ULWmWpTsWPTaCXQjBrerIzEEjDWm+GNlf0G/2EAQLxstq+QTt1Wkm1ZknIP2HXAaEWHAHJJCLqITpaPHpbY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730283838; c=relaxed/simple;
-	bh=lA//qZesgyraKynZBmuWjZqo2zD+sf15KS0VwoKI/nc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=Xkk9wji27vRdL3/SOBlhGjYNqG/odSNAVxRz52dVlhKhR+A5CO0v9B+DCchFxA+qEtaUnbQyaWJJ9fAh1SKUJ9EaCdF9LatKA9810KYbWUezw2Y9p/ZKY6W9ah/gZ1BvCklPBiHq7OmAwbwn7wE45Co/wuRqI5g4ugSYC7/HLH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=WzXwusx/; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+	s=arc-20240116; t=1730379528; c=relaxed/simple;
+	bh=DXnZKixscFoBQMJXA8w4bMmQD+j421Dnphaji0yHKQU=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=aI0VqpRhiOyXnA4I8a02nGL7EdLBJHEd2JQDt7Dh5LMJSr7pC+sGSx8qvEqkQZOr3DrugINDbprUbcEDvw4AqRXiajag4JyIl3GwYzpAeQQ21RRJqs5MTr/sY4QefkLf9OdxSnOBApsq/zjtdXO6bwCDxvzTJnF9KXjXFpZ3wso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cAhTuZ5w; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="WzXwusx/"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a86e9db75b9so956114466b.1
-        for <netfs@lists.linux.dev>; Wed, 30 Oct 2024 03:23:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1730283834; x=1730888634; darn=lists.linux.dev;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Uua1tstVo1jiKYBlbaHaBo0WmGm8rt33M09fbm0Vnlo=;
-        b=WzXwusx/y5fIS1FCr33yPWI3qKHYR3Kv+nkJDmRXanY5SleQYgJUmSEjBrxJ92Rd90
-         IAL2qF2QtyW7244WnsD/1DsDaO8VIwU361rsE8VVt735KapcAGjSlu+hTUQ9obJ9C64p
-         x6RnQ+u+anAPcdzuHMP3oGSJ/34GTkOtlGIcDPSnOdlKj5hmD/4VHPC7oBoFf9mK4YyX
-         Z2OHSOvM3QjOMVO0ME8ijfbTf4HqikwIBD5iEJ0GQwcSx9wIGV7HxrPrLa0XL8ZfDjLB
-         LLSfpFUn22Y4hGikJsOEkiYA8vXUlD49pc6WHLHHzCTzY94z/M+y+53BvOwE3ozRV/uI
-         LbYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730283834; x=1730888634;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Uua1tstVo1jiKYBlbaHaBo0WmGm8rt33M09fbm0Vnlo=;
-        b=jex1biQf+uGKNkCohfqO6aXNtpv50d3OBntBAGDOMqMSE2xjotJo3WgCEXBksMknpl
-         2fKDd6DOb1BpPToSri/xIHvpbGQQXMgpVdga4QVSaTkA+Yq3b0RFpS1bWQCUUtTZr9iD
-         wqQlHylobifzzdFZg48a3JJXI3flnMhS7oJ9aPB31xY1LUBwOdOyVL5EePBBllyROeyt
-         TUClXkPzHnx2nqe/lfM2kdB6jcF1Ob5Z+1gDi1iESiDc8oR821HmKuQjJt8iGCm8fkwR
-         SkAUw7ccq10MEh9pS9QjgXwpo+e7DM7IFZii0WIt4s1psqWvEkobrez/1P3FWCXKyY3Z
-         Gmbw==
-X-Forwarded-Encrypted: i=1; AJvYcCX8P5o2FDxXcnjsGwdh3lXlbnFIBNP58akdfLGfomAehz3bFYgGm4zBHN2j2dVT+p1hzpWwQg==@lists.linux.dev
-X-Gm-Message-State: AOJu0YwGE/C7pVsQg/RfJWmki91jztFPp/d+zLNvUV+gUXv5Va8lFxAk
-	vm3z9I7DPdHxXVMX/xjjKq0S3aPOM1hLvbRavfrTGUtqqVhWzbfNPCqP7ZVvdWJcUUxIJujJwyG
-	xCFYneAbmFkUW+HlC3uUczHMpKGXB88YrVZ2zcA==
-X-Google-Smtp-Source: AGHT+IFxuUwla/JZ0vPuZemP9dHRo1Gp2NZw4PQe1YoUlDO9XgRUKXEOFqWt8VNPv7t+1tnVBdcaGzRdNUy7wsmH0GY=
-X-Received: by 2002:a17:907:724a:b0:a9a:345a:6873 with SMTP id
- a640c23a62f3a-a9de5d0aeb1mr1475360466b.24.1730283833954; Wed, 30 Oct 2024
- 03:23:53 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cAhTuZ5w"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1730379524;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tw7g6uU6ZxI1gC/pUKtFC6nfgE91Ln7aDN8ewiylNhk=;
+	b=cAhTuZ5wPsYghsQmQ9HoNpzbD4yboAXgCUtjiEJvRGSOPbseKo7Rqf/crJJZ66cEPGTd4y
+	LK/2/kgV/0WjqY+/JKFfb3uqd3SOD7v3uz/Yh277PIJSeyRneS7p1HzUn7ZDjr/hsyBajw
+	Vt5rLlvI9yniZ0ni3tPGbYWp24izWNE=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-99-Mc0dZgGdMRKw16nHTE7gOw-1; Thu,
+ 31 Oct 2024 08:58:41 -0400
+X-MC-Unique: Mc0dZgGdMRKw16nHTE7gOw-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 91A071956058;
+	Thu, 31 Oct 2024 12:58:38 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.231])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 40C4E1956054;
+	Thu, 31 Oct 2024 12:58:34 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20241025204008.4076565-26-dhowells@redhat.com>
+References: <20241025204008.4076565-26-dhowells@redhat.com> <20241025204008.4076565-1-dhowells@redhat.com>
+To: Marc Dionne <marc.dionne@auristor.com>
+Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
+    Jeff Layton <jlayton@kernel.org>, netfs@lists.linux.dev,
+    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+    v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org,
+    linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+    netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 25/31] afs: Make {Y,}FS.FetchData an asynchronous operation
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAKPOu+9DyMbKLhyJb7aMLDTb=Fh0T8Teb9sjuf_pze+XWT1VaQ@mail.gmail.com>
-In-Reply-To: <CAKPOu+9DyMbKLhyJb7aMLDTb=Fh0T8Teb9sjuf_pze+XWT1VaQ@mail.gmail.com>
-From: Max Kellermann <max.kellermann@ionos.com>
-Date: Wed, 30 Oct 2024 11:23:42 +0100
-Message-ID: <CAKPOu+_XVhgg7Gq=izU9QDFyaVpZTSyNWOWLi5N8S6wSYdbf3A@mail.gmail.com>
-Subject: Re: Oops in netfs_rreq_unlock_folios_pgpriv2
-To: David Howells <dhowells@redhat.com>, netfs@lists.linux.dev, linux-nfs@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <43387.1730379513.1@warthog.procyon.org.uk>
 Content-Transfer-Encoding: quoted-printable
+Date: Thu, 31 Oct 2024 12:58:33 +0000
+Message-ID: <43388.1730379513@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-David,
+I think this may need an additional bit (see attached).
 
-Meanwhile, our servers crash many times a day due to this bug.
+David
+---
+afs: Fix hang due to FetchData RPC op being cancelled by signal
 
-The code was added by your commit 7b589a9b45a ("netfs: Fix handling of
-USE_PGPRIV2 and WRITE_TO_CACHE flags") after I found Ceph-related bugs
-in your commit 2ff1e97587f4 ("netfs: Replace PG_fscache by setting
-folio->private and marking dirty"). Since this fix, the Ceph problems
-were gone, but yesterday, out of the blue, the NFS-using server
-started crashing (after running stable with 6.11.5 for 5 days).
+If a signal comes in just as an RPC operation is being queued to get a
+channel for transmission, afs_make_call() will submit an immediate abort
+and cancel the asynchronous work.  This is a problem for asynchronous
+FetchData as the file-read routines don't get notified and don't therefore
+get to inform netfslib, leaving netfslib hanging.
 
-We can't go back to 6.10 (EOL); the newest kernel prior to your
-refactoring was 6.9 which has been EOL since July, leaving a downgrade
-to 6.6 LTS as the only remaining option.
+Fix this by:
 
-Max
+ (1) Split the ->done() call op to have an ->immediate_cancel() op also
+     that is called by afs_make_call() instead of ->done().
 
+     It is undesirable from async FetchData's point of view to implement
+     ->done() as this is also called from the received data processing
+     loop, which is triggered by the async notification from AF_RXRPC.
 
+ (2) Make the various async Probe RPCs use their ->immediate_cancel() go t=
+o
+     the same handler as their ->done() call.
 
-On Tue, Oct 29, 2024 at 9:02=E2=80=AFAM Max Kellermann <max.kellermann@iono=
-s.com> wrote:
->
-> Hi David,
->
-> maybe this crash is related to your recent netfs refactoring work; it is =
-on
-> a server with heavy NFS traffic (with fscache enabled). The kernel is
-> 6.11.5 plus a dozen patches that are not relevant for NFS/netfs/fscache.
->
->  BUG: unable to handle page fault for address: 0000025882015121
->  #PF: supervisor read access in kernel mode
->  #PF: error_code(0x0000) - not-present page
->  PGD 0 P4D 0
->  Oops: Oops: 0000 [#1] SMP PTI
->  CPU: 11 UID: 0 PID: 247837 Comm: kworker/u193:32 Not tainted
-> 6.11.5-cm4all1-hp+ #219
->  Hardware name: HP ProLiant DL380 Gen9/ProLiant DL380 Gen9, BIOS P89
-> 10/17/2018
->  Workqueue: nfsiod rpc_async_release
->  RIP: 0010:netfs_rreq_unlock_folios_pgpriv2+0xd2/0x360
->  Code: 4c 8b 04 24 48 85 c0 49 89 c5 0f 84 38 01 00 00 49 81 fd 06 04 00 =
-00
-> 0f 84 f2 00 00 00 49 81 fd 02 04 00 00 0f 84 35 02 00 00 <49> 8b 45 20 ba
-> 00 10 00 00 49 8b 4d 00 48 c1 e0 0c 83 e1 40 74 08
->  RSP: 0018:ffffb0056373fc90 EFLAGS: 00010216
->  RAX: 000000000000002d RBX: ffff89de0d2a6780 RCX: 0000000000000001
->  RDX: 00000000000000ad RSI: 0000000000000001 RDI: ffff89deb02e7b50
->  RBP: 0000000000000000 R08: ffff89de3c9e9400 R09: 000000000000002c
->  R10: 0000000000000008 R11: 0000000000000001 R12: 00000000000000b7
->  R13: 0000025882015101 R14: 0000000000000000 R15: ffffb0056373fd28
->  FS:  0000000000000000(0000) GS:ffff89f51fac0000(0000)
-> knlGS:0000000000000000
->  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->  CR2: 0000025882015121 CR3: 000000005942e006 CR4: 00000000001706f0
->  Call Trace:
->   <TASK>
->   ? __die+0x1f/0x60
->   ? page_fault_oops+0x15c/0x450
->   ? search_extable+0x22/0x30
->   ? netfs_rreq_unlock_folios_pgpriv2+0xd2/0x360
->   ? search_module_extables+0xe/0x40
->   ? exc_page_fault+0x5e/0x100
->   ? asm_exc_page_fault+0x22/0x30
->   ? netfs_rreq_unlock_folios_pgpriv2+0xd2/0x360
->   ? select_task_rq_fair+0x1ed/0x1370
->   netfs_rreq_unlock_folios+0x40c/0x4b0
->   netfs_rreq_assess+0x348/0x580
->   netfs_subreq_terminated+0x193/0x2a0
->   nfs_netfs_read_completion+0x97/0xb0
->   nfs_read_completion+0x12e/0x200
->   rpc_free_task+0x39/0x60
->   rpc_async_release+0x2b/0x40
->   process_one_work+0x134/0x2e0
->   worker_thread+0x299/0x3a0
->   ? __pfx_worker_thread+0x10/0x10
->   kthread+0xba/0xe0
->   ? __pfx_kthread+0x10/0x10
->   ret_from_fork+0x30/0x50
->   ? __pfx_kthread+0x10/0x10
->   ret_from_fork_asm+0x1a/0x30
->   </TASK>
->  Modules linked in:
->  CR2: 0000025882015121
->  ---[ end trace 0000000000000000 ]---
->  ERST: [Firmware Warn]: Firmware does not respond in time.
->  pstore: backend (erst) writing error (-5)
->  RIP: 0010:netfs_rreq_unlock_folios_pgpriv2+0xd2/0x360
->  Code: 4c 8b 04 24 48 85 c0 49 89 c5 0f 84 38 01 00 00 49 81 fd 06 04 00 =
-00
-> 0f 84 f2 00 00 00 49 81 fd 02 04 00 00 0f 84 35 02 00 00 <49> 8b 45 20 ba
-> 00 10 00 00 49 8b 4d 00 48 c1 e0 0c 83 e1 40 74 08
->  RSP: 0018:ffffb0056373fc90 EFLAGS: 00010216
->  RAX: 000000000000002d RBX: ffff89de0d2a6780 RCX: 0000000000000001
->  RDX: 00000000000000ad RSI: 0000000000000001 RDI: ffff89deb02e7b50
->  RBP: 0000000000000000 R08: ffff89de3c9e9400 R09: 000000000000002c
->  R10: 0000000000000008 R11: 0000000000000001 R12: 00000000000000b7
->  R13: 0000025882015101 R14: 0000000000000000 R15: ffffb0056373fd28
->  FS:  0000000000000000(0000) GS:ffff89f51fac0000(0000)
-> knlGS:0000000000000000
->  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->  CR2: 0000025882015121 CR3: 000000005942e006 CR4: 00000000001706f0
->  note: kworker/u193:32[247837] exited with irqs disabled
->
->  (gdb) p netfs_rreq_unlock_folios_pgpriv2+0xd2
->  $1 =3D (void (*)(struct netfs_io_request *, size_t *)) 0xffffffff813d80c=
-2
-> <netfs_rreq_unlock_folios_pgpriv2+210>
->  (gdb) disassemble netfs_rreq_unlock_folios_pgpriv2+0xd2
->  Dump of assembler code for function netfs_rreq_unlock_folios_pgpriv2:
->  [...]
->    0xffffffff813d8093 <+163>: call   0xffffffff81f0ec70 <xas_find>
->    0xffffffff813d8098 <+168>: mov    (%rsp),%r8
->    0xffffffff813d809c <+172>: test   %rax,%rax
->    0xffffffff813d809f <+175>: mov    %rax,%r13
->    0xffffffff813d80a2 <+178>: je     0xffffffff813d81e0
-> <netfs_rreq_unlock_folios_pgpriv2+496>
->    0xffffffff813d80a8 <+184>: cmp    $0x406,%r13
->    0xffffffff813d80af <+191>: je     0xffffffff813d81a7
-> <netfs_rreq_unlock_folios_pgpriv2+439>
->    0xffffffff813d80b5 <+197>: cmp    $0x402,%r13
->    0xffffffff813d80bc <+204>: je     0xffffffff813d82f7
-> <netfs_rreq_unlock_folios_pgpriv2+775>
->    0xffffffff813d80c2 <+210>: mov    0x20(%r13),%rax
->    0xffffffff813d80c6 <+214>: mov    $0x1000,%edx
->    0xffffffff813d80cb <+219>: mov    0x0(%r13),%rcx
->    0xffffffff813d80cf <+223>: shl    $0xc,%rax
->    0xffffffff813d80d3 <+227>: and    $0x40,%ecx
->    0xffffffff813d80d6 <+230>: je     0xffffffff813d80e0
-> <netfs_rreq_unlock_folios_pgpriv2+240>
->    0xffffffff813d80d8 <+232>: movzbl 0x40(%r13),%ecx
->    0xffffffff813d80dd <+237>: shl    %cl,%rdx
->
->
-> Right now, the machine is running and I have an unstripped kernel, just i=
-n
-> case you need more information from /proc/kcore.
->
-> Max
->
-> [resent as text/plain only - damn you, gmail!]
+ (3) Don't provide the Lock RPCs, InlineBulkStatus RPC and YFS.RemoveFile2
+     RPC with ->immediate_cancel() as their ->done() calls are only
+     interested in looking at the response from the server.
+
+ (4) Implement this for FetchData RPCs, making it schedule the async
+     handler and wait for it so that it doesn't get cancelled.
+
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+---
+ fs/afs/file.c      |    8 ++++++++
+ fs/afs/fsclient.c  |    3 +++
+ fs/afs/internal.h  |   17 +++++++++++++++++
+ fs/afs/rxrpc.c     |   17 ++---------------
+ fs/afs/vlclient.c  |    1 +
+ fs/afs/yfsclient.c |    1 +
+ 6 files changed, 32 insertions(+), 15 deletions(-)
+
+diff --git a/fs/afs/file.c b/fs/afs/file.c
+index dbc108c6cae5..a2880fd3c460 100644
+--- a/fs/afs/file.c
++++ b/fs/afs/file.c
+@@ -314,6 +314,14 @@ void afs_fetch_data_async_rx(struct work_struct *work=
+)
+ 	afs_put_call(call);
+ }
+ =
+
++void afs_fetch_data_immediate_cancel(struct afs_call *call)
++{
++	afs_get_call(call, afs_call_trace_wake);
++	if (!queue_work(afs_async_calls, &call->async_work))
++		afs_deferred_put_call(call);
++	flush_work(&call->async_work);
++}
++
+ /*
+  * Fetch file data from the volume.
+  */
+diff --git a/fs/afs/fsclient.c b/fs/afs/fsclient.c
+index 6380cdcfd4fc..1d9ecd5418d8 100644
+--- a/fs/afs/fsclient.c
++++ b/fs/afs/fsclient.c
+@@ -410,6 +410,7 @@ static const struct afs_call_type afs_RXFSFetchData =3D=
+ {
+ 	.op		=3D afs_FS_FetchData,
+ 	.async_rx	=3D afs_fetch_data_async_rx,
+ 	.deliver	=3D afs_deliver_fs_fetch_data,
++	.immediate_cancel =3D afs_fetch_data_immediate_cancel,
+ 	.destructor	=3D afs_flat_call_destructor,
+ };
+ =
+
+@@ -418,6 +419,7 @@ static const struct afs_call_type afs_RXFSFetchData64 =
+=3D {
+ 	.op		=3D afs_FS_FetchData64,
+ 	.async_rx	=3D afs_fetch_data_async_rx,
+ 	.deliver	=3D afs_deliver_fs_fetch_data,
++	.immediate_cancel =3D afs_fetch_data_immediate_cancel,
+ 	.destructor	=3D afs_flat_call_destructor,
+ };
+ =
+
+@@ -1734,6 +1736,7 @@ static const struct afs_call_type afs_RXFSGetCapabil=
+ities =3D {
+ 	.op		=3D afs_FS_GetCapabilities,
+ 	.deliver	=3D afs_deliver_fs_get_capabilities,
+ 	.done		=3D afs_fileserver_probe_result,
++	.immediate_cancel =3D afs_fileserver_probe_result,
+ 	.destructor	=3D afs_fs_get_capabilities_destructor,
+ };
+ =
+
+diff --git a/fs/afs/internal.h b/fs/afs/internal.h
+index b11b2dfb8380..2077f6c923e0 100644
+--- a/fs/afs/internal.h
++++ b/fs/afs/internal.h
+@@ -210,6 +210,9 @@ struct afs_call_type {
+ =
+
+ 	/* Call done function (gets called immediately on success or failure) */
+ 	void (*done)(struct afs_call *call);
++
++	/* Handle a call being immediately cancelled. */
++	void (*immediate_cancel)(struct afs_call *call);
+ };
+ =
+
+ /*
+@@ -1127,6 +1130,7 @@ extern void afs_put_wb_key(struct afs_wb_key *);
+ extern int afs_open(struct inode *, struct file *);
+ extern int afs_release(struct inode *, struct file *);
+ void afs_fetch_data_async_rx(struct work_struct *work);
++void afs_fetch_data_immediate_cancel(struct afs_call *call);
+ =
+
+ /*
+  * flock.c
+@@ -1362,6 +1366,19 @@ extern void afs_send_simple_reply(struct afs_call *=
+, const void *, size_t);
+ extern int afs_extract_data(struct afs_call *, bool);
+ extern int afs_protocol_error(struct afs_call *, enum afs_eproto_cause);
+ =
+
++static inline struct afs_call *afs_get_call(struct afs_call *call,
++					    enum afs_call_trace why)
++{
++	int r;
++
++	__refcount_inc(&call->ref, &r);
++
++	trace_afs_call(call->debug_id, why, r + 1,
++		       atomic_read(&call->net->nr_outstanding_calls),
++		       __builtin_return_address(0));
++	return call;
++}
++
+ static inline void afs_make_op_call(struct afs_operation *op, struct afs_=
+call *call,
+ 				    gfp_t gfp)
+ {
+diff --git a/fs/afs/rxrpc.c b/fs/afs/rxrpc.c
+index 94fff4e214b0..066e5d70dabe 100644
+--- a/fs/afs/rxrpc.c
++++ b/fs/afs/rxrpc.c
+@@ -236,19 +236,6 @@ void afs_deferred_put_call(struct afs_call *call)
+ 		schedule_work(&call->free_work);
+ }
+ =
+
+-static struct afs_call *afs_get_call(struct afs_call *call,
+-				     enum afs_call_trace why)
+-{
+-	int r;
+-
+-	__refcount_inc(&call->ref, &r);
+-
+-	trace_afs_call(call->debug_id, why, r + 1,
+-		       atomic_read(&call->net->nr_outstanding_calls),
+-		       __builtin_return_address(0));
+-	return call;
+-}
+-
+ /*
+  * Queue the call for actual work.
+  */
+@@ -444,8 +431,8 @@ void afs_make_call(struct afs_call *call, gfp_t gfp)
+ 	call->error =3D ret;
+ 	trace_afs_call_done(call);
+ error_kill_call:
+-	if (call->type->done)
+-		call->type->done(call);
++	if (call->type->immediate_cancel)
++		call->type->immediate_cancel(call);
+ =
+
+ 	/* We need to dispose of the extra ref we grabbed for an async call.
+ 	 * The call, however, might be queued on afs_async_calls and we need to
+diff --git a/fs/afs/vlclient.c b/fs/afs/vlclient.c
+index cac75f89b64a..adc617a82a86 100644
+--- a/fs/afs/vlclient.c
++++ b/fs/afs/vlclient.c
+@@ -370,6 +370,7 @@ static const struct afs_call_type afs_RXVLGetCapabilit=
+ies =3D {
+ 	.name		=3D "VL.GetCapabilities",
+ 	.op		=3D afs_VL_GetCapabilities,
+ 	.deliver	=3D afs_deliver_vl_get_capabilities,
++	.immediate_cancel =3D afs_vlserver_probe_result,
+ 	.done		=3D afs_vlserver_probe_result,
+ 	.destructor	=3D afs_destroy_vl_get_capabilities,
+ };
+diff --git a/fs/afs/yfsclient.c b/fs/afs/yfsclient.c
+index 4e7d93ee5a08..f57c089f26ee 100644
+--- a/fs/afs/yfsclient.c
++++ b/fs/afs/yfsclient.c
+@@ -458,6 +458,7 @@ static const struct afs_call_type yfs_RXYFSFetchData64=
+ =3D {
+ 	.op		=3D yfs_FS_FetchData64,
+ 	.async_rx	=3D afs_fetch_data_async_rx,
+ 	.deliver	=3D yfs_deliver_fs_fetch_data64,
++	.immediate_cancel =3D afs_fetch_data_immediate_cancel,
+ 	.destructor	=3D afs_flat_call_destructor,
+ };
+ =
+
