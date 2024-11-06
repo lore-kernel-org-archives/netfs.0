@@ -1,72 +1,70 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0590C191F68;
-	Wed,  6 Nov 2024 05:59:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C591D5CCF
+	for <netfs@lists.linux.dev>; Wed,  6 Nov 2024 08:35:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.136.29.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730872762; cv=none; b=CdTn0+Lwf6e77Z855nbIhISX1MYDnFD7g5IlLbbHwTh+v2A2kOcy4dfSYnPfb3Xw/0B/M5k5JBCKkf5gDOsCW5W2b5UjAvJwqUvzUigNEpB66FAcDxxsZYC0wdOz5h8rewoUJubM/jX5eASp//rwk0QU1AN13Ptc4eHZgwhRpEY=
+	t=1730882128; cv=none; b=K35RMW6KhcSkTv/IgXjAZd06s+tEBqWzz0jMJShKyCsrEe+vG6W+IHh0nuP0dY1vG+2sJGiomKGeulyprku8Xu9XvFQ31OJAM5XVl4MnorGQp5ks4PVAE5cLPFNvj8vzoABNpeTFuyPXtHK/XtxuwtpECm/5zT5KQkeyV8M+41k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730872762; c=relaxed/simple;
-	bh=pejA8p4pUQOOOfIaAqDoAbP6ujyUTye2OnK2sV0aF6M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JrY0qInkJB1byKXQeAEfrmo5oSPBYzTe8ryA1yexTMt6gfDi+X31hHi9E/ri/WtCgt3yiBCslPSm36Mh3arNTADjTbkQMQs93RKfx2aqgBTuVyQIITp9vA8zwrFePKEtHjYixGoOYLCl4o20wbBzYAJ6PMijg9EVdY0gwxkfmFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=caWk7TAX; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="caWk7TAX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0020CC4CECD;
-	Wed,  6 Nov 2024 05:59:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730872761;
-	bh=pejA8p4pUQOOOfIaAqDoAbP6ujyUTye2OnK2sV0aF6M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=caWk7TAXzoKXPI6lVr5wdAkvS026FD0NH/rEjAyH7yiRuxWUkLAIywKPukBEbCdPa
-	 aoMGDqYmDjyeIBvSyvSqFqBNjQdaOzijoYFLI81hkzyUo+wArEN0EExb7MEqFvCq0H
-	 wJ19qVwaU94CKXye9xK10t1Plhtr6Votwp1Ig2Sg=
-Date: Wed, 6 Nov 2024 06:59:03 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Christian Ebner <c.ebner@proxmox.com>
-Cc: dhowells@redhat.com, jlayton@kernel.org, stable@vger.kernel.org,
-	netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH stable 6.11.y] netfs: reset subreq->iov_iter before
- netfs_clear_unread() tail clean
-Message-ID: <2024110644-audible-canine-30ca@gregkh>
-References: <20241027114315.730407-1-c.ebner@proxmox.com>
+	s=arc-20240116; t=1730882128; c=relaxed/simple;
+	bh=C/velvt7rmPUsQmHDYuEhOqbZlT3Y7yVo6RK2nuGCVo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FDrmgdJbz9MbmkFpbu7FMK1u15AVVseJsW75iXV4feSpyjq+aJh+gBmCM3Svu1oCrndVou+n0QaAps5Kzuk8J6ySusUDdkD9vVGl1sqZ0F4wZqTvyNFtZezNpCSz3d0/R9B/Rhvm65qayyMGFUZVovP8fUqEDW37f4+GRYSVwGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass smtp.mailfrom=proxmox.com; arc=none smtp.client-ip=94.136.29.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 42F8948D33;
+	Wed,  6 Nov 2024 09:26:48 +0100 (CET)
+Message-ID: <7e364258-e643-4656-9233-f89f1c4b1a66@proxmox.com>
+Date: Wed, 6 Nov 2024 09:26:46 +0100
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241027114315.730407-1-c.ebner@proxmox.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH stable 6.11.y] netfs: reset subreq->iov_iter before
+ netfs_clear_unread() tail clean
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: dhowells@redhat.com, jlayton@kernel.org, stable@vger.kernel.org,
+ netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20241027114315.730407-1-c.ebner@proxmox.com>
+ <2024110644-audible-canine-30ca@gregkh>
+Content-Language: en-US, de-DE
+From: Christian Ebner <c.ebner@proxmox.com>
+In-Reply-To: <2024110644-audible-canine-30ca@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sun, Oct 27, 2024 at 12:43:15PM +0100, Christian Ebner wrote:
-> Fixes file corruption issues when reading contents via ceph client.
+On 11/6/24 06:59, Greg KH wrote:
+> We would much rather take the original series of commits, what exactly
+> are they here?
 > 
-> Call netfs_reset_subreq_iter() to align subreq->io_iter before
-> calling netfs_clear_unread() to clear tail, as subreq->io_iter count
-> and subreq->transferred might not be aligned after incomplete I/O,
-> having the subreq's NETFS_SREQ_CLEAR_TAIL set.
+> thanks,
 > 
-> Based on ee4cdf7b ("netfs: Speed up buffered reading"), which
-> introduces a fix for the issue in mainline.
-> 
-> Fixes: 92b6cc5d ("netfs: Add iov_iters to (sub)requests to describe various buffers")
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219237
-> Signed-off-by: Christian Ebner <c.ebner@proxmox.com>
-> ---
-> Sending this patch in an attempt to backport the fix introduced by
-> commit ee4cdf7b ("netfs: Speed up buffered reading"), which however
-> can not be cherry picked for older kernels, as the patch is not
-> independent from other commits and touches a lot of unrelated (to
-> the fix) code.
+> greg k-h
 
-We would much rather take the original series of commits, what exactly
-are they here?
+Hello Greg,
+thank you for your reply.
 
-thanks,
+AFAIK the relevant patches for this series are commits 
+80887f31..ee4cdf7b, although the last patch containing the fix does not 
+apply cleanly on the current 6.11.y branch.
 
-greg k-h
+Please note, I am not very familiar with the code so unsure if all of 
+the patches in the series are required for the fix. Maybe David Howells 
+as author of the series can provide some more insights?
+
+The patch series introducing the fix is 
+https://lore.kernel.org/all/20240814203850.2240469-1-dhowells@redhat.com/
+
+Please let me know how to proceed, thanks!
+
+Best regards,
+Christian Ebner
+
+
