@@ -1,28 +1,29 @@
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE79B1F4FBA
-	for <netfs@lists.linux.dev>; Thu,  7 Nov 2024 11:10:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921D61F6680
+	for <netfs@lists.linux.dev>; Thu,  7 Nov 2024 11:10:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730977832; cv=none; b=CqIn6RJxXvZvFSUR3YqTGdx5xt9+Xo0dh4RX825UmftdHUazNg+BWqe1yzfJGIfTBxaRLIIZYvHTuZVMccR86aU5UOVYL0zcToAV7F4RxOCkPBtmiHL3iwGrv1fGAO8RLcYZPrWUphoS8iQeUyDclmJTWu1+rGb1XOeUKn/WNbU=
+	t=1730977834; cv=none; b=h8p6AavuLE1mv0IHfGcoiBm4RXJ4h3vA+fq7vKA3t8oSUJc8k3Tv8fYKMGRm+OJkApv0Qiv5uscSan0JSgxAY5NawC2MBBZL+c+KqqFfKQ8Sw4IMm62tQ3datvGHqvuutAu0AQDV0m7veznC3gUo732zB4HZeU7i5ozTTPF+2tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730977832; c=relaxed/simple;
-	bh=RVVmHJ2hHNmXUopsdCaH/m3BSyOH2T6JXPZrJTIBz7I=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XWhImPBrEstsQhzXod4FVL7/5fvtx2igRkEUmq8Bb5DYbRaGmT6ferU4SZSJFX+G6iuWB9FMkF+zlyuGzjlKa73q3LvkLy4fawW74deepYnTD1WHDIaxlzTWfA7QMNxgttlG2vI33Qt8bpd2OkgbO0lE3KTqmO+SFpESm0VC9Nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+	s=arc-20240116; t=1730977834; c=relaxed/simple;
+	bh=1WexRfGfAjCbZ7vpocIPygEkhF0DS+Vxup3A6fLnrzg=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bDoAtJq9QjMGrUl+ySn85vlaIkAfIPuR0IuXaCZUrZ7KspesvRX8D21C+e0guXef5nlhmpRJ7KMfRiHiGrBRv/GrjaSlTMl7/V4n86a6L4BKOy/CL4BGrHOvqZ7WZY5pCXU/BFotgKgS08YqsJtVZAWZWiUNCgzEOi+s76+fcWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.44])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4XkfT31B71z2Fbqn;
-	Thu,  7 Nov 2024 19:08:39 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4XkfTm39pBzQsf2;
+	Thu,  7 Nov 2024 19:09:16 +0800 (CST)
 Received: from kwepemf100017.china.huawei.com (unknown [7.202.181.16])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8379B1401E9;
-	Thu,  7 Nov 2024 19:10:21 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id AA6D9180105;
+	Thu,  7 Nov 2024 19:10:24 +0800 (CST)
 Received: from huawei.com (10.175.104.67) by kwepemf100017.china.huawei.com
  (7.202.181.16) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 7 Nov
- 2024 19:10:20 +0800
+ 2024 19:10:23 +0800
 From: Zizhi Wo <wozizhi@huawei.com>
 To: <netfs@lists.linux.dev>, <dhowells@redhat.com>, <jlayton@kernel.org>,
 	<brauner@kernel.org>
@@ -31,10 +32,12 @@ CC: <hsiangkao@linux.alibaba.com>, <jefflexu@linux.alibaba.com>,
 	<linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<wozizhi@huawei.com>, <libaokun1@huawei.com>, <yangerkun@huawei.com>,
 	<houtao1@huawei.com>, <yukuai3@huawei.com>
-Subject: [PATCH v2 0/5] fscache/cachefiles: Some bugfixes
-Date: Thu, 7 Nov 2024 19:06:44 +0800
-Message-ID: <20241107110649.3980193-1-wozizhi@huawei.com>
+Subject: [PATCH v2 3/5] cachefiles: Clean up in cachefiles_commit_tmpfile()
+Date: Thu, 7 Nov 2024 19:06:47 +0800
+Message-ID: <20241107110649.3980193-4-wozizhi@huawei.com>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20241107110649.3980193-1-wozizhi@huawei.com>
+References: <20241107110649.3980193-1-wozizhi@huawei.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -46,37 +49,39 @@ Content-Type: text/plain
 X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
  kwepemf100017.china.huawei.com (7.202.181.16)
 
-Changes since V1[1]:
- - Removed some incorrect patches.
- - Modified the description of the first patch.
- - Modified the fourth patch to move fput out of lock execution.
+Currently, cachefiles_commit_tmpfile() will only be called if object->flags
+is set to CACHEFILES_OBJECT_USING_TMPFILE. Only cachefiles_create_file()
+and cachefiles_invalidate_cookie() set this flag. Both of these functions
+replace object->file with the new tmpfile, and both are called by
+fscache_cookie_state_machine(), so there are no concurrency issues.
 
-Recently, I sent the first version of the patch series. After some
-discussions, I made modifications to a few patches and have now officially
-sent this second version.
+So the equation "d_backing_inode(dentry) == file_inode(object->file)" in
+cachefiles_commit_tmpfile() will never hold true according to the above
+conditions. This patch removes this part of the redundant code and does not
+involve any other logical changes.
 
-This patchset mainly includes 5 fix patches about fscache/cachefiles.
-Additionally, patches 2, 3, and 5 have already been ACKed. The first patch
-fixes an issue with the incorrect return length, and the fourth patch
-addresses a null pointer dereference issue with file.
+Signed-off-by: Zizhi Wo <wozizhi@huawei.com>
+Acked-by: David Howells <dhowells@redhat.com>
+---
+ fs/cachefiles/namei.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-[1] https://lore.kernel.org/all/20240821024301.1058918-1-wozizhi@huawei.com/
-
-Zizhi Wo (5):
-  cachefiles: Fix incorrect length return value in
-    cachefiles_ondemand_fd_write_iter()
-  cachefiles: Fix missing pos updates in
-    cachefiles_ondemand_fd_write_iter()
-  cachefiles: Clean up in cachefiles_commit_tmpfile()
-  cachefiles: Fix NULL pointer dereference in object->file
-  netfs/fscache: Add a memory barrier for FSCACHE_VOLUME_CREATING
-
- fs/cachefiles/interface.c | 14 ++++++++++----
- fs/cachefiles/namei.c     |  5 -----
- fs/cachefiles/ondemand.c  | 38 +++++++++++++++++++++++++++++---------
- fs/netfs/fscache_volume.c |  3 +--
- 4 files changed, 40 insertions(+), 20 deletions(-)
-
+diff --git a/fs/cachefiles/namei.c b/fs/cachefiles/namei.c
+index 2b3f9935dbb4..7cf59713f0f7 100644
+--- a/fs/cachefiles/namei.c
++++ b/fs/cachefiles/namei.c
+@@ -691,11 +691,6 @@ bool cachefiles_commit_tmpfile(struct cachefiles_cache *cache,
+ 	}
+ 
+ 	if (!d_is_negative(dentry)) {
+-		if (d_backing_inode(dentry) == file_inode(object->file)) {
+-			success = true;
+-			goto out_dput;
+-		}
+-
+ 		ret = cachefiles_unlink(volume->cache, object, fan, dentry,
+ 					FSCACHE_OBJECT_IS_STALE);
+ 		if (ret < 0)
 -- 
 2.39.2
 
