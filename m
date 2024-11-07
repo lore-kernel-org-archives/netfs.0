@@ -1,102 +1,75 @@
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB7A1E1C36
-	for <netfs@lists.linux.dev>; Thu,  7 Nov 2024 11:30:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD71B20B1FC
+	for <netfs@lists.linux.dev>; Thu,  7 Nov 2024 11:51:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.136.29.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730979025; cv=none; b=dPhfQOc3anKS93pdSTJVgzc1JBtp74ndrG1BhYwlzHjuMG90tDVh1AJhhDyj1/z//zqn7Vs1KVU1IhvLPMlKE1NkbaaCy93GKOJn5nTKS3hz2iLUQnYf4VM3jCOdkgaJMiW+Lnk9ZuLs+wfDLW9ZhJtyGLuKbhgXlOAVAtqZ+LM=
+	t=1730980285; cv=none; b=ZhR3uRgNVCBq4V8XQamP1VwSz2jg9D6UzZGv83YNwIvAUfskjrJHhBCDx5f2TCcYRJVWViNxHOYepCz+/VggbFqGDvoEdONPL4HVYOkWG4IjMOTJduphkmW297xvkFcIrCjRoUDd4tj+/OLIRCZd9MjZVVLj5Cuei2v0kQV4EtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730979025; c=relaxed/simple;
-	bh=tycehnml7nIskV1IKhFmTrfCzq+GzAVvOOf7z24DQ6k=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mz930KcDX99EupP3jdk0kb7z3qxU8YbRO4jVDUHFp99qrV3IZvpGtDqHdEr8jUG+LgTfs8ftssyEtRhvVI/4G2IkNNewt6LuuEnqbAWADG7CNKG+bcA5zLSCWcA5WOzRpu7+Psv8QSuo3vS+zJSh9/gwC26KxKqMHFwlK9gksNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4XkfWD6Ng5z2gL16;
-	Thu,  7 Nov 2024 19:10:32 +0800 (CST)
-Received: from kwepemf100017.china.huawei.com (unknown [7.202.181.16])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8E6621A016C;
-	Thu,  7 Nov 2024 19:10:22 +0800 (CST)
-Received: from huawei.com (10.175.104.67) by kwepemf100017.china.huawei.com
- (7.202.181.16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 7 Nov
- 2024 19:10:21 +0800
-From: Zizhi Wo <wozizhi@huawei.com>
-To: <netfs@lists.linux.dev>, <dhowells@redhat.com>, <jlayton@kernel.org>,
-	<brauner@kernel.org>
-CC: <hsiangkao@linux.alibaba.com>, <jefflexu@linux.alibaba.com>,
-	<zhujia.zj@bytedance.com>, <linux-erofs@lists.ozlabs.org>,
-	<linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<wozizhi@huawei.com>, <libaokun1@huawei.com>, <yangerkun@huawei.com>,
-	<houtao1@huawei.com>, <yukuai3@huawei.com>
-Subject: [PATCH v2 1/5] cachefiles: Fix incorrect length return value in cachefiles_ondemand_fd_write_iter()
-Date: Thu, 7 Nov 2024 19:06:45 +0800
-Message-ID: <20241107110649.3980193-2-wozizhi@huawei.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20241107110649.3980193-1-wozizhi@huawei.com>
-References: <20241107110649.3980193-1-wozizhi@huawei.com>
+	s=arc-20240116; t=1730980285; c=relaxed/simple;
+	bh=0AtubCeFukFj7oJ5lpiZaEPaElzTFMpovpQKmNfwuE8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RyOFgO5tmaAJ8NVz7d4bPUK9LatxXeY4nP4wsoxhj9pSgGkcZe8VBt+q1zb/3kWMpzJ1/BJGvUK1ypiljpkvLjhwqDP91lCK8LjY3TrKlm8BEc0stU7Z6I6rrBQq1W+Jt5UNJ7M0uj8J1HDp0MwYwBmuHBCEZZEL52YyUYUg5gQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass smtp.mailfrom=proxmox.com; arc=none smtp.client-ip=94.136.29.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 681D248F39;
+	Thu,  7 Nov 2024 12:51:15 +0100 (CET)
+Message-ID: <fac697e2-22aa-40e5-942a-a6e40efee0b2@proxmox.com>
+Date: Thu, 7 Nov 2024 12:51:14 +0100
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- kwepemf100017.china.huawei.com (7.202.181.16)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH stable 6.11.y] netfs: reset subreq->iov_iter before
+ netfs_clear_unread() tail clean
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: dhowells@redhat.com, jlayton@kernel.org, stable@vger.kernel.org,
+ netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20241027114315.730407-1-c.ebner@proxmox.com>
+ <2024110644-audible-canine-30ca@gregkh>
+ <7e364258-e643-4656-9233-f89f1c4b1a66@proxmox.com>
+ <2024110625-blot-uncooked-48f9@gregkh>
+Content-Language: en-US, de-DE
+From: Christian Ebner <c.ebner@proxmox.com>
+In-Reply-To: <2024110625-blot-uncooked-48f9@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-cachefiles_ondemand_fd_write_iter() function first aligns "pos" and "len"
-to block boundaries. When calling __cachefiles_write(), the aligned "pos"
-is passed in, but "len" is the original unaligned value(iter->count).
-Additionally, the returned length of the write operation is the modified
-"len" aligned by block size, which is unreasonable.
+On 11/6/24 09:35, Greg KH wrote:
+> On Wed, Nov 06, 2024 at 09:26:46AM +0100, Christian Ebner wrote:
+> 
+> Please try testing the original fixes and providing them as a patch
+> series and send them for us to review.
+> 
+> thanks,
+> 
+> greg k-h
 
-The alignment of "pos" and "len" is intended only to check whether the
-cache has enough space. But the modified len should not be used as the
-return value of cachefiles_ondemand_fd_write_iter() because the length we
-passed to __cachefiles_write() is the previous "len". Doing so would result
-in a mismatch in the data written on-demand. For example, if the length of
-the user state passed in is not aligned to the block size (the preread
-scene/DIO writes only need 512 alignment/Fault injection), the length of
-the write will differ from the actual length of the return.
+Hi Greg,
 
-To solve this issue, since the __cachefiles_prepare_write() modifies the
-size of "len", we pass "aligned_len" to __cachefiles_prepare_write() to
-calculate the free blocks and use the original "len" as the return value of
-cachefiles_ondemand_fd_write_iter().
+as mentioned, the original series does not apply on stable-6.11.y and 
+securely and correctly back-porting this is out of scope for us, given 
+resource and time constraints.
 
-Fixes: c8383054506c ("cachefiles: notify the user daemon when looking up cookie")
-Signed-off-by: Zizhi Wo <wozizhi@huawei.com>
----
- fs/cachefiles/ondemand.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+The main intend was to contribute back a patch which is also 
+back-portable to older kernels. This seems unfeasible with the huge 
+original patch series. The submitted patch has successfully been tested 
+on our side and fixes the issue for affected customers which were 
+willing to test the patch.
 
-diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-index 470c96658385..bdd321017f1c 100644
---- a/fs/cachefiles/ondemand.c
-+++ b/fs/cachefiles/ondemand.c
-@@ -61,7 +61,7 @@ static ssize_t cachefiles_ondemand_fd_write_iter(struct kiocb *kiocb,
- 	struct cachefiles_object *object = kiocb->ki_filp->private_data;
- 	struct cachefiles_cache *cache = object->volume->cache;
- 	struct file *file = object->file;
--	size_t len = iter->count;
-+	size_t len = iter->count, aligned_len = len;
- 	loff_t pos = kiocb->ki_pos;
- 	const struct cred *saved_cred;
- 	int ret;
-@@ -70,7 +70,7 @@ static ssize_t cachefiles_ondemand_fd_write_iter(struct kiocb *kiocb,
- 		return -ENOBUFS;
- 
- 	cachefiles_begin_secure(cache, &saved_cred);
--	ret = __cachefiles_prepare_write(object, file, &pos, &len, len, true);
-+	ret = __cachefiles_prepare_write(object, file, &pos, &aligned_len, len, true);
- 	cachefiles_end_secure(cache, saved_cred);
- 	if (ret < 0)
- 		return ret;
--- 
-2.39.2
+Thanks for your time.
+
+Best regards,
+Christian Ebner
+
+
+
+
 
