@@ -1,121 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B20185924;
-	Fri, 15 Nov 2024 06:48:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C9E18BC26
+	for <netfs@lists.linux.dev>; Fri, 15 Nov 2024 09:13:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731653289; cv=none; b=tLbMG9DFd9ITTVANdEGLaAnUJEbCSQKCPwLZCJV1465W+/V8C0c+qqJ8S6nn3K4uUOfu6cwn3ykECrPIa5Y3fWx3QGFhSZ6bbLzdOzzAbWj4Bjik2xy6pjh59wOLOd60bUcKkiWIklDM60RER0Pmcg20PT9op/voUa2RlJrPClw=
+	t=1731662034; cv=none; b=UVnmkvX+R4CdQHnm9E1iyu4gmO88tVJl80f4XcuhHxMkKZQdU8o+9cmyreH8CfmrPFOD5rSQ+bfQJoB/XH9ywxpBaQEmcnuMVUP8upf3S7J5tQm+pXtXdE0SRYK9/b+sxljkXYFoM8/mluN58ATecV7O/GA1mX2v5BP7bBsMREg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731653289; c=relaxed/simple;
-	bh=zakHiXayz7SY1jBhcUhQzU+JONzAKDRAo+HlUYF2IG4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KWpRt1p19H2ZBgpCW/AgsSQ63dM+hMT0dYOO7aoctqFSEvNrPR1fvaodXkMuiA5PJ7hu4M4ON8bSET5AVFkVcqpkd0l4Ay+sIu+HZEt6CELZwnOl+87eZmcLfDun6X3QvnCLc8xh0Vgx9ld9LA6H/hzkThp1Px7eVHBnfkD0jdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KakwhxgE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1731662034; c=relaxed/simple;
+	bh=1gpbH+F/EyAt7/qdUtEQNzUhRagbx8xAr7oPVt5RjTg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=ufKPQoSIGsyPdQwE2VuAy8BT+K/XLMERvvP35eMb3MI0EGkkRI7NBQjvmgK9FoCpaG9ltesPcl4F8EyZkk0P3cDvHCTFT7Hxh3e+73fgA4ghYMuKKt1IGeX8ky41iuzYsAAbRe+G+HM8KRWEtp2Z1DLbW+s8FLY/vkic+/JVNXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=yDaAeZyL; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KakwhxgE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2930C4CECF;
-	Fri, 15 Nov 2024 06:48:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1731653289;
-	bh=zakHiXayz7SY1jBhcUhQzU+JONzAKDRAo+HlUYF2IG4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KakwhxgEMiiEj8EoCeF2MovKQ2iMqLxkH7LfuwYoHDFWFGkYU8BSmQhq8gFwVs+tQ
-	 stcsqn/E3dHjgKMjhRvmvSbk7u44zDuJsxyBhMYRdExaylL8ahs0qJl6ilZnWTTFeE
-	 4df1ZD6KSPqvkkGZzekrLZcjYJedkyrlNTVm5+FM=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	netfs@lists.linux.dev,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 43/63] netfs: Downgrade i_rwsem for a buffered write
-Date: Fri, 15 Nov 2024 07:38:06 +0100
-Message-ID: <20241115063727.469260672@linuxfoundation.org>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115063725.892410236@linuxfoundation.org>
-References: <20241115063725.892410236@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="yDaAeZyL"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4315eac969aso8853835e9.1
+        for <netfs@lists.linux.dev>; Fri, 15 Nov 2024 01:13:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1731662030; x=1732266830; darn=lists.linux.dev;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=B8COCFgpNqgb0Y7Anvsa8b6bhjh2JHm033ij5t0kw0Q=;
+        b=yDaAeZyLAhltOCJM0P+tRl08TWreVKhlk4870NXo4oXg8EjyaLZbsYg6lMPIHJMeFa
+         YGuY2tb/qe7+7KGCzKc1E1b0Z+sI4bmzqco6z54ZXiBNjGR7WJ66qHIqLmfN93ZCbLcy
+         uVZ6aEMEEWgJ7NeV7USsc7WfC1Il72ueAxxnbhElbZK6LRZwLxeVpIS5rJgZuLNGd7kE
+         4eJd9kbD+xIyVjSig2nY8bj8QOuQg1zHGx+GCkchd3Iig1da3KHVIGxlY6Qd2IhcPuKI
+         jrqCZ4e1YfGKl4JuYEAFFjjzM1+sHu9k0At31toN4Jy1VfLcKHmUHsMZlymXVWaFApAm
+         gsYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731662030; x=1732266830;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=B8COCFgpNqgb0Y7Anvsa8b6bhjh2JHm033ij5t0kw0Q=;
+        b=wML0wPlYVYfVn6n08ijG8cu8qCx+gGjhVCEH571v7+igRfhDl0W642fsRNDLfXdhLx
+         KMGGSwFcCXg2ZMHEWYnFmIMaIPUg87p/DbQ+vSdrZVd5Czu0tI7aA0otYXxts4OZbc8A
+         DVAJswn71+NXFjiHRF5pBtD95GZcF05Gavt+NYfk0GJmwybSgot1Kduzd41yEplq40JP
+         OameaWibv7Oi5lE/P79S7906X+ssFBNPf4AotSF6RZcgKGE965RvLQGxfINyND0elx9I
+         alNsZDOGa/Mk9hq2a9TVf1VZJWe2RAHUmQGzL0681XdNoNKa6aaxcs5qEPfKEYNpB4cx
+         Bb5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXzSSXxyISYMiH2KlybwiM4H1XFDIEbZo6x31usprNXEYW9vt0Ns9ncaTJ1QYusrJvnnKwTYQ==@lists.linux.dev
+X-Gm-Message-State: AOJu0YzjGl0kEOZ7MS+GN+rMVmN9aqIvdwLgfCnQ8Gkw63j5cQOstV34
+	ZuP7uPW7soSm2ikJmVrRBOgaKoIAp8VYVtZnOrJ2/LN3u4Vc2d38sk7Cez0DTgA=
+X-Google-Smtp-Source: AGHT+IFDwyeF9NdbO3uA8WPZbwIsipDKiK7gl4rjQvHP2ciMl3NTCJLQxQXZjpw4OVLXp1FI70A9Yw==
+X-Received: by 2002:a05:600c:a4c:b0:42c:b991:98bc with SMTP id 5b1f17b1804b1-432d95ad53cmr54878725e9.0.1731662029843;
+        Fri, 15 Nov 2024 01:13:49 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432da298c81sm51915835e9.39.2024.11.15.01.13.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Nov 2024 01:13:49 -0800 (PST)
+Date: Fri, 15 Nov 2024 12:13:46 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Jeff Layton <jlayton@kernel.org>, netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+Subject: [PATCH] netfs: Remove duplicate check in
+ netfs_cache_read_terminated()
+Message-ID: <dfc4ac23-88eb-4293-b4dd-e617779ee7ac@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+There are two checks for "if (transferred_or_error > 0)".  Delete
+the second check.
 
-------------------
-
-From: David Howells <dhowells@redhat.com>
-
-[ Upstream commit d6a77668a708f0b5ca6713b39c178c9d9563c35b ]
-
-In the I/O locking code borrowed from NFS into netfslib, i_rwsem is held
-locked across a buffered write - but this causes a performance regression
-in cifs as it excludes buffered reads for the duration (cifs didn't use any
-locking for buffered reads).
-
-Mitigate this somewhat by downgrading the i_rwsem to a read lock across the
-buffered write.  This at least allows parallel reads to occur whilst
-excluding other writes, DIO, truncate and setattr.
-
-Note that this shouldn't be a problem for a buffered write as a read
-through an mmap can circumvent i_rwsem anyway.
-
-Also note that we might want to make this change in NFS also.
-
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/1317958.1729096113@warthog.procyon.org.uk
-cc: Steve French <sfrench@samba.org>
-cc: Paulo Alcantara <pc@manguebit.com>
-cc: Trond Myklebust <trondmy@kernel.org>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: netfs@lists.linux.dev
-cc: linux-cifs@vger.kernel.org
-cc: linux-nfs@vger.kernel.org
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 ---
- fs/netfs/locking.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/netfs/read_collect.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/fs/netfs/locking.c b/fs/netfs/locking.c
-index 75dc52a49b3a4..709a6aa101028 100644
---- a/fs/netfs/locking.c
-+++ b/fs/netfs/locking.c
-@@ -121,6 +121,7 @@ int netfs_start_io_write(struct inode *inode)
- 		up_write(&inode->i_rwsem);
- 		return -ERESTARTSYS;
- 	}
-+	downgrade_write(&inode->i_rwsem);
- 	return 0;
- }
- EXPORT_SYMBOL(netfs_start_io_write);
-@@ -135,7 +136,7 @@ EXPORT_SYMBOL(netfs_start_io_write);
- void netfs_end_io_write(struct inode *inode)
- 	__releases(inode->i_rwsem)
- {
--	up_write(&inode->i_rwsem);
-+	up_read(&inode->i_rwsem);
- }
- EXPORT_SYMBOL(netfs_end_io_write);
+diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
+index 7f3a3c056c6e..431166d4f103 100644
+--- a/fs/netfs/read_collect.c
++++ b/fs/netfs/read_collect.c
+@@ -597,10 +597,8 @@ void netfs_cache_read_terminated(void *priv, ssize_t transferred_or_error, bool
  
+ 	if (transferred_or_error > 0) {
+ 		subreq->error = 0;
+-		if (transferred_or_error > 0) {
+-			subreq->transferred += transferred_or_error;
+-			__set_bit(NETFS_SREQ_MADE_PROGRESS, &subreq->flags);
+-		}
++		subreq->transferred += transferred_or_error;
++		__set_bit(NETFS_SREQ_MADE_PROGRESS, &subreq->flags);
+ 	} else {
+ 		subreq->error = transferred_or_error;
+ 	}
 -- 
-2.43.0
-
-
+2.45.2
 
