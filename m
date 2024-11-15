@@ -1,99 +1,123 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C9E18BC26
-	for <netfs@lists.linux.dev>; Fri, 15 Nov 2024 09:13:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9C441B6D1B
+	for <netfs@lists.linux.dev>; Fri, 15 Nov 2024 12:53:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731662034; cv=none; b=UVnmkvX+R4CdQHnm9E1iyu4gmO88tVJl80f4XcuhHxMkKZQdU8o+9cmyreH8CfmrPFOD5rSQ+bfQJoB/XH9ywxpBaQEmcnuMVUP8upf3S7J5tQm+pXtXdE0SRYK9/b+sxljkXYFoM8/mluN58ATecV7O/GA1mX2v5BP7bBsMREg=
+	t=1731675228; cv=none; b=JV/e/FBh4LlNAaIXnkPDbFcKL3v0GoQXPsPuPSJzqoMO6RXzZeulgB+Fvp0r3gFpdGIWzwxtbBXxSdCm5+Q134UXLcYvvTzNLGPd4sTkkSaqLuliphnlm/XtufdGT+86PBOwkjJRM6YDkgkuf8fqJm6X38I4KiFyipjP7q6snm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731662034; c=relaxed/simple;
-	bh=1gpbH+F/EyAt7/qdUtEQNzUhRagbx8xAr7oPVt5RjTg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=ufKPQoSIGsyPdQwE2VuAy8BT+K/XLMERvvP35eMb3MI0EGkkRI7NBQjvmgK9FoCpaG9ltesPcl4F8EyZkk0P3cDvHCTFT7Hxh3e+73fgA4ghYMuKKt1IGeX8ky41iuzYsAAbRe+G+HM8KRWEtp2Z1DLbW+s8FLY/vkic+/JVNXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=yDaAeZyL; arc=none smtp.client-ip=209.85.128.46
+	s=arc-20240116; t=1731675228; c=relaxed/simple;
+	bh=kC5b4Nc50fbhWMMi5vOolJEMARSuns1Kxgz8mfrxf0I=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=JLLqXwtl3Io78fgchpyngmFy4vBW03eYmKGbVYhKgj5YgZsHre70PS9hmUHtmTiPvSc0dXmnNchTesMOTQ9hG73a7n4cIb2HcyeorVnWNrFUpSBQnNxgQR1eT9O2WYBV2uoUsy87HxxL0+YjNIG9bAcCKI+5QP+YQkwaOjlUPbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hmgIjsSP; arc=none smtp.client-ip=209.85.221.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="yDaAeZyL"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4315eac969aso8853835e9.1
-        for <netfs@lists.linux.dev>; Fri, 15 Nov 2024 01:13:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hmgIjsSP"
+Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-513de426863so746411e0c.0
+        for <netfs@lists.linux.dev>; Fri, 15 Nov 2024 04:53:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731662030; x=1732266830; darn=lists.linux.dev;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=B8COCFgpNqgb0Y7Anvsa8b6bhjh2JHm033ij5t0kw0Q=;
-        b=yDaAeZyLAhltOCJM0P+tRl08TWreVKhlk4870NXo4oXg8EjyaLZbsYg6lMPIHJMeFa
-         YGuY2tb/qe7+7KGCzKc1E1b0Z+sI4bmzqco6z54ZXiBNjGR7WJ66qHIqLmfN93ZCbLcy
-         uVZ6aEMEEWgJ7NeV7USsc7WfC1Il72ueAxxnbhElbZK6LRZwLxeVpIS5rJgZuLNGd7kE
-         4eJd9kbD+xIyVjSig2nY8bj8QOuQg1zHGx+GCkchd3Iig1da3KHVIGxlY6Qd2IhcPuKI
-         jrqCZ4e1YfGKl4JuYEAFFjjzM1+sHu9k0At31toN4Jy1VfLcKHmUHsMZlymXVWaFApAm
-         gsYA==
+        d=linaro.org; s=google; t=1731675225; x=1732280025; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=NEbeDGIYvAwvzpGJm9/Bl8sSZPwTY7aHupGksBQNqK0=;
+        b=hmgIjsSPOTdUQLBVwihzecNUPbO0vpNM+iCpHkC9tlKWwcxsZCuc5JRBJ+AJ+gKrP1
+         D/HouSVYup1l5nWOfOtK8LZgXMaOENlMNxW+E+MTTTJDLuewWawevntnG39UiCkeFCXr
+         igc5Tb9iGBKpOy0x+cIvCV0IrvWvzuwQgGtsKwbqtjMyNnKDlg40xcDrlkFwaqJddL5L
+         ILU4WDdP2p1j7gm+Iq8i35YkbG9OJjFwaGqA03hdS0Zcnv7PK3TME0O0u8RBxC/UmRfy
+         10YA8TiJGrQ8/N7xH0fBf8bpW1ZtUL/71Gvo+mylg2Hjcj/FoXKJilSlm6JFnrYG/MsX
+         kM/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731662030; x=1732266830;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=B8COCFgpNqgb0Y7Anvsa8b6bhjh2JHm033ij5t0kw0Q=;
-        b=wML0wPlYVYfVn6n08ijG8cu8qCx+gGjhVCEH571v7+igRfhDl0W642fsRNDLfXdhLx
-         KMGGSwFcCXg2ZMHEWYnFmIMaIPUg87p/DbQ+vSdrZVd5Czu0tI7aA0otYXxts4OZbc8A
-         DVAJswn71+NXFjiHRF5pBtD95GZcF05Gavt+NYfk0GJmwybSgot1Kduzd41yEplq40JP
-         OameaWibv7Oi5lE/P79S7906X+ssFBNPf4AotSF6RZcgKGE965RvLQGxfINyND0elx9I
-         alNsZDOGa/Mk9hq2a9TVf1VZJWe2RAHUmQGzL0681XdNoNKa6aaxcs5qEPfKEYNpB4cx
-         Bb5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXzSSXxyISYMiH2KlybwiM4H1XFDIEbZo6x31usprNXEYW9vt0Ns9ncaTJ1QYusrJvnnKwTYQ==@lists.linux.dev
-X-Gm-Message-State: AOJu0YzjGl0kEOZ7MS+GN+rMVmN9aqIvdwLgfCnQ8Gkw63j5cQOstV34
-	ZuP7uPW7soSm2ikJmVrRBOgaKoIAp8VYVtZnOrJ2/LN3u4Vc2d38sk7Cez0DTgA=
-X-Google-Smtp-Source: AGHT+IFDwyeF9NdbO3uA8WPZbwIsipDKiK7gl4rjQvHP2ciMl3NTCJLQxQXZjpw4OVLXp1FI70A9Yw==
-X-Received: by 2002:a05:600c:a4c:b0:42c:b991:98bc with SMTP id 5b1f17b1804b1-432d95ad53cmr54878725e9.0.1731662029843;
-        Fri, 15 Nov 2024 01:13:49 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432da298c81sm51915835e9.39.2024.11.15.01.13.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Nov 2024 01:13:49 -0800 (PST)
-Date: Fri, 15 Nov 2024 12:13:46 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Jeff Layton <jlayton@kernel.org>, netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: [PATCH] netfs: Remove duplicate check in
- netfs_cache_read_terminated()
-Message-ID: <dfc4ac23-88eb-4293-b4dd-e617779ee7ac@stanley.mountain>
+        d=1e100.net; s=20230601; t=1731675225; x=1732280025;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NEbeDGIYvAwvzpGJm9/Bl8sSZPwTY7aHupGksBQNqK0=;
+        b=kRxuABoLeA/hijHr/GNJPTqbjq+zm3qOpRCu3VZn/dvlQu479iWbF1tPzuM/jY3F+5
+         Dlk2RzNaKvoAqM23GcSWPn5L84BliFfQKXD8pceatIeXMSjDHaOGEcbYhXBuRShYBLdo
+         JsyInOMPNerbAijgmmOCkHDj2L02dMPv0MFrk0IUwS1i1nsoeD8HvlOxDZNLl7j9nnqm
+         GBhokvQpgQ1uq22/Vy9+Ls25B70HMMaGaCXP0D4nmD0pHaGCEyeGW3EHxVe8L4KhdoSS
+         6/+LNY3KPxM2oK9jL8vY4rh9btuRzxGLsfU59a5kzQBvsKpX1IKlEzu8T+eABjkG1ZJr
+         mu4w==
+X-Forwarded-Encrypted: i=1; AJvYcCWb/mts3wjLMcllSUHmZmVQJAPPL1Y1GWmklZoM5uTwrMex5uaCf969gs817e17ZlqSDVlb/A==@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz8G/EGA5+caPE7EbC/lEUiNP86KhUGsuun6W9+0A73rRpzkdw0
+	tZDMfDMdKhTsp1HD05Wy15qOlRRC+aD4q5tnKZEDW+5klZZfr3V0JwFKV7z3IElD45rL0OGqIyg
+	xxlJspwrgXsxdyFAyRFb7d481RJnwN8Q3Eprj4g==
+X-Google-Smtp-Source: AGHT+IEtDEtXKpcCidRqx6bebqrisPTC0Px9Xm1sUVNWuLsQVQUre+hBcxnbLyeeXGplNKk47hIC4CRTO6saY/xxXGY=
+X-Received: by 2002:a05:6122:8c22:b0:50c:79a4:c25 with SMTP id
+ 71dfb90a1353d-51477f7c9f3mr3308737e0c.8.1731675224854; Fri, 15 Nov 2024
+ 04:53:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Fri, 15 Nov 2024 18:23:33 +0530
+Message-ID: <CA+G9fYtThFpgHJvVwmvp274QJ0QBbrsr+qnYi0b5fWJ5oJL2uw@mail.gmail.com>
+Subject: next-20241114: clang: fs/netfs/read_retry.c:235:20: error: variable
+ 'subreq' is uninitialized when used here [-Werror,-Wuninitialized]
+To: open list <linux-kernel@vger.kernel.org>, linux-fsdevel@vger.kernel.org, 
+	netfs@lists.linux.dev, clang-built-linux <llvm@lists.linux.dev>, linux-cachefs@redhat.com, 
+	lkft-triage@lists.linaro.org, Linux Regressions <regressions@lists.linux.dev>
+Cc: Arnd Bergmann <arnd@arndb.de>, Anders Roxell <anders.roxell@linaro.org>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, David Howells <dhowells@redhat.com>, 
+	Jeff Layton <jlayton@kernel.org>, Nathan Chancellor <nathan@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-There are two checks for "if (transferred_or_error > 0)".  Delete
-the second check.
+The following builds failed with clang-19 and clang-nightly on the
+Linux next-20241114 and next-20241115 tags on x86 architecture.
+But the build passed with gcc-13.
 
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
----
- fs/netfs/read_collect.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+First seen on Linux next-20241114 tag.
+  Good: next-20241113
+  Bad:  next-20241114
 
-diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
-index 7f3a3c056c6e..431166d4f103 100644
---- a/fs/netfs/read_collect.c
-+++ b/fs/netfs/read_collect.c
-@@ -597,10 +597,8 @@ void netfs_cache_read_terminated(void *priv, ssize_t transferred_or_error, bool
- 
- 	if (transferred_or_error > 0) {
- 		subreq->error = 0;
--		if (transferred_or_error > 0) {
--			subreq->transferred += transferred_or_error;
--			__set_bit(NETFS_SREQ_MADE_PROGRESS, &subreq->flags);
--		}
-+		subreq->transferred += transferred_or_error;
-+		__set_bit(NETFS_SREQ_MADE_PROGRESS, &subreq->flags);
- 	} else {
- 		subreq->error = transferred_or_error;
- 	}
--- 
-2.45.2
+build:
+  * clang-19-lkftconfig
+  * clang-nightly-lkftconfig
 
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+Build log:
+---------
+fs/netfs/read_retry.c:235:20: error: variable 'subreq' is
+uninitialized when used here [-Werror,-Wuninitialized]
+  235 |         if (list_is_last(&subreq->rreq_link, &stream->subrequests))
+      |                           ^~~~~~
+fs/netfs/read_retry.c:28:36: note: initialize the variable 'subreq' to
+silence this warning
+   28 |         struct netfs_io_subrequest *subreq;
+      |                                           ^
+      |                                            = NULL
+1 error generated.
+make[5]: *** [scripts/Makefile.build:229: fs/netfs/read_retry.o] Error 1
+
+Build image:
+-----------
+- https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20241114/testrun/25811023/suite/build/test/clang-19-lkftconfig/details/
+- https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20241114/testrun/25811023/suite/build/test/clang-19-lkftconfig/log
+- https://storage.tuxsuite.com/public/linaro/lkft/builds/2opUctayqtTsKWUeLDYKbGaUqa9/
+
+Steps to reproduce:
+------------
+- tuxmake --runtime podman --target-arch x86_64 --toolchain clang-19
+--kconfig https://storage.tuxsuite.com/public/linaro/lkft/builds/2opUctayqtTsKWUeLDYKbGaUqa9/config
+LLVM=1 LLVM_IAS=1
+
+metadata:
+----
+  git describe: next-20241114
+  git repo: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+  git sha: 37c5695cb37a20403947062be8cb7e00f6bed353
+  kernel config:
+https://storage.tuxsuite.com/public/linaro/lkft/builds/2opUctayqtTsKWUeLDYKbGaUqa9/config
+  build url: https://storage.tuxsuite.com/public/linaro/lkft/builds/2opUctayqtTsKWUeLDYKbGaUqa9/
+  toolchain: clang-19
+  config: lkftconfig
+  arch: x86_64
+
+--
+Linaro LKFT
+https://lkft.linaro.org
