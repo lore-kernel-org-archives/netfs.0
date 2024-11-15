@@ -1,123 +1,134 @@
-Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9C441B6D1B
-	for <netfs@lists.linux.dev>; Fri, 15 Nov 2024 12:53:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.173
+Received: from bout3.ijzerbout.nl (bout3.ijzerbout.nl [136.144.140.114])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 750545464B;
+	Fri, 15 Nov 2024 20:02:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.144.140.114
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731675228; cv=none; b=JV/e/FBh4LlNAaIXnkPDbFcKL3v0GoQXPsPuPSJzqoMO6RXzZeulgB+Fvp0r3gFpdGIWzwxtbBXxSdCm5+Q134UXLcYvvTzNLGPd4sTkkSaqLuliphnlm/XtufdGT+86PBOwkjJRM6YDkgkuf8fqJm6X38I4KiFyipjP7q6snm4=
+	t=1731700927; cv=none; b=evUobVOiuMONUJaOYoiTzR387qolpwdmtUzML2mq273NZf489j3PYHfRVkT5puzvGeB/i1vGftK8V5ptRdLK2KFc1Dn6Wan5YFbpdHsO+HKiD8/qwrVZwGXQoYFJOkiO0xKQIzMsIbD7EcrDfG6Pd1HrvWOcHEw2uKJzRtniX6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731675228; c=relaxed/simple;
-	bh=kC5b4Nc50fbhWMMi5vOolJEMARSuns1Kxgz8mfrxf0I=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=JLLqXwtl3Io78fgchpyngmFy4vBW03eYmKGbVYhKgj5YgZsHre70PS9hmUHtmTiPvSc0dXmnNchTesMOTQ9hG73a7n4cIb2HcyeorVnWNrFUpSBQnNxgQR1eT9O2WYBV2uoUsy87HxxL0+YjNIG9bAcCKI+5QP+YQkwaOjlUPbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hmgIjsSP; arc=none smtp.client-ip=209.85.221.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1731700927; c=relaxed/simple;
+	bh=kTKcI7rAzWbnFx3Ax+rm7FwXA+3N7eD2+FIgr2oP7kg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nT69W+dUPLRd6Ns0ZrrxqLVsL9RUqbv8de2Iim/DeGIcPbdrPKnitUjHfgI8mLwVcqZti+uOAUHX5GJYaUV2/uR6R5A0jlOPFwV22+2M1dIdVEQCM+dH0QscfuKhjiKbzaE+9BjZ1/vIBW1okvEnAxbgDzKeIjHfLF0gMC/2PSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ijzerbout.nl; spf=pass smtp.mailfrom=ijzerbout.nl; dkim=pass (4096-bit key) header.d=ijzerbout.nl header.i=@ijzerbout.nl header.b=cHfjERfY; arc=none smtp.client-ip=136.144.140.114
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ijzerbout.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ijzerbout.nl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hmgIjsSP"
-Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-513de426863so746411e0c.0
-        for <netfs@lists.linux.dev>; Fri, 15 Nov 2024 04:53:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731675225; x=1732280025; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=NEbeDGIYvAwvzpGJm9/Bl8sSZPwTY7aHupGksBQNqK0=;
-        b=hmgIjsSPOTdUQLBVwihzecNUPbO0vpNM+iCpHkC9tlKWwcxsZCuc5JRBJ+AJ+gKrP1
-         D/HouSVYup1l5nWOfOtK8LZgXMaOENlMNxW+E+MTTTJDLuewWawevntnG39UiCkeFCXr
-         igc5Tb9iGBKpOy0x+cIvCV0IrvWvzuwQgGtsKwbqtjMyNnKDlg40xcDrlkFwaqJddL5L
-         ILU4WDdP2p1j7gm+Iq8i35YkbG9OJjFwaGqA03hdS0Zcnv7PK3TME0O0u8RBxC/UmRfy
-         10YA8TiJGrQ8/N7xH0fBf8bpW1ZtUL/71Gvo+mylg2Hjcj/FoXKJilSlm6JFnrYG/MsX
-         kM/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731675225; x=1732280025;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=NEbeDGIYvAwvzpGJm9/Bl8sSZPwTY7aHupGksBQNqK0=;
-        b=kRxuABoLeA/hijHr/GNJPTqbjq+zm3qOpRCu3VZn/dvlQu479iWbF1tPzuM/jY3F+5
-         Dlk2RzNaKvoAqM23GcSWPn5L84BliFfQKXD8pceatIeXMSjDHaOGEcbYhXBuRShYBLdo
-         JsyInOMPNerbAijgmmOCkHDj2L02dMPv0MFrk0IUwS1i1nsoeD8HvlOxDZNLl7j9nnqm
-         GBhokvQpgQ1uq22/Vy9+Ls25B70HMMaGaCXP0D4nmD0pHaGCEyeGW3EHxVe8L4KhdoSS
-         6/+LNY3KPxM2oK9jL8vY4rh9btuRzxGLsfU59a5kzQBvsKpX1IKlEzu8T+eABjkG1ZJr
-         mu4w==
-X-Forwarded-Encrypted: i=1; AJvYcCWb/mts3wjLMcllSUHmZmVQJAPPL1Y1GWmklZoM5uTwrMex5uaCf969gs817e17ZlqSDVlb/A==@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz8G/EGA5+caPE7EbC/lEUiNP86KhUGsuun6W9+0A73rRpzkdw0
-	tZDMfDMdKhTsp1HD05Wy15qOlRRC+aD4q5tnKZEDW+5klZZfr3V0JwFKV7z3IElD45rL0OGqIyg
-	xxlJspwrgXsxdyFAyRFb7d481RJnwN8Q3Eprj4g==
-X-Google-Smtp-Source: AGHT+IEtDEtXKpcCidRqx6bebqrisPTC0Px9Xm1sUVNWuLsQVQUre+hBcxnbLyeeXGplNKk47hIC4CRTO6saY/xxXGY=
-X-Received: by 2002:a05:6122:8c22:b0:50c:79a4:c25 with SMTP id
- 71dfb90a1353d-51477f7c9f3mr3308737e0c.8.1731675224854; Fri, 15 Nov 2024
- 04:53:44 -0800 (PST)
+	dkim=pass (4096-bit key) header.d=ijzerbout.nl header.i=@ijzerbout.nl header.b="cHfjERfY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ijzerbout.nl; s=key;
+	t=1731700922; bh=kTKcI7rAzWbnFx3Ax+rm7FwXA+3N7eD2+FIgr2oP7kg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=cHfjERfY1/rAAYikk2QNbgGZwf8P76vzMPzQy0d38kXIISsg6cIu+TyONdT+1XA9d
+	 dnHVgoiBK/U+Ro40XfKwbu0kYfn03m1yCclV6oORc5HF1o34pGsZmNOzLqCRhoSAH+
+	 bVBVKjSR8nU5xVOSXJDnjtUPKMWJyAKcxgCzdVYtvgvWOYTpPivdsVJJLPoI2YBvDv
+	 YfdiF9W8RjIdBQ3sShsTkRNGpSMMNgugIUwUnbAbuBOE3sUaWPyxt1eEG2fB+9Ojh6
+	 clox9OhOuRhluFaZfycU5bW3lyo10aEcZYWTp4LajDyqEsevUsJGiGsQGbbtmUsAGw
+	 zM/4cMlJZi0LxU8Iz7pva37mepW1yCxANkesaw/WVrlzxEL2BBIYcvn4Ns+IWj/Pl9
+	 3xbzlIzCPENc15jBiKC3X5tUuOq6P+iM8sUBOmiD5JyFBSMXeuSuAu1HJ7Bbd4FyE/
+	 PBYXB2Di/tBAed2LS23SuHO40UV3Hf8QS8rw4yLte6S2qH/ZvWXvDoEQF9H7Wt0ZGA
+	 ysGoIjNlPNdRkfpyOTMNcAHMh4u1X1WsE3uuWa2Onkmd9yvzplXQr4YqjLyvanucka
+	 NQVkL1t60WZZNPUDpdDPVX+iR4y9mn87zk2epeaPRvd1Pow2ipBYG6a3996OgEmpKk
+	 fItX9fSiHH5XvvnpO8iKLYxA=
+Received: from [IPV6:2a10:3781:99:1:1ac0:4dff:fea7:ec3a] (racer.ijzerbout.nl [IPv6:2a10:3781:99:1:1ac0:4dff:fea7:ec3a])
+	by bout3.ijzerbout.nl (Postfix) with ESMTPSA id 7CF6618A7E9;
+	Fri, 15 Nov 2024 21:02:00 +0100 (CET)
+Message-ID: <b7135da8-a04f-48ec-957f-09542178b861@ijzerbout.nl>
+Date: Fri, 15 Nov 2024 21:01:57 +0100
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Fri, 15 Nov 2024 18:23:33 +0530
-Message-ID: <CA+G9fYtThFpgHJvVwmvp274QJ0QBbrsr+qnYi0b5fWJ5oJL2uw@mail.gmail.com>
-Subject: next-20241114: clang: fs/netfs/read_retry.c:235:20: error: variable
- 'subreq' is uninitialized when used here [-Werror,-Wuninitialized]
-To: open list <linux-kernel@vger.kernel.org>, linux-fsdevel@vger.kernel.org, 
-	netfs@lists.linux.dev, clang-built-linux <llvm@lists.linux.dev>, linux-cachefs@redhat.com, 
-	lkft-triage@lists.linaro.org, Linux Regressions <regressions@lists.linux.dev>
-Cc: Arnd Bergmann <arnd@arndb.de>, Anders Roxell <anders.roxell@linaro.org>, 
-	Dan Carpenter <dan.carpenter@linaro.org>, David Howells <dhowells@redhat.com>, 
-	Jeff Layton <jlayton@kernel.org>, Nathan Chancellor <nathan@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 07/33] netfs: Abstract out a rolling folio buffer
+ implementation
+To: David Howells <dhowells@redhat.com>,
+ Christian Brauner <christian@brauner.io>, Steve French <smfrench@gmail.com>,
+ Matthew Wilcox <willy@infradead.org>
+Cc: Jeff Layton <jlayton@kernel.org>, Gao Xiang
+ <hsiangkao@linux.alibaba.com>, Dominique Martinet <asmadeus@codewreck.org>,
+ Marc Dionne <marc.dionne@auristor.com>, Paulo Alcantara <pc@manguebit.com>,
+ Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+ Eric Van Hensbergen <ericvh@kernel.org>, Ilya Dryomov <idryomov@gmail.com>,
+ netfs@lists.linux.dev, linux-afs@lists.infradead.org,
+ linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
+ ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
+ linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20241108173236.1382366-1-dhowells@redhat.com>
+ <20241108173236.1382366-8-dhowells@redhat.com>
+Content-Language: en-US
+From: Kees Bakker <kees@ijzerbout.nl>
+In-Reply-To: <20241108173236.1382366-8-dhowells@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The following builds failed with clang-19 and clang-nightly on the
-Linux next-20241114 and next-20241115 tags on x86 architecture.
-But the build passed with gcc-13.
+Op 08-11-2024 om 18:32 schreef David Howells:
+> A rolling buffer is a series of folios held in a list of folio_queues.  New
+> folios and folio_queue structs may be inserted at the head simultaneously
+> with spent ones being removed from the tail without the need for locking.
+>
+> The rolling buffer includes an iov_iter and it has to be careful managing
+> this as the list of folio_queues is extended such that an oops doesn't
+> incurred because the iterator was pointing to the end of a folio_queue
+> segment that got appended to and then removed.
+>
+> We need to use the mechanism twice, once for read and once for write, and,
+> in future patches, we will use a second rolling buffer to handle bounce
+> buffering for content encryption.
+>
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> cc: Jeff Layton <jlayton@kernel.org>
+> cc: netfs@lists.linux.dev
+> cc: linux-fsdevel@vger.kernel.org
+> ---
+>   fs/netfs/Makefile              |   1 +
+>   fs/netfs/buffered_read.c       | 119 ++++-------------
+>   fs/netfs/direct_read.c         |  14 +-
+>   fs/netfs/direct_write.c        |  10 +-
+>   fs/netfs/internal.h            |   4 -
+>   fs/netfs/misc.c                | 147 ---------------------
+>   fs/netfs/objects.c             |   2 +-
+>   fs/netfs/read_pgpriv2.c        |  32 ++---
+>   fs/netfs/read_retry.c          |   2 +-
+>   fs/netfs/rolling_buffer.c      | 225 +++++++++++++++++++++++++++++++++
+>   fs/netfs/write_collect.c       |  19 +--
+>   fs/netfs/write_issue.c         |  26 ++--
+>   include/linux/netfs.h          |  10 +-
+>   include/linux/rolling_buffer.h |  61 +++++++++
+>   include/trace/events/netfs.h   |   2 +
+>   15 files changed, 375 insertions(+), 299 deletions(-)
+>   create mode 100644 fs/netfs/rolling_buffer.c
+>   create mode 100644 include/linux/rolling_buffer.h
+> [...]
+> diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
+> index 88f2adfab75e..0722fb9919a3 100644
+> --- a/fs/netfs/direct_write.c
+> +++ b/fs/netfs/direct_write.c
+> @@ -68,19 +68,19 @@ ssize_t netfs_unbuffered_write_iter_locked(struct kiocb *iocb, struct iov_iter *
+>   		 * request.
+>   		 */
+>   		if (async || user_backed_iter(iter)) {
+> -			n = netfs_extract_user_iter(iter, len, &wreq->iter, 0);
+> +			n = netfs_extract_user_iter(iter, len, &wreq->buffer.iter, 0);
+>   			if (n < 0) {
+>   				ret = n;
+>   				goto out;
+>   			}
+> -			wreq->direct_bv = (struct bio_vec *)wreq->iter.bvec;
+> +			wreq->direct_bv = (struct bio_vec *)wreq->buffer.iter.bvec;
+>   			wreq->direct_bv_count = n;
+>   			wreq->direct_bv_unpin = iov_iter_extract_will_pin(iter);
+>   		} else {
+> -			wreq->iter = *iter;
+> +			wreq->buffer.iter = *iter;
+>   		}
+>   
+> -		wreq->io_iter = wreq->iter;
+> +		wreq->buffer.iter = wreq->buffer.iter;
+Is this correct, an assignment to itself?
+>   	}
+>   
+>   	__set_bit(NETFS_RREQ_USE_IO_ITER, &wreq->flags);
+> [...]
 
-First seen on Linux next-20241114 tag.
-  Good: next-20241113
-  Bad:  next-20241114
-
-build:
-  * clang-19-lkftconfig
-  * clang-nightly-lkftconfig
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-Build log:
----------
-fs/netfs/read_retry.c:235:20: error: variable 'subreq' is
-uninitialized when used here [-Werror,-Wuninitialized]
-  235 |         if (list_is_last(&subreq->rreq_link, &stream->subrequests))
-      |                           ^~~~~~
-fs/netfs/read_retry.c:28:36: note: initialize the variable 'subreq' to
-silence this warning
-   28 |         struct netfs_io_subrequest *subreq;
-      |                                           ^
-      |                                            = NULL
-1 error generated.
-make[5]: *** [scripts/Makefile.build:229: fs/netfs/read_retry.o] Error 1
-
-Build image:
------------
-- https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20241114/testrun/25811023/suite/build/test/clang-19-lkftconfig/details/
-- https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20241114/testrun/25811023/suite/build/test/clang-19-lkftconfig/log
-- https://storage.tuxsuite.com/public/linaro/lkft/builds/2opUctayqtTsKWUeLDYKbGaUqa9/
-
-Steps to reproduce:
-------------
-- tuxmake --runtime podman --target-arch x86_64 --toolchain clang-19
---kconfig https://storage.tuxsuite.com/public/linaro/lkft/builds/2opUctayqtTsKWUeLDYKbGaUqa9/config
-LLVM=1 LLVM_IAS=1
-
-metadata:
-----
-  git describe: next-20241114
-  git repo: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
-  git sha: 37c5695cb37a20403947062be8cb7e00f6bed353
-  kernel config:
-https://storage.tuxsuite.com/public/linaro/lkft/builds/2opUctayqtTsKWUeLDYKbGaUqa9/config
-  build url: https://storage.tuxsuite.com/public/linaro/lkft/builds/2opUctayqtTsKWUeLDYKbGaUqa9/
-  toolchain: clang-19
-  config: lkftconfig
-  arch: x86_64
-
---
-Linaro LKFT
-https://lkft.linaro.org
