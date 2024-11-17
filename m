@@ -1,197 +1,131 @@
-Received: from bout3.ijzerbout.nl (bout3.ijzerbout.nl [136.144.140.114])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88F818A6D4;
-	Fri, 15 Nov 2024 20:32:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.144.140.114
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40371DA60D
+	for <netfs@lists.linux.dev>; Sun, 17 Nov 2024 21:42:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731702730; cv=none; b=oZlGPPGPs1HnGVFVDe4qxBdk1rMrD/avvIekMRdRR3qIGsZrB6N6/xm+tAsexlcKroeoVdAp7tq/5U8jccQ5SsHy4NlMmU3YWktr6XkiOrzqehZSGqvf33HQ6cQcR7qar7H6dxaLnpel/q6oX8CU9t2JAXsDlGaoglGZORyUKWw=
+	t=1731879749; cv=none; b=ClMAf75eLz28fBboq0FFLo/pjwcI+iWOFnVFf4KIn3E7iwSKsFipdZFjK03fKI/IVDDCUoqDeUQV67TOKLRwPstreCY2GOh0zCxkpJb8Grr9I4g9yoa5ridYxXN2ioVyruYI26ujVmQPFXskVfFi3Zgrk32G/nUof3S0trmCaLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731702730; c=relaxed/simple;
-	bh=aW0kZXCjwMJkAvO9eGrMTuU564xR45DjHMlx+V4e670=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VT15sQbPiB/IGiGrrRCuk0SwiUBUGcdBcSqOmABwcI/FLFtfIXQ5lm+Po42j44C2ED5MaUhoE6CgDaX+0UCl9L6IuUEUVeGRyie9YrsPUW/OZjiHXt9fnzORBPcBswfBQPGK22MZovZcfkYGumCadRHs0L+IeZjBN5rCaGymqQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ijzerbout.nl; spf=pass smtp.mailfrom=ijzerbout.nl; dkim=pass (4096-bit key) header.d=ijzerbout.nl header.i=@ijzerbout.nl header.b=QeHMhT4Z; arc=none smtp.client-ip=136.144.140.114
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ijzerbout.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ijzerbout.nl
+	s=arc-20240116; t=1731879749; c=relaxed/simple;
+	bh=fbnwBa/ZpueSh9SqikfHGUoxX6deXqluvSX6WSJQJJs=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=Q7hUJcRYdKb3vzzQcUNRHREen7jgCHfMFlGhTU0oTCVJkwjGxuI+5x4NV9XdGpHvFybMi2Oi7FQiZvGRuUI7jrXIs89cKVNbKtOhWlkuVkceIbbDY5CNyxTbJENaHZMoyx+IY8QFlvM9koVxPA7P2ftD6N0Nk0Si0ccz+lz/5l8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toblux.com; spf=none smtp.mailfrom=toblux.com; dkim=pass (2048-bit key) header.d=toblux-com.20230601.gappssmtp.com header.i=@toblux-com.20230601.gappssmtp.com header.b=AseKx6Tt; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toblux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=toblux.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=ijzerbout.nl header.i=@ijzerbout.nl header.b="QeHMhT4Z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ijzerbout.nl; s=key;
-	t=1731702725; bh=aW0kZXCjwMJkAvO9eGrMTuU564xR45DjHMlx+V4e670=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QeHMhT4Zs6fgL1xTGbR5gC4hQqUmKKeyRJFxO6CGGf7WsIf7m4fxhFOcKeoK0KrMa
-	 HWuLBlIm2hXivW4vyOHHsZ2R8gfLbGyax+8HF4AMY+G+vp0ly7uX4qMLmxVMNdIfsw
-	 GN3/MV1yHiHGsVhiAly54eawmHiD1EC1TV5rvt3zKe3oSvjRgqbiMGzox+AgYKiICK
-	 p/pa8VsdyE7qHc4SiqawWHBxzK89GtQsK12xNh+Y3ZriJNsJ/LyH3dI9kHt7bau2uJ
-	 VlIJ5dQncKjSE9lG+ShI7oYB7LmpwL1zbScAmtVxtPMd1SQxtKSJ7zUavRnC1kWV+/
-	 j0lhNwUHsLyQKY0k8s/okKEBXRAoP2rr0D09L0WvH+hO+0ERvYy/SWvKzYsPFz8VX8
-	 s/mKq4LASMQ8xdNuxbwaMkuJ12rn8YpFb1iSSd8giG5FP/5jm5c918mouNSkD2/91Q
-	 OcLS182MwxzqpojOVoINTZ5JXbG/tl5qMcKIfPKlvMCAy0myE6EC3Q5FZKzvpXhZyX
-	 i8O8Q47umz52anLbdpycCdz7+f5pd4+Egishgq9vRBTJCK4CKl8BX1nIYlVJh1IYCT
-	 D6tQyiAKznHrv/y2Bjui8nj+WkPgHsSkEyGN7GNJEtc1Z09bFtiJg0VUioI3mV8Eq8
-	 UFg72HmB4pDw9/qKIJBxNRiE=
-Received: from [IPV6:2a10:3781:99:1:1ac0:4dff:fea7:ec3a] (racer.ijzerbout.nl [IPv6:2a10:3781:99:1:1ac0:4dff:fea7:ec3a])
-	by bout3.ijzerbout.nl (Postfix) with ESMTPSA id D88A216029D;
-	Fri, 15 Nov 2024 21:32:04 +0100 (CET)
-Message-ID: <17eb79fc-ccd9-4c85-bd23-e08380825c41@ijzerbout.nl>
-Date: Fri, 15 Nov 2024 21:32:02 +0100
+	dkim=pass (2048-bit key) header.d=toblux-com.20230601.gappssmtp.com header.i=@toblux-com.20230601.gappssmtp.com header.b="AseKx6Tt"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-37ece998fe6so253347f8f.1
+        for <netfs@lists.linux.dev>; Sun, 17 Nov 2024 13:42:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toblux-com.20230601.gappssmtp.com; s=20230601; t=1731879746; x=1732484546; darn=lists.linux.dev;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zr6CSSq+yYWOM7mVKH3wNw8lI+twmShT9Ch+V8e8Hus=;
+        b=AseKx6TtBuYiN+KotfrYAaHb8QLXOhr60GW1DW0cvk0tkWVNF3479hTzs2q1Pfmn5b
+         imbM1/Wawz/w0Misfo6Mm8WV5A7ElKlyx89mX/EP00m/4SGO8NJeFTd9Bg34+CSOpnye
+         6LF1hcGCL7T0+Uqh2SPF7h2pEtBKLFWH11V2ds++E58x6T8kkamom0bXIUuZeg8baasE
+         GJSpqSlrJT+icAfJO0niFO9v+7maSU79YLVA46Ce6aYDiO3/aDy/JnJY2u0UcdQv0Fo7
+         /NJ0wreCD4l9JFf3ibiy0lFpp0yL9YAHpfLj6x03p/Jd7JS+gJnSFaY0HN94ykf07oYv
+         J5/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731879746; x=1732484546;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zr6CSSq+yYWOM7mVKH3wNw8lI+twmShT9Ch+V8e8Hus=;
+        b=B/+C9h9kBDHLKG0y+I2o6YbQBcjjb4w+ai4OUGRgE51FP/U/Feht9/G9bF/ZqAW798
+         u0bXptKIuNOyjyVn7tFQx9H8t64azxLad0lzoKu0xEnEFPNVdwkRnayzVUh1ct++2+q3
+         lcVIEv/YxMp92Kzmqd4pIMwrXLXJc1ctHh6Zfh5DjWgQnehcr5zSKwj1Xx39moqMc7Eq
+         bsZ3VUAjcmZAd8crgnZwz1SwA51U0vO0nADyaPeUs71ZK0AFV7ar6UcFV2wwHcBVTA7l
+         2Fsu44XsbMZ8lIHtddwaebOvAzBNBgqgj2kUUgDYWCcjtY8NOUKNKuv6GDt0hAaU3EME
+         OfZw==
+X-Gm-Message-State: AOJu0YwzkUrRmHiW/5aGxMcEJCYyjThV/6m1fBkl0tF8Njm32TV4EFiC
+	Trji4VXgkdHK7LgEoUMZkDxQOLWHrtelcP8QEhuMHQ2P+suEtR2SCDug//DQRwc=
+X-Gm-Gg: ASbGnctpvm/p3G6zDkUmxN9Bw4TRcgt6/XePx8uHjKX/Sk7E7dC7DwXWHaTPO5t1DmF
+	leiNokTMSQRAhBYVBctx6tb2JEPrcW+jemVHx7q/5AN0eAFPRm8MHSWqoP9gNIuCd9SM8lNQc2F
+	FNoPXGOBtMe8a2fCiuAy0NQ+5rHjh1xOjOX6C4WtYeWha2sRSKBK1OcD1oLPHrXQVvwfZb2Ph2B
+	/yoMvRptnXMAVzG1T/aDOYWbGQ2XBEsyidM1wdP/ADC65pXY7cXqcUcPJGpIC0zXCPX7eHRq8WA
+	XplkHQ==
+X-Google-Smtp-Source: AGHT+IF+9oJFbi21AiEkbm/uejQ7RsC8IrNLz23sCIY+EPlWop6ZGwOrWSuUxfNkWi1PvkVhegUgpA==
+X-Received: by 2002:a05:6000:2d03:b0:382:3ef9:dfbc with SMTP id ffacd0b85a97d-3823ef9eecemr723300f8f.5.1731879746245;
+        Sun, 17 Nov 2024 13:42:26 -0800 (PST)
+Received: from smtpclient.apple ([2001:a61:a4f:301:d900:ed0f:882d:dc03])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-382491e19bdsm477489f8f.16.2024.11.17.13.42.24
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 17 Nov 2024 13:42:25 -0800 (PST)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 23/33] afs: Use netfslib for directories
-To: David Howells <dhowells@redhat.com>,
- Christian Brauner <christian@brauner.io>, Steve French <smfrench@gmail.com>,
- Matthew Wilcox <willy@infradead.org>
-Cc: Jeff Layton <jlayton@kernel.org>, Gao Xiang
- <hsiangkao@linux.alibaba.com>, Dominique Martinet <asmadeus@codewreck.org>,
- Marc Dionne <marc.dionne@auristor.com>, Paulo Alcantara <pc@manguebit.com>,
- Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
- Eric Van Hensbergen <ericvh@kernel.org>, Ilya Dryomov <idryomov@gmail.com>,
- netfs@lists.linux.dev, linux-afs@lists.infradead.org,
- linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
- ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
- linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20241108173236.1382366-1-dhowells@redhat.com>
- <20241108173236.1382366-24-dhowells@redhat.com>
-Content-Language: en-US
-From: Kees Bakker <kees@ijzerbout.nl>
-In-Reply-To: <20241108173236.1382366-24-dhowells@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51.11.1\))
+Subject: Re: [RESEND PATCH] fscache: Remove duplicate included header
+From: Thorsten Blum <thorsten.blum@toblux.com>
+In-Reply-To: <20240830-weihnachten-umtreiben-d3a9f1aee2e7@brauner>
+Date: Sun, 17 Nov 2024 22:42:13 +0100
+Cc: netfs@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Simon Horman <horms@kernel.org>,
+ dhowells@redhat.com,
+ jlayton@kernel.org
 Content-Transfer-Encoding: 7bit
+Message-Id: <FE1592EE-F840-4E90-9177-FD2D03261E3B@toblux.com>
+References: <20240628062329.321162-2-thorsten.blum@toblux.com>
+ <20240628-dingfest-gemessen-756a29e9af0b@brauner>
+ <4A2EAFA2-842F-46EF-995E-7843937E8CD5@toblux.com>
+ <20240830-weihnachten-umtreiben-d3a9f1aee2e7@brauner>
+To: Christian Brauner <brauner@kernel.org>
+X-Mailer: Apple Mail (2.3776.700.51.11.1)
 
-Op 08-11-2024 om 18:32 schreef David Howells:
-> In the AFS ecosystem, directories are just a special type of file that is
-> downloaded and parsed locally.  Download is done by the same mechanism as
-> ordinary files and the data can be cached.  There is one important semantic
-> restriction on directories over files: the client must download the entire
-> directory in one go because, for example, the server could fabricate the
-> contents of the blob on the fly with each download and give a different
-> image each time.
->
-> So that we can cache the directory download, switch AFS directory support
-> over to using the netfslib single-object API, thereby allowing directory
-> content to be stored in the local cache.
->
-> To make this work, the following changes are made:
->
->   (1) A directory's contents are now stored in a folio_queue chain attached
->       to the afs_vnode (inode) struct rather than its associated pagecache,
->       though multipage folios are still used to hold the data.  The folio
->       queue is discarded when the directory inode is evicted.
->
->       This also helps with the phasing out of ITER_XARRAY.
->
->   (2) Various directory operations are made to use and unuse the cache
->       cookie.
->
->   (3) The content checking, content dumping and content iteration are now
->       performed with a standard iov_iter iterator over the contents of the
->       folio queue.
->
->   (4) Iteration and modification must be done with the vnode's validate_lock
->       held.  In conjunction with (1), this means that the iteration can be
->       done without the need to lock pages or take extra refs on them, unlike
->       when accessing ->i_pages.
->
->   (5) Convert to using netfs_read_single() to read data.
->
->   (6) Provide a ->writepages() to call netfs_writeback_single() to save the
->       data to the cache according to the VM's scheduling whilst holding the
->       validate_lock read-locked as (4).
->
->   (7) Change local directory image editing functions:
->
->       (a) Provide a function to get a specific block by number from the
->       	 folio_queue as we can no longer use the i_pages xarray to locate
->       	 folios by index.  This uses a cursor to remember the current
->       	 position as we need to iterate through the directory contents.
->       	 The block is kmapped before being returned.
->
->       (b) Make the function in (a) extend the directory by an extra folio if
->       	 we run out of space.
->
->       (c) Raise the check of the block free space counter, for those blocks
->       	 that have one, higher in the function to eliminate a call to get a
->       	 block.
->
->       (d) Remove the page unlocking and putting done during the editing
->       	 loops.  This is no longer necessary as the folio_queue holds the
->       	 references and the pages are no longer in the pagecache.
->
->       (e) Mark the inode dirty and pin the cache usage till writeback at the
->       	 end of a successful edit.
->
->   (8) Don't set the large_folios flag on the inode as we do the allocation
->       ourselves rather than the VM doing it automatically.
->
->   (9) Mark the inode as being a single object that isn't uploaded to the
->       server.
->
-> (10) Enable caching on directories.
->
-> (11) Only set the upload key for writeback for regular files.
->
-> Notes:
->
->   (*) We keep the ->release_folio(), ->invalidate_folio() and
->       ->migrate_folio() ops as we set the mapping pointer on the folio.
->
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> cc: Marc Dionne <marc.dionne@auristor.com>
-> cc: Jeff Layton <jlayton@kernel.org>
-> cc: linux-afs@lists.infradead.org
-> cc: netfs@lists.linux.dev
-> cc: linux-fsdevel@vger.kernel.org
-> ---
->   fs/afs/dir.c               | 742 +++++++++++++++++++------------------
->   fs/afs/dir_edit.c          | 183 ++++-----
->   fs/afs/file.c              |   8 +
->   fs/afs/inode.c             |  21 +-
->   fs/afs/internal.h          |  16 +
->   fs/afs/super.c             |   2 +
->   fs/afs/write.c             |   4 +-
->   include/trace/events/afs.h |   6 +-
->   8 files changed, 512 insertions(+), 470 deletions(-)
->
-> [...]
-> +/*
-> + * Iterate through the directory folios under RCU conditions.
-> + */
-> +static int afs_dir_iterate_contents(struct inode *dir, struct dir_context *ctx)
-> +{
-> +	struct afs_vnode *dvnode = AFS_FS_I(dir);
-> +	struct iov_iter iter;
-> +	unsigned long long i_size = i_size_read(dir);
-> +	int ret = 0;
->   
-> -		do {
-> -			dblock = kmap_local_folio(folio, offset);
-> -			ret = afs_dir_iterate_block(dvnode, ctx, dblock,
-> -						    folio_pos(folio) + offset);
-> -			kunmap_local(dblock);
-> -			if (ret != 1)
-> -				goto out;
-> +	/* Round the file position up to the next entry boundary */
-> +	ctx->pos = round_up(ctx->pos, sizeof(union afs_xdr_dirent));
->   
-> -		} while (offset += sizeof(*dblock), offset < size);
-> +	if (i_size <= 0 || ctx->pos >= i_size)
-> +		return 0;
->   
-> -		ret = 0;
-> -	}
-> +	iov_iter_folio_queue(&iter, ITER_SOURCE, dvnode->directory, 0, 0, i_size);
-> +	iov_iter_advance(&iter, round_down(ctx->pos, AFS_DIR_BLOCK_SIZE));
-> +
-> +	iterate_folioq(&iter, iov_iter_count(&iter), dvnode, ctx,
-> +		       afs_dir_iterate_step);
-> +
-> +	if (ret == -ESTALE)
-This is dead code because `ret` is set to 0 and never changed.
-> +		afs_invalidate_dir(dvnode, afs_dir_invalid_iter_stale);
-> +	return ret;
-> +}
-> [...]
+On 30. Aug 2024, at 15:17, Christian Brauner wrote:
+> On Thu, Aug 29, 2024 at 02:29:34PM GMT, Thorsten Blum wrote:
+>> On 28. Jun 2024, at 10:44, Christian Brauner wrote:
+>>> On Fri, 28 Jun 2024 08:23:30 +0200, Thorsten Blum wrote:
+>>>> Remove duplicate included header file linux/uio.h
+>>>> 
+>>>> 
+>>> 
+>>> Applied to the vfs.netfs branch of the vfs/vfs.git tree.
+>>> Patches in the vfs.netfs branch should appear in linux-next soon.
+>>> 
+>>> Please report any outstanding bugs that were missed during review in a
+>>> new review to the original patch series allowing us to drop it.
+>>> 
+>>> It's encouraged to provide Acked-bys and Reviewed-bys even though the
+>>> patch has now been applied. If possible patch trailers will be updated.
+>>> 
+>>> Note that commit hashes shown below are subject to change due to rebase,
+>>> trailer updates or similar. If in doubt, please check the listed branch.
+>>> 
+>>> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+>>> branch: vfs.netfs
+>>> 
+>>> [1/1] fscache: Remove duplicate included header
+>>>     https://git.kernel.org/vfs/vfs/c/5094b901bedc
+>> 
+>> Hi Christian,
+>> 
+>> I just noticed that this patch never made it into linux-next and I 
+>> can't find it in the vfs.netfs branch either. Any ideas?
+> 
+> Picked into vfs.fixes.
+
+Hi Christian,
+
+I just noticed that this patch (again) didn't make it into linux-next.
+Any ideas why not? The link just says:
+
+  Notice: this object is not reachable from any branch.
+
+Obviously, this patch isn't very important, but maybe this happens with
+other, more important patches too?
+
+Thanks,
+Thorsten
+
