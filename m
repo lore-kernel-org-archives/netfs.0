@@ -1,98 +1,94 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA1017FE
-	for <netfs@lists.linux.dev>; Mon, 18 Nov 2024 06:08:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8865F1AA1E4
+	for <netfs@lists.linux.dev>; Mon, 18 Nov 2024 16:35:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731910106; cv=none; b=L1SIT/l61pMRk1CWagdyUpjcw4hUfaqJAPtqtO7FUoDpYGQ6xVBuNhBE9iM7zGTAEqAVZbVQcoXjeqsl+uyQVhDTltFonpYlYJLIfmilnD5zRvj2N0bjby917jdNdmlRSIcuDBrwOkcpJyD84a9QIFFLzgr7QEucP3s1nR9Oa0A=
+	t=1731947741; cv=none; b=YVB49bsFD8Ohn4MRZ+sYQggjz0OV0nbYgZCtVDcXxJr1e+dCCrBkg/nmKBGmPpg/BQX9FPyCODX8LFRFqMrVPEg/VEJeaZCufmFVBuH8IEnB8bCrvzFXEcRDoktxFvC2DR2Z5RvvHDLNNqf0TwrXj2kOErrE5Y06igQAF5W9qOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731910106; c=relaxed/simple;
-	bh=cJ2P6uR4opZsVGWIta5h5IZmD3jekZ9UDttr48No1E0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=H6Db6fDsON3FDXwG5t5rFYAe8E8j41P00mjVbplPkdmk0EPk+pyg+lufCQ8IlHwElQ6vtjMfqj5FZPIsX9CI/yNFq94ACTQ5nQKTBef9vkjykMquPCJKmU8Hb3mmUZtHkoc+ddS0WrkvDZUwOfNCTPaYD4QTsZ5TBvCJvaIbEWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dYp0IAup; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1731947741; c=relaxed/simple;
+	bh=wwmrSMmvUtQxOnWoWMX94ibGfGj/+431cg0WAd2Ud6U=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=lvN2CzsxqLChZvugmJP4n65Fe7czGO6d4X6xYuGSY2oW8U9lcoPeb1z79J3v6/nmXRacNS9PrY8n7pr96PzW6dBQuIlKG6jc4psc4WmoRUo8qza6EIc/ytkcBcx5MkoVDEXlUUEHp/PEMzVJCw9DMDKWa1cxPhsCNDkDgy2BFNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=C+ZgNer4; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dYp0IAup"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4319399a411so34727635e9.2
-        for <netfs@lists.linux.dev>; Sun, 17 Nov 2024 22:08:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731910103; x=1732514903; darn=lists.linux.dev;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fF7b8budhWUD2De6hv7m+BHsAeeg1J7TYowVwHq0Uok=;
-        b=dYp0IAupYfqNUHy1Em8OaKS1K3Tl/82lR3OFE4H4ybo/pLIiVfVc8BogTERE6cM7Kh
-         K2iXZL2QLLa1dmlQ4dfCjebFQQBGnqK5JJqnf8kc4OzJ6y7gKO/jHR5j+D4XTtLM7LYb
-         zFWuDD0ceuLOuSJ+jFdjxGW3XEvC5bRRQIOz8wd7A0QRGFB/QNJcWGZoLFrHaMgOBDFp
-         Po+pnK3Z5VVdc5G63crFyiAQw7XfFIzy/f8P2R+DWnSgVhgBNBIq4EKmubHmn1Wjtjuc
-         z3IlOfrJSWTWOnVeL9f6PBBu/NmZwo1+InigGmzvbrG4EGjM7kZvVcyBw0d2QmhP3cIc
-         2Yyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731910103; x=1732514903;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fF7b8budhWUD2De6hv7m+BHsAeeg1J7TYowVwHq0Uok=;
-        b=O0+A4E7mLwDyk91TbGi7Vwkc6ihywsRIuwn4cn9neW/4SaNHqGJRkVK9gj3UPR0NDr
-         hJuYw9R2NSL/RUjh/dUC0HOmTNjW5c0kv/jKyg7qR7W4+bbhnY28+WExhpB8KBhT5S7/
-         81jnFm3jP4FeFxRpiblP99IGbagzu2mgvPzspAeNEHlh42NvxM/tYeEPp4OZG8QlnAub
-         Rw5QBH1YrR+Dh6289siTNGJ/vmkKCwc6YifJNX/dydrDRaiHsyr8lMDYeJ0+LQLBA3iP
-         mHifPl0CRcK7tbNy/rkCaUrxIGx8mf8Ft3KNIQZPoaFt0KRL2QJo/NaLfiVzvPto1aaD
-         4t+w==
-X-Forwarded-Encrypted: i=1; AJvYcCV6TFF1IHAmqIpPgv7LG+qShY671gjaWgTBPFCRFgSalgKXR0u7Ljn+Up+XicvfQav4xQqYBQ==@lists.linux.dev
-X-Gm-Message-State: AOJu0YzNisM+XQNBZX1MAbqVbnq1WxC2HCi8YJIFM5veyrvYcMQywPFn
-	hL9lTunY3JW8Gpcoi9STTweUf/4bTmr83QmR3OMFU55XIdGZfyybAS1cXzViTnE=
-X-Google-Smtp-Source: AGHT+IEro4yYmZP5OKHef+XOzgZ/LRIKlD6qWiYZLHMGCu2nTq/i6YxPj2oMalXqgeMbxjS/2dLAvw==
-X-Received: by 2002:a05:600c:4505:b0:431:1868:417f with SMTP id 5b1f17b1804b1-432df74be9amr107263115e9.17.1731910102919;
-        Sun, 17 Nov 2024 22:08:22 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432dab788a2sm141599425e9.11.2024.11.17.22.08.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 Nov 2024 22:08:22 -0800 (PST)
-Date: Mon, 18 Nov 2024 09:08:19 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Jeff Layton <jlayton@kernel.org>, netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: [PATCH] netfs: silence an uninitialized variable warning
-Message-ID: <867904ba-85fe-4766-91cb-3c8ce0703c1e@stanley.mountain>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="C+ZgNer4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1731947738;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=F48vEQ6V/tDlXaOtinAU3DdgDvVmHs2S/fGlg/NOvdQ=;
+	b=C+ZgNer4hKOeHdJEBG/l6jXUewb3GN736uG8q4K4/NF8RzEYX/ixS5TCkMfD/cdt+Xct8Y
+	MKVk2ifwKjV6qHboJL65bnLN0aow7LdWt8Hs/+sDR6naIxDDZlqlrLNacPsmA5TLIqJT62
+	F0F0Cu3nbjXKcvtoR6R9kiGO9Jinitc=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-351-HpCdFzANNgKaFZmQE0YgOw-1; Mon,
+ 18 Nov 2024 11:35:33 -0500
+X-MC-Unique: HpCdFzANNgKaFZmQE0YgOw-1
+X-Mimecast-MFC-AGG-ID: HpCdFzANNgKaFZmQE0YgOw
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D5300197731B;
+	Mon, 18 Nov 2024 16:35:28 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.207])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 710421956054;
+	Mon, 18 Nov 2024 16:35:20 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <17eb79fc-ccd9-4c85-bd23-e08380825c41@ijzerbout.nl>
+References: <17eb79fc-ccd9-4c85-bd23-e08380825c41@ijzerbout.nl> <20241108173236.1382366-1-dhowells@redhat.com> <20241108173236.1382366-24-dhowells@redhat.com>
+To: Kees Bakker <kees@ijzerbout.nl>
+Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
+    Steve French <smfrench@gmail.com>,
+    Matthew Wilcox <willy@infradead.org>,
+    Jeff Layton <jlayton@kernel.org>,
+    Gao Xiang <hsiangkao@linux.alibaba.com>,
+    Dominique Martinet <asmadeus@codewreck.org>,
+    Marc Dionne <marc.dionne@auristor.com>,
+    Paulo Alcantara <pc@manguebit.com>,
+    Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+    Eric Van Hensbergen <ericvh@kernel.org>,
+    Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
+    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+    v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org,
+    linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+    netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 23/33] afs: Use netfslib for directories
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <941498.1731947719.1@warthog.procyon.org.uk>
+Date: Mon, 18 Nov 2024 16:35:19 +0000
+Message-ID: <941499.1731947719@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-Smatch complains that "ret" is uninitialized on the success path if we
-don't enter the nested loop at the end of the function.  In real life we
-will enter that loop so "ret" will be zero.
+Kees Bakker <kees@ijzerbout.nl> wrote:
 
-Generally, I don't endorse silencing static checker warnings but in this
-case, I think it make sense.
+> > +	iterate_folioq(&iter, iov_iter_count(&iter), dvnode, ctx,
+> > +		       afs_dir_iterate_step);
+> > +
+> > +	if (ret == -ESTALE)
+> This is dead code because `ret` is set to 0 and never changed.
+> > +		afs_invalidate_dir(dvnode, afs_dir_invalid_iter_stale);
 
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
----
- fs/netfs/write_issue.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Yeah.  I posted a modification for this in response to someone else.  ESTALE
+needs to be set if iterate_folioq() returns 0.
 
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index cd2b349243b3..8f02d8effe78 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -862,7 +862,7 @@ int netfs_writeback_single(struct address_space *mapping,
- 	struct netfs_inode *ictx = netfs_inode(mapping->host);
- 	struct folio_queue *fq;
- 	size_t size = iov_iter_count(iter);
--	int ret;
-+	int ret = 0;
- 
- 	if (WARN_ON_ONCE(!iov_iter_is_folioq(iter)))
- 		return -EIO;
--- 
-2.45.2
+David
 
