@@ -1,81 +1,83 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f199.google.com (mail-il1-f199.google.com [209.85.166.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3362156F20;
-	Wed, 20 Nov 2024 08:28:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D82A23099D
+	for <netfs@lists.linux.dev>; Thu, 21 Nov 2024 09:50:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732091309; cv=none; b=J8UeYXECOb6IxQhDCoUg35TS7vY8WyCXMv7wxbKbb20xQOJbv7a5sHl1y7zNlQU/jgQKFmpFSFTbOUnF0N1pXoNGbPlVRskCuNOy4cxCLbm6mz+HdVKZ7JEs75/LWS9PvwFdMJVnzzGgKjy7sus6XttT+IULge4TmeCVW4S8Q8Q=
+	t=1732182625; cv=none; b=C8ArmpH32gYfg/ROpFCSfhUka91P8yBM4dxKoHyGG/D9B1t7V0lQSKJwcAjsfFq++K/AoC7wf56ad+UCZRjbFGjyLxk1t8nA1AezCguxynxhOUWSgWFWGeJr1N6jF8QEkzCxj1Ii+H6K1rncyVVoFCR6cQRMmP+ZcLpde+MeEvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732091309; c=relaxed/simple;
-	bh=BEN+FFG8DzVJ1Osemg/1oIpG9nJboJMmdJivsCj5HIU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BzgrHDcDURIfzRnkJd6vpMQwcFo2NNldCK0m0RplgrNgT8NGKmsgtAyUOZL0lVbvV3I11lMxmdrpb7KJ3Q6SXIDUcJxQo8X7yAQaq7nBFtuw4/f3/xm6QleRzNkJA/FEZ9dZQiI+kzn2dmSZgLYqYjg2638y34NK3LPn29gpH2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RI6Ns4Z0; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RI6Ns4Z0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC74C4CECD;
-	Wed, 20 Nov 2024 08:28:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732091309;
-	bh=BEN+FFG8DzVJ1Osemg/1oIpG9nJboJMmdJivsCj5HIU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RI6Ns4Z0pYGeqqYyRzWp77GU8jov8PilY5yrobKeBgcqD8S6ZpqISfqKlrj0OZx3U
-	 GfHE34tX4H3cO6a0r7cHKBks6kpccjSL6yU6Y2TZ2msE39Gufe7jDC96ud4bNwogys
-	 Rf0QgRYg6lyN4tc3QUwq61U5FU6M7fKzvzutLE2jzrWyUoNTsWzw2AeK4S9h9VYNDg
-	 54C6UpMHibVGysZg4GgVtCfg1Blzsl4p+QqQvWiZ8roWUdockS6KK9x560C3zP1MkW
-	 ynqrCYmtIc9aOhetsDYn3meLpcAO/FT91O7F/GoyNEG0on/tJoMRj6r7422w31W6MZ
-	 2AMkgeYD2bZIQ==
-From: Christian Brauner <brauner@kernel.org>
-To: David Howells <dhowells@redhat.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] netfs: silence an uninitialized variable warning
-Date: Wed, 20 Nov 2024 09:28:20 +0100
-Message-ID: <20241120-lageplan-kneifen-e124b37dee93@brauner>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <867904ba-85fe-4766-91cb-3c8ce0703c1e@stanley.mountain>
-References: <867904ba-85fe-4766-91cb-3c8ce0703c1e@stanley.mountain>
+	s=arc-20240116; t=1732182625; c=relaxed/simple;
+	bh=FGO4BeVUMYEZDZMkjtSlonZAZx9UMN+rpetz3/zATz8=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=u4O4JlFR5JPSEAQtY/TmiyZ0MSILnRapJyOVDnjKN5MKAkt2hAE1CCJI8CVPx4+uT9jLZ7EB63UZG884ozmbOillxBfcmTNTdFRRJSe1wWJXLUiLGfEiwc1GbnZp1wB8/pp6C759DLZQmhXkEic7Dq3u666+CPeB01LjmmPTpz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-3a5b2ec15a9so7281545ab.3
+        for <netfs@lists.linux.dev>; Thu, 21 Nov 2024 01:50:24 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732182623; x=1732787423;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yG5fYqoFl0t1IHX9mlRsDbQlnWfhNBQhEGosyFvJw70=;
+        b=FuFJZ43tQzws+CrZUf1rMUUiWpMfsnMCPkEDda1PDv3oyE9OX2EQvHGVdSAx7YZq/q
+         IwTNmh8XjU0Ib6g57lug4qW7Ws1yy92C1nDTj70QzYTb9L9aMtNZmbGiIPdoZ9x/nAs7
+         3ElUjZJRPe4+9xa+TwC2sCLKZuv502Dx0JSuEiKi4lw3zxB9quwmeADzDxa1qqRJ1V59
+         /pNbtR7KEUznjs/Ee4/+HvAxPcoERKsgrRCEemGr6NRur6afD2xrWovFoh4E102GA35B
+         ucsqarU57mQoK/UF6kMWkWYDxee6o4CrYGjAUqoyvp7wMWmMLexZhMIpF+mE3IE8KJtz
+         jDPg==
+X-Forwarded-Encrypted: i=1; AJvYcCUeWxuK9TfI+OSRE9nOnNcfs2XWAz++fMIxAr6vdFUA56Yp0evgFe3iqTzkCzAFCGeRLLjKGg==@lists.linux.dev
+X-Gm-Message-State: AOJu0YxxhqbvbCncs/Z6rpdncygZERTr7MuCPFa+ri3DhtwIiLq/1GTV
+	hAiHIg7pTa53gImTVHwth3CsAI1NfuefSvm+EB/NDql2ShoQ9jbIPizpVcXzkdQ5f1X59sHGGUM
+	Sq7J/NSt/52k8ntSB+pPsHWC/QX86Te0VsxAnUK3203qpN+gyebFYb28=
+X-Google-Smtp-Source: AGHT+IGfDDjmHUsUK18fbFKl8h22zJyn+fThfcuo/Q4Kz6URLxQGTP83WTonaRZ22t++zCV1b+0tIV7ZvxVgZpgSfMFKeuZEzUFT
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1158; i=brauner@kernel.org; h=from:subject:message-id; bh=BEN+FFG8DzVJ1Osemg/1oIpG9nJboJMmdJivsCj5HIU=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaTbzl2m8GxdzyqWFy9zImbvUJw/++bl1mUb5tr3zntx5 srjFCG+Zx2lLAxiXAyyYoosDu0m4XLLeSo2G2VqwMxhZQIZwsDFKQATWfmO4Z/iEqHAqz0XZ2/0 Wq897+Mx8YYDebm3tbSLDXVNjtvLtlsxMiwsrfPROC4gLmD4wtk7pslGyzaXt+mg4mI3Ea1JDy6 L8wIA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6e02:13ae:b0:3a7:819c:5129 with SMTP id
+ e9e14a558f8ab-3a786574454mr63939175ab.18.1732182623685; Thu, 21 Nov 2024
+ 01:50:23 -0800 (PST)
+Date: Thu, 21 Nov 2024 01:50:23 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <673f025f.050a0220.363a1b.00fa.GAE@google.com>
+Subject: [syzbot] Monthly netfs report (Nov 2024)
+From: syzbot <syzbot+list7a6f269bbee45c565136@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, netfs@lists.linux.dev, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 18 Nov 2024 09:08:19 +0300, Dan Carpenter wrote:
-> Smatch complains that "ret" is uninitialized on the success path if we
-> don't enter the nested loop at the end of the function.  In real life we
-> will enter that loop so "ret" will be zero.
-> 
-> Generally, I don't endorse silencing static checker warnings but in this
-> case, I think it make sense.
-> 
-> [...]
+Hello netfs maintainers/developers,
 
-Applied to the vfs-6.14.netfs branch of the vfs/vfs.git tree.
-Patches in the vfs-6.14.netfs branch should appear in linux-next soon.
+This is a 31-day syzbot report for the netfs subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/netfs
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+During the period, 3 new issues were detected and 0 were fixed.
+In total, 9 issues are still open and 1 has already been fixed.
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+Some of the still happening issues:
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+Ref Crashes Repro Title
+<1> 58      Yes   KASAN: slab-use-after-free Read in iov_iter_revert
+                  https://syzkaller.appspot.com/bug?extid=2625ce08c2659fb9961a
+<2> 4       Yes   kernel BUG in iov_iter_revert (2)
+                  https://syzkaller.appspot.com/bug?extid=404b4b745080b6210c6c
+<3> 1       No    WARNING in netfs_writepages
+                  https://syzkaller.appspot.com/bug?extid=06023121b0153752a3d3
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs-6.14.netfs
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-[1/1] netfs: silence an uninitialized variable warning
-      https://git.kernel.org/vfs/vfs/c/574cb560cc1c
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
+
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
