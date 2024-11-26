@@ -1,83 +1,144 @@
-Received: from mail-il1-f199.google.com (mail-il1-f199.google.com [209.85.166.199])
+Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D82A23099D
-	for <netfs@lists.linux.dev>; Thu, 21 Nov 2024 09:50:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90030199924
+	for <netfs@lists.linux.dev>; Tue, 26 Nov 2024 08:25:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732182625; cv=none; b=C8ArmpH32gYfg/ROpFCSfhUka91P8yBM4dxKoHyGG/D9B1t7V0lQSKJwcAjsfFq++K/AoC7wf56ad+UCZRjbFGjyLxk1t8nA1AezCguxynxhOUWSgWFWGeJr1N6jF8QEkzCxj1Ii+H6K1rncyVVoFCR6cQRMmP+ZcLpde+MeEvI=
+	t=1732609527; cv=none; b=Q0Xjd6a4JmIfokrldH4piepEEbaQ7ZftuAlQnLvFy54gbUgqyTcjuHBpi1Xc4Fu0RXE2uhe+SuLHzxOoXO0ax66CvR84oWziN3BVdrTP9S9saCO7lb6R10gYdul7TWVZCYBlguk8YbsSkZpGuHAsiWjGNtfXvzvRgj7sW60DhLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732182625; c=relaxed/simple;
-	bh=FGO4BeVUMYEZDZMkjtSlonZAZx9UMN+rpetz3/zATz8=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=u4O4JlFR5JPSEAQtY/TmiyZ0MSILnRapJyOVDnjKN5MKAkt2hAE1CCJI8CVPx4+uT9jLZ7EB63UZG884ozmbOillxBfcmTNTdFRRJSe1wWJXLUiLGfEiwc1GbnZp1wB8/pp6C759DLZQmhXkEic7Dq3u666+CPeB01LjmmPTpz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-3a5b2ec15a9so7281545ab.3
-        for <netfs@lists.linux.dev>; Thu, 21 Nov 2024 01:50:24 -0800 (PST)
+	s=arc-20240116; t=1732609527; c=relaxed/simple;
+	bh=sI7tNk5+zKeQtAWcs3AksLYA8Nbczy7AgLIX6hl0R9k=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=prXFq+5yP3Kr90RgNGiIJDaXLXdlFt5zB1kTP7JZKWOa3yo2K7xMaMlbXWpV3e+dbn7kH/nni7Rm22xLWw3YIa7p9gQjjj6RP/+n5ffUU4vrvQLwoHWQhBPyXVJhmh3tRWCqPmJPUMoGZo5tAaLfuqximAbyKpQJ/Cvz8JJ0Ltc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NhEIWIjN; arc=none smtp.client-ip=209.85.217.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NhEIWIjN"
+Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-4af07a8d444so790233137.1
+        for <netfs@lists.linux.dev>; Tue, 26 Nov 2024 00:25:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1732609524; x=1733214324; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=r6PXQfbArbgQ9QlkA0GcTxdQSqKG1+4ODD/01KNTBS8=;
+        b=NhEIWIjNXB6cbs4CDBjbc4T1tsqJFNpY4OrHBPm8AXDOUU+3gdin0n4jHg6f2pmArx
+         BhdbpaTvRRDB4T/Lz3CsV23G02OG6Ey8A0Yz5Ow4VkF+6I/i53QiVjJqGU3WcbvU9/gN
+         BYJGKQ+ySHcBFDntcAtud9cAsRcoSXBp/RpHgUNHgYtxCA0wRM20aCdRSFvQCizAChUu
+         lodOqBmrv+l4VTFY4a8KHtySDW+K78BfRKj0umoEtJRE+EnuwjEWjwhgt20hVQjSUK11
+         j+bo5EAS568wE2u2ucw/J+sxLNomXMA8Reolef9VfPd8PUZhovMFCQzYhHxD2j1faDMO
+         BNdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732182623; x=1732787423;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+        d=1e100.net; s=20230601; t=1732609524; x=1733214324;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=yG5fYqoFl0t1IHX9mlRsDbQlnWfhNBQhEGosyFvJw70=;
-        b=FuFJZ43tQzws+CrZUf1rMUUiWpMfsnMCPkEDda1PDv3oyE9OX2EQvHGVdSAx7YZq/q
-         IwTNmh8XjU0Ib6g57lug4qW7Ws1yy92C1nDTj70QzYTb9L9aMtNZmbGiIPdoZ9x/nAs7
-         3ElUjZJRPe4+9xa+TwC2sCLKZuv502Dx0JSuEiKi4lw3zxB9quwmeADzDxa1qqRJ1V59
-         /pNbtR7KEUznjs/Ee4/+HvAxPcoERKsgrRCEemGr6NRur6afD2xrWovFoh4E102GA35B
-         ucsqarU57mQoK/UF6kMWkWYDxee6o4CrYGjAUqoyvp7wMWmMLexZhMIpF+mE3IE8KJtz
-         jDPg==
-X-Forwarded-Encrypted: i=1; AJvYcCUeWxuK9TfI+OSRE9nOnNcfs2XWAz++fMIxAr6vdFUA56Yp0evgFe3iqTzkCzAFCGeRLLjKGg==@lists.linux.dev
-X-Gm-Message-State: AOJu0YxxhqbvbCncs/Z6rpdncygZERTr7MuCPFa+ri3DhtwIiLq/1GTV
-	hAiHIg7pTa53gImTVHwth3CsAI1NfuefSvm+EB/NDql2ShoQ9jbIPizpVcXzkdQ5f1X59sHGGUM
-	Sq7J/NSt/52k8ntSB+pPsHWC/QX86Te0VsxAnUK3203qpN+gyebFYb28=
-X-Google-Smtp-Source: AGHT+IGfDDjmHUsUK18fbFKl8h22zJyn+fThfcuo/Q4Kz6URLxQGTP83WTonaRZ22t++zCV1b+0tIV7ZvxVgZpgSfMFKeuZEzUFT
+        bh=r6PXQfbArbgQ9QlkA0GcTxdQSqKG1+4ODD/01KNTBS8=;
+        b=hqwJYJQHc1F1m6LWu1PXYbzxUl7FUeV1Yn8TiBMBwOSKQDrT2waGXDtQESzsZOi82B
+         iDDKVNRDMmTSxXWSo1iIkEG6G4jHYIv+mzgv8BPI+H2Dp8kYgm59IBoYJhPDpbyVEgM1
+         0KqBz6++NbgCP6kN77ffuaPCQhiXLbbX+y2fEuAfx26yKf+AFB797tWj9SY8piRXHYY+
+         lKqzJx2YILpWfbpYq9FFfBu7y9RL1hFAaRdVkJRiW0AsqT0acNfSg0WXgAyx3gK2WiPJ
+         vlHUtT+Ru1alI59YFsY08v8sRe9yDefgir2DpZLyYqEdYE+wYaYnZOo0FlTDnnITHr+G
+         bp4g==
+X-Gm-Message-State: AOJu0YyBo/z6L7lxLw9eBl/jl4igxFbmb3hukf8hyRSpJDFcrXCDDPyr
+	s2H9i/JurFfClG93acji9/7lAptUWXwKHqTAjvA9nTzXOvd2e53IfLriJJnMwIdhjORYHHxYqNU
+	vZf5yyMW43ExCOOtWvCSa5R+AD86VqXPLW6bWgTuEDFM2I3V9AR4=
+X-Gm-Gg: ASbGncsjCJBIkGyxNsy4UI3DQd/+Tkqjp/892gsPKmLdvDihfgmnhXnCDT2E3v2pDaY
+	m8Hj03bioqnaMa6MuYu9m4Vn49RstIDFEKsomqa5/k4aKiwGvuLJM2hXwS55oGRhP
+X-Google-Smtp-Source: AGHT+IHfmlOUT07xsGM81ccGUL8gokcmILu2aWCHpE5lTRyBqDIA2QVqqjf2o72oJuOxTAI/oybzlUneyIUgqtnDACo=
+X-Received: by 2002:a05:6102:9d0:b0:4af:476:f3ca with SMTP id
+ ada2fe7eead31-4af0476f4e3mr9401237137.12.1732609523827; Tue, 26 Nov 2024
+ 00:25:23 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:13ae:b0:3a7:819c:5129 with SMTP id
- e9e14a558f8ab-3a786574454mr63939175ab.18.1732182623685; Thu, 21 Nov 2024
- 01:50:23 -0800 (PST)
-Date: Thu, 21 Nov 2024 01:50:23 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <673f025f.050a0220.363a1b.00fa.GAE@google.com>
-Subject: [syzbot] Monthly netfs report (Nov 2024)
-From: syzbot <syzbot+list7a6f269bbee45c565136@syzkaller.appspotmail.com>
-To: linux-kernel@vger.kernel.org, netfs@lists.linux.dev, 
-	syzkaller-bugs@googlegroups.com
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 26 Nov 2024 13:55:11 +0530
+Message-ID: <CA+G9fYuLXDh8GDmgdhmA1NAhsma3=FoH1n93gmkHAGGFKbNGeQ@mail.gmail.com>
+Subject: fs/netfs/read_retry.c:235:20: error: variable 'subreq' is
+ uninitialized when used here [-Werror,-Wuninitialized]
+To: netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+	open list <linux-kernel@vger.kernel.org>, lkft-triage@lists.linaro.org
+Cc: Jeff Layton <jlayton@kernel.org>, David Howells <dhowells@redhat.com>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Anders Roxell <anders.roxell@linaro.org>, 
+	Arnd Bergmann <arnd@arndb.de>
 Content-Type: text/plain; charset="UTF-8"
 
-Hello netfs maintainers/developers,
+The x86_64 builds failed with clang-19 and clang-nightly on the Linux
+next-20241125 tag.
+Same build pass with gcc-13.
 
-This is a 31-day syzbot report for the netfs subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/netfs
+First seen on Linux next-20241125 tag.
+  Good: next-20241122
+  Bad:  next-20241125 and next-20241126
 
-During the period, 3 new issues were detected and 0 were fixed.
-In total, 9 issues are still open and 1 has already been fixed.
+x86_64:
+  build:
+    * clang-19-lkftconfig
+    * clang-nightly-lkftconfig-lto-full
+    * clang-nightly-lkftconfig
+    * clang-19-lkftconfig-kcsan
+    * korg-clang-19-lkftconfig-lto-full
+    * clang-nightly-lkftconfig-lto-thing
+    * clang-nightly-lkftconfig-kselftest
+    * clang-19-x86_64_defconfig
+    * rustclang-nightly-lkftconfig-kselftest
+    * clang-19-lkftconfig-no-kselftest-frag
+    * korg-clang-19-lkftconfig-hardening
+    * korg-clang-19-lkftconfig-lto-thing
+    * clang-19-lkftconfig-compat
+    * clang-nightly-lkftconfig-hardening
+    * clang-nightly-x86_64_defconfig
 
-Some of the still happening issues:
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Ref Crashes Repro Title
-<1> 58      Yes   KASAN: slab-use-after-free Read in iov_iter_revert
-                  https://syzkaller.appspot.com/bug?extid=2625ce08c2659fb9961a
-<2> 4       Yes   kernel BUG in iov_iter_revert (2)
-                  https://syzkaller.appspot.com/bug?extid=404b4b745080b6210c6c
-<3> 1       No    WARNING in netfs_writepages
-                  https://syzkaller.appspot.com/bug?extid=06023121b0153752a3d3
+Build error:
+---------
+fs/netfs/read_retry.c:235:20: error: variable 'subreq' is
+uninitialized when used here [-Werror,-Wuninitialized]
+  235 |         if (list_is_last(&subreq->rreq_link, &stream->subrequests))
+      |                           ^~~~~~
+fs/netfs/read_retry.c:28:36: note: initialize the variable 'subreq' to
+silence this warning
+   28 |         struct netfs_io_subrequest *subreq;
+      |                                           ^
+      |                                            = NULL
+1 error generated.
+make[5]: *** [scripts/Makefile.build:194: fs/netfs/read_retry.o] Error 1
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+Build image:
+-----------
+- https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20241126/testrun/26060810/suite/build/test/clang-19-lkftconfig/log
+- https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20241126/testrun/26060810/suite/build/test/clang-19-lkftconfig/details/
+- https://storage.tuxsuite.com/public/linaro/lkft/builds/2pNKzjvChfT6aOWplZaZeQzbYCX/
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+Steps to reproduce:
+------------
+- tuxmake --runtime podman --target-arch x86_64 --toolchain clang-19
+--kconfig https://storage.tuxsuite.com/public/linaro/lkft/builds/2pNKzjvChfT6aOWplZaZeQzbYCX/config
+LLVM=1 LLVM_IAS=1
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
+The git log shows
+$ git log --oneline  next-20241122..next-20241125 -- fs/netfs/read_retry.c
+1bd9011ee163e netfs: Change the read result collector to only use one work item
+5c962f9982cd9 netfs: Don't use bh spinlock
+3c8a83f74e0ea netfs: Drop the was_async arg from netfs_read_subreq_terminated()
+2029a747a14d2 netfs: Abstract out a rolling folio buffer implementation
 
-You may send multiple commands in a single email message.
+metadata:
+----
+  git describe: next-20241125 and next-20241126
+  git repo: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+  git sha: ed9a4ad6e5bd3a443e81446476718abebee47e82
+  kernel config:
+https://storage.tuxsuite.com/public/linaro/lkft/builds/2pNKzjvChfT6aOWplZaZeQzbYCX/config
+  build url: https://storage.tuxsuite.com/public/linaro/lkft/builds/2pNKzjvChfT6aOWplZaZeQzbYCX/
+  toolchain: clang-19 and clang-nightly
+  config: defconfig, lkftconfig etc
+  arch: x86_64
+
+--
+Linaro LKFT
+https://lkft.linaro.org
