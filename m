@@ -1,148 +1,254 @@
-Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F241817BA0
-	for <netfs@lists.linux.dev>; Tue, 26 Nov 2024 08:49:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827E71E0DFC
+	for <netfs@lists.linux.dev>; Wed, 27 Nov 2024 11:07:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732610970; cv=none; b=a7ZyMvjKif3UjxX2uSSIWIajtmNt0Wg9PAMJTPhY1/QqvPt6xg5paxNUnmbIAfEKRwT9jftUKAW1ANRn+rHIA0UhuTxxdyN2urz25JZ9lh9Xg1QZ7xI/HM0WIyU5+ZNzVYcTdWHWWarLeEhYaYMZT5gEOysVdpzo0tq7DV7t1Q8=
+	t=1732705624; cv=none; b=SH4pAL05VryjfnxmCdRPYKcnor86ee5ZLAdgEmdLHet2QDViR6osDniVLnh3uWrVw0yZ+StQUW+Qwbn5BEWYVPnhgDPQk5KdhyZ9EdOHNyDrnk35vCbR3+QkYOHf4+FxMoCMfoq32+LzJndjzXEgmWWMRSls52d20Q/tkkXCAp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732610970; c=relaxed/simple;
-	bh=QgA2V39K+nI8Yw0kGgHn1G1xYlFo87d/nEmMPnhMCyA=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=UGnCnikDhoGzB09+HEuj02h4n7ILDKkY2tT2Y8WO3WITAaVHBjezdg7acgO7GvYQiN9Pkun2+MdjPCHpgCmRPYlYpoiCbKIApo6GyJempPl1F0aK8JV65NUAdV6E/nICuOYWNOOiVoVfBRGVij+wpOXotCnKpYjtNfX+YoSLETI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=UVEQYXXF; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=CWerTH+a; arc=none smtp.client-ip=202.12.124.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1732705624; c=relaxed/simple;
+	bh=nsTnpCU5lza/RRF6svKMS0tHdUP03m9UTECrIonLoPA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SRK4YqFbqzZl05sGvkDDtDMYlh9mNl85KIoSVIUFSODmAHU9Co7PNSFFW6Rgjesxa8asi0p91XKItb0XWK57hdlS9JiyTB58jSheQI6eHzcJ1bOOmxmDBlouphrT0Z9s+cSRlyYgvgPYqlUKvfJfksSMUotzr1eC/CXTr40I9O8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=p8bQSUHT; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=A6QzlK35; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=p8bQSUHT; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=A6QzlK35; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="UVEQYXXF";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="CWerTH+a"
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfout.stl.internal (Postfix) with ESMTP id A8B1E1140158;
-	Tue, 26 Nov 2024 03:49:26 -0500 (EST)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-10.internal (MEProxy); Tue, 26 Nov 2024 03:49:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1732610966;
-	 x=1732697366; bh=Qd19FLub09m9YC9jkC4e0DUGqBo/39uXk/01+azJUEw=; b=
-	UVEQYXXFLYQlQl6Yh66OTYGqna8PXeYwTCRT8WL9kNMgsIwTvyefqnfMrrDMd4rJ
-	r3NUGxuaIO4qJS2T93hszme5BWugzpVMtKA4eJqwPFFAWjWkwmcA/uAhW6BomRXF
-	jU0NrCMknn3SiJ9TF5sqco36KmxyxBNd7DgLNOr16tsbcL46EWpEXecHBiHinh1p
-	y7k9uYbB6tyJ6Jd5jVm6WwhbC2foNOtkYGD5RUwENYCdbRTFJyTfbZReHIZvu+zg
-	R+HHQdtFHUVO+sK4klY6vgKYXj7Um5VhPEcVHYFTHdd9qZdl/9merOl3ScBn2/O9
-	+8TEH0o9Zual2f3d68J+mQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1732610966; x=
-	1732697366; bh=Qd19FLub09m9YC9jkC4e0DUGqBo/39uXk/01+azJUEw=; b=C
-	WerTH+aenqwR0jH4udCVgVcMLi8Xfsilp2tqUwNqllEHT+pLGpA/dg9Bk/31UfZW
-	7bEKaisgV5yVXkZteN80MefY1gkS16HZGjLbExE8CD9PBHEk3IwxctEg8WIFgdPm
-	88KefC+bZl5xPMxIwOnGNCkz13+6JIpyI6aYdyJvMT1HgVQmSdtmqhmlhI+XbKNz
-	nj8O18iDCFb2y4Vp+Ij08zYHZjbx+YaQQI1QaLAMwe8280j4HpnKG3L9lx1JPYXn
-	0QYDYsIHHYBkSGND+qjfUO9llxiI+CbX6meYT+i1mzbQkLNfW4eruMzXBLPzMyBu
-	460VfEJltg9jRKVV+Aq0w==
-X-ME-Sender: <xms:lotFZ8Kiql7C8tgUlsvXeFeyyNy7J0Uv5rm-vj1bPA3PHCzzEqCrJQ>
-    <xme:lotFZ8K0rytf1gGFiE7ekf7PuDOGhNUAEvxQ694-k7SW8xeoW4plSpAKUJfeWfXyS
-    a8xIx4s1REEAXSlt9o>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrgeeigdduvdduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddt
-    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
-    guvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefg
-    gfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepledp
-    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepjhhlrgihthhonheskhgvrhhnvghlrd
-    horhhgpdhrtghpthhtoheprghnuggvrhhsrdhrohigvghllheslhhinhgrrhhordhorhhg
-    pdhrtghpthhtohepuggrnhdrtggrrhhpvghnthgvrheslhhinhgrrhhordhorhhgpdhrtg
-    hpthhtohepnhgrrhgvshhhrdhkrghmsghojhhusehlihhnrghrohdrohhrghdprhgtphht
-    thhopehlkhhfthdqthhrihgrghgvsehlihhsthhsrdhlihhnrghrohdrohhrghdprhgtph
-    htthhopehnvghtfhhssehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepughh
-    ohifvghllhhssehrvgguhhgrthdrtghomhdprhgtphhtthhopehlihhnuhigqdhfshguvg
-    hvvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgv
-    rhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:lotFZ8uabkzTD6kHjDKiBwYtmUbgYIp6AtoBDgAV73Bx_9y0y5YHCg>
-    <xmx:lotFZ5a2MexPC4-BtuXuMHqZVH2-jmJDzIxqE04h14VFDKAEmT8rMw>
-    <xmx:lotFZzZGwd3CkOcjVBMDMrKZuq1QlsEf4k2FYnENYik5uxlhs4Vhmw>
-    <xmx:lotFZ1AFDh-wbJ9_Byyv1yFrHm5Q1h5X7VAB9S3sUMUcDIX6xsrBGA>
-    <xmx:lotFZxPM9cAUgqeyOZJTWHiVMxoZE7qbhH5anYVDdfs7KEZp693-H58x>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 1B8832220071; Tue, 26 Nov 2024 03:49:25 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="p8bQSUHT";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="A6QzlK35";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="p8bQSUHT";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="A6QzlK35"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 6DCAC1F786;
+	Wed, 27 Nov 2024 11:06:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1732705614; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ve5bO8Xk7Mdrs4etTh9swfc19BKNL9zCNHLtpjsUTFc=;
+	b=p8bQSUHTiWn0ntOSRJlScU0Y19NQdFqyVvSnTjYkPUFbSbXa84sBQr1A++WXGv8NqwuNv7
+	Uv8Tu4bAhSvjqJS1aPqaa9tjJdYTBrh05zizZNuVVnuFwm0khP5TBFOTxpmDqrWT1RyyQ6
+	7AkavAsc5Zz5U4vPxB5TjZWUiuGyPr8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1732705614;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ve5bO8Xk7Mdrs4etTh9swfc19BKNL9zCNHLtpjsUTFc=;
+	b=A6QzlK35pDqkrXs+xGX1Dgc+aZox97lM3/2YXSKsXJeYg5wX9oGp90z8E3LoX/LazwHrS8
+	WLYc/Yx/4DFZsYDw==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1732705614; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ve5bO8Xk7Mdrs4etTh9swfc19BKNL9zCNHLtpjsUTFc=;
+	b=p8bQSUHTiWn0ntOSRJlScU0Y19NQdFqyVvSnTjYkPUFbSbXa84sBQr1A++WXGv8NqwuNv7
+	Uv8Tu4bAhSvjqJS1aPqaa9tjJdYTBrh05zizZNuVVnuFwm0khP5TBFOTxpmDqrWT1RyyQ6
+	7AkavAsc5Zz5U4vPxB5TjZWUiuGyPr8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1732705614;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ve5bO8Xk7Mdrs4etTh9swfc19BKNL9zCNHLtpjsUTFc=;
+	b=A6QzlK35pDqkrXs+xGX1Dgc+aZox97lM3/2YXSKsXJeYg5wX9oGp90z8E3LoX/LazwHrS8
+	WLYc/Yx/4DFZsYDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5686213941;
+	Wed, 27 Nov 2024 11:06:54 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id S3cYFU79RmfSWQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 27 Nov 2024 11:06:54 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id EBEF6A08D6; Wed, 27 Nov 2024 12:06:49 +0100 (CET)
+Date: Wed, 27 Nov 2024 12:06:49 +0100
+From: Jan Kara <jack@suse.cz>
+To: NeilBrown <neilb@suse.de>
+Cc: Jan Kara <jack@suse.cz>, Anders Blomdell <anders.blomdell@gmail.com>,
+	Philippe Troin <phil@fifi.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>,
+	netfs@lists.linux.dev
+Subject: Re: Regression in NFS probably due to very large amounts of readahead
+Message-ID: <20241127110649.yg2k4s3fzohb2pgg@quack3>
+References: <>
+ <20241126150613.a4b57y2qmolapsuc@quack3>
+ <173269663098.1734440.13407516531783940860@noble.neil.brown.name>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Tue, 26 Nov 2024 09:49:05 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Naresh Kamboju" <naresh.kamboju@linaro.org>, netfs@lists.linux.dev,
- linux-fsdevel@vger.kernel.org, "open list" <linux-kernel@vger.kernel.org>,
- lkft-triage@lists.linaro.org
-Cc: "Jeff Layton" <jlayton@kernel.org>, "David Howells" <dhowells@redhat.com>,
- "Dan Carpenter" <dan.carpenter@linaro.org>,
- "Anders Roxell" <anders.roxell@linaro.org>
-Message-Id: <b55d1f04-aadc-490e-a8b5-fe1588f3c9c0@app.fastmail.com>
-In-Reply-To: 
- <CA+G9fYuLXDh8GDmgdhmA1NAhsma3=FoH1n93gmkHAGGFKbNGeQ@mail.gmail.com>
-References: 
- <CA+G9fYuLXDh8GDmgdhmA1NAhsma3=FoH1n93gmkHAGGFKbNGeQ@mail.gmail.com>
-Subject: Re: fs/netfs/read_retry.c:235:20: error: variable 'subreq' is uninitialized
- when used here [-Werror,-Wuninitialized]
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <173269663098.1734440.13407516531783940860@noble.neil.brown.name>
+X-Spam-Score: -2.30
+X-Spamd-Result: default: False [-2.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	TAGGED_RCPT(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[suse.cz,gmail.com,fifi.org,infradead.org,linux-foundation.org,vger.kernel.org,kvack.org,redhat.com,lists.linux.dev];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:email]
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-On Tue, Nov 26, 2024, at 09:25, Naresh Kamboju wrote:
-> The x86_64 builds failed with clang-19 and clang-nightly on the Linux
-> next-20241125 tag.
-> Same build pass with gcc-13.
+Added David Howells to CC since this seems to be mostly netfs related.
 
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
->
-> Build error:
-> ---------
-> fs/netfs/read_retry.c:235:20: error: variable 'subreq' is
-> uninitialized when used here [-Werror,-Wuninitialized]
->   235 |         if (list_is_last(&subreq->rreq_link, &stream->subrequests))
->       |                           ^~~~~~
-> fs/netfs/read_retry.c:28:36: note: initialize the variable 'subreq' to
-> silence this warning
->    28 |         struct netfs_io_subrequest *subreq;
->       |                                           ^
->       |                                            = NULL
-> 1 error generated.
-> make[5]: *** [scripts/Makefile.build:194: fs/netfs/read_retry.o] Error 1
+On Wed 27-11-24 19:37:10, NeilBrown wrote:
+> On Wed, 27 Nov 2024, Jan Kara wrote:
+> > On Tue 26-11-24 11:37:19, Jan Kara wrote:
+> > > On Tue 26-11-24 09:01:35, Anders Blomdell wrote:
+> > > > On 2024-11-26 02:48, Philippe Troin wrote:
+> > > > > On Sat, 2024-11-23 at 23:32 +0100, Anders Blomdell wrote:
+> > > > > > When we (re)started one of our servers with 6.11.3-200.fc40.x86_64,
+> > > > > > we got terrible performance (lots of nfs: server x.x.x.x not
+> > > > > > responding).
+> > > > > > What triggered this problem was virtual machines with NFS-mounted
+> > > > > > qcow2 disks
+> > > > > > that often triggered large readaheads that generates long streaks of
+> > > > > > disk I/O
+> > > > > > of 150-600 MB/s (4 ordinary HDD's) that filled up the buffer/cache
+> > > > > > area of the
+> > > > > > machine.
+> > > > > > 
+> > > > > > A git bisect gave the following suspect:
+> > > > > > 
+> > > > > > git bisect start
+> > > > > 
+> > > > > 8< snip >8
+> > > > > 
+> > > > > > # first bad commit: [7c877586da3178974a8a94577b6045a48377ff25]
+> > > > > > readahead: properly shorten readahead when falling back to
+> > > > > > do_page_cache_ra()
+> > > > > 
+> > > > > Thank you for taking the time to bisect, this issue has been bugging
+> > > > > me, but it's been non-deterministic, and hence hard to bisect.
+> > > > > 
+> > > > > I'm seeing the same problem on 6.11.10 (and earlier 6.11.x kernels) in
+> > > > > slightly different setups:
+> > > > > 
+> > > > > (1) On machines mounting NFSv3 shared drives. The symptom here is a
+> > > > > "nfs server XXX not responding, still trying" that never recovers
+> > > > > (while the server remains pingable and other NFSv3 volumes from the
+> > > > > hanging server can be mounted).
+> > > > > 
+> > > > > (2) On VMs running over qemu-kvm, I see very long stalls (can be up to
+> > > > > several minutes) on random I/O. These stalls eventually recover.
+> > > > > 
+> > > > > I've built a 6.11.10 kernel with
+> > > > > 7c877586da3178974a8a94577b6045a48377ff25 reverted and I'm back to
+> > > > > normal (no more NFS hangs, no more VM stalls).
+> > > > > 
+> > > > Some printk debugging, seems to indicate that the problem
+> > > > is that the entity 'ra->size - (index - start)' goes
+> > > > negative, which then gets cast to a very large unsigned
+> > > > 'nr_to_read' when calling 'do_page_cache_ra'. Where the true
+> > > > bug is still eludes me, though.
+> > > 
+> > > Thanks for the report, bisection and debugging! I think I see what's going
+> > > on. read_pages() can go and reduce ra->size when ->readahead() callback
+> > > failed to read all folios prepared for reading and apparently that's what
+> > > happens with NFS and what can lead to negative argument to
+> > > do_page_cache_ra(). Now at this point I'm of the opinion that updating
+> > > ra->size / ra->async_size does more harm than good (because those values
+> > > show *desired* readahead to happen, not exact number of pages read),
+> > > furthermore it is problematic because ra can be shared by multiple
+> > > processes and so updates are inherently racy. If we indeed need to store
+> > > number of read pages, we could do it through ractl which is call-site local
+> > > and used for communication between readahead generic functions and callers.
+> > > But I have to do some more history digging and code reading to understand
+> > > what is using this logic in read_pages().
+> > 
+> > Hum, checking the history the update of ra->size has been added by Neil two
+> > years ago in 9fd472af84ab ("mm: improve cleanup when ->readpages doesn't
+> > process all pages"). Neil, the changelog seems as there was some real
+> > motivation behind updating of ra->size in read_pages(). What was it? Now I
+> > somewhat disagree with reducing ra->size in read_pages() because it seems
+> > like a wrong place to do that and if we do need something like that,
+> > readahead window sizing logic should rather be changed to take that into
+> > account? But it all depends on what was the real rationale behind reducing
+> > ra->size in read_pages()...
+> > 
+> 
+> I cannot tell you much more than what the commit itself says.
+> If there are any pages still in the rac, then we didn't try read-ahead
+> and shouldn't pretend that we did. Else the numbers will be wrong.
+> 
+> I think the important part of the patch was the
+> delete_from_page_cache().
+> Leaving pages in the page cache which we didn't try to read will cause
+> a future read-ahead to skip those pages and they can only be read
+> synchronously.
 
+Yes, I agree with the delete_from_page_cache() part (although it seems as a
+bit of an band aid but I guess KISS principle wins here).
 
-This broke in 1bd9011ee163 ("netfs: Change the read result
-collector to only use one work item"), which introduced an
-extra "subreq" variable in the "do {} while()" loop that
-shadows the one in the function body.
+> But maybe you are right that ra, being shared, shouldn't be modified
+> like this.
 
-The one pointed out by the compiler is not initialized
-anywhere. My best guess is that the extra declaration should
-just be removed here:
+OK, I was wondering whether this ra update isn't some way how NFS tries to
+stear optimal readahead size for it. It would be weird but possible. If
+this was mostly a theoretical concert, then I'd be for dropping the ra
+update in read_pages(). I did a small excursion to nfs_readahead() and
+that function itself seems to read all the pages unless there's some error
+like ENOMEM. But before doing this nfs_readahead() does:
 
---- a/fs/netfs/read_retry.c
-+++ b/fs/netfs/read_retry.c
-@@ -72,7 +72,7 @@ static void netfs_retry_read_subrequests(struct netfs_io_request *rreq)
-        next = stream->subrequests.next;
- 
-        do {
--               struct netfs_io_subrequest *subreq = NULL, *from, *to, *tmp;
-+               struct netfs_io_subrequest *from, *to, *tmp;
-                struct iov_iter source;
-                unsigned long long start, len;
-                size_t part;
+        ret = nfs_netfs_readahead(ractl);
+        if (!ret)
+                goto out;                    
 
-This also removes an initialization to NULL, but I think
-that was not needed regardless.
+And that is more interesting because if the inode has netfs cache, we will
+do netfs_readahead(ractl) and return 0. So whatever netfs_readahead() reads
+is the final result. And that function actually seems to read only
+PAGEVEC_SIZE folios (because that's what fits in its request structure) and
+aborts. 
 
-       Arnd
+Now unless you have fscache in tmpfs or you have really large folios in the
+page cache, reading PAGEVEC_SIZE folios can be too small to get decent
+performance. But that's somewhat besides the point of this thread. The fact
+is that netfs can indeed read very few folios from the readahead it was
+asked to do. The question is how the generic readahead code should handle
+such case. Either we could say that such behavior is not really supported
+(besides error recovery where performance is not an issue) and fix netfs to
+try harder to submit all the folios generic code asked it to read. Or we
+can say generic readahead code needs to accommodate such behavior in a
+performant way but then the readahead limitation should be communicated in
+advance so that we avoid creating tons of folios only to discard them a
+while later. I guess the decision depends on how practical is the "try to
+read all folios" solution for netfs... What do you think guys?
+
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
