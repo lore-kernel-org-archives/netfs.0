@@ -1,254 +1,224 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827E71E0DFC
-	for <netfs@lists.linux.dev>; Wed, 27 Nov 2024 11:07:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A276202F79
+	for <netfs@lists.linux.dev>; Wed, 27 Nov 2024 21:22:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732705624; cv=none; b=SH4pAL05VryjfnxmCdRPYKcnor86ee5ZLAdgEmdLHet2QDViR6osDniVLnh3uWrVw0yZ+StQUW+Qwbn5BEWYVPnhgDPQk5KdhyZ9EdOHNyDrnk35vCbR3+QkYOHf4+FxMoCMfoq32+LzJndjzXEgmWWMRSls52d20Q/tkkXCAp8=
+	t=1732742548; cv=none; b=hB/UJC4Aci5mOc19UocHF9idJV7SMi5xwKmP64tC4hj0+x2fU5FHuCqGHN5WwsrJlnf2czsbC14aepyDqPzSaJCX2t/EybEhdaj3CqDiFVNRYXBs14h/SA9mphtaRRIfHbJwHE+9nJpoNkgCn4fHtnCnilK0HRV7h9Ptn6fObh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732705624; c=relaxed/simple;
-	bh=nsTnpCU5lza/RRF6svKMS0tHdUP03m9UTECrIonLoPA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SRK4YqFbqzZl05sGvkDDtDMYlh9mNl85KIoSVIUFSODmAHU9Co7PNSFFW6Rgjesxa8asi0p91XKItb0XWK57hdlS9JiyTB58jSheQI6eHzcJ1bOOmxmDBlouphrT0Z9s+cSRlyYgvgPYqlUKvfJfksSMUotzr1eC/CXTr40I9O8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=p8bQSUHT; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=A6QzlK35; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=p8bQSUHT; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=A6QzlK35; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="p8bQSUHT";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="A6QzlK35";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="p8bQSUHT";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="A6QzlK35"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 6DCAC1F786;
-	Wed, 27 Nov 2024 11:06:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1732705614; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ve5bO8Xk7Mdrs4etTh9swfc19BKNL9zCNHLtpjsUTFc=;
-	b=p8bQSUHTiWn0ntOSRJlScU0Y19NQdFqyVvSnTjYkPUFbSbXa84sBQr1A++WXGv8NqwuNv7
-	Uv8Tu4bAhSvjqJS1aPqaa9tjJdYTBrh05zizZNuVVnuFwm0khP5TBFOTxpmDqrWT1RyyQ6
-	7AkavAsc5Zz5U4vPxB5TjZWUiuGyPr8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1732705614;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ve5bO8Xk7Mdrs4etTh9swfc19BKNL9zCNHLtpjsUTFc=;
-	b=A6QzlK35pDqkrXs+xGX1Dgc+aZox97lM3/2YXSKsXJeYg5wX9oGp90z8E3LoX/LazwHrS8
-	WLYc/Yx/4DFZsYDw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1732705614; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ve5bO8Xk7Mdrs4etTh9swfc19BKNL9zCNHLtpjsUTFc=;
-	b=p8bQSUHTiWn0ntOSRJlScU0Y19NQdFqyVvSnTjYkPUFbSbXa84sBQr1A++WXGv8NqwuNv7
-	Uv8Tu4bAhSvjqJS1aPqaa9tjJdYTBrh05zizZNuVVnuFwm0khP5TBFOTxpmDqrWT1RyyQ6
-	7AkavAsc5Zz5U4vPxB5TjZWUiuGyPr8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1732705614;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ve5bO8Xk7Mdrs4etTh9swfc19BKNL9zCNHLtpjsUTFc=;
-	b=A6QzlK35pDqkrXs+xGX1Dgc+aZox97lM3/2YXSKsXJeYg5wX9oGp90z8E3LoX/LazwHrS8
-	WLYc/Yx/4DFZsYDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5686213941;
-	Wed, 27 Nov 2024 11:06:54 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id S3cYFU79RmfSWQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 27 Nov 2024 11:06:54 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id EBEF6A08D6; Wed, 27 Nov 2024 12:06:49 +0100 (CET)
-Date: Wed, 27 Nov 2024 12:06:49 +0100
-From: Jan Kara <jack@suse.cz>
-To: NeilBrown <neilb@suse.de>
-Cc: Jan Kara <jack@suse.cz>, Anders Blomdell <anders.blomdell@gmail.com>,
-	Philippe Troin <phil@fifi.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>,
-	netfs@lists.linux.dev
-Subject: Re: Regression in NFS probably due to very large amounts of readahead
-Message-ID: <20241127110649.yg2k4s3fzohb2pgg@quack3>
-References: <>
- <20241126150613.a4b57y2qmolapsuc@quack3>
- <173269663098.1734440.13407516531783940860@noble.neil.brown.name>
+	s=arc-20240116; t=1732742548; c=relaxed/simple;
+	bh=yFbgcHeMHyIvKDJ4TL0bBAORSg87sc3mNPdjcKC4euk=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=C/rV69b3uii6LZfXxTEsyVxImIDi4vYy1cQFD3RPufz2c4lUn0I9elc4tG4QAXbcUDWsA9C6pzV3QZX5QiheLJavhG6la1oveTiX+2LoLKlsCUPvm+D50SMcafrVl6Jo0MmhKo1+3Uw8bvPlXGORX2Lrv2DFuSeaHynfg0oUvvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3a79f4c0729so1583255ab.3
+        for <netfs@lists.linux.dev>; Wed, 27 Nov 2024 13:22:26 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732742546; x=1733347346;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=c6w/ragAH6fNV1kVvMrzZ4MY5D3euj2lCORACOs9Ins=;
+        b=NZq6r541gU1uYp3vL1JHnEUZuB7hqN98yrLqTspZHShozXkX1RX8fVGwcZcMwViNkD
+         s0wb790u6Oc4xRzxRQ7W9JpW1IPWoPcKvigJQWfKlWAgkfrclZkiggU98APlbUYYc1xz
+         4Sv3g3AsvqGQq3FdBHakPBGNADE3Z/e4v19Lc7LQSNOBV03xX5xGW0SmFDwQg2GNn45b
+         H9XGtB8X6Ejp02USk9gzQr8WHPLak7n4+kmqfPLh2454p5TNmzOSZQICnI9GcDk7l1LN
+         XMHvPqE/t3WF7HZFrgaylCGfyXtu47Gmdb5M+JuDwYYQeAwHMTYFHgriS15yVPODsorg
+         158g==
+X-Forwarded-Encrypted: i=1; AJvYcCUOp6Be2yzdw7PrfpnpfXUyYPjrpiM0c1DO1jerJfXX1tI62IjYUj+gTZa7uz7OtpwoqcetHA==@lists.linux.dev
+X-Gm-Message-State: AOJu0YypQfMqSaL3SYknCxbSLNO7efofFbuz8ift1eg7ssrhIbM0T2aj
+	PfFdpwyIAlecCIWekKSjTVra9VSzghyeDHqPN2E6eru+fqGY4utnwSPn7IkREABCjTjtB6hu6mI
+	lw0aZ+hfQKHOhq/69cQL1wgV9xihwPoJS0euoxz/YXDWuKn4t3owmSmw=
+X-Google-Smtp-Source: AGHT+IHkmj8EeYdD0jdKVhuczxXDyaO0/L8rIBgOTIAxmjMRJSe40gzKjtwDt9Zm2d3nTBtYmpYeeyPhXdVFSHyJu5zkMDHGAN1o
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <173269663098.1734440.13407516531783940860@noble.neil.brown.name>
-X-Spam-Score: -2.30
-X-Spamd-Result: default: False [-2.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	TAGGED_RCPT(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[3];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[suse.cz,gmail.com,fifi.org,infradead.org,linux-foundation.org,vger.kernel.org,kvack.org,redhat.com,lists.linux.dev];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:email]
-X-Spam-Flag: NO
-X-Spam-Level: 
+X-Received: by 2002:a05:6e02:1caf:b0:3a7:8720:9de8 with SMTP id
+ e9e14a558f8ab-3a7c552677amr54613075ab.5.1732742545753; Wed, 27 Nov 2024
+ 13:22:25 -0800 (PST)
+Date: Wed, 27 Nov 2024 13:22:25 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <67478d91.050a0220.253251.0061.GAE@google.com>
+Subject: [syzbot] [netfs?] INFO: task hung in netfs_unbuffered_read_iter
+From: syzbot <syzbot+8965fea6a159ab9aa32d@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, bharathsm@microsoft.com, brauner@kernel.org, 
+	dhowells@redhat.com, ericvh@kernel.org, jlayton@kernel.org, 
+	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux_oss@crudebyte.com, lucho@ionkov.net, 
+	marc.dionne@auristor.com, mathieu.desnoyers@efficios.com, mhiramat@kernel.org, 
+	netfs@lists.linux.dev, pc@manguebit.com, ronniesahlberg@gmail.com, 
+	rostedt@goodmis.org, samba-technical@lists.samba.org, sfrench@samba.org, 
+	sprasad@microsoft.com, syzkaller-bugs@googlegroups.com, tom@talpey.com, 
+	v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Added David Howells to CC since this seems to be mostly netfs related.
+Hello,
 
-On Wed 27-11-24 19:37:10, NeilBrown wrote:
-> On Wed, 27 Nov 2024, Jan Kara wrote:
-> > On Tue 26-11-24 11:37:19, Jan Kara wrote:
-> > > On Tue 26-11-24 09:01:35, Anders Blomdell wrote:
-> > > > On 2024-11-26 02:48, Philippe Troin wrote:
-> > > > > On Sat, 2024-11-23 at 23:32 +0100, Anders Blomdell wrote:
-> > > > > > When we (re)started one of our servers with 6.11.3-200.fc40.x86_64,
-> > > > > > we got terrible performance (lots of nfs: server x.x.x.x not
-> > > > > > responding).
-> > > > > > What triggered this problem was virtual machines with NFS-mounted
-> > > > > > qcow2 disks
-> > > > > > that often triggered large readaheads that generates long streaks of
-> > > > > > disk I/O
-> > > > > > of 150-600 MB/s (4 ordinary HDD's) that filled up the buffer/cache
-> > > > > > area of the
-> > > > > > machine.
-> > > > > > 
-> > > > > > A git bisect gave the following suspect:
-> > > > > > 
-> > > > > > git bisect start
-> > > > > 
-> > > > > 8< snip >8
-> > > > > 
-> > > > > > # first bad commit: [7c877586da3178974a8a94577b6045a48377ff25]
-> > > > > > readahead: properly shorten readahead when falling back to
-> > > > > > do_page_cache_ra()
-> > > > > 
-> > > > > Thank you for taking the time to bisect, this issue has been bugging
-> > > > > me, but it's been non-deterministic, and hence hard to bisect.
-> > > > > 
-> > > > > I'm seeing the same problem on 6.11.10 (and earlier 6.11.x kernels) in
-> > > > > slightly different setups:
-> > > > > 
-> > > > > (1) On machines mounting NFSv3 shared drives. The symptom here is a
-> > > > > "nfs server XXX not responding, still trying" that never recovers
-> > > > > (while the server remains pingable and other NFSv3 volumes from the
-> > > > > hanging server can be mounted).
-> > > > > 
-> > > > > (2) On VMs running over qemu-kvm, I see very long stalls (can be up to
-> > > > > several minutes) on random I/O. These stalls eventually recover.
-> > > > > 
-> > > > > I've built a 6.11.10 kernel with
-> > > > > 7c877586da3178974a8a94577b6045a48377ff25 reverted and I'm back to
-> > > > > normal (no more NFS hangs, no more VM stalls).
-> > > > > 
-> > > > Some printk debugging, seems to indicate that the problem
-> > > > is that the entity 'ra->size - (index - start)' goes
-> > > > negative, which then gets cast to a very large unsigned
-> > > > 'nr_to_read' when calling 'do_page_cache_ra'. Where the true
-> > > > bug is still eludes me, though.
-> > > 
-> > > Thanks for the report, bisection and debugging! I think I see what's going
-> > > on. read_pages() can go and reduce ra->size when ->readahead() callback
-> > > failed to read all folios prepared for reading and apparently that's what
-> > > happens with NFS and what can lead to negative argument to
-> > > do_page_cache_ra(). Now at this point I'm of the opinion that updating
-> > > ra->size / ra->async_size does more harm than good (because those values
-> > > show *desired* readahead to happen, not exact number of pages read),
-> > > furthermore it is problematic because ra can be shared by multiple
-> > > processes and so updates are inherently racy. If we indeed need to store
-> > > number of read pages, we could do it through ractl which is call-site local
-> > > and used for communication between readahead generic functions and callers.
-> > > But I have to do some more history digging and code reading to understand
-> > > what is using this logic in read_pages().
-> > 
-> > Hum, checking the history the update of ra->size has been added by Neil two
-> > years ago in 9fd472af84ab ("mm: improve cleanup when ->readpages doesn't
-> > process all pages"). Neil, the changelog seems as there was some real
-> > motivation behind updating of ra->size in read_pages(). What was it? Now I
-> > somewhat disagree with reducing ra->size in read_pages() because it seems
-> > like a wrong place to do that and if we do need something like that,
-> > readahead window sizing logic should rather be changed to take that into
-> > account? But it all depends on what was the real rationale behind reducing
-> > ra->size in read_pages()...
-> > 
-> 
-> I cannot tell you much more than what the commit itself says.
-> If there are any pages still in the rac, then we didn't try read-ahead
-> and shouldn't pretend that we did. Else the numbers will be wrong.
-> 
-> I think the important part of the patch was the
-> delete_from_page_cache().
-> Leaving pages in the page cache which we didn't try to read will cause
-> a future read-ahead to skip those pages and they can only be read
-> synchronously.
+syzbot found the following issue on:
 
-Yes, I agree with the delete_from_page_cache() part (although it seems as a
-bit of an band aid but I guess KISS principle wins here).
+HEAD commit:    ed9a4ad6e5bd Add linux-next specific files for 20241126
+git tree:       linux-next
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=17615530580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=e348a4873516af92
+dashboard link: https://syzkaller.appspot.com/bug?extid=8965fea6a159ab9aa32d
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=175c8dc0580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1103a1e8580000
 
-> But maybe you are right that ra, being shared, shouldn't be modified
-> like this.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/3b9ba5fbd895/disk-ed9a4ad6.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/e30aed8d0305/vmlinux-ed9a4ad6.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/1092546e50cf/bzImage-ed9a4ad6.xz
 
-OK, I was wondering whether this ra update isn't some way how NFS tries to
-stear optimal readahead size for it. It would be weird but possible. If
-this was mostly a theoretical concert, then I'd be for dropping the ra
-update in read_pages(). I did a small excursion to nfs_readahead() and
-that function itself seems to read all the pages unless there's some error
-like ENOMEM. But before doing this nfs_readahead() does:
+The issue was bisected to:
 
-        ret = nfs_netfs_readahead(ractl);
-        if (!ret)
-                goto out;                    
+commit 1bd9011ee163e11f186b72705978fd6b21bdc07b
+Author: David Howells <dhowells@redhat.com>
+Date:   Fri Nov 8 17:32:29 2024 +0000
 
-And that is more interesting because if the inode has netfs cache, we will
-do netfs_readahead(ractl) and return 0. So whatever netfs_readahead() reads
-is the final result. And that function actually seems to read only
-PAGEVEC_SIZE folios (because that's what fits in its request structure) and
-aborts. 
+    netfs: Change the read result collector to only use one work item
 
-Now unless you have fscache in tmpfs or you have really large folios in the
-page cache, reading PAGEVEC_SIZE folios can be too small to get decent
-performance. But that's somewhat besides the point of this thread. The fact
-is that netfs can indeed read very few folios from the readahead it was
-asked to do. The question is how the generic readahead code should handle
-such case. Either we could say that such behavior is not really supported
-(besides error recovery where performance is not an issue) and fix netfs to
-try harder to submit all the folios generic code asked it to read. Or we
-can say generic readahead code needs to accommodate such behavior in a
-performant way but then the readahead limitation should be communicated in
-advance so that we avoid creating tons of folios only to discard them a
-while later. I guess the decision depends on how practical is the "try to
-read all folios" solution for netfs... What do you think guys?
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=174cc3c0580000
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=14ccc3c0580000
+console output: https://syzkaller.appspot.com/x/log.txt?x=10ccc3c0580000
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+8965fea6a159ab9aa32d@syzkaller.appspotmail.com
+Fixes: 1bd9011ee163 ("netfs: Change the read result collector to only use one work item")
+
+INFO: task syz-executor246:5857 blocked for more than 143 seconds.
+      Not tainted 6.12.0-next-20241126-syzkaller #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:syz-executor246 state:D stack:22584 pid:5857  tgid:5857  ppid:5854   flags:0x00004006
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5369 [inline]
+ __schedule+0x1850/0x4c30 kernel/sched/core.c:6756
+ __schedule_loop kernel/sched/core.c:6833 [inline]
+ schedule+0x14b/0x320 kernel/sched/core.c:6848
+ bit_wait+0x12/0xd0 kernel/sched/wait_bit.c:237
+ __wait_on_bit+0xb0/0x2f0 kernel/sched/wait_bit.c:49
+ out_of_line_wait_on_bit+0x1d5/0x260 kernel/sched/wait_bit.c:64
+ wait_on_bit include/linux/wait_bit.h:77 [inline]
+ netfs_dispatch_unbuffered_reads fs/netfs/direct_read.c:107 [inline]
+ netfs_unbuffered_read fs/netfs/direct_read.c:146 [inline]
+ netfs_unbuffered_read_iter_locked+0xd7e/0x1560 fs/netfs/direct_read.c:231
+ netfs_unbuffered_read_iter+0xbf/0xe0 fs/netfs/direct_read.c:266
+ new_sync_read fs/read_write.c:484 [inline]
+ vfs_read+0x991/0xb70 fs/read_write.c:565
+ ksys_read+0x18f/0x2b0 fs/read_write.c:708
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f1999cb4f79
+RSP: 002b:00007ffef9ec4f98 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
+RAX: ffffffffffffffda RBX: 0030656c69662f2e RCX: 00007f1999cb4f79
+RDX: 0000000000002020 RSI: 000000002001b640 RDI: 0000000000000006
+RBP: 00007f1999cfe04e R08: 0000000000000006 R09: 0000000000000006
+R10: 0000000000000006 R11: 0000000000000246 R12: 00007ffef9ec4fac
+R13: 431bde82d7b634db R14: 0000000000000001 R15: 0000000000000001
+ </TASK>
+
+Showing all locks held in the system:
+1 lock held by khungtaskd/30:
+ #0: ffffffff8e937ae0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:337 [inline]
+ #0: ffffffff8e937ae0 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:849 [inline]
+ #0: ffffffff8e937ae0 (rcu_read_lock){....}-{1:3}, at: debug_show_all_locks+0x55/0x2a0 kernel/locking/lockdep.c:6744
+5 locks held by kworker/u8:2/35:
+2 locks held by getty/5592:
+ #0: ffff888034e320a0 (&tty->ldisc_sem){++++}-{0:0}, at: tty_ldisc_ref_wait+0x25/0x70 drivers/tty/tty_ldisc.c:243
+ #1: ffffc90002fde2f0 (&ldata->atomic_read_lock){+.+.}-{4:4}, at: n_tty_read+0x6a6/0x1e00 drivers/tty/n_tty.c:2211
+1 lock held by syz-executor246/5857:
+ #0: ffff888072050148 (&sb->s_type->i_mutex_key#15){++++}-{4:4}, at: netfs_start_io_direct+0x1d4/0x210 fs/netfs/locking.c:188
+
+=============================================
+
+NMI backtrace for cpu 1
+CPU: 1 UID: 0 PID: 30 Comm: khungtaskd Not tainted 6.12.0-next-20241126-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ nmi_cpu_backtrace+0x49c/0x4d0 lib/nmi_backtrace.c:113
+ nmi_trigger_cpumask_backtrace+0x198/0x320 lib/nmi_backtrace.c:62
+ trigger_all_cpu_backtrace include/linux/nmi.h:162 [inline]
+ check_hung_uninterruptible_tasks kernel/hung_task.c:234 [inline]
+ watchdog+0xffb/0x1040 kernel/hung_task.c:397
+ kthread+0x2f0/0x390 kernel/kthread.c:389
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+Sending NMI from CPU 1 to CPUs 0:
+NMI backtrace for cpu 0
+CPU: 0 UID: 0 PID: 35 Comm: kworker/u8:2 Not tainted 6.12.0-next-20241126-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Workqueue: events_unbound toggle_allocation_gate
+RIP: 0010:insn_get_sib arch/x86/lib/insn.c:447 [inline]
+RIP: 0010:insn_get_displacement+0x2ca/0x9a0 arch/x86/lib/insn.c:484
+Code: cb f5 49 bc 00 00 00 00 00 fc ff df e9 12 04 00 00 49 8d 5d 25 48 89 d8 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df 0f b6 04 08 <84> c0 0f 85 95 05 00 00 0f b6 1b 31 ff 89 de e8 72 c9 cb f5 85 db
+RSP: 0018:ffffc90000ab7790 EFLAGS: 00000a07
+RAX: 0000000000000000 RBX: ffffc90000ab7945 RCX: dffffc0000000000
+RDX: ffff888020a81e00 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffffc90000ab794c R08: ffffffff8bd3c21d R09: ffffffff8bd395b6
+R10: 0000000000000002 R11: ffff888020a81e00 R12: 1ffff92000156f29
+R13: ffffc90000ab7920 R14: 1ffff92000156f2a R15: 0000000000000000
+FS:  0000000000000000(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fbd0e4b4580 CR3: 000000000e736000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <NMI>
+ </NMI>
+ <TASK>
+ insn_get_immediate+0x62/0x11f0 arch/x86/lib/insn.c:650
+ insn_get_length arch/x86/lib/insn.c:723 [inline]
+ insn_decode+0x2d6/0x4c0 arch/x86/lib/insn.c:762
+ text_poke_loc_init+0xed/0x870 arch/x86/kernel/alternative.c:2432
+ arch_jump_label_transform_queue+0x8f/0x100 arch/x86/kernel/jump_label.c:138
+ __jump_label_update+0x177/0x3a0 kernel/jump_label.c:513
+ static_key_disable_cpuslocked+0xd2/0x1c0 kernel/jump_label.c:240
+ static_key_disable+0x1a/0x20 kernel/jump_label.c:248
+ toggle_allocation_gate+0x1bf/0x260 mm/kfence/core.c:854
+ process_one_work kernel/workqueue.c:3229 [inline]
+ process_scheduled_works+0xa63/0x1850 kernel/workqueue.c:3310
+ worker_thread+0x870/0xd30 kernel/workqueue.c:3391
+ kthread+0x2f0/0x390 kernel/kthread.c:389
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+INFO: NMI handler (nmi_cpu_backtrace_handler) took too long to run: 1.344 msecs
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
