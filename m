@@ -1,84 +1,86 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f68.google.com (mail-ed1-f68.google.com [209.85.208.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D581E199934
-	for <netfs@lists.linux.dev>; Fri, 29 Nov 2024 12:41:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F19F84D3E
+	for <netfs@lists.linux.dev>; Fri, 29 Nov 2024 14:55:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732884097; cv=none; b=Mh0ibONjxq+sDDe9dvk//s8GxzXFrYG6W3mt8MqjIZhpqgei5/VtQeq59s8cQzGl1ez4JkYU6b8hipF6jj77wx0lbu2C6qN3tMKtvWCKgi72HKXv789L8aJr+ZE8rFeFaAzP9jAJb2hRF66uUNP20aNspqD8qBzUC719Hk8aNKo=
+	t=1732892113; cv=none; b=pofHg9KKkahXkZsv88ebrDsRf2UfLBp6sS5xg4E6lGr5oKpQ3CovnKpNRYTsuS3jSmHAqZgUPDAr+UUG9qbG4dI2mJNjvFCuxLLLs/vxNsmfNyEBGarhIB+QpWCDCSKBFwiY2E3bkAE8+9GEowfG5bBcxv5vxShMASIs2sCtnwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732884097; c=relaxed/simple;
-	bh=/5hkHpGXIRPZIGRYrzi9fORbfclpImv7n31LW92dn5U=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=Epbm0NKFuJwW1hhF5ThO6sdbfit1f/CzPgmqnwbXE0JNdMA6/D1aTzO+XKoeuziQcTFK7dKrIuG1N98lnu+omJUhIqXN92GhGE5VOpHO9m22ZAoHIc8f1K6afAWEIX4A77ckXc+47G7uzGrQNRyHZOqNjvGmZQ5xvvjsatIs8Vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Cw89ivNw; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1732892113; c=relaxed/simple;
+	bh=O9a3P91RjewXkY9Vb24JTH2RFu7MA/UNMj6F+7Ja3GM=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=ExuV13quERP1QArF8MaRho6KpcoJFjfnYlCCOl8uHOoZAxmPWKsl3ZpDCvJyUeUTrVHqSY0yoTdQuSjpsO4J0KWPVX+pLiIL4zmv+KEuiJKt2UiyQtFM6aobKFxa16uNrFkAQSbhpwHSyeqVSxi8xwRSbOrsWb/VjRf0PBWKs6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=FGUqD/YV; arc=none smtp.client-ip=209.85.208.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Cw89ivNw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1732884094;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BRkQ7caS5vjHyMGGRL+u1PZKOEaI3catRgsdocSqOXY=;
-	b=Cw89ivNwibNW/rfK7d1J1dON8bSkfqy51Hd+c3uvmGLlmYJqHsDd3ztPDMtUWhbQU9SVG0
-	uA7EfGQ8jE8GUaSows9QtLAbE9uaaTKtbldrviZvIMpp3wfAosJ0FK1AD+K2l38PQEnD+4
-	EpndUAypxFDwbjNVNuaAkPONNlifO7o=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-607-sMpMOHflNWmnyAF14Y2mUQ-1; Fri,
- 29 Nov 2024 07:41:31 -0500
-X-MC-Unique: sMpMOHflNWmnyAF14Y2mUQ-1
-X-Mimecast-MFC-AGG-ID: sMpMOHflNWmnyAF14Y2mUQ
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 690E819560AB;
-	Fri, 29 Nov 2024 12:41:30 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.2])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B625230001A2;
-	Fri, 29 Nov 2024 12:41:28 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <CAKPOu+_4m80thNy5_fvROoxBm689YtA0dZ-=gcmkzwYSY4syqw@mail.gmail.com>
-References: <CAKPOu+_4m80thNy5_fvROoxBm689YtA0dZ-=gcmkzwYSY4syqw@mail.gmail.com>
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: dhowells@redhat.com, Jeff Layton <jlayton@kernel.org>,
-    netfs@lists.linux.dev, linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-    linux-kernel@vger.kernel.org
-Subject: Re: 6.12 WARNING in netfs_consume_read_data()
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="FGUqD/YV"
+Received: by mail-ed1-f68.google.com with SMTP id 4fb4d7f45d1cf-5d01db666ceso2163991a12.0
+        for <netfs@lists.linux.dev>; Fri, 29 Nov 2024 06:55:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1732892109; x=1733496909; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=O9a3P91RjewXkY9Vb24JTH2RFu7MA/UNMj6F+7Ja3GM=;
+        b=FGUqD/YV2DjvZOc+p5/+/rz3y32kyX4L7CaVQRxJpiIduEO/P4G3SrQ41D7cSy0Dad
+         PttT/xLgNKJgyLlVClKq1VrBdwiepfO3mbB9iWwhhK45OGBblXbIHGXI5MUoKoSEEG4a
+         f7jG1T6jMfNRdxwHi9nfkSKLLGYeUPzLDh13K3GDaQjSZ7VUZy16CHdBlG7WewjXIrnH
+         JpZDVkDmsXEehebpOPoJxCHT7It548rCE9J5Ziss8u44xXbhsVRFn3WtT/wiD7IbhrxT
+         uY/Ivj6QDVmD0H8ZCNdpbo1xhoR8F+ngp+gEqjqbT3vRt6UxqSbA3rvtKN7iAqmlqxO5
+         L2Cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732892109; x=1733496909;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=O9a3P91RjewXkY9Vb24JTH2RFu7MA/UNMj6F+7Ja3GM=;
+        b=xF5dMbwOMazNP1bUYHLO+voIn2KCNKfifgQaa8bn+tywkoIb8CSwCexdV0G0log61w
+         02ZXjM7amrNZrw5N3n5QkmzJG8kIkuCHJ3S4U6tXmJVwV7i3RKhtYJXpdVVGog+XOFuj
+         lYBYdZK/WDcS4FLbPtdLmJJMxQk9VbbcWAuCVY8sz6Day9SeII8WLpP6IUPPKJazURWy
+         9o2QkdCXfR2zayXnQVCnuTgI6DYA/YDhGTsA2+USV3zc0zEH8qI5RCeVvdwtBmMP83Du
+         CP3u9CRe7xGiBzqWF8Wj/yVIHxm/8UTnVeeFsw2aT3ejRkN92Q1NX4c/7IjC70eXb2Rg
+         carQ==
+X-Gm-Message-State: AOJu0YwpAn4fGIl0llVBwhSvBzXNYgM3Md6cskL3g6raVBxiFaIwwhdy
+	RRRaDv9XGdQFLo6s60ZmVKjCTs75bLTWIn0iRQ3W5pikU+nuwAtunzjhFQSPBtnD98lLZbPign9
+	V3ktOjaX9GffrdVwy82tqPNHy1Xgy2/rguhbYwKBXi324kuCY65lFpuvA
+X-Gm-Gg: ASbGncvmAwi0PZS+0ZAiJxjwo4Qg/yDsUoJEe3LkivZ1zRU5Hq2jWWfsr5QYr91uHdB
+	QB2sgiepqgiE9mUYBF9PwgCStPf1Yyta+3kwLx786YEgVQvt9k9EEobGHzmEb
+X-Google-Smtp-Source: AGHT+IG51/ctnpWAAyPJ/UsJlBYumpbLHWzlJDXWMRRsSq/xkkaWPA5otoCRqF2ZE2cHTksBbDVGzPfBHaxGmz3W3Fg=
+X-Received: by 2002:a05:6402:4402:b0:5cf:f248:7715 with SMTP id
+ 4fb4d7f45d1cf-5d080c48680mr9742804a12.23.1732892108854; Fri, 29 Nov 2024
+ 06:55:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3990749.1732884087.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 29 Nov 2024 12:41:27 +0000
-Message-ID: <3990750.1732884087@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+From: Max Kellermann <max.kellermann@ionos.com>
+Date: Fri, 29 Nov 2024 15:54:56 +0100
+Message-ID: <CAKPOu+_JUNO5EZosu00H=tZsgfCAzQkBBkJjVfOHYrX_6mHEPQ@mail.gmail.com>
+Subject: New cachefilesd implementation
+To: netfs@lists.linux.dev
+Cc: David Howells <dhowells@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Max,
+Hi,
 
-Could you try:
+the venerable cachefilesd has caused us numerous problems. We have a
+rather large cache partition (several terabytes containing hundreds of
+millions of cached files), and cachefiled's culling would take a
+thousand times longer than it would take the kernel to refill the
+space that was freed. cachefilesd had been running for months at 100%
+CPU with no visible progress. This made our fscache unusable.
 
-	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log=
-/?h=3Dnetfs-writeback
+This problem is caused by cachefilesd's bad choice of data structure:
+it maintains a sorted array of object pointers, making
+insert_into_cull_table() extremely slow and CPU consuming. I figured
+reimplementing it from scratch in a saner language was faster than
+fixing the old C code base. So I did just that, with C++ and io_uring.
 
-I think the patches there should fix it.
+This is it, after barely one day of hacking: https://github.com/CM4all/cash
+It is not yet complete (hard-coded configuration, no graveyard
+cleanup, bad error handling) and the code sure could be prettier, but
+it's already running on our production servers and has cleaned up the
+mess that cachefilesd has left behind.
 
-However, as these aren't making it till the next merge window, I'll try an=
-d
-work out an interim fix.
-
-David
-
+Max
