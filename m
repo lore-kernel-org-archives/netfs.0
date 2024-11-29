@@ -1,80 +1,101 @@
-Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9A119CC1C
-	for <netfs@lists.linux.dev>; Fri, 29 Nov 2024 17:15:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8C014D430
+	for <netfs@lists.linux.dev>; Fri, 29 Nov 2024 18:41:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732900507; cv=none; b=Av4knC8OUj6XSsadF6Dp7S9+pKOYAmhr3Dov3+H35jDOMLXleEIO4mL2hjcCj3HNnfKZNDyrgrSwc/W+cCg4KYtjzFdQOLD8LczkcUFDKt65bhqcHFMWkTxMwdiUJumMam3RlfWmAxNDA61LF9CCEmPpG600qWGUQGSEx0A2RkA=
+	t=1732905691; cv=none; b=uXylU2WtFoaGSnxMuTXHHmk8WTW8zXkz5RE9xqcUF6LflGT37+iZFsbt4HjiA5JQ21fmy5YR2MkOV1nw22EjxJgjFwA2r3ZHKrLGrf2XfnXar5wzjhflCWrz9/2YWAbw1NCYmqqOKBWPA29+OSVD1SfxDqWFg1Apjf77YN1Xd6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732900507; c=relaxed/simple;
-	bh=GnhFjpEQk2QTU3xMRMxYSIU7Dc+xnhMFHvUYOX0FzPs=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=oKzUsqGZ+ynBSJJvEIeewL3nfqrnlJEgA6aatNwH23QMPTt5oNlfrqDBPbxHFedx2hxqlJlkOTBpj7/uzqlvg7h0ebTvv4OTy7fFefsuAM70fat4cE6cQJkcgruv6ugD/FSsdwA3urQNf1rmTmzYRHmgyMuTQimOzEaKyLhMPX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3a77085a3d7so16179135ab.1
-        for <netfs@lists.linux.dev>; Fri, 29 Nov 2024 09:15:05 -0800 (PST)
+	s=arc-20240116; t=1732905691; c=relaxed/simple;
+	bh=xAb4Le1Lr+I2C91qh3j1SB/a63UxkprFuvtEzuE2+JQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=X3nwH/jlntwEQb8MkXWk1XenbtfZedaat0g6rEnd2wWMv5hf4BsohoV3NynEL38v0rPiic+MfF4oI0HPP48qMisO20RpMkme8kJGf8bJYSp8y/0aphSzLSM9IEEAJQzzrHCtOgMvqA2WwzuvwheZ67C+/NfnAjpG7y3ZXBg5k9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=DSrkCt8b; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="DSrkCt8b"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-aa51b8c5f4dso284672366b.2
+        for <netfs@lists.linux.dev>; Fri, 29 Nov 2024 10:41:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1732905684; x=1733510484; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2NvojhvAIMBhLQh6O1cvcFUUSDHH+U81GMl9MyhQbnA=;
+        b=DSrkCt8bftvl095+tqPtSiRFABVchzZedUMyDmuJjn3G4Qs0RTZibQCQJrtr/zWEDO
+         mGB9mYlIa4Blsh4pXoswwjvgjEWJGqPMnfiV7FUhp6MKhVQ5KLMdMerbaslowWbHebJt
+         IiXU2CxkffHIM1NVl1BCElFZxt6v8fIFM2iFZvzqhJZXmEm5p6CutMN1EG7kU75ak+Io
+         2a9PTR6Sq1yBw00POqUrGudoF5Pj7kwZ12RUB2EQGG7RaLCybMcWpj3XXndwUdshl8hY
+         7jxYqdZmvuB7+0oPu4wGLickqszzc4zJ63cTJ+4TKeo3ZJIm5/LGaOZ+jXJzfW/lZd0D
+         0A6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732900505; x=1733505305;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cabndGigWtS979m0rIc0e06+sfnwrdqk4oGx1hUPQVw=;
-        b=tU11baS3fCFWesSCKsZMvFROdWqW8634nURSd1NpOOXIjMZZidKyTYHLyxTJEfTwUd
-         aWYGCWngGvnKQvkK1K42uLRUSp4EMNRowmm62ymtzOYxXebtXEgA1GrtIGd5+sDBajT/
-         0+DW2Dgb9JAU7hbWakGHQ7rURmwcXUKVDpyIFfdG5Ro4ulTvNQyu1nKWIRkFKWsnn3XZ
-         1AtNhirzkGdP/gMKZSIv18ZMTsD1faMfHuZvLGqAFA8BgBOoHaRbqgy2SNOWPBUynlqq
-         tBVHcfMJeFdaJK726pHL+Z5JWy+U3CeNGwCq5gUpBmzv3JOa0x7h2kBFd57uDSxZvqKU
-         JLAA==
-X-Forwarded-Encrypted: i=1; AJvYcCWbFnwJPfomGMXBZhULqBRJLsyC9OcEBMxH+VrPJjKzkfYptuQP85+a9cCmarnh+6svlcwlsw==@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzv95yNOe+mytF1/sHaBNUZkkAsiKgat6HjRLCNmEjQ5di0gOUR
-	TTPyVzt0eQlaQ6JZKuxqo9xcz+gHW/GLl8GIc/RLozaGwP6BecobehJrnlA8b99mTlXpc0mTC3t
-	9Fh45oeMFkGlmc55/NZ79J+qbVrS1PqOYT7mBQqYyTLzCGo8VZEo0xos=
-X-Google-Smtp-Source: AGHT+IHe8uD7Va/t9RghiydunC7nRHm/GXM4J1aMUOaYHKIypML+ORhOP4P4xsuLh0/azcIVXHk232/8no/NPRjgk/tTxHq54l6N
+        d=1e100.net; s=20230601; t=1732905684; x=1733510484;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2NvojhvAIMBhLQh6O1cvcFUUSDHH+U81GMl9MyhQbnA=;
+        b=cLVvm3DzElBsxJQkFYPI3qUJnXxLiQ/TveV/BMb4mrkq1/VcQRS3wj46iWCVM+dG2q
+         oLYMPAMar1KE7HfHy/DWRt7e/oZR1JB6Z28YGYVEHKiDN+WN9ByTKbQZLv/d9IRQo/VN
+         ftVSjWqYg4TKhPgkm80n/zQC0prVMxCfocQz46DSpn6Ltk/hi6t2ltbV/VPxseoFeI3l
+         LCCCN+CCqyKmuXmGiwaf8Vw7nwMugYVhRnMYKjMrzad0sihcP+5d77BlwgGbFGgI/FsD
+         ZGqTuNE5XZc/FtOh1GcnG5z1GtNMYQAPGsjYJnmLl3UoxIyX+pTFHrfyDAoj5q3HFTih
+         pP9Q==
+X-Gm-Message-State: AOJu0Ywt7eYOAKBMwpOfjebwa0xPTHz61mBkC/HJWS9KzWopIR/mRWJq
+	P3JsYpIx4Eo0hV82yDq/I775CockxqA8FQM+or3NZhlZZz8cL63vaHAANY4anNkjDe9IH557yks
+	pwRP0OKra9iRuf/2dmWqALLzUnwxRcJi8m0gh+/F7ZlzFECF7QkTK+A==
+X-Gm-Gg: ASbGncsFNBszPmJEwj056vpG/zim02csWlvF8DhgWz2dpday9TxkzKU4rm/DMQlcsm8
+	pJUQG1bHMdKTsJZ+4I39nqhkqUwRWVL+fLEm/hTOhwk2DI41uPXUjXxWv6/2r
+X-Google-Smtp-Source: AGHT+IG2JUbCttHRySoP5H/kIF2kcMZoeZJQd1iXLDQ0okbqS9DAnasQYD6569dIdAQQ02sDNcMyILohvw5ZrxUHyUg=
+X-Received: by 2002:a17:906:2181:b0:aa5:29ef:3aa6 with SMTP id
+ a640c23a62f3a-aa580f0ec72mr892793366b.23.1732905684289; Fri, 29 Nov 2024
+ 10:41:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1a46:b0:3a7:c81e:825f with SMTP id
- e9e14a558f8ab-3a7cbd23d37mr83760205ab.9.1732900504111; Fri, 29 Nov 2024
- 09:15:04 -0800 (PST)
-Date: Fri, 29 Nov 2024 09:15:04 -0800
-In-Reply-To: <4020304.1732897192@warthog.procyon.org.uk>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6749f698.050a0220.253251.00bd.GAE@google.com>
-Subject: Re: [syzbot] [netfs?] INFO: task hung in netfs_unbuffered_read_iter
-From: syzbot <syzbot+8965fea6a159ab9aa32d@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, bharathsm@microsoft.com, brauner@kernel.org, 
-	dhowells@redhat.com, ericvh@kernel.org, jlayton@kernel.org, 
-	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux_oss@crudebyte.com, lucho@ionkov.net, 
-	marc.dionne@auristor.com, mathieu.desnoyers@efficios.com, mhiramat@kernel.org, 
-	netfs@lists.linux.dev, pc@manguebit.com, ronniesahlberg@gmail.com, 
-	rostedt@goodmis.org, samba-technical@lists.samba.org, sfrench@samba.org, 
-	sprasad@microsoft.com, syzkaller-bugs@googlegroups.com, tom@talpey.com, 
-	v9fs@lists.linux.dev
+References: <CAKPOu+_JUNO5EZosu00H=tZsgfCAzQkBBkJjVfOHYrX_6mHEPQ@mail.gmail.com>
+ <4022108.1732899245@warthog.procyon.org.uk>
+In-Reply-To: <4022108.1732899245@warthog.procyon.org.uk>
+From: Max Kellermann <max.kellermann@ionos.com>
+Date: Fri, 29 Nov 2024 19:41:13 +0100
+Message-ID: <CAKPOu+8k-FxPFyomULC8MqVo-gvnaJNLrvfccVgb1uXZ24yFvw@mail.gmail.com>
+Subject: Re: New cachefilesd implementation
+To: David Howells <dhowells@redhat.com>
+Cc: netfs@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+On Fri, Nov 29, 2024 at 5:54=E2=80=AFPM David Howells <dhowells@redhat.com>=
+ wrote:
+> Now, would you be able to clone this:
+>
+>         https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/cachefil=
+esd.git/
+>
+> Then rip out the existing code and put in your code?
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+You mean create a merge commit from your repository? This would make
+it easier for people to "upgrade" by using a simple "git pull" on
+their existing clone. Is that what you want?
 
-Reported-by: syzbot+8965fea6a159ab9aa32d@syzkaller.appspotmail.com
-Tested-by: syzbot+8965fea6a159ab9aa32d@syzkaller.appspotmail.com
+> There's some stuff in
+> there that is necessary to run on SELinux-based systems and it would make=
+ it
+> a lot easier for me just to replace the current cachefilesd package by ju=
+st
+> pulling yours directly.
 
-Tested on:
+I wrote my implementation only for our own use (it solves an important
+problem we had), but if you want to retire yours and make mine the
+successor ("cachefilesd v2"?), I'd be willing to integrate all
+existing features. And give up the silly project name ;-) (naming is
+hard)
 
-commit:         2aece382 netfs: Report on NULL folioq in netfs_writeba..
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git netfs-writeback
-console output: https://syzkaller.appspot.com/x/log.txt?x=159cf3c0580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=225053d900535838
-dashboard link: https://syzkaller.appspot.com/bug?extid=8965fea6a159ab9aa32d
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=1328f3c0580000
+> Also, you are using a simplified BSD licence - can you make it joint BSD/=
+GPL?
 
-Note: testing is done by a robot and is best-effort only.
+Yes.
