@@ -1,200 +1,172 @@
-Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
+Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A276202F79
-	for <netfs@lists.linux.dev>; Wed, 27 Nov 2024 21:22:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D036C157A46
+	for <netfs@lists.linux.dev>; Fri, 29 Nov 2024 07:27:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732742548; cv=none; b=hB/UJC4Aci5mOc19UocHF9idJV7SMi5xwKmP64tC4hj0+x2fU5FHuCqGHN5WwsrJlnf2czsbC14aepyDqPzSaJCX2t/EybEhdaj3CqDiFVNRYXBs14h/SA9mphtaRRIfHbJwHE+9nJpoNkgCn4fHtnCnilK0HRV7h9Ptn6fObh0=
+	t=1732865246; cv=none; b=BpPU54ffM3OP6nE/Lbh6oF22YmdN9qGUNiXQ96TJY/yWbuxUpo1qf0kOU9fo5gkWVUUsu0NpIBd1TN4kV/ljq1Tyyko/pK1/N2qkOo2gUbv0CsIxV+AsPR4O4KpiZN5tdvuruJuHxQ26iau26cwvYBMuN3ZlXYfmO8T9YbZzPmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732742548; c=relaxed/simple;
-	bh=yFbgcHeMHyIvKDJ4TL0bBAORSg87sc3mNPdjcKC4euk=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=C/rV69b3uii6LZfXxTEsyVxImIDi4vYy1cQFD3RPufz2c4lUn0I9elc4tG4QAXbcUDWsA9C6pzV3QZX5QiheLJavhG6la1oveTiX+2LoLKlsCUPvm+D50SMcafrVl6Jo0MmhKo1+3Uw8bvPlXGORX2Lrv2DFuSeaHynfg0oUvvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
+	s=arc-20240116; t=1732865246; c=relaxed/simple;
+	bh=qZ/uICPY2dq7EMrhEvmi9Lt3yrzqEBcFQ4vMTDWEJgc=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=SfudyYqfVGxmjXtyvgUJ2Qfw4ZkSnJu2vPxiRFSP/umqJQkNR+HRdokCQSheASaQq5yU+l7XKD+wx8lQHnsF7ttrdloKscleoO61rdG4A6fXk/dvwWzjjiMrVcKnMUF9mr+w3JJSwP3H6MALmZfcJzolRPXFM+VjYurMNIMRr4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3a79f4c0729so1583255ab.3
-        for <netfs@lists.linux.dev>; Wed, 27 Nov 2024 13:22:26 -0800 (PST)
+Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-8418307b4f9so142742539f.1
+        for <netfs@lists.linux.dev>; Thu, 28 Nov 2024 23:27:24 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732742546; x=1733347346;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=c6w/ragAH6fNV1kVvMrzZ4MY5D3euj2lCORACOs9Ins=;
-        b=NZq6r541gU1uYp3vL1JHnEUZuB7hqN98yrLqTspZHShozXkX1RX8fVGwcZcMwViNkD
-         s0wb790u6Oc4xRzxRQ7W9JpW1IPWoPcKvigJQWfKlWAgkfrclZkiggU98APlbUYYc1xz
-         4Sv3g3AsvqGQq3FdBHakPBGNADE3Z/e4v19Lc7LQSNOBV03xX5xGW0SmFDwQg2GNn45b
-         H9XGtB8X6Ejp02USk9gzQr8WHPLak7n4+kmqfPLh2454p5TNmzOSZQICnI9GcDk7l1LN
-         XMHvPqE/t3WF7HZFrgaylCGfyXtu47Gmdb5M+JuDwYYQeAwHMTYFHgriS15yVPODsorg
-         158g==
-X-Forwarded-Encrypted: i=1; AJvYcCUOp6Be2yzdw7PrfpnpfXUyYPjrpiM0c1DO1jerJfXX1tI62IjYUj+gTZa7uz7OtpwoqcetHA==@lists.linux.dev
-X-Gm-Message-State: AOJu0YypQfMqSaL3SYknCxbSLNO7efofFbuz8ift1eg7ssrhIbM0T2aj
-	PfFdpwyIAlecCIWekKSjTVra9VSzghyeDHqPN2E6eru+fqGY4utnwSPn7IkREABCjTjtB6hu6mI
-	lw0aZ+hfQKHOhq/69cQL1wgV9xihwPoJS0euoxz/YXDWuKn4t3owmSmw=
-X-Google-Smtp-Source: AGHT+IHkmj8EeYdD0jdKVhuczxXDyaO0/L8rIBgOTIAxmjMRJSe40gzKjtwDt9Zm2d3nTBtYmpYeeyPhXdVFSHyJu5zkMDHGAN1o
+        d=1e100.net; s=20230601; t=1732865244; x=1733470044;
+        h=content-transfer-encoding:to:from:subject:message-id:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7t+yCvLqPaPl8VBtNzjGkNzg501tc5nDnJ48ZnMcu+s=;
+        b=dNYrXBwAk3qHki0AJYtxdayZHMhjsusGDUkhGqVeKuWLQ0OV2NgIrzY3zRVlseAQTD
+         TYnsTVKCMwUU8O+HHk9FGNzRJDkf8RCKRF0rN2tu3f4rZCvXOcvI/4P40a4jUfH7uuYe
+         l6IbdJQy67syCsAJdTZYxfxGHAMBCIEP/iP9osQpbND39Kp214bTXoHdZyu0O/scT1qD
+         1Em/FPUaptj8wFivYgie6SFBSubdaJepnAe8wLQRhghRxKhEVgdG/Bd9pVYoxBE/P40z
+         Os+oUHNekV569WZTj1EEAQ/L+6uAbPp0S49T+ze+9iltp9BwPVarq+XM5/xGlYbUAdv0
+         PhkA==
+X-Forwarded-Encrypted: i=1; AJvYcCUq9NY9O+RPy7+IMlEAo5VQH3VZDZyvSe0hCMvEMeSLwfDd91c8T4c37eYhScdZH++aSFQGqA==@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw+bKdJaY6EFyaL98tV6QAElXnPs/ojkZHYOgZabjflrW9hJ24H
+	JdJpbxk4iqPBLsTF2SpD4Zfi+HgUIdWfuhridgld4eDEaFGT+vpxxdGqZ7F/uXThyNhW9HGeirL
+	mMvliqV3stOmr1u7ltdmUDqKF4ZgM8/G0LQcae6AyMdeoRJ4e8qNUTDA=
+X-Google-Smtp-Source: AGHT+IFMswTPiNG+WhDA9tzI3s8K/Gi1GhVWJcOG4BsIvm7hfEp0yz22wXkyOmcc/AdmZfd7HSwGlTBJlEKMuAmndiI/ZtqzNe20
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1caf:b0:3a7:8720:9de8 with SMTP id
- e9e14a558f8ab-3a7c552677amr54613075ab.5.1732742545753; Wed, 27 Nov 2024
- 13:22:25 -0800 (PST)
-Date: Wed, 27 Nov 2024 13:22:25 -0800
+X-Received: by 2002:a05:6e02:b2d:b0:3a7:87f2:b013 with SMTP id
+ e9e14a558f8ab-3a7c5525326mr119878605ab.4.1732865244039; Thu, 28 Nov 2024
+ 23:27:24 -0800 (PST)
+Date: Thu, 28 Nov 2024 23:27:24 -0800
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <67478d91.050a0220.253251.0061.GAE@google.com>
-Subject: [syzbot] [netfs?] INFO: task hung in netfs_unbuffered_read_iter
-From: syzbot <syzbot+8965fea6a159ab9aa32d@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, bharathsm@microsoft.com, brauner@kernel.org, 
-	dhowells@redhat.com, ericvh@kernel.org, jlayton@kernel.org, 
-	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux_oss@crudebyte.com, lucho@ionkov.net, 
-	marc.dionne@auristor.com, mathieu.desnoyers@efficios.com, mhiramat@kernel.org, 
-	netfs@lists.linux.dev, pc@manguebit.com, ronniesahlberg@gmail.com, 
-	rostedt@goodmis.org, samba-technical@lists.samba.org, sfrench@samba.org, 
-	sprasad@microsoft.com, syzkaller-bugs@googlegroups.com, tom@talpey.com, 
+Message-ID: <67496cdc.050a0220.253251.00a5.GAE@google.com>
+Subject: [syzbot] [netfs?] WARNING in netfs_retry_reads
+From: syzbot <syzbot+fe139f9822abd9855970@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, bhelgaas@google.com, dhowells@redhat.com, 
+	ericvh@kernel.org, ilpo.jarvinen@linux.intel.com, jlayton@kernel.org, 
+	jonathan.cameron@huawei.com, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux_oss@crudebyte.com, lucho@ionkov.net, 
+	lukas@wunner.de, netfs@lists.linux.dev, syzkaller-bugs@googlegroups.com, 
 	v9fs@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
 Hello,
 
 syzbot found the following issue on:
 
-HEAD commit:    ed9a4ad6e5bd Add linux-next specific files for 20241126
+HEAD commit:    85a2dd7d7c81 Add linux-next specific files for 20241125
 git tree:       linux-next
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=17615530580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e348a4873516af92
-dashboard link: https://syzkaller.appspot.com/bug?extid=8965fea6a159ab9aa32d
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=175c8dc0580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1103a1e8580000
+console output: https://syzkaller.appspot.com/x/log.txt?x=3D10e3a5c0580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=3D45719eec4c74e6b=
+a
+dashboard link: https://syzkaller.appspot.com/bug?extid=3Dfe139f9822abd9855=
+970
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debia=
+n) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D1334dee858000=
+0
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D14e3a5c0580000
 
 Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/3b9ba5fbd895/disk-ed9a4ad6.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/e30aed8d0305/vmlinux-ed9a4ad6.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/1092546e50cf/bzImage-ed9a4ad6.xz
+disk image: https://storage.googleapis.com/syzbot-assets/5422dd6ada68/disk-=
+85a2dd7d.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/3a382ed71d3a/vmlinux-=
+85a2dd7d.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/9b4d03eb0da3/bzI=
+mage-85a2dd7d.xz
 
 The issue was bisected to:
 
-commit 1bd9011ee163e11f186b72705978fd6b21bdc07b
-Author: David Howells <dhowells@redhat.com>
-Date:   Fri Nov 8 17:32:29 2024 +0000
+commit fad610b987132868e3410c530871086552ce6155
+Author: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
+Date:   Fri Oct 18 14:47:47 2024 +0000
 
-    netfs: Change the read result collector to only use one work item
+    Documentation PCI: Reformat RMW ops documentation
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=174cc3c0580000
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=14ccc3c0580000
-console output: https://syzkaller.appspot.com/x/log.txt?x=10ccc3c0580000
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=3D16de15305800=
+00
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=3D15de15305800=
+00
+console output: https://syzkaller.appspot.com/x/log.txt?x=3D11de1530580000
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+8965fea6a159ab9aa32d@syzkaller.appspotmail.com
-Fixes: 1bd9011ee163 ("netfs: Change the read result collector to only use one work item")
+IMPORTANT: if you fix the issue, please add the following tag to the commit=
+:
+Reported-by: syzbot+fe139f9822abd9855970@syzkaller.appspotmail.com
+Fixes: fad610b98713 ("Documentation PCI: Reformat RMW ops documentation")
 
-INFO: task syz-executor246:5857 blocked for more than 143 seconds.
-      Not tainted 6.12.0-next-20241126-syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz-executor246 state:D stack:22584 pid:5857  tgid:5857  ppid:5854   flags:0x00004006
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5369 [inline]
- __schedule+0x1850/0x4c30 kernel/sched/core.c:6756
- __schedule_loop kernel/sched/core.c:6833 [inline]
- schedule+0x14b/0x320 kernel/sched/core.c:6848
- bit_wait+0x12/0xd0 kernel/sched/wait_bit.c:237
- __wait_on_bit+0xb0/0x2f0 kernel/sched/wait_bit.c:49
- out_of_line_wait_on_bit+0x1d5/0x260 kernel/sched/wait_bit.c:64
- wait_on_bit include/linux/wait_bit.h:77 [inline]
- netfs_dispatch_unbuffered_reads fs/netfs/direct_read.c:107 [inline]
- netfs_unbuffered_read fs/netfs/direct_read.c:146 [inline]
- netfs_unbuffered_read_iter_locked+0xd7e/0x1560 fs/netfs/direct_read.c:231
- netfs_unbuffered_read_iter+0xbf/0xe0 fs/netfs/direct_read.c:266
- new_sync_read fs/read_write.c:484 [inline]
- vfs_read+0x991/0xb70 fs/read_write.c:565
- ksys_read+0x18f/0x2b0 fs/read_write.c:708
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f1999cb4f79
-RSP: 002b:00007ffef9ec4f98 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-RAX: ffffffffffffffda RBX: 0030656c69662f2e RCX: 00007f1999cb4f79
-RDX: 0000000000002020 RSI: 000000002001b640 RDI: 0000000000000006
-RBP: 00007f1999cfe04e R08: 0000000000000006 R09: 0000000000000006
-R10: 0000000000000006 R11: 0000000000000246 R12: 00007ffef9ec4fac
-R13: 431bde82d7b634db R14: 0000000000000001 R15: 0000000000000001
- </TASK>
-
-Showing all locks held in the system:
-1 lock held by khungtaskd/30:
- #0: ffffffff8e937ae0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:337 [inline]
- #0: ffffffff8e937ae0 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:849 [inline]
- #0: ffffffff8e937ae0 (rcu_read_lock){....}-{1:3}, at: debug_show_all_locks+0x55/0x2a0 kernel/locking/lockdep.c:6744
-5 locks held by kworker/u8:2/35:
-2 locks held by getty/5592:
- #0: ffff888034e320a0 (&tty->ldisc_sem){++++}-{0:0}, at: tty_ldisc_ref_wait+0x25/0x70 drivers/tty/tty_ldisc.c:243
- #1: ffffc90002fde2f0 (&ldata->atomic_read_lock){+.+.}-{4:4}, at: n_tty_read+0x6a6/0x1e00 drivers/tty/n_tty.c:2211
-1 lock held by syz-executor246/5857:
- #0: ffff888072050148 (&sb->s_type->i_mutex_key#15){++++}-{4:4}, at: netfs_start_io_direct+0x1d4/0x210 fs/netfs/locking.c:188
-
-=============================================
-
-NMI backtrace for cpu 1
-CPU: 1 UID: 0 PID: 30 Comm: khungtaskd Not tainted 6.12.0-next-20241126-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- nmi_cpu_backtrace+0x49c/0x4d0 lib/nmi_backtrace.c:113
- nmi_trigger_cpumask_backtrace+0x198/0x320 lib/nmi_backtrace.c:62
- trigger_all_cpu_backtrace include/linux/nmi.h:162 [inline]
- check_hung_uninterruptible_tasks kernel/hung_task.c:234 [inline]
- watchdog+0xffb/0x1040 kernel/hung_task.c:397
- kthread+0x2f0/0x390 kernel/kthread.c:389
- ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
-Sending NMI from CPU 1 to CPUs 0:
-NMI backtrace for cpu 0
-CPU: 0 UID: 0 PID: 35 Comm: kworker/u8:2 Not tainted 6.12.0-next-20241126-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-Workqueue: events_unbound toggle_allocation_gate
-RIP: 0010:insn_get_sib arch/x86/lib/insn.c:447 [inline]
-RIP: 0010:insn_get_displacement+0x2ca/0x9a0 arch/x86/lib/insn.c:484
-Code: cb f5 49 bc 00 00 00 00 00 fc ff df e9 12 04 00 00 49 8d 5d 25 48 89 d8 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df 0f b6 04 08 <84> c0 0f 85 95 05 00 00 0f b6 1b 31 ff 89 de e8 72 c9 cb f5 85 db
-RSP: 0018:ffffc90000ab7790 EFLAGS: 00000a07
-RAX: 0000000000000000 RBX: ffffc90000ab7945 RCX: dffffc0000000000
-RDX: ffff888020a81e00 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: ffffc90000ab794c R08: ffffffff8bd3c21d R09: ffffffff8bd395b6
-R10: 0000000000000002 R11: ffff888020a81e00 R12: 1ffff92000156f29
-R13: ffffc90000ab7920 R14: 1ffff92000156f2a R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+------------[ cut here ]------------
+do not call blocking ops when !TASK_RUNNING; state=3D2 set at [<ffffffff817=
+7bd66>] prepare_to_wait+0x186/0x210 kernel/sched/wait.c:237
+WARNING: CPU: 0 PID: 5848 at kernel/sched/core.c:8685 __might_sleep+0xb9/0x=
+e0 kernel/sched/core.c:8681
+Modules linked in:
+CPU: 0 UID: 0 PID: 5848 Comm: syz-executor189 Not tainted 6.12.0-next-20241=
+125-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Goo=
+gle 09/13/2024
+RIP: 0010:__might_sleep+0xb9/0xe0 kernel/sched/core.c:8681
+Code: 93 0e 01 90 42 80 3c 23 00 74 08 48 89 ef e8 fe 38 9b 00 48 8b 4d 00 =
+48 c7 c7 80 2d 0a 8c 44 89 ee 48 89 ca e8 b8 e6 f0 ff 90 <0f> 0b 90 90 eb b=
+5 89 d9 80 e1 07 80 c1 03 38 c1 0f 8c 70 ff ff ff
+RSP: 0018:ffffc90003e465a8 EFLAGS: 00010246
+RAX: ff5208356e89db00 RBX: 1ffff1100fff22ed RCX: ffff88807ff90000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffff88807ff91768 R08: ffffffff81601b32 R09: fffffbfff1cfa218
+R10: dffffc0000000000 R11: fffffbfff1cfa218 R12: dffffc0000000000
+R13: 0000000000000002 R14: 000000000000004a R15: ffffffff8c1ca120
+FS:  0000555573787380(0000) GS:ffff8880b8600000(0000) knlGS:000000000000000=
+0
 CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fbd0e4b4580 CR3: 000000000e736000 CR4: 00000000003526f0
+CR2: 00007ff2460a1104 CR3: 00000000745c2000 CR4: 00000000003526f0
 DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
 DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 Call Trace:
- <NMI>
- </NMI>
  <TASK>
- insn_get_immediate+0x62/0x11f0 arch/x86/lib/insn.c:650
- insn_get_length arch/x86/lib/insn.c:723 [inline]
- insn_decode+0x2d6/0x4c0 arch/x86/lib/insn.c:762
- text_poke_loc_init+0xed/0x870 arch/x86/kernel/alternative.c:2432
- arch_jump_label_transform_queue+0x8f/0x100 arch/x86/kernel/jump_label.c:138
- __jump_label_update+0x177/0x3a0 kernel/jump_label.c:513
- static_key_disable_cpuslocked+0xd2/0x1c0 kernel/jump_label.c:240
- static_key_disable+0x1a/0x20 kernel/jump_label.c:248
- toggle_allocation_gate+0x1bf/0x260 mm/kfence/core.c:854
- process_one_work kernel/workqueue.c:3229 [inline]
- process_scheduled_works+0xa63/0x1850 kernel/workqueue.c:3310
- worker_thread+0x870/0xd30 kernel/workqueue.c:3391
- kthread+0x2f0/0x390 kernel/kthread.c:389
- ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ wait_on_bit include/linux/wait_bit.h:74 [inline]
+ netfs_retry_reads+0xde/0x1e00 fs/netfs/read_retry.c:263
+ netfs_collect_read_results fs/netfs/read_collect.c:333 [inline]
+ netfs_read_collection+0x33a0/0x4070 fs/netfs/read_collect.c:414
+ netfs_wait_for_read+0x2ba/0x4e0 fs/netfs/read_collect.c:629
+ netfs_unbuffered_read fs/netfs/direct_read.c:156 [inline]
+ netfs_unbuffered_read_iter_locked+0x120e/0x1560 fs/netfs/direct_read.c:231
+ netfs_unbuffered_read_iter+0xbf/0xe0 fs/netfs/direct_read.c:266
+ __kernel_read+0x513/0x9d0 fs/read_write.c:523
+ integrity_kernel_read+0xb0/0x100 security/integrity/iint.c:28
+ ima_calc_file_hash_tfm security/integrity/ima/ima_crypto.c:480 [inline]
+ ima_calc_file_shash security/integrity/ima/ima_crypto.c:511 [inline]
+ ima_calc_file_hash+0xae6/0x1b30 security/integrity/ima/ima_crypto.c:568
+ ima_collect_measurement+0x520/0xb10 security/integrity/ima/ima_api.c:293
+ process_measurement+0x1351/0x1fb0 security/integrity/ima/ima_main.c:372
+ ima_file_check+0xd9/0x120 security/integrity/ima/ima_main.c:572
+ security_file_post_open+0xb9/0x280 security/security.c:3121
+ do_open fs/namei.c:3830 [inline]
+ path_openat+0x2ccd/0x3590 fs/namei.c:3987
+ do_filp_open+0x27f/0x4e0 fs/namei.c:4014
+ do_sys_openat2+0x13e/0x1d0 fs/open.c:1402
+ do_sys_open fs/open.c:1417 [inline]
+ __do_sys_open fs/open.c:1425 [inline]
+ __se_sys_open fs/open.c:1421 [inline]
+ __x64_sys_open+0x225/0x270 fs/open.c:1421
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7ff24603d929
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 61 1a 00 00 90 48 89 f8 48 89 f7 =
+48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff f=
+f 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffe9079c548 EFLAGS: 00000246 ORIG_RAX: 0000000000000002
+RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007ff24603d929
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000020000340
+RBP: 00007ff24608a257 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000023fb0
+R13: 00007ff2460bab40 R14: 00007ff2460bcd00 R15: 00007ffe9079c570
  </TASK>
-INFO: NMI handler (nmi_cpu_backtrace_handler) took too long to run: 1.344 msecs
 
 
 ---
@@ -204,7 +176,8 @@ syzbot engineers can be reached at syzkaller@googlegroups.com.
 
 syzbot will keep track of this issue. See:
 https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+For information about bisection process see: https://goo.gl/tpsmEJ#bisectio=
+n
 
 If the report is already addressed, let syzbot know by replying with:
 #syz fix: exact-commit-title
