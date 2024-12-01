@@ -1,78 +1,115 @@
-Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273B822066
-	for <netfs@lists.linux.dev>; Sat, 30 Nov 2024 14:44:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F8EB644
+	for <netfs@lists.linux.dev>; Sun,  1 Dec 2024 01:58:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732977845; cv=none; b=fmAPNSfG5y9HBrLcK8K9IOCbRsQAOdG+gPTXQJnQr/ztm0LNnoBMzyeArn3o2j2KhgSOFTZiyeHDlsbHLKOqbVW4YocTMrAvGWwA7OTq7oxpb81b5HKjSEDQXiFgI+Tlkp5buae2CdlkPOkaNPHUev/e8hgaQM99yrwLN/6E+M8=
+	t=1733018309; cv=none; b=fLZphtnuNVbbYySGg9GsfDqBewy9gOZDXMHMBsxI/UvHrZAGoeWyjFxfn5pflyVtnd6KaoB8KRvYgl0t58qAPSuQjQol7UCu+mgRfbyxqEMBLy4bN3/MKguQJPHQxO8iuxlz/jvDzhL0v0ftpeHXYljbU1vqs4QASg6cabndT+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732977845; c=relaxed/simple;
-	bh=/2me3GlS88an3RLsz+gmPqqJsjFVKRchDVf0XYxw0yA=;
+	s=arc-20240116; t=1733018309; c=relaxed/simple;
+	bh=zTMhgQ7GAngkohf2rn/P/5vDYoYLNJENEFkhFPgmq4A=;
 	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=aaO0A48CPT/ET77ihaBYNMJvgHTeqGj6OXzTHPUEiUDv8s9cIt41ded7blnQhDP5FaxbCmDhziBFFjCbZIjEGhuHPZUG934G6Gr/MBJE99OJ3qeYys7pBlvHYCsI8nyo7mZqq3ErK3e/nrh27bz7jJ9fmThgyhNttBcvN8Bx5gM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.72
+	 Content-Type; b=JehKITyprtmoz5h8rTPSKn5H9PFhquHuUKix5yX17oDNjQ3wBjNZ4goLgHVF3vsiMAtwBlJMD/pUc4v0Ko7WnCmwyd0CXU9BSy94Fqp363tCD6Q9bfnfiqBiuxDz3S0UFFEiOeCdWGLO/qGmDiq5DtESQ/lKIi9clc/htRMdmE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-843eac1b9dbso251087739f.0
-        for <netfs@lists.linux.dev>; Sat, 30 Nov 2024 06:44:03 -0800 (PST)
+Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3a71bdd158aso29609415ab.1
+        for <netfs@lists.linux.dev>; Sat, 30 Nov 2024 17:58:27 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732977843; x=1733582643;
+        d=1e100.net; s=20230601; t=1733018307; x=1733623107;
         h=to:from:subject:message-id:in-reply-to:date:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NLpCxVWUm+FLHYgY6UmUs8QAXQBwFoHMQc5QOpBkoP4=;
-        b=AlFokrBoRY6sJyFWzrfXo9BXYkqWdY8tMr1yd5t353CIxqXqEiptGPVDH6o2dbgBJ1
-         A35vcip4Yr8LHbmYvdMQmWXzOXm+m8NA9B2G4SyLim9Qxe9ZU5N3iNQdAiI7oNif30S2
-         5pJZ6gdx/1aXQKFC8+M/AatFq1eshsUJDYmbWCoGcVV/i9mTBTCKsJUE+xUfPlh6aBFK
-         CFK/LYZCXpOg3BxPlBy/RQ8jSAcvawlScIPWfpaysjRdUFcXyiPM2UwLOpNbQgY8g+U3
-         KdP5DEDK5gzyRxCza9UaFL5tOn0cqqyZpPhOMA8DCdr7S2T0p5WiGiYzP2PhVVo/R3dj
-         bCgA==
-X-Forwarded-Encrypted: i=1; AJvYcCX4Yg1SWtzCNY7pRjt6ZKigIzsjpy3geD1xZHDcwkDZApemvNie65OJzoKh/C5+zZuSvAnpRw==@lists.linux.dev
-X-Gm-Message-State: AOJu0YxFhBsolLJLS2OKPDN+wMV1UAjz5InBnTv2sJpXxuyPm4q+ErgC
-	FEfUPiCsmNDgH04VoxK0uZ95Mu8AlT/6n8W5uusnoALXr0pQNaOMb9Et6+OSwrlIxM9K5iQnQEm
-	iy2a7aE9REjhVGtbeDVINmFTNIH1izxV4i+JeaKu9JxFoVBuTBFyW+HI=
-X-Google-Smtp-Source: AGHT+IGKM3IQM8HG3HSI7urzSPpJKTU55OY0Q6Z5kYb4DXB4yN+jXJMypP7rSsTOQ4NnPvpsotgixPfEKNRfhZjHxhSEQLvvMk5g
+        bh=oga6qmMks5KjnhwQMu5wVri17WghvBrofAMjw1HSmnU=;
+        b=bJNkFUG9jQrCeWnXJLfclM1jjnIrcq5FveItOW+8TowgN7x0avKAR2zIg80D4dTJsM
+         A3ZN2jRGMcvdqv6BBGl2ESnTPcw020UK6H92mptKNxEyORDx3BgSIJUFJdEexCJyQcWY
+         OohVapjO7K8dHmnlsrdaze6QmdjzrqeRY0otHK6cmCTJ/lAR3Jw8PNNJ+K6/TjUqAQg0
+         DOCpFIzhFlVTSn+rk8rAcbdI1aPskz5rg3vGvZAPfQRA0XuKTHPiP5SqQ9SPLR4T+ks0
+         9iEE5gHVf92sBYN62t7eNuFOLEop+V4PvQYL03mmgF61S3SBQtVyyN4Nn6Cbk0hVkgFy
+         j+kA==
+X-Forwarded-Encrypted: i=1; AJvYcCWAPGAzaZzyZgDeeCiTds8YamZxC8wpRoR17zTQN5/MCl49sLJmEFZGqrKjRpmGuNhiA5ANgQ==@lists.linux.dev
+X-Gm-Message-State: AOJu0YxZ0Nkk4naJr4wPtAwU7bnB+OZ9T1Tjt5zjVlW6jKf0AcEIpN4g
+	jmQpVb+E6Nl+meKP7Juhlm++auLK5S3OlzDAZRORXmWUiyR5KKuQitjUfdBaPUcEW8ehRIwH3da
+	coBhuWyDYaKN4dm13G7O/kNuvrJwUqZCw5ZmFWfqBD5IXiF6GIFW6wn4=
+X-Google-Smtp-Source: AGHT+IHYOe4T8vhtQp3j52u+dUjdYd/xgSjj8rXSIWax2fDqxyDbFB3caVq0f/UT5o8T5Gh3oOPm1b1CEkH8R2dTiQP+hC1QAVzp
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:4405:10b0:3a7:c5ff:e698 with SMTP id
- e9e14a558f8ab-3a7c5ffe892mr96045695ab.0.1732977843441; Sat, 30 Nov 2024
- 06:44:03 -0800 (PST)
-Date: Sat, 30 Nov 2024 06:44:03 -0800
-In-Reply-To: <67238110.050a0220.35b515.015e.GAE@google.com>
+X-Received: by 2002:a05:6e02:12cc:b0:3a7:86ab:bebf with SMTP id
+ e9e14a558f8ab-3a7c55d432dmr165626055ab.19.1733018306816; Sat, 30 Nov 2024
+ 17:58:26 -0800 (PST)
+Date: Sat, 30 Nov 2024 17:58:26 -0800
+In-Reply-To: <673ac3cd.050a0220.87769.001f.GAE@google.com>
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <674b24b3.050a0220.253251.00dd.GAE@google.com>
-Subject: Re: [syzbot] [netfs?] kernel BUG in iov_iter_revert (2)
-From: syzbot <syzbot+404b4b745080b6210c6c@syzkaller.appspotmail.com>
-To: dhowells@redhat.com, dmantipov@yandex.ru, jlayton@kernel.org, 
-	joannelkoong@gmail.com, josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org, miklos@szeredi.hu, 
-	mszeredi@redhat.com, netfs@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Message-ID: <674bc2c2.050a0220.48a03.0002.GAE@google.com>
+Subject: Re: [syzbot] [netfs?] WARNING in netfs_writepages
+From: syzbot <syzbot+06023121b0153752a3d3@syzkaller.appspotmail.com>
+To: dhowells@redhat.com, jlayton@kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netfs@lists.linux.dev, 
+	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 
-syzbot has bisected this issue to:
+syzbot has found a reproducer for the following issue on:
 
-commit 3b97c3652d9128ab7f8c9b8adec6108611fdb153
-Author: Joanne Koong <joannelkoong@gmail.com>
-Date:   Thu Oct 24 17:18:08 2024 +0000
-
-    fuse: convert direct io to use folios
-
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=13e29f78580000
-start commit:   f486c8aa16b8 Add linux-next specific files for 20241128
+HEAD commit:    f486c8aa16b8 Add linux-next specific files for 20241128
 git tree:       linux-next
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=10129f78580000
-console output: https://syzkaller.appspot.com/x/log.txt?x=17e29f78580000
+console output: https://syzkaller.appspot.com/x/log.txt?x=11c905e8580000
 kernel config:  https://syzkaller.appspot.com/x/.config?x=e348a4873516af92
-dashboard link: https://syzkaller.appspot.com/bug?extid=404b4b745080b6210c6c
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=131f71e8580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12bc200f980000
+dashboard link: https://syzkaller.appspot.com/bug?extid=06023121b0153752a3d3
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15c905e8580000
 
-Reported-by: syzbot+404b4b745080b6210c6c@syzkaller.appspotmail.com
-Fixes: 3b97c3652d91 ("fuse: convert direct io to use folios")
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/beb58ebb63cf/disk-f486c8aa.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/b241b5609e64/vmlinux-f486c8aa.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/c9d817f665f2/bzImage-f486c8aa.xz
 
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+06023121b0153752a3d3@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 12 at fs/netfs/write_issue.c:583 netfs_writepages+0x8ff/0xb60 fs/netfs/write_issue.c:583
+Modules linked in:
+CPU: 0 UID: 0 PID: 12 Comm: kworker/u8:1 Not tainted 6.12.0-next-20241128-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Workqueue: writeback wb_workfn (flush-9p-3)
+RIP: 0010:netfs_writepages+0x8ff/0xb60 fs/netfs/write_issue.c:583
+Code: 10 4c 89 f2 48 8d 4c 24 70 e8 ad a6 85 ff 48 85 c0 0f 84 e6 00 00 00 48 89 c3 e8 cc dc 49 ff e9 4a fe ff ff e8 c2 dc 49 ff 90 <0f> 0b 90 e9 a9 fe ff ff e8 b4 dc 49 ff 4c 89 e7 be 08 00 00 00 e8
+RSP: 0018:ffffc900001170c0 EFLAGS: 00010293
+RAX: ffffffff8255983e RBX: 810f000000000000 RCX: ffff88801cac5a00
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 810f000000000000
+RBP: ffffc90000117190 R08: ffffffff825596e2 R09: 1ffff110043d34b5
+R10: dffffc0000000000 R11: ffffed10043d34b6 R12: ffff888021e9a5d8
+R13: dffffc0000000000 R14: ffffea0001784fc0 R15: 0000000000000000
+FS:  0000000000000000(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fb76d7e4d58 CR3: 000000002fc7a000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ do_writepages+0x35f/0x880 mm/page-writeback.c:2702
+ __writeback_single_inode+0x14f/0x10d0 fs/fs-writeback.c:1680
+ writeback_sb_inodes+0x820/0x1360 fs/fs-writeback.c:1976
+ __writeback_inodes_wb+0x11b/0x260 fs/fs-writeback.c:2047
+ wb_writeback+0x427/0xb80 fs/fs-writeback.c:2158
+ wb_check_background_flush fs/fs-writeback.c:2228 [inline]
+ wb_do_writeback fs/fs-writeback.c:2316 [inline]
+ wb_workfn+0xc4b/0x1080 fs/fs-writeback.c:2343
+ process_one_work kernel/workqueue.c:3229 [inline]
+ process_scheduled_works+0xa66/0x1840 kernel/workqueue.c:3310
+ worker_thread+0x870/0xd30 kernel/workqueue.c:3391
+ kthread+0x2f0/0x390 kernel/kthread.c:389
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+
+
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
