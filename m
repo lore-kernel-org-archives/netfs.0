@@ -1,217 +1,179 @@
-Received: from forward202d.mail.yandex.net (forward202d.mail.yandex.net [178.154.239.219])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f205.google.com (mail-il1-f205.google.com [209.85.166.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52AAF1F949
-	for <netfs@lists.linux.dev>; Mon,  2 Dec 2024 09:45:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4C51DB37B
+	for <netfs@lists.linux.dev>; Mon,  2 Dec 2024 17:23:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733132761; cv=none; b=TpNdfO2Bu6rW8iF6uCX+ySQIrgyG9JJGbgbil96QnabTYZ9dSIzj3yKz2q3eKBVGTn1JjWK41z4H21Ci599tFtJosyFO3eIdZm8K1rd4Cf+iRLBbk1AtxWNoIBEoLDzIzpYP5tq50OcAWCroI/cetgUoCf1V/uAnUsm7CeJrj0E=
+	t=1733160205; cv=none; b=myrYNYgEj2m8VdSTDksWPOBfAGRZ4uWknshmQ3ao6qp995PabB2kWZFbXvF8ONkC8V9pvA6H2R0xmN68hWCUeIvGt3nVMNcJ0V9pXyQjrio60KuHwlVcTtNkJA3uQdCEbfBR0MfyQ3Rq4iti9cDKDOA3YTzRQQb2NxfXUtMCTAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733132761; c=relaxed/simple;
-	bh=vh0ec8OjidZYnLyILeTGDgFfc8qn2Z/5TwVnzPPs0gw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ft1har9KUkDKwNNyXduHflKJS/2O9NYtkwwhHkJVxkUFB2997OKT3v+s44ty4vP99z7XB72uBEMUmPdQaimVO4pBqF9jULpFFCauKEIZClsrIYfM51tR/9wCPDmzou+Znj372Xfco28fHPQjNmWnKAB3l7zMTqmhDuOTtKsgYAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=qjrOpDKi; arc=none smtp.client-ip=178.154.239.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="qjrOpDKi"
-Received: from forward103a.mail.yandex.net (forward103a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d103])
-	by forward202d.mail.yandex.net (Yandex) with ESMTPS id C093E65199
-	for <netfs@lists.linux.dev>; Mon,  2 Dec 2024 12:40:23 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-31.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-31.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0f:26bf:0:640:efa0:0])
-	by forward103a.mail.yandex.net (Yandex) with ESMTPS id 05E6360E4B;
-	Mon,  2 Dec 2024 12:40:16 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-31.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id Eeajf1qOiiE0-7bIeXwt2;
-	Mon, 02 Dec 2024 12:40:15 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1733132415; bh=+3eoasJ2+W8u4jDRwthmE7pkDtyyD8cK4MURm1Ha7p4=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=qjrOpDKipEUoscpB18mBZog7XbHx5ciz20b1uMoJZ17eva85dcR4llP2C3jzbqmqK
-	 gXrFjVAh6b/vCTF94V2MrLvPUMjpDF92kgOQLiU+gmJJ+G/PWzl4r2YDTbiIh75Ve0
-	 lJAkGjYvKSvuOTTy2zykpeXRXAPUDO5ThXNBhOGg=
-Authentication-Results: mail-nwsmtp-smtp-production-main-31.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Dmitry Antipov <dmantipov@yandex.ru>
-To: David Howells <dhowells@redhat.com>
-Cc: Jeff Layton <jlayton@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	syzbot+404b4b745080b6210c6c@syzkaller.appspotmail.com
-Subject: [PATCH v2] netfs: fix kernel BUG in iov_iter_revert()
-Date: Mon,  2 Dec 2024 12:39:43 +0300
-Message-ID: <20241202093943.227786-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1733160205; c=relaxed/simple;
+	bh=niYey3A2BI1zHc9oE/V9wTEb2AngGjaDi9xTB6eXJp0=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=MFzVJKTGACbm/Hfs+2525nqLfotcZXVzMoRWd7Yj01Dx9O7rdNpSDJTeeZTrD/Hxq4omjxVy/FCWDFkGhReUkYqN4C8sUJGSQNMf4ZkswsDy8sgC8kwoN6PnTonb6Uzdo69/PGJ0dArNZ0g38L98np4Z5FbE+/BQ2ySVGrCV5FQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f205.google.com with SMTP id e9e14a558f8ab-3a7bdd00353so50513085ab.1
+        for <netfs@lists.linux.dev>; Mon, 02 Dec 2024 09:23:23 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733160203; x=1733765003;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=cWtCFCl9BH6B1/hrLDgMJbyasTsGi0yL5kBQrDwE6xQ=;
+        b=eXQvBGKBEmYDoQb3oGsTXNWPmpCfSu94bPCIpSW6h41S9xpYheEYYFCtARJOtJS0ia
+         VrsGbWzeNly3sRmOtk/Oa87vl42hEjmN4lvSFRZgTCBw21tyOJRg5jc1k1XWIXO7kWM1
+         vaDz/C2Av7ue/UXHPpH0/Xf2TZewJVcuszNIEv7SNJ778T3B4TWxUJcxnhriiP0jcmEX
+         Mt/NnRewJRV6oDjuZ/bHBeOrMLoD3NAVnX7nzaUqqLXNwlhJl9TCtWFL/dtMrX6i3tQc
+         ZfkH1u8OpjKM9QGNgHKrecwi1ZSHgaQwtdj4DHTX8zlvSCo8ujc9+DfwAJ3uA7KuJ8Ib
+         WYJA==
+X-Forwarded-Encrypted: i=1; AJvYcCUgewjq4c0gyqh+y7drx0MKy+2WUt4pO5fB4qGVZo+nHcLxDqjHXwVNx0oR3ylV1UUFdX5kGg==@lists.linux.dev
+X-Gm-Message-State: AOJu0YzDEQkZDbJq7mPDbVhaRH3kToGkFDjHc+PuXbDhpyQbZECU3Jvw
+	9RxnAus8QSy8FD9q8HOz+6R7+BupnvzfCWUlhZOBqPtNv9dDSfcpbS7JUEYv1u9AUo5Cmzgv0t+
+	Wl3T+xyjcBBE0fLq526ZLDK6VqcEHdpaQPiV06o0m9wgqp4kQkZ5hVUQ=
+X-Google-Smtp-Source: AGHT+IFGrYLgVMCkuWthz1BRGHleiw9U22O8SugwE5SIOQ51OAgdGsPOdMZVjiB1rIUZC23Pv25Kpzsr+8zM3B/WjzigFSvEFPLm
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6e02:1a02:b0:3a7:9347:5465 with SMTP id
+ e9e14a558f8ab-3a7c5523826mr268135525ab.3.1733160203172; Mon, 02 Dec 2024
+ 09:23:23 -0800 (PST)
+Date: Mon, 02 Dec 2024 09:23:23 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <674ded0b.050a0220.48a03.0027.GAE@google.com>
+Subject: [syzbot] [netfs?] WARNING in netfs_retry_reads (2)
+From: syzbot <syzbot+5621e2baf492be382fa9@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, bharathsm@microsoft.com, brauner@kernel.org, 
+	dhowells@redhat.com, ericvh@kernel.org, jlayton@kernel.org, 
+	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux_oss@crudebyte.com, lucho@ionkov.net, 
+	marc.dionne@auristor.com, mathieu.desnoyers@efficios.com, mhiramat@kernel.org, 
+	netfs@lists.linux.dev, pc@manguebit.com, ronniesahlberg@gmail.com, 
+	rostedt@goodmis.org, samba-technical@lists.samba.org, sfrench@samba.org, 
+	sprasad@microsoft.com, syzkaller-bugs@googlegroups.com, tom@talpey.com, 
+	v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Syzbot has reported the following splat triggered by fault injection:
+Hello,
 
-kernel BUG at lib/iov_iter.c:624!
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
-CPU: 0 UID: 0 PID: 5767 Comm: repro Not tainted 6.12.0-rc4-syzkaller-00261-g850925a8133c #0
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-3.fc41 04/01/2014
-RIP: 0010:iov_iter_revert+0x420/0x590
-Code: 42 80 3c 20 00 48 8b 1c 24 74 08 48 89 df e8 17 07 43 fd 4c 89 2b e9 04 01 00 00 45 85 ed 48 8b 3c 24 75 16 e8 41 48 d9 fc 90 <0f> 0b 41 83 fd 05 48 8b 3c 24 0f 84 58 01 00 00 48 89 f8 48 c1 e8
-RSP: 0018:ffffc90002f4f740 EFLAGS: 00010293
-RAX: ffffffff84bba22f RBX: 000000000001e098 RCX: ffff888026309cc0
-RDX: 0000000000000000 RSI: ffffffff8f098180 RDI: ffff888024f92df0
-RBP: 0000000000000000 R08: 0000000000000001 R09: ffffffff84bb9f14
-R10: 0000000000000004 R11: ffff888026309cc0 R12: dffffc0000000000
-R13: 0000000000000000 R14: ffff888024f92de0 R15: fffffffffffe1f68
-FS:  00007f2c11757600(0000) GS:ffff888062800000(0000) knlGS:0000000000000000
+syzbot found the following issue on:
+
+HEAD commit:    f486c8aa16b8 Add linux-next specific files for 20241128
+git tree:       linux-next
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=1236a0df980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=e348a4873516af92
+dashboard link: https://syzkaller.appspot.com/bug?extid=5621e2baf492be382fa9
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17da7f78580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=138f3d30580000
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/beb58ebb63cf/disk-f486c8aa.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/b241b5609e64/vmlinux-f486c8aa.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/c9d817f665f2/bzImage-f486c8aa.xz
+
+The issue was bisected to:
+
+commit 1bd9011ee163e11f186b72705978fd6b21bdc07b
+Author: David Howells <dhowells@redhat.com>
+Date:   Fri Nov 8 17:32:29 2024 +0000
+
+    netfs: Change the read result collector to only use one work item
+
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=144ccfc0580000
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=164ccfc0580000
+console output: https://syzkaller.appspot.com/x/log.txt?x=124ccfc0580000
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+5621e2baf492be382fa9@syzkaller.appspotmail.com
+Fixes: 1bd9011ee163 ("netfs: Change the read result collector to only use one work item")
+
+------------[ cut here ]------------
+do not call blocking ops when !TASK_RUNNING; state=2 set at [<ffffffff8177c166>] prepare_to_wait+0x186/0x210 kernel/sched/wait.c:237
+WARNING: CPU: 0 PID: 5828 at kernel/sched/core.c:8685 __might_sleep+0xb9/0xe0 kernel/sched/core.c:8681
+Modules linked in:
+CPU: 0 UID: 0 PID: 5828 Comm: syz-executor222 Not tainted 6.12.0-next-20241128-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+RIP: 0010:__might_sleep+0xb9/0xe0 kernel/sched/core.c:8681
+Code: 94 0e 01 90 42 80 3c 23 00 74 08 48 89 ef e8 ae 30 9b 00 48 8b 4d 00 48 c7 c7 e0 2d 0a 8c 44 89 ee 48 89 ca e8 08 e6 f0 ff 90 <0f> 0b 90 90 eb b5 89 d9 80 e1 07 80 c1 03 38 c1 0f 8c 70 ff ff ff
+RSP: 0018:ffffc900039765a8 EFLAGS: 00010246
+RAX: b7d7501871149800 RBX: 1ffff1100ff252ed RCX: ffff88807f928000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffff88807f929768 R08: ffffffff81601ea2 R09: fffffbfff1cfa220
+R10: dffffc0000000000 R11: fffffbfff1cfa220 R12: dffffc0000000000
+R13: 0000000000000002 R14: 000000000000004a R15: ffffffff8c1ca1a0
+FS:  0000555593050480(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
 CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000557cafd1eb48 CR3: 0000000024e1a000 CR4: 00000000000006f0
+CR2: 000055bb6dfcc068 CR3: 000000002f04e000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 Call Trace:
  <TASK>
- ? __die_body+0x5f/0xb0
- ? die+0x9e/0xc0
- ? do_trap+0x15a/0x3a0
- ? iov_iter_revert+0x420/0x590
- ? do_error_trap+0x1dc/0x2c0
- ? iov_iter_revert+0x420/0x590
- ? __pfx_do_error_trap+0x10/0x10
- ? handle_invalid_op+0x34/0x40
- ? iov_iter_revert+0x420/0x590
- ? exc_invalid_op+0x38/0x50
- ? asm_exc_invalid_op+0x1a/0x20
- ? iov_iter_revert+0x104/0x590
- ? iov_iter_revert+0x41f/0x590
- ? iov_iter_revert+0x420/0x590
- netfs_reset_iter+0xce/0x130
- netfs_read_subreq_terminated+0x1fe/0xad0
- netfs_read_to_pagecache+0x628/0x900
- netfs_readahead+0x7e9/0x9d0
- ? __pfx_netfs_readahead+0x10/0x10
- ? blk_start_plug+0x70/0x1b0
- read_pages+0x180/0x840
- ? __pfx_read_pages+0x10/0x10
- ? filemap_add_folio+0x26d/0x650
- ? __pfx_filemap_add_folio+0x10/0x10
- ? rcu_read_lock_any_held+0xb7/0x160
- ? __pfx_rcu_read_lock_any_held+0x10/0x10
- ? __pfx_proc_fail_nth_write+0x10/0x10
- page_cache_ra_unbounded+0x774/0x8a0
- force_page_cache_ra+0x280/0x2f0
- generic_fadvise+0x522/0x830
- ? __pfx_generic_fadvise+0x10/0x10
- ? lockdep_hardirqs_on_prepare+0x43d/0x780
- ? __pfx_lockdep_hardirqs_on_prepare+0x10/0x10
- ? vfs_fadvise+0x99/0xc0
- __x64_sys_readahead+0x1ac/0x230
- do_syscall_64+0xf3/0x230
+ wait_on_bit include/linux/wait_bit.h:74 [inline]
+ netfs_retry_reads+0xde/0x1e10 fs/netfs/read_retry.c:263
+ netfs_collect_read_results fs/netfs/read_collect.c:333 [inline]
+ netfs_read_collection+0x334e/0x4020 fs/netfs/read_collect.c:414
+ netfs_wait_for_read+0x2ba/0x4e0 fs/netfs/read_collect.c:629
+ netfs_unbuffered_read fs/netfs/direct_read.c:156 [inline]
+ netfs_unbuffered_read_iter_locked+0x11fc/0x1540 fs/netfs/direct_read.c:231
+ netfs_unbuffered_read_iter+0xbf/0xe0 fs/netfs/direct_read.c:266
+ __kernel_read+0x513/0x9d0 fs/read_write.c:523
+ integrity_kernel_read+0xb0/0x100 security/integrity/iint.c:28
+ ima_calc_file_hash_tfm security/integrity/ima/ima_crypto.c:480 [inline]
+ ima_calc_file_shash security/integrity/ima/ima_crypto.c:511 [inline]
+ ima_calc_file_hash+0xae6/0x1b30 security/integrity/ima/ima_crypto.c:568
+ ima_collect_measurement+0x520/0xb10 security/integrity/ima/ima_api.c:293
+ process_measurement+0x1351/0x1fb0 security/integrity/ima/ima_main.c:372
+ ima_file_check+0xd9/0x120 security/integrity/ima/ima_main.c:572
+ security_file_post_open+0xb9/0x280 security/security.c:3121
+ do_open fs/namei.c:3830 [inline]
+ path_openat+0x2ccd/0x3590 fs/namei.c:3987
+ do_filp_open+0x27f/0x4e0 fs/namei.c:4014
+ do_sys_openat2+0x13e/0x1d0 fs/open.c:1402
+ do_sys_open fs/open.c:1417 [inline]
+ __do_sys_open fs/open.c:1425 [inline]
+ __se_sys_open fs/open.c:1421 [inline]
+ __x64_sys_open+0x225/0x270 fs/open.c:1421
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f2c116736a9
-Code: 5c c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 4f 37 0d 00 f7 d8 64 89 01 48
-RSP: 002b:00007ffc78181c88 EFLAGS: 00000246 ORIG_RAX: 00000000000000bb
-RAX: ffffffffffffffda RBX: 0000000000000002 RCX: 00007f2c116736a9
-RDX: 000800000000000d RSI: 0000000000000005 RDI: 0000000000000006
-RBP: 00000000004029d8 R08: 00007ffc78181658 R09: 00007f0038363735
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffc78181cb0
-R13: 00007ffc78181ec8 R14: 0000000000401120 R15: 00007f2c1178ca80
+RIP: 0033:0x7fdf86d213b9
+Code: d8 5b c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffdb23978f8 EFLAGS: 00000246 ORIG_RAX: 0000000000000002
+RAX: ffffffffffffffda RBX: 00007ffdb2397940 RCX: 00007fdf86d213b9
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000020000340
+RBP: 00007ffdb2397948 R08: aaaaaaaaaaaa0102 R09: aaaaaaaaaaaa0102
+R10: aaaaaaaaaaaa0102 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 000000000000001d R15: 00007fdf86d983a0
  </TASK>
 
-This happens just because 'netfs_prepare_read_iterator()' may return
--ENOMEM (which is actually triggered by the fault injection) but such
-a cases are not consistently handled in 'netfs_read_to_pagecache()'.
-So wrap 'netfs_prepare_read_iterator()' to handle all possible
--ENOMEM cases and mark the corresponding subrequest as cancelled.
 
-Reported-by: syzbot+404b4b745080b6210c6c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=404b4b745080b6210c6c
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-Tested-by: syzbot+404b4b745080b6210c6c@syzkaller.appspotmail.com
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 ---
-v2: adjusted to match 6.13.0-rc1
----
- fs/netfs/buffered_read.c | 31 ++++++++++++++++++++++++++-----
- 1 file changed, 26 insertions(+), 5 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index 7ac34550c403..4404f3c6ec3e 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -95,7 +95,7 @@ static size_t netfs_load_buffer_from_ra(struct netfs_io_request *rreq,
- }
- 
- /*
-- * netfs_prepare_read_iterator - Prepare the subreq iterator for I/O
-+ * __netfs_prepare_read_iterator - Prepare the subreq iterator for I/O
-  * @subreq: The subrequest to be set up
-  *
-  * Prepare the I/O iterator representing the read buffer on a subrequest for
-@@ -109,7 +109,7 @@ static size_t netfs_load_buffer_from_ra(struct netfs_io_request *rreq,
-  * [!] NOTE: This must be run in the same thread as ->issue_read() was called
-  * in as we access the readahead_control struct.
-  */
--static ssize_t netfs_prepare_read_iterator(struct netfs_io_subrequest *subreq)
-+static ssize_t __netfs_prepare_read_iterator(struct netfs_io_subrequest *subreq)
- {
- 	struct netfs_io_request *rreq = subreq->rreq;
- 	size_t rsize = subreq->len;
-@@ -174,6 +174,21 @@ static ssize_t netfs_prepare_read_iterator(struct netfs_io_subrequest *subreq)
- 	return subreq->len;
- }
- 
-+/* Wrap the above by handling possible -ENOMEM and
-+ * marking the corresponding subrequest as cancelled.
-+ */
-+static inline ssize_t netfs_prepare_read_iterator(struct netfs_io_subrequest *subreq)
-+{
-+	struct netfs_io_request *rreq = subreq->rreq;
-+	ssize_t slice = __netfs_prepare_read_iterator(subreq);
-+
-+	if (unlikely(slice < 0)) {
-+		atomic_dec(&rreq->nr_outstanding);
-+		netfs_put_subrequest(subreq, false, netfs_sreq_trace_put_cancel);
-+	}
-+	return slice;
-+}
-+
- static enum netfs_io_source netfs_cache_prepare_read(struct netfs_io_request *rreq,
- 						     struct netfs_io_subrequest *subreq,
- 						     loff_t i_size)
-@@ -285,9 +300,7 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq)
- 			}
- 
- 			slice = netfs_prepare_read_iterator(subreq);
--			if (slice < 0) {
--				atomic_dec(&rreq->nr_outstanding);
--				netfs_put_subrequest(subreq, false, netfs_sreq_trace_put_cancel);
-+			if (unlikely(slice < 0)) {
- 				ret = slice;
- 				break;
- 			}
-@@ -302,6 +315,10 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq)
- 			trace_netfs_sreq(subreq, netfs_sreq_trace_submit);
- 			netfs_stat(&netfs_n_rh_zero);
- 			slice = netfs_prepare_read_iterator(subreq);
-+			if (unlikely(slice < 0)) {
-+				ret = slice;
-+				break;
-+			}
- 			__set_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags);
- 			netfs_read_subreq_terminated(subreq, 0, false);
- 			goto done;
-@@ -310,6 +327,10 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq)
- 		if (source == NETFS_READ_FROM_CACHE) {
- 			trace_netfs_sreq(subreq, netfs_sreq_trace_submit);
- 			slice = netfs_prepare_read_iterator(subreq);
-+			if (unlikely(slice < 0)) {
-+				ret = slice;
-+				break;
-+			}
- 			netfs_read_cache_to_pagecache(rreq, subreq);
- 			goto done;
- 		}
--- 
-2.47.1
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
