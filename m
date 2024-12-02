@@ -1,116 +1,217 @@
-Received: from mail-il1-f207.google.com (mail-il1-f207.google.com [209.85.166.207])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward202d.mail.yandex.net (forward202d.mail.yandex.net [178.154.239.219])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F491BC094
-	for <netfs@lists.linux.dev>; Sun,  1 Dec 2024 18:15:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52AAF1F949
+	for <netfs@lists.linux.dev>; Mon,  2 Dec 2024 09:45:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733076930; cv=none; b=hI1krTf2gQZWe0HrFRcGlOd9MYRKvDKId74i2m89sihUz6piWO4AzR+F/QnTOt6gzkvO0EAEjD6KpcSyTbnAe0sYt7SZuocDgMnnN9Zyv/N9xHGjleBnFz7eoYXHmOnTSw7xsJLGtwo1i0elg1/viFxJgNAiABG9i3Bm4QTeIOU=
+	t=1733132761; cv=none; b=TpNdfO2Bu6rW8iF6uCX+ySQIrgyG9JJGbgbil96QnabTYZ9dSIzj3yKz2q3eKBVGTn1JjWK41z4H21Ci599tFtJosyFO3eIdZm8K1rd4Cf+iRLBbk1AtxWNoIBEoLDzIzpYP5tq50OcAWCroI/cetgUoCf1V/uAnUsm7CeJrj0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733076930; c=relaxed/simple;
-	bh=Qm6OLsuIxJ8I0u+ZD2CtmuobsW18gm+oqJ0SiZ+Mllk=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=Tg+xuoyEea7KyNPrXjS/kUSMnDe5cURA7w+EiaVkjU/fhYedx0z2/oCkbq+wm0QaUJ0NwI7F0vLEPTFjE/IElyw0/VMU53dpSiqYSzn5KfrRAHZJLNjHz7cA0cwgpFz35PMbdn5vVhnP2T2uy/PnHPF5bQd+wkn95cl0dSie13I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f207.google.com with SMTP id e9e14a558f8ab-3a7e1527971so20286225ab.0
-        for <netfs@lists.linux.dev>; Sun, 01 Dec 2024 10:15:27 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733076927; x=1733681727;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AfXWxKK2+ijvkbDiUUwCtHhzQL1apk9vqakJtaqZfgc=;
-        b=KuNzA1mUS1fqBrnsmTfd8M4kGFYFqWiURyYdVl6LSY5w+voPpj3texgrBJQ90xrzRg
-         lMHv/wT529fRGb5i5mGnE+jnkRRTA0TTJ3LZG977KwqhN8F2OavAAIodwJMZG6gPhi/b
-         48aqCij/1ZWScKJie3awduH3KIWhZnHVeqMZhNIY7WLL+AGv3NSxAl4+uBLIiRArIJUI
-         dLT4g8Was9XlrulAOn2sktWFi0eTdoUaNkqhKaUMkCwHhzkioBl7/f1dg7mCU2CT9nzV
-         7mu0Z1Y1xxlmRdXxrn+sJrKQx3MB1HeXHDFhRdYBGiD0579u8EnZbG07O9KetOcS5ygV
-         SeKw==
-X-Forwarded-Encrypted: i=1; AJvYcCUKV412/OpJP9kZOHhVDLlmaikWUwQ6VsHzEpywmjm2x6CscVBPmBSqOvY9kjNAM3PcJXQbuA==@lists.linux.dev
-X-Gm-Message-State: AOJu0YzzVr5gOKwx3aKyan903zRTe7EzIU8CcsctDn8nItqsL8YJM0fI
-	FscOMyYcEMwe71kEB+twSzzupW/+wjPn2g6Ql1LWBRe/zfJ0ksYk6GEkq9InsTKLmyua8d2kFRi
-	tEY6FvdIw5bvhLaim7Wun/8UKqlaIIEWONDana9bZGLKTX3PQhovR8Wc=
-X-Google-Smtp-Source: AGHT+IFNUwNrHO3nfBaeEVSHwic7+12RpAhdgcQCUxJaqFwv/Qrn6SwhHR/iC0x9u/ILxjPdmovr0tivIV+6hfwqPQNgJU5rDERb
+	s=arc-20240116; t=1733132761; c=relaxed/simple;
+	bh=vh0ec8OjidZYnLyILeTGDgFfc8qn2Z/5TwVnzPPs0gw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ft1har9KUkDKwNNyXduHflKJS/2O9NYtkwwhHkJVxkUFB2997OKT3v+s44ty4vP99z7XB72uBEMUmPdQaimVO4pBqF9jULpFFCauKEIZClsrIYfM51tR/9wCPDmzou+Znj372Xfco28fHPQjNmWnKAB3l7zMTqmhDuOTtKsgYAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=qjrOpDKi; arc=none smtp.client-ip=178.154.239.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="qjrOpDKi"
+Received: from forward103a.mail.yandex.net (forward103a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d103])
+	by forward202d.mail.yandex.net (Yandex) with ESMTPS id C093E65199
+	for <netfs@lists.linux.dev>; Mon,  2 Dec 2024 12:40:23 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-31.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-31.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0f:26bf:0:640:efa0:0])
+	by forward103a.mail.yandex.net (Yandex) with ESMTPS id 05E6360E4B;
+	Mon,  2 Dec 2024 12:40:16 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-31.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id Eeajf1qOiiE0-7bIeXwt2;
+	Mon, 02 Dec 2024 12:40:15 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1733132415; bh=+3eoasJ2+W8u4jDRwthmE7pkDtyyD8cK4MURm1Ha7p4=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=qjrOpDKipEUoscpB18mBZog7XbHx5ciz20b1uMoJZ17eva85dcR4llP2C3jzbqmqK
+	 gXrFjVAh6b/vCTF94V2MrLvPUMjpDF92kgOQLiU+gmJJ+G/PWzl4r2YDTbiIh75Ve0
+	 lJAkGjYvKSvuOTTy2zykpeXRXAPUDO5ThXNBhOGg=
+Authentication-Results: mail-nwsmtp-smtp-production-main-31.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Dmitry Antipov <dmantipov@yandex.ru>
+To: David Howells <dhowells@redhat.com>
+Cc: Jeff Layton <jlayton@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	syzbot+404b4b745080b6210c6c@syzkaller.appspotmail.com
+Subject: [PATCH v2] netfs: fix kernel BUG in iov_iter_revert()
+Date: Mon,  2 Dec 2024 12:39:43 +0300
+Message-ID: <20241202093943.227786-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:148e:b0:3a7:e047:733f with SMTP id
- e9e14a558f8ab-3a7e0477ab5mr90652305ab.1.1733076927014; Sun, 01 Dec 2024
- 10:15:27 -0800 (PST)
-Date: Sun, 01 Dec 2024 10:15:26 -0800
-In-Reply-To: <673ac3cd.050a0220.87769.001f.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <674ca7be.050a0220.ad585.003c.GAE@google.com>
-Subject: Re: [syzbot] [netfs?] WARNING in netfs_writepages
-From: syzbot <syzbot+06023121b0153752a3d3@syzkaller.appspotmail.com>
-To: dhowells@redhat.com, jlayton@kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netfs@lists.linux.dev, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-syzbot has found a reproducer for the following issue on:
+Syzbot has reported the following splat triggered by fault injection:
 
-HEAD commit:    f486c8aa16b8 Add linux-next specific files for 20241128
-git tree:       linux-next
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=136ba7c0580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e348a4873516af92
-dashboard link: https://syzkaller.appspot.com/bug?extid=06023121b0153752a3d3
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=119abf78580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1527dd30580000
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/beb58ebb63cf/disk-f486c8aa.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/b241b5609e64/vmlinux-f486c8aa.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/c9d817f665f2/bzImage-f486c8aa.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+06023121b0153752a3d3@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 35 at fs/netfs/write_issue.c:583 netfs_writepages+0x8ff/0xb60 fs/netfs/write_issue.c:583
-Modules linked in:
-CPU: 1 UID: 0 PID: 35 Comm: kworker/u8:2 Not tainted 6.12.0-next-20241128-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-Workqueue: writeback wb_workfn (flush-9p-1)
-RIP: 0010:netfs_writepages+0x8ff/0xb60 fs/netfs/write_issue.c:583
-Code: 10 4c 89 f2 48 8d 4c 24 70 e8 ad a6 85 ff 48 85 c0 0f 84 e6 00 00 00 48 89 c3 e8 cc dc 49 ff e9 4a fe ff ff e8 c2 dc 49 ff 90 <0f> 0b 90 e9 a9 fe ff ff e8 b4 dc 49 ff 4c 89 e7 be 08 00 00 00 e8
-RSP: 0018:ffffc90000ab70c0 EFLAGS: 00010293
-RAX: ffffffff8255983e RBX: 810f000000000000 RCX: ffff888020a9da00
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 810f000000000000
-RBP: ffffc90000ab7190 R08: ffffffff825596e2 R09: 1ffff1100415a855
-R10: dffffc0000000000 R11: ffffed100415a856 R12: ffff888020ad42d8
-R13: dffffc0000000000 R14: ffffea0001b5e580 R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ffff8880b8700000(0000) knlGS:0000000000000000
+kernel BUG at lib/iov_iter.c:624!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 0 UID: 0 PID: 5767 Comm: repro Not tainted 6.12.0-rc4-syzkaller-00261-g850925a8133c #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-3.fc41 04/01/2014
+RIP: 0010:iov_iter_revert+0x420/0x590
+Code: 42 80 3c 20 00 48 8b 1c 24 74 08 48 89 df e8 17 07 43 fd 4c 89 2b e9 04 01 00 00 45 85 ed 48 8b 3c 24 75 16 e8 41 48 d9 fc 90 <0f> 0b 41 83 fd 05 48 8b 3c 24 0f 84 58 01 00 00 48 89 f8 48 c1 e8
+RSP: 0018:ffffc90002f4f740 EFLAGS: 00010293
+RAX: ffffffff84bba22f RBX: 000000000001e098 RCX: ffff888026309cc0
+RDX: 0000000000000000 RSI: ffffffff8f098180 RDI: ffff888024f92df0
+RBP: 0000000000000000 R08: 0000000000000001 R09: ffffffff84bb9f14
+R10: 0000000000000004 R11: ffff888026309cc0 R12: dffffc0000000000
+R13: 0000000000000000 R14: ffff888024f92de0 R15: fffffffffffe1f68
+FS:  00007f2c11757600(0000) GS:ffff888062800000(0000) knlGS:0000000000000000
 CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f475ed5bd58 CR3: 00000000771b4000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+CR2: 0000557cafd1eb48 CR3: 0000000024e1a000 CR4: 00000000000006f0
 Call Trace:
  <TASK>
- do_writepages+0x35f/0x880 mm/page-writeback.c:2702
- __writeback_single_inode+0x14f/0x10d0 fs/fs-writeback.c:1680
- writeback_sb_inodes+0x820/0x1360 fs/fs-writeback.c:1976
- __writeback_inodes_wb+0x11b/0x260 fs/fs-writeback.c:2047
- wb_writeback+0x427/0xb80 fs/fs-writeback.c:2158
- wb_check_background_flush fs/fs-writeback.c:2228 [inline]
- wb_do_writeback fs/fs-writeback.c:2316 [inline]
- wb_workfn+0xc4b/0x1080 fs/fs-writeback.c:2343
- process_one_work kernel/workqueue.c:3229 [inline]
- process_scheduled_works+0xa66/0x1840 kernel/workqueue.c:3310
- worker_thread+0x870/0xd30 kernel/workqueue.c:3391
- kthread+0x2f0/0x390 kernel/kthread.c:389
- ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ ? __die_body+0x5f/0xb0
+ ? die+0x9e/0xc0
+ ? do_trap+0x15a/0x3a0
+ ? iov_iter_revert+0x420/0x590
+ ? do_error_trap+0x1dc/0x2c0
+ ? iov_iter_revert+0x420/0x590
+ ? __pfx_do_error_trap+0x10/0x10
+ ? handle_invalid_op+0x34/0x40
+ ? iov_iter_revert+0x420/0x590
+ ? exc_invalid_op+0x38/0x50
+ ? asm_exc_invalid_op+0x1a/0x20
+ ? iov_iter_revert+0x104/0x590
+ ? iov_iter_revert+0x41f/0x590
+ ? iov_iter_revert+0x420/0x590
+ netfs_reset_iter+0xce/0x130
+ netfs_read_subreq_terminated+0x1fe/0xad0
+ netfs_read_to_pagecache+0x628/0x900
+ netfs_readahead+0x7e9/0x9d0
+ ? __pfx_netfs_readahead+0x10/0x10
+ ? blk_start_plug+0x70/0x1b0
+ read_pages+0x180/0x840
+ ? __pfx_read_pages+0x10/0x10
+ ? filemap_add_folio+0x26d/0x650
+ ? __pfx_filemap_add_folio+0x10/0x10
+ ? rcu_read_lock_any_held+0xb7/0x160
+ ? __pfx_rcu_read_lock_any_held+0x10/0x10
+ ? __pfx_proc_fail_nth_write+0x10/0x10
+ page_cache_ra_unbounded+0x774/0x8a0
+ force_page_cache_ra+0x280/0x2f0
+ generic_fadvise+0x522/0x830
+ ? __pfx_generic_fadvise+0x10/0x10
+ ? lockdep_hardirqs_on_prepare+0x43d/0x780
+ ? __pfx_lockdep_hardirqs_on_prepare+0x10/0x10
+ ? vfs_fadvise+0x99/0xc0
+ __x64_sys_readahead+0x1ac/0x230
+ do_syscall_64+0xf3/0x230
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f2c116736a9
+Code: 5c c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 4f 37 0d 00 f7 d8 64 89 01 48
+RSP: 002b:00007ffc78181c88 EFLAGS: 00000246 ORIG_RAX: 00000000000000bb
+RAX: ffffffffffffffda RBX: 0000000000000002 RCX: 00007f2c116736a9
+RDX: 000800000000000d RSI: 0000000000000005 RDI: 0000000000000006
+RBP: 00000000004029d8 R08: 00007ffc78181658 R09: 00007f0038363735
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffc78181cb0
+R13: 00007ffc78181ec8 R14: 0000000000401120 R15: 00007f2c1178ca80
  </TASK>
 
+This happens just because 'netfs_prepare_read_iterator()' may return
+-ENOMEM (which is actually triggered by the fault injection) but such
+a cases are not consistently handled in 'netfs_read_to_pagecache()'.
+So wrap 'netfs_prepare_read_iterator()' to handle all possible
+-ENOMEM cases and mark the corresponding subrequest as cancelled.
 
+Reported-by: syzbot+404b4b745080b6210c6c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=404b4b745080b6210c6c
+Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
+Tested-by: syzbot+404b4b745080b6210c6c@syzkaller.appspotmail.com
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 ---
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+v2: adjusted to match 6.13.0-rc1
+---
+ fs/netfs/buffered_read.c | 31 ++++++++++++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 5 deletions(-)
+
+diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
+index 7ac34550c403..4404f3c6ec3e 100644
+--- a/fs/netfs/buffered_read.c
++++ b/fs/netfs/buffered_read.c
+@@ -95,7 +95,7 @@ static size_t netfs_load_buffer_from_ra(struct netfs_io_request *rreq,
+ }
+ 
+ /*
+- * netfs_prepare_read_iterator - Prepare the subreq iterator for I/O
++ * __netfs_prepare_read_iterator - Prepare the subreq iterator for I/O
+  * @subreq: The subrequest to be set up
+  *
+  * Prepare the I/O iterator representing the read buffer on a subrequest for
+@@ -109,7 +109,7 @@ static size_t netfs_load_buffer_from_ra(struct netfs_io_request *rreq,
+  * [!] NOTE: This must be run in the same thread as ->issue_read() was called
+  * in as we access the readahead_control struct.
+  */
+-static ssize_t netfs_prepare_read_iterator(struct netfs_io_subrequest *subreq)
++static ssize_t __netfs_prepare_read_iterator(struct netfs_io_subrequest *subreq)
+ {
+ 	struct netfs_io_request *rreq = subreq->rreq;
+ 	size_t rsize = subreq->len;
+@@ -174,6 +174,21 @@ static ssize_t netfs_prepare_read_iterator(struct netfs_io_subrequest *subreq)
+ 	return subreq->len;
+ }
+ 
++/* Wrap the above by handling possible -ENOMEM and
++ * marking the corresponding subrequest as cancelled.
++ */
++static inline ssize_t netfs_prepare_read_iterator(struct netfs_io_subrequest *subreq)
++{
++	struct netfs_io_request *rreq = subreq->rreq;
++	ssize_t slice = __netfs_prepare_read_iterator(subreq);
++
++	if (unlikely(slice < 0)) {
++		atomic_dec(&rreq->nr_outstanding);
++		netfs_put_subrequest(subreq, false, netfs_sreq_trace_put_cancel);
++	}
++	return slice;
++}
++
+ static enum netfs_io_source netfs_cache_prepare_read(struct netfs_io_request *rreq,
+ 						     struct netfs_io_subrequest *subreq,
+ 						     loff_t i_size)
+@@ -285,9 +300,7 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq)
+ 			}
+ 
+ 			slice = netfs_prepare_read_iterator(subreq);
+-			if (slice < 0) {
+-				atomic_dec(&rreq->nr_outstanding);
+-				netfs_put_subrequest(subreq, false, netfs_sreq_trace_put_cancel);
++			if (unlikely(slice < 0)) {
+ 				ret = slice;
+ 				break;
+ 			}
+@@ -302,6 +315,10 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq)
+ 			trace_netfs_sreq(subreq, netfs_sreq_trace_submit);
+ 			netfs_stat(&netfs_n_rh_zero);
+ 			slice = netfs_prepare_read_iterator(subreq);
++			if (unlikely(slice < 0)) {
++				ret = slice;
++				break;
++			}
+ 			__set_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags);
+ 			netfs_read_subreq_terminated(subreq, 0, false);
+ 			goto done;
+@@ -310,6 +327,10 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq)
+ 		if (source == NETFS_READ_FROM_CACHE) {
+ 			trace_netfs_sreq(subreq, netfs_sreq_trace_submit);
+ 			slice = netfs_prepare_read_iterator(subreq);
++			if (unlikely(slice < 0)) {
++				ret = slice;
++				break;
++			}
+ 			netfs_read_cache_to_pagecache(rreq, subreq);
+ 			goto done;
+ 		}
+-- 
+2.47.1
+
