@@ -1,68 +1,63 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522301F8AF9
-	for <netfs@lists.linux.dev>; Tue,  3 Dec 2024 16:50:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C18C1F9F77
+	for <netfs@lists.linux.dev>; Tue,  3 Dec 2024 16:56:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733244641; cv=none; b=aTuhfvawrQTPhLBki+LqllaBRLOP/6jXIKdG/bHQIltTlyTbKBDi80etg+H7eBWlqO7PXm/mGFd8NQaYjxX3dHqjlhXqxEUdtGmt6jmu7rUAE6ImSTizdERVyJaPwc+DMoS7tJbPULBg36hRUY4nBle43beDVBtJjXNck7f9uYk=
+	t=1733244968; cv=none; b=E32Lw4JTOHXu1nrw0dkd9Aapt63QboBw9TQdhl+Yev9BDj7hE8R7meX0s98gc2dpFSCMJKKiQSJETMRcFGqcZYAbkJ6khb3VGKchPom7rtQDFDxrk6R+jR3Fj/tAfF4vPAPJwXHaMfPCSQVvVx0X2mjx7zwtEbVjdgn0D5f79vM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733244641; c=relaxed/simple;
-	bh=U/kZg6wRRAGFaUyq3MwugoqyLVhimU1xugPQde6x/+U=;
+	s=arc-20240116; t=1733244968; c=relaxed/simple;
+	bh=7Gx75QDlyoDonl8gsJEr0X4zw3xiB1g1IW3hMV6K+3U=;
 	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=ha1muVfO6N6W1NUp+t9vcrPyfhePJg1lMT+VMAB5fXp4xP7Xw580npvV9r5B0D9Qyq4DnKBXRXrENpagsC4UmvnXaDJi4ZI9QeJJ7Geohr/53xxRq95tVbVDAqNFc4Jijp0r6qZ5RpFyfPwW44veew9S3gb9xhI2/RaKgbTqCDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KOm5RBU3; arc=none smtp.client-ip=170.10.133.124
+	 Content-Type:Date:Message-ID; b=tLL7yim4UbeDv5y+32CJYZwoYT6EMFbrK7Uu/e1ULXeKxs0lF77PZZNCmABy2nZpj6aRq1LVwurSBexnFJwoxi7jpVAB8Dtb9j6l9bU6LwEurD9Jmo3Dc8uN5JxDh5dCZqWUGCnwTrfNitw2hQqYBe7Rs9FLdbjbY5kXgsSBx2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iQe9adNx; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KOm5RBU3"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iQe9adNx"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733244639;
+	s=mimecast20190719; t=1733244966;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=U/kZg6wRRAGFaUyq3MwugoqyLVhimU1xugPQde6x/+U=;
-	b=KOm5RBU3R9xv+4NCbHnxg/GBPr0u4kA5bf6IdaaR7PcD/03pQya3a5AiYNScLrRKdAYClS
-	5edh6T3sF6oIf7KKu1abZwiTEre4UqoKMQYkGlBz6gyMRJ+vfKF50V8//e0sghyMZ4/8me
-	tJj+zgRqBzt9SYcZ5l6YlZExITPtLI4=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+	bh=DV9CirJEkNvuIp9vIxKxT+t7dtJcsduQ7RHNpTrXiWQ=;
+	b=iQe9adNxsfEoC9k0d50kd/TkMYSbKoVNBGbHvv1Ma3MbuPISZQqTajzLoBXIisXU2AIL54
+	WHwX1gqTT3lnh8Zf868MulECMUall8pqb7EFQzl7sx47KykYxcvg2hyPWRt/Ee3lfO88aW
+	j9a0IezPdzNgEE75FV3jJSxpHCZnRxE=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-626-ZaPuXlSMM0KYIhsLt3rKvg-1; Tue,
- 03 Dec 2024 11:50:36 -0500
-X-MC-Unique: ZaPuXlSMM0KYIhsLt3rKvg-1
-X-Mimecast-MFC-AGG-ID: ZaPuXlSMM0KYIhsLt3rKvg
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-423-BLyc-I2_PU6o9ocECVBXbg-1; Tue,
+ 03 Dec 2024 11:56:00 -0500
+X-MC-Unique: BLyc-I2_PU6o9ocECVBXbg-1
+X-Mimecast-MFC-AGG-ID: BLyc-I2_PU6o9ocECVBXbg
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A0BF71944DDF;
-	Tue,  3 Dec 2024 16:50:31 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 377AF1955D96;
+	Tue,  3 Dec 2024 16:55:59 +0000 (UTC)
 Received: from warthog.procyon.org.uk (unknown [10.42.28.48])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DA9A030000DF;
-	Tue,  3 Dec 2024 16:50:23 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BAACA19560A3;
+	Tue,  3 Dec 2024 16:55:56 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
 	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
 	Kingdom.
 	Registered in England and Wales under Company Registration No. 3798903
 From: David Howells <dhowells@redhat.com>
-In-Reply-To: <674ded0b.050a0220.48a03.0027.GAE@google.com>
-References: <674ded0b.050a0220.48a03.0027.GAE@google.com>
-To: syzbot <syzbot+5621e2baf492be382fa9@syzkaller.appspotmail.com>
-Cc: dhowells@redhat.com, asmadeus@codewreck.org, bharathsm@microsoft.com,
-    brauner@kernel.org, ericvh@kernel.org, jlayton@kernel.org,
-    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-    linux-trace-kernel@vger.kernel.org, linux_oss@crudebyte.com,
-    lucho@ionkov.net, marc.dionne@auristor.com,
-    mathieu.desnoyers@efficios.com, mhiramat@kernel.org,
-    netfs@lists.linux.dev, pc@manguebit.com, ronniesahlberg@gmail.com,
-    rostedt@goodmis.org, samba-technical@lists.samba.org,
-    sfrench@samba.org, sprasad@microsoft.com,
-    syzkaller-bugs@googlegroups.com, tom@talpey.com,
-    v9fs@lists.linux.dev
-Subject: Re: [syzbot] [netfs?] WARNING in netfs_retry_reads (2)
+In-Reply-To: <CA+G9fYuLXDh8GDmgdhmA1NAhsma3=FoH1n93gmkHAGGFKbNGeQ@mail.gmail.com>
+References: <CA+G9fYuLXDh8GDmgdhmA1NAhsma3=FoH1n93gmkHAGGFKbNGeQ@mail.gmail.com>
+To: Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc: dhowells@redhat.com, netfs@lists.linux.dev,
+    linux-fsdevel@vger.kernel.org,
+    open list <linux-kernel@vger.kernel.org>,
+    lkft-triage@lists.linaro.org, Jeff Layton <jlayton@kernel.org>,
+    Dan Carpenter <dan.carpenter@linaro.org>,
+    Anders Roxell <anders.roxell@linaro.org>,
+    Arnd Bergmann <arnd@arndb.de>
+Subject: Re: fs/netfs/read_retry.c:235:20: error: variable 'subreq' is uninitialized when used here [-Werror,-Wuninitialized]
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -70,12 +65,76 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <589148.1733244622.1@warthog.procyon.org.uk>
+Content-ID: <589334.1733244955.1@warthog.procyon.org.uk>
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 03 Dec 2024 16:50:22 +0000
-Message-ID: <589149.1733244622@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Date: Tue, 03 Dec 2024 16:55:55 +0000
+Message-ID: <589335.1733244955@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs=
-.git netfs-writeback
+Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+
+> Build error:
+> ---------
+> fs/netfs/read_retry.c:235:20: error: variable 'subreq' is
+> uninitialized when used here [-Werror,-Wuninitialized]
+>   235 |         if (list_is_last(&subreq->rreq_link, &stream->subrequest=
+s))
+>       |                           ^~~~~~
+> fs/netfs/read_retry.c:28:36: note: initialize the variable 'subreq' to
+> silence this warning
+>    28 |         struct netfs_io_subrequest *subreq;
+>       |                                           ^
+>       |                                            =3D NULL
+> 1 error generated.
+> make[5]: *** [scripts/Makefile.build:194: fs/netfs/read_retry.o] Error 1
+> =
+
+> Build image:
+> -----------
+> - https://qa-reports.linaro.org/lkft/linux-next-master/build/next-202411=
+26/testrun/26060810/suite/build/test/clang-19-lkftconfig/log
+> - https://qa-reports.linaro.org/lkft/linux-next-master/build/next-202411=
+26/testrun/26060810/suite/build/test/clang-19-lkftconfig/details/
+> - https://storage.tuxsuite.com/public/linaro/lkft/builds/2pNKzjvChfT6aOW=
+plZaZeQzbYCX/
+> =
+
+> Steps to reproduce:
+> ------------
+> - tuxmake --runtime podman --target-arch x86_64 --toolchain clang-19
+> --kconfig https://storage.tuxsuite.com/public/linaro/lkft/builds/2pNKzjv=
+ChfT6aOWplZaZeQzbYCX/config
+> LLVM=3D1 LLVM_IAS=3D1
+> =
+
+> The git log shows
+> $ git log --oneline  next-20241122..next-20241125 -- fs/netfs/read_retry=
+.c
+> 1bd9011ee163e netfs: Change the read result collector to only use one wo=
+rk item
+> 5c962f9982cd9 netfs: Don't use bh spinlock
+> 3c8a83f74e0ea netfs: Drop the was_async arg from netfs_read_subreq_termi=
+nated()
+> 2029a747a14d2 netfs: Abstract out a rolling folio buffer implementation
+> =
+
+> metadata:
+> ----
+>   git describe: next-20241125 and next-20241126
+>   git repo: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-n=
+ext.git
+>   git sha: ed9a4ad6e5bd3a443e81446476718abebee47e82
+>   kernel config:
+> https://storage.tuxsuite.com/public/linaro/lkft/builds/2pNKzjvChfT6aOWpl=
+ZaZeQzbYCX/config
+
+That should be fixed on my branch now:
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/l=
+og/?h=3Dnetfs-writeback
+
+I'm just moving the branch to v6.13-rc1 and fixing reported issues before
+asking Christian to repull it.
+
+David
 
