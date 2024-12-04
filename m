@@ -1,97 +1,84 @@
-Received: from forward500b.mail.yandex.net (forward500b.mail.yandex.net [178.154.239.144])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A40A1F7096
-	for <netfs@lists.linux.dev>; Wed,  4 Dec 2024 13:19:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AA591DF73E
+	for <netfs@lists.linux.dev>; Wed,  4 Dec 2024 13:41:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733318357; cv=none; b=dKMGUo23pUnTMt9g1Y+Dn+RvHcMWai1BGqOuWGvlc2QWp4UbNTE32AL5P/4CX1jcS6ixO2f9141WYz3YRzpIZ8lg9VXWikVwXOc+plxYj7KSCiq8bKUuFBlVCfBDqQv89Kj4yeTq/ZWnGNFKTpweyoyZn1sfQhrJk2Eh6Y2LigU=
+	t=1733319710; cv=none; b=XiMcOINH/CXhS1cqdO74byK5+5p4ztDX3rLete5ZmKXIIaLgnptxIgPqthpBIY658ozke24PobmBA5CsA0abiRUslO5oIDNHzF63N1NawGsV53nCDSnxPE+pfppeSxHZxxCmfxKSxxw1fTx0T8VlQ6t/xWK03sKVJslgY3/7V3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733318357; c=relaxed/simple;
-	bh=F4i9RTxTHxwuT1bKs95j9l/03exXzBFg/gaBamfbmdQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MYbEfUkEBcVG4/bwOHKUETkRljEZu/Hf+FrEpXH6zbReT6i9bns4B2U+5YjmWbzFJddxZwfm4FkuTA9aP74kaHKDFXfiHv+1k/c8aa78rRokrpLtRwGDexNbHL+mpV49jj7Aff5bAZlJeLtb6e/eLbFF4otVfi4KpO2JwKaVqPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=aI0xfWPB; arc=none smtp.client-ip=178.154.239.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+	s=arc-20240116; t=1733319710; c=relaxed/simple;
+	bh=//IOCXU9YYt4/q/x0hx4GJcgqWywOZM6O/P4V+hgsa8=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=XJxLkIMu8wHpAbLSXcGKhYD7NFUrcj/p47IHtr9nfoA4uYzg3xNj43pm512iGBDTOOhkEGMPfzKHmQ7eafBMla9EwvM1HS0luqk0EWUMCs98qnQr1r8577URl51YnDcnMfOY0U2EMLbwy1QlV2NGWtNeufnIve4uEhIQcmE8Sko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IIrDRS3k; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="aI0xfWPB"
-Received: from mail-nwsmtp-smtp-production-main-39.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-39.sas.yp-c.yandex.net [IPv6:2a02:6b8:c08:c61f:0:640:7720:0])
-	by forward500b.mail.yandex.net (Yandex) with ESMTPS id 3573F61862;
-	Wed,  4 Dec 2024 16:13:49 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-39.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id kDgZ8aIOieA0-L7TvwyjF;
-	Wed, 04 Dec 2024 16:13:48 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1733318028; bh=F4i9RTxTHxwuT1bKs95j9l/03exXzBFg/gaBamfbmdQ=;
-	h=In-Reply-To:To:From:Cc:Date:References:Subject:Message-ID;
-	b=aI0xfWPBZYFSJySjGgX12KGVbqNjVH1GyoCuw0/sdKQHNSKgQWlPz3MFwbD8l82o1
-	 vTnf54fzT9tkhC+g79DWCgap3Tn4co51hTF45MOS3OtPEJRkmDPaxgZ0TEV5FOOzNj
-	 Ei7BTfl2zDMtuT1nH4uVtU+ZnMXMa0oLO4ivDgO4=
-Authentication-Results: mail-nwsmtp-smtp-production-main-39.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-Message-ID: <20acef00-d4d2-4ab2-9262-21e3889266df@yandex.ru>
-Date: Wed, 4 Dec 2024 16:13:46 +0300
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IIrDRS3k"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733319707;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Je4LoQU1rSuWE8wImIWJKAiOgPVmQRuJjQd+HMY9Y0c=;
+	b=IIrDRS3kDpBtHM50XGdhlKDCHGRSfhrJk7ogssJKQJDUvDy9VGbTwVywsAK95UgbIH38hm
+	23ojuGEQgwpkDn6RPY087O7BNTij5Mm4hYfxizwl9mYDZI7xWQfl9DnLx6wmfzi+XQb7YS
+	zobSk2BxEkL8UvxfVybqrudwGh3/p/A=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-12-SJNa59pBOM-nAAPG5E9uHA-1; Wed,
+ 04 Dec 2024 08:41:44 -0500
+X-MC-Unique: SJNa59pBOM-nAAPG5E9uHA-1
+X-Mimecast-MFC-AGG-ID: SJNa59pBOM-nAAPG5E9uHA
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 785F11954B09;
+	Wed,  4 Dec 2024 13:41:42 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.48])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 358B119560A2;
+	Wed,  4 Dec 2024 13:41:39 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <CAJfpeguAw2_3waLEGhPK-LZ_dFfOXO6bHGE=6Yo2xpyet6SYrA@mail.gmail.com>
+References: <CAJfpeguAw2_3waLEGhPK-LZ_dFfOXO6bHGE=6Yo2xpyet6SYrA@mail.gmail.com> <20241202093943.227786-1-dmantipov@yandex.ru> <1100513.1733306199@warthog.procyon.org.uk>
+To: Miklos Szeredi <miklos@szeredi.hu>
+Cc: dhowells@redhat.com, Dmitry Antipov <dmantipov@yandex.ru>,
+    Jeff Layton <jlayton@kernel.org>,
+    Christian Brauner <brauner@kernel.org>, netfs@lists.linux.dev,
+    linux-fsdevel@vger.kernel.org, lvc-project@linuxtesting.org,
+    syzbot+404b4b745080b6210c6c@syzkaller.appspotmail.com
+Subject: Re: syzbot program that crashes netfslib can also crash fuse
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: syzbot program that crashes netfslib can also crash fuse
-Content-Language: en-MW
-To: Miklos Szeredi <miklos@szeredi.hu>, David Howells <dhowells@redhat.com>
-Cc: Jeff Layton <jlayton@kernel.org>, Christian Brauner <brauner@kernel.org>,
- netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
- lvc-project@linuxtesting.org,
- syzbot+404b4b745080b6210c6c@syzkaller.appspotmail.com
-References: <20241202093943.227786-1-dmantipov@yandex.ru>
- <1100513.1733306199@warthog.procyon.org.uk>
- <CAJfpeguAw2_3waLEGhPK-LZ_dFfOXO6bHGE=6Yo2xpyet6SYrA@mail.gmail.com>
-From: Dmitry Antipov <dmantipov@yandex.ru>
-Autocrypt: addr=dmantipov@yandex.ru; keydata=
- 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
- A/UwwXBRuvydGV0=
-In-Reply-To: <CAJfpeguAw2_3waLEGhPK-LZ_dFfOXO6bHGE=6Yo2xpyet6SYrA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1127212.1733319697.1@warthog.procyon.org.uk>
+Date: Wed, 04 Dec 2024 13:41:38 +0000
+Message-ID: <1127213.1733319698@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On 12/4/24 3:41 PM, Miklos Szeredi wrote:
+I seems to work, so you can add:
 
-> Can you please test this?
+Tested-by: David Howells <dhowells@redhat.com>
 
-Tested-by: Dmitry Antipov <dmantipov@yandex.ru>
+Please don't mark it as closing the syzbot report as that pertains to
+netfslib, not fuse.  syzbot attached both reproducers to the same overall
+report when it really ought to have split them.
 
-Dmitry
+Note that a reproducer zombie is left behind and the filesystem can't be
+unmounted as it is busy (which may be due to the zombie).  However, the zombie
+goes away and is replaced with another if the reproducer is run again.  I
+wonder if I'm seeing a systemd bug as systemd should be reaping the zombies.
+
+David
 
