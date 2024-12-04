@@ -1,171 +1,73 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D350A1F8EF1
-	for <netfs@lists.linux.dev>; Wed,  4 Dec 2024 14:11:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361FB1F756F
+	for <netfs@lists.linux.dev>; Wed,  4 Dec 2024 14:20:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733321497; cv=none; b=Rjnj4HUPx6Kd4pvl8FqIM5ww1saQK5x3jq0JNnZ43i+HDopxLJsOgut0dP+EnmVLvlssSzugcz/x3hEjkBRH71kqiEJpw/c5lM02mC6MZ2K3IxvSJru1prKeRc+uVYo+569SjBVmg1DfGybokpG8xMV17RDzKjOYJu47ADvE1rk=
+	t=1733322006; cv=none; b=snkXpruNO9Sgb05ob4nRmfidYPIgwm2m5SRlgDbgJHLxFa6/zXcxHUs4cwD7qdkd6Da9M8Z2rENAYbrRRfZ/Fqjy2BpiVtHShEG4EyVdrmYjIjSwbISoWTpM9jNes5dK3sgg+dRJkbDO94saFN/QRu3iJPJyhwo0c7ey7oTdW4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733321497; c=relaxed/simple;
-	bh=Olq8n9V/c4ByFTjwghd3RJxLHgwGeb1Qki0jTylZSXg=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=VdqrdTj5A5QCh/suSgaOBOpysLal//+/tgDH+rr+7m4RxLYjyR+p5Mx4Xj7wGnZ2IyOgBwQik1dbGPO5IcyGJSx9Ri7VutVwBtBfkgehmT9BsFDyMAGL0WIkjnVBh8Qd5i519G9qpIiMASrnojXWDRsmFpXg6v95i44qZNli/ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=esApVVK/; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="esApVVK/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733321494;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6bC3keQdTl30q+RF/rmG2+pay8wGwfywBaMyPdC8zJk=;
-	b=esApVVK/T+M/yQg0a+CjK/gZ4f/T4d48i158YykBSLnIHtQFL8KczcOx/m3WTcCtHAJfiM
-	rXwEUvvIENIdgcxqS+hTyg36NMMV1Ta1w0A04gTE5qKMlrzdf9RLyP0K4FstfJrlo1G1aa
-	kMX/JuRFIdbGbr7ZJtX5PskTwEyMlSE=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-447-kpMovubyMEK9BYAP0K7I0w-1; Wed,
- 04 Dec 2024 09:11:31 -0500
-X-MC-Unique: kpMovubyMEK9BYAP0K7I0w-1
-X-Mimecast-MFC-AGG-ID: kpMovubyMEK9BYAP0K7I0w
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B3B571955F40;
-	Wed,  4 Dec 2024 14:11:28 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.48])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DA46D19560A2;
-	Wed,  4 Dec 2024 14:11:26 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <67238110.050a0220.35b515.015e.GAE@google.com>
-References: <67238110.050a0220.35b515.015e.GAE@google.com>
-To: syzbot <syzbot+404b4b745080b6210c6c@syzkaller.appspotmail.com>
-Cc: dhowells@redhat.com, jlayton@kernel.org,
-    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-    netfs@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [netfs?] kernel BUG in iov_iter_revert (2)
+	s=arc-20240116; t=1733322006; c=relaxed/simple;
+	bh=tO+SORHpKmrWTcl93DOLCo0umt8XdOBYvIMpAvA3wgg=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=PO9on6WjGECBsKEEgmXZKMDNPVRFkVGCheM4brfLjs3DJd3j3qQooCF8RqBV5RP5+WbHBpsAKHX38RHnVRlVEJw2Ui0MJ/W8YlKX6Fd/SYBUEiEqeMe8mGOE2a0VcaTH/xdUivc8UEQWotyyJUdRHQhrcnWOxMovGpOc0Z7vQXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3a775636946so39793645ab.2
+        for <netfs@lists.linux.dev>; Wed, 04 Dec 2024 06:20:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733322002; x=1733926802;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8KVEhwAjHAH6DwhUQICA5+2FgGfgLP5QSHauX9xaRkI=;
+        b=gz9qzn0SsYKknLkJfHsCmVDdSx4jBDRL5Tp07pXn1i40WRWTocLuUVVYMO2Q0uVcC8
+         D9tDU6ihETLxoKwZj+gkRu52RD7jbL2h/bhGj7i6miT0OKgkjP7tWagPYRCxKpEsu99g
+         h/HLnVFk8z9DVYMr3BjPeQ0CeFOkITIbcLn0wlhCttZKJiIlaUIOvqbJ8Q00x4t1WHr5
+         F4M2UVUZHpoZ9oXPT/c6cCqL85zvN83I8FITxnbIkI64MUBx9tWKvnBuHuBP598cE4TV
+         OLk33EGZK3PSyPbWcmg8lNoPsOrJQKwuKdK1ziUcoNFEdMrPYCbYlDI+aBA2bDhX4WX+
+         rW2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWDuZ7WcfE2df3sy/k0xIqM199Mzo9DLywRAshSZwaGe0tvQZ0nrTo6JwK8w6dG0XQfTHDFtQ==@lists.linux.dev
+X-Gm-Message-State: AOJu0YxdPGvht+IdpqJHNUV+N/L87toPTlGe2fD8w81UFONRxdi7Elre
+	1arOeG9RyW1gKH4MTltLezxX0srNCSjuqeYEgTXSxnEPDrIAIhPZYAWikKsA7QMZ/6vIrdhlVcx
+	gkcGUH9tlBYrcYk8qL1B1poZ8Kb9tchMdJzMW8ObJdY/W+UcqsqZGeHs=
+X-Google-Smtp-Source: AGHT+IFCfKe19gEn2IpmATv9IPOuQmAwJeYIZY35tvobgYCj4YIwz7jBav1nR/Rzgpfp/T5bdc8Tcp8RRuHIAae0Yhb0GSO7H9tV
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1129890.1733321485.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 04 Dec 2024 14:11:25 +0000
-Message-ID: <1129891.1733321485@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Received: by 2002:a05:6e02:1c89:b0:3a7:e528:6ee6 with SMTP id
+ e9e14a558f8ab-3a7f9a4e005mr86299875ab.13.1733322002409; Wed, 04 Dec 2024
+ 06:20:02 -0800 (PST)
+Date: Wed, 04 Dec 2024 06:20:02 -0800
+In-Reply-To: <1128092.1733320787@warthog.procyon.org.uk>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <67506512.050a0220.17bd51.006d.GAE@google.com>
+Subject: Re: [syzbot] [netfs?] kernel BUG in iov_iter_revert (2)
+From: syzbot <syzbot+404b4b745080b6210c6c@syzkaller.appspotmail.com>
+To: dhowells@redhat.com, jlayton@kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netfs@lists.linux.dev, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.gi=
-t v6.13-rc1
+Hello,
 
-netfs: Fix enomem handling in buffered reads
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-If netfs_read_to_pagecache() gets an error from either ->prepare_read() or
-from netfs_prepare_read_iterator(), it needs to decrement ->nr_outstanding=
-,
-cancel the subrequest and break out of the issuing loop.  Currently, it
-only does this for two of the cases, but there are two more that aren't
-handled.
-
-Fix this by moving the handling to a common place and jumping to it from
-all four places.  This is in preference to inserting a wrapper around
-netfs_prepare_read_iterator() as proposed by Dmitry Antipov[1].
-
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
 Reported-by: syzbot+404b4b745080b6210c6c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=3D404b4b745080b6210c6c
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Dmitry Antipov <dmantipov@yandex.ru>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Link: https://lore.kernel.org/r/20241202093943.227786-1-dmantipov@yandex.r=
-u/ [1]
----
- fs/netfs/buffered_read.c |   28 ++++++++++++++++------------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+Tested-by: syzbot+404b4b745080b6210c6c@syzkaller.appspotmail.com
 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index 7ac34550c403..4dc9b8286355 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -275,22 +275,14 @@ static void netfs_read_to_pagecache(struct netfs_io_=
-request *rreq)
- 			netfs_stat(&netfs_n_rh_download);
- 			if (rreq->netfs_ops->prepare_read) {
- 				ret =3D rreq->netfs_ops->prepare_read(subreq);
--				if (ret < 0) {
--					atomic_dec(&rreq->nr_outstanding);
--					netfs_put_subrequest(subreq, false,
--							     netfs_sreq_trace_put_cancel);
--					break;
--				}
-+				if (ret < 0)
-+					goto prep_failed;
- 				trace_netfs_sreq(subreq, netfs_sreq_trace_prepare);
- 			}
- =
+Tested on:
 
- 			slice =3D netfs_prepare_read_iterator(subreq);
--			if (slice < 0) {
--				atomic_dec(&rreq->nr_outstanding);
--				netfs_put_subrequest(subreq, false, netfs_sreq_trace_put_cancel);
--				ret =3D slice;
--				break;
--			}
-+			if (slice < 0)
-+				goto prep_iter_failed;
- =
+commit:         40384c84 Linux 6.13-rc1
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git v6.13-rc1
+console output: https://syzkaller.appspot.com/x/log.txt?x=11f960f8580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=58639d2215ba9a07
+dashboard link: https://syzkaller.appspot.com/bug?extid=404b4b745080b6210c6c
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=1249a330580000
 
- 			rreq->netfs_ops->issue_read(subreq);
- 			goto done;
-@@ -302,6 +294,8 @@ static void netfs_read_to_pagecache(struct netfs_io_re=
-quest *rreq)
- 			trace_netfs_sreq(subreq, netfs_sreq_trace_submit);
- 			netfs_stat(&netfs_n_rh_zero);
- 			slice =3D netfs_prepare_read_iterator(subreq);
-+			if (slice < 0)
-+				goto prep_iter_failed;
- 			__set_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags);
- 			netfs_read_subreq_terminated(subreq, 0, false);
- 			goto done;
-@@ -310,6 +304,8 @@ static void netfs_read_to_pagecache(struct netfs_io_re=
-quest *rreq)
- 		if (source =3D=3D NETFS_READ_FROM_CACHE) {
- 			trace_netfs_sreq(subreq, netfs_sreq_trace_submit);
- 			slice =3D netfs_prepare_read_iterator(subreq);
-+			if (slice < 0)
-+				goto prep_iter_failed;
- 			netfs_read_cache_to_pagecache(rreq, subreq);
- 			goto done;
- 		}
-@@ -318,6 +314,14 @@ static void netfs_read_to_pagecache(struct netfs_io_r=
-equest *rreq)
- 		WARN_ON_ONCE(1);
- 		break;
- =
-
-+	prep_iter_failed:
-+		ret =3D slice;
-+	prep_failed:
-+		subreq->error =3D ret;
-+		atomic_dec(&rreq->nr_outstanding);
-+		netfs_put_subrequest(subreq, false, netfs_sreq_trace_put_cancel);
-+		break;
-+
- 	done:
- 		size -=3D slice;
- 		start +=3D slice;
-
+Note: testing is done by a robot and is best-effort only.
