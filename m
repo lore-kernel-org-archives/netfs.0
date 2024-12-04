@@ -1,80 +1,87 @@
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m10145.netease.com (mail-m10145.netease.com [154.81.10.145])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ADCB1C68F
-	for <netfs@lists.linux.dev>; Wed,  4 Dec 2024 01:51:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D66C188015
+	for <netfs@lists.linux.dev>; Wed,  4 Dec 2024 06:48:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=154.81.10.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733277065; cv=none; b=k4zNb93EZlL1LCopZDa9xy0b7toZ5tL2J9qvidOksqLqppwuqqsb3xI2NlLBHam+rQ646+A+YoSmXO+R7mN3I0e+7NpIXor8A6gsfBaXBeh19+Gv79sAjejmg5kv8U9Ux+CJsLwyI61bYHBoh2hMv/Fdg3SQLuAsuv74We4v8Ec=
+	t=1733294913; cv=none; b=b8XZezg6RuJK1ofdTPVWbLtLoE+RFCoZSHxwPheEsdsI4DX5EnKXGapa/pBM8eEEmqMTjev6JvhQ1Sm8g4qhJMFh/4UsFs1wVw14UtPW4Cc+d9zccgotxIfXSS7uZwrNpJBFMywVXYtO2ZHQDWqbMAbwgjEfUIUkYYG0SUW6duQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733277065; c=relaxed/simple;
-	bh=rWtZF8Dus1RjbJZaZTLBXSr66OIKeFm9TueYUIt7Zoc=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=kTQ6+qpk39IJ7NuIrHvJg1ZLYBMH5AprVMBtywekOBERulEjgp59xOYWXtpHA1o5iA5Ro4F59yCYycWcUP3psGU4w9saJtLV55Uxdf13GpMU7I47NWsdXU3T+GrPJMTLjh6l1HDfBhcjlesrbx12O6rS/t1baGf+qV66NLnYzzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-3a7cf41b54eso123077595ab.2
-        for <netfs@lists.linux.dev>; Tue, 03 Dec 2024 17:51:03 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733277062; x=1733881862;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ojyRDzOs4L5r1zvt5rLALFwRhgSLoRI+YAka9dryW2U=;
-        b=pkg1ARcTYqdIW/3CQAflDCBpt1yN1Jb6SGyQTYKODVyP8mFMJDCAM9tLHibTJANrlH
-         MSTsAhlfTiSk6/LjACKrHRP7lTgutPNxQUqmza5qtrvL9m9TdkDT8qoMQHtmjkeDR3JI
-         vWf40myRfrpicMr5yIPpECPoIuV4avV5hhJZZYky/qLnYplkuuoT11C4iQtEBMouLgRU
-         o8XcqdlcULKueo48+c30uI7kKyoq7js5oMnKl2F2wKJEgueqUwD2E974nJABj8oS7+u5
-         //YhTwhzu0g0UAoZpjN5crSDpeiOiP2NgoASWJBwuN9PvmWUhvlFKUEYW4rTTkzJCAXm
-         sExg==
-X-Forwarded-Encrypted: i=1; AJvYcCUI40vIGYvrmuDyZG1miBwI2kgofGpM5EQE5renZYJ0SPSQWqxAkAiusZkl3lNGXviSiQmeqQ==@lists.linux.dev
-X-Gm-Message-State: AOJu0YxGHi67xlYeHuPPk6WAucaweLXA5N0xgulZrgBxfCnr3tetFvb2
-	/Y/Ttb+6msXAqRSLGaTuS/1DggOmyupbY34ukqDZm1Xu3VxbmKo2coAreYn/YJ7sqIANDUAJeMx
-	aXsjl/hHBAzTbAltas0WmazDtTuc6z30a76zoL+8U0m1gLQlMTjJ0mEs=
-X-Google-Smtp-Source: AGHT+IGmDky9ubXMdmWEyJvsqWfLs/KF8vdb5UnF3UfBT6VPtkSCq7Mi1MPMv2mpAS+sZb0fM/xrpgyQuWJKEeTuR3Zk+AqaSlPn
+	s=arc-20240116; t=1733294913; c=relaxed/simple;
+	bh=o8y0jaHm1vc1A6fPbLE8eSCbKomotemIUf8JvNn9ZN8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WZY7bf3uGmd8roWIOluP32+QBd6jEDbaA6xewxVSdYtAyCN325lUHkba+3u5ihqtcXJeMZbNlwhcCGmT1c9hQxb1B+jt/lj7VZZUzstXYeC+v2hHi6nTfB8Q79iUluTtwd6EuiQP5pKgIQVRL2T+snbEFbNHL+B8KFlB9DGmWow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=WVi4fmgI; arc=none smtp.client-ip=154.81.10.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="WVi4fmgI"
+Received: from localhost.localdomain (unknown [202.119.23.198])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 4a901914;
+	Wed, 4 Dec 2024 14:48:18 +0800 (GMT+08:00)
+From: Zilin Guan <zilin@seu.edu.cn>
+To: dhowells@redhat.com
+Cc: jlayton@kernel.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	xujianhao01@gmail.com
+Subject: [QUESTION] inconsistent use of smp_mb()
+Date: Wed,  4 Dec 2024 06:48:18 +0000
+Message-Id: <20241204064818.2760263-1-zilin@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1fce:b0:3a7:21ad:72a9 with SMTP id
- e9e14a558f8ab-3a7fed5f51amr26749215ab.17.1733277062597; Tue, 03 Dec 2024
- 17:51:02 -0800 (PST)
-Date: Tue, 03 Dec 2024 17:51:02 -0800
-In-Reply-To: <589149.1733244622@warthog.procyon.org.uk>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <674fb586.050a0220.17bd51.0057.GAE@google.com>
-Subject: Re: [syzbot] [netfs?] WARNING in netfs_retry_reads (2)
-From: syzbot <syzbot+5621e2baf492be382fa9@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, bharathsm@microsoft.com, brauner@kernel.org, 
-	dhowells@redhat.com, ericvh@kernel.org, jlayton@kernel.org, 
-	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux_oss@crudebyte.com, lucho@ionkov.net, 
-	marc.dionne@auristor.com, mathieu.desnoyers@efficios.com, mhiramat@kernel.org, 
-	netfs@lists.linux.dev, pc@manguebit.com, ronniesahlberg@gmail.com, 
-	rostedt@goodmis.org, samba-technical@lists.samba.org, sfrench@samba.org, 
-	sprasad@microsoft.com, syzkaller-bugs@googlegroups.com, tom@talpey.com, 
-	v9fs@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlDQ0IfVk9PSR9LGUtLQkpLSVYeHw5VEwETFhoSFy
+	QUDg9ZV1kYEgtZQVlJS0lVSkpCVUlIVUpCQ1lXWRYaDxIVHRRZQVlPS0hVSktISk5MTlVKS0tVSk
+	JLS1kG
+X-HM-Tid: 0a93906d3ea503a1kunm4a901914
+X-HM-MType: 10
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6OT46Qzo*OTItCQpCSk0hGTk#
+	Dy1PCStVSlVKTEhISUJPQ0JCQ01LVTMWGhIXVQESFxIVOwgeDlUeHw5VGBVFWVdZEgtZQVlJS0lV
+	SkpCVUlIVUpCQ1lXWQgBWUFKSU1KNwY+
+DKIM-Signature:a=rsa-sha256;
+	b=WVi4fmgIbV9J+SGyC6IU5X+xWlv5PLGYKwLTcmcDmUTwuZ4RNz7C7HFTWacmEcR1r+DPeQHwYBIhS33lbSSv/3A2jZpX5JYXsMbzvlXII49AAGcXGXmPMj5t43yxnISMqn3TdC2gMwJIa2WQ76QGAd0TUSU+22grECiqpiVkMfI=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=Tu6tGkbMYUAL0DYR8x2vk7K4QjqEHcaUrWdPubvdO9E=;
+	h=date:mime-version:subject:message-id:from;
 
 Hello,
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+I have a question regarding the use of smp_rmb() to enforce 
+memory ordering in two related functions.
 
-Reported-by: syzbot+5621e2baf492be382fa9@syzkaller.appspotmail.com
-Tested-by: syzbot+5621e2baf492be382fa9@syzkaller.appspotmail.com
+In the function netfs_unbuffered_write_iter_locked() from the file 
+fs/netfs/direct_write.c, smp_rmb() is explicitly used after the 
+wait_on_bit() call to ensure that the error and transferred fields are 
+read in the correct order following the NETFS_RREQ_IN_PROGRESS flag:
 
-Tested on:
+105	wait_on_bit(&wreq->flags, NETFS_RREQ_IN_PROGRESS,
+106		    TASK_UNINTERRUPTIBLE);
+107	smp_rmb(); /* Read error/transferred after RIP flag */
+108	ret = wreq->error;
+109	if (ret == 0) {
+110		ret = wreq->transferred;
+111		iocb->ki_pos += ret;
+112	}
 
-commit:         12588c3f netfs: Fix hang in synchronous read due to fa..
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git netfs-writeback
-console output: https://syzkaller.appspot.com/x/log.txt?x=135e1fc0580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=50c7a61469ce77e7
-dashboard link: https://syzkaller.appspot.com/bug?extid=5621e2baf492be382fa9
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+However, in the function netfs_end_writethrough() from the file 
+fs/netfs/write_issue.c, there is no such use of smp_rmb() after 
+the corresponding wait_on_bit() call, despite accessing the same filed 
+of wreq->error and relying on the same NETFS_RREQ_IN_PROGRESS flag:
 
-Note: no patches were applied.
-Note: testing is done by a robot and is best-effort only.
+681	wait_on_bit(&wreq->flags, NETFS_RREQ_IN_PROGRESS, 
+		    TASK_UNINTERRUPTIBLE);
+682	ret = wreq->error;
+
+My question is why does the first function require a CPU memory barrier 
+smp_rmb() to enforce ordering, whereas the second function does not?
+
+Thank you for your time and assistance!
+
+Best Regards,
+Zilin Guan
