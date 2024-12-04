@@ -1,140 +1,80 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C18C1F9F77
-	for <netfs@lists.linux.dev>; Tue,  3 Dec 2024 16:56:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ADCB1C68F
+	for <netfs@lists.linux.dev>; Wed,  4 Dec 2024 01:51:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733244968; cv=none; b=E32Lw4JTOHXu1nrw0dkd9Aapt63QboBw9TQdhl+Yev9BDj7hE8R7meX0s98gc2dpFSCMJKKiQSJETMRcFGqcZYAbkJ6khb3VGKchPom7rtQDFDxrk6R+jR3Fj/tAfF4vPAPJwXHaMfPCSQVvVx0X2mjx7zwtEbVjdgn0D5f79vM=
+	t=1733277065; cv=none; b=k4zNb93EZlL1LCopZDa9xy0b7toZ5tL2J9qvidOksqLqppwuqqsb3xI2NlLBHam+rQ646+A+YoSmXO+R7mN3I0e+7NpIXor8A6gsfBaXBeh19+Gv79sAjejmg5kv8U9Ux+CJsLwyI61bYHBoh2hMv/Fdg3SQLuAsuv74We4v8Ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733244968; c=relaxed/simple;
-	bh=7Gx75QDlyoDonl8gsJEr0X4zw3xiB1g1IW3hMV6K+3U=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=tLL7yim4UbeDv5y+32CJYZwoYT6EMFbrK7Uu/e1ULXeKxs0lF77PZZNCmABy2nZpj6aRq1LVwurSBexnFJwoxi7jpVAB8Dtb9j6l9bU6LwEurD9Jmo3Dc8uN5JxDh5dCZqWUGCnwTrfNitw2hQqYBe7Rs9FLdbjbY5kXgsSBx2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iQe9adNx; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iQe9adNx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733244966;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DV9CirJEkNvuIp9vIxKxT+t7dtJcsduQ7RHNpTrXiWQ=;
-	b=iQe9adNxsfEoC9k0d50kd/TkMYSbKoVNBGbHvv1Ma3MbuPISZQqTajzLoBXIisXU2AIL54
-	WHwX1gqTT3lnh8Zf868MulECMUall8pqb7EFQzl7sx47KykYxcvg2hyPWRt/Ee3lfO88aW
-	j9a0IezPdzNgEE75FV3jJSxpHCZnRxE=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-423-BLyc-I2_PU6o9ocECVBXbg-1; Tue,
- 03 Dec 2024 11:56:00 -0500
-X-MC-Unique: BLyc-I2_PU6o9ocECVBXbg-1
-X-Mimecast-MFC-AGG-ID: BLyc-I2_PU6o9ocECVBXbg
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 377AF1955D96;
-	Tue,  3 Dec 2024 16:55:59 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.48])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BAACA19560A3;
-	Tue,  3 Dec 2024 16:55:56 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <CA+G9fYuLXDh8GDmgdhmA1NAhsma3=FoH1n93gmkHAGGFKbNGeQ@mail.gmail.com>
-References: <CA+G9fYuLXDh8GDmgdhmA1NAhsma3=FoH1n93gmkHAGGFKbNGeQ@mail.gmail.com>
-To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc: dhowells@redhat.com, netfs@lists.linux.dev,
-    linux-fsdevel@vger.kernel.org,
-    open list <linux-kernel@vger.kernel.org>,
-    lkft-triage@lists.linaro.org, Jeff Layton <jlayton@kernel.org>,
-    Dan Carpenter <dan.carpenter@linaro.org>,
-    Anders Roxell <anders.roxell@linaro.org>,
-    Arnd Bergmann <arnd@arndb.de>
-Subject: Re: fs/netfs/read_retry.c:235:20: error: variable 'subreq' is uninitialized when used here [-Werror,-Wuninitialized]
+	s=arc-20240116; t=1733277065; c=relaxed/simple;
+	bh=rWtZF8Dus1RjbJZaZTLBXSr66OIKeFm9TueYUIt7Zoc=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=kTQ6+qpk39IJ7NuIrHvJg1ZLYBMH5AprVMBtywekOBERulEjgp59xOYWXtpHA1o5iA5Ro4F59yCYycWcUP3psGU4w9saJtLV55Uxdf13GpMU7I47NWsdXU3T+GrPJMTLjh6l1HDfBhcjlesrbx12O6rS/t1baGf+qV66NLnYzzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-3a7cf41b54eso123077595ab.2
+        for <netfs@lists.linux.dev>; Tue, 03 Dec 2024 17:51:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733277062; x=1733881862;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ojyRDzOs4L5r1zvt5rLALFwRhgSLoRI+YAka9dryW2U=;
+        b=pkg1ARcTYqdIW/3CQAflDCBpt1yN1Jb6SGyQTYKODVyP8mFMJDCAM9tLHibTJANrlH
+         MSTsAhlfTiSk6/LjACKrHRP7lTgutPNxQUqmza5qtrvL9m9TdkDT8qoMQHtmjkeDR3JI
+         vWf40myRfrpicMr5yIPpECPoIuV4avV5hhJZZYky/qLnYplkuuoT11C4iQtEBMouLgRU
+         o8XcqdlcULKueo48+c30uI7kKyoq7js5oMnKl2F2wKJEgueqUwD2E974nJABj8oS7+u5
+         //YhTwhzu0g0UAoZpjN5crSDpeiOiP2NgoASWJBwuN9PvmWUhvlFKUEYW4rTTkzJCAXm
+         sExg==
+X-Forwarded-Encrypted: i=1; AJvYcCUI40vIGYvrmuDyZG1miBwI2kgofGpM5EQE5renZYJ0SPSQWqxAkAiusZkl3lNGXviSiQmeqQ==@lists.linux.dev
+X-Gm-Message-State: AOJu0YxGHi67xlYeHuPPk6WAucaweLXA5N0xgulZrgBxfCnr3tetFvb2
+	/Y/Ttb+6msXAqRSLGaTuS/1DggOmyupbY34ukqDZm1Xu3VxbmKo2coAreYn/YJ7sqIANDUAJeMx
+	aXsjl/hHBAzTbAltas0WmazDtTuc6z30a76zoL+8U0m1gLQlMTjJ0mEs=
+X-Google-Smtp-Source: AGHT+IGmDky9ubXMdmWEyJvsqWfLs/KF8vdb5UnF3UfBT6VPtkSCq7Mi1MPMv2mpAS+sZb0fM/xrpgyQuWJKEeTuR3Zk+AqaSlPn
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <589334.1733244955.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 03 Dec 2024 16:55:55 +0000
-Message-ID: <589335.1733244955@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Received: by 2002:a05:6e02:1fce:b0:3a7:21ad:72a9 with SMTP id
+ e9e14a558f8ab-3a7fed5f51amr26749215ab.17.1733277062597; Tue, 03 Dec 2024
+ 17:51:02 -0800 (PST)
+Date: Tue, 03 Dec 2024 17:51:02 -0800
+In-Reply-To: <589149.1733244622@warthog.procyon.org.uk>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <674fb586.050a0220.17bd51.0057.GAE@google.com>
+Subject: Re: [syzbot] [netfs?] WARNING in netfs_retry_reads (2)
+From: syzbot <syzbot+5621e2baf492be382fa9@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, bharathsm@microsoft.com, brauner@kernel.org, 
+	dhowells@redhat.com, ericvh@kernel.org, jlayton@kernel.org, 
+	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux_oss@crudebyte.com, lucho@ionkov.net, 
+	marc.dionne@auristor.com, mathieu.desnoyers@efficios.com, mhiramat@kernel.org, 
+	netfs@lists.linux.dev, pc@manguebit.com, ronniesahlberg@gmail.com, 
+	rostedt@goodmis.org, samba-technical@lists.samba.org, sfrench@samba.org, 
+	sprasad@microsoft.com, syzkaller-bugs@googlegroups.com, tom@talpey.com, 
+	v9fs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+Hello,
 
-> Build error:
-> ---------
-> fs/netfs/read_retry.c:235:20: error: variable 'subreq' is
-> uninitialized when used here [-Werror,-Wuninitialized]
->   235 |         if (list_is_last(&subreq->rreq_link, &stream->subrequest=
-s))
->       |                           ^~~~~~
-> fs/netfs/read_retry.c:28:36: note: initialize the variable 'subreq' to
-> silence this warning
->    28 |         struct netfs_io_subrequest *subreq;
->       |                                           ^
->       |                                            =3D NULL
-> 1 error generated.
-> make[5]: *** [scripts/Makefile.build:194: fs/netfs/read_retry.o] Error 1
-> =
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-> Build image:
-> -----------
-> - https://qa-reports.linaro.org/lkft/linux-next-master/build/next-202411=
-26/testrun/26060810/suite/build/test/clang-19-lkftconfig/log
-> - https://qa-reports.linaro.org/lkft/linux-next-master/build/next-202411=
-26/testrun/26060810/suite/build/test/clang-19-lkftconfig/details/
-> - https://storage.tuxsuite.com/public/linaro/lkft/builds/2pNKzjvChfT6aOW=
-plZaZeQzbYCX/
-> =
+Reported-by: syzbot+5621e2baf492be382fa9@syzkaller.appspotmail.com
+Tested-by: syzbot+5621e2baf492be382fa9@syzkaller.appspotmail.com
 
-> Steps to reproduce:
-> ------------
-> - tuxmake --runtime podman --target-arch x86_64 --toolchain clang-19
-> --kconfig https://storage.tuxsuite.com/public/linaro/lkft/builds/2pNKzjv=
-ChfT6aOWplZaZeQzbYCX/config
-> LLVM=3D1 LLVM_IAS=3D1
-> =
+Tested on:
 
-> The git log shows
-> $ git log --oneline  next-20241122..next-20241125 -- fs/netfs/read_retry=
-.c
-> 1bd9011ee163e netfs: Change the read result collector to only use one wo=
-rk item
-> 5c962f9982cd9 netfs: Don't use bh spinlock
-> 3c8a83f74e0ea netfs: Drop the was_async arg from netfs_read_subreq_termi=
-nated()
-> 2029a747a14d2 netfs: Abstract out a rolling folio buffer implementation
-> =
+commit:         12588c3f netfs: Fix hang in synchronous read due to fa..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git netfs-writeback
+console output: https://syzkaller.appspot.com/x/log.txt?x=135e1fc0580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=50c7a61469ce77e7
+dashboard link: https://syzkaller.appspot.com/bug?extid=5621e2baf492be382fa9
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
 
-> metadata:
-> ----
->   git describe: next-20241125 and next-20241126
->   git repo: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-n=
-ext.git
->   git sha: ed9a4ad6e5bd3a443e81446476718abebee47e82
->   kernel config:
-> https://storage.tuxsuite.com/public/linaro/lkft/builds/2pNKzjvChfT6aOWpl=
-ZaZeQzbYCX/config
-
-That should be fixed on my branch now:
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/l=
-og/?h=3Dnetfs-writeback
-
-I'm just moving the branch to v6.13-rc1 and fixing reported issues before
-asking Christian to repull it.
-
-David
-
+Note: no patches were applied.
+Note: testing is done by a robot and is best-effort only.
