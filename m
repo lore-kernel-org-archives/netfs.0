@@ -1,116 +1,161 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB6B118E368
-	for <netfs@lists.linux.dev>; Wed,  4 Dec 2024 08:27:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D26D91AB52F
+	for <netfs@lists.linux.dev>; Wed,  4 Dec 2024 09:56:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733300856; cv=none; b=ZQvLCbjRFv0NRWFLVAODZysEMxJfPuI32l099XHK/05rI9Boweqo82GS96Y8rcV67CusMaPzjdlWxabaQWdOxIuX3dQcC7kR2M4pXYp+TUxpUa9TD+5BfuiPdKSBbCBMAciFWaWwaxdGybAit8oltPMBbMyj/XYde3N7Fbx5e8w=
+	t=1733306212; cv=none; b=FpBJVmZ8xFdhDeG9nrLBKiVH7b8PDIcof/pGg9rJ42MaMYIo7EW1hkBMUXU76KiyPOiay+uVpnPyM6nQqN0HFIGuFasxZUkeMWcy+Py1r2YfSYiLV8Jzs2vUz0+sykOYuQ2e7gfzZFF5Q7Mv9L1rfQv/1Y4cGeL9mZ95DEXVAto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733300856; c=relaxed/simple;
-	bh=ucfBwFNm0ABhHUXqA9vCNAbh5NsOj2dYkGl7XgX6DzY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CAXzvWQAT52bbwU3octDhNaAL5NJBklHIQb+LG3+OJ/t8Ff6+adKas+yz8vGxxokbYP3sbs0Zwwlt2on8G4wjN2/DYv6dtyJ+pqrOn0mnp3zy/g7SLfsWyZrOt5IpikF4y8WFFCuCOX9WEtDVcGCLLTNPmBn1CpF+/ER/k59ZF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mZfXlHyA; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1733306212; c=relaxed/simple;
+	bh=z0r02GOTsgnnZBZyYBHGi4Y/zi6zlaDPgcANI4yLS/g=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=YCDf9StzNQrdIncqEuvJadnQPC7w0b5u1xfeym7d3V1EwKcF+y681lB2HEVVr3bNhsv/z/YKbKDBLy88MtNobQWwwc5kF23oUTomgqH50m3nuKRty+QshYHBU6RMmr1XEG8mQ8HSOXqUVy9ZLfeO7RonBvlnbzUKHse9tndquho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=afbqlu33; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mZfXlHyA"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a9e44654ae3so851518166b.1
-        for <netfs@lists.linux.dev>; Wed, 04 Dec 2024 00:27:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733300853; x=1733905653; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0yzShrViHPdCPjMWdlFTiNS/QjPXPWPOzuyMGv4WSxU=;
-        b=mZfXlHyAsCpfA1v2wfjr0hSOgCtwdoGUlZ5Wt8mDtOB7YZd1wbh2bekgaw7yQHUwR+
-         LH4452UrMkwEgsuzP3kfExY9MorhPsqgr4Ycz99dRaq4A3YW82lpj+vygSEE3kctdVVz
-         vXotEHAKw1bNXxDLr6pw4JiGG18ZdQt0dX4M47PaMygHqZ0ZQ8EULm15CMjgopvN15qN
-         TudkaBr3CPJ1X98Fc6txp8f6dZmpEUGInDyQ9rnn2njNfZKqY26moPuO8oseauyudB2U
-         joXQuH0XIK0G7DpqnStDZ8a4lAsyNUCHXN96LnNV55ez64W1q6S3o4CmH3+JN5WE0n/x
-         WBog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733300853; x=1733905653;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0yzShrViHPdCPjMWdlFTiNS/QjPXPWPOzuyMGv4WSxU=;
-        b=t3A/EIanusuIdkhy4hRXe+llnJAvmtwoUdF9EPDitg3J+UkMlHCY+2mrjOyXWO8e4f
-         lwmXM40XJczbZMKBDhq/W6zm1r6Mi2rWJxRNO4cOGiqsYEX9n5ARsA2N8L/bVP2LfbrM
-         r8azzfbDfZqLu+wwMAhf5pJ0qUkG0ckYaBO9APKt3OId/kaAu1aOXhMy4HKGhlAVY8XK
-         XxuA+rKhxrN/2fZtlNjlCz2gaYWz/bWgGqz2mL449ifPKX9q6IUlj2j/58euQrFjRqEB
-         9A/A83Pr+GGzqmORznG/Xo/ADM1oPd+TcxylOqmFlrxWH/YOBQ70J/elU56Fxp8QddCi
-         VMNg==
-X-Forwarded-Encrypted: i=1; AJvYcCXVjgxT5b4JayHxPMto021oF0tWJqI9LO31wOmIZCbNDTN80VK9mhb/zvKt3SIhpUfiNbGopA==@lists.linux.dev
-X-Gm-Message-State: AOJu0YyML9bh+jG6Gj5yC8csNDXI2fkPWkm8kN+urQhbxWo+a7I4CKJY
-	duhfaKlimfWESpMiuq9Eu1Z0oTdHnyTpcgdVkvn/zVDfViQx3Q/5
-X-Gm-Gg: ASbGncvnmF2HN+q3f+sCjWCKPBBCIfrGtyoKgXi5lOrTYJ6ZcYdzsGQW26LhqW6lety
-	LWhFUeKKNhiX3XTK5WMALqE/eHo/elD54zKLQQZiBZzbWKCMFen0XbNoir0W7GYh0eBb6/Y4UjY
-	ptAWOLM8FG/8r5utxIakcU6wczM5kJhPOXXGfpDpz4ulml0ORJpqRtWuXG7HR6h9G/tFGOw1trE
-	67oyRS77FyPvZloBi3r5OnUQRNK3W9HPLSun6T+T6ANfynDnmi/4lRVcM/6
-X-Google-Smtp-Source: AGHT+IEo+659fUpkUFFkpxGn3gIqjDDx/wXNSC5AVajmYgifn/7dCNbegBe0YK6GdEfvUasEaSSYhA==
-X-Received: by 2002:a17:907:6eab:b0:a9a:3e33:8d9e with SMTP id a640c23a62f3a-aa5f7dab9d4mr596771966b.28.1733300852808;
-        Wed, 04 Dec 2024 00:27:32 -0800 (PST)
-Received: from f (cst-prg-22-5.cust.vodafone.cz. [46.135.22.5])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa5998e6f99sm704374666b.131.2024.12.04.00.27.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Dec 2024 00:27:32 -0800 (PST)
-Date: Wed, 4 Dec 2024 09:27:22 +0100
-From: Mateusz Guzik <mjguzik@gmail.com>
-To: Zilin Guan <zilin@seu.edu.cn>
-Cc: dhowells@redhat.com, jlayton@kernel.org, netfs@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, xujianhao01@gmail.com
-Subject: Re: [QUESTION] inconsistent use of smp_mb()
-Message-ID: <ulg54pf2qnlzqfj247fypypzun2yvwepqrcwaqzlr6sn3ukuab@rov7btfppktc>
-References: <20241204064818.2760263-1-zilin@seu.edu.cn>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="afbqlu33"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733306209;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oJNI533Crd7GYCjIgVZGSj79RM759v5i3jMuDe10RZA=;
+	b=afbqlu33XS3evcFcrU6ltiT4AAi9CbC/nQx8w3m8omsEoAVPvfVKzP6NbhHiBj1BQ899YQ
+	qBsD8WPdijtRXto3nu/Gdwz1PmosOBmpshcWs52hUOxu3fJwpOWGgA/yda/7sy6FWnJZtN
+	YvAce3YqjH59L/H19v3qtHXzrxS8gXc=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-164-ZeNldURKOFyIwFGi-fSFzg-1; Wed,
+ 04 Dec 2024 04:56:46 -0500
+X-MC-Unique: ZeNldURKOFyIwFGi-fSFzg-1
+X-Mimecast-MFC-AGG-ID: ZeNldURKOFyIwFGi-fSFzg
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 270271954221;
+	Wed,  4 Dec 2024 09:56:44 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.48])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0056D1956054;
+	Wed,  4 Dec 2024 09:56:40 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20241202093943.227786-1-dmantipov@yandex.ru>
+References: <20241202093943.227786-1-dmantipov@yandex.ru>
+To: Miklos Szeredi <miklos@szeredi.hu>
+Cc: dhowells@redhat.com, Dmitry Antipov <dmantipov@yandex.ru>,
+    Jeff Layton <jlayton@kernel.org>,
+    Christian Brauner <brauner@kernel.org>, netfs@lists.linux.dev,
+    linux-fsdevel@vger.kernel.org, lvc-project@linuxtesting.org,
+    syzbot+404b4b745080b6210c6c@syzkaller.appspotmail.com
+Subject: syzbot program that crashes netfslib can also crash fuse
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241204064818.2760263-1-zilin@seu.edu.cn>
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1100512.1733306199.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 04 Dec 2024 09:56:39 +0000
+Message-ID: <1100513.1733306199@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-On Wed, Dec 04, 2024 at 06:48:18AM +0000, Zilin Guan wrote:
-> Hello,
-> 
-> I have a question regarding the use of smp_rmb() to enforce 
-> memory ordering in two related functions.
-> 
-> In the function netfs_unbuffered_write_iter_locked() from the file 
-> fs/netfs/direct_write.c, smp_rmb() is explicitly used after the 
-> wait_on_bit() call to ensure that the error and transferred fields are 
-> read in the correct order following the NETFS_RREQ_IN_PROGRESS flag:
-> 
-> 105	wait_on_bit(&wreq->flags, NETFS_RREQ_IN_PROGRESS,
-> 106		    TASK_UNINTERRUPTIBLE);
-> 107	smp_rmb(); /* Read error/transferred after RIP flag */
-> 108	ret = wreq->error;
-> 109	if (ret == 0) {
-> 110		ret = wreq->transferred;
-> 111		iocb->ki_pos += ret;
-> 112	}
-> 
-> However, in the function netfs_end_writethrough() from the file 
-> fs/netfs/write_issue.c, there is no such use of smp_rmb() after 
-> the corresponding wait_on_bit() call, despite accessing the same filed 
-> of wreq->error and relying on the same NETFS_RREQ_IN_PROGRESS flag:
-> 
-> 681	wait_on_bit(&wreq->flags, NETFS_RREQ_IN_PROGRESS, 
-> 		    TASK_UNINTERRUPTIBLE);
-> 682	ret = wreq->error;
-> 
-> My question is why does the first function require a CPU memory barrier 
-> smp_rmb() to enforce ordering, whereas the second function does not?
+Interesting...  The test program also causes fuse to oops (see attached) o=
+ver
+without even getting to netfslib.  The BUG is in iov_iter_revert():
 
-The fence is redundant.
+	if (iov_iter_is_xarray(i) || iter_is_ubuf(i)) {
+		BUG(); /* We should never go beyond the start of the specified
+			* range since we might then be straying into pages that
+			* aren't pinned.
+			*/
 
-Per the comment in wait_on_bit:
- * Returned value will be zero if the bit was cleared in which case the
- * call has ACQUIRE semantics, or %-EINTR if the process received a
- * signal and the mode permitted wake up on that signal.
+I was trying the C reproducer from here:
 
-Since both sites pass TASK_UNINTERRUPTIBLE this will only ever return
-after the bit is sorted out, already providing the needed fence.
+	https://syzkaller.appspot.com/bug?extid=3D404b4b745080b6210c6c
+
+David
+---
+ FAULT_INJECTION: forcing a failure.
+ name failslab, interval 1, probability 0, space 0, times 1
+ CPU: 3 UID: 0 PID: 5926 Comm: repro-12bc200f9 Not tainted 6.13.0-rc1-buil=
+d3+ #5189
+ Hardware name: ASUS All Series/H97-PLUS, BIOS 2306 10/09/2014
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x47/0x70
+  should_fail_ex+0x12e/0x160
+  should_failslab+0x50/0x60
+  __kmalloc_noprof+0x9f/0x290
+  ? fuse_get_user_pages+0xad/0x290
+  ? kmem_cache_debug_flags+0xc/0x20
+  fuse_get_user_pages+0xad/0x290
+  ? fuse_folios_alloc+0x13/0x30
+  fuse_direct_io+0x220/0x460
+  fuse_direct_write_iter+0x10f/0x180
+  vfs_write+0x142/0x1e0
+  ? __pfx_fuse_file_write_iter+0x10/0x10
+  ksys_write+0x6d/0xc0
+  do_syscall_64+0x80/0xe0
+  entry_SYSCALL_64_after_hwframe+0x71/0x79
+ RIP: 0033:0x7fdd71f0f85d
+ Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f=
+7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 f=
+f ff 73 01 c3 48 8b 0d a3 45 0c 00 f7 d8 64 89 01 48
+ RSP: 002b:00007fdd71df7e68 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+ RAX: ffffffffffffffda RBX: 00007fdd71df8cdc RCX: 00007fdd71f0f85d
+ RDX: 000000000000000f RSI: 0000000020000280 RDI: 0000000000000005
+ RBP: 00007fdd71df7e90 R08: 0000000000000000 R09: 0000000000000000
+ R10: 0000000000000000 R11: 0000000000000246 R12: 00007fdd71df86c0
+ R13: ffffffffffffff88 R14: 0000000000000002 R15: 00007fffe6090bd0
+  </TASK>
+ ------------[ cut here ]------------
+ kernel BUG at lib/iov_iter.c:626!
+ Oops: invalid opcode: 0000 [#1] SMP PTI
+ CPU: 3 UID: 0 PID: 5926 Comm: repro-12bc200f9 Not tainted 6.13.0-rc1-buil=
+d3+ #5189
+ Hardware name: ASUS All Series/H97-PLUS, BIOS 2306 10/09/2014
+ RIP: 0010:iov_iter_revert+0x4c/0xf0
+ Code: 80 f9 06 0f 84 bf 00 00 00 48 8b 47 08 48 39 f0 72 0c 48 29 f0 48 8=
+9 47 08 c3 cc cc cc cc 48 29 c6 80 f9 05 74 04 84 c9 75 02 <0f> 0b 80 f9 0=
+2 48 8b 47 10 75 15 8b 48 f8 48 83 e8 10 48 ff 42 20
+ RSP: 0018:ffff88811f16fd00 EFLAGS: 00010246
+ RAX: 0000000000000000 RBX: ffff888107504900 RCX: 0000000000001600
+ RDX: ffff88811f16fe60 RSI: 000000000000000f RDI: ffff88811f16fe60
+ RBP: 0000000000000000 R08: ffff88840fb9fa40 R09: ffff88840fb9fa60
+ R10: 0000000000000006 R11: 0000000000000020 R12: ffff88810b481400
+ R13: 00000000fffffff4 R14: ffff88811ce26cc0 R15: ffff88811f16fdb8
+ FS:  00007fdd71df86c0(0000) GS:ffff88840fb80000(0000) knlGS:0000000000000=
+000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 0000560d9a217710 CR3: 000000010760e003 CR4: 00000000001706f0
+ Call Trace:
+  <TASK>
+  ? __die_body+0x1a/0x60
+  ? die+0x30/0x50
+  ? do_trap+0x7a/0x100
+  ? iov_iter_revert+0x4c/0xf0
+  ? iov_iter_revert+0x4c/0xf0
+  ? do_error_trap+0x6e/0xa0
+  ? iov_iter_revert+0x4c/0xf0
+  ? exc_invalid_op+0x49/0x60
+  ? iov_iter_revert+0x4c/0xf0
+  ? asm_exc_invalid_op+0x16/0x20
+  ? iov_iter_revert+0x4c/0xf0
+  fuse_direct_io+0x398/0x460
+  fuse_direct_write_iter+0x10f/0x180
+  vfs_write+0x142/0x1e0
+  ? __pfx_fuse_file_write_iter+0x10/0x10
+  ksys_write+0x6d/0xc0
+  do_syscall_64+0x80/0xe0
+  entry_SYSCALL_64_after_hwframe+0x71/0x79
+
