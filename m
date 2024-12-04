@@ -1,125 +1,97 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward500b.mail.yandex.net (forward500b.mail.yandex.net [178.154.239.144])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940E42B9C6
-	for <netfs@lists.linux.dev>; Wed,  4 Dec 2024 12:41:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A40A1F7096
+	for <netfs@lists.linux.dev>; Wed,  4 Dec 2024 13:19:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733316117; cv=none; b=MQXY0gP0ndfX+0B3ZThvjfg4FngCpEsviMQpnn+/1NVbX+aasUt+VZUfIDG8Gf6gsIkBq/cZdyGa6opcz3BCd9kB57GHM6jHvleBSElR6emOHlNk+p2uDZZIyg4ZUkYm2z0uj5MLLTFhMoqpcx+pGNxoyhFmBKdJT5/vEGVCS0k=
+	t=1733318357; cv=none; b=dKMGUo23pUnTMt9g1Y+Dn+RvHcMWai1BGqOuWGvlc2QWp4UbNTE32AL5P/4CX1jcS6ixO2f9141WYz3YRzpIZ8lg9VXWikVwXOc+plxYj7KSCiq8bKUuFBlVCfBDqQv89Kj4yeTq/ZWnGNFKTpweyoyZn1sfQhrJk2Eh6Y2LigU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733316117; c=relaxed/simple;
-	bh=CA8V7r/HHu+tdRQoB5cE5pMef+kvwPPpVBvOxT59EbI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IF9l2vklZRzoNYTu1/ZIAynqymQYSmbH/KVUzBvEi2mXXBKaGSQPk2DMR9H4VmNR6A3EaS0RM4U/keOEpOEgesClWnU5BGH4dcTgIvLFhTc72ECOkLc6K0HNRz8PanmWMtaDw2s1Gh2Am0iJzBBHAiBn7KKit1ahc2+3smqqZLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu; spf=pass smtp.mailfrom=szeredi.hu; dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b=AIWUtBrD; arc=none smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szeredi.hu
+	s=arc-20240116; t=1733318357; c=relaxed/simple;
+	bh=F4i9RTxTHxwuT1bKs95j9l/03exXzBFg/gaBamfbmdQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MYbEfUkEBcVG4/bwOHKUETkRljEZu/Hf+FrEpXH6zbReT6i9bns4B2U+5YjmWbzFJddxZwfm4FkuTA9aP74kaHKDFXfiHv+1k/c8aa78rRokrpLtRwGDexNbHL+mpV49jj7Aff5bAZlJeLtb6e/eLbFF4otVfi4KpO2JwKaVqPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=aI0xfWPB; arc=none smtp.client-ip=178.154.239.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b="AIWUtBrD"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-46695478d03so58629831cf.1
-        for <netfs@lists.linux.dev>; Wed, 04 Dec 2024 04:41:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google; t=1733316113; x=1733920913; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=8llbzjZ//9+h5xfG8QfPKdjzTna7E693fwr0oTRJmW4=;
-        b=AIWUtBrDYk/1bEQ0CVyo+UKwdvorU0lV/PFUmN/ARfmoFFAD4I87OZ805L3Gy7nM6V
-         +skyV/OL9mfIJkN+UQGzWl6DcFztVm/jUXoyTXKBY+fyF+cARsiwrH2CzVdH08JfIgdj
-         jTI/qzAHHfUHSxBaQTVfi711O3ZPrkCJN7t+o=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733316113; x=1733920913;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8llbzjZ//9+h5xfG8QfPKdjzTna7E693fwr0oTRJmW4=;
-        b=TFrebmKMLtyulx3CN61lsJe0RACduLdX4U3ejNaxN+s+wP4RFD688BDfySLY0mWK75
-         SgNBR83/W5p7EE3Blue10YemLgESqjl+dg/U7i39Q11oEpWMF32Me94SM9ZXwXs9fJFT
-         FQYrp+oHg/KgscmXIw6O2pOMA5fgSPj+rGK5KPFesr6EvymDxxFaxriYLbEcMRtWIFdM
-         Muw9EWflMW+zWxaoD7QZrdo0iOvDno0on+TBgwyEDN31CPurODJvAj0Yxighl+PK1+Ib
-         JboV7zCUS6zYybMgLM8zNRjWsTLWd4Se/RYDHLX2PsPKVFtNT9kp1dKd2BNHZ4cFq+G3
-         0Xpg==
-X-Forwarded-Encrypted: i=1; AJvYcCURYxwrfwrCxKNz/s+CkN5ENb87dWgabW2f0fzDLI2dgn8xIGgi5M4FERLXpfqxyNqiA6QwZw==@lists.linux.dev
-X-Gm-Message-State: AOJu0YyxtgcXFiw6xO0rOA1C2+MFIEUreZzDChXffBWnrSYGDb1Cjy2g
-	sU55kRhnZX3QvZr+m5NVma+L6Rf/y/AhU7nHz3pHqu3LXhtg60QQx4byVFXZXfNfdm1oMMeSiMs
-	p3WLZjNIx5VDX/EIjw1sIeFJ+lgDMK/1rUXgPbg==
-X-Gm-Gg: ASbGncuCwl/lQYzqDtMx35oqUxQaY+FGhsFQHJZQ4sMS8HOaW/Pp9MHM8diMWQm6TTh
-	/uktE7qWE4UeBJTnTyMKU09Fq9AqkPUw=
-X-Google-Smtp-Source: AGHT+IFr6bGymy7YeT0tDLIC2vZBdlTOgMsR6dCpqF9+A8uFmv4A9jCBRMqqTxj1MwINnQpAGUucyxS8LL7NJH0OU2Q=
-X-Received: by 2002:ac8:7d41:0:b0:466:949a:de53 with SMTP id
- d75a77b69052e-4670c75800emr96854181cf.56.1733316113334; Wed, 04 Dec 2024
- 04:41:53 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="aI0xfWPB"
+Received: from mail-nwsmtp-smtp-production-main-39.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-39.sas.yp-c.yandex.net [IPv6:2a02:6b8:c08:c61f:0:640:7720:0])
+	by forward500b.mail.yandex.net (Yandex) with ESMTPS id 3573F61862;
+	Wed,  4 Dec 2024 16:13:49 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-39.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id kDgZ8aIOieA0-L7TvwyjF;
+	Wed, 04 Dec 2024 16:13:48 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1733318028; bh=F4i9RTxTHxwuT1bKs95j9l/03exXzBFg/gaBamfbmdQ=;
+	h=In-Reply-To:To:From:Cc:Date:References:Subject:Message-ID;
+	b=aI0xfWPBZYFSJySjGgX12KGVbqNjVH1GyoCuw0/sdKQHNSKgQWlPz3MFwbD8l82o1
+	 vTnf54fzT9tkhC+g79DWCgap3Tn4co51hTF45MOS3OtPEJRkmDPaxgZ0TEV5FOOzNj
+	 Ei7BTfl2zDMtuT1nH4uVtU+ZnMXMa0oLO4ivDgO4=
+Authentication-Results: mail-nwsmtp-smtp-production-main-39.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+Message-ID: <20acef00-d4d2-4ab2-9262-21e3889266df@yandex.ru>
+Date: Wed, 4 Dec 2024 16:13:46 +0300
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241202093943.227786-1-dmantipov@yandex.ru> <1100513.1733306199@warthog.procyon.org.uk>
-In-Reply-To: <1100513.1733306199@warthog.procyon.org.uk>
-From: Miklos Szeredi <miklos@szeredi.hu>
-Date: Wed, 4 Dec 2024 13:41:42 +0100
-Message-ID: <CAJfpeguAw2_3waLEGhPK-LZ_dFfOXO6bHGE=6Yo2xpyet6SYrA@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: syzbot program that crashes netfslib can also crash fuse
-To: David Howells <dhowells@redhat.com>
-Cc: Dmitry Antipov <dmantipov@yandex.ru>, Jeff Layton <jlayton@kernel.org>, 
-	Christian Brauner <brauner@kernel.org>, netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	lvc-project@linuxtesting.org, 
-	syzbot+404b4b745080b6210c6c@syzkaller.appspotmail.com
-Content-Type: multipart/mixed; boundary="0000000000003856770628711b29"
+Content-Language: en-MW
+To: Miklos Szeredi <miklos@szeredi.hu>, David Howells <dhowells@redhat.com>
+Cc: Jeff Layton <jlayton@kernel.org>, Christian Brauner <brauner@kernel.org>,
+ netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+ lvc-project@linuxtesting.org,
+ syzbot+404b4b745080b6210c6c@syzkaller.appspotmail.com
+References: <20241202093943.227786-1-dmantipov@yandex.ru>
+ <1100513.1733306199@warthog.procyon.org.uk>
+ <CAJfpeguAw2_3waLEGhPK-LZ_dFfOXO6bHGE=6Yo2xpyet6SYrA@mail.gmail.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
+Autocrypt: addr=dmantipov@yandex.ru; keydata=
+ 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
+ A/UwwXBRuvydGV0=
+In-Reply-To: <CAJfpeguAw2_3waLEGhPK-LZ_dFfOXO6bHGE=6Yo2xpyet6SYrA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
---0000000000003856770628711b29
-Content-Type: text/plain; charset="UTF-8"
+On 12/4/24 3:41 PM, Miklos Szeredi wrote:
 
-On Wed, 4 Dec 2024 at 10:56, David Howells <dhowells@redhat.com> wrote:
->
-> Interesting...  The test program also causes fuse to oops (see attached) over
-> without even getting to netfslib.  The BUG is in iov_iter_revert():
->
->         if (iov_iter_is_xarray(i) || iter_is_ubuf(i)) {
->                 BUG(); /* We should never go beyond the start of the specified
->                         * range since we might then be straying into pages that
->                         * aren't pinned.
->                         */
+> Can you please test this?
 
-Can you please test this?
+Tested-by: Dmitry Antipov <dmantipov@yandex.ru>
 
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -1541,8 +1541,10 @@ static int fuse_get_user_pages(struct
-fuse_args_pages *ap, struct iov_iter *ii,
-         */
-        struct page **pages = kzalloc(max_pages * sizeof(struct page *),
-                                      GFP_KERNEL);
--       if (!pages)
-+       if (!pages) {
-+               *nbytesp = 0;
-                return -ENOMEM;
-+       }
+Dmitry
 
-        while (nbytes < *nbytesp && nr_pages < max_pages) {
-                unsigned nfolios, i;
-
-(Also attaching patch without whitespace damage.)
-
-Thanks,
-Miklos
-
---0000000000003856770628711b29
-Content-Type: text/x-patch; charset="US-ASCII"; 
-	name="fix-fuse_get_user_pages-alloc-failure.patch"
-Content-Disposition: attachment; 
-	filename="fix-fuse_get_user_pages-alloc-failure.patch"
-Content-Transfer-Encoding: base64
-Content-ID: <f_m49vmnzk0>
-X-Attachment-Id: f_m49vmnzk0
-
-ZGlmZiAtLWdpdCBhL2ZzL2Z1c2UvZmlsZS5jIGIvZnMvZnVzZS9maWxlLmMKaW5kZXggODhkMDk0
-NmI1YmM5Li5iYzAxOWZhYzBiNTUgMTAwNjQ0Ci0tLSBhL2ZzL2Z1c2UvZmlsZS5jCisrKyBiL2Zz
-L2Z1c2UvZmlsZS5jCkBAIC0xNTQxLDggKzE1NDEsMTAgQEAgc3RhdGljIGludCBmdXNlX2dldF91
-c2VyX3BhZ2VzKHN0cnVjdCBmdXNlX2FyZ3NfcGFnZXMgKmFwLCBzdHJ1Y3QgaW92X2l0ZXIgKmlp
-LAogCSAqLwogCXN0cnVjdCBwYWdlICoqcGFnZXMgPSBremFsbG9jKG1heF9wYWdlcyAqIHNpemVv
-ZihzdHJ1Y3QgcGFnZSAqKSwKIAkJCQkgICAgICBHRlBfS0VSTkVMKTsKLQlpZiAoIXBhZ2VzKQor
-CWlmICghcGFnZXMpIHsKKwkJKm5ieXRlc3AgPSAwOwogCQlyZXR1cm4gLUVOT01FTTsKKwl9CiAK
-IAl3aGlsZSAobmJ5dGVzIDwgKm5ieXRlc3AgJiYgbnJfcGFnZXMgPCBtYXhfcGFnZXMpIHsKIAkJ
-dW5zaWduZWQgbmZvbGlvcywgaTsK
---0000000000003856770628711b29--
