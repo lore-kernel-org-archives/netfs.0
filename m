@@ -1,173 +1,74 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AED61D5CFA
-	for <netfs@lists.linux.dev>; Thu,  5 Dec 2024 09:39:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0EC207DF0
+	for <netfs@lists.linux.dev>; Thu,  5 Dec 2024 09:59:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733391559; cv=none; b=Z9eMmkbb7erhposhkeGeHv4b5b3rAC99GYyp0K2dqK/z1x2tzi25ciAKzXpMngu+6ZFk9KmFvVQ+Ib5BKoEsPS16DB3xMYhdkcuRxE+oE/3zk4gUi1eRHh2Yx4fK5Ar95f1dQXg7oU2wPEDpYlYi419QOg1vIpdTlpv6Ad2jcsQ=
+	t=1733392748; cv=none; b=t4KbbgDQKw9h0bGrlWIezGtHXiRg9XeD3hIcQTmndu6c15a25dVD2j9+GnZGo23mATKvoPEMTIOrBNMClZu0JidVeogz8ROducdbiCj09tNeQlQ9W30SsqkAudGOFgu0WGVLhxn57+bEChSQT/oivYi+sfI3UPGokd500AYgChE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733391559; c=relaxed/simple;
-	bh=oZtKuhzxajYCrnXbWpf2HCVAwSMjzBBKh+xdSWz7Fak=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=kwxe2g8fhI9MiEoJBSObVXzaE6FgX0n0I7ddi0tLL1AQCvMELvhCgZjlW7BbA5Jue3SllLPDcZ2EWY7po5KbhsYjf83V3bN61pbhUX0kPGFxSwH21IOABYPCYncDQuoR1TdyiE+YP5s/c7Kqo2VQJ2/YxRggl8Brz62i5u/36JQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TTjDKAdb; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TTjDKAdb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733391557;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5bmHCospEdUEWKsCE26X0+djAl1wpJXnOUHyXQH8b74=;
-	b=TTjDKAdbd/vPSFj+AW81n6PfmV0HmRfySk8Qhk21JUIphPYFUBo7PscRA7BBrczVyzs367
-	v6RPHWDq1UJofq6PoR/DzP/BT4nmrF7cUW3G9IutcYqjjfPxnp3xjD3dr7zlDV7Cpsd/eu
-	a70gAoda8O2junc11VgEE1xyR45MtNY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-402-cw055EATNByoGgUX5-Rsjw-1; Thu,
- 05 Dec 2024 04:39:11 -0500
-X-MC-Unique: cw055EATNByoGgUX5-Rsjw-1
-X-Mimecast-MFC-AGG-ID: cw055EATNByoGgUX5-Rsjw
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2BC001944DD8;
-	Thu,  5 Dec 2024 09:39:10 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.48])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3978F1955F3F;
-	Thu,  5 Dec 2024 09:38:55 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <67506987.050a0220.17bd51.006f.GAE@google.com>
-References: <67506987.050a0220.17bd51.006f.GAE@google.com>
-To: syzbot <syzbot+404b4b745080b6210c6c@syzkaller.appspotmail.com>
-Cc: dhowells@redhat.com, jlayton@kernel.org,
-    Ming Lei <ming.lei@redhat.com>, Jens Axboe <axboe@kernel.dk>,
-    netfs@lists.linux.dev, linux-block@vger.kernel.org,
-    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-    syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [netfs?] kernel BUG in iov_iter_revert (2)
+	s=arc-20240116; t=1733392748; c=relaxed/simple;
+	bh=SgIHS645a0AYFH1ctRSGEAJTKS9pLtbEIGoGYT5Xrx0=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=IDvORc3TMgxMPCpD+V1rVEYBFb7/yt/5l35t+7WL6ofbH9nQIee4g/2Traxl9yeaz6mu1Nx/0AuCuKuFdwUMX//0JBs09/P26B1OjPJ466CRpUbcpcZYirSqxrVCL2OmLpmYBmCn54Azbuqu2DcyIYXkAK1kaqOFsy+rrtn1KT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3a7d87dfd9bso8724825ab.0
+        for <netfs@lists.linux.dev>; Thu, 05 Dec 2024 01:59:04 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733392743; x=1733997543;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8lNUCqqMwNBH1sfFW4omgrn6scda2dAGbmRIbTAv4L0=;
+        b=AO2L+r8RRZBmlMqq6IvsCZ0rGsjOOeaGEJCt/lB49r2ohrO0kvcQ+K57+4T0ul8SXE
+         VGvOWk6PxB1a9cT1mBDfdnHEG3cN9kLl/OEshx0g9nF22Kqxl/XIxrL3yGqOXCwxDeC1
+         UM/YSiE57eJe4/qW2ow/yqQrk3Nn0HxsVddzvDcXhnTuphewuwnJZfLzcZRxMifKbs4s
+         GPRZUiU2bYzuLp8kVQqegc3+Dmxbzci/buqoOmHFlF3EwkpDb9+H7O10t23kdcDH0vEz
+         0LRSm58WuBPHuJQB5r6K43EoY4Bfh+rXj6obZrWz8IuVCha+FLUcFc60i44G9BB155Zr
+         jkvw==
+X-Forwarded-Encrypted: i=1; AJvYcCVeDaavIbTGxiAlnSHlyAAQiIJHjIQI/NG43RuIq4MlmB7BJsomSaDNrMiUIavNxlpYyd9Bmw==@lists.linux.dev
+X-Gm-Message-State: AOJu0YwKkMBrSrXWXHws0Tphfo7i+1do6tQcOQI2VyzMsJbflQbNG5lv
+	Tx+TvwLxt5lOxemNQcVDNsHqyCyTgt8CSw+f4DEPb/W0/ZemqvW25KdE27kWonmDdqGRxV/7CET
+	CL/0oLjn+9cxrZk/WLm4rH4Woc3xpicforpddU1YtFqfjWYXbmTY33Ew=
+X-Google-Smtp-Source: AGHT+IFavLHBVe3EenRxLgzvIaeEkVCw6c2tXhFegXn7cdD53cnvfTiRuE/EybIckxER921OESEtcxvmumxOeN/nu4vsVhRDpbeN
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1757418.1733391531.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Dec 2024 09:38:51 +0000
-Message-ID: <1757419.1733391531@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+X-Received: by 2002:a92:c54f:0:b0:3a7:8720:9de5 with SMTP id
+ e9e14a558f8ab-3a7f9a36198mr111101565ab.1.1733392743713; Thu, 05 Dec 2024
+ 01:59:03 -0800 (PST)
+Date: Thu, 05 Dec 2024 01:59:03 -0800
+In-Reply-To: <1757419.1733391531@warthog.procyon.org.uk>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <67517967.050a0220.17bd51.0099.GAE@google.com>
+Subject: Re: [syzbot] [netfs?] kernel BUG in iov_iter_revert (2)
+From: syzbot <syzbot+404b4b745080b6210c6c@syzkaller.appspotmail.com>
+To: axboe@kernel.dk, dhowells@redhat.com, jlayton@kernel.org, 
+	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, ming.lei@redhat.com, netfs@lists.linux.dev, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-#syz test: https://git.kernel.org/pub/scm/linux/kernel/git/axboe/linux-blo=
-ck.git for-6.14/block
+Hello,
 
-netfs: Fix enomem handling in buffered reads
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-If netfs_read_to_pagecache() gets an error from either ->prepare_read() or
-from netfs_prepare_read_iterator(), it needs to decrement ->nr_outstanding=
-,
-cancel the subrequest and break out of the issuing loop.  Currently, it
-only does this for two of the cases, but there are two more that aren't
-handled.
-
-Fix this by moving the handling to a common place and jumping to it from
-all four places.  This is in preference to inserting a wrapper around
-netfs_prepare_read_iterator() as proposed by Dmitry Antipov[1].
-
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
 Reported-by: syzbot+404b4b745080b6210c6c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=3D404b4b745080b6210c6c
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Dmitry Antipov <dmantipov@yandex.ru>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Link: https://lore.kernel.org/r/20241202093943.227786-1-dmantipov@yandex.r=
-u/ [1]
----
- fs/netfs/buffered_read.c |   28 ++++++++++++++++------------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+Tested-by: syzbot+404b4b745080b6210c6c@syzkaller.appspotmail.com
 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index 7ac34550c403..4dc9b8286355 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -275,22 +275,14 @@ static void netfs_read_to_pagecache(struct netfs_io_=
-request *rreq)
- 			netfs_stat(&netfs_n_rh_download);
- 			if (rreq->netfs_ops->prepare_read) {
- 				ret =3D rreq->netfs_ops->prepare_read(subreq);
--				if (ret < 0) {
--					atomic_dec(&rreq->nr_outstanding);
--					netfs_put_subrequest(subreq, false,
--							     netfs_sreq_trace_put_cancel);
--					break;
--				}
-+				if (ret < 0)
-+					goto prep_failed;
- 				trace_netfs_sreq(subreq, netfs_sreq_trace_prepare);
- 			}
- =
+Tested on:
 
- 			slice =3D netfs_prepare_read_iterator(subreq);
--			if (slice < 0) {
--				atomic_dec(&rreq->nr_outstanding);
--				netfs_put_subrequest(subreq, false, netfs_sreq_trace_put_cancel);
--				ret =3D slice;
--				break;
--			}
-+			if (slice < 0)
-+				goto prep_iter_failed;
- =
+commit:         c018ec9d block: rnull: Initialize the module in place
+git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/axboe/linux-block.git for-6.14/block
+console output: https://syzkaller.appspot.com/x/log.txt?x=159ca8df980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=58639d2215ba9a07
+dashboard link: https://syzkaller.appspot.com/bug?extid=404b4b745080b6210c6c
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=14b910f8580000
 
- 			rreq->netfs_ops->issue_read(subreq);
- 			goto done;
-@@ -302,6 +294,8 @@ static void netfs_read_to_pagecache(struct netfs_io_re=
-quest *rreq)
- 			trace_netfs_sreq(subreq, netfs_sreq_trace_submit);
- 			netfs_stat(&netfs_n_rh_zero);
- 			slice =3D netfs_prepare_read_iterator(subreq);
-+			if (slice < 0)
-+				goto prep_iter_failed;
- 			__set_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags);
- 			netfs_read_subreq_terminated(subreq, 0, false);
- 			goto done;
-@@ -310,6 +304,8 @@ static void netfs_read_to_pagecache(struct netfs_io_re=
-quest *rreq)
- 		if (source =3D=3D NETFS_READ_FROM_CACHE) {
- 			trace_netfs_sreq(subreq, netfs_sreq_trace_submit);
- 			slice =3D netfs_prepare_read_iterator(subreq);
-+			if (slice < 0)
-+				goto prep_iter_failed;
- 			netfs_read_cache_to_pagecache(rreq, subreq);
- 			goto done;
- 		}
-@@ -318,6 +314,14 @@ static void netfs_read_to_pagecache(struct netfs_io_r=
-equest *rreq)
- 		WARN_ON_ONCE(1);
- 		break;
- =
-
-+	prep_iter_failed:
-+		ret =3D slice;
-+	prep_failed:
-+		subreq->error =3D ret;
-+		atomic_dec(&rreq->nr_outstanding);
-+		netfs_put_subrequest(subreq, false, netfs_sreq_trace_put_cancel);
-+		break;
-+
- 	done:
- 		size -=3D slice;
- 		start +=3D slice;
-
+Note: testing is done by a robot and is best-effort only.
