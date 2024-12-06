@@ -1,131 +1,145 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43AB1FCD1E
-	for <netfs@lists.linux.dev>; Fri,  6 Dec 2024 11:06:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F5E202F7E
+	for <netfs@lists.linux.dev>; Fri,  6 Dec 2024 12:41:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733483205; cv=none; b=RrX5DBItPD5O0KBSvZ3ETZXYYBsua7hn6qrxUjG2/R4KzCwmvSUmdFKH3mtKy+Thjqu4FQnq4MSb+prdFoMGLHbtjJHDrKdmszzSBVS8uj+B01Yp+800zvVgbx+ASkYFN3trArgeBLF+BwLtmkWEIzgRpXwgWCggu2Xfg/PvKqE=
+	t=1733488871; cv=none; b=PBtzLCCCrIqw21HsH6X5LzdW23objmPNarQWt/Lx8de0mJFxugSsNlvd9fMrxxztt1ONkzhRMlbB79yvjf50HKuzBzAfNn973EwAKvh5O5S9xQyDKK2plRPhLAb9S3xByFQxzg8DsHDa8WeoRbprlYQxjmDO7MeQOSvjf7LveFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733483205; c=relaxed/simple;
-	bh=yWtcrzdgAvBrgae7cwVH2ss7Um0+y6Eu2IYvB+sSKbM=;
-	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=DJuqzj9kgyDWLfBJW+cMmoChuf7WWtsjTYFAw+bKXRVLkOOGe5eJCfjBEN5HomUoEyqPTUFQJORiSXWKq2mQ7GqhS/6za19BSUWSQ0oQUZX2qCzVXIfpt5vTkZcJtn8mqZQcAIYgn5v2jAEgAnWBpZs4ERtrZKTTzCp08UqZRi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hKVGECHM; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1733488871; c=relaxed/simple;
+	bh=t4Fgw8nKOBruWIjpvLkYp2AIC5dy6abm6RTvVXuHm6c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BoM2UhSub7FlPofDdFdTVnaLsWVpTpVPNryu77fkY7YTzx7uAj8S29QoxIZJwEawymcwIfvqpnP3xmiDysQ0PYPrbE/qe6giFcpXw01d2jba+Cs5f4H8z+2ACjjDiCBZU+o//dq68LJaq1ovt2JR6QPQ0Xj3X3WXQkJfE0CM3VE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.fm; spf=pass smtp.mailfrom=fastmail.fm; dkim=pass (2048-bit key) header.d=fastmail.fm header.i=@fastmail.fm header.b=L5bZM7kv; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=3/mEvQSe; arc=none smtp.client-ip=202.12.124.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.fm
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.fm
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hKVGECHM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733483202;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=9r+6fMgClRllhmJ7Eb5OJfXb8Cftj0qgZEdtU6wnqxA=;
-	b=hKVGECHMg4eZPHsxdpIta6ljbvmIUNWxDOhfuj3vBmzC7CtZlgZFUTHxvbeKH96SUUdVFr
-	upWejUXBqsRNXTpDuZslsLPjSb51MDtwRggFwxEvMg7SDbVocrXOpje/mdX8bAgR38mbej
-	LOcAC3Q3YcrKt0CU2HycNmVodsL5K2w=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-558-PlVf5XUbPaii21V9hMiYWQ-1; Fri,
- 06 Dec 2024 06:06:37 -0500
-X-MC-Unique: PlVf5XUbPaii21V9hMiYWQ-1
-X-Mimecast-MFC-AGG-ID: PlVf5XUbPaii21V9hMiYWQ
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E5E5B19560AB;
-	Fri,  6 Dec 2024 11:06:35 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.48])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9AADF300019E;
-	Fri,  6 Dec 2024 11:06:33 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-To: Steve French <stfrench@microsoft.com>
-cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.com>,
-    Jeff Layton <jlayton@kernel.org>, linux-cifs@vger.kernel.org,
-    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Subject: [PATCH] cifs: Fix rmdir failure due to ongoing I/O on deleted file
+	dkim=pass (2048-bit key) header.d=fastmail.fm header.i=@fastmail.fm header.b="L5bZM7kv";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="3/mEvQSe"
+Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
+	by mailfout.stl.internal (Postfix) with ESMTP id 70653114013D;
+	Fri,  6 Dec 2024 07:41:08 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Fri, 06 Dec 2024 07:41:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.fm; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1733488868;
+	 x=1733575268; bh=tXXivK+cdUGnoPSCQQoOlq548346QQ9af7kT7yc5szI=; b=
+	L5bZM7kvXOnkUPpoKhBpNaNRp3WS7T/GRlbcQKzH/H789dMkBUkRTfVwA2lK/XYT
+	bWYiVf0TjlUz78y5itP+z9p1QVE8rYv6gv3WF9U6d0GV38qUqymjivKv53XFcxUp
+	IUjr6wLUewcpVhGeTjIFi8VeVM+sHlGPR2LdtbY51KjJg0zyTUq4wPn7R2npAZku
+	pZRdgkU0+lA+bIfmw0IWg4WDGMIPSKu1pdw0qbAy8quDY+YPhle/ohJcgOpWoA0V
+	WRZJSflL4490WCNYXN7umaRfyr8lpAyaUpW0K191TK+T5sJ5InMjp8/RyUqu+Kbd
+	WWTIdsZXRTRrebxvSfAC8w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1733488868; x=
+	1733575268; bh=tXXivK+cdUGnoPSCQQoOlq548346QQ9af7kT7yc5szI=; b=3
+	/mEvQSeBzy8f/flfuSUzIXqyAhCW97YYhtDDPzQqFKbskF3ADgUT2H3Y9vlElAb9
+	sx+jrlGBT0hzqMBDkCWM/jC2v9VTDAqDBp7pA3jyWtT662bKpq/Q2Dr1d6hWvFX6
+	vtK0BPK/mBvG9VBdbg3HteAMnXLfJA6aLOLwXDqlvU2631Weg6w7nbDfTuHi5j5O
+	CSM56nouFFhePkqsxz+ZyGssCGfmUxkLHbgQo7ctVrwzS6jTTnaYlb5msJ1VAiBK
+	zNjwSFFfqBX4fOJ2YZJwCrndMsjvKji6r+8CpzDFd+9FHTsSAFIbi4IIhbmh+zYb
+	ue2zvudIywKcnhdJ92vew==
+X-ME-Sender: <xms:4_BSZ63g2dAj3RY08FmIBHPATks5l640VjJ4gt6Q6L-4FFVQ2LLf8A>
+    <xme:4_BSZ9EzEhqM2Nz5SuWL8Ex7_jX3r7XCRPYh7iAlaW6m1nqJqxmFsMMqub_qlo6Uj
+    3mVA6CSJGKzu-Yx>
+X-ME-Received: <xmr:4_BSZy4uWm4RQrAwG5kPHjbF7hfuM6OElzSyoA8YDJYLbkSWmtHfRXEKhw3SpAxqYnvJH-SDqzpimXvrBfaO8U-bgytpN7v42H4oPbqVPTWvWPUS_912>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrieelgdegudcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
+    hsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeen
+    ucfhrhhomhepuegvrhhnugcuufgthhhusggvrhhtuceosggvrhhnugdrshgthhhusggvrh
+    htsehfrghsthhmrghilhdrfhhmqeenucggtffrrghtthgvrhhnpeffjeevfeefjefghfef
+    hfeiueffffetledtgffhhfdttdefueevledvleetfeevtdenucffohhmrghinhepkhgvrh
+    hnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhf
+    rhhomhepsggvrhhnugdrshgthhhusggvrhhtsehfrghsthhmrghilhdrfhhmpdhnsggprh
+    gtphhtthhopeelpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehmihhklhhoshes
+    shiivghrvgguihdrhhhupdhrtghpthhtohepughhohifvghllhhssehrvgguhhgrthdrtg
+    homhdprhgtphhtthhopegumhgrnhhtihhpohhvseihrghnuggvgidrrhhupdhrtghpthht
+    ohepjhhlrgihthhonheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghrrghunhgvrh
+    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgvthhfsheslhhishhtshdrlhhinhhu
+    gidruggvvhdprhgtphhtthhopehlihhnuhigqdhfshguvghvvghlsehvghgvrhdrkhgvrh
+    hnvghlrdhorhhgpdhrtghpthhtoheplhhvtgdqphhrohhjvggttheslhhinhhugihtvghs
+    thhinhhgrdhorhhgpdhrtghpthhtohepshihiigsohhtodegtdegsgegsgejgeehtdektd
+    gsiedvuddttgeitgesshihiihkrghllhgvrhdrrghpphhsphhothhmrghilhdrtghomh
+X-ME-Proxy: <xmx:4_BSZ71pLr0Yuf-zt9h9hahzb5gFIqfY4UJDjSdt6jY7gdPYgOA64A>
+    <xmx:4_BSZ9GXQtxqRyUnkAaDo7qWW88Xpf3dsq-DfYbbBKYF55PlP22HtQ>
+    <xmx:4_BSZ08GU1ARAQaGKtoHjQx_FQ1V5mw_8y-GtUO_5dZ5VCGp-Xb7qw>
+    <xmx:4_BSZyk7dpDgJjtAHGAT3xS3doqyCJ0UdXsaDxIF9wpGcVCWZHf5Dw>
+    <xmx:5PBSZ8BzVUyqqXzsIamKPMatdFlw3Mjc2Er2gWzQUXF7h8NiSbqzYok0>
+Feedback-ID: id8a24192:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 6 Dec 2024 07:41:06 -0500 (EST)
+Message-ID: <4b9f34f5-7cfc-40e2-b2a7-ad69d1d81437@fastmail.fm>
+Date: Fri, 6 Dec 2024 13:41:05 +0100
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1978206.1733483192.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 06 Dec 2024 11:06:32 +0000
-Message-ID: <1978207.1733483192@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+User-Agent: Mozilla Thunderbird
+Subject: Re: syzbot program that crashes netfslib can also crash fuse
+To: Miklos Szeredi <miklos@szeredi.hu>, David Howells <dhowells@redhat.com>
+Cc: Dmitry Antipov <dmantipov@yandex.ru>, Jeff Layton <jlayton@kernel.org>,
+ Christian Brauner <brauner@kernel.org>, netfs@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org, lvc-project@linuxtesting.org,
+ syzbot+404b4b745080b6210c6c@syzkaller.appspotmail.com
+References: <20241202093943.227786-1-dmantipov@yandex.ru>
+ <1100513.1733306199@warthog.procyon.org.uk>
+ <CAJfpeguAw2_3waLEGhPK-LZ_dFfOXO6bHGE=6Yo2xpyet6SYrA@mail.gmail.com>
+From: Bernd Schubert <bernd.schubert@fastmail.fm>
+Content-Language: en-US, de-DE, fr
+In-Reply-To: <CAJfpeguAw2_3waLEGhPK-LZ_dFfOXO6bHGE=6Yo2xpyet6SYrA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-    =
 
-The cifs_io_request struct (a wrapper around netfs_io_request) holds open
-the file on the server, even beyond the local Linux file being closed.
-This can cause problems with Windows-based filesystems as the file's name
-still exists after deletion until the file is closed, preventing the paren=
-t
-directory from being removed and causing spurious test failures in xfstest=
-s
-due to inability to remove a directory.  The symptom looks something like
-this in the test output:
 
-   rm: cannot remove '/mnt/scratch/test/p0/d3': Directory not empty
-   rm: cannot remove '/mnt/scratch/test/p1/dc/dae': Directory not empty
+On 12/4/24 13:41, Miklos Szeredi wrote:
+> On Wed, 4 Dec 2024 at 10:56, David Howells <dhowells@redhat.com> wrote:
+>>
+>> Interesting...  The test program also causes fuse to oops (see attached) over
+>> without even getting to netfslib.  The BUG is in iov_iter_revert():
+>>
+>>         if (iov_iter_is_xarray(i) || iter_is_ubuf(i)) {
+>>                 BUG(); /* We should never go beyond the start of the specified
+>>                         * range since we might then be straying into pages that
+>>                         * aren't pinned.
+>>                         */
+> 
+> Can you please test this?
+> 
+> --- a/fs/fuse/file.c
+> +++ b/fs/fuse/file.c
+> @@ -1541,8 +1541,10 @@ static int fuse_get_user_pages(struct
+> fuse_args_pages *ap, struct iov_iter *ii,
+>          */
+>         struct page **pages = kzalloc(max_pages * sizeof(struct page *),
+>                                       GFP_KERNEL);
+> -       if (!pages)
+> +       if (!pages) {
+> +               *nbytesp = 0;
+>                 return -ENOMEM;
+> +       }
+> 
+>         while (nbytes < *nbytesp && nr_pages < max_pages) {
+>                 unsigned nfolios, i;
+> 
+> (Also attaching patch without whitespace damage.)
 
-Fix this by waiting in unlink and rename for any outstanding I/O requests
-to be completed on the target file before removing that file.
+I had already posted a patch on Monday.
 
-Note that this doesn't prevent Linux from trying to start new requests
-after deletion if it still has the file open locally - something that's
-perfectly acceptable on a UNIX system.
+https://lore.kernel.org/r/20241203-fix-fuse_get_user_pages-v2-1-acce8a29d06b@ddn.com
 
-Note also that whilst I've marked this as fixing the commit to make cifs
-use netfslib, I don't know that it won't occur before that.
+@David, is that the same sysbot report or another one?
 
-Fixes: 3ee1a1fc3981 ("cifs: Cut over to using netfslib")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Steve French <stfrench@microsoft.com>
-cc: Paulo Alcantara <pc@manguebit.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
----
 
-diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-index 42c030687918..3df53d51f646 100644
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -1871,6 +1871,7 @@ int cifs_unlink(struct inode *dir, struct dentry *de=
-ntry)
- 		goto unlink_out;
- 	}
- =
-
-+	netfs_wait_for_outstanding_io(inode);
- 	cifs_close_deferred_file_under_dentry(tcon, full_path);
- #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
- 	if (cap_unix(tcon->ses) && (CIFS_UNIX_POSIX_PATH_OPS_CAP &
-@@ -2388,8 +2389,10 @@ cifs_rename2(struct mnt_idmap *idmap, struct inode =
-*source_dir,
- 	}
- =
-
- 	cifs_close_deferred_file_under_dentry(tcon, from_name);
--	if (d_inode(target_dentry) !=3D NULL)
-+	if (d_inode(target_dentry) !=3D NULL) {
-+		netfs_wait_for_outstanding_io(d_inode(target_dentry));
- 		cifs_close_deferred_file_under_dentry(tcon, to_name);
-+	}
- =
-
- 	rc =3D cifs_do_rename(xid, source_dentry, from_name, target_dentry,
- 			    to_name);
-
+Thanks,
+Bernd
