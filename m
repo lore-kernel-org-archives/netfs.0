@@ -1,145 +1,111 @@
-Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F5E202F7E
-	for <netfs@lists.linux.dev>; Fri,  6 Dec 2024 12:41:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43DB679D2
+	for <netfs@lists.linux.dev>; Fri,  6 Dec 2024 14:07:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733488871; cv=none; b=PBtzLCCCrIqw21HsH6X5LzdW23objmPNarQWt/Lx8de0mJFxugSsNlvd9fMrxxztt1ONkzhRMlbB79yvjf50HKuzBzAfNn973EwAKvh5O5S9xQyDKK2plRPhLAb9S3xByFQxzg8DsHDa8WeoRbprlYQxjmDO7MeQOSvjf7LveFs=
+	t=1733494027; cv=none; b=JyW8QIySTWDOYm3Qt9K5ijYY9CyhQzb68Ii/apVdIhGb+QtTwbtnRp//xfGmVCji6K3y9aJ0ZWEGhxaw59/bW+OIVzTUfKbbLgYFIjytkCf7J/v3uORAlQ5piZuXInBqLJ7VdqAXZ3GGU1EhLJNYpLtnCN5m0KJFT8uYuw5PYxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733488871; c=relaxed/simple;
-	bh=t4Fgw8nKOBruWIjpvLkYp2AIC5dy6abm6RTvVXuHm6c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BoM2UhSub7FlPofDdFdTVnaLsWVpTpVPNryu77fkY7YTzx7uAj8S29QoxIZJwEawymcwIfvqpnP3xmiDysQ0PYPrbE/qe6giFcpXw01d2jba+Cs5f4H8z+2ACjjDiCBZU+o//dq68LJaq1ovt2JR6QPQ0Xj3X3WXQkJfE0CM3VE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.fm; spf=pass smtp.mailfrom=fastmail.fm; dkim=pass (2048-bit key) header.d=fastmail.fm header.i=@fastmail.fm header.b=L5bZM7kv; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=3/mEvQSe; arc=none smtp.client-ip=202.12.124.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.fm
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.fm
+	s=arc-20240116; t=1733494027; c=relaxed/simple;
+	bh=Y3jRSyLqGJJ4m0znm8th/SKmR9vjy9aqGsQ2/0KyxGY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=unjDggFYVHh2uuTYiLE12+Vq4+iLiL67IOTbB5aBjz4kX6CWapL+BVvNPTCcHdBngCAIgdyyhaCK8pfMXvwAyNmwRE7ftJlZTlHJHQuaklmRtXxyZo+aciJcpXmeaz16HHsaIBdLAWQzt9f08ppVJlhK03AH0MKG+5WxfHHvWY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=AkjK72Re; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.fm header.i=@fastmail.fm header.b="L5bZM7kv";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="3/mEvQSe"
-Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
-	by mailfout.stl.internal (Postfix) with ESMTP id 70653114013D;
-	Fri,  6 Dec 2024 07:41:08 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-11.internal (MEProxy); Fri, 06 Dec 2024 07:41:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.fm; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1733488868;
-	 x=1733575268; bh=tXXivK+cdUGnoPSCQQoOlq548346QQ9af7kT7yc5szI=; b=
-	L5bZM7kvXOnkUPpoKhBpNaNRp3WS7T/GRlbcQKzH/H789dMkBUkRTfVwA2lK/XYT
-	bWYiVf0TjlUz78y5itP+z9p1QVE8rYv6gv3WF9U6d0GV38qUqymjivKv53XFcxUp
-	IUjr6wLUewcpVhGeTjIFi8VeVM+sHlGPR2LdtbY51KjJg0zyTUq4wPn7R2npAZku
-	pZRdgkU0+lA+bIfmw0IWg4WDGMIPSKu1pdw0qbAy8quDY+YPhle/ohJcgOpWoA0V
-	WRZJSflL4490WCNYXN7umaRfyr8lpAyaUpW0K191TK+T5sJ5InMjp8/RyUqu+Kbd
-	WWTIdsZXRTRrebxvSfAC8w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1733488868; x=
-	1733575268; bh=tXXivK+cdUGnoPSCQQoOlq548346QQ9af7kT7yc5szI=; b=3
-	/mEvQSeBzy8f/flfuSUzIXqyAhCW97YYhtDDPzQqFKbskF3ADgUT2H3Y9vlElAb9
-	sx+jrlGBT0hzqMBDkCWM/jC2v9VTDAqDBp7pA3jyWtT662bKpq/Q2Dr1d6hWvFX6
-	vtK0BPK/mBvG9VBdbg3HteAMnXLfJA6aLOLwXDqlvU2631Weg6w7nbDfTuHi5j5O
-	CSM56nouFFhePkqsxz+ZyGssCGfmUxkLHbgQo7ctVrwzS6jTTnaYlb5msJ1VAiBK
-	zNjwSFFfqBX4fOJ2YZJwCrndMsjvKji6r+8CpzDFd+9FHTsSAFIbi4IIhbmh+zYb
-	ue2zvudIywKcnhdJ92vew==
-X-ME-Sender: <xms:4_BSZ63g2dAj3RY08FmIBHPATks5l640VjJ4gt6Q6L-4FFVQ2LLf8A>
-    <xme:4_BSZ9EzEhqM2Nz5SuWL8Ex7_jX3r7XCRPYh7iAlaW6m1nqJqxmFsMMqub_qlo6Uj
-    3mVA6CSJGKzu-Yx>
-X-ME-Received: <xmr:4_BSZy4uWm4RQrAwG5kPHjbF7hfuM6OElzSyoA8YDJYLbkSWmtHfRXEKhw3SpAxqYnvJH-SDqzpimXvrBfaO8U-bgytpN7v42H4oPbqVPTWvWPUS_912>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrieelgdegudcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
-    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
-    hsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeen
-    ucfhrhhomhepuegvrhhnugcuufgthhhusggvrhhtuceosggvrhhnugdrshgthhhusggvrh
-    htsehfrghsthhmrghilhdrfhhmqeenucggtffrrghtthgvrhhnpeffjeevfeefjefghfef
-    hfeiueffffetledtgffhhfdttdefueevledvleetfeevtdenucffohhmrghinhepkhgvrh
-    hnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhf
-    rhhomhepsggvrhhnugdrshgthhhusggvrhhtsehfrghsthhmrghilhdrfhhmpdhnsggprh
-    gtphhtthhopeelpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehmihhklhhoshes
-    shiivghrvgguihdrhhhupdhrtghpthhtohepughhohifvghllhhssehrvgguhhgrthdrtg
-    homhdprhgtphhtthhopegumhgrnhhtihhpohhvseihrghnuggvgidrrhhupdhrtghpthht
-    ohepjhhlrgihthhonheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghrrghunhgvrh
-    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgvthhfsheslhhishhtshdrlhhinhhu
-    gidruggvvhdprhgtphhtthhopehlihhnuhigqdhfshguvghvvghlsehvghgvrhdrkhgvrh
-    hnvghlrdhorhhgpdhrtghpthhtoheplhhvtgdqphhrohhjvggttheslhhinhhugihtvghs
-    thhinhhgrdhorhhgpdhrtghpthhtohepshihiigsohhtodegtdegsgegsgejgeehtdektd
-    gsiedvuddttgeitgesshihiihkrghllhgvrhdrrghpphhsphhothhmrghilhdrtghomh
-X-ME-Proxy: <xmx:4_BSZ71pLr0Yuf-zt9h9hahzb5gFIqfY4UJDjSdt6jY7gdPYgOA64A>
-    <xmx:4_BSZ9GXQtxqRyUnkAaDo7qWW88Xpf3dsq-DfYbbBKYF55PlP22HtQ>
-    <xmx:4_BSZ08GU1ARAQaGKtoHjQx_FQ1V5mw_8y-GtUO_5dZ5VCGp-Xb7qw>
-    <xmx:4_BSZyk7dpDgJjtAHGAT3xS3doqyCJ0UdXsaDxIF9wpGcVCWZHf5Dw>
-    <xmx:5PBSZ8BzVUyqqXzsIamKPMatdFlw3Mjc2Er2gWzQUXF7h8NiSbqzYok0>
-Feedback-ID: id8a24192:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 6 Dec 2024 07:41:06 -0500 (EST)
-Message-ID: <4b9f34f5-7cfc-40e2-b2a7-ad69d1d81437@fastmail.fm>
-Date: Fri, 6 Dec 2024 13:41:05 +0100
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="AkjK72Re"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a9f1c590ecdso262352066b.1
+        for <netfs@lists.linux.dev>; Fri, 06 Dec 2024 06:07:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1733494022; x=1734098822; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=c/53FjXdidLh3jZZz1rPsx2rl/+JDtT/CVnYyzJvL7c=;
+        b=AkjK72RecDEZtMIA1Jq0IzFTPKuenCR6Fgga3MuEspNzwJo+kb3s/hJCu5N6o6uaJV
+         WtEDEjPe7+TWK+d4KD3ZReNFpX6oSTQdqul6MdXQhhVArjMvbahMEtmhctbi4MeXRk9b
+         IlZnjxbhwnXmIwh1HgEbDjRyyngJuMx4hvj3G+APc0fUyWJx3YatdDgL91IohT3zqXgF
+         RGgvt/aJCIdt833w82OuTW08GD8UyiIlbBOWLV41CNgansl2cMrgMG+dNqn5YHHG5tzR
+         9/fEs8s/hsOCLEuCBo+o5Pq4+C59/LR6wwdCeQnoB4KnLb07sWJhBaIyHZYJvi+Y2VTu
+         809g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733494022; x=1734098822;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=c/53FjXdidLh3jZZz1rPsx2rl/+JDtT/CVnYyzJvL7c=;
+        b=H/bV4WLS85yM510YsMFtetvT8py+UqF9nVvPzd/lAG9Wx+KajCOO9aIY+oVmB+1YhC
+         SPHMmLoeoOtjop3FeZpRK1uFSVK7Wzf7UdbuMxR7Tx6fbdIdrgEPnCzYo7lOmiQvcEep
+         kblKB1zmemTh2q3S+lhawjlg0KyXO2vCcx97PQdNlCuljNnQ9fD+6V2y4CwdfHeziCmN
+         c8WiRF1IzIhOvkiQw7jkOQ+rZMfSoVZ2vmIZul6otZytji/Q49yXG2TD7enNFmrkVb2w
+         ncgXVhZ5VJKXhQRpH+vnUuI/4HXISNcAzWRiHUc2Tal2yY/nPLEcgSfDLx7qbjQJ7kOt
+         Zs8Q==
+X-Gm-Message-State: AOJu0YwVgArLepE5hFHGVLvQXXxlqPdq2N1MbHFjPRnt29sSv3MaqZlX
+	vEjEibi6pmgGf66gmyw97L5MOdc3aQlpTfKjPzYVwaW9a5/xpSBLVI5FztBCF9m7O0ifVy4o46k
+	i+ZuCHEWchzf+WCNgcDkZ6rot1bIFdluUE/OVfscWX49sVb8JU8m0Vg==
+X-Gm-Gg: ASbGncuUvBFoQxjSkUKDT05YvvBExJYcsPg5Vm2X5rWrl0QlbLPUEmIvvl6ZIsqj6YQ
+	5LiG3+HTWdMkA7M+ULx5OiPyx8/2yZ07Ydnf33iAjO2sKqaGVEvBxbmjuZljE
+X-Google-Smtp-Source: AGHT+IHusLFPrUcP5Q+1cLknHTOnkJQnFc/dkEmQ8NKaIbWLWU6reloS6YJa6ES2YA1j6z5hweoJjDWdDUAcTA5wUx0=
+X-Received: by 2002:a17:907:a192:b0:aa6:c55:7397 with SMTP id
+ a640c23a62f3a-aa63a21c376mr264845866b.45.1733494022312; Fri, 06 Dec 2024
+ 06:07:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: syzbot program that crashes netfslib can also crash fuse
-To: Miklos Szeredi <miklos@szeredi.hu>, David Howells <dhowells@redhat.com>
-Cc: Dmitry Antipov <dmantipov@yandex.ru>, Jeff Layton <jlayton@kernel.org>,
- Christian Brauner <brauner@kernel.org>, netfs@lists.linux.dev,
- linux-fsdevel@vger.kernel.org, lvc-project@linuxtesting.org,
- syzbot+404b4b745080b6210c6c@syzkaller.appspotmail.com
-References: <20241202093943.227786-1-dmantipov@yandex.ru>
- <1100513.1733306199@warthog.procyon.org.uk>
- <CAJfpeguAw2_3waLEGhPK-LZ_dFfOXO6bHGE=6Yo2xpyet6SYrA@mail.gmail.com>
-From: Bernd Schubert <bernd.schubert@fastmail.fm>
-Content-Language: en-US, de-DE, fr
-In-Reply-To: <CAJfpeguAw2_3waLEGhPK-LZ_dFfOXO6bHGE=6Yo2xpyet6SYrA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <CAKPOu+_JUNO5EZosu00H=tZsgfCAzQkBBkJjVfOHYrX_6mHEPQ@mail.gmail.com>
+ <4022108.1732899245@warthog.procyon.org.uk>
+In-Reply-To: <4022108.1732899245@warthog.procyon.org.uk>
+From: Max Kellermann <max.kellermann@ionos.com>
+Date: Fri, 6 Dec 2024 15:06:50 +0100
+Message-ID: <CAKPOu+_gzJCN6OKYvUw+H9kDrc3YG8yxJS_YDx41zS==wBKpbA@mail.gmail.com>
+Subject: Re: New cachefilesd implementation
+To: David Howells <dhowells@redhat.com>
+Cc: netfs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Fri, Nov 29, 2024 at 5:54=E2=80=AFPM David Howells <dhowells@redhat.com>=
+ wrote:
+> Now, would you be able to clone this:
+>
+>         https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/cachefil=
+esd.git/
+>
+> Then rip out the existing code and put in your code?  There's some stuff =
+in
+> there that is necessary to run on SELinux-based systems and it would make=
+ it
+> a lot easier for me just to replace the current cachefilesd package by ju=
+st
+> pulling yours directly.
 
+Here:
 
-On 12/4/24 13:41, Miklos Szeredi wrote:
-> On Wed, 4 Dec 2024 at 10:56, David Howells <dhowells@redhat.com> wrote:
->>
->> Interesting...  The test program also causes fuse to oops (see attached) over
->> without even getting to netfslib.  The BUG is in iov_iter_revert():
->>
->>         if (iov_iter_is_xarray(i) || iter_is_ubuf(i)) {
->>                 BUG(); /* We should never go beyond the start of the specified
->>                         * range since we might then be straying into pages that
->>                         * aren't pinned.
->>                         */
-> 
-> Can you please test this?
-> 
-> --- a/fs/fuse/file.c
-> +++ b/fs/fuse/file.c
-> @@ -1541,8 +1541,10 @@ static int fuse_get_user_pages(struct
-> fuse_args_pages *ap, struct iov_iter *ii,
->          */
->         struct page **pages = kzalloc(max_pages * sizeof(struct page *),
->                                       GFP_KERNEL);
-> -       if (!pages)
-> +       if (!pages) {
-> +               *nbytesp = 0;
->                 return -ENOMEM;
-> +       }
-> 
->         while (nbytes < *nbytesp && nr_pages < max_pages) {
->                 unsigned nfolios, i;
-> 
-> (Also attaching patch without whitespace damage.)
+https://github.com/CM4all/cash/tree/cachefilesd2
 
-I had already posted a patch on Monday.
+Please check if that's how you envisioned it. License is also changed
+to BSD2 or GPL2+.
+RFC! - it's not yet finalized, and not yet ready for merging.
 
-https://lore.kernel.org/r/20241203-fix-fuse_get_user_pages-v2-1-acce8a29d06b@ddn.com
+Meanwhile, I have implemented lots of further optimizations. Now
+almost all I/O (except for readdir()) is done with io_uring -
+including writes to /dev/cachefiles, which required some tricky
+machinery around fchdir(), because /dev/cachefiles accepts only file
+names in the current working directory.
 
-@David, is that the same sysbot report or another one?
+Some things are missing completely, like logging and daemonization. I
+believe that daemonization is an obsolete feature and the init system
+should take care for daemonization.
 
+This implementation has been running on our production servers for
+more than a week now and the problems we had with the old cachefilesd
+are gone now. It's as fast as it can be, thanks to io_uring, and is
+more secure: it drops CAP_SYS_ADMIN after opening /dev/cachefiles, and
+has no other capabilities.
 
-Thanks,
-Bernd
+Max
