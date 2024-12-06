@@ -1,105 +1,80 @@
-Received: from mail-m1035.netease.com (mail-m1035.netease.com [154.81.10.35])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2170B225D6
-	for <netfs@lists.linux.dev>; Fri,  6 Dec 2024 07:28:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=154.81.10.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FE91D47A2
+	for <netfs@lists.linux.dev>; Fri,  6 Dec 2024 10:51:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733470120; cv=none; b=I42+2Lr/CqO+xGCXCpm0lCUKLEOHEESwT0a1mdna27rKbd0ydR7Kgn3EkdE0mN+CRrBiPRj7WKUjI1KRjBKFS6KYekTfddesTu0hPYaAzhx4X9vTt6UNBAQioD1FplQx9WggkDk53U3W++7ZSnl8PmHS6ngfy40q+ohu0mNj3gM=
+	t=1733482286; cv=none; b=ZoTeY170FpG2t6b8ZISq4/C+WmBxJg763ifLGwVx/SU75ydtvsOOmatKYo3ufSruxTttN+qE6lrjFbnI19jHilWwBZf5eRYmLdxofn5nhsbFrlgFAqWgDTOe/y/kMP1hT5Qd5VzVQ+1hz+0KkcxvnVWvhje+kzTe89uDdIGnsiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733470120; c=relaxed/simple;
-	bh=YL+9m+fKpEznl2nFJijfWwhBg5EzwRct9DJv4KiLwLg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XJa/kUPaSA9PrsfW1VIP4eFSzzqsTMFq+T7twvOAXJIL5n2N0zM10I9QVY+e+7VTgCRaHKdqMUCp/xZw/yzVJFs7vauUfod5GWhe+D6s8ZqNIk3B2emRCg7oL6gZUzoqzT3WaxlD78HbypLcJk0CMPdXulv/yW5mlk6iU6Yqtfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=J/C7hIeW; arc=none smtp.client-ip=154.81.10.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+	s=arc-20240116; t=1733482286; c=relaxed/simple;
+	bh=oTsPUDgDN6bcnZ0E8n6dRKgzyMJp9vgjIScGMRZsCxE=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=QG5JJ4/4BG+9PQUPfIP+U5fRspL6LY0u9oNMTdps4C+nOTzw9Mh3EsIEZYBfZa2CaUxm7AdtwRS1B2SZARuvqUVigOzGFY89MVyHm2W9yU2qQ1vgUEZ4scLyGI7kgDg27Z1WZrRnwlUeP/QVR644VqEzl3augRGwoklQy8zF0f0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=M6yHh4bX; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="J/C7hIeW"
-Received: from localhost.localdomain (unknown [202.119.23.198])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 4e55eede;
-	Fri, 6 Dec 2024 15:13:16 +0800 (GMT+08:00)
-From: Zilin Guan <zilin@seu.edu.cn>
-To: mjguzik@gmail.com
-Cc: dhowells@redhat.com,
-	jlayton@kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netfs@lists.linux.dev,
-	xujianhao01@gmail.com,
-	zilin@seu.edu.cn
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M6yHh4bX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733482283;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NST6jts8YNbGPQLwjh+xfRvv0/reS6QmYyob3J81Hkg=;
+	b=M6yHh4bXzNGZop8ydvWG1bnFzxSOS65UNhY6A1/FDQlwkQmipaMSOMVrPoPW55iLmbQGdH
+	kEVZaUIN5Kygl2bt8kerOiBuCJxhMMzFdLZ8qOgKTckH1t5IhE9aCrTHDuNY/TNO0aW5d6
+	qqOStCYExaRpRXJrbKxCBH9YyGxJ+R0=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-265-j4uGIcJqOo-pktNsHs93Kw-1; Fri,
+ 06 Dec 2024 05:51:20 -0500
+X-MC-Unique: j4uGIcJqOo-pktNsHs93Kw-1
+X-Mimecast-MFC-AGG-ID: j4uGIcJqOo-pktNsHs93Kw
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 323EE1955F38;
+	Fri,  6 Dec 2024 10:51:18 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.48])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AE0991955F3F;
+	Fri,  6 Dec 2024 10:51:15 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20241206071315.2958512-1-zilin@seu.edu.cn>
+References: <20241206071315.2958512-1-zilin@seu.edu.cn> <ulg54pf2qnlzqfj247fypypzun2yvwepqrcwaqzlr6sn3ukuab@rov7btfppktc>
+To: Zilin Guan <zilin@seu.edu.cn>
+Cc: dhowells@redhat.com, mjguzik@gmail.com, jlayton@kernel.org,
+    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+    netfs@lists.linux.dev, xujianhao01@gmail.com
 Subject: Re: [QUESTION] inconsistent use of smp_mb()
-Date: Fri,  6 Dec 2024 07:13:15 +0000
-Message-Id: <20241206071315.2958512-1-zilin@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <ulg54pf2qnlzqfj247fypypzun2yvwepqrcwaqzlr6sn3ukuab@rov7btfppktc>
-References: <ulg54pf2qnlzqfj247fypypzun2yvwepqrcwaqzlr6sn3ukuab@rov7btfppktc>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkZQkoaVh0aTRlDQ09DGBkYHVYeHw5VEwETFhoSFy
-	QUDg9ZV1kYEgtZQVlJS0lVSkpCVUlIVUpCQ1lXWRYaDxIVHRRZQVlPS0hVSktISk5MSVVKS0tVSk
-	JLS1kG
-X-HM-Tid: 0a939ad0cff603a1kunm4e55eede
-X-HM-MType: 10
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6MjY6Hio*TjIfCVEwSTkoUR4X
-	MS0KCyJVSlVKTEhIT01CSkJMSkNPVTMWGhIXVQESFxIVOwgeDlUeHw5VGBVFWVdZEgtZQVlJS0lV
-	SkpCVUlIVUpCQ1lXWQgBWUFJSk1KNwY+
-DKIM-Signature:a=rsa-sha256;
-	b=J/C7hIeW+cVAxKPsAOD+OCo4W1hlx1gNOp/TIOdds4T9JRa2cuOENSbs4cfX+lDxC3HsPAYSEpQlmgVkiCWFVQsV7ivF7vIq0oLizpvt+/KMqXJZXmnWzlGrHxdzHuwsBw2GpESqqO7bsvjVnhNlEeuDGb5wR+Oq0I2d+JPXWp8=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=KaeUVXapuHKSzLw5ctqEebg9c7ruMdXt2f6CPGdCRmE=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1977685.1733482274.1@warthog.procyon.org.uk>
+Date: Fri, 06 Dec 2024 10:51:14 +0000
+Message-ID: <1977686.1733482274@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-On Wed, Dec 04, 2024 at 09:27:22AM+0100, Mateusz Guzik wrote:
-> On Wed, Dec 04, 2024 at 06:48:18AM +0000, Zilin Guan wrote:
-> > Hello,
-> > 
-> > I have a question regarding the use of smp_rmb() to enforce 
-> > memory ordering in two related functions.
-> > 
-> > In the function netfs_unbuffered_write_iter_locked() from the file 
-> > fs/netfs/direct_write.c, smp_rmb() is explicitly used after the 
-> > wait_on_bit() call to ensure that the error and transferred fields are 
-> > read in the correct order following the NETFS_RREQ_IN_PROGRESS flag:
-> > 
-> > 105	wait_on_bit(&wreq->flags, NETFS_RREQ_IN_PROGRESS,
-> > 106		    TASK_UNINTERRUPTIBLE);
-> > 107	smp_rmb(); /* Read error/transferred after RIP flag */
-> > 108	ret = wreq->error;
-> > 109	if (ret == 0) {
-> > 110		ret = wreq->transferred;
-> > 111		iocb->ki_pos += ret;
-> > 112	}
-> > 
-> > However, in the function netfs_end_writethrough() from the file 
-> > fs/netfs/write_issue.c, there is no such use of smp_rmb() after 
-> > the corresponding wait_on_bit() call, despite accessing the same filed 
-> > of wreq->error and relying on the same NETFS_RREQ_IN_PROGRESS flag:
-> > 
-> > 681	wait_on_bit(&wreq->flags, NETFS_RREQ_IN_PROGRESS, 
-> > 		    TASK_UNINTERRUPTIBLE);
-> > 682	ret = wreq->error;
-> > 
-> > My question is why does the first function require a CPU memory barrier 
-> > smp_rmb() to enforce ordering, whereas the second function does not?
-> 
-> The fence is redundant.
-> 
-> Per the comment in wait_on_bit:
->  * Returned value will be zero if the bit was cleared in which case the
->  * call has ACQUIRE semantics, or %-EINTR if the process received a
->  * signal and the mode permitted wake up on that signal.
-> 
-> Since both sites pass TASK_UNINTERRUPTIBLE this will only ever return
-> after the bit is sorted out, already providing the needed fence.
- 
-Since the code does not need the fence, should I send a patch to 
-remove it? Commit 2df8654 introduced this fence during the transition 
-to a new writeback implementation. However, the author added this fence 
-as part of the changes and did not intend to address a specific CPU 
-reordering issue.
+Zilin Guan <zilin@seu.edu.cn> wrote:
+
+> Since the code does not need the fence, should I send a patch to 
+> remove it? Commit 2df8654 introduced this fence during the transition 
+> to a new writeback implementation. However, the author added this fence 
+> as part of the changes and did not intend to address a specific CPU 
+> reordering issue.
+
+Sure.
+
+Thanks,
+David
+
