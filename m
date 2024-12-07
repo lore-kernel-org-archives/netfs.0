@@ -1,88 +1,81 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mail-m60106.netease.com (mail-m60106.netease.com [210.79.60.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB0C213E6A
-	for <netfs@lists.linux.dev>; Fri,  6 Dec 2024 21:13:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485292E822
+	for <netfs@lists.linux.dev>; Sat,  7 Dec 2024 04:42:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.79.60.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733519617; cv=none; b=XBYweSswHxFdqLPksltYp9zERbWEGMC3FPQsPfYnFsojQF1Rz7ywi/Z9iiGKamzLBtwPXT1MoScp+lJN+RbUaUkLCMIsUe+VP8CP4Y5X+cYOtE0UVhCl8G3wPs576rkOEuDL80YLT6CUf+6CSIh0Pf0BdEHUaO+M93Xff84fclQ=
+	t=1733546560; cv=none; b=loC0DbLhcHclvx50eAy3ri6y84SpZk3e9yBYhX58iI9QukDsTTTQcyNwPSOEz8S5oB1aV+cL1ZVfSKPemwblrOutQbvBPeafbWqdGyPPMKYfs5udsRrtFxyEb5FA2MYZdvI8zwg6r3GeVSBPe0RZSSJguH2p5q9BwNmiQZCRgjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733519617; c=relaxed/simple;
-	bh=UmyiWS3FvApH/OGcGuiDKK7Yco/2XZG4nu/5S0zwsIw=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=pxn7S4izvuNwtzx7vTul1Kd8e38dC8ZIBBQcGTmG1bOfPWKKheTi7tocGlIe8DCd7bzGWqe2hJpOJ9ykncqUwh7v5sKYt5CtBDFSJSshQSbQWrWoh9R5kY6PRtgW7yK4IYBDyvxjumYQm29oH+HDPNInGP69GoJFkp8VYQ1z71o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WxtpO1YG; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1733546560; c=relaxed/simple;
+	bh=HMdtTUtzSIja3JEp9rNY5FRMru0ceZs02c4Mf8/k/rc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bKmzVwdmZY+TeJFd5o8Mn15R/+ewV9SBxT6Np2M2rnGKd3u7lYcHz3cdAJYrWadoAGbXWITIglF62Y0jPPKCE64UZ+l8k2sVFJVtxPpVcqsXOmzVxvSv+ykaW+Bd9OYB1HsB1ILZ3kj4+9N5hKGjjb5qiFtsI79KBIR7guq55eE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=cIQJPrMw; arc=none smtp.client-ip=210.79.60.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WxtpO1YG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733519615;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cSUJegE2rtjeYKwXEyaKur6j8cDYr8o25vQqsWAVYBA=;
-	b=WxtpO1YGZ34x1B/gbBLTgJGO4Y18SWVCqGhoDfVV6S0JlcZxKfPsJnzBHYFLccNq1Slg8O
-	vHfUN90tFTDvW7S8XlZY3+4nYX+EoePYSm2w0EyUurancViyWYgo2JCxcFJv1eIdsYoV5K
-	kC8qDOe9AgkZ7A4f0XX/pbOwIAkh2UU=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-591-KSFQMdm-PCuJQiNgdilzKg-1; Fri,
- 06 Dec 2024 16:13:34 -0500
-X-MC-Unique: KSFQMdm-PCuJQiNgdilzKg-1
-X-Mimecast-MFC-AGG-ID: KSFQMdm-PCuJQiNgdilzKg
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 152541956089;
-	Fri,  6 Dec 2024 21:13:33 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.48])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 301F63000238;
-	Fri,  6 Dec 2024 21:13:30 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <CAKPOu+_OamJ-0wsJB3GOYu5v76ZwFr+N2L92dYH6NLBzzhDfOQ@mail.gmail.com>
-References: <CAKPOu+_OamJ-0wsJB3GOYu5v76ZwFr+N2L92dYH6NLBzzhDfOQ@mail.gmail.com> <CAKPOu+_4m80thNy5_fvROoxBm689YtA0dZ-=gcmkzwYSY4syqw@mail.gmail.com> <3990750.1732884087@warthog.procyon.org.uk> <CAKPOu+96b4nx3iHaH6Mkf2GyJ-dr0i5o=hfFVDs--gWkN7aiDQ@mail.gmail.com> <CAKPOu+9xvH4JfGqE=TSOpRry7zCRHx+51GtOHKbHTn9gHAU+VA@mail.gmail.com>
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: dhowells@redhat.com, Jeff Layton <jlayton@kernel.org>,
-    netfs@lists.linux.dev, linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-    linux-kernel@vger.kernel.org
-Subject: Re: 6.12 WARNING in netfs_consume_read_data()
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="cIQJPrMw"
+Received: from localhost.localdomain (unknown [202.119.23.198])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 4f744e4c;
+	Sat, 7 Dec 2024 10:20:09 +0800 (GMT+08:00)
+From: Zilin Guan <zilin@seu.edu.cn>
+To: dhowells@redhat.com
+Cc: jlayton@kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netfs@lists.linux.dev,
+	jianhao.xu@seu.edu.cn,
+	zilin@seu.edu.cn
+Subject: [PATCH] fs/netfs: Remove redundant use of smp_rmb()
+Date: Sat,  7 Dec 2024 02:19:52 +0000
+Message-Id: <20241207021952.2978530-1-zilin@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1995559.1733519609.1@warthog.procyon.org.uk>
-Date: Fri, 06 Dec 2024 21:13:29 +0000
-Message-ID: <1995560.1733519609@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Transfer-Encoding: 8bit
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlCH0xNVkhJTh9JShgfTk5JSVYeHw5VEwETFhoSFy
+	QUDg9ZV1kYEgtZQVlJS0lVSkpCVUlIVUpCQ1lXWRYaDxIVHRRZQVlPS0hVSktISk5MTlVKS0tVSk
+	JLS1kG
+X-HM-Tid: 0a939eead27803a1kunm4f744e4c
+X-HM-MType: 10
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6NDo6DBw5GjIqDUkcQzdJEDw9
+	CkoKFA9VSlVKTEhITkhDS0pLTUhIVTMWGhIXVQESFxIVOwgeDlUeHw5VGBVFWVdZEgtZQVlJS0lV
+	SkpCVUlIVUpCQ1lXWQgBWUFKSktKNwY+
+DKIM-Signature:a=rsa-sha256;
+	b=cIQJPrMwojB2L3Zlqa1Mi/B2gGf58Z9rR7yrdTWOHJceIPBZ7z9u3aHvHCu4GBjT4YjySglaiFNOPCzI+99LeQRFfw/TqoV2/7VVkjQHwyoLUTtiVSmSDMWN6IKLwE5VXxKO6NgIeGw9zKO1kxK1gfKZyysImfoaF3sJ59CgrOo=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=EQzIrNnIyG5tXCGdHLpf6HtjgxuDF7I3HH2v48y6u2Y=;
+	h=date:mime-version:subject:message-id:from;
 
-Max Kellermann <max.kellermann@ionos.com> wrote:
+The function netfs_unbuffered_write_iter_locked() in
+fs/netfs/direct_write.c contains an unnecessary smp_rmb() call after
+wait_on_bit(). Since wait_on_bit() already incorporates a memory barrier
+that ensures the flag update is visible before the function returns, the
+smp_rmb() provides no additional benefit and incurs unnecessary overhead.
 
-> 
-> I tried with 6.12.3 + dhowells/netfs-writeback; David's branch solved
-> many problems and it took much longer to trigger the hang, but it
-> eventually occurred:
+This patch removes the redundant barrier to simplify and optimize the code.
 
-Can you get some tracing for me?
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+---
+ fs/netfs/direct_write.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_failure/enable
-echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_rreq/enable
-echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_sreq/enable
-echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_folio/enable
-echo 1 >/sys/kernel/debug/tracing/events/cachefiles/cachefiles_read/enable
-echo 1 >/sys/kernel/debug/tracing/events/cachefiles/cachefiles_write/enable
-
-(And compress the result before posting)
-
-Thanks,
-David
+diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
+index 88f2adfab75e..173e8b5e6a93 100644
+--- a/fs/netfs/direct_write.c
++++ b/fs/netfs/direct_write.c
+@@ -104,7 +104,6 @@ ssize_t netfs_unbuffered_write_iter_locked(struct kiocb *iocb, struct iov_iter *
+ 		trace_netfs_rreq(wreq, netfs_rreq_trace_wait_ip);
+ 		wait_on_bit(&wreq->flags, NETFS_RREQ_IN_PROGRESS,
+ 			    TASK_UNINTERRUPTIBLE);
+-		smp_rmb(); /* Read error/transferred after RIP flag */
+ 		ret = wreq->error;
+ 		if (ret == 0) {
+ 			ret = wreq->transferred;
+-- 
+2.34.1
 
