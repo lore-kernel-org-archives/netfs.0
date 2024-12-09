@@ -1,196 +1,144 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD4D35946
-	for <netfs@lists.linux.dev>; Mon,  9 Dec 2024 14:16:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861281B0420
+	for <netfs@lists.linux.dev>; Mon,  9 Dec 2024 14:46:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733753765; cv=none; b=Vkl3tI0dG/U70EKxPoEVSGqEfUACXPWAFAGiQGZn01v7XEIemkukfvp/GYQrhvbn18ZeEGWNcTj7TxRD8wLjY/Nk8bPb6OFCOSOSeKqTshFP1kD2CPlS5SzIQ2yfG9ksHbcvy7ys8DgJTtGn+C60mzGwU9MWX3r2X0pR7h+GnNA=
+	t=1733755573; cv=none; b=sYo5tGMusfHCk4xvmry2vP4QC5Ok2uKrvbP8/lKgA3LlISUS9u0fftG9poCSiVwY1GvlfH/S4klCEeFjJfsOI3BfdsrJaLixeO5n5lwVpm8ZqYGMnva9+ApoTswU3GG0rS+DtWGvXrSmompXHD2r5mxUNl+VpJAZK5F08l1ny7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733753765; c=relaxed/simple;
-	bh=VzcSKHy18NLLXf21RkjF1FqrTcUOAH8NoqpvDorSaU0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kHTR2CSCCk1/+hiqIwwI+iREfD7+pPivDH97nZadaRIcimHXfj9OpVB0if/Y8EY06+nQpJeuWyloUlST80EIUmCvqrWqdyC4k4kecjyE9ZmmO+26X3TlBVgkgOUZ2SLnQp1uFRIS2nlnVfRtEZf4UV9W7TJWBTSsoQTBVED5Jec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=ZeW9ntt1; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+	s=arc-20240116; t=1733755573; c=relaxed/simple;
+	bh=gxoqf3V6MNwR8Jxtgxg0q1RTCN9bxCAoFnFNdWxak4w=;
+	h=From:In-Reply-To:References:To:cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=ZJFfs5+IzlA3u8ubpT7I/bHAJyIYL7YkuZ5qkYUDyICY/1HS9lsbRMtOqKhMO/1hzQ0WoXKTmmMekIQ6aOiC1eCT0Msnvy6cztFHyswQM/3zAukPAZCplZPsN9o1dBx4q9Baz5F83hq3hhqEjw/PiJakxmsW+S0+6VFgxzbNJKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DJpHo+HS; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="ZeW9ntt1"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-aa670ffe302so244447466b.2
-        for <netfs@lists.linux.dev>; Mon, 09 Dec 2024 06:16:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1733753760; x=1734358560; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Vdmax77IGEEwisTCnHEna2vDXeBlXeblGP0C74f9/Ic=;
-        b=ZeW9ntt1EITRW55YiRB+KC4jVUDsWro+E7oYxDmD6bzMAEZ2RjP2pea4e4I0LAwewh
-         /2srUf00P1E+G/hMwpMmNeGUtLG/7hQPORl7x+hCE76UiQl8NmGgXkGYEV8GkEdWM9zh
-         vvOEea++bF2jrzXTEga5hFD7wuUlC7N6lpTqyNhSEhYuJE3PBFhEpgrZnCcwAVIY1Yu4
-         T6WMz2v22LAa2/YBbgyeStMrEyOwXWivcrDkFNf6OFxbJD52rHVvswUxZ3B9iQr6jIuP
-         xDhxzd6SXgd2SAywshiOuM59eFgGOZJErdTaOk7qnQX4B+UQmWjm9mgMpQBvvoPNMGpK
-         xzRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733753760; x=1734358560;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Vdmax77IGEEwisTCnHEna2vDXeBlXeblGP0C74f9/Ic=;
-        b=u/Uui7+XRfLUGehzjNxzHgHS7Hd+G8RdO/tjonIpVeUGz318u5pcfnz1sVG8StjMio
-         r22U8X0s6QvqRPPr58w5r0/nVKRhz1Wov9XaYjpHSDmXgUs5ox3rsacig3cu0m0CPpHA
-         hce1In6Fh4ZNfoYz0Oidmb1eVLEzRWXfI05A/GWL5rwPeeQ9AcvixtTRg2A5YeWSL8iE
-         HErD8Avx+k4ycIpaABdApG/OiuIby2u4kr+JRzH8Y4nQ7lkeLuI82qSz/fIUCFvX0bxA
-         m8v4HArY0as+EyTePB0gQVMAUN1cE4oKlrC6n/N6t/eGnTbI9JQi6tvcbO/Q9mHGPOqL
-         Ywsw==
-X-Forwarded-Encrypted: i=1; AJvYcCWK9AxJht6WhuaNIpY9Zl1m0lxHi+T7v9G3/6HCOual3nhboVorL2Yr99mwKhv4Q4vPBZcijw==@lists.linux.dev
-X-Gm-Message-State: AOJu0YyzVXxFT5wBprQciCIemjF/bXZRCrtmVUuz42GIKo5EuV8uqcil
-	yijkWHpyr/TBkfkJ3vUXxQPnUZ3asvwMnje4ppDBe9AukcpyeDTHfVBJEDhCqqE=
-X-Gm-Gg: ASbGncuJg4mgeTL3GVWu55vpjHG+P5QIm+s2Xe0DroFDhDjqfD27ppmsVq5qygDPbGc
-	aUi6Qm6V3q2bbS/4uIvdS8GEukbpjh5FtxcRMwI/tlTXWcBdMpLPp9hPsLyaTIy8ZGv+TNGaAk9
-	mWPQSLDDUxniq4oaQP3z1oXYZ87HXjLC0fGR4aMiSHYIjmjLXm+mAjA8wR51i09IqZ+00wxp08a
-	J4UKTrVlrNhPeE5zpZiKfaBoWGDeGYvRSg/eBcmjinm7ZGMexUEHCDWKKZUOWMpVMJH99MzQtoN
-	gCPJ8Fr1B1PNNZrILm6F8feEo5Tdqi3ynsdQ4BaecfALZQMyBQ==
-X-Google-Smtp-Source: AGHT+IFLBp2fdCsJQMa/TJPMRoMaNu3fmS9Q17TcQ19MhzzXMeczTB44DwPwQ6to38t0U4YkQwbl1A==
-X-Received: by 2002:a17:906:30cb:b0:aa5:3782:53af with SMTP id a640c23a62f3a-aa63a07edfcmr1132170766b.27.1733753759856;
-        Mon, 09 Dec 2024 06:15:59 -0800 (PST)
-Received: from raven.intern.cm-ag (p200300dc6f2c8700023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f2c:8700:230:64ff:fe74:809])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa689b6e7d8sm147359666b.78.2024.12.09.06.15.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Dec 2024 06:15:59 -0800 (PST)
-From: Max Kellermann <max.kellermann@ionos.com>
-To: dhowells@redhat.com,
-	netfs@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Cc: Max Kellermann <max.kellermann@ionos.com>
-Subject: [PATCH] fs/cachefiles/daemon: parse the "secctx" immediately
-Date: Mon,  9 Dec 2024 15:15:54 +0100
-Message-ID: <20241209141554.638708-1-max.kellermann@ionos.com>
-X-Mailer: git-send-email 2.45.2
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DJpHo+HS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733755569;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3G/ATOlFkQtH54MeWdYZh8GPQakhI+3TwZChdXPPqtI=;
+	b=DJpHo+HS1Da3ft4P8wiBHtWAuSVbf1LGbc4dRIy/VFdqHkzYHh2Y54e8gQ0Vi1kT+sX37n
+	S/1nu8NwPata9H9S6YkbAsh3prpxDTnb9lBv7xVpfW7eWpYv4ZOI2fE53IRPKEEFTbwv2w
+	ZkB5Zp57bWY+WOMNId7HaqxJgtNo5ig=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-171-THTru4SJMFGT1J6xnwPHdQ-1; Mon,
+ 09 Dec 2024 09:46:06 -0500
+X-MC-Unique: THTru4SJMFGT1J6xnwPHdQ-1
+X-Mimecast-MFC-AGG-ID: THTru4SJMFGT1J6xnwPHdQ
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DC9B2195607D;
+	Mon,  9 Dec 2024 14:46:04 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.48])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EE361195605A;
+	Mon,  9 Dec 2024 14:46:01 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <CAKPOu+986mTt1i9xGBXiQPVOmu4ZJTskrCt6f-99EL_s0rhz_A@mail.gmail.com>
+References: <CAKPOu+986mTt1i9xGBXiQPVOmu4ZJTskrCt6f-99EL_s0rhz_A@mail.gmail.com>
+To: Max Kellermann <max.kellermann@ionos.com>
+cc: dhowells@redhat.com, Trond Myklebust <trondmy@kernel.org>,
+    Anna Schumaker <anna@kernel.org>,
+    Dave Wysochanski <dwysocha@redhat.com>,
+    Jeff Layton <jlayton@kernel.org>,
+    Christian Brauner <brauner@kernel.org>, netfs@lists.linux.dev,
+    linux-nfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: [PATCH] nfs: Fix oops in nfs_netfs_init_request() when copying to cache
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2128543.1733755560.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 09 Dec 2024 14:46:00 +0000
+Message-ID: <2128544.1733755560@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-Instead of storing an opaque string, call security_secctx_to_secid()
-right in the "secctx" command handler and store only the numeric
-"secid".  This eliminates an unnecessary string allocation and allows
-the daemon to receive errors when writing the "secctx" command instead
-of postponing the error to the "bind" command handler.  For example,
-if the kernel was built without `CONFIG_SECURITY`, "bind" will return
-`EOPNOTSUPP`, but the daemon doesn't know why.  With this patch, the
-"secctx" will instead return `EOPNOTSUPP` which is the right context
-for this error.
+Hi Max,
 
-This patch adds a boolean flag `have_secid` because I'm not sure if we
-can safely assume that zero is the special secid value for "not set".
-This appears to be true for SELinux, Smack and AppArmor, but since
-this attribute is not documented, I'm unable to derive a stable
-guarantee for that.
+Does this fix the issue?
 
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+David
 ---
- fs/cachefiles/daemon.c   | 14 +++++++-------
- fs/cachefiles/internal.h |  3 ++-
- fs/cachefiles/security.c |  6 +++---
- 3 files changed, 12 insertions(+), 11 deletions(-)
+nfs: Fix oops in nfs_netfs_init_request() when copying to cache
 
-diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
-index 89b11336a836..169e8709e4ad 100644
---- a/fs/cachefiles/daemon.c
-+++ b/fs/cachefiles/daemon.c
-@@ -15,6 +15,7 @@
- #include <linux/namei.h>
- #include <linux/poll.h>
- #include <linux/mount.h>
-+#include <linux/security.h> // for security_secctx_to_secid()
- #include <linux/statfs.h>
- #include <linux/ctype.h>
- #include <linux/string.h>
-@@ -576,7 +577,7 @@ static int cachefiles_daemon_dir(struct cachefiles_cache *cache, char *args)
-  */
- static int cachefiles_daemon_secctx(struct cachefiles_cache *cache, char *args)
+When netfslib wants to copy some data that has just been read on behalf of
+nfs, it creates a new write request and calls nfs_netfs_init_request() to
+initialise it, but with a NULL file pointer.  This causes
+nfs_file_open_context() to oops - however, we don't actually need the nfs
+context as we're only going to write to the cache.
+
+Fix this by just returning if we aren't given a file pointer and emit a
+warning if the request was for something other than copy-to-cache.
+
+Further, fix nfs_netfs_free_request() so that it doesn't try to free the
+context if the pointer is NULL.
+
+Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
+Reported-by: Max Kellermann <max.kellermann@ionos.com>
+Closes: https://lore.kernel.org/r/CAKPOu+986mTt1i9xGBXiQPVOmu4ZJTskrCt6f-9=
+9EL_s0rhz_A@mail.gmail.com/
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Trond Myklebust <trondmy@kernel.org>
+cc: Anna Schumaker <anna@kernel.org>
+cc: Dave Wysochanski <dwysocha@redhat.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-nfs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+---
+ fs/nfs/fscache.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/fs/nfs/fscache.c b/fs/nfs/fscache.c
+index 810269ee0a50..d49e4ce27999 100644
+--- a/fs/nfs/fscache.c
++++ b/fs/nfs/fscache.c
+@@ -263,6 +263,12 @@ int nfs_netfs_readahead(struct readahead_control *rac=
+tl)
+ static atomic_t nfs_netfs_debug_id;
+ static int nfs_netfs_init_request(struct netfs_io_request *rreq, struct f=
+ile *file)
  {
--	char *secctx;
-+	int err;
- 
- 	_enter(",%s", args);
- 
-@@ -585,16 +586,16 @@ static int cachefiles_daemon_secctx(struct cachefiles_cache *cache, char *args)
- 		return -EINVAL;
- 	}
- 
--	if (cache->secctx) {
-+	if (cache->have_secid) {
- 		pr_err("Second security context specified\n");
- 		return -EINVAL;
- 	}
- 
--	secctx = kstrdup(args, GFP_KERNEL);
--	if (!secctx)
--		return -ENOMEM;
-+	err = security_secctx_to_secid(args, strlen(args), &cache->secid);
-+	if (err)
-+		return err;
- 
--	cache->secctx = secctx;
-+	cache->have_secid = true;
- 	return 0;
++	if (!file) {
++		if (WARN_ON_ONCE(rreq->origin !=3D NETFS_PGPRIV2_COPY_TO_CACHE))
++			return -EIO;
++		return 0;
++	}
++
+ 	rreq->netfs_priv =3D get_nfs_open_context(nfs_file_open_context(file));
+ 	rreq->debug_id =3D atomic_inc_return(&nfs_netfs_debug_id);
+ 	/* [DEPRECATED] Use PG_private_2 to mark folio being written to the cach=
+e. */
+@@ -274,7 +280,8 @@ static int nfs_netfs_init_request(struct netfs_io_requ=
+est *rreq, struct file *fi
+ =
+
+ static void nfs_netfs_free_request(struct netfs_io_request *rreq)
+ {
+-	put_nfs_open_context(rreq->netfs_priv);
++	if (rreq->netfs_priv)
++		put_nfs_open_context(rreq->netfs_priv);
  }
- 
-@@ -820,7 +821,6 @@ static void cachefiles_daemon_unbind(struct cachefiles_cache *cache)
- 	put_cred(cache->cache_cred);
- 
- 	kfree(cache->rootdirname);
--	kfree(cache->secctx);
- 	kfree(cache->tag);
- 
- 	_leave("");
-diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
-index 7b99bd98de75..38c236e38cef 100644
---- a/fs/cachefiles/internal.h
-+++ b/fs/cachefiles/internal.h
-@@ -122,7 +122,6 @@ struct cachefiles_cache {
- #define CACHEFILES_STATE_CHANGED	3	/* T if state changed (poll trigger) */
- #define CACHEFILES_ONDEMAND_MODE	4	/* T if in on-demand read mode */
- 	char				*rootdirname;	/* name of cache root directory */
--	char				*secctx;	/* LSM security context */
- 	char				*tag;		/* cache binding tag */
- 	refcount_t			unbind_pincount;/* refcount to do daemon unbind */
- 	struct xarray			reqs;		/* xarray of pending on-demand requests */
-@@ -130,6 +129,8 @@ struct cachefiles_cache {
- 	struct xarray			ondemand_ids;	/* xarray for ondemand_id allocation */
- 	u32				ondemand_id_next;
- 	u32				msg_id_next;
-+	u32				secid;		/* LSM security id */
-+	bool				have_secid;	/* whether "secid" was set */
- };
- 
- static inline bool cachefiles_in_ondemand_mode(struct cachefiles_cache *cache)
-diff --git a/fs/cachefiles/security.c b/fs/cachefiles/security.c
-index fe777164f1d8..fc6611886b3b 100644
---- a/fs/cachefiles/security.c
-+++ b/fs/cachefiles/security.c
-@@ -18,7 +18,7 @@ int cachefiles_get_security_ID(struct cachefiles_cache *cache)
- 	struct cred *new;
- 	int ret;
- 
--	_enter("{%s}", cache->secctx);
-+	_enter("{%u}", cache->have_secid ? cache->secid : 0);
- 
- 	new = prepare_kernel_cred(current);
- 	if (!new) {
-@@ -26,8 +26,8 @@ int cachefiles_get_security_ID(struct cachefiles_cache *cache)
- 		goto error;
- 	}
- 
--	if (cache->secctx) {
--		ret = set_security_override_from_ctx(new, cache->secctx);
-+	if (cache->have_secid) {
-+		ret = set_security_override(new, cache->secid);
- 		if (ret < 0) {
- 			put_cred(new);
- 			pr_err("Security denies permission to nominate security context: error %d\n",
--- 
-2.45.2
+ =
+
+ static struct nfs_netfs_io_data *nfs_netfs_alloc(struct netfs_io_subreque=
+st *sreq)
 
