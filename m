@@ -1,88 +1,139 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454C413665A
-	for <netfs@lists.linux.dev>; Sun,  8 Dec 2024 10:20:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD1D1B0405
+	for <netfs@lists.linux.dev>; Mon,  9 Dec 2024 13:14:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733653251; cv=none; b=LQ8Gd9GiOOVn9PSaPpRMjStvOQqEhgWN0O2SEan+mlAJQVPRNyTE+eStycr6vOHRcg7GwIvWFWH3h6vH7k0ow/q00xSwHVOBotzsmmX5Ggqgjw8r4jcl7sQ6MXsKsB+79XR9IAaNVlRNTwGVdAE7ltU+GT86NO+8iw8o9l5IiDg=
+	t=1733750062; cv=none; b=MFg2RschVUr7wJv0hDjTx5Nu/pTzzUTDeGnQeYijVX/fCe0daqejtlnSD3Sg2aZO0aPeB5Y71zpy0c6Aam2iENznK5hvH8mRbpCkkVD1QcWP2RtErP+i+zEqnamEn/8mKnrarDrJRWp4uvDsSn++vQTSas4e8lxgjhDDAbfugXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733653251; c=relaxed/simple;
-	bh=3AslVg5GZai63noZK1hbCUABgi6fZFg3OgTktJsgI4U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CNo6MeeqjmX13+AZchigtGuiHLXf3NSzw7ZEJcGwRH6GB00sTxG7LrZiIo3f2Ihyd6noNity1wD4OEGO0rS9n3dJ4rkB255pLXps7eKHMzPriG4iMHYDxnG/yxMRIBdwF1jw/21VZKp+Bs39R1BOANI09S2+Ncor6hJB0Yd7pzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=SwiEHTMH; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+	s=arc-20240116; t=1733750062; c=relaxed/simple;
+	bh=h6QARE/caL5bX1/fTS/81RmE6jFI7Wcw5PJZSDe8wRU=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=PlllwUzZDcqcwJiUS93dgDZNTdotP7yxlPGig782d7Vsok/S7EBcx5reCR2f85fZ8NUHDHZwZWpWGW+6iGIG4/+LXaS4Bt/1x6zfnj1A7c4laxTBtzTBuQlHfbclCBQ7Ebl/UwcA8nSZ/P7kiK6TLjTV+4FgQ0m0B2RhUfqzrng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MdkVb2qe; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="SwiEHTMH"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-aa67ac42819so44593366b.0
-        for <netfs@lists.linux.dev>; Sun, 08 Dec 2024 02:20:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1733653247; x=1734258047; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3AslVg5GZai63noZK1hbCUABgi6fZFg3OgTktJsgI4U=;
-        b=SwiEHTMHrsbghD2w0tR+Cah9DsKRYkVb9umr5Jr4UMnRsr3el2/6O2FSXwzulFHGSl
-         hgoci626rSDGmpohmgOXIc3Qfg0w0M2yEWcUfwwr3ARKKWSfCC5JdaxOEKpyq4Wm8+7x
-         zhBU/1FqMUF6vvOPn62WD1bTUCxJaZE8vQrRhLPdXuJ7kDesv80p48+crujnDHx1A2Qe
-         91RUggFqD73FPexR574EuAezuEU6ffn0MiwZHENCU8fX85kUBpGtTdRTbhqwhbWbUexT
-         ZVEHkBGlMA32OfeTfR7+TpN1iilaAyAtgjOE2Bxh1BnPJiCGp5u4a1omVDhtH9Ny9+gc
-         U6VQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733653247; x=1734258047;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3AslVg5GZai63noZK1hbCUABgi6fZFg3OgTktJsgI4U=;
-        b=hrz2Vd7e2/TKt78jOPyzVfAO1n1tkLR8cI1l81iJ1gffDs9DjdD/x1XMa1qikpj9bc
-         4/x4kWMwjTnDc6rxGfkbl365D8yLxrpTmyJxfsCsuNpZwVoQbjjf3R5xUyeEh/BOTLNv
-         x/agEhaK3YQWgceH+VXLVIZ2umWJJzdfSn050xT1nMtL6VL47M5T9iJHRhgsEQa5JVGF
-         XXErxeHAy6cnGMEaZSoCoGbUv0/uI8AA7qGGQi/wNfKN4ukA25C28/Qf2//D5acmZ/Nh
-         cNkHTWf7KwmCCZ+lQzycc4qPQeRKILX6Pdw83oiRgEpNdt2fdb/huugYS/0jmI9Sv947
-         Q9vQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVCZuDubMnZaNELQIkzP//crUMpRH9NcZcZpf8gWttJds6Yycdt+GAbnOd6peGh34jq8TwPeA==@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy3QUVMeDZqeYLmwrq52RLH0iyWl+9PVETOreQhJu2aeC2wkS6i
-	xgTsvlK+3UlJ1u3yxVtnPgFkR9LLvtEzalT/Z7UcbGtLDG7/0ZbCeeQFLXEwwGRZoO+EL4to7oF
-	IierM8Piy+S+wrRy9K2Eacf5y5azfTr16TrraTA==
-X-Gm-Gg: ASbGnctD0pYiF8qf8iLwFcUhDst5zKTVEXbVyAjUDJsZHJJPGvhUfCD0/vm8T1g31ty
-	da/xTWTienZLkK7VyeAv8IkLsnDu20ZhqtjeYVPlQSCsxhb+HAXPUdssasVIq
-X-Google-Smtp-Source: AGHT+IHhsFb/p+bUKWhNb26BKnfksM/ayxxLkaw2zAoftdh79YIZEReweI5txI3aE/Mh13JN6jNXf17waG7w8+NuFdE=
-X-Received: by 2002:a17:907:3455:b0:aa6:3b8e:e07c with SMTP id
- a640c23a62f3a-aa63b8fbfa6mr604208266b.54.1733653247478; Sun, 08 Dec 2024
- 02:20:47 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MdkVb2qe"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733750060;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PZ4m5E5/bsh+47B5T+BAoMFzf3uOEkW9Xl/M2Y5SYQI=;
+	b=MdkVb2qeaqu4YzwTs1hBFAEAuwofz1PaY/F/Te5YjoADj4JCcXBHQdcspCIYWhF6RlB/ho
+	39orz7RNAt/IWt+Njka43tyq8YhsvPFrmEYwhakAmpBkgGG+Fm1vp70qgtZDNlZIpGJEPP
+	hWr+OR8SnzekVljNw81nWUuZrlCBD+Y=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-564-G_8VxTJJNoilOLMDj3UWqg-1; Mon,
+ 09 Dec 2024 08:14:18 -0500
+X-MC-Unique: G_8VxTJJNoilOLMDj3UWqg-1
+X-Mimecast-MFC-AGG-ID: G_8VxTJJNoilOLMDj3UWqg
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9B8D91954215;
+	Mon,  9 Dec 2024 13:14:17 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.48])
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D3D8B1956089;
+	Mon,  9 Dec 2024 13:14:15 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <CAKPOu+-h2B0mw0k_XiHJ1u69draDLTLqJhRmr3ksk2-ozzXiTg@mail.gmail.com>
+References: <CAKPOu+-h2B0mw0k_XiHJ1u69draDLTLqJhRmr3ksk2-ozzXiTg@mail.gmail.com> <CAKPOu+_4m80thNy5_fvROoxBm689YtA0dZ-=gcmkzwYSY4syqw@mail.gmail.com> <3990750.1732884087@warthog.procyon.org.uk> <CAKPOu+96b4nx3iHaH6Mkf2GyJ-dr0i5o=hfFVDs--gWkN7aiDQ@mail.gmail.com> <CAKPOu+9xvH4JfGqE=TSOpRry7zCRHx+51GtOHKbHTn9gHAU+VA@mail.gmail.com> <CAKPOu+_OamJ-0wsJB3GOYu5v76ZwFr+N2L92dYH6NLBzzhDfOQ@mail.gmail.com> <1995560.1733519609@warthog.procyon.org.uk> <CAKPOu+8a6EW_Ao65+aK-0ougWEzy_0yuwf3Dit89LuU8vEsJ2Q@mail.gmail.com>
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: dhowells@redhat.com, Jeff Layton <jlayton@kernel.org>,
+    netfs@lists.linux.dev, linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+    linux-kernel@vger.kernel.org
+Subject: [PATCH] netfs: Fix ceph copy to cache on write-begin
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAKPOu+_4m80thNy5_fvROoxBm689YtA0dZ-=gcmkzwYSY4syqw@mail.gmail.com>
- <3990750.1732884087@warthog.procyon.org.uk> <CAKPOu+96b4nx3iHaH6Mkf2GyJ-dr0i5o=hfFVDs--gWkN7aiDQ@mail.gmail.com>
- <CAKPOu+9xvH4JfGqE=TSOpRry7zCRHx+51GtOHKbHTn9gHAU+VA@mail.gmail.com>
- <CAKPOu+_OamJ-0wsJB3GOYu5v76ZwFr+N2L92dYH6NLBzzhDfOQ@mail.gmail.com>
- <1995560.1733519609@warthog.procyon.org.uk> <CAKPOu+8a6EW_Ao65+aK-0ougWEzy_0yuwf3Dit89LuU8vEsJ2Q@mail.gmail.com>
-In-Reply-To: <CAKPOu+8a6EW_Ao65+aK-0ougWEzy_0yuwf3Dit89LuU8vEsJ2Q@mail.gmail.com>
-From: Max Kellermann <max.kellermann@ionos.com>
-Date: Sun, 8 Dec 2024 11:20:36 +0100
-Message-ID: <CAKPOu+-h2B0mw0k_XiHJ1u69draDLTLqJhRmr3ksk2-ozzXiTg@mail.gmail.com>
-Subject: Re: 6.12 WARNING in netfs_consume_read_data()
-To: David Howells <dhowells@redhat.com>
-Cc: Jeff Layton <jlayton@kernel.org>, netfs@lists.linux.dev, 
-	linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2117976.1733750054.1@warthog.procyon.org.uk>
 Content-Transfer-Encoding: quoted-printable
+Date: Mon, 09 Dec 2024 13:14:14 +0000
+Message-ID: <2117977.1733750054@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
-On Sat, Dec 7, 2024 at 7:39=E2=80=AFPM Max Kellermann <max.kellermann@ionos=
-.com> wrote:
-> Here's a Brotli-compressed trace (of 6.12.3 +
-> dhowells/netfs-writeback). I can reproduce it this way:
->
-> 1. log in via SSH (cm4all-lukko is our SSH server)
-> 2. "cp" a file on the Ceph home directory
-> 3. log out - bash hangs inside write():
+Hi Max,
 
-Today, I took the time to bisect it, and the bisect arrived at
-first-bad commit 796a4049640b54cb1daf9e7fe543292c5ca02c74 ("netfs: In
-readahead, put the folio refs as soon extracted").
+Could you try this?
+
+David
+---
+netfs: Fix ceph copy to cache on write-begin
+
+At the end of netfs_unlock_read_folio() in which folios are marked
+appropriately for copying to the cache (either with by being marked dirty
+and having their private data set or by having PG_private_2 set) and then
+unlocked, the folio_queue struct has the entry pointing to the folio
+cleared.  This presents a problem for netfs_pgpriv2_write_to_the_cache(),
+which is used to write folios marked with PG_private_2 to the cache as it
+expects to be able to trawl the folio_queue list thereafter to find the
+relevant folios, leading to a hang.
+
+Fix this by not clearing the folio_queue entry if we're going to do the
+deprecated copy-to-cache.  The clearance will be done instead as the folio=
+s
+are written to the cache.
+
+This can be reproduced by starting cachefiles, mounting a ceph filesystem
+with "-o fsc" and writing to it.
+
+Reported-by: Max Kellermann <max.kellermann@ionos.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: Ilya Dryomov <idryomov@gmail.com>
+cc: Xiubo Li <xiubli@redhat.com>
+cc: netfs@lists.linux.dev
+cc: ceph-devel@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
+---
+ fs/netfs/read_collect.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
+index 849f40f64443..72a16222b63b 100644
+--- a/fs/netfs/read_collect.c
++++ b/fs/netfs/read_collect.c
+@@ -62,10 +62,14 @@ static void netfs_unlock_read_folio(struct netfs_io_su=
+brequest *subreq,
+ 		} else {
+ 			trace_netfs_folio(folio, netfs_folio_trace_read_done);
+ 		}
++
++		folioq_clear(folioq, slot);
+ 	} else {
+ 		// TODO: Use of PG_private_2 is deprecated.
+ 		if (test_bit(NETFS_SREQ_COPY_TO_CACHE, &subreq->flags))
+ 			netfs_pgpriv2_mark_copy_to_cache(subreq, rreq, folioq, slot);
++		else
++			folioq_clear(folioq, slot);
+ 	}
+ =
+
+ 	if (!test_bit(NETFS_RREQ_DONT_UNLOCK_FOLIOS, &rreq->flags)) {
+@@ -77,8 +81,6 @@ static void netfs_unlock_read_folio(struct netfs_io_subr=
+equest *subreq,
+ 			folio_unlock(folio);
+ 		}
+ 	}
+-
+-	folioq_clear(folioq, slot);
+ }
+ =
+
+ /*
+
