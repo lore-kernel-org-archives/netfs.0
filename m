@@ -1,63 +1,57 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861281B0420
-	for <netfs@lists.linux.dev>; Mon,  9 Dec 2024 14:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82BF523312A
+	for <netfs@lists.linux.dev>; Mon,  9 Dec 2024 16:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733755573; cv=none; b=sYo5tGMusfHCk4xvmry2vP4QC5Ok2uKrvbP8/lKgA3LlISUS9u0fftG9poCSiVwY1GvlfH/S4klCEeFjJfsOI3BfdsrJaLixeO5n5lwVpm8ZqYGMnva9+ApoTswU3GG0rS+DtWGvXrSmompXHD2r5mxUNl+VpJAZK5F08l1ny7o=
+	t=1733760245; cv=none; b=p+C3vJRV6RtSBrqJNFbCZ2u2slCOW7k2v+0i7YmP36PJODMJm0i0XchCowg/61upuHYMoAEef8/+kXLLHQsJabdbzAtKrp7PUmVdYgbe35JuI2oxVu4uoPAjuuUU3sBIzeEkeoo/jgKX03NzuLkNY7eWvNaDOi6W8EgwigD9U4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733755573; c=relaxed/simple;
-	bh=gxoqf3V6MNwR8Jxtgxg0q1RTCN9bxCAoFnFNdWxak4w=;
-	h=From:In-Reply-To:References:To:cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=ZJFfs5+IzlA3u8ubpT7I/bHAJyIYL7YkuZ5qkYUDyICY/1HS9lsbRMtOqKhMO/1hzQ0WoXKTmmMekIQ6aOiC1eCT0Msnvy6cztFHyswQM/3zAukPAZCplZPsN9o1dBx4q9Baz5F83hq3hhqEjw/PiJakxmsW+S0+6VFgxzbNJKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DJpHo+HS; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1733760245; c=relaxed/simple;
+	bh=HcHrZ+agvz4D3sGtHxCE7PE6Arti4HiRiqeu5M1F8EI=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=Up8Ubm4nLg2W+vuIvqVpjfyvlUDBEfGNOIVkT4glAHgdvJcc4zRJQIs3YX9g03pvzBPpycHo11GcK5pl+k+IeK6initLg/QLR9xKb3/Ttff2CbVuasQzLbvNFJY8mQCZkwrewP7Qyi7I1fVQauLLseyaaqn9MotA/jioqeTAWbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jPTfDn/B; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DJpHo+HS"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jPTfDn/B"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733755569;
+	s=mimecast20190719; t=1733760242;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3G/ATOlFkQtH54MeWdYZh8GPQakhI+3TwZChdXPPqtI=;
-	b=DJpHo+HS1Da3ft4P8wiBHtWAuSVbf1LGbc4dRIy/VFdqHkzYHh2Y54e8gQ0Vi1kT+sX37n
-	S/1nu8NwPata9H9S6YkbAsh3prpxDTnb9lBv7xVpfW7eWpYv4ZOI2fE53IRPKEEFTbwv2w
-	ZkB5Zp57bWY+WOMNId7HaqxJgtNo5ig=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+	bh=HcHrZ+agvz4D3sGtHxCE7PE6Arti4HiRiqeu5M1F8EI=;
+	b=jPTfDn/BGEJPJyCbwlyKxv9hf3cddC67vd/aYfvYrM31wPHIXuODSPC7k9o2+86OELu6ZL
+	+cfiPVRuk8hQVfm9ghvQykDtuBZAEEobcjKh4iVxXFub+VPjssf607FurJLIkI+GIAXy8Z
+	g7Rpo8bTwDseHyxeiMlOD5uW1ru5MXw=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-171-THTru4SJMFGT1J6xnwPHdQ-1; Mon,
- 09 Dec 2024 09:46:06 -0500
-X-MC-Unique: THTru4SJMFGT1J6xnwPHdQ-1
-X-Mimecast-MFC-AGG-ID: THTru4SJMFGT1J6xnwPHdQ
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-679-eVdzHhjhMAC2XveG54Er6w-1; Mon,
+ 09 Dec 2024 11:03:58 -0500
+X-MC-Unique: eVdzHhjhMAC2XveG54Er6w-1
+X-Mimecast-MFC-AGG-ID: eVdzHhjhMAC2XveG54Er6w
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DC9B2195607D;
-	Mon,  9 Dec 2024 14:46:04 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 465B919541BC;
+	Mon,  9 Dec 2024 16:03:57 +0000 (UTC)
 Received: from warthog.procyon.org.uk (unknown [10.42.28.48])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EE361195605A;
-	Mon,  9 Dec 2024 14:46:01 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2C8A2300018D;
+	Mon,  9 Dec 2024 16:03:55 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
 	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
 	Kingdom.
 	Registered in England and Wales under Company Registration No. 3798903
 From: David Howells <dhowells@redhat.com>
-In-Reply-To: <CAKPOu+986mTt1i9xGBXiQPVOmu4ZJTskrCt6f-99EL_s0rhz_A@mail.gmail.com>
-References: <CAKPOu+986mTt1i9xGBXiQPVOmu4ZJTskrCt6f-99EL_s0rhz_A@mail.gmail.com>
+In-Reply-To: <20241209141554.638708-1-max.kellermann@ionos.com>
+References: <20241209141554.638708-1-max.kellermann@ionos.com>
 To: Max Kellermann <max.kellermann@ionos.com>
-cc: dhowells@redhat.com, Trond Myklebust <trondmy@kernel.org>,
-    Anna Schumaker <anna@kernel.org>,
-    Dave Wysochanski <dwysocha@redhat.com>,
-    Jeff Layton <jlayton@kernel.org>,
-    Christian Brauner <brauner@kernel.org>, netfs@lists.linux.dev,
-    linux-nfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+Cc: dhowells@redhat.com, netfs@lists.linux.dev,
     linux-kernel@vger.kernel.org
-Subject: [PATCH] nfs: Fix oops in nfs_netfs_init_request() when copying to cache
+Subject: Re: [PATCH] fs/cachefiles/daemon: parse the "secctx" immediately
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -65,80 +59,16 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2128543.1733755560.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 09 Dec 2024 14:46:00 +0000
-Message-ID: <2128544.1733755560@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Content-ID: <2133496.1733760235.1@warthog.procyon.org.uk>
+Date: Mon, 09 Dec 2024 16:03:55 +0000
+Message-ID: <2133497.1733760235@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Hi Max,
+Max Kellermann <max.kellermann@ionos.com> wrote:
 
-Does this fix the issue?
+> +#include <linux/security.h> // for security_secctx_to_secid()
+
+You don't need a comment there.
 
 David
----
-nfs: Fix oops in nfs_netfs_init_request() when copying to cache
-
-When netfslib wants to copy some data that has just been read on behalf of
-nfs, it creates a new write request and calls nfs_netfs_init_request() to
-initialise it, but with a NULL file pointer.  This causes
-nfs_file_open_context() to oops - however, we don't actually need the nfs
-context as we're only going to write to the cache.
-
-Fix this by just returning if we aren't given a file pointer and emit a
-warning if the request was for something other than copy-to-cache.
-
-Further, fix nfs_netfs_free_request() so that it doesn't try to free the
-context if the pointer is NULL.
-
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-Reported-by: Max Kellermann <max.kellermann@ionos.com>
-Closes: https://lore.kernel.org/r/CAKPOu+986mTt1i9xGBXiQPVOmu4ZJTskrCt6f-9=
-9EL_s0rhz_A@mail.gmail.com/
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Trond Myklebust <trondmy@kernel.org>
-cc: Anna Schumaker <anna@kernel.org>
-cc: Dave Wysochanski <dwysocha@redhat.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: linux-nfs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
----
- fs/nfs/fscache.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/fs/nfs/fscache.c b/fs/nfs/fscache.c
-index 810269ee0a50..d49e4ce27999 100644
---- a/fs/nfs/fscache.c
-+++ b/fs/nfs/fscache.c
-@@ -263,6 +263,12 @@ int nfs_netfs_readahead(struct readahead_control *rac=
-tl)
- static atomic_t nfs_netfs_debug_id;
- static int nfs_netfs_init_request(struct netfs_io_request *rreq, struct f=
-ile *file)
- {
-+	if (!file) {
-+		if (WARN_ON_ONCE(rreq->origin !=3D NETFS_PGPRIV2_COPY_TO_CACHE))
-+			return -EIO;
-+		return 0;
-+	}
-+
- 	rreq->netfs_priv =3D get_nfs_open_context(nfs_file_open_context(file));
- 	rreq->debug_id =3D atomic_inc_return(&nfs_netfs_debug_id);
- 	/* [DEPRECATED] Use PG_private_2 to mark folio being written to the cach=
-e. */
-@@ -274,7 +280,8 @@ static int nfs_netfs_init_request(struct netfs_io_requ=
-est *rreq, struct file *fi
- =
-
- static void nfs_netfs_free_request(struct netfs_io_request *rreq)
- {
--	put_nfs_open_context(rreq->netfs_priv);
-+	if (rreq->netfs_priv)
-+		put_nfs_open_context(rreq->netfs_priv);
- }
- =
-
- static struct nfs_netfs_io_data *nfs_netfs_alloc(struct netfs_io_subreque=
-st *sreq)
 
