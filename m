@@ -1,171 +1,146 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819B6143871
-	for <netfs@lists.linux.dev>; Mon,  9 Dec 2024 17:12:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C71A2144C4
+	for <netfs@lists.linux.dev>; Thu, 12 Dec 2024 16:00:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733764351; cv=none; b=oiyJbMrxPm+FMnI9C5CiB8kRIDZDcfGT3qzy4PHzaL25qV+aNn+NfEDZ0Q8UHu1xAu5k/+99J1cixvs6sYKdTNlI/8TwUOR6Osonj2oRBbaX/1lhZsslbCPG0AHGs1Z8Me0MLHNOjfPSDil3QOMz3vcCSHFvPxt96wNR6Jsj/50=
+	t=1734019244; cv=none; b=hQZM1pViT5kfmPsTIkIH40SOAsC7dsix2PGouieB00DIbHCaPnUmlE9+gkPc/uwvq6La7fcjEoN4Y2EoBjY2a2rpsAEtO6+jsnczla2rr4+DIgaLuif6nDn0kkmsjlGmDhYmYFvIjBWSlmtoyULI4JxhJr1s5wkgPwRbs1MH9aQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733764351; c=relaxed/simple;
-	bh=cOzd8+7H/GN0o1zps3NAZOOuJnioPUq6sgRKP597Lz0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZMHTjDdZIGFwuVL+vfsq8Vc2Be5qBV59k3VxNWbnesCVzjdl0A0ul0OWpxJYxyoVLyb8W3DEofBR7tYwgvxE+izd95PdXD+e6aJhtbKYk5ypVma1B2gUt2DPDKrRdjZuiCxduO2lInxJJ0fKFAF5Z6516dSCtMLfWvv/bjO/xE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=Di2fzjDR; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+	s=arc-20240116; t=1734019244; c=relaxed/simple;
+	bh=rc/A+zfoLgMcw4oFtpNwtbEKHPWwHyKWpzGQCrZqPtg=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=MM2NP8Xic39jVieDhvDtDDbYq3v37UazmMlvDkn+qEQRbKikB5bAvMSsvgzO2CIqSAd+woke03HhbPuJCHGi3yZDLc35AFDsQ/lAJZT9rTmAaL8UVeTvdXHdQGiLhqrksQCmylvdZcej0kK9unfE1V0unFKr+0cRBwdrPZExBf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GBmJHt4p; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="Di2fzjDR"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-aa66ead88b3so344636366b.0
-        for <netfs@lists.linux.dev>; Mon, 09 Dec 2024 09:12:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1733764347; x=1734369147; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vaWyuI+1zfgRvLafZXYRvDDVpYcT2uiI1jU4yIWvFaI=;
-        b=Di2fzjDR7aHKC7d+vPX+ULEjBQs47KFLOkrGUakpZ9FcAwQWmRiJ8dlc2BhM63mV85
-         IXe0ZZUJTtAtJJ1j9y6EjQFRHZGbVbY77T6C41ljya3KfZOd/CxUU24+oNgYT+wroaP4
-         oosw1qu3rRhS6UJf9cKS+4F0WS2N2elDsL0eAXeEmuEmEABoQZS4gFJ1KWrEvYs/rZFl
-         pIYRYZkbEl+Rq0nY+rgj2yeLqwVuZXPIgOoS3KhDdRjX0C8lcNRpDCBjI7ky09SV12Te
-         fq7qQmpK5GM+MBe+PqpP1GlKsv9NpIaAE1UVDLZmPLXNdeQq98bVEq5a7s+JdMyyrPAh
-         TfrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733764347; x=1734369147;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vaWyuI+1zfgRvLafZXYRvDDVpYcT2uiI1jU4yIWvFaI=;
-        b=wDkJQ/TKdyyUn1WMPfw1ViHizzkepvCvFZ7Bedj6l12Ohv4YwdiLp5PtEOTBSPgDvN
-         it7vq4u8dDmHkb22pGSwKdl4yCipmN7HuL3plExdc3FIXRHMTFXtqdjIG6g4Q+aD4uTm
-         O2vUxh80tTOfHAKEGKu7moMEFZLuErqjReR+YNAj4Z7qgz3Hf9VM6loBK00l9WxzYA4R
-         h7WxUsXRodyt5Oh/mhv0Yoxt6vVNqEAhlO+CxdYJXLJgTY9oHFv5z8GSm1LmOFVP/wDQ
-         //qVDrNGirJDPgY9zY/SUivMiI4Qfi72QOwFr+RFjxblI3biT89G1VvS8bJA3ZYgG3ED
-         VCQg==
-X-Forwarded-Encrypted: i=1; AJvYcCW2HnQdivmzByVkFIam33xBc3wzqoDOQRUxn+phL1EBIpncK+EqmkS0msDigqzY331CQwFe+Q==@lists.linux.dev
-X-Gm-Message-State: AOJu0YwqXL5/xX3ufonVlexLJhO79nx8KJ2A2klSi2CPSdqyEoZ42dSE
-	EwyhzKG7gli4C7YfFSanSfxRO3ZnOcJyiBUUxUsEtOBlBDlIvj2v3lwf33Zy7XxHzTtbNmPGwu3
-	LK5goI4bHvBMrbnTah5/tSothREI0lLphVqYUeQ==
-X-Gm-Gg: ASbGncshzR3lkMrnKpH5MmubOUujf86tD7n6SALH1nzvvKW9wlvLjyncBEb9syRYQzc
-	dqELLAjVG+PX7bp3vzo6iLY/S0P5zH2VcQ9I038o3RMOHJr5xs1ZpjtUOGK/6
-X-Google-Smtp-Source: AGHT+IGjhgia80GwIq5GYW/J/My9MoNCTxyL/+qNp0qo2eVT8TVjbjcgPbng+OjrTZMWEUN4ktGPt5mr5dUK2s5wNHQ=
-X-Received: by 2002:a17:906:c38b:b0:aa6:7b34:c1a8 with SMTP id
- a640c23a62f3a-aa69ce8deddmr107306866b.55.1733764346946; Mon, 09 Dec 2024
- 09:12:26 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GBmJHt4p"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1734019240;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CGHoUas+hoBNTIO/X3iEVw0m4f2DhD0T8Dmi/UxHTe8=;
+	b=GBmJHt4pEOmi9lBB/0PRS0tKbkrgCO2rDHWHWvL1R6Pqwr6pYXMAu+QvE8Mc0dpchMC8Ym
+	xZlr5bkyIgqLzKQk3D92eIQxPlu+e75IF4siSYEBN204FOid3QYgwOcnhUAxITZICUv4Cd
+	Heo5SDcqWOqCoCyL2y527+cvB/5OsKM=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-220-dnGvJIAhO0uUkB_inXMfxA-1; Thu,
+ 12 Dec 2024 11:00:37 -0500
+X-MC-Unique: dnGvJIAhO0uUkB_inXMfxA-1
+X-Mimecast-MFC-AGG-ID: dnGvJIAhO0uUkB_inXMfxA
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0F1C119560BA;
+	Thu, 12 Dec 2024 16:00:35 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.48])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8FF461955F43;
+	Thu, 12 Dec 2024 16:00:33 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <CAKPOu+-Bpds7-Ocb-tBMs1==YzVhhx01+FaiokiGR3A-W9t_gQ@mail.gmail.com>
+References: <CAKPOu+-Bpds7-Ocb-tBMs1==YzVhhx01+FaiokiGR3A-W9t_gQ@mail.gmail.com> <CAKPOu+_4m80thNy5_fvROoxBm689YtA0dZ-=gcmkzwYSY4syqw@mail.gmail.com> <3990750.1732884087@warthog.procyon.org.uk> <CAKPOu+96b4nx3iHaH6Mkf2GyJ-dr0i5o=hfFVDs--gWkN7aiDQ@mail.gmail.com> <CAKPOu+9xvH4JfGqE=TSOpRry7zCRHx+51GtOHKbHTn9gHAU+VA@mail.gmail.com> <CAKPOu+_OamJ-0wsJB3GOYu5v76ZwFr+N2L92dYH6NLBzzhDfOQ@mail.gmail.com> <1995560.1733519609@warthog.procyon.org.uk> <CAKPOu+8a6EW_Ao65+aK-0ougWEzy_0yuwf3Dit89LuU8vEsJ2Q@mail.gmail.com> <CAKPOu+-h2B0mw0k_XiHJ1u69draDLTLqJhRmr3ksk2-ozzXiTg@mail.gmail.com> <2117977.1733750054@warthog.procyon.org.uk>
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: dhowells@redhat.com, Jeff Layton <jlayton@kernel.org>,
+    netfs@lists.linux.dev, linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+    linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] netfs: Fix ceph copy to cache on write-begin
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAKPOu+986mTt1i9xGBXiQPVOmu4ZJTskrCt6f-99EL_s0rhz_A@mail.gmail.com>
- <2128544.1733755560@warthog.procyon.org.uk>
-In-Reply-To: <2128544.1733755560@warthog.procyon.org.uk>
-From: Max Kellermann <max.kellermann@ionos.com>
-Date: Mon, 9 Dec 2024 18:12:15 +0100
-Message-ID: <CAKPOu+8LSKtGmtjwRpY9tMnt=1Y7RvrhDxVsfSRQW02_g5-6XA@mail.gmail.com>
-Subject: Re: [PATCH] nfs: Fix oops in nfs_netfs_init_request() when copying to cache
-To: David Howells <dhowells@redhat.com>
-Cc: Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
-	Dave Wysochanski <dwysocha@redhat.com>, Jeff Layton <jlayton@kernel.org>, 
-	Christian Brauner <brauner@kernel.org>, netfs@lists.linux.dev, linux-nfs@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2787699.1734019232.1@warthog.procyon.org.uk>
 Content-Transfer-Encoding: quoted-printable
+Date: Thu, 12 Dec 2024 16:00:32 +0000
+Message-ID: <2787700.1734019232@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Mon, Dec 9, 2024 at 3:46=E2=80=AFPM David Howells <dhowells@redhat.com> =
-wrote:
-> Does this fix the issue?
+How about if you add the attached?
 
-The issue is with 6.11, but this patch fails to build with 6.11 and
-I'm not sure how to backport that part:
+For convenience, I've put the outstanding fix patches I have here:
 
- fs/nfs/fscache.c: In function =E2=80=98nfs_netfs_init_request=E2=80=99:
- fs/nfs/fscache.c:267:50: error: =E2=80=98NETFS_PGPRIV2_COPY_TO_CACHE=E2=80=
-=99
-undeclared (first use in this function); did you mean
-=E2=80=98NETFS_RREQ_COPY_TO_CACHE=E2=80=99?
-   267 |                 if (WARN_ON_ONCE(rreq->origin !=3D
-NETFS_PGPRIV2_COPY_TO_CACHE))
-       |
-^~~~~~~~~~~~~~~~~~~~~~~~~~~
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log=
+/?h=3Dnetfs-fixes
 
-Our production machines are all 6.11, because 6.12 has that other
-netfs regression that freezes all transfers immediately
-(https://lore.kernel.org/netfs/CAKPOu+_4m80thNy5_fvROoxBm689YtA0dZ-=3Dgcmkz=
-wYSY4syqw@mail.gmail.com/).
-I guess this other bug only affects Ceph and not NFS, but after
-experiencing so many kernel regressions recently, I had to become more
-cautious with kernel updates (the past 2 months had more
-netfs/NFS/Ceph regression than the last 20 years combined).
+David
+---
+commit d0bc2ecca996105f55da22e8867905ca1dad7c8f
+Author: David Howells <dhowells@redhat.com>
+Date:   Thu Dec 12 15:26:24 2024 +0000
 
+    netfs: Fix the (non-)cancellation of copy when cache is temporarily di=
+sabled
+    =
 
->
-> David
-> ---
-> nfs: Fix oops in nfs_netfs_init_request() when copying to cache
->
-> When netfslib wants to copy some data that has just been read on behalf o=
-f
-> nfs, it creates a new write request and calls nfs_netfs_init_request() to
-> initialise it, but with a NULL file pointer.  This causes
-> nfs_file_open_context() to oops - however, we don't actually need the nfs
-> context as we're only going to write to the cache.
->
-> Fix this by just returning if we aren't given a file pointer and emit a
-> warning if the request was for something other than copy-to-cache.
->
-> Further, fix nfs_netfs_free_request() so that it doesn't try to free the
-> context if the pointer is NULL.
->
-> Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-> Reported-by: Max Kellermann <max.kellermann@ionos.com>
-> Closes: https://lore.kernel.org/r/CAKPOu+986mTt1i9xGBXiQPVOmu4ZJTskrCt6f-=
-99EL_s0rhz_A@mail.gmail.com/
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> cc: Trond Myklebust <trondmy@kernel.org>
-> cc: Anna Schumaker <anna@kernel.org>
-> cc: Dave Wysochanski <dwysocha@redhat.com>
-> cc: Jeff Layton <jlayton@kernel.org>
-> cc: linux-nfs@vger.kernel.org
-> cc: netfs@lists.linux.dev
-> cc: linux-fsdevel@vger.kernel.org
-> ---
->  fs/nfs/fscache.c |    9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
->
-> diff --git a/fs/nfs/fscache.c b/fs/nfs/fscache.c
-> index 810269ee0a50..d49e4ce27999 100644
-> --- a/fs/nfs/fscache.c
-> +++ b/fs/nfs/fscache.c
-> @@ -263,6 +263,12 @@ int nfs_netfs_readahead(struct readahead_control *ra=
-ctl)
->  static atomic_t nfs_netfs_debug_id;
->  static int nfs_netfs_init_request(struct netfs_io_request *rreq, struct =
-file *file)
->  {
-> +       if (!file) {
-> +               if (WARN_ON_ONCE(rreq->origin !=3D NETFS_PGPRIV2_COPY_TO_=
-CACHE))
-> +                       return -EIO;
-> +               return 0;
-> +       }
-> +
->         rreq->netfs_priv =3D get_nfs_open_context(nfs_file_open_context(f=
-ile));
->         rreq->debug_id =3D atomic_inc_return(&nfs_netfs_debug_id);
->         /* [DEPRECATED] Use PG_private_2 to mark folio being written to t=
-he cache. */
-> @@ -274,7 +280,8 @@ static int nfs_netfs_init_request(struct netfs_io_req=
-uest *rreq, struct file *fi
->
->  static void nfs_netfs_free_request(struct netfs_io_request *rreq)
->  {
-> -       put_nfs_open_context(rreq->netfs_priv);
-> +       if (rreq->netfs_priv)
-> +               put_nfs_open_context(rreq->netfs_priv);
->  }
->
->  static struct nfs_netfs_io_data *nfs_netfs_alloc(struct netfs_io_subrequ=
-est *sreq)
->
+    When the caching for a cookie is temporarily disabled (e.g. due to a D=
+IO
+    write on that file), future copying to the cache for that file is disa=
+bled
+    until all fds open on that file are closed.  However, if netfslib is u=
+sing
+    the deprecated PG_private_2 method (such as is currently used by ceph)=
+, and
+    decides it wants to copy to the cache, netfs_advance_write() will just=
+ bail
+    at the first check seeing that the cache stream is unavailable, and
+    indicate that it dealt with all the content.
+    =
+
+    This means that we have no subrequests to provide notifications to dri=
+ve
+    the state machine or even to pin the request and the request just gets
+    discarded, leaving the folios with PG_private_2 set.
+    =
+
+    Fix this by jumping directly to cancel the request if the cache is not
+    available.  That way, we don't remove mark3 from the folio_queue list =
+and
+    netfs_pgpriv2_cancel() will clean up the folios.
+    =
+
+    This was found by running the generic/013 xfstest against ceph with an=
+ active
+    cache and the "-o fsc" option passed to ceph.  That would usually hang
+    =
+
+    Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
+    Reported-by: Max Kellermann <max.kellermann@ionos.com>
+    Signed-off-by: David Howells <dhowells@redhat.com>
+    cc: Jeff Layton <jlayton@kernel.org>
+    cc: Ilya Dryomov <idryomov@gmail.com>
+    cc: Xiubo Li <xiubli@redhat.com>
+    cc: netfs@lists.linux.dev
+    cc: ceph-devel@vger.kernel.org
+    cc: linux-fsdevel@vger.kernel.org
+
+diff --git a/fs/netfs/read_pgpriv2.c b/fs/netfs/read_pgpriv2.c
+index ba5af89d37fa..54d5004fec18 100644
+--- a/fs/netfs/read_pgpriv2.c
++++ b/fs/netfs/read_pgpriv2.c
+@@ -170,6 +170,10 @@ void netfs_pgpriv2_write_to_the_cache(struct netfs_io=
+_request *rreq)
+ =
+
+ 	trace_netfs_write(wreq, netfs_write_trace_copy_to_cache);
+ 	netfs_stat(&netfs_n_wh_copy_to_cache);
++	if (!wreq->io_streams[1].avail) {
++		netfs_put_request(wreq, false, netfs_rreq_trace_put_return);
++		goto couldnt_start;
++	}
+ =
+
+ 	for (;;) {
+ 		error =3D netfs_pgpriv2_copy_folio(wreq, folio);
+
