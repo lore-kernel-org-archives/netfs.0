@@ -1,133 +1,140 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE7F12CDA5;
-	Sat, 14 Dec 2024 10:16:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B4F6191F89
+	for <netfs@lists.linux.dev>; Sat, 14 Dec 2024 13:44:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734171384; cv=none; b=BTkqpgYMYPyt1KiygqYzwZplCZPrK+5cR0O4bI7S5YoqLi95UcPCj3YRhB2X44zWDMP7Bg2SV3e2cmYG/A4hKQsc6Wz7JlIY9PFYMLmhNnAOOiLKyQeAXphNoIelgM4rUk41sUfp5u2d+75uLkgSFoHwbSpF7saSvNhl8bRBVVg=
+	t=1734183898; cv=none; b=YixMnXBkIU+G2Xx0fYRNSkyjD7H7Me/h5xoCEVMwpFmlvjeTltT90QYQLv9po350dfuT5cKZyUBdBYbPx1T6aADR9CTQDF//ze0uq4WTA9QdMDxy4FbtXLL9Rsi0RVYfOfjQOiVPxc0pTCcRPwGhT5XCATtExX+IMYF715rhMho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734171384; c=relaxed/simple;
-	bh=ppurqkLg5frVMfdj9t/MeoIOWop6fX3bDcl+dcNOFPQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MIDlCbRmraRb9ssKJX4kbEzGEb43DXW1Cv3wbKbUiTI7yTgm7d8WK13cUqyYywjRhKO8NvRxOQbycwelw67CUfXE3NoAu8sK7gLlDiIZYFWUYJwdmp6NXwT+Ntsu/RM6hlJsjVpnxwzdhqYa1GWBxQcmPG2pp956Lx2yTn2+AyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZUcDz3g2; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1734183898; c=relaxed/simple;
+	bh=13rBSAvaRAo4EyKvH1GGFM98sYucjN0FkZJgyl07oPc=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=VYJy0uSdFrY5PfI5vZUhJxUQbCv1S1BVY8zO8dtzj6y1SvJ3zGwuAZmzRN09Xb3FDTKnmTN2DUqua1zJsgfKfyftwtG70UarMMCJu9fEMVmDzzpHr9VdD4CzpIIbEWZdGyg38QWQMVdI3OWkjfcwj8VH6/jDbHYlK6777gUaAFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Jb3sjXPQ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZUcDz3g2"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2161eb95317so23944485ad.1;
-        Sat, 14 Dec 2024 02:16:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734171382; x=1734776182; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WC99pq7hRHFrLDw7siiOrZ7FqbwdIbl7gLGxK8elhYI=;
-        b=ZUcDz3g2iGdi0/EjrMhKwRFUnpHCbf7bXfnDcI2Oa1dWMqYPKR71/sM+oYOXYur41P
-         Q4tuCst/5VpxDNHw77NH2+kseu5nG2ZgsAqm7l+QnKPH5Aj+bdujkWvpwv7EaQX/DCmp
-         gNXrC07xtIMAmZoIyvRb4x/kcJ6fIDMN5WlH7sEZPoEqz06+KhTeEoGgKJ1KauWna3TQ
-         qUOC7e5lOn4QxAaX3pRc6QCdk0N6ZIScYMY/7qKc1v1gcXUplortHQSyW+f3RkPfBHZ8
-         1icg5mztvTgXPJGt2FUZkDI9EXJRg3L9RVLYFOlev57lzU/XX81p/TpBWelY12RNNJJF
-         yOEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734171382; x=1734776182;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WC99pq7hRHFrLDw7siiOrZ7FqbwdIbl7gLGxK8elhYI=;
-        b=nymsJFIvXctx24Yx7HmkMhPG7wdin7cAjwm+F9ausmSMsY16mToDPx1GBYJt5/vbV/
-         dGuOHDL+4vsf6DlQ3GHUO0wvrvPvAGSAJ3wW58/k2g/DdSeRvI1Ga4q76KKBExJH2caP
-         VIcylXEkc4OVjh4WJeG5bIqFKSs3F1KQX2a0RHSLHm+DkUUIL2u0eDWnL0gTb2y7AHjY
-         oAN0c6FoESwdzjHl8RReKtfGp89sCK0G3sk1opIO1aTl7HyvXIc3XyqEja8kO0N3yOFN
-         wICb3db2brqFTRtQW+CWy33RvcbL2+ApZYa4T0IAsjgW0UuvK/UjBAmnc0pOQLA1yihr
-         xlKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVQ9in1LNKj+aFJFoBB7Jo//H0IaOmQcf9aZ+ZDMTZjwlZ+kPL0VsCz922pw+CZvEsJao+AGQ==@lists.linux.dev, AJvYcCXtNcWRwi3UZ0v+em+1+zkt57IZn4CnqX3VHTvH2XjtfmqJARrZksksO9+t6ME2Q9WCNlh/cQ==@lists.linux.dev
-X-Gm-Message-State: AOJu0YwxDylhc3lQndlrNrE6Zaj3l/GwKnQdXsxNfOBRQMUJXT06f3v3
-	c21gH/Bq91XZMmz87Rymfrl4FyitM/wYznbuAMy3lFVxPaUodNiY
-X-Gm-Gg: ASbGncujBx3ky52mhQhiYuNxooatiF3LjhCengJ6bffAmL58nZuVi1QpHybOlGxr8To
-	rogXcgKTAMzQU3PtiumwbbZZsI57qh/jjSZGdCTDMxhDY5gNLwCr+W/eWKwdo4Sn+OH8+CCvZ4L
-	WPlXo8tDRK8CTl9GYKChZIITa9Ou4Y1eWWgvbeYZsRiV8RmLNfAeswi9SeYY0PyPGTgJWjxxVOf
-	E54uOk1wlcyRFGz2ZbZ6k1b7agAgAwM3DrSje5ZYgUgowo47kNZofCVqJ+oIDB26Ev/AeBJxRz+
-	sYFhWAxcLeboVdHGQfV5H04=
-X-Google-Smtp-Source: AGHT+IEZVE15/vEAohikUk6vjIGzOeFn+yVnxHcYlw+pZKWRHHAPNEYP1GeDSZ8W1ZJPAeFwPcezZw==
-X-Received: by 2002:a17:902:f70b:b0:216:28c4:61c6 with SMTP id d9443c01a7336-218929fb17bmr82919535ad.34.1734171382443;
-        Sat, 14 Dec 2024 02:16:22 -0800 (PST)
-Received: from [10.0.2.15] (KD106167137155.ppp-bb.dion.ne.jp. [106.167.137.155])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-218a1e50455sm10069475ad.159.2024.12.14.02.16.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 14 Dec 2024 02:16:22 -0800 (PST)
-Message-ID: <27fff669-bec4-4255-ba2f-4b154b474d97@gmail.com>
-Date: Sat, 14 Dec 2024 19:16:18 +0900
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Jb3sjXPQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1734183895;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=um83NFh7ZIRRd8ai46akYsrKyJ5hcwaKtVTR9gj1RFE=;
+	b=Jb3sjXPQtHJuX/7nXJYOsTNk//t5xj2hfrYO6OGnyI1QDrXObAxHr2PB1JbZHBMHDCIRrp
+	Dn82JlsgkPxiLXVh3L/DUZ6Q+OAKc4fE28H3Jkz29q/RzWfQu1HmOLS563IKwE82ocb4zJ
+	xw6ldI1E4q2SeoqxZxkvs2sT6M8DefE=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-638-ql_YDdrZOJec0ZI5AmZePg-1; Sat,
+ 14 Dec 2024 08:44:52 -0500
+X-MC-Unique: ql_YDdrZOJec0ZI5AmZePg-1
+X-Mimecast-MFC-AGG-ID: ql_YDdrZOJec0ZI5AmZePg
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A2AD4195608C;
+	Sat, 14 Dec 2024 13:44:48 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.48])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EDE4A195394B;
+	Sat, 14 Dec 2024 13:44:42 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <27fff669-bec4-4255-ba2f-4b154b474d97@gmail.com>
+References: <27fff669-bec4-4255-ba2f-4b154b474d97@gmail.com> <20241213135013.2964079-1-dhowells@redhat.com> <20241213135013.2964079-8-dhowells@redhat.com>
+To: Akira Yokosawa <akiyks@gmail.com>,
+    "Paul E. McKenney" <paulmck@kernel.org>
+Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
+    Max Kellermann <max.kellermann@ionos.com>,
+    Ilya Dryomov <idryomov@gmail.com>, Xiubo Li <xiubli@redhat.com>,
+    Trond Myklebust <trondmy@kernel.org>,
+    Jeff Layton <jlayton@kernel.org>,
+    Matthew Wilcox <willy@infradead.org>, netfs@lists.linux.dev,
+    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+    v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org,
+    linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+    linux-kernel@vger.kernel.org, Zilin Guan <zilin@seu.edu.cn>
+Subject: Re: [PATCH 07/10] netfs: Fix missing barriers by using clear_and_wake_up_bit()
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/10] netfs: Fix missing barriers by using
- clear_and_wake_up_bit()
-To: David Howells <dhowells@redhat.com>,
- Christian Brauner <christian@brauner.io>
-Cc: Max Kellermann <max.kellermann@ionos.com>,
- Ilya Dryomov <idryomov@gmail.com>, Xiubo Li <xiubli@redhat.com>,
- Trond Myklebust <trondmy@kernel.org>, Jeff Layton <jlayton@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, netfs@lists.linux.dev,
- linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
- linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
- linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Zilin Guan <zilin@seu.edu.cn>, Akira Yokosawa <akiyks@gmail.com>
-References: <20241213135013.2964079-1-dhowells@redhat.com>
- <20241213135013.2964079-8-dhowells@redhat.com>
-Content-Language: en-US
-From: Akira Yokosawa <akiyks@gmail.com>
-In-Reply-To: <20241213135013.2964079-8-dhowells@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <3332015.1734183881.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 14 Dec 2024 13:44:41 +0000
+Message-ID: <3332016.1734183881@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Hi David,
+[Adding Paul McKenney as he's the expert.]
 
-David Howells wrote:
-> Use clear_and_wake_up_bit() rather than something like:
-> 
-> 	clear_bit_unlock(NETFS_RREQ_IN_PROGRESS, &rreq->flags);
-> 	wake_up_bit(&rreq->flags, NETFS_RREQ_IN_PROGRESS);
-> 
-> as there needs to be a barrier inserted between which is present in
-> clear_and_wake_up_bit().
+Akira Yokosawa <akiyks@gmail.com> wrote:
 
-If I am reading the kernel-doc comment of clear_bit_unlock() [1, 2]:
+> David Howells wrote:
+> > Use clear_and_wake_up_bit() rather than something like:
+> > =
 
-    This operation is atomic and provides release barrier semantics.
+> > 	clear_bit_unlock(NETFS_RREQ_IN_PROGRESS, &rreq->flags);
+> > 	wake_up_bit(&rreq->flags, NETFS_RREQ_IN_PROGRESS);
+> > =
 
-correctly, there already seems to be a barrier which should be
-good enough.
+> > as there needs to be a barrier inserted between which is present in
+> > clear_and_wake_up_bit().
+> =
 
-[1]: https://www.kernel.org/doc/html/latest/core-api/kernel-api.html#c.clear_bit_unlock
-[2]: include/asm-generic/bitops/instrumented-lock.h
+> If I am reading the kernel-doc comment of clear_bit_unlock() [1, 2]:
+> =
 
-> 
-> Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
-> Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
+>     This operation is atomic and provides release barrier semantics.
+> =
 
-So I'm not sure this fixes anything.
+> correctly, there already seems to be a barrier which should be
+> good enough.
+> =
 
-What am I missing?
+> [1]: https://www.kernel.org/doc/html/latest/core-api/kernel-api.html#c.c=
+lear_bit_unlock
+> [2]: include/asm-generic/bitops/instrumented-lock.h
+> =
 
-        Thanks, Akira
+> > =
 
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> cc: Zilin Guan <zilin@seu.edu.cn>
-> cc: Akira Yokosawa <akiyks@gmail.com>
-> cc: Jeff Layton <jlayton@kernel.org>
-> cc: netfs@lists.linux.dev
-> cc: linux-fsdevel@vger.kernel.org
-> ---
->  fs/netfs/read_collect.c  | 3 +--
->  fs/netfs/write_collect.c | 9 +++------
->  2 files changed, 4 insertions(+), 8 deletions(-)
-> 
-[...]
+> > Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
+> > Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
+> =
+
+> So I'm not sure this fixes anything.
+> =
+
+> What am I missing?
+
+We may need two barriers.  You have three things to synchronise:
+
+ (1) The stuff you did before unlocking.
+
+ (2) The lock bit.
+
+ (3) The task state.
+
+clear_bit_unlock() interposes a release barrier between (1) and (2).
+
+Neither clear_bit_unlock() nor wake_up_bit(), however, necessarily interpo=
+se a
+barrier between (2) and (3).  I'm not sure it entirely matters, but it see=
+ms
+that since we have a function that combines the two, we should probably us=
+e
+it - though, granted, it might not actually be a fix.
+
+David
 
