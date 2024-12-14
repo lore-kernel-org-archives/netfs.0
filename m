@@ -1,84 +1,133 @@
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B8A1E3769
-	for <netfs@lists.linux.dev>; Fri, 13 Dec 2024 16:13:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE7F12CDA5;
+	Sat, 14 Dec 2024 10:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734106424; cv=none; b=awKHH+pj2PtTIuKH7yQSYXinWWgx8K0dpGSmqsf2bnlTj8b4KDSrhcO8oas1E5vQSgud/V29DRPmsF68KAJp2IQXwfxWQweGbauaJGNLwTXLkIWQmvSPFN77JUQjwGk7VKl2JtEpyqr44AQEWMdVgyZ+0ecriWlfRyW9VydTc4s=
+	t=1734171384; cv=none; b=BTkqpgYMYPyt1KiygqYzwZplCZPrK+5cR0O4bI7S5YoqLi95UcPCj3YRhB2X44zWDMP7Bg2SV3e2cmYG/A4hKQsc6Wz7JlIY9PFYMLmhNnAOOiLKyQeAXphNoIelgM4rUk41sUfp5u2d+75uLkgSFoHwbSpF7saSvNhl8bRBVVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734106424; c=relaxed/simple;
-	bh=JeYzecM4Ws6DAx8d1eYSSaAR9Hxv7aMjtxrtoNso9js=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SmNF9A3qY+Wv8WFZXrdXn4DtSTpd+EFFdbiW511cKJdXinlgXGGS6unOrgK1sAm3yvjV4n0sYmUzHMr8LuuLBk7LkiHw/gdfEr1lY9l4GLXJbiGuP0akyQwzovtW3vv/PehsGuy2n6liopzRbZgCLziWhlv+LYvnJXPLr2wt5hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu; spf=pass smtp.mailfrom=szeredi.hu; dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b=TuXroBuK; arc=none smtp.client-ip=209.85.222.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szeredi.hu
+	s=arc-20240116; t=1734171384; c=relaxed/simple;
+	bh=ppurqkLg5frVMfdj9t/MeoIOWop6fX3bDcl+dcNOFPQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MIDlCbRmraRb9ssKJX4kbEzGEb43DXW1Cv3wbKbUiTI7yTgm7d8WK13cUqyYywjRhKO8NvRxOQbycwelw67CUfXE3NoAu8sK7gLlDiIZYFWUYJwdmp6NXwT+Ntsu/RM6hlJsjVpnxwzdhqYa1GWBxQcmPG2pp956Lx2yTn2+AyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZUcDz3g2; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b="TuXroBuK"
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-7b6ff72ba5aso47528585a.1
-        for <netfs@lists.linux.dev>; Fri, 13 Dec 2024 08:13:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZUcDz3g2"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2161eb95317so23944485ad.1;
+        Sat, 14 Dec 2024 02:16:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google; t=1734106422; x=1734711222; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=VTgK8vtVJlVpnYOvWfFrTdJyV8eieOKxBt4m4Ra+gVk=;
-        b=TuXroBuKZSmCDFKFnyAXAT0uZpC70NPFRzS7RT6rEnkmi8D2DCbNyOYYQ32AHC4ZYp
-         Rta8IMkFrFmKmxfAzFS6n24aQ3tq3LObpA12nsTXmrnccnywOEfYhHmD+RffUPnf6Mma
-         LJNU0ua9xpZVyoYbwovAZ3HOmyxEy8tnp677I=
+        d=gmail.com; s=20230601; t=1734171382; x=1734776182; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WC99pq7hRHFrLDw7siiOrZ7FqbwdIbl7gLGxK8elhYI=;
+        b=ZUcDz3g2iGdi0/EjrMhKwRFUnpHCbf7bXfnDcI2Oa1dWMqYPKR71/sM+oYOXYur41P
+         Q4tuCst/5VpxDNHw77NH2+kseu5nG2ZgsAqm7l+QnKPH5Aj+bdujkWvpwv7EaQX/DCmp
+         gNXrC07xtIMAmZoIyvRb4x/kcJ6fIDMN5WlH7sEZPoEqz06+KhTeEoGgKJ1KauWna3TQ
+         qUOC7e5lOn4QxAaX3pRc6QCdk0N6ZIScYMY/7qKc1v1gcXUplortHQSyW+f3RkPfBHZ8
+         1icg5mztvTgXPJGt2FUZkDI9EXJRg3L9RVLYFOlev57lzU/XX81p/TpBWelY12RNNJJF
+         yOEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734106422; x=1734711222;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VTgK8vtVJlVpnYOvWfFrTdJyV8eieOKxBt4m4Ra+gVk=;
-        b=cG5mL8LN8m865BIf0nShECDWOnpRPX96prXF2MRt8XyW2YcG9DpfxQsNOpLjmEZ70z
-         qiVyroiPmYAOtdipl7FkNLSV8cnA3+QiVS+AmDezlyQUeS3qytRVLiRFwh5KarfBvsrT
-         qtLe40T3QtHPv68blLjvSpMhN3qhwVQ8xKOapZ8rfVyw6U7KFmExph8mpkWG7H1IKAAq
-         NFudS3/CYG88q1q+fsyroYXE908BIH3IzszY2u3uhEGeo/6xLGlXhF1gfe34uK0j1Def
-         +wu44ArINImitxZiXxT+iBWK6xhCzcrWWiF3j64msNeUsJh0T+2LQSKSaYJnKYMBJC4s
-         tVCg==
-X-Forwarded-Encrypted: i=1; AJvYcCVTUw/UrRKANutdIVe7nC0n+0vLsVDqcK9+3Hom2Qu5iSm281Rro5WJJMbrcuqQxpxGMhLz7A==@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywcxcq4fgVz0aDv53htsVeRorFRQ/bjIAhD8N3J6WTBIpZIENIU
-	fvwjFmpXVgDLzmNSL3EDrs0RI8SLf+MWcQjHAdccApIIga2xxOyGivYleHTIV6XlUru4tfGbTAW
-	atbegFbvZiX6x2xlVWfhQVwo783tQJa7uVkJ8gg==
-X-Gm-Gg: ASbGncvSpYEBjzvj45oJ8CgU6oFNOHKp4nOJ/BAot6b4nIJwvLiD30f9kMgRWqkf/iI
-	0oUVesMCAZFXI1TCD2NNHDxdmFKYXPtdXYhUsFg==
-X-Google-Smtp-Source: AGHT+IEK7cPvoYZztp8WXRex5AggE+7kQWRBIjyrSu0/57plBJrXdZPJ6JJi38gMdr7TZFixPLtwoFF69xUnqROniPs=
-X-Received: by 2002:a05:622a:58d:b0:466:a584:69f8 with SMTP id
- d75a77b69052e-467a582f1famr58994161cf.43.1734106421923; Fri, 13 Dec 2024
- 08:13:41 -0800 (PST)
+        d=1e100.net; s=20230601; t=1734171382; x=1734776182;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WC99pq7hRHFrLDw7siiOrZ7FqbwdIbl7gLGxK8elhYI=;
+        b=nymsJFIvXctx24Yx7HmkMhPG7wdin7cAjwm+F9ausmSMsY16mToDPx1GBYJt5/vbV/
+         dGuOHDL+4vsf6DlQ3GHUO0wvrvPvAGSAJ3wW58/k2g/DdSeRvI1Ga4q76KKBExJH2caP
+         VIcylXEkc4OVjh4WJeG5bIqFKSs3F1KQX2a0RHSLHm+DkUUIL2u0eDWnL0gTb2y7AHjY
+         oAN0c6FoESwdzjHl8RReKtfGp89sCK0G3sk1opIO1aTl7HyvXIc3XyqEja8kO0N3yOFN
+         wICb3db2brqFTRtQW+CWy33RvcbL2+ApZYa4T0IAsjgW0UuvK/UjBAmnc0pOQLA1yihr
+         xlKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVQ9in1LNKj+aFJFoBB7Jo//H0IaOmQcf9aZ+ZDMTZjwlZ+kPL0VsCz922pw+CZvEsJao+AGQ==@lists.linux.dev, AJvYcCXtNcWRwi3UZ0v+em+1+zkt57IZn4CnqX3VHTvH2XjtfmqJARrZksksO9+t6ME2Q9WCNlh/cQ==@lists.linux.dev
+X-Gm-Message-State: AOJu0YwxDylhc3lQndlrNrE6Zaj3l/GwKnQdXsxNfOBRQMUJXT06f3v3
+	c21gH/Bq91XZMmz87Rymfrl4FyitM/wYznbuAMy3lFVxPaUodNiY
+X-Gm-Gg: ASbGncujBx3ky52mhQhiYuNxooatiF3LjhCengJ6bffAmL58nZuVi1QpHybOlGxr8To
+	rogXcgKTAMzQU3PtiumwbbZZsI57qh/jjSZGdCTDMxhDY5gNLwCr+W/eWKwdo4Sn+OH8+CCvZ4L
+	WPlXo8tDRK8CTl9GYKChZIITa9Ou4Y1eWWgvbeYZsRiV8RmLNfAeswi9SeYY0PyPGTgJWjxxVOf
+	E54uOk1wlcyRFGz2ZbZ6k1b7agAgAwM3DrSje5ZYgUgowo47kNZofCVqJ+oIDB26Ev/AeBJxRz+
+	sYFhWAxcLeboVdHGQfV5H04=
+X-Google-Smtp-Source: AGHT+IEZVE15/vEAohikUk6vjIGzOeFn+yVnxHcYlw+pZKWRHHAPNEYP1GeDSZ8W1ZJPAeFwPcezZw==
+X-Received: by 2002:a17:902:f70b:b0:216:28c4:61c6 with SMTP id d9443c01a7336-218929fb17bmr82919535ad.34.1734171382443;
+        Sat, 14 Dec 2024 02:16:22 -0800 (PST)
+Received: from [10.0.2.15] (KD106167137155.ppp-bb.dion.ne.jp. [106.167.137.155])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-218a1e50455sm10069475ad.159.2024.12.14.02.16.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 14 Dec 2024 02:16:22 -0800 (PST)
+Message-ID: <27fff669-bec4-4255-ba2f-4b154b474d97@gmail.com>
+Date: Sat, 14 Dec 2024 19:16:18 +0900
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20241202093943.227786-1-dmantipov@yandex.ru> <1100513.1733306199@warthog.procyon.org.uk>
- <CAJfpeguAw2_3waLEGhPK-LZ_dFfOXO6bHGE=6Yo2xpyet6SYrA@mail.gmail.com> <4b9f34f5-7cfc-40e2-b2a7-ad69d1d81437@fastmail.fm>
-In-Reply-To: <4b9f34f5-7cfc-40e2-b2a7-ad69d1d81437@fastmail.fm>
-From: Miklos Szeredi <miklos@szeredi.hu>
-Date: Fri, 13 Dec 2024 17:13:31 +0100
-Message-ID: <CAJfpegtvJr7zKShpFGtFUT66+2gz8H6Js9srhpaqUhXA6061BQ@mail.gmail.com>
-Subject: Re: syzbot program that crashes netfslib can also crash fuse
-To: Bernd Schubert <bernd.schubert@fastmail.fm>
-Cc: David Howells <dhowells@redhat.com>, Dmitry Antipov <dmantipov@yandex.ru>, 
-	Jeff Layton <jlayton@kernel.org>, Christian Brauner <brauner@kernel.org>, netfs@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, lvc-project@linuxtesting.org, 
-	syzbot+404b4b745080b6210c6c@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 07/10] netfs: Fix missing barriers by using
+ clear_and_wake_up_bit()
+To: David Howells <dhowells@redhat.com>,
+ Christian Brauner <christian@brauner.io>
+Cc: Max Kellermann <max.kellermann@ionos.com>,
+ Ilya Dryomov <idryomov@gmail.com>, Xiubo Li <xiubli@redhat.com>,
+ Trond Myklebust <trondmy@kernel.org>, Jeff Layton <jlayton@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, netfs@lists.linux.dev,
+ linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+ linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
+ linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Zilin Guan <zilin@seu.edu.cn>, Akira Yokosawa <akiyks@gmail.com>
+References: <20241213135013.2964079-1-dhowells@redhat.com>
+ <20241213135013.2964079-8-dhowells@redhat.com>
+Content-Language: en-US
+From: Akira Yokosawa <akiyks@gmail.com>
+In-Reply-To: <20241213135013.2964079-8-dhowells@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, 6 Dec 2024 at 13:41, Bernd Schubert <bernd.schubert@fastmail.fm> wrote:
+Hi David,
 
-> I had already posted a patch on Monday.
->
-> https://lore.kernel.org/r/20241203-fix-fuse_get_user_pages-v2-1-acce8a29d06b@ddn.com
+David Howells wrote:
+> Use clear_and_wake_up_bit() rather than something like:
+> 
+> 	clear_bit_unlock(NETFS_RREQ_IN_PROGRESS, &rreq->flags);
+> 	wake_up_bit(&rreq->flags, NETFS_RREQ_IN_PROGRESS);
+> 
+> as there needs to be a barrier inserted between which is present in
+> clear_and_wake_up_bit().
 
-Sorry, missed that.  Applied your version with the above test-by's added.
+If I am reading the kernel-doc comment of clear_bit_unlock() [1, 2]:
 
-> @David, is that the same sysbot report or another one?
+    This operation is atomic and provides release barrier semantics.
 
-It's a different one, assigned to netfs, not fuse.
+correctly, there already seems to be a barrier which should be
+good enough.
 
-Thanks,
-Miklos
+[1]: https://www.kernel.org/doc/html/latest/core-api/kernel-api.html#c.clear_bit_unlock
+[2]: include/asm-generic/bitops/instrumented-lock.h
+
+> 
+> Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
+> Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
+
+So I'm not sure this fixes anything.
+
+What am I missing?
+
+        Thanks, Akira
+
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> cc: Zilin Guan <zilin@seu.edu.cn>
+> cc: Akira Yokosawa <akiyks@gmail.com>
+> cc: Jeff Layton <jlayton@kernel.org>
+> cc: netfs@lists.linux.dev
+> cc: linux-fsdevel@vger.kernel.org
+> ---
+>  fs/netfs/read_collect.c  | 3 +--
+>  fs/netfs/write_collect.c | 9 +++------
+>  2 files changed, 4 insertions(+), 8 deletions(-)
+> 
+[...]
+
