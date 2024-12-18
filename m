@@ -1,125 +1,252 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501931F8F17;
-	Tue, 17 Dec 2024 17:30:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5582115854A
+	for <netfs@lists.linux.dev>; Wed, 18 Dec 2024 15:10:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734456643; cv=none; b=cGgi0WTzSslhJPPVo7W0kJbTDxvXoBwl2FD8cbevv2DnZE+sxx27bkX4ughpQ9WjC+Ndvw7KoVuQ6wWgYpb3k1X2URJhK3/EG2DGzgDxxDwqeE5hFczONNYkDf+6lFY5h90hu+2EOnG0S3CZ1IOIivCU8SBVXxb9Fc/4hycFqK4=
+	t=1734534638; cv=none; b=YYuRTtFnMEWxSNR5svSddaLnX8c954k/jOLIFnfbZddwhmelOs3gZXR8hDV85k0Xt0inqb7rxooRD4x6yLD0+Ehv+O8NZvA1B62gs7Ps8r3S+Qi2gHeXK7E/9iji5Aw7YqeDT85f0AWUKwgfRwy0gkiQAO17jwyo2IZyAES6Zhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734456643; c=relaxed/simple;
-	bh=tTve6jmv6a7QTCCQ45wocrrPtqChJHiXIX15NyGbte0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XWcA62e+7WpI9BFkJ2QWY3CT1D+5p2nM4WNhzD3jxE37fUe7SiAQJO/yQou1opMJB8Pd89g0k37a7K+6OuPpI6v4u1R2PgCizvMJ2GJQC6Chzh+7Se4FfkAIlmCF5RISr3HW5/KOIOFVeBvk8zn27yLmmmNdlsbCP2ICTE/gpe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dguw94iC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734534638; c=relaxed/simple;
+	bh=dJ5MgtcOdIkkXX2Gd0V5R5VUbYMOC+PpISay7kYQ4G0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VFn6vMnMxG5Ki3GfkTqoGoOd6kfZwdQLQuqT7rzAgT4dsMnnxo+uAn3QYmEqanpmudmpJREOIDMyFGDzceGAsw6TiAxc7/+iuwSn3KFGPjjEVKTqj+Fj1GXzOCCNULCos1HsiudB2h5V7e1Yc7eY1AxJR507gQRiKvrUhelH0Uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VGT0xaeO; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dguw94iC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538DDC4CEEC;
-	Tue, 17 Dec 2024 17:30:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734456642;
-	bh=tTve6jmv6a7QTCCQ45wocrrPtqChJHiXIX15NyGbte0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dguw94iCkuly+aE2ahi87SdbbWRG1Zfk49bDOSmBMIOWlGpyV8wfkRRwJwR7lo5Mn
-	 03QT2h8PjU92AQ3m/tvtCcAti5YyCgQpstAIkNe6fmzbrfs1vtUfecX4AqspWndhT3
-	 HzR/AWdLNxDoc+HFGiu6uTNk4KhwwCZw0rjSE4wg=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	linux-cifs@vger.kernel.org,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 122/172] cifs: Fix rmdir failure due to ongoing I/O on deleted file
-Date: Tue, 17 Dec 2024 18:07:58 +0100
-Message-ID: <20241217170551.394460766@linuxfoundation.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217170546.209657098@linuxfoundation.org>
-References: <20241217170546.209657098@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VGT0xaeO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1734534634;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Rq13+spy+qCFhDJsgxiTRuvUnBVAzO08weFgvcvuB7I=;
+	b=VGT0xaeOSNImnNs3JXhZvPpcUh4sNvAy/PJFcqH0NXx5FViFM73C/iaaG5SpYOe30DciER
+	fRekArsGqhxQeCCH6JOrio6SKX6BHPQo1HHpO5xkuZxRBuYkLxl4qygp9h08fjXlJsayQV
+	MXB4YSXCV9rBFHoxge9zBLuKxF2jRvU=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-177-oHReeHFxNui2rq3gumSW2A-1; Wed, 18 Dec 2024 10:10:31 -0500
+X-MC-Unique: oHReeHFxNui2rq3gumSW2A-1
+X-Mimecast-MFC-AGG-ID: oHReeHFxNui2rq3gumSW2A
+Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-5d3cdb9d4b1so940613a12.1
+        for <netfs@lists.linux.dev>; Wed, 18 Dec 2024 07:10:31 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734534630; x=1735139430;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Rq13+spy+qCFhDJsgxiTRuvUnBVAzO08weFgvcvuB7I=;
+        b=wiTwUv0XRHY+lvM6zib1Htxs0BZd9yXpOZbseMim4jQtUKyAtIGdAr+1LCADpz2CmV
+         iaXDdNHsfwh1z6QOfB398EZBMrADiik3hqiKdXrCDEWObDxKhkxOnLxHyocWR3P3Zq0R
+         o4h6q2YHl9eaYt1VCTIQOit8yzojV3Jo/SKvcH5biJAw5U3yQmgJvoXndET07KAW82Ik
+         6ZXtD7ubyr/wGm2SVBUjd18Uw+y9kuFqxcjbfUjUwgUCIJ2mSTv5XWaiL7Kj702MfQc8
+         fYiRZB/LZoRkz90qGkxPkVsDIVeP387zrxaA0aUE0COndCTEBwi05wMlJp4aA5qBQsp6
+         VlGg==
+X-Forwarded-Encrypted: i=1; AJvYcCUqjxzyv43WE7bVj+cRQQ/9QVlCinJqNgENqGiZ+Gfk6Oo6IgrY7Yow15PfAyXghKENTNk3iw==@lists.linux.dev
+X-Gm-Message-State: AOJu0YzpcN2kqc0sDW7nq8W9N9TULNWdkSs36pqP0syihWkw0W07+Jgy
+	7WewaTK8Vs2bl8RdLSz7UsAgt/ZyuL5H1NUBGLU4Yg06CLTySOSgTZNh2KyQM2Ka4Pv0495w2/X
+	hbk43VvdgGMeZFDsaI8BXB7GXwk26lr6Lk7rnlzkO20uivhgPxxCCX7CRpdBiQDHi/CilLLRVUu
+	7cmKbHErur971gHCDyN9RDgTd2iCY=
+X-Gm-Gg: ASbGnct4++Jlbjq5cfN+81JIwDhh8CH9lDbAS73r9WJl6HvASOGFqLDmEXCCTLjX1vy
+	SDCo9E3DVH4eVPGXBy3k4louTVyErG3cRJdll9g==
+X-Received: by 2002:a05:6402:4341:b0:5d3:e58c:25e2 with SMTP id 4fb4d7f45d1cf-5d7d556a032mr7458433a12.2.1734534630098;
+        Wed, 18 Dec 2024 07:10:30 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGPXB4Hx123hIFkjF3f0ABZNjkTu8BSyACv9a6CvqUYXqkqjaQQ+sXVlOZWB1mhhZKOt1MoxEBCl6ooO9B/teI=
+X-Received: by 2002:a05:6402:4341:b0:5d3:e58c:25e2 with SMTP id
+ 4fb4d7f45d1cf-5d7d556a032mr7458383a12.2.1734534629616; Wed, 18 Dec 2024
+ 07:10:29 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241213135013.2964079-1-dhowells@redhat.com> <2964553.1734098664@warthog.procyon.org.uk>
+In-Reply-To: <2964553.1734098664@warthog.procyon.org.uk>
+From: Alex Markuze <amarkuze@redhat.com>
+Date: Wed, 18 Dec 2024 17:10:18 +0200
+Message-ID: <CAO8a2ShjqL=-jk8_8Lk5+V13Tf60B+c8K6XovXEQH7F-gPP4-Q@mail.gmail.com>
+Subject: Re: ceph xfstests failures [was Re: [PATCH 00/10] netfs, ceph, nfs,
+ cachefiles: Miscellaneous fixes/changes]
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <christian@brauner.io>, Ilya Dryomov <idryomov@gmail.com>, 
+	Max Kellermann <max.kellermann@ionos.com>, Xiubo Li <xiubli@redhat.com>, 
+	Trond Myklebust <trondmy@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, netfs@lists.linux.dev, linux-afs@lists.infradead.org, 
+	linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org, 
+	ceph-devel@vger.kernel.org, v9fs@lists.linux.dev, 
+	linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: nl-esjs2WwrumS6hmyp8uCGJByLW3VNCxOA0l1Q66sU_1734534630
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+Hey David.
+Thanks, for the find. I've seen your mail, but it was a busy week.
+If you can, please open a https://tracker.ceph.com/ bug and assign it to me=
+.
 
-------------------
-
-From: David Howells <dhowells@redhat.com>
-
-[ Upstream commit bb57c81e97e0082abfb0406ed6f67c615c3d206c ]
-
-The cifs_io_request struct (a wrapper around netfs_io_request) holds open
-the file on the server, even beyond the local Linux file being closed.
-This can cause problems with Windows-based filesystems as the file's name
-still exists after deletion until the file is closed, preventing the parent
-directory from being removed and causing spurious test failures in xfstests
-due to inability to remove a directory.  The symptom looks something like
-this in the test output:
-
-   rm: cannot remove '/mnt/scratch/test/p0/d3': Directory not empty
-   rm: cannot remove '/mnt/scratch/test/p1/dc/dae': Directory not empty
-
-Fix this by waiting in unlink and rename for any outstanding I/O requests
-to be completed on the target file before removing that file.
-
-Note that this doesn't prevent Linux from trying to start new requests
-after deletion if it still has the file open locally - something that's
-perfectly acceptable on a UNIX system.
-
-Note also that whilst I've marked this as fixing the commit to make cifs
-use netfslib, I don't know that it won't occur before that.
-
-Fixes: 3ee1a1fc3981 ("cifs: Cut over to using netfslib")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/smb/client/inode.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-index b35fe1075503..fafc07e38663 100644
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -1925,6 +1925,7 @@ int cifs_unlink(struct inode *dir, struct dentry *dentry)
- 		goto unlink_out;
- 	}
- 
-+	netfs_wait_for_outstanding_io(inode);
- 	cifs_close_deferred_file_under_dentry(tcon, full_path);
- #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
- 	if (cap_unix(tcon->ses) && (CIFS_UNIX_POSIX_PATH_OPS_CAP &
-@@ -2442,8 +2443,10 @@ cifs_rename2(struct mnt_idmap *idmap, struct inode *source_dir,
- 	}
- 
- 	cifs_close_deferred_file_under_dentry(tcon, from_name);
--	if (d_inode(target_dentry) != NULL)
-+	if (d_inode(target_dentry) != NULL) {
-+		netfs_wait_for_outstanding_io(d_inode(target_dentry));
- 		cifs_close_deferred_file_under_dentry(tcon, to_name);
-+	}
- 
- 	rc = cifs_do_rename(xid, source_dentry, from_name, target_dentry,
- 			    to_name);
--- 
-2.39.5
-
-
+On Fri, Dec 13, 2024 at 4:05=E2=80=AFPM David Howells <dhowells@redhat.com>=
+ wrote:
+>
+> David Howells <dhowells@redhat.com> wrote:
+>
+> > With these patches, I can run xfstest -g quick to completion on ceph wi=
+th a
+> > local cache.
+>
+> I should qualify that.  The thing completes and doesn't hang, but I get 6
+> failures:
+>
+>     Failures: generic/604 generic/633 generic/645 generic/696 generic/697=
+ generic/732
+>
+> Though these don't appear to be anything to do with netfslib (see attache=
+d).
+> There are two cases where the mount is busy and the rest seems to be due =
+to
+> id-mapped mounts and/or user namespaces.
+>
+> The xfstest local.config file looks something like:
+>
+>     export FSTYP=3Dceph
+>     export TEST_DEV=3D<ipaddr>:/test
+>     export TEST_DIR=3D/xfstest.test
+>     TEST_FS_MOUNT_OPTS=3D'-o name=3Dadmin,mds_namespace=3Dtest,fs=3Dtest,=
+fsc'
+>     export SCRATCH_DEV=3D<ipaddr>:/scratch
+>     export SCRATCH_MNT=3D/xfstest.scratch
+>     export MOUNT_OPTIONS=3D'-o name=3Dadmin,mds_namespace=3Dscratch,fs=3D=
+scratch,fsc=3Dscratch'
+>
+> David
+> ---
+> # ./check -E .exclude generic/604 generic/633 generic/645 generic/696 gen=
+eric/697 generic/732
+> FSTYP         -- ceph
+> PLATFORM      -- Linux/x86_64 andromeda 6.13.0-rc2-build3+ #5311 SMP Fri =
+Dec 13 09:03:34 GMT 2024
+> MKFS_OPTIONS  -- <ipaddr>:/scratch
+> MOUNT_OPTIONS -- -o name=3Dadmin,mds_namespace=3Dscratch,fs=3Dscratch,fsc=
+=3Dscratch -o context=3Dsystem_u:object_r:root_t:s0 <ipaddr>:/scratch /xfst=
+est.scratch
+>
+> generic/604 2s ... [failed, exit status 1]- output mismatch (see /root/xf=
+stests-dev/results//generic/604.out.bad)
+>     --- tests/generic/604.out   2024-09-12 12:36:14.187441830 +0100
+>     +++ /root/xfstests-dev/results//generic/604.out.bad 2024-12-13 13:18:=
+51.910900871 +0000
+>     @@ -1,2 +1,4 @@
+>      QA output created by 604
+>     -Silence is golden
+>     +mount error 16 =3D Device or resource busy
+>     +mount -o name=3Dadmin,mds_namespace=3Dscratch,fs=3Dscratch,fsc=3Dscr=
+atch -o context=3Dsystem_u:object_r:root_t:s0 <ipaddr>:/scratch /xfstest.sc=
+ratch failed
+>     +(see /root/xfstests-dev/results//generic/604.full for details)
+>     ...
+>     (Run 'diff -u /root/xfstests-dev/tests/generic/604.out /root/xfstests=
+-dev/results//generic/604.out.bad'  to see the entire diff)
+> generic/633       [failed, exit status 1]- output mismatch (see /root/xfs=
+tests-dev/results//generic/633.out.bad)
+>     --- tests/generic/633.out   2024-09-12 12:36:14.187441830 +0100
+>     +++ /root/xfstests-dev/results//generic/633.out.bad 2024-12-13 13:18:=
+55.958979531 +0000
+>     @@ -1,2 +1,4 @@
+>      QA output created by 633
+>      Silence is golden
+>     +idmapped-mounts.c: 307: tcore_create_in_userns - Input/output error =
+- failure: open file
+>     +vfstest.c: 2418: run_test - Success - failure: create operations in =
+user namespace
+>     ...
+>     (Run 'diff -u /root/xfstests-dev/tests/generic/633.out /root/xfstests=
+-dev/results//generic/633.out.bad'  to see the entire diff)
+> generic/645       [failed, exit status 1]- output mismatch (see /root/xfs=
+tests-dev/results//generic/645.out.bad)
+>     --- tests/generic/645.out   2024-09-12 12:36:14.191441810 +0100
+>     +++ /root/xfstests-dev/results//generic/645.out.bad 2024-12-13 13:19:=
+25.526908024 +0000
+>     @@ -1,2 +1,4 @@
+>      QA output created by 645
+>      Silence is golden
+>     +idmapped-mounts.c: 6671: nested_userns - Invalid argument - failure:=
+ sys_mount_setattr
+>     +vfstest.c: 2418: run_test - Invalid argument - failure: test that ne=
+sted user namespaces behave correctly when attached to idmapped mounts
+>     ...
+>     (Run 'diff -u /root/xfstests-dev/tests/generic/645.out /root/xfstests=
+-dev/results//generic/645.out.bad'  to see the entire diff)
+> generic/696       - output mismatch (see /root/xfstests-dev/results//gene=
+ric/696.out.bad)
+>     --- tests/generic/696.out   2024-09-12 12:36:14.195441791 +0100
+>     +++ /root/xfstests-dev/results//generic/696.out.bad 2024-12-13 13:19:=
+30.254804087 +0000
+>     @@ -1,2 +1,6 @@
+>      QA output created by 696
+>     +idmapped-mounts.c: 7763: setgid_create_umask_idmapped - Input/output=
+ error - failure: create
+>     +vfstest.c: 2418: run_test - Success - failure: create operations by =
+using umask in directories with setgid bit set on idmapped mount
+>     +idmapped-mounts.c: 7763: setgid_create_umask_idmapped - Input/output=
+ error - failure: create
+>     +vfstest.c: 2418: run_test - Success - failure: create operations by =
+using umask in directories with setgid bit set on idmapped mount
+>      Silence is golden
+>     ...
+>     (Run 'diff -u /root/xfstests-dev/tests/generic/696.out /root/xfstests=
+-dev/results//generic/696.out.bad'  to see the entire diff)
+>
+> HINT: You _MAY_ be missing kernel fix:
+>       ac6800e279a2 fs: Add missing umask strip in vfs_tmpfile 1639a49ccdc=
+e fs: move S_ISGID stripping into the vfs_*() helpers
+>
+> generic/697       - output mismatch (see /root/xfstests-dev/results//gene=
+ric/697.out.bad)
+>     --- tests/generic/697.out   2024-09-12 12:36:14.195441791 +0100
+>     +++ /root/xfstests-dev/results//generic/697.out.bad 2024-12-13 13:19:=
+31.749225548 +0000
+>     @@ -1,2 +1,4 @@
+>      QA output created by 697
+>     +idmapped-mounts.c: 8218: setgid_create_acl_idmapped - Input/output e=
+rror - failure: create
+>     +vfstest.c: 2418: run_test - Success - failure: create operations by =
+using acl in directories with setgid bit set on idmapped mount
+>      Silence is golden
+>     ...
+>     (Run 'diff -u /root/xfstests-dev/tests/generic/697.out /root/xfstests=
+-dev/results//generic/697.out.bad'  to see the entire diff)
+>
+> HINT: You _MAY_ be missing kernel fix:
+>       1639a49ccdce fs: move S_ISGID stripping into the vfs_*() helpers
+>
+> generic/732 1s ... [failed, exit status 1]- output mismatch (see /root/xf=
+stests-dev/results//generic/732.out.bad)
+>     --- tests/generic/732.out   2024-09-12 12:36:14.195441791 +0100
+>     +++ /root/xfstests-dev/results//generic/732.out.bad 2024-12-13 13:19:=
+34.482858235 +0000
+>     @@ -1,2 +1,5 @@
+>      QA output created by 732
+>      Silence is golden
+>     +mount error 16 =3D Device or resource busy
+>     +mount -o name=3Dadmin,mds_namespace=3Dscratch,fs=3Dscratch,fsc=3Dscr=
+atch -o context=3Dsystem_u:object_r:root_t:s0 <ipaddr>:/scratch /xfstest.te=
+st/mountpoint2-732 failed
+>     +(see /root/xfstests-dev/results//generic/732.full for details)
+>     ...
+>     (Run 'diff -u /root/xfstests-dev/tests/generic/732.out /root/xfstests=
+-dev/results//generic/732.out.bad'  to see the entire diff)
+> Ran: generic/604 generic/633 generic/645 generic/696 generic/697 generic/=
+732
+> Failures: generic/604 generic/633 generic/645 generic/696 generic/697 gen=
+eric/732
+> Failed 6 of 6 tests
+>
+>
 
