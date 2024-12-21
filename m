@@ -1,87 +1,152 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B3E14C85;
-	Fri, 20 Dec 2024 01:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C791E9B0E;
+	Sat, 21 Dec 2024 05:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734656839; cv=none; b=ArZXteQDq92GcNSZ4glyjhzhJHvVc0oth2EzUuUXidfZHtUUulcO6rJxgVoEMoEFn7FCSVnuiyEBn8/O3v41JHOr+FJLmVU836bb4xNw9na+lbU9ycM1n5ix36OMcNR7xXwHbS8PxwvBXyMtnU6Qw5kdJLHfFbQupW1V1kPR+xM=
+	t=1734758139; cv=none; b=tTRf2eXtVFJlRkda7dBladHLYp0+UoyC471ndFO4zcXVOQqMxTUv3Qr89YKrFeROmgJ6X1ixIgxSufVl+5mekSbT+ioJkGobEKn407mwjYqHYrvMGOB6sNUrnzKjdiH1hd/yrI6C9u5sXv9J3ToRgp9r2pSb3U4+SR5Ax9mwYqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734656839; c=relaxed/simple;
-	bh=sMg3yiNS0/KcFfjwQhwPGmJIHHvyEy9NS1Nt89paaHE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NgoDrqGOx8BipV5uxP8AVkYcGWpVyBqKMsLzTKZcOJUrN6wbTfNpMhNKIA1RgvLS7eivkIV6qZQb3js+dLK0dttjWxGDfT/VdXJsECmeWWwE0gBTfzRgGURkW3syAy56MbS9l5aZ7mIFJyaWfJjfcsEElqStQxwc3d6DUK4WuG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CNJiDrbk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1734758139; c=relaxed/simple;
+	bh=6D22z4Q6qM5owg8DKTRELAvvJsU6v0seLUtNWMGH3rc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tTyTQPCN9iagD8LBxoXy1XbFfwexQc/5IGhnsUrrrYr6w967Y19tITkMicl48DJ03eC0RCjL1V/eTk3tm5PxyXW3oO1QevN+VtHMAz7IkzZnakrgjNA72qjYROFl9mJpf9MEACvBLGIs+dm1WIg/evsxm2o+78CBdPs+xJzitU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NBXpg8Ka; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CNJiDrbk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953D0C4CECE;
-	Fri, 20 Dec 2024 01:07:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NBXpg8Ka"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C315C4AF0B;
+	Sat, 21 Dec 2024 05:15:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734656837;
-	bh=sMg3yiNS0/KcFfjwQhwPGmJIHHvyEy9NS1Nt89paaHE=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=CNJiDrbkYiRka8HQXFqYjbgggHpRUTaRqvcZLB58zaUcUns5rlBVLsjC6xaNavZPr
-	 XoTW3pSyBktEaxHud7H/WwMmEvoNWkhXXIiNV9JkV7z/OOQaI0XG2mQdXgu2UQ26B5
-	 o4YFb4w0u/AUH07nkNumoLb3HeLz3GSYDdZZ4Be0zxR71Ty//JMw79ZJlWZsMRT/1u
-	 eEKQRHWjc3/T1HDKsJeXA26+tMJ/HB2WKnL1Kehlb1TwzZPQfuiu2pCS3IgAUTVAS3
-	 iei16quFdFhs+CErro+TYTWZkFetGauZWy6aXz2+zbWG7wJH8mqXVQtSJAcmmhTTs0
-	 yR3spWpsls86A==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 33B3BCE0EE4; Thu, 19 Dec 2024 17:07:17 -0800 (PST)
-Date: Thu, 19 Dec 2024 17:07:17 -0800
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>, jlayton@kernel.org,
-	netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, sfr@canb.auug.org.au,
-	linux-next@vger.kernel.org
-Subject: Re: [PATCH RFC netfs] Fix uninitialized variable in
- netfs_retry_read_subrequests()
-Message-ID: <03561ca5-df13-4b6c-8ac8-2dfe45ec2b6d@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <fb54084d-6d4e-4cda-8941-addc8c8898f5@paulmck-laptop>
- <4059210.1734654011@warthog.procyon.org.uk>
+	s=k20201202; t=1734758138;
+	bh=6D22z4Q6qM5owg8DKTRELAvvJsU6v0seLUtNWMGH3rc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=NBXpg8KaWOmk5BPV9JRlUwyRpdhTsLRyF3o8nRURr2/sbFbiwU2VhLnOWtq7YJJec
+	 Ot/mrxQD51xumkqWjcecDxrOC+vTCvlpENvgKus+wds6XuYQMZ4OjFmYVLVzNmKCQx
+	 8Yd4aIB+ofU4wRNrNx2mJNZo6Y8Ig66H3F2PCCchNTw5ieI+yPfxIk0SIIw6/HdH41
+	 HX+8wPXoowb5iLRcX7svVCHB1ds6rNhJGAqS3gQxaOmqT1MnGb2nQvhuhzrDVJM+Yw
+	 huvvldEYppAd0O00Hj7vzofTkZWWE0+YpLYoWM8cW36gTa9GhYsreT3EctWsy/x6p3
+	 x8mJPCbZig5Og==
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-54024aa9febso2752449e87.1;
+        Fri, 20 Dec 2024 21:15:38 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVWmN3dA9I5GW4HHcVGSjZbbMbKHo4bt083tWULqg+YiD4Pe0yykG2A6UyQsRyXTyZM89C9NA==@lists.linux.dev, AJvYcCXqDuF8I56dZO8W2Wb52U9yV7n1RJk75YQ54jbi//Il0lPkMLr4Hw6V60MGSWwTLcyZ6EgSXQ==@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz8qhpk9u8O6vDLcE8TQep1MvzGDDXhmh6FCqNTDJayCwVWDDDL
+	f4/DgaeTkjuD3qURXgugev1wcjVbVrDPA3AoEpmryjbS92+SMZ/SLkjCZXYV2dGYLFDbnFaKHKL
+	rKwbQSoYZSvviU9Gwm37G+e7yWBs=
+X-Google-Smtp-Source: AGHT+IFLGvnYDVZLLa6gb/IFLNG+NtJdTz+H8BQtiW/Pv7A9hdRHwl2vjaIxr7x6UhU9lyjaVH3MCdnPjifz3TMcGbU=
+X-Received: by 2002:ac2:5682:0:b0:542:2f5a:5f52 with SMTP id
+ 2adb3069b0e04-5422f5a5f9dmr180818e87.13.1734758137206; Fri, 20 Dec 2024
+ 21:15:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4059210.1734654011@warthog.procyon.org.uk>
+References: <20241213135013.2964079-1-dhowells@redhat.com> <20241213135013.2964079-2-dhowells@redhat.com>
+In-Reply-To: <20241213135013.2964079-2-dhowells@redhat.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Sat, 21 Dec 2024 14:15:00 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQndCMudAtVRAbfSfnV+XhSMDcnP-s1_GAQh8UiEdLBSg@mail.gmail.com>
+Message-ID: <CAK7LNAQndCMudAtVRAbfSfnV+XhSMDcnP-s1_GAQh8UiEdLBSg@mail.gmail.com>
+Subject: Re: [PATCH 01/10] kheaders: Ignore silly-rename files
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <christian@brauner.io>, Max Kellermann <max.kellermann@ionos.com>, 
+	Ilya Dryomov <idryomov@gmail.com>, Xiubo Li <xiubli@redhat.com>, 
+	Trond Myklebust <trondmy@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, netfs@lists.linux.dev, linux-afs@lists.infradead.org, 
+	linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org, 
+	ceph-devel@vger.kernel.org, v9fs@lists.linux.dev, 
+	linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Marc Dionne <marc.dionne@auristor.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 20, 2024 at 12:20:11AM +0000, David Howells wrote:
-> Paul E. McKenney <paulmck@kernel.org> wrote:
-> 
-> > This should actually be considered more of a bug report than a patch.
-> > 
-> > Clang 18.1.8 (but not GCC 11.5.0) complains that the "subreq" local
-> > variable can be used uninitialized in netfs_retry_read_subrequests(),
-> > just after the abandon_after label.  This function is unusual in having
-> > three instances of this local variable.  The third and last one is clearly
-> > erroneous because there is a branch out of the enclosing do-while loop
-> > to the end of this function, and it looks like the intent is that the
-> > code at the end of this function be using the same value of the "subreq"
-> > local variable as is used within that do-while loop.
-> > 
-> > Therefore, take the obvious (if potentially quite misguided) approach
-> > of removing the third declaration of "subreq", instead simply setting
-> > it to NULL.
-> 
-> I think you're looking at the old version of my netfs-writeback branch that's
-> residing in Christian's vfs.netfs branch.  I've posted a new version of my
-> branch[1] without this problem and am hoping for Christian to update the
-> branch[2] so that Stephen can pull it into linux-next.
+On Fri, Dec 13, 2024 at 10:50=E2=80=AFPM David Howells <dhowells@redhat.com=
+> wrote:
+>
+> Tell tar to ignore silly-rename files (".__afs*" and ".nfs*") when buildi=
+ng
+> the header archive.  These occur when a file that is open is unlinked
+> locally, but hasn't yet been closed.  Such files are visible to the user
+> via the getdents() syscall and so programs may want to do things with the=
+m.
+>
+> During the kernel build, such files may be made during the processing of
+> header files and the cleanup may get deferred by fput() which may result =
+in
+> tar seeing these files when it reads the directory, but they may have
+> disappeared by the time it tries to open them, causing tar to fail with a=
+n
+> error.  Further, we don't want to include them in the tarball if they sti=
+ll
+> exist.
+>
+> With CONFIG_HEADERS_INSTALL=3Dy, something like the following may be seen=
+:
 
-Me too, and thank you for looking into this!
+I am confused.
 
-							Thanx, Paul
+kernel/gen_kheaders.sh is executed when CONFIG_IKHEADERS is enabled.
 
-> David
-> 
-> [1] https://lore.kernel.org/linux-fsdevel/20241216204124.3752367-1-dhowells@redhat.com/T/#t
-> 
-> [2] And hoping he'll remember to drop "[PATCH v5 26/32] Display waited-on page
-> index after 1min of waiting" for me.  I forgot to remove that debugging patch.
-> 
+How is CONFIG_HEADERS_INSTALL related?
+
+
+
+>    find: './kernel/.tmp_cpio_dir/include/dt-bindings/reset/.__afs2080': N=
+o such file or directory
+>    tar: ./include/linux/greybus/.__afs3C95: File removed before we read i=
+t
+>
+> The find warning doesn't seem to cause a problem.
+
+I picked the following commit.
+
+https://lore.kernel.org/all/20241218202021.17276-1-elsk@google.com/
+
+This shoots the root cause of the 'find' errors.
+Does it fix your problems too?
+
+
+Your patch does not address the 'find' errors.
+
+
+
+
+
+
+>
+> Fix this by telling tar when called from in gen_kheaders.sh to exclude su=
+ch
+> files.  This only affects afs and nfs; cifs uses the Windows Hidden
+> attribute to prevent the file from being seen.
+>
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> cc: Masahiro Yamada <masahiroy@kernel.org>
+> cc: Marc Dionne <marc.dionne@auristor.com>
+> cc: linux-afs@lists.infradead.org
+> cc: linux-nfs@vger.kernel.org
+> cc: linux-kernel@vger.kernel.org
+> ---
+>  kernel/gen_kheaders.sh | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/kernel/gen_kheaders.sh b/kernel/gen_kheaders.sh
+> index 383fd43ac612..7e1340da5aca 100755
+> --- a/kernel/gen_kheaders.sh
+> +++ b/kernel/gen_kheaders.sh
+> @@ -89,6 +89,7 @@ find $cpio_dir -type f -print0 |
+>
+>  # Create archive and try to normalize metadata for reproducibility.
+>  tar "${KBUILD_BUILD_TIMESTAMP:+--mtime=3D$KBUILD_BUILD_TIMESTAMP}" \
+> +    --exclude=3D".__afs*" --exclude=3D".nfs*" \
+>      --owner=3D0 --group=3D0 --sort=3Dname --numeric-owner --mode=3Du=3Dr=
+w,go=3Dr,a+X \
+>      -I $XZ -cf $tarfile -C $cpio_dir/ . > /dev/null
+>
+>
+
+
+--=20
+Best Regards
+Masahiro Yamada
