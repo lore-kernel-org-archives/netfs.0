@@ -1,65 +1,146 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BF61D8E1D;
-	Mon,  6 Jan 2025 09:16:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 638981CBA02
+	for <netfs@lists.linux.dev>; Mon,  6 Jan 2025 11:37:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736154976; cv=none; b=b8dYsnxRZBHqDOApT5Vf7XW8n1xLQqLgmpuYhNhPtFkS6ACAmoiwQpu/X3dTLQz4OB8CypC2UN0bozkDgqOPXG0mxQ6A93iweYkbsliiozXtvN3BPT/pDL0OCX6FyX5k5WbTOM/RVNJegJgdKLOTz0u2TQPVQHZOdcDrt3t8nyw=
+	t=1736163454; cv=none; b=RMys9anmHwfhQbkNAn56XdtlDXKkq97xswDfFX9LHyM5KROFrzE4STXwTSa4xf6uUF5ocvdkgk9dikcF/8ht5p6b4dEugwidcQaLeNrHR0sjD9F58icuDVP/4zu4MozhyqR3IWHGgfJ1Cj03RukYIGQjOoR6eMyPDXYtlAwr9kA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736154976; c=relaxed/simple;
-	bh=4/8XWjin8gUiHFiWrCvFm8Wj00zGliS766CAAY7K3hg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cr9diS4hc75YFsVRFGwgxswFla1rEJ9wh2pAZBE6IVCZK9tkJMF3zkqy/n15yrP/6bSBTEw118LzUh1vLp8hA0hcRGFw7rVzUpd5eWK+V056GTs3EfvabRXJBozXQr1hh60jigD+QGv5E94tlJ5QRSirNwoSJvLVnBwLaSJjl1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=utfQ3GLh; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+	s=arc-20240116; t=1736163454; c=relaxed/simple;
+	bh=vSkL70mPa9ZU0T2jcqCFDByTZW4036xqdGj/g8j0Pcc=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=E82eeQWyImQL/kF+B/yzv5zWcx/tynBA6xANUnE+Z/5SMGTsLsbpihUyjlj0RYLoTGAOnqis22YOqJZ53DleawBsjLgEPX/ViAd2Gey6Nekci7jq3omM5TNpKQVVluaGB4hU4bb8pJ7zC51+hKdEJ+hKBoNszYkMGrbA7LIfGek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HBk9kjl4; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="utfQ3GLh"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=8SM31yDesgM1eYl6Lj1y750DwKgjbTFkgesdYsVjfLE=; b=utfQ3GLhAdlXYnK2/WQV0arUmG
-	ylQTqZHzMm6m0hQa5gxCYi3m179bOe3II5UI9/gndzFDAUJiq32MSxj317p4UQtGBKrC77Ne+WRjW
-	vJhOueoFbPzHW7mpngZutz5qkUkAVNPw8N9Ly2ESqj3Y8n7N+8LqJ4BaW+0ADWPQPeJXa/rk8cfda
-	DBA4WZOdtSSEh0h/AvucYHKH1kjBwauh9WeDAxprALfxBR4N7Hw9oVGrrkmNMGC/DWl52+ONCYkLU
-	E2pwK5Fyk2u67nPjxYQ+g8ozk6Diu+iGzbkmSYqD9HPh4mR9OUkt3PqjeTIzexBpwI3HCQnaD0IBD
-	XxhT8owQ==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1tUjDY-00000000dYn-19s1;
-	Mon, 06 Jan 2025 09:16:12 +0000
-Date: Mon, 6 Jan 2025 01:16:12 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Christoph Hellwig <hch@infradead.org>, nicolas.baranger@3xo.fr,
-	linux-cifs@vger.kernel.org, netfs@lists.linux.dev
-Subject: Re: Losetup Direct I/O breaks BACK-FILE filesystem on CIFS share
- (Appears in Linux 6.10 and reproduced on mainline)
-Message-ID: <Z3ufXFZziHGYpBsO@infradead.org>
-References: <Z3uENYsAlKhUdQgY@infradead.org>
- <669f22fc89e45dd4e56d75876dc8f2bf@3xo.fr>
- <fedd8a40d54b2969097ffa4507979858@3xo.fr>
- <278655.1736154782@warthog.procyon.org.uk>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HBk9kjl4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736163451;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Kp15SreWS1fhtE7z/OTQXIsjz7AhnxT/exdmyKm2weg=;
+	b=HBk9kjl4JhZXb3sOSbrYacHbNYGj2qY4TDWEfY0mnPFWYZXUIW2eKntYhmKZXKmrlPNw/z
+	1ygCn6dkDgyafwZLv+2Au4EJNuxKQaD/Aer1sJKrPicanNijPY+0a6S0By95vkOlzbOVtt
+	qSer7kax8tyh8HF+zyK78kooI2tdojM=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-407-9tlihHwDM_G6dW8v7aOHtQ-1; Mon,
+ 06 Jan 2025 06:37:30 -0500
+X-MC-Unique: 9tlihHwDM_G6dW8v7aOHtQ-1
+X-Mimecast-MFC-AGG-ID: 9tlihHwDM_G6dW8v7aOHtQ
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 740D3195608C;
+	Mon,  6 Jan 2025 11:37:28 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.12])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0BC9D1956056;
+	Mon,  6 Jan 2025 11:37:25 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <fedd8a40d54b2969097ffa4507979858@3xo.fr>
+References: <fedd8a40d54b2969097ffa4507979858@3xo.fr> <669f22fc89e45dd4e56d75876dc8f2bf@3xo.fr>
+To: nicolas.baranger@3xo.fr
+Cc: dhowells@redhat.com, Steve French <smfrench@gmail.com>,
+    Christoph Hellwig <hch@infradead.org>,
+    Jeff Layton <jlayton@kernel.org>,
+    Christian Brauner <brauner@kernel.org>, netfs@lists.linux.dev,
+    linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: [PATCH] netfs: Fix kernel async DIO
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <278655.1736154782@warthog.procyon.org.uk>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <286637.1736163444.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 06 Jan 2025 11:37:24 +0000
+Message-ID: <286638.1736163444@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Mon, Jan 06, 2025 at 09:13:02AM +0000, David Howells wrote:
-> Okay, I can reproduce it trivially.  Question is, do I need to copy the
-> bio_vec array (or kvec array or folio_queue list) or can I rely on that being
-> maintained till the end of the op?  (Obviously, I can't rely on the iov_iter
-> struct itself being maintained).  I think I have to copy the contents, just in
-> case.
+Hi Nicolas,
 
-The bio_vec array can't be freed while I/O is in progress.  Take a look
-at the iov_iter_is_bvec case in bio_iov_iter_get_pages for how simple
-ITER_BVEC handling can be.
+Does the attached fix your problem?
+
+David
+---
+netfs: Fix kernel async DIO
+
+Netfslib needs to be able to handle kernel-initiated asynchronous DIO that
+is supplied with a bio_vec[] array.  Currently, because of the async flag,
+this gets passed to netfs_extract_user_iter() which throws a warning and
+fails because it only handles IOVEC and UBUF iterators.  This can be
+triggered through a combination of cifs and a loopback blockdev with
+something like:
+
+        mount //my/cifs/share /foo
+        dd if=3D/dev/zero of=3D/foo/m0 bs=3D4K count=3D1K
+        losetup --sector-size 4096 --direct-io=3Don /dev/loop2046 /foo/m0
+        echo hello >/dev/loop2046
+
+This causes the following to appear in syslog:
+
+        WARNING: CPU: 2 PID: 109 at fs/netfs/iterator.c:50 netfs_extract_u=
+ser_iter+0x170/0x250 [netfs]
+
+and the write to fail.
+
+Fix this by removing the check in netfs_unbuffered_write_iter_locked() tha=
+t
+causes async kernel DIO writes to be handled as userspace writes.  Note
+that this change relies on the kernel caller maintaining the existence of
+the bio_vec array (or kvec[] or folio_queue) until the op is complete.
+
+Fixes: 153a9961b551 ("netfs: Implement unbuffered/DIO write support")
+Reported by: Nicolas Baranger <nicolas.baranger@3xo.fr>
+Closes: https://lore.kernel.org/r/fedd8a40d54b2969097ffa4507979858@3xo.fr/
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Steve French <smfrench@gmail.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: netfs@lists.linux.dev
+cc: linux-cifs@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
+---
+ fs/netfs/direct_write.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
+index eded8afaa60b..42ce53cc216e 100644
+--- a/fs/netfs/direct_write.c
++++ b/fs/netfs/direct_write.c
+@@ -67,7 +67,7 @@ ssize_t netfs_unbuffered_write_iter_locked(struct kiocb =
+*iocb, struct iov_iter *
+ 		 * allocate a sufficiently large bvec array and may shorten the
+ 		 * request.
+ 		 */
+-		if (async || user_backed_iter(iter)) {
++		if (user_backed_iter(iter)) {
+ 			n =3D netfs_extract_user_iter(iter, len, &wreq->buffer.iter, 0);
+ 			if (n < 0) {
+ 				ret =3D n;
+@@ -77,6 +77,11 @@ ssize_t netfs_unbuffered_write_iter_locked(struct kiocb=
+ *iocb, struct iov_iter *
+ 			wreq->direct_bv_count =3D n;
+ 			wreq->direct_bv_unpin =3D iov_iter_extract_will_pin(iter);
+ 		} else {
++			/* If this is a kernel-generated async DIO request,
++			 * assume that any resources the iterator points to
++			 * (eg. a bio_vec array) will persist till the end of
++			 * the op.
++			 */
+ 			wreq->buffer.iter =3D *iter;
+ 		}
+ 	}
 
