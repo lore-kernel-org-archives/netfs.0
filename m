@@ -1,86 +1,105 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABDC1E231F
-	for <netfs@lists.linux.dev>; Tue,  7 Jan 2025 10:58:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331C31E9B27
+	for <netfs@lists.linux.dev>; Tue,  7 Jan 2025 11:15:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736247531; cv=none; b=OpJD1gP900EYvgTyLjdF9/bunK538gTQOWKLnUsuorj2le0+oXysIpJQxHNkkuscZaHKX2WmVze5fzq7uj5u4QAXLmXMKSFA2GtRp0gEBswEews9D9qoOhB88IMEVj6Ba+2Ba/IG6y02ybgzbpGodfl0CnUdjcSjHnX2NuGsKUE=
+	t=1736248528; cv=none; b=OdGFfKdcxoLJQafjzadOehqBnSt/MbLxv1lRB2wjddWjfjtDS5ZnSTO/U6g84EAZj57Aqg1xnYvt60QCOWgWr/ZP+oxaiO8rAJN50COVR51ByjNraf0lSLT2YRKm6sCPr/Ok1uqxfVQZtgGiZ21N7wJSTOJAHSZ5LoSJiq+wKFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736247531; c=relaxed/simple;
-	bh=r9cba/X2LZ+xXzIfLu11VdFcsGQUaqpTLxJ+TPcAd0U=;
+	s=arc-20240116; t=1736248528; c=relaxed/simple;
+	bh=QZp/WDXgrKvYb74JicBCfyng7OGqeKkWShWpr+oWPc0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FHttpOHS8c2E9IFkLlbloLx0NKLj+abELuNA3+Im7WfBcORADAOmsfbSmJZnaUaiKNC8lZeZr7ACN2489hndRoESo1naAxhaEZYBK3Ye0n5EEvZ+psAGNPpy8GVjH4kjxvvxlW0sLolxUh3RYQ7INSgSLsqZ6FeCkkMFv96Scgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=OIxZBfEd; arc=none smtp.client-ip=209.85.218.44
+	 To:Cc:Content-Type; b=CAqgISaYggi9qCVTczegxf8/7jkkh++Sl2DM0edgC9/V7HWs1Ld90q5E1zdjKHRyaRbFMdQEAT24Y0ntaCgYOe9tGJOjXvOTmzXxrNSnBdZingQrQgGw9dQbqTxHj0/pDsnLzQekACqfxQcMgVbUSiI0zOX+LwC6xt/sKNBgV24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=Prj+Y1wb; arc=none smtp.client-ip=209.85.218.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="OIxZBfEd"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-aa67f31a858so2773842166b.2
-        for <netfs@lists.linux.dev>; Tue, 07 Jan 2025 02:58:49 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="Prj+Y1wb"
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-aafc9d75f8bso224429066b.2
+        for <netfs@lists.linux.dev>; Tue, 07 Jan 2025 03:15:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1736247528; x=1736852328; darn=lists.linux.dev;
+        d=ionos.com; s=google; t=1736248522; x=1736853322; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=r9cba/X2LZ+xXzIfLu11VdFcsGQUaqpTLxJ+TPcAd0U=;
-        b=OIxZBfEd+OIWKMFIz7tNXGnc524pjiiZjlFRR3Hj6ReP+gq7F16gGNBBf1h3Vk/hpB
-         Vf9p/4IsiPLc4lu8zSP46ved0QrbcbyopTSmahzeJb1DiWgNJ6iOe6aZP295lHmgMik2
-         CMKz/1AkkxWgLfuwm6R3rXh2jyu1QSVs19HOeRVSwxdJDIIaCLv+9G/SJtZI3j5BQuRN
-         TPaU8B5J/7tMyWNuKGf4XJCsY/e3iuGwJ7kkGscB7aco+c66vSkIUvZJq2KU3zP6DUoO
-         Y35u3pTGTlNyI64sFNA+K86oUZFTos7wpGtvE0y4OF5X76C73QZLaAOY7Uy2cY4ums9y
-         AnCA==
+        bh=G4sAEv5+P24ZuVYwXpR4YI7dfuop0huoLVLWvKazLDA=;
+        b=Prj+Y1wbftKt5bFM2I4wq99dZXkvkUS9bVPTmE2783L0Mk84Qntsy++ylrv1LwxAdp
+         LNZMGQGAiSNObyJ2251ucLl2tsixzQ7fAgNuqJRh6U/e0mNGnRJSxZsGi/FQXP0YjLxe
+         1eyhNECIf0N7HdtNWwNkxub6lF6EClxDa4WCj3FAuNr5w3ObMOmrZJaOvRJcswLtNDkm
+         II5gUX/nvDGKh7OVQrmgIAZpao8RSS9qQoSMTcxyLtDxv45VS+Q0ElOHy6qfNkKJNpWB
+         Nd2r+oOC3SDz+Y9W8fqyUw7Yi1sZLMqb1L6Vx7UZwjLsGqxZSNBWV/6DPddHTXnukIMJ
+         /xaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736247528; x=1736852328;
+        d=1e100.net; s=20230601; t=1736248522; x=1736853322;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=r9cba/X2LZ+xXzIfLu11VdFcsGQUaqpTLxJ+TPcAd0U=;
-        b=LCkF8yzfSLP+Rdsq2cgBljUBiq1KijBzegqG32gMVKfU5sPGO949cuh9wWV0Ymgydc
-         UCJ8Y3OuAeMAaz4b2/zIt1PolN4kvYREH5z0gpTWbO/EF+Cxk1OeXs2Glm36fowhCe5G
-         t+StZGwGBwEj4jVPXavnWUY+d22f7Ws1QUxdkhBluZr+ESfZcx4ocbknSclF69jYhwv/
-         r95DxyYQ5fB89h23vTovPeZh7V4AhAYD1hdf71uGDzEarSgywzsz/sR6Y/J7fZU3aotk
-         nsNE9ZPLaoqBF1Ho6G/KWz3mJT/8pcc4+augJqQ7BUCHV2S9xCPs44e6Ege5Iibpziq/
-         0qAg==
-X-Forwarded-Encrypted: i=1; AJvYcCU+HsHMXVv0lNCOtU/927/YbVtsxpoOHIEd2Jr00YJ+qxd5x9Tfm7uAxqB2P4n2XsR2mW2srQ==@lists.linux.dev
-X-Gm-Message-State: AOJu0YwUS88D+sIevmjLwAiRQ6ERXyppu52VD5bWGeo0OLLJYoTONSMI
-	MZu2p0qb6DcqEgre3MpCCixXPsByV5g0EMUQV53LLBR34chrzVAI5PzmC/vI7QqRT6p/YJXCpze
-	DJxkXt5v0hstEvzV16JlrJhwNeIYW3nDvuNDcog==
-X-Gm-Gg: ASbGncu5GNOUk7sku1Vn/lUQCMmyq0afsQQmxhTg1MWPIHniLbcUaa0QjbRHUKnl8cp
-	JNVuMtFWYVPRKhaiM8+TB7TW8lzXBSeflzenJIpNUzEHir9H3B7JSL116gf55E8RcT+4=
-X-Google-Smtp-Source: AGHT+IETZOmNG/e0pTEpYkVhrwGsLepWld2hp3oIZEoqxA3MiEDxyRVbckh1TvXsfUQviSS2Bg03tqiW0zDp2s9kgt8=
-X-Received: by 2002:a17:907:1c10:b0:aab:eefd:4ceb with SMTP id
- a640c23a62f3a-aac27025de5mr5732340766b.10.1736247528011; Tue, 07 Jan 2025
- 02:58:48 -0800 (PST)
+        bh=G4sAEv5+P24ZuVYwXpR4YI7dfuop0huoLVLWvKazLDA=;
+        b=KaSOQncxJRCOBmltjt68OGHNpQIMK99gYGd7lylQplB1C+WJ6NlScX2/bV+WUEaxSU
+         LJDND2aKTblz/UqVOF7rPU7Fq6SjtUG+Jm9TJg+nj9mJA8e76dOUKhh+eRHGvzp++JsI
+         wE75yypF+AoMQfmHtuJpaPWgHRiAIInoTn9SPAaDxu/3bxmZLpzR6ds2Em9ZEyZLeoQi
+         uhmWr1mzTU5nWXJmjrsF3jLTq9KdMdaz4ZuH8ZRYx7bIgjcZwvSiTBKAs27Aqu6pkhIk
+         IJiX1ofCr0V37o/JTKzkNDHdoBKfkYPFrQXN3kFVoPFQbcOcpAEpm2S6i7s0rPK4dLG3
+         Vlug==
+X-Gm-Message-State: AOJu0YyDJNx6AI1hPuz6/I1l/Y4Fykijl1f5A1QwuSmXti3x3sW9SiMs
+	1KKzHV+2Y+iHQCY8AEBU8zdaPc1sqIXRGPAjxHIbh03FabESecUziQMEaXcCwVE8wKMsZkWA353
+	18wQASH9XYaUCl8RE12xw/khmX3k8Vr2+7dsFnErqpQ6DQaXDmIk=
+X-Gm-Gg: ASbGncsyAlXyCUm6MZmrdKmRT6IheqcXtqolGiVPP7OCNusgV2VaNlJJqq8uqnah7oj
+	JbXSfdPPBYaeCPLBlIQ0yaZJOAyZLYAPW0of/o0Kbna67pVBzmTJGS4VMxmkQRbSvf0I=
+X-Google-Smtp-Source: AGHT+IF4CUaVr277Bgf4TPhx5v7M8trrJ5YFFhkQe+5vif2wVEaqEOTKmXfVNKJLrK1OS6Px9dwjOxAnfnP9Jm328t0=
+X-Received: by 2002:a17:907:1c91:b0:aa6:5d30:d976 with SMTP id
+ a640c23a62f3a-aac270278edmr6088067366b.10.1736248522097; Tue, 07 Jan 2025
+ 03:15:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAKPOu+_4m80thNy5_fvROoxBm689YtA0dZ-=gcmkzwYSY4syqw@mail.gmail.com>
- <3990750.1732884087@warthog.procyon.org.uk> <CAKPOu+96b4nx3iHaH6Mkf2GyJ-dr0i5o=hfFVDs--gWkN7aiDQ@mail.gmail.com>
- <CAKPOu+9xvH4JfGqE=TSOpRry7zCRHx+51GtOHKbHTn9gHAU+VA@mail.gmail.com>
- <CAKPOu+_OamJ-0wsJB3GOYu5v76ZwFr+N2L92dYH6NLBzzhDfOQ@mail.gmail.com>
- <1995560.1733519609@warthog.procyon.org.uk> <CAKPOu+8a6EW_Ao65+aK-0ougWEzy_0yuwf3Dit89LuU8vEsJ2Q@mail.gmail.com>
- <CAKPOu+-h2B0mw0k_XiHJ1u69draDLTLqJhRmr3ksk2-ozzXiTg@mail.gmail.com>
- <2117977.1733750054@warthog.procyon.org.uk> <CAKPOu+-Bpds7-Ocb-tBMs1==YzVhhx01+FaiokiGR3A-W9t_gQ@mail.gmail.com>
- <2787700.1734019232@warthog.procyon.org.uk>
-In-Reply-To: <2787700.1734019232@warthog.procyon.org.uk>
+References: <CAKPOu+_JUNO5EZosu00H=tZsgfCAzQkBBkJjVfOHYrX_6mHEPQ@mail.gmail.com>
+ <4022108.1732899245@warthog.procyon.org.uk> <CAKPOu+_gzJCN6OKYvUw+H9kDrc3YG8yxJS_YDx41zS==wBKpbA@mail.gmail.com>
+In-Reply-To: <CAKPOu+_gzJCN6OKYvUw+H9kDrc3YG8yxJS_YDx41zS==wBKpbA@mail.gmail.com>
 From: Max Kellermann <max.kellermann@ionos.com>
-Date: Tue, 7 Jan 2025 11:58:37 +0100
-Message-ID: <CAKPOu+-O4NVRO-oEsSv_GG__q5tdC-X8zPUnLkJ+9iDaVp_UyA@mail.gmail.com>
-Subject: Re: [PATCH] netfs: Fix ceph copy to cache on write-begin
+Date: Tue, 7 Jan 2025 12:15:11 +0100
+Message-ID: <CAKPOu+8qbUWCeUvb3eMfkvF6hx8pGWf+o8sU6T3dPSmWr+mXCw@mail.gmail.com>
+Subject: Re: New cachefilesd implementation
 To: David Howells <dhowells@redhat.com>
-Cc: Jeff Layton <jlayton@kernel.org>, netfs@lists.linux.dev, 
-	linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-kernel@vger.kernel.org
+Cc: netfs@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 12, 2024 at 5:00=E2=80=AFPM David Howells <dhowells@redhat.com>=
- wrote:
-> How about if you add the attached?
+On Fri, Dec 6, 2024 at 3:06=E2=80=AFPM Max Kellermann <max.kellermann@ionos=
+.com> wrote:
+>
+> On Fri, Nov 29, 2024 at 5:54=E2=80=AFPM David Howells <dhowells@redhat.co=
+m> wrote:
+> > Now, would you be able to clone this:
+> >
+> >         https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/cachef=
+ilesd.git/
+> >
+> > Then rip out the existing code and put in your code?  There's some stuf=
+f in
+> > there that is necessary to run on SELinux-based systems and it would ma=
+ke it
+> > a lot easier for me just to replace the current cachefilesd package by =
+just
+> > pulling yours directly.
+>
+> Here:
+>
+> https://github.com/CM4all/cash/tree/cachefilesd2
+>
+> Please check if that's how you envisioned it. License is also changed
+> to BSD2 or GPL2+.
+> RFC! - it's not yet finalized, and not yet ready for merging.
 
-Still no change, first try led to hang, as always.
+David, please don't forget this.
 
-(Sorry for the late reply, I was offline on vacation)
+Today, I have merged our latest version (0.3 -> 0.5) into the
+"cachefilesd2" branch. The new version limits the io_uring
+concurrency, because previously, our daemon could lock up the kernel
+inside io_uring for exceeding the cgroup memory limit.
+
+Max
