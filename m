@@ -1,74 +1,264 @@
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.3xo.fr (mail.3xo.fr [212.129.21.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5DF1DED4A
-	for <netfs@lists.linux.dev>; Mon,  6 Jan 2025 17:42:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D20B156F3F
+	for <netfs@lists.linux.dev>; Tue,  7 Jan 2025 08:26:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.129.21.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736185327; cv=none; b=WwE9MLs7Yyrpyzdts2gLIBFz7s0FH7poNTEWja3TScoie5EoWeyR/xaUuN0ovWCIGLIxnqj8loW8zEh8dubWmSTrPDJyYgA4ZudkgurYLAKKYWyfNE3OySlZiPVPH+v42N6jLBEGKylsF30f5tuiPgGvdUpbOfXRnh0T0t1CnA4=
+	t=1736238400; cv=none; b=qO3jAt/6PnA08E8HA8hSmUAQ22oUNqMLLawFQ1YZkOCPl4WAhiwNcotAF08EyP8SHXxunkNfhF88wptsdqqVaaUqs9rn9j8YXNAYDYDIR/POo7/D+meFchHyy8ZFj8J4I1YHHKs7ncuLwVdE428BLRXu7wRi98JKaaZ+bR8BiAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736185327; c=relaxed/simple;
-	bh=qDoZS3NKdSeE+nCo/Q27/As6lKC0AXdtcZdMKhSej3Y=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=lbhcmS0vhWqx/5zfx2g6Ss3Digo458mYlDEAYAl70vrAMzOyxciYB9EP+8H6D+9s8JXdWgYC9+qia8CNj03nGDHuNLhpaYBKnnx81g+GQptC83YC1y9MA+zyXrvq6ccjQQIkOfDnOdZI4wyS2hDnFIPHOz02lLdexdYuTnXsokA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-3a817be161bso142712495ab.1
-        for <netfs@lists.linux.dev>; Mon, 06 Jan 2025 09:42:06 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736185325; x=1736790125;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GNENMpa70ZFUxpC/qH5uyHnJyYbgF2N+67wGvKH0tJY=;
-        b=WmT876W6LREg4njG16mmqAvL3/Q2TsdWukiLpTCodieXzLi5/LzGiuzhMwEr+06Udt
-         yHVw+8P4BrV4A/mmev/kd2nIzH4tmmtpWNmZuxZAd8kxS5k+zIilMRZglZT61NEuYZnU
-         Jfe7+t9GTJ+PafWGvdSRon6OU0xSS7GXUBgFni366vvi4BHG/8v1o1sH1v1ecPJxKTc7
-         8Udx9BOC+IvSRtfsXMfvnHigJE3rbYUvuvywavdrAfnVgGLRF9OxdktD/YhzT1jgzhok
-         +yyBr/KEzMK5QodaNv58nUUxTz4mdh3BSN262xjcK/FIjaRXupQbhfFx+saWAYsFnf5L
-         cn6A==
-X-Forwarded-Encrypted: i=1; AJvYcCXQeWuzdDYsbEilpuMLLkbVrfY5yJ6+ouSY6FCu0vU6vvUbuXPCzjsX99w/cY24RLBNtvdaHQ==@lists.linux.dev
-X-Gm-Message-State: AOJu0YwGuqYAN8M57tFECZbs7FMnqd7hpPwD3BD6Azy7lNKaQoCKvAu/
-	JllOCLExvX+OeMtHMeQDNfgXHH66Zvnyw/gsqMiaTAPvJ97T4rRi4+2C1kFn6GM8LNeSvxq5X0G
-	5lmgaBelyaHSpJz3tKZwSk+CcfgxtT2J8WwOzY2wWl5XMzWE/qUOQxyQ=
-X-Google-Smtp-Source: AGHT+IH2sA1PHDte7MnFAI5UDFyl6+57MyFTp+jr53IHp24CXdnaVcc7eiEp40FSRBdicfxfzHzbowsbHGx/11z9/QdsFQIlNKjo
+	s=arc-20240116; t=1736238400; c=relaxed/simple;
+	bh=jZ0+OGaIgzg1CHNIaj8SAXWPI9x1twG7QWvI5xB7uKI=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=Xz5YwXD+hdEJxM8ebWyuoMMPZd6j01CI//YrhJ/ofL2JJBHGAqN2a5Acax/8pqTQVhwIJRDyqU2K2RsbErBJ5a2Z3NFYc3QhA4jWVS7ZWtVShYoVeBrQWapzUSEL/FtQeXN8aVEG92Wpm77HWqcSHpXvZ3IjMcT1/PhKJLdZrTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=3xo.fr; spf=pass smtp.mailfrom=3xo.fr; dkim=pass (2048-bit key) header.d=3xo.fr header.i=@3xo.fr header.b=0Dy1kcjU; arc=none smtp.client-ip=212.129.21.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=3xo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=3xo.fr
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=3xo.fr header.i=@3xo.fr header.b="0Dy1kcjU"
+Received: from localhost (mail.3xo.fr [212.129.21.66])
+	by mail.3xo.fr (Postfix) with ESMTP id 8C308C6;
+	Tue,  7 Jan 2025 09:26:34 +0100 (CET)
+X-Virus-Scanned: Debian amavis at nxo2.3xo.fr
+Received: from mail.3xo.fr ([212.129.21.66])
+ by localhost (mail.3xo.fr [212.129.21.66]) (amavis, port 10024) with ESMTP
+ id 1TM8fVmCoesI; Tue,  7 Jan 2025 09:26:29 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.3xo.fr 0F9E69A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=3xo.fr; s=3xo;
+	t=1736238389; bh=mAo05H522WX53Hk4wwUxmtgyssL8mKB7kPAfERuCX2E=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=0Dy1kcjUNuSdweDJBY94RHlIgmtyEm+KdgNepv9WDm1zQG2gmC83u+C17/nLptmcq
+	 qABU8ZIcj2JvoibEjdMKH5dfIq7YlHCF/HV02kGL7750VfKAm/23LEN5R4e9kYsP5a
+	 c3ZEVdhnzeVWy6Xb/eiuqx8KlPVSLzWXgkOTpsV/EyZZUCwlz+KwBXCdyXrZR8vdJa
+	 fMb+q8+kBfLiEtPUxjcGg7A8oGRJVMbI8BmHRtXqSZwsNURv5M2P9oUmc2wYJcl6ok
+	 yR6OOwi51YJJqzasqMIAaudwsrMq2cg3A5tvE0fvUVCYsM9PDtI1nuHJE7ku9V5AcY
+	 +mn8qGyxqCZ/w==
+Received: from mail.3xo.fr (mail.3xo.fr [212.129.21.66])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.3xo.fr (Postfix) with ESMTPSA id 0F9E69A;
+	Tue,  7 Jan 2025 09:26:29 +0100 (CET)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1808:b0:3a7:e956:13fc with SMTP id
- e9e14a558f8ab-3ce31d3c1c3mr1609715ab.5.1736185325499; Mon, 06 Jan 2025
- 09:42:05 -0800 (PST)
-Date: Mon, 06 Jan 2025 09:42:05 -0800
-In-Reply-To: <CAJnrk1ZC4orWTbJAKVuDwmRCRRN-WSM6xpcNiGW48P55nD3r+Q@mail.gmail.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <677c15ed.050a0220.3b3668.0016.GAE@google.com>
-Subject: Re: [syzbot] [fuse?] KASAN: slab-use-after-free Read in iov_iter_revert
-From: syzbot <syzbot+2625ce08c2659fb9961a@syzkaller.appspotmail.com>
-To: dhowells@redhat.com, jlayton@kernel.org, joannelkoong@gmail.com, 
-	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, miklos@szeredi.hu, mszeredi@redhat.com, 
-	netfs@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Date: Tue, 07 Jan 2025 09:26:28 +0100
+From: nicolas.baranger@3xo.fr
+To: David Howells <dhowells@redhat.com>
+Cc: Steve French <smfrench@gmail.com>, Christoph Hellwig
+ <hch@infradead.org>, Jeff Layton <jlayton@kernel.org>, Christian Brauner
+ <brauner@kernel.org>, netfs@lists.linux.dev, linux-cifs@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] netfs: Fix kernel async DIO
+In-Reply-To: <b3e8129937055ff8971d8be44286f0b8@3xo.fr>
+References: <fedd8a40d54b2969097ffa4507979858@3xo.fr>
+ <669f22fc89e45dd4e56d75876dc8f2bf@3xo.fr>
+ <286638.1736163444@warthog.procyon.org.uk>
+ <b3e8129937055ff8971d8be44286f0b8@3xo.fr>
+Message-ID: <d98ca4470c447182020b576841115a20@3xo.fr>
+X-Sender: nicolas.baranger@3xo.fr
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hello,
+Hi David
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+As your patch was written on top on linux-next I was required to make 
+some small modifications to make it work on mainline (6.13-rc6).
+The following patch is working fine for me on mainline, but i think it 
+would be better to wait for your confirmation / validation (or new 
+patch) before applying it on production.
 
-Reported-by: syzbot+2625ce08c2659fb9961a@syzkaller.appspotmail.com
-Tested-by: syzbot+2625ce08c2659fb9961a@syzkaller.appspotmail.com
+#-------- PATCH --------#
 
-Tested on:
+diff --git a/linux-6.13-rc6/nba/_orig_fs.netfs.direct_write.c 
+b/linux-6.13-rc6/fs/netfs/direct_write.c
+index 88f2adf..94a1ee8 100644
+--- a/linux-6.13-rc6/nba/_orig_fs.netfs.direct_write.c
++++ b/linux-6.13-rc6/fs/netfs/direct_write.c
+@@ -67,7 +67,7 @@ ssize_t netfs_unbuffered_write_iter_locked(struct 
+kiocb *iocb, struct iov_iter *
+                  * allocate a sufficiently large bvec array and may 
+shorten the
+                  * request.
+                  */
+-               if (async || user_backed_iter(iter)) {
++               if (user_backed_iter(iter)) {
+                         n = netfs_extract_user_iter(iter, len, 
+&wreq->iter, 0);
+                         if (n < 0) {
+                                 ret = n;
+@@ -77,6 +77,11 @@ ssize_t netfs_unbuffered_write_iter_locked(struct 
+kiocb *iocb, struct iov_iter *
+                         wreq->direct_bv_count = n;
+                         wreq->direct_bv_unpin = 
+iov_iter_extract_will_pin(iter);
+                 } else {
++                       /* If this is a kernel-generated async DIO 
+request,
++                        * assume that any resources the iterator points 
+to
++                        * (eg. a bio_vec array) will persist till the 
+end of
++                        * the op.
++                        */
+                         wreq->iter = *iter;
+                 }
 
-commit:         78f2560f fuse: Set *nbytesp=0 in fuse_get_user_pages o..
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/mszeredi/fuse.git for-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=16eeb418580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=a0669984e46cc674
-dashboard link: https://syzkaller.appspot.com/bug?extid=2625ce08c2659fb9961a
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
 
-Note: no patches were applied.
-Note: testing is done by a robot and is best-effort only.
+#-------- TESTS --------#
+
+Using this patch Linux 6.13-rc6 build with no error and '--direct-io=on' 
+is working :
+
+
+18:38:47 root@deb12-lab-10d:~# uname -a
+Linux deb12-lab-10d.lab.lan 6.13.0-rc6-amd64 #0 SMP PREEMPT_DYNAMIC Mon 
+Jan  6 18:14:07 CET 2025 x86_64 GNU/Linux
+
+18:39:29 root@deb12-lab-10d:~# losetup
+NAME          SIZELIMIT OFFSET AUTOCLEAR RO BACK-FILE                    
+    DIO LOG-SEC
+/dev/loop2046         0      0         0  0 
+/mnt/FBX24T/FS-LAN/bckcrypt2046   1    4096
+
+18:39:32 root@deb12-lab-10d:~# dmsetup ls | grep bckcrypt
+bckcrypt    (254:7)
+
+18:39:55 root@deb12-lab-10d:~# cryptsetup status bckcrypt
+/dev/mapper/bckcrypt is active and is in use.
+   type:    LUKS2
+   cipher:  aes-xts-plain64
+   keysize: 512 bits
+   key location: keyring
+   device:  /dev/loop2046
+   loop:    /mnt/FBX24T/FS-LAN/bckcrypt2046
+   sector size:  512
+   offset:  32768 sectors
+   size:    8589901824 sectors
+   mode:    read/write
+
+18:40:36 root@deb12-lab-10d:~# df -h | egrep 'cifs|bckcrypt'
+//10.0.10.100/FBX24T      cifs        22T     13T  9,0T  60% /mnt/FBX24T
+/dev/mapper/bckcrypt      btrfs      4,0T    3,3T  779G  82% 
+/mnt/bckcrypt
+
+
+09:08:44 root@deb12-lab-10d:~# LANG=en_US.UTF-8
+09:08:46 root@deb12-lab-10d:~# dd if=/dev/zero 
+of=/mnt/bckcrypt/test/test.dd bs=256M count=16 oflag=direct 
+status=progress
+4294967296 bytes (4.3 GB, 4.0 GiB) copied, 14 s, 302 MB/s
+16+0 records in
+16+0 records out
+4294967296 bytes (4.3 GB, 4.0 GiB) copied, 14.2061 s, 302 MB/s
+
+
+
+No write errors using '--direct-io=on' option of losetup with this patch 
+=> writing to the back-file is more than 20x faster ...
+It seems to be ok !
+
+Let me know if something's wrong in this patch or if it can safely be 
+used in production.
+
+Again thanks everyone for help.
+Nicolas
+
+
+
+Le 2025-01-06 13:07, nicolas.baranger@3xo.fr a écrit :
+
+> Hi David
+> 
+> Thanks for the job !
+> I will buid Linux 6.10 and mainline with the provided change and I'm 
+> comming here as soon as I get results from tests (CET working time).
+> 
+> Thanks again for help in this issue
+> Nicolas
+> 
+> Le 2025-01-06 12:37, David Howells a écrit :
+> 
+>> Hi Nicolas,
+>> 
+>> Does the attached fix your problem?
+>> 
+>> David
+>> ---
+>> netfs: Fix kernel async DIO
+>> 
+>> Netfslib needs to be able to handle kernel-initiated asynchronous DIO 
+>> that
+>> is supplied with a bio_vec[] array.  Currently, because of the async 
+>> flag,
+>> this gets passed to netfs_extract_user_iter() which throws a warning 
+>> and
+>> fails because it only handles IOVEC and UBUF iterators.  This can be
+>> triggered through a combination of cifs and a loopback blockdev with
+>> something like:
+>> 
+>> mount //my/cifs/share /foo
+>> dd if=/dev/zero of=/foo/m0 bs=4K count=1K
+>> losetup --sector-size 4096 --direct-io=on /dev/loop2046 /foo/m0
+>> echo hello >/dev/loop2046
+>> 
+>> This causes the following to appear in syslog:
+>> 
+>> WARNING: CPU: 2 PID: 109 at fs/netfs/iterator.c:50 
+>> netfs_extract_user_iter+0x170/0x250 [netfs]
+>> 
+>> and the write to fail.
+>> 
+>> Fix this by removing the check in netfs_unbuffered_write_iter_locked() 
+>> that
+>> causes async kernel DIO writes to be handled as userspace writes.  
+>> Note
+>> that this change relies on the kernel caller maintaining the existence 
+>> of
+>> the bio_vec array (or kvec[] or folio_queue) until the op is complete.
+>> 
+>> Fixes: 153a9961b551 ("netfs: Implement unbuffered/DIO write support")
+>> Reported by: Nicolas Baranger <nicolas.baranger@3xo.fr>
+>> Closes: 
+>> https://lore.kernel.org/r/fedd8a40d54b2969097ffa4507979858@3xo.fr/
+>> Signed-off-by: David Howells <dhowells@redhat.com>
+>> cc: Steve French <smfrench@gmail.com>
+>> cc: Jeff Layton <jlayton@kernel.org>
+>> cc: netfs@lists.linux.dev
+>> cc: linux-cifs@vger.kernel.org
+>> cc: linux-fsdevel@vger.kernel.org
+>> ---
+>> fs/netfs/direct_write.c |    7 ++++++-
+>> 1 file changed, 6 insertions(+), 1 deletion(-)
+>> 
+>> diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
+>> index eded8afaa60b..42ce53cc216e 100644
+>> --- a/fs/netfs/direct_write.c
+>> +++ b/fs/netfs/direct_write.c
+>> @@ -67,7 +67,7 @@ ssize_t netfs_unbuffered_write_iter_locked(struct 
+>> kiocb *iocb, struct iov_iter *
+>> * allocate a sufficiently large bvec array and may shorten the
+>> * request.
+>> */
+>> -        if (async || user_backed_iter(iter)) {
+>> +        if (user_backed_iter(iter)) {
+>> n = netfs_extract_user_iter(iter, len, &wreq->buffer.iter, 0);
+>> if (n < 0) {
+>> ret = n;
+>> @@ -77,6 +77,11 @@ ssize_t netfs_unbuffered_write_iter_locked(struct 
+>> kiocb *iocb, struct iov_iter *
+>> wreq->direct_bv_count = n;
+>> wreq->direct_bv_unpin = iov_iter_extract_will_pin(iter);
+>> } else {
+>> +            /* If this is a kernel-generated async DIO request,
+>> +             * assume that any resources the iterator points to
+>> +             * (eg. a bio_vec array) will persist till the end of
+>> +             * the op.
+>> +             */
+>> wreq->buffer.iter = *iter;
+>> }
+>> }
