@@ -1,78 +1,83 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335FF14D6F9;
-	Thu,  9 Jan 2025 15:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E8D7FD;
+	Thu,  9 Jan 2025 16:19:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736437915; cv=none; b=d9ztAOH0Zjh0rdtneZoSzI5RZMwyxkw3a+pN0Cr0ABmJC3Ho39865ogbb+lkmcGeTvq5Gah6lDuFTbPSv4ylR6yWormBwItXVUkr9vR/maMRRDScB/X/fzncEbbiShMkk0a+hHdiK1EHKwZMWSLEZTvrGwQ461ddE55WVV5QreU=
+	t=1736439589; cv=none; b=sRh8IA86ZM/9dIGnzwF4cuNRXwgQU9DcBXK4auTm9PCOy4CHtghf+AKw3ShIUcfyxgvrEROnFknPhfaKlN9zryC+NSXp0KvgGGPwXHtmpRKEVLsmubhtg+6sS+coB4elrHi8lz7nBtRf6FHxWaLeMlIpWmpQz4sfJW5YnBKbZGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736437915; c=relaxed/simple;
-	bh=4PNW5U1RCpwSI6ed5qCmkDfjxSB39XjXAAnaje7o+L4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YgSL0Pd1nJaFdW1GYTicH/Ycjm7wc6v4pyxm1j4g2r5erQdKrVE5oZ1LR1g8lyXY1/k4fS1BxUXKDh7bo6FvvhgUXId5cuRly7PLukaUcgfAOCrvM5b6uc2hYuvspIeaWnmbm4XPghEv2r3h9eDCfNT3Gr4OaqAfx1vGvdzM2aA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F9BSlQcx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736439589; c=relaxed/simple;
+	bh=dT2Di/AJfEvLQNlMs2IJ4b62sJt2FtdY0tvJXjcTzpM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IblMENjdTg+aQZ9wrH4NVWgj05LrQKpksABITx5+2pdIIH9z60zj70Iv49wpvPrCGGyz7qNwNhpkQw8RSS8D54T7xvZBPy/ta8YjEiRs411hQ5HE5y9z3/mES4MQZxDhuq7leqwSCibJFFMaLqNMjKRlzxPD2/DyAXK+EQWz+OA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WWoBNtx0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F9BSlQcx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E5AC4CED2;
-	Thu,  9 Jan 2025 15:51:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WWoBNtx0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1954C4CED2;
+	Thu,  9 Jan 2025 16:19:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736437915;
-	bh=4PNW5U1RCpwSI6ed5qCmkDfjxSB39XjXAAnaje7o+L4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=F9BSlQcxUU/kvrDz8ezVoOO+s/YBhBI99DBGbLdRbteRKBcsdBNKhfA6NIrkjDYkC
-	 9GtrmQ7VK0dv7qDBCLFFprwhk5flkxmRl+V2FYyKWlDlaQk5dy/y43RuJc1rAObSVE
-	 sl7FszvwCJ3ZWmJ3LwoRXHehBmq48TqQ4/nOFcPMPAGWGxlPfP39p5Evt4580Qxykh
-	 T6IreW5JxdI40u2aiQRRvDdYRS5jpPoTlnD0T3RTnaN10Mg41YwaqUaSESqRhF+j/w
-	 8yWPU7z9RguVCtFoKzz3OeFzncyxzknkL/0P6P7tlQkSO/uCgw6CAfTy6ch0j+etXR
-	 6KWhdTwfzx9bw==
-Date: Thu, 9 Jan 2025 07:51:54 -0800
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Joel Granados <joel.granados@kernel.org>
-Cc: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
-	Kees Cook <kees@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org, linux-crypto@vger.kernel.org,
-	openipmi-developer@lists.sourceforge.net,
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org, linux-hyperv@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-raid@vger.kernel.org,
-	linux-scsi@vger.kernel.org, linux-serial@vger.kernel.org,
-	xen-devel@lists.xenproject.org, linux-aio@kvack.org,
-	linux-fsdevel@vger.kernel.org, netfs@lists.linux.dev,
-	codalist@coda.cs.cmu.edu, linux-mm@kvack.org,
-	linux-nfs@vger.kernel.org, ocfs2-devel@lists.linux.dev,
-	fsverity@lists.linux.dev, linux-xfs@vger.kernel.org,
-	io-uring@vger.kernel.org, bpf@vger.kernel.org,
-	kexec@lists.infradead.org, linux-trace-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org, apparmor@lists.ubuntu.com,
-	linux-security-module@vger.kernel.org, keyrings@vger.kernel.org
-Subject: Re: [PATCH] treewide: const qualify ctl_tables where applicable
-Message-ID: <20250109155154.GP1306365@frogsfrogsfrogs>
-References: <20250109-jag-ctl_table_const-v1-1-622aea7230cf@kernel.org>
+	s=k20201202; t=1736439588;
+	bh=dT2Di/AJfEvLQNlMs2IJ4b62sJt2FtdY0tvJXjcTzpM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=WWoBNtx0ooMX7M0lUJyRfruK6zWbtIC8NBuWD+EFbRx6YcS9Yv6vhH0mielNoQ1cW
+	 xBCYFuD6GCtvOKvbewdBGxSsL6oTj/ARcEtm5epGXEi4mSzhpkAotAlS7LvUO1pCQn
+	 fulgpu3D0KueKJsUrYWHCjhZNJTgK2kFHN8gDwPr620Q1kRGd6MKvOtqNSJYou93z1
+	 tYPFCCHuri2Ou8pnbPyEYh+XXyPKiRB5XNCeGGJjhwdiQHdxkHa9SzhHc9wT/6vy4P
+	 k2SzAJAoKWgTmeUMwMGqsA3lRhouayhlgF4Bo4//0k1tdhDuLiVLXikll1MX+7XNVa
+	 ZbtAHmLueSUGw==
+From: Christian Brauner <brauner@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Nicolas Baranger <nicolas.baranger@3xo.fr>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Steve French <smfrench@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	netfs@lists.linux.dev,
+	linux-cifs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] netfs: Fix kernel async DIO
+Date: Thu,  9 Jan 2025 17:19:39 +0100
+Message-ID: <20250109-sonntag-surfen-6f60a9399120@brauner>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <608725.1736275167@warthog.procyon.org.uk>
+References: <608725.1736275167@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250109-jag-ctl_table_const-v1-1-622aea7230cf@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1208; i=brauner@kernel.org; h=from:subject:message-id; bh=dT2Di/AJfEvLQNlMs2IJ4b62sJt2FtdY0tvJXjcTzpM=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaTXf5ctCSlN+6xpPn/Crt1C939Y3zHcYufTVj1zaT9n2 65blptndJSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzkuS4jQ9+f21XxHQVWZ5Ol D5fPndo1WXaRjJGVyuJbocuE5e63RjAy7Fq8bmaoq1JxlvZu/yTnVf7bfb9sf7tn+7wPBtlNkbJ X2QE=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jan 09, 2025 at 02:16:39PM +0100, Joel Granados wrote:
-> Add the const qualifier to all the ctl_tables in the tree except the
-> ones in ./net dir. The "net" sysctl code is special as it modifies the
-> arrays before passing it on to the registration function.
+On Tue, 07 Jan 2025 18:39:27 +0000, David Howells wrote:
+> Netfslib needs to be able to handle kernel-initiated asynchronous DIO that
+> is supplied with a bio_vec[] array.  Currently, because of the async flag,
+> this gets passed to netfs_extract_user_iter() which throws a warning and
+> fails because it only handles IOVEC and UBUF iterators.  This can be
+> triggered through a combination of cifs and a loopback blockdev with
+> something like:
 > 
-> Constifying ctl_table structs will prevent the modification of
-> proc_handler function pointers as the arrays would reside in .rodata.
-> This is made possible after commit 78eb4ea25cd5 ("sysctl: treewide:
-> constify the ctl_table argument of proc_handlers") constified all the
-> proc_handlers.
+> [...]
 
-Sounds like a good idea,
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org> # xfs
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
---D
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
+
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[1/1] netfs: Fix kernel async DIO
+      https://git.kernel.org/vfs/vfs/c/3f6bc9e3ab9b
