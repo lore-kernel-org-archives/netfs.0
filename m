@@ -1,77 +1,98 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16DD47FD;
-	Thu,  9 Jan 2025 16:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3534618787A;
+	Thu,  9 Jan 2025 18:06:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736439636; cv=none; b=Ft4svO5uB0RoiUBZFdPEnCsTvdCp3c3QjKScJQSxmgKIJwRmzREQMBFDXa3woXjfeg7ljqbp6/hr5Z3oOijDQGp6pylHZ+j3lvFFaIBDPY8LeIUnXtaRFYLgv9800bTzIHsrNe7mWODuQWDFRymwz77nk6gguAj0cWR/1vL8MtM=
+	t=1736445964; cv=none; b=VvHEyCfUg876uGgrEmYxXy8UlEdiwWGoaWWMkr5oFovrJb2FwTebjDin5EpnoVGYN28ukq2myVh045svMJRL8JsE63HRfqjdXQUl0H7gIUF9MzCVFKBKpnJjQbHKPxKz4Cwf4idIawEkLnve+ppo6OhZbiIIU0jjqIZfLC+2X38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736439636; c=relaxed/simple;
-	bh=sldwzxvW/R8iRVqJ/OHt6eFeo28DreIZbrstzILl5Ns=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bfjyEmDhRlDv659xTnsqekk7W3rFVLFtp4/xivDPqAzVhTgehoM//1hTkH0IdvkoxvLia77yO5+omr93xEZIbSyOuOWp7FGhr0ycpdL4b6Hjp1LScZkgrhE3wIzUr1byijEgA+Nfp2c0a2FzLgN1XdxQDUz3z2KGzgs8/E08BD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BfWjlB1J; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736445964; c=relaxed/simple;
+	bh=rp9xKD+8m1msQ0xxbCs9oZzFyU1GURrqUZhq3NbpvyQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VZDfMAbOVoBTLRuPumm/61F/h2i1GJZRnbEgzMhnss0baXDo1f0XYOpYBi4tzja4LFrqQzafYP5JJv1S7AdbWgoNz5EGEy4gUerg2ncDitCupUAfGFl3lErZBMARDgI5diRRJnipAROC50bHeFT1zHg9fSZZr/jK+qNPqzMkH2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hXJVC9TE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BfWjlB1J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03CAEC4CED2;
-	Thu,  9 Jan 2025 16:20:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hXJVC9TE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE1D0C4CEEA;
+	Thu,  9 Jan 2025 18:06:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736439635;
-	bh=sldwzxvW/R8iRVqJ/OHt6eFeo28DreIZbrstzILl5Ns=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BfWjlB1JWGCaHAm7YrOhtNouvLTW7+x0R9QVemDM+bv3Iq8+nXtl/+gb5ODk7GL63
-	 tzFQp2NRBnkYM2qD9zG1B4eKTi/M03XAPa2rgFcF1IAws4g46zZSandhawGdMFv8xy
-	 ccsol6LTMWsZDMdNwGM6PzMngWzTzywnoQTECMyi/Pmkl/sIwyE+BCEtSBHyoe+4fD
-	 naOpkN+An8jr6XOqKsa+HCh/G3L5Noe/wsxjoKoqvHAD5WnppswpDFCul8ZXsF9gC8
-	 7srjhtL6sH6hEUzmKv98s+kigbNSiRpiqJQC7qKV7PlLEtvj4arhyXeTQ1VPJHzZ7K
-	 MlIDILge0DYOA==
-From: Christian Brauner <brauner@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] netfs: Fix read-retry for fs with no ->prepare_read()
-Date: Thu,  9 Jan 2025 17:20:27 +0100
-Message-ID: <20250109-falter-idiotensicher-13fee5d55a4a@brauner>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <529329.1736261010@warthog.procyon.org.uk>
-References: <529329.1736261010@warthog.procyon.org.uk>
+	s=k20201202; t=1736445963;
+	bh=rp9xKD+8m1msQ0xxbCs9oZzFyU1GURrqUZhq3NbpvyQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=hXJVC9TEna9TWYKbS9F02aIUvOHalq4E7m1+cvMk0ArDdbnyNkOQeESQ7Ur7QTEYq
+	 oV3fJnNHiU6ugTU9/tuOjHdJ9qaR831jsML8BcJ2B2+uzRQfA4kpmr3AmZ+XqRvw70
+	 BTN8HX8ggLtR2WOIhN2X2Ipa4OKa5qs1wwTNGfy1p+9su4jHqsiWIAwGFmgaxU7Nfw
+	 H9Abn1fQ/2SPP2QU6lVw0EYHITfjtwSWp9wIQJbaVZRVNv4TDYE1jWwRNuescPEqI8
+	 vYK392uOFALwuMqP1HoC1bERclFcBuYV7fmAeGJqkaXECHPwUoHQw9LVho0fFgK9tk
+	 fJ+fXn+JQWXLQ==
+Received: by mail-io1-f45.google.com with SMTP id ca18e2360f4ac-844ee15d6f4so82757339f.1;
+        Thu, 09 Jan 2025 10:06:03 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU4jXhaetBibZ/hmdchBYWvF2l1SAnV1LRUFykzaKl5iey/cFFUumucujHsEG6jQSN07cHC5mQn7A==@lists.linux.dev, AJvYcCWLbXXebfHxne5je/vqSdO8ujCRzwcwRMlOa9883s88i2g7iLPT4N/zHrWpIXourkxWoQh2ssl/jagRs6o=@lists.linux.dev, AJvYcCXxLwHs+/M4lD2wW+fTWsGtXtIxwe1D62OVmHxyjN1Hcjb5UEeAB0rOb589RW5CHUqCHIDnBo0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzAGAgfv9/vJh1XduMGXqU0KK5euQsNsYpmJ3OqMWK3oR2DWEVv
+	fJlIdrw3rU8GvjZ8p0UQJjsyYGlnPUlllaiSRAoZRbLG5gdbGVbIEOQSlAoH6o9amVdn7iNSYdl
+	QPv+LOTrzvNWjZ1P6L2uRjz++KhY=
+X-Google-Smtp-Source: AGHT+IHw82IqZn0L3vIWI2GRAE2/Fu1vkOzFuTOkK3ccul7HxPp7E2ac95iMCNTUN8mztI4YyZ2Kf9FZUsicSlonzfg=
+X-Received: by 2002:a05:6e02:3048:b0:3a7:6a98:3fdf with SMTP id
+ e9e14a558f8ab-3ce3a9da817mr60484875ab.14.1736445963152; Thu, 09 Jan 2025
+ 10:06:03 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1085; i=brauner@kernel.org; h=from:subject:message-id; bh=sldwzxvW/R8iRVqJ/OHt6eFeo28DreIZbrstzILl5Ns=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaTXf/dpexD9Vej2lJj8DvELuednNOzcZDOrLehP+cEt2 tITLz9V6ChlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZiIYQDDXzGNSM8N4s8Cpfx5 aiaXvlPIeHQrL0uy8FzZ9TtKp1kfFTH8D7qyPef21B09vdPfr+uy42Rj9WG76efAe2K9wYlpW6c YcwEA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+References: <20250109-jag-ctl_table_const-v1-1-622aea7230cf@kernel.org>
+In-Reply-To: <20250109-jag-ctl_table_const-v1-1-622aea7230cf@kernel.org>
+From: Song Liu <song@kernel.org>
+Date: Thu, 9 Jan 2025 10:05:51 -0800
+X-Gmail-Original-Message-ID: <CAPhsuW5zpA28gkBQYMMuYCUbnDzdeq4pHsd0Mx=PBnDPiHKqHw@mail.gmail.com>
+X-Gm-Features: AbW1kvZZD8oqcdTZ9DXv7tEUC7bpyqeBsuw6nnhXboAE2kNg_1eTiibnv93HXj8
+Message-ID: <CAPhsuW5zpA28gkBQYMMuYCUbnDzdeq4pHsd0Mx=PBnDPiHKqHw@mail.gmail.com>
+Subject: Re: [PATCH] treewide: const qualify ctl_tables where applicable
+To: Joel Granados <joel.granados@kernel.org>
+Cc: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
+	Kees Cook <kees@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, linux-crypto@vger.kernel.org, 
+	openipmi-developer@lists.sourceforge.net, intel-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
+	linux-hyperv@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	linux-raid@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	linux-serial@vger.kernel.org, xen-devel@lists.xenproject.org, 
+	linux-aio@kvack.org, linux-fsdevel@vger.kernel.org, netfs@lists.linux.dev, 
+	codalist@coda.cs.cmu.edu, linux-mm@kvack.org, linux-nfs@vger.kernel.org, 
+	ocfs2-devel@lists.linux.dev, fsverity@lists.linux.dev, 
+	linux-xfs@vger.kernel.org, io-uring@vger.kernel.org, bpf@vger.kernel.org, 
+	kexec@lists.infradead.org, linux-trace-kernel@vger.kernel.org, 
+	linux-hardening@vger.kernel.org, apparmor@lists.ubuntu.com, 
+	linux-security-module@vger.kernel.org, keyrings@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 07 Jan 2025 14:43:30 +0000, David Howells wrote:
-> Fix netfslib's read-retry to only call ->prepare_read() in the backing
-> filesystem such a function is provided.  We can get to this point if a
-> there's an active cache as failed reads from the cache need negotiating
-> with the server instead.
-> 
-> 
+On Thu, Jan 9, 2025 at 5:16=E2=80=AFAM Joel Granados <joel.granados@kernel.=
+org> wrote:
+>
+[...]
+>  drivers/base/firmware_loader/fallback_table.c | 2 +-
+>  drivers/cdrom/cdrom.c                         | 2 +-
+>  drivers/char/hpet.c                           | 2 +-
+>  drivers/char/ipmi/ipmi_poweroff.c             | 2 +-
+>  drivers/char/random.c                         | 2 +-
+>  drivers/gpu/drm/i915/i915_perf.c              | 2 +-
+>  drivers/gpu/drm/xe/xe_observation.c           | 2 +-
+>  drivers/hv/hv_common.c                        | 2 +-
+>  drivers/infiniband/core/iwcm.c                | 2 +-
+>  drivers/infiniband/core/ucma.c                | 2 +-
+>  drivers/macintosh/mac_hid.c                   | 2 +-
+>  drivers/md/md.c                               | 2 +-
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
+For md bits:
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+Reviewed-by: Song Liu <song@kernel.org>
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+Thanks,
+Song
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
-
-[1/1] netfs: Fix read-retry for fs with no ->prepare_read()
-      https://git.kernel.org/vfs/vfs/c/904abff4b1b9
+[...]
