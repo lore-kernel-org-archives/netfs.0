@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3380E1FC0F4;
-	Mon, 13 Jan 2025 18:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5251CD1ED;
+	Mon, 13 Jan 2025 18:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736793325; cv=none; b=dyxDn7bhxT9qyy77OD71BFJ56aWMLArdkEP/K2I251SpqBCg1+Iu/5iQATE2vnokPQL0UmmUlEFODB45XMrHcWXH60yKSUK4xI+1kXoF81p5ciY37ogg2dwHbOLmAcGAs9FXW9W7dh2KWzkgX3xoi2XTlHNaT4qnCE+WItrNymE=
+	t=1736793350; cv=none; b=IF/kBhWp0a7Rfd4FJ5lydL/Mck0l9UQMelRxhGNLp0KwwSwQHjJNP0TzJrIo6KZw6ja7HxCSNRpAyXjuNj2IpbbwnJsleABQMoWN/uoJbPO1DdqRXLXBuwjXdAiiEm2rdQO0/t94qsN6iXwxFnrDxU0ewoKgM2EUnIQAK+9Q3us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736793325; c=relaxed/simple;
+	s=arc-20240116; t=1736793350; c=relaxed/simple;
 	bh=BE+Y0XSeW8eoYlbqAzwQnaajnEIJVDMT7DuCgIXfWHg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=F3HJzN9cREa2WrARHKcZyd6W61BckSac0ffMO0PJiRYFWF6YohfArHQRbJHfRHzMOauexODCeKKyBtxoEt2IvZxEHHlltco78OFSt2l0irVsJhNkS8kkJllhe6pUHh/Les/nNFnQ1tmwoIv1XxLk6OsoT5p7ovWDgIiTr8d06XA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yxi21eIW; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=EZxEHDXAylL8znXVGHLiM0SvRSu+4eglmdf57U83IXuRAAtmdhYNQej9NcN+YL4/uiNarwARVFVohIx3g53y4PqKX+fnXnMUvy1kZETLc8fRTLsPCdDG9WhryYB8Y/7aKTHmCep0THdmgaOvl5y87eyk4sPnhQaVrOmOqMxOcu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aySsK7Cz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yxi21eIW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BC8DC4CED6;
-	Mon, 13 Jan 2025 18:35:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aySsK7Cz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E8A4C4CEE3;
+	Mon, 13 Jan 2025 18:35:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736793325;
+	s=k20201202; t=1736793349;
 	bh=BE+Y0XSeW8eoYlbqAzwQnaajnEIJVDMT7DuCgIXfWHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yxi21eIWhZhuF2n/fNVmsvGVikEqtRje+UAT1m/cLCfiaOvxKR2IH0uvh+Eblp0DY
-	 owHRxOS4Z9eNHbxaEfqRLvgG9mO5U4qmjwKfZDBlLcQW4LBBf5UyiNyKlBe491YMlV
-	 DQoR6KU57hP1tNOpKhRr4XCz/v5rOBSyFZpk1SA1w6Xu2k3uEW9gSGFBcF1jTQHihq
-	 ullndUzwM8M96cB0gP7LFbIf4zESEw/HYcpAssk2spSVYbkk8mCeHFfO2yVYyLcbko
-	 SFYox8YKz08Xj1ClJjX4IpXu05JScYUTzizIiDwGOB2MHXPjeq/5mcfjVbzeFgcteg
-	 wAO/G8L9V//ZQ==
+	b=aySsK7CzlZwUysig/YK3snnZPCfwSu+Dszl60cpW5yiYbb+apznTdEz11WNiNxhFh
+	 X7GgTNJmMUwx0tLjjZPxf8WWoxotEJXnQyKJixcdY7oIIi1oJcZ+4saOvc98PxJfmn
+	 35oBvbtw+XP3SQ/O9QZvb9zY2K+AJpJKu1IhJlSdZbTh97Y7tHYrz87+O+ni/O29jG
+	 y5eRVXNBlsaI6+v+z/gcy96pK5BARgpD2PZfr2OPHvei0r0gAkkWyN/zasP/1cdWTt
+	 lh7h45uc5JSLmZGOYJxZ/uGzO7062VpS8/LaMXMBuzWfAmG9YvbuYbb3ktqTqpNcO/
+	 iqY0rgCb6uZ1g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -34,12 +34,12 @@ Cc: Max Kellermann <max.kellermann@ionos.com>,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	netfs@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.6 05/10] cachefiles: Parse the "secctx" immediately
-Date: Mon, 13 Jan 2025 13:35:06 -0500
-Message-Id: <20250113183511.1783990-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 05/10] cachefiles: Parse the "secctx" immediately
+Date: Mon, 13 Jan 2025 13:35:31 -0500
+Message-Id: <20250113183537.1784136-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250113183511.1783990-1-sashal@kernel.org>
-References: <20250113183511.1783990-1-sashal@kernel.org>
+In-Reply-To: <20250113183537.1784136-1-sashal@kernel.org>
+References: <20250113183537.1784136-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -48,7 +48,7 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.71
+X-stable-base: Linux 6.1.124
 Content-Transfer-Encoding: 8bit
 
 From: Max Kellermann <max.kellermann@ionos.com>
