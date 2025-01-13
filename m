@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964711CEACD;
-	Mon, 13 Jan 2025 18:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3380E1FC0F4;
+	Mon, 13 Jan 2025 18:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736793285; cv=none; b=I+T6ZAmaeStYNdhwjZka9a69dXAz9qbjc3KezoCHFwPrwgd5PBM1FQnT++gKzgtBF1mddXF+xuboCzPqqVRf2RYWnZji+ey77Q/AawuSI+wagO48kt3MUoaa+hxjBRyQaZs++TSyPVsLyeiqjHrtG3ETssljWmkNEXJ5DV7Ucyk=
+	t=1736793325; cv=none; b=dyxDn7bhxT9qyy77OD71BFJ56aWMLArdkEP/K2I251SpqBCg1+Iu/5iQATE2vnokPQL0UmmUlEFODB45XMrHcWXH60yKSUK4xI+1kXoF81p5ciY37ogg2dwHbOLmAcGAs9FXW9W7dh2KWzkgX3xoi2XTlHNaT4qnCE+WItrNymE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736793285; c=relaxed/simple;
-	bh=867NzXqBIu90ZFPURJJ28gMF8l/fRPsBmAOh08MTZo4=;
+	s=arc-20240116; t=1736793325; c=relaxed/simple;
+	bh=BE+Y0XSeW8eoYlbqAzwQnaajnEIJVDMT7DuCgIXfWHg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Vm2Sk1IhsAVycJwJw2dko4XAhzbhgkGFfS6cR0mN9Rz/z44fMj87EDfz4t0Q52NkRCpVzawqJPtuQfpa6f4OrytyvI/3HijUBYE8Rj7RkG/QQU2yGAJqheMzP4ioH6NDneKMamQ5ZO2faPsrOXpmGZO+1YGeAEp16hlafG1SBkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AnkF73wT; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=F3HJzN9cREa2WrARHKcZyd6W61BckSac0ffMO0PJiRYFWF6YohfArHQRbJHfRHzMOauexODCeKKyBtxoEt2IvZxEHHlltco78OFSt2l0irVsJhNkS8kkJllhe6pUHh/Les/nNFnQ1tmwoIv1XxLk6OsoT5p7ovWDgIiTr8d06XA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yxi21eIW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AnkF73wT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C67C4CED6;
-	Mon, 13 Jan 2025 18:34:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yxi21eIW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BC8DC4CED6;
+	Mon, 13 Jan 2025 18:35:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736793285;
-	bh=867NzXqBIu90ZFPURJJ28gMF8l/fRPsBmAOh08MTZo4=;
+	s=k20201202; t=1736793325;
+	bh=BE+Y0XSeW8eoYlbqAzwQnaajnEIJVDMT7DuCgIXfWHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AnkF73wTaZvmIVVsQJyum6K9Bul/gnx1vCZ/gsJ/MXtOcPz4xpuUhzi/dZPD7jSVi
-	 8wwib/gVpDSxiENY86jYynz0iKzxf8A95qPzW/OCzei07jYv0EZtlbL9h6BQnlumAW
-	 QARH6FDYQfzK2b/BNjRY9QSafgW5shHTDFfHdNx7fJtUfjDbbahkrYOrraPpDyO7ke
-	 i/R5jLg3amnaYkmDWO7YIPtxnjGLRAIr+12ErFiwmh7DAQkkNbwOJsVap7muo4z7fh
-	 XQQho0BeuADMksBoGZC74KI35JXuG0/fpmg/4ZcrRkP0TUUX21erWFJ9d4fRr63ubX
-	 zI94SYRbACHww==
+	b=Yxi21eIWhZhuF2n/fNVmsvGVikEqtRje+UAT1m/cLCfiaOvxKR2IH0uvh+Eblp0DY
+	 owHRxOS4Z9eNHbxaEfqRLvgG9mO5U4qmjwKfZDBlLcQW4LBBf5UyiNyKlBe491YMlV
+	 DQoR6KU57hP1tNOpKhRr4XCz/v5rOBSyFZpk1SA1w6Xu2k3uEW9gSGFBcF1jTQHihq
+	 ullndUzwM8M96cB0gP7LFbIf4zESEw/HYcpAssk2spSVYbkk8mCeHFfO2yVYyLcbko
+	 SFYox8YKz08Xj1ClJjX4IpXu05JScYUTzizIiDwGOB2MHXPjeq/5mcfjVbzeFgcteg
+	 wAO/G8L9V//ZQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -34,12 +34,12 @@ Cc: Max Kellermann <max.kellermann@ionos.com>,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	netfs@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.12 08/20] cachefiles: Parse the "secctx" immediately
-Date: Mon, 13 Jan 2025 13:34:13 -0500
-Message-Id: <20250113183425.1783715-8-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 05/10] cachefiles: Parse the "secctx" immediately
+Date: Mon, 13 Jan 2025 13:35:06 -0500
+Message-Id: <20250113183511.1783990-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250113183425.1783715-1-sashal@kernel.org>
-References: <20250113183425.1783715-1-sashal@kernel.org>
+In-Reply-To: <20250113183511.1783990-1-sashal@kernel.org>
+References: <20250113183511.1783990-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -48,7 +48,7 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.9
+X-stable-base: Linux 6.6.71
 Content-Transfer-Encoding: 8bit
 
 From: Max Kellermann <max.kellermann@ionos.com>
@@ -135,7 +135,7 @@ index 89b11336a836..1806bff8e59b 100644
  
  	_leave("");
 diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
-index 7b99bd98de75..38c236e38cef 100644
+index 111ad6ecd4ba..4421a12960a6 100644
 --- a/fs/cachefiles/internal.h
 +++ b/fs/cachefiles/internal.h
 @@ -122,7 +122,6 @@ struct cachefiles_cache {
