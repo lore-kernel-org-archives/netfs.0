@@ -1,41 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0D3248BA6;
-	Wed, 15 Jan 2025 10:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A46248BBD;
+	Wed, 15 Jan 2025 10:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736937863; cv=none; b=cVzLmRemL/O9vfodHBYPTai6lNI+UgHnwOK3QUcDdk/zOLkbewcPNiLtiPyRP9ftlKjgaP7UhaNWCmJfJsf4D17/Kr5O0E2Mgr1aMjR0RA2I7w0i+AfPMNz8piV23cAIZFeuHI9tGBx8JO85HvQCPDOh4u8CmQz4Gerf5GQUDLo=
+	t=1736937931; cv=none; b=Y2p3O+ctTy6CGnjlgbKeG7hnagzmSFFjvDfGAjy+TGAE8cTgQgCvaT9jeotzarUdxq7rryiGnW9uQK/NorgtutSJCUXoS0Q86kJdKTGyEp9cpICkNrf0LBRUKmJav1hP0/dXe6AKl3xPk2N2MoD7Bz6+UrSGOB6O5tAm737Wt40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736937863; c=relaxed/simple;
-	bh=Kdxz0lyK8z7zX6L+U+/sPw/y8Tp+1OjDoriWgrtvo5I=;
+	s=arc-20240116; t=1736937931; c=relaxed/simple;
+	bh=whUK9SzTzoVupHJbdUVdmtGDI+S0LVhJEFiZKT4iI2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gt4jzhpOiFjw3SD2ANDDpQ7TTBZ0bJ2MgXbV6NUkjdDyqnRBQWH3fy7nmle3Rh0FXwoJMH8AQDGcuND+rsCSXcA7VH1mQiEZnm3mXiuAhPbGWIJJi/F9m+1urgMU7Btz0pPBZPDE+zsVPZh+wiLL7c3SfJeA/mZSAX1WnO/MvAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UXaL2Uoa; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=sAquYU7etLwb2FwbxHnN/uzjGrqv8hQ2OKibm2E2Nrp1WlThJdaMzGGCw42LCAibZoOyAfkh4j+rzVbTJE440YsrSV3X+bQlC610QQSqR5v2kxhu2tJfvOwW8i5wQFc8rIIHwLlPbaG8HKoji7nnaq0dxZh1Y1C2Nh/3c+RbcFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wUIPl6/A; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXaL2Uoa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D96C4CEE1;
-	Wed, 15 Jan 2025 10:44:22 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wUIPl6/A"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C73E8C4CEDF;
+	Wed, 15 Jan 2025 10:45:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736937863;
-	bh=Kdxz0lyK8z7zX6L+U+/sPw/y8Tp+1OjDoriWgrtvo5I=;
+	s=korg; t=1736937931;
+	bh=whUK9SzTzoVupHJbdUVdmtGDI+S0LVhJEFiZKT4iI2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UXaL2UoavBmn/x5S41BULnKnAn6ZjiQGJgAROkAG/Y7gEmrdNPMWYWpxzTBNGhiyr
-	 HSJMIk43KvEBPBONzbZHLlgeiX++roR+XlVTQL+w94rtm8N3O3KEpXGOCAj4oqZwWS
-	 UnCKyiAuZEkAnyl95nFoQb1w0k9CJJ0/OKml9HKg=
+	b=wUIPl6/AWUQltNPiE3sOUo9a2BIW6ROwjmqE5c1TezPKlc5jHvP5ssAxPNoXuynyy
+	 J+f6/gCdXZpkEapaQcbyiKviyn1O9KO05WoUY+YTFb/nE6GVIpfrgF+zYDJhpm7gnj
+	 oewJlR1PMAHktp/ied7o4OcDjZjU9OIja4dxK1Us=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	syzbot+404b4b745080b6210c6c@syzkaller.appspotmail.com,
 	David Howells <dhowells@redhat.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
 	Jeff Layton <jlayton@kernel.org>,
 	netfs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 014/189] netfs: Fix is-caching check in read-retry
-Date: Wed, 15 Jan 2025 11:35:10 +0100
-Message-ID: <20250115103606.930204147@linuxfoundation.org>
+Subject: [PATCH 6.12 009/189] netfs: Fix enomem handling in buffered reads
+Date: Wed, 15 Jan 2025 11:35:05 +0100
+Message-ID: <20250115103606.735407605@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
 In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
 References: <20250115103606.357764746@linuxfoundation.org>
@@ -56,57 +58,100 @@ Content-Transfer-Encoding: 8bit
 
 From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit d4e338de17cb6532bf805fae00db8b41e914009b ]
+[ Upstream commit 105549d09a539a876b7c3330ab52d8aceedad358 ]
 
-netfs: Fix is-caching check in read-retry
+If netfs_read_to_pagecache() gets an error from either ->prepare_read() or
+from netfs_prepare_read_iterator(), it needs to decrement ->nr_outstanding,
+cancel the subrequest and break out of the issuing loop.  Currently, it
+only does this for two of the cases, but there are two more that aren't
+handled.
 
-The read-retry code checks the NETFS_RREQ_COPY_TO_CACHE flag to determine
-if there might be failed reads from the cache that need turning into reads
-from the server, with the intention of skipping the complicated part if it
-can.  The code that set the flag, however, got lost during the read-side
-rewrite.
+Fix this by moving the handling to a common place and jumping to it from
+all four places.  This is in preference to inserting a wrapper around
+netfs_prepare_read_iterator() as proposed by Dmitry Antipov[1].
 
-Fix the check to see if the cache_resources are valid instead.  The flag
-can then be removed.
+Link: https://lore.kernel.org/r/20241202093943.227786-1-dmantipov@yandex.ru/ [1]
 
 Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
+Reported-by: syzbot+404b4b745080b6210c6c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=404b4b745080b6210c6c
 Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/3752048.1734381285@warthog.procyon.org.uk
+Link: https://lore.kernel.org/r/20241213135013.2964079-4-dhowells@redhat.com
+Tested-by: syzbot+404b4b745080b6210c6c@syzkaller.appspotmail.com
+cc: Dmitry Antipov <dmantipov@yandex.ru>
 cc: Jeff Layton <jlayton@kernel.org>
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/read_retry.c | 2 +-
- include/linux/netfs.h | 1 -
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ fs/netfs/buffered_read.c | 28 ++++++++++++++++------------
+ 1 file changed, 16 insertions(+), 12 deletions(-)
 
-diff --git a/fs/netfs/read_retry.c b/fs/netfs/read_retry.c
-index 0350592ea804..2701f7d45999 100644
---- a/fs/netfs/read_retry.c
-+++ b/fs/netfs/read_retry.c
-@@ -49,7 +49,7 @@ static void netfs_retry_read_subrequests(struct netfs_io_request *rreq)
- 	 * up to the first permanently failed one.
- 	 */
- 	if (!rreq->netfs_ops->prepare_read &&
--	    !test_bit(NETFS_RREQ_COPY_TO_CACHE, &rreq->flags)) {
-+	    !rreq->cache_resources.ops) {
- 		struct netfs_io_subrequest *subreq;
+diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
+index af46a598f4d7..2dd2260352db 100644
+--- a/fs/netfs/buffered_read.c
++++ b/fs/netfs/buffered_read.c
+@@ -275,22 +275,14 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq)
+ 			netfs_stat(&netfs_n_rh_download);
+ 			if (rreq->netfs_ops->prepare_read) {
+ 				ret = rreq->netfs_ops->prepare_read(subreq);
+-				if (ret < 0) {
+-					atomic_dec(&rreq->nr_outstanding);
+-					netfs_put_subrequest(subreq, false,
+-							     netfs_sreq_trace_put_cancel);
+-					break;
+-				}
++				if (ret < 0)
++					goto prep_failed;
+ 				trace_netfs_sreq(subreq, netfs_sreq_trace_prepare);
+ 			}
  
- 		list_for_each_entry(subreq, &rreq->subrequests, rreq_link) {
-diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-index 5eaceef41e6c..474481ee8b7c 100644
---- a/include/linux/netfs.h
-+++ b/include/linux/netfs.h
-@@ -269,7 +269,6 @@ struct netfs_io_request {
- 	size_t			prev_donated;	/* Fallback for subreq->prev_donated */
- 	refcount_t		ref;
- 	unsigned long		flags;
--#define NETFS_RREQ_COPY_TO_CACHE	1	/* Need to write to the cache */
- #define NETFS_RREQ_NO_UNLOCK_FOLIO	2	/* Don't unlock no_unlock_folio on completion */
- #define NETFS_RREQ_DONT_UNLOCK_FOLIOS	3	/* Don't unlock the folios on completion */
- #define NETFS_RREQ_FAILED		4	/* The request failed */
+ 			slice = netfs_prepare_read_iterator(subreq);
+-			if (slice < 0) {
+-				atomic_dec(&rreq->nr_outstanding);
+-				netfs_put_subrequest(subreq, false, netfs_sreq_trace_put_cancel);
+-				ret = slice;
+-				break;
+-			}
++			if (slice < 0)
++				goto prep_iter_failed;
+ 
+ 			rreq->netfs_ops->issue_read(subreq);
+ 			goto done;
+@@ -302,6 +294,8 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq)
+ 			trace_netfs_sreq(subreq, netfs_sreq_trace_submit);
+ 			netfs_stat(&netfs_n_rh_zero);
+ 			slice = netfs_prepare_read_iterator(subreq);
++			if (slice < 0)
++				goto prep_iter_failed;
+ 			__set_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags);
+ 			netfs_read_subreq_terminated(subreq, 0, false);
+ 			goto done;
+@@ -310,6 +304,8 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq)
+ 		if (source == NETFS_READ_FROM_CACHE) {
+ 			trace_netfs_sreq(subreq, netfs_sreq_trace_submit);
+ 			slice = netfs_prepare_read_iterator(subreq);
++			if (slice < 0)
++				goto prep_iter_failed;
+ 			netfs_read_cache_to_pagecache(rreq, subreq);
+ 			goto done;
+ 		}
+@@ -318,6 +314,14 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq)
+ 		WARN_ON_ONCE(1);
+ 		break;
+ 
++	prep_iter_failed:
++		ret = slice;
++	prep_failed:
++		subreq->error = ret;
++		atomic_dec(&rreq->nr_outstanding);
++		netfs_put_subrequest(subreq, false, netfs_sreq_trace_put_cancel);
++		break;
++
+ 	done:
+ 		size -= slice;
+ 		start += slice;
 -- 
 2.39.5
 
