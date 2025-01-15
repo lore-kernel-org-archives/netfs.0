@@ -1,96 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A88B2248BB2;
-	Wed, 15 Jan 2025 10:48:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE7A1A239C;
+	Wed, 15 Jan 2025 17:52:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938099; cv=none; b=uKrRnMtX4AOSVPEJjiszV3YGoupc86I6ySmFtasPmTwvzQ9eWhoPlDOnBPhArPARBOQHSB6WbadjMOTARiR8CysWcOQl2r9YDju+jWLLcrsitoXCboeanCnqJb/XfWEclWcOnwxzkGYC0x/2dRjnPhv8GeG+soUraLlptGUDP/4=
+	t=1736963564; cv=none; b=as7OqnqLMcKoxSEZauhJUGRslfL9HwpuuqhIsXXMRUQlcvLYuVXExZ4MTXqKU7yFLp93AT4sRvwLdHib1N/BJ61LNL5WqU/yg2v8nVgh/T7fHUMy4IvNoxM2CeMzZhIKReOr+AnK3IJr6XeQ5R8HtzbnwWF1h6ePtXmTNEXng0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938099; c=relaxed/simple;
-	bh=vnScDa3TYqfUJu6ok+5Wm4alEJNBuHVIX18vUOd0CiE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FsNWdE6R1foLKo6kdw08NFbRY95o3mcNNuFQ0GFx297xafBWFr8N5JQZaQk+K5NU12LvJCaW2JYzGbFcrPTJkEHd7yT/pBnPDfAF9kS0dyfetk6RJ74x7BJ1JfBRRqbWYmr7tqRvDHAMVjjGlukYH04/OvASYJ5jip+s30oYGLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xO03CROC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736963564; c=relaxed/simple;
+	bh=SAuv4o0YPcUZA0Dnn4TAU1w9hrOHI62b2s0bpW+yq4M=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=QplvuKlWnT4nVi8mqnHX4Vm5dJKeDpFj+1O++IbEEzsjJMt8BNXNS4HY6xoRjddYgGAszy1KrP4zniiZQDM0jFj5SFOGeZ2RVxp9sujHScBJzHMsR1UGivVU8c664i/MvMd2DSik4n6Sx4mfw6EETGfnV6UgJ7KNsBavnC5j/sE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=O59TkAiV; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fzGlQJbE; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xO03CROC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0391C4CEDF;
-	Wed, 15 Jan 2025 10:48:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938099;
-	bh=vnScDa3TYqfUJu6ok+5Wm4alEJNBuHVIX18vUOd0CiE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xO03CROCmXNJSOGrKXu09mlHnMOKuKSLI+lN2Abz/+QVMccZvYGgzrfH67fJazqwL
-	 MkKlZCifAWrI5UIaF2hjramFtHw+lLdYn54ZzgvaL/5tIdgtEW0kmZrSZ0qrr7UAzy
-	 kTuvFlRtuytScKLi5SUMnIEXF7eVFJgLM6JCk/4Y=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 082/189] netfs: Fix read-retry for fs with no ->prepare_read()
-Date: Wed, 15 Jan 2025 11:36:18 +0100
-Message-ID: <20250115103609.617676141@linuxfoundation.org>
-X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="O59TkAiV";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fzGlQJbE"
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1736963561;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HoxPdbGDiDXMZjZ2YzakPSB0m74gINsG6VFgtuazYj8=;
+	b=O59TkAiVIoh/kyWqt3sD2QUaiElCxlt4joNfsm5Vy47rl6VB5TFRsEG8yyBoGzvY2r/6mY
+	lQrxl2KFOtZwXB8o2yGswqA28AwPR3ILexVj+8YMlHNoNTQyAqrecm5DQu43fEOAoeu1zB
+	AUUJUV3mFLL/jKj4Q1eejS9vRnjN/1NreJFiVLN6lXCv97Xxmp1pRrzkdAR4+8k7oYySE3
+	EjRlx3bwRLZ1kPZatpooq203bOQXFsUoJ5K9wvWgIoGkzYbbWPFekFpYB6FKtIibo4IGCl
+	3qtrgWckX7984+Okk9ULQbx1KIxKVOK20qnnIXjJMWBsTxDlkgtJ8kE9XE9ROg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1736963561;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HoxPdbGDiDXMZjZ2YzakPSB0m74gINsG6VFgtuazYj8=;
+	b=fzGlQJbELsuQf/TIokTn215dpIYwMgfAYRUXgXNteW1TJ/rfCFCi40yte9UtrzUzNBp68H
+	ns68VXLDVpNCEbAA==
+To: Joel Granados <joel.granados@kernel.org>, Thomas =?utf-8?Q?Wei=C3=9Fsc?=
+ =?utf-8?Q?huh?=
+ <linux@weissschuh.net>, Kees Cook <kees@kernel.org>, Luis Chamberlain
+ <mcgrof@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-crypto@vger.kernel.org,
+ openipmi-developer@lists.sourceforge.net, intel-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ linux-hyperv@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-raid@vger.kernel.org, linux-scsi@vger.kernel.org,
+ linux-serial@vger.kernel.org, xen-devel@lists.xenproject.org,
+ linux-aio@kvack.org, linux-fsdevel@vger.kernel.org, netfs@lists.linux.dev,
+ codalist@coda.cs.cmu.edu, linux-mm@kvack.org, linux-nfs@vger.kernel.org,
+ ocfs2-devel@lists.linux.dev, fsverity@lists.linux.dev,
+ linux-xfs@vger.kernel.org, io-uring@vger.kernel.org, bpf@vger.kernel.org,
+ kexec@lists.infradead.org, linux-trace-kernel@vger.kernel.org,
+ linux-hardening@vger.kernel.org, apparmor@lists.ubuntu.com,
+ linux-security-module@vger.kernel.org, keyrings@vger.kernel.org, Song Liu
+ <song@kernel.org>, "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>, "Darrick J. Wong"
+ <djwong@kernel.org>, Jani Nikula <jani.nikula@intel.com>, Corey Minyard
+ <cminyard@mvista.com>, Joel Granados <joel.granados@kernel.org>
+Subject: Re: [PATCH v2] treewide: const qualify ctl_tables where applicable
+In-Reply-To: <20250110-jag-ctl_table_const-v2-1-0000e1663144@kernel.org>
+References: <20250110-jag-ctl_table_const-v2-1-0000e1663144@kernel.org>
+Date: Wed, 15 Jan 2025 18:52:40 +0100
+Message-ID: <87jzawarrr.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+On Fri, Jan 10 2025 at 15:16, Joel Granados wrote:
+> sed:
+>     sed --in-place \
+>       -e "s/struct ctl_table .table = &uts_kern/const struct ctl_table *table = \&uts_kern/" \
+>       kernel/utsname_sysctl.c
+>
+> Reviewed-by: Song Liu <song@kernel.org>
+> Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org> # for kernel/trace/
+> Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com> # SCSI
+> Reviewed-by: Darrick J. Wong <djwong@kernel.org> # xfs
+> Acked-by: Jani Nikula <jani.nikula@intel.com>
+> Acked-by: Corey Minyard <cminyard@mvista.com>
+> Signed-off-by: Joel Granados <joel.granados@kernel.org>
 
-------------------
-
-From: David Howells <dhowells@redhat.com>
-
-[ Upstream commit 904abff4b1b94184aaa0e9f5fce7821f7b5b81a3 ]
-
-Fix netfslib's read-retry to only call ->prepare_read() in the backing
-filesystem such a function is provided.  We can get to this point if a
-there's an active cache as failed reads from the cache need negotiating
-with the server instead.
-
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/529329.1736261010@warthog.procyon.org.uk
-cc: Jeff Layton <jlayton@kernel.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/netfs/read_retry.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/fs/netfs/read_retry.c b/fs/netfs/read_retry.c
-index 2701f7d45999..48fb0303f7ee 100644
---- a/fs/netfs/read_retry.c
-+++ b/fs/netfs/read_retry.c
-@@ -149,7 +149,8 @@ static void netfs_retry_read_subrequests(struct netfs_io_request *rreq)
- 			BUG_ON(!len);
- 
- 			/* Renegotiate max_len (rsize) */
--			if (rreq->netfs_ops->prepare_read(subreq) < 0) {
-+			if (rreq->netfs_ops->prepare_read &&
-+			    rreq->netfs_ops->prepare_read(subreq) < 0) {
- 				trace_netfs_sreq(subreq, netfs_sreq_trace_reprep_failed);
- 				__set_bit(NETFS_SREQ_FAILED, &subreq->flags);
- 			}
--- 
-2.39.5
-
-
-
+Acked-by: Thomas Gleixner <tglx@linutronix.de>
