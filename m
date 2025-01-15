@@ -1,184 +1,127 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5251CD1ED;
-	Mon, 13 Jan 2025 18:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDD9248BC5;
+	Wed, 15 Jan 2025 10:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736793350; cv=none; b=IF/kBhWp0a7Rfd4FJ5lydL/Mck0l9UQMelRxhGNLp0KwwSwQHjJNP0TzJrIo6KZw6ja7HxCSNRpAyXjuNj2IpbbwnJsleABQMoWN/uoJbPO1DdqRXLXBuwjXdAiiEm2rdQO0/t94qsN6iXwxFnrDxU0ewoKgM2EUnIQAK+9Q3us=
+	t=1736937851; cv=none; b=WBnx3mFpyIVdVX0pjc/ngakgp5o1hqRRA4M5T/48225of32lpW42Cv1rfrKyxWZmLNiQZaaFnGHuE96tO4HrfKl1cSHOGxnciTV0HQLGMH4ehcBru+ig9SfF7bR6ul/WVRp8JnFn0Lw7/WBFE8O0v14LJ1QqJt+3V0bkYdM0aIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736793350; c=relaxed/simple;
-	bh=BE+Y0XSeW8eoYlbqAzwQnaajnEIJVDMT7DuCgIXfWHg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=EZxEHDXAylL8znXVGHLiM0SvRSu+4eglmdf57U83IXuRAAtmdhYNQej9NcN+YL4/uiNarwARVFVohIx3g53y4PqKX+fnXnMUvy1kZETLc8fRTLsPCdDG9WhryYB8Y/7aKTHmCep0THdmgaOvl5y87eyk4sPnhQaVrOmOqMxOcu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aySsK7Cz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1736937851; c=relaxed/simple;
+	bh=1nOLWDSbTVwfmqkWr0V5bhex74kvRor7yesZUJp+KFk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=PBAQXxKvIj5xaV3lfw6tRF8kWNd5ffUOjf+FqbnNneC++QEdvahXoWlzv7zSM6Y+8N/kCQMJxV9ZOqNuKnLwTdSyeMtlj1JZTYhFsI0jvy04S9hG0qddKjIgRbVpSMO0+QAzpfcDGHPJ154YMd41gLTh31yzUQIVpsARR81HQ3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HgW7zuNX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aySsK7Cz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E8A4C4CEE3;
-	Mon, 13 Jan 2025 18:35:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736793349;
-	bh=BE+Y0XSeW8eoYlbqAzwQnaajnEIJVDMT7DuCgIXfWHg=;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HgW7zuNX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB0F0C4CEE3;
+	Wed, 15 Jan 2025 10:44:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1736937850;
+	bh=1nOLWDSbTVwfmqkWr0V5bhex74kvRor7yesZUJp+KFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aySsK7CzlZwUysig/YK3snnZPCfwSu+Dszl60cpW5yiYbb+apznTdEz11WNiNxhFh
-	 X7GgTNJmMUwx0tLjjZPxf8WWoxotEJXnQyKJixcdY7oIIi1oJcZ+4saOvc98PxJfmn
-	 35oBvbtw+XP3SQ/O9QZvb9zY2K+AJpJKu1IhJlSdZbTh97Y7tHYrz87+O+ni/O29jG
-	 y5eRVXNBlsaI6+v+z/gcy96pK5BARgpD2PZfr2OPHvei0r0gAkkWyN/zasP/1cdWTt
-	 lh7h45uc5JSLmZGOYJxZ/uGzO7062VpS8/LaMXMBuzWfAmG9YvbuYbb3ktqTqpNcO/
-	 iqY0rgCb6uZ1g==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Max Kellermann <max.kellermann@ionos.com>,
+	b=HgW7zuNXHkSaW2olR/aOiwzmjfbBCJuXoHps/7sFGUHgP6c5da/+2exnM2uVwQlGH
+	 BB6r1dtfZ9vE0dfC9D/jcOv3SyyNl7FQhWpRrIOJewOla4ASuW86UHFAqcfDHb8St9
+	 9wFlqqzvmLLoHfqExiRxP2aAyaTEYNTUtB6iRrjo=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Max Kellermann <max.kellermann@ionos.com>,
 	David Howells <dhowells@redhat.com>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Dave Wysochanski <dwysocha@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-nfs@vger.kernel.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
 	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	netfs@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.1 05/10] cachefiles: Parse the "secctx" immediately
-Date: Mon, 13 Jan 2025 13:35:31 -0500
-Message-Id: <20250113183537.1784136-5-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250113183537.1784136-1-sashal@kernel.org>
-References: <20250113183537.1784136-1-sashal@kernel.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 010/189] nfs: Fix oops in nfs_netfs_init_request() when copying to cache
+Date: Wed, 15 Jan 2025 11:35:06 +0100
+Message-ID: <20250115103606.772390097@linuxfoundation.org>
+X-Mailer: git-send-email 2.48.0
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.124
 Content-Transfer-Encoding: 8bit
 
-From: Max Kellermann <max.kellermann@ionos.com>
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit e5a8b6446c0d370716f193771ccacf3260a57534 ]
+------------------
 
-Instead of storing an opaque string, call security_secctx_to_secid()
-right in the "secctx" command handler and store only the numeric
-"secid".  This eliminates an unnecessary string allocation and allows
-the daemon to receive errors when writing the "secctx" command instead
-of postponing the error to the "bind" command handler.  For example,
-if the kernel was built without `CONFIG_SECURITY`, "bind" will return
-`EOPNOTSUPP`, but the daemon doesn't know why.  With this patch, the
-"secctx" will instead return `EOPNOTSUPP` which is the right context
-for this error.
+From: David Howells <dhowells@redhat.com>
 
-This patch adds a boolean flag `have_secid` because I'm not sure if we
-can safely assume that zero is the special secid value for "not set".
-This appears to be true for SELinux, Smack and AppArmor, but since
-this attribute is not documented, I'm unable to derive a stable
-guarantee for that.
+[ Upstream commit 86ad1a58f6a9453f49e06ef957a40a8dac00a13f ]
 
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+When netfslib wants to copy some data that has just been read on behalf of
+nfs, it creates a new write request and calls nfs_netfs_init_request() to
+initialise it, but with a NULL file pointer.  This causes
+nfs_file_open_context() to oops - however, we don't actually need the nfs
+context as we're only going to write to the cache.
+
+Fix this by just returning if we aren't given a file pointer and emit a
+warning if the request was for something other than copy-to-cache.
+
+Further, fix nfs_netfs_free_request() so that it doesn't try to free the
+context if the pointer is NULL.
+
+Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
+Reported-by: Max Kellermann <max.kellermann@ionos.com>
+Closes: https://lore.kernel.org/r/CAKPOu+9DyMbKLhyJb7aMLDTb=Fh0T8Teb9sjuf_pze+XWT1VaQ@mail.gmail.com/
 Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/20241209141554.638708-1-max.kellermann@ionos.com/
-Link: https://lore.kernel.org/r/20241213135013.2964079-6-dhowells@redhat.com
+Link: https://lore.kernel.org/r/20241213135013.2964079-5-dhowells@redhat.com
+cc: Trond Myklebust <trondmy@kernel.org>
+cc: Anna Schumaker <anna@kernel.org>
+cc: Dave Wysochanski <dwysocha@redhat.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-nfs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cachefiles/daemon.c   | 14 +++++++-------
- fs/cachefiles/internal.h |  3 ++-
- fs/cachefiles/security.c |  6 +++---
- 3 files changed, 12 insertions(+), 11 deletions(-)
+ fs/nfs/fscache.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
-index 89b11336a836..1806bff8e59b 100644
---- a/fs/cachefiles/daemon.c
-+++ b/fs/cachefiles/daemon.c
-@@ -15,6 +15,7 @@
- #include <linux/namei.h>
- #include <linux/poll.h>
- #include <linux/mount.h>
-+#include <linux/security.h>
- #include <linux/statfs.h>
- #include <linux/ctype.h>
- #include <linux/string.h>
-@@ -576,7 +577,7 @@ static int cachefiles_daemon_dir(struct cachefiles_cache *cache, char *args)
-  */
- static int cachefiles_daemon_secctx(struct cachefiles_cache *cache, char *args)
+diff --git a/fs/nfs/fscache.c b/fs/nfs/fscache.c
+index 810269ee0a50..d49e4ce27999 100644
+--- a/fs/nfs/fscache.c
++++ b/fs/nfs/fscache.c
+@@ -263,6 +263,12 @@ int nfs_netfs_readahead(struct readahead_control *ractl)
+ static atomic_t nfs_netfs_debug_id;
+ static int nfs_netfs_init_request(struct netfs_io_request *rreq, struct file *file)
  {
--	char *secctx;
-+	int err;
++	if (!file) {
++		if (WARN_ON_ONCE(rreq->origin != NETFS_PGPRIV2_COPY_TO_CACHE))
++			return -EIO;
++		return 0;
++	}
++
+ 	rreq->netfs_priv = get_nfs_open_context(nfs_file_open_context(file));
+ 	rreq->debug_id = atomic_inc_return(&nfs_netfs_debug_id);
+ 	/* [DEPRECATED] Use PG_private_2 to mark folio being written to the cache. */
+@@ -274,7 +280,8 @@ static int nfs_netfs_init_request(struct netfs_io_request *rreq, struct file *fi
  
- 	_enter(",%s", args);
- 
-@@ -585,16 +586,16 @@ static int cachefiles_daemon_secctx(struct cachefiles_cache *cache, char *args)
- 		return -EINVAL;
- 	}
- 
--	if (cache->secctx) {
-+	if (cache->have_secid) {
- 		pr_err("Second security context specified\n");
- 		return -EINVAL;
- 	}
- 
--	secctx = kstrdup(args, GFP_KERNEL);
--	if (!secctx)
--		return -ENOMEM;
-+	err = security_secctx_to_secid(args, strlen(args), &cache->secid);
-+	if (err)
-+		return err;
- 
--	cache->secctx = secctx;
-+	cache->have_secid = true;
- 	return 0;
+ static void nfs_netfs_free_request(struct netfs_io_request *rreq)
+ {
+-	put_nfs_open_context(rreq->netfs_priv);
++	if (rreq->netfs_priv)
++		put_nfs_open_context(rreq->netfs_priv);
  }
  
-@@ -820,7 +821,6 @@ static void cachefiles_daemon_unbind(struct cachefiles_cache *cache)
- 	put_cred(cache->cache_cred);
- 
- 	kfree(cache->rootdirname);
--	kfree(cache->secctx);
- 	kfree(cache->tag);
- 
- 	_leave("");
-diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
-index 111ad6ecd4ba..4421a12960a6 100644
---- a/fs/cachefiles/internal.h
-+++ b/fs/cachefiles/internal.h
-@@ -122,7 +122,6 @@ struct cachefiles_cache {
- #define CACHEFILES_STATE_CHANGED	3	/* T if state changed (poll trigger) */
- #define CACHEFILES_ONDEMAND_MODE	4	/* T if in on-demand read mode */
- 	char				*rootdirname;	/* name of cache root directory */
--	char				*secctx;	/* LSM security context */
- 	char				*tag;		/* cache binding tag */
- 	refcount_t			unbind_pincount;/* refcount to do daemon unbind */
- 	struct xarray			reqs;		/* xarray of pending on-demand requests */
-@@ -130,6 +129,8 @@ struct cachefiles_cache {
- 	struct xarray			ondemand_ids;	/* xarray for ondemand_id allocation */
- 	u32				ondemand_id_next;
- 	u32				msg_id_next;
-+	u32				secid;		/* LSM security id */
-+	bool				have_secid;	/* whether "secid" was set */
- };
- 
- static inline bool cachefiles_in_ondemand_mode(struct cachefiles_cache *cache)
-diff --git a/fs/cachefiles/security.c b/fs/cachefiles/security.c
-index fe777164f1d8..fc6611886b3b 100644
---- a/fs/cachefiles/security.c
-+++ b/fs/cachefiles/security.c
-@@ -18,7 +18,7 @@ int cachefiles_get_security_ID(struct cachefiles_cache *cache)
- 	struct cred *new;
- 	int ret;
- 
--	_enter("{%s}", cache->secctx);
-+	_enter("{%u}", cache->have_secid ? cache->secid : 0);
- 
- 	new = prepare_kernel_cred(current);
- 	if (!new) {
-@@ -26,8 +26,8 @@ int cachefiles_get_security_ID(struct cachefiles_cache *cache)
- 		goto error;
- 	}
- 
--	if (cache->secctx) {
--		ret = set_security_override_from_ctx(new, cache->secctx);
-+	if (cache->have_secid) {
-+		ret = set_security_override(new, cache->secid);
- 		if (ret < 0) {
- 			put_cred(new);
- 			pr_err("Security denies permission to nominate security context: error %d\n",
+ static struct nfs_netfs_io_data *nfs_netfs_alloc(struct netfs_io_subrequest *sreq)
 -- 
 2.39.5
+
+
 
