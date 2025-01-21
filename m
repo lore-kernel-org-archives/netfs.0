@@ -1,220 +1,139 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634881119A;
-	Tue, 21 Jan 2025 13:40:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6C3A1F55FA;
+	Tue, 21 Jan 2025 17:59:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737466834; cv=none; b=jZXwEh4LvP81lgpL9/zZL6Nzkk+VHd/DRws84RlgNH+ZLfJVBNzQZzZCGf42MFIkjduRqSjR8V+/tyC99zJP1JoMt82Zm0v3LQcziqZHBHHiXP18GpjK+UCkC5qo+d9M3bo/JBGVZzm/+wmBy+gLYjYWnZd/zZzRw5kEssJwJck=
+	t=1737482373; cv=none; b=Xre4VLuy9+WG+RV3aNkdRJ4vHc5VNEDv3tN2skPo6gdzFNRbNmNzNCEXQVvzCmiSPgq2fjmtzu2Yw1M4QMRIttuxdwxyxJu44xp3bVznmubMh4Jf1zuMaHuw2xfCFCsEDijQpS5LXy7qOTxqGhIIf1l/20PhVljKPmCVoDjYoJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737466834; c=relaxed/simple;
-	bh=O6UDpyy68BQo7X626NvkAmSzVuRiTAwo5GjYO1FKjts=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ChUb+XsJ+96YQmdSdXSFsq1+80Wr8TzRy2nKoZXY7Ri7wx31k85PyqP7CcYhibXpLJhk/Kvh+M6kWR2Jc+uG6Xp/M6jt84Vk4tMwN89szI9TjCc2qlyLqUheusyawSfqSd4NBj6Ux3+X9WdeiCBZ9SfAgEp4aW1EMxPrGfgs9a8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=XXJc1fjY; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1737482373; c=relaxed/simple;
+	bh=gdVZ7EZcFCxr50W/oFCdbTk/DmDd/OzTiv9J4k8k9ek=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=G4sRTVbsM2yPFGMkXgW/ZWuJFcWPOxy/YiZzYdYgNtvganocUDD6FxWFf6PHdrOXXlGhSRtFsxpQt5DKdoGPIln1qIIdaSaq3k/mcXBiY9bpiKY08LLFsusBc77XKtPiXK1SaKST709XJOydHq5D1R+/s3/0jxNNF2PPLBEGDNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mw2GF6yQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="XXJc1fjY"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50LBcWDl021758;
-	Tue, 21 Jan 2025 13:40:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=1XuHjAhe+6crgeyPxGiThULHkHEa/Q
-	wDtL3yiBvZqn4=; b=XXJc1fjY1LEte8uWYOHY0rVlVq4wX9PCcoXpIbn1EYs9EL
-	OD4/8pPTNQ9wGah7zwpokGzeZLvKhyS2XwyswSQynQSvx4Pq0nVXT5v0PMm1KdzN
-	F6FmU2v9zN3MF0dGtVIr8337iz/SeaELL+AkChcaIBTAfjVK9Q1TKCVQHZUYF4b8
-	lkEmavTZcGG7bcRDLLuw9HOFrKWm+iyEw+rBb1iDcR2ksQakFyzbWZB9l+0n9NZH
-	7bFXS3CXhWJ3qAfxFUQeEb9d90I2xBmDXS8qIuY9SsKjzzFL1VStL4eYIhJR/WhB
-	kacwVPn3TvuRt93neu9S0HZxZA9oxnhjkLM3qkFg==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44a1n9b0sf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Jan 2025 13:40:21 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50LAtOsq021012;
-	Tue, 21 Jan 2025 13:40:19 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 448sb1b14q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Jan 2025 13:40:19 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50LDeIWj60031254
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 21 Jan 2025 13:40:18 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 25C3B2004B;
-	Tue, 21 Jan 2025 13:40:18 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7FD1A20040;
-	Tue, 21 Jan 2025 13:40:17 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.155.204.135])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 21 Jan 2025 13:40:17 +0000 (GMT)
-Date: Tue, 21 Jan 2025 14:40:16 +0100
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Joel Granados <joel.granados@kernel.org>
-Cc: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
-        Kees Cook <kees@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-crypto@vger.kernel.org,
-        openipmi-developer@lists.sourceforge.net,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        intel-xe@lists.freedesktop.org, linux-hyperv@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-raid@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-serial@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-aio@kvack.org,
-        linux-fsdevel@vger.kernel.org, netfs@lists.linux.dev,
-        codalist@coda.cs.cmu.edu, linux-mm@kvack.org,
-        linux-nfs@vger.kernel.org, ocfs2-devel@lists.linux.dev,
-        fsverity@lists.linux.dev, linux-xfs@vger.kernel.org,
-        io-uring@vger.kernel.org, bpf@vger.kernel.org,
-        kexec@lists.infradead.org, linux-trace-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org, apparmor@lists.ubuntu.com,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        Song Liu <song@kernel.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        "Darrick J. Wong" <djwong@kernel.org>,
-        Jani Nikula <jani.nikula@intel.com>,
-        Corey Minyard <cminyard@mvista.com>
-Subject: Re: [PATCH v2] treewide: const qualify ctl_tables where applicable
-Message-ID: <Z4+jwDBrZNRgu85S@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
-References: <20250110-jag-ctl_table_const-v2-1-0000e1663144@kernel.org>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mw2GF6yQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8BF5C4CEDF;
+	Tue, 21 Jan 2025 17:59:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1737482373;
+	bh=gdVZ7EZcFCxr50W/oFCdbTk/DmDd/OzTiv9J4k8k9ek=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=mw2GF6yQmFwwLSYac5bBFg/U3kRbfbd45KtG6AiCqNod7zYJ0WyPbt0qzDW5aoPXM
+	 P2JWqgf+KC32Nir/vjsc8mvxQPSutgBQvTDtn3SixoGk5tXxf4Gg6up5jmfn28W/BM
+	 7BAprG81+OMAd3xL+EXKmsC8V1maFdH242SuhhfE=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Shyam Prasad N <nspmangalore@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 054/122] netfs: Fix non-contiguous donation between completed reads
+Date: Tue, 21 Jan 2025 18:51:42 +0100
+Message-ID: <20250121174535.073498135@linuxfoundation.org>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250121174532.991109301@linuxfoundation.org>
+References: <20250121174532.991109301@linuxfoundation.org>
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250110-jag-ctl_table_const-v2-1-0000e1663144@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: mWjZL4Eizm--6YwnTI2RlL8astD0-e-i
-X-Proofpoint-GUID: mWjZL4Eizm--6YwnTI2RlL8astD0-e-i
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-21_05,2025-01-21_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
- bulkscore=0 suspectscore=0 adultscore=0 clxscore=1011 priorityscore=1501
- spamscore=0 impostorscore=0 lowpriorityscore=0 mlxscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501210112
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jan 10, 2025 at 03:16:08PM +0100, Joel Granados wrote:
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
-Hi Joel,
+------------------
 
-> Add the const qualifier to all the ctl_tables in the tree except for
-> watchdog_hardlockup_sysctl, memory_allocation_profiling_sysctls,
-> loadpin_sysctl_table and the ones calling register_net_sysctl (./net,
-> drivers/inifiniband dirs). These are special cases as they use a
-> registration function with a non-const qualified ctl_table argument or
-> modify the arrays before passing them on to the registration function.
-> 
-> Constifying ctl_table structs will prevent the modification of
-> proc_handler function pointers as the arrays would reside in .rodata.
-> This is made possible after commit 78eb4ea25cd5 ("sysctl: treewide:
-> constify the ctl_table argument of proc_handlers") constified all the
-> proc_handlers.
+From: David Howells <dhowells@redhat.com>
 
-I could identify at least these occurences in s390 code as well:
+[ Upstream commit c8b90d40d5bba8e6fba457b8a7c10d3c0d467e37 ]
 
-diff --git a/arch/s390/appldata/appldata_base.c b/arch/s390/appldata/appldata_base.c
-index dd7ba7587dd5..9b83c318f919 100644
---- a/arch/s390/appldata/appldata_base.c
-+++ b/arch/s390/appldata/appldata_base.c
-@@ -204,7 +204,7 @@ appldata_timer_handler(const struct ctl_table *ctl, int write,
- {
- 	int timer_active = appldata_timer_active;
- 	int rc;
--	struct ctl_table ctl_entry = {
-+	const struct ctl_table ctl_entry = {
- 		.procname	= ctl->procname,
- 		.data		= &timer_active,
- 		.maxlen		= sizeof(int),
-@@ -237,7 +237,7 @@ appldata_interval_handler(const struct ctl_table *ctl, int write,
- {
- 	int interval = appldata_interval;
- 	int rc;
--	struct ctl_table ctl_entry = {
-+	const struct ctl_table ctl_entry = {
- 		.procname	= ctl->procname,
- 		.data		= &interval,
- 		.maxlen		= sizeof(int),
-@@ -269,7 +269,7 @@ appldata_generic_handler(const struct ctl_table *ctl, int write,
- 	struct list_head *lh;
- 	int rc, found;
- 	int active;
--	struct ctl_table ctl_entry = {
-+	const struct ctl_table ctl_entry = {
- 		.data		= &active,
- 		.maxlen		= sizeof(int),
- 		.extra1		= SYSCTL_ZERO,
-diff --git a/arch/s390/kernel/hiperdispatch.c b/arch/s390/kernel/hiperdispatch.c
-index 7857a7e8e56c..7d0ba16085c1 100644
---- a/arch/s390/kernel/hiperdispatch.c
-+++ b/arch/s390/kernel/hiperdispatch.c
-@@ -273,7 +273,7 @@ static int hiperdispatch_ctl_handler(const struct ctl_table *ctl, int write,
- {
- 	int hiperdispatch;
- 	int rc;
--	struct ctl_table ctl_entry = {
-+	const struct ctl_table ctl_entry = {
- 		.procname	= ctl->procname,
- 		.data		= &hiperdispatch,
- 		.maxlen		= sizeof(int),
-diff --git a/arch/s390/kernel/topology.c b/arch/s390/kernel/topology.c
-index 6691808bf50a..26e50de83d80 100644
---- a/arch/s390/kernel/topology.c
-+++ b/arch/s390/kernel/topology.c
-@@ -629,7 +629,7 @@ static int topology_ctl_handler(const struct ctl_table *ctl, int write,
- 	int enabled = topology_is_enabled();
- 	int new_mode;
- 	int rc;
--	struct ctl_table ctl_entry = {
-+	const struct ctl_table ctl_entry = {
- 		.procname	= ctl->procname,
- 		.data		= &enabled,
- 		.maxlen		= sizeof(int),
-@@ -658,7 +658,7 @@ static int polarization_ctl_handler(const struct ctl_table *ctl, int write,
- {
- 	int polarization;
- 	int rc;
--	struct ctl_table ctl_entry = {
-+	const struct ctl_table ctl_entry = {
- 		.procname	= ctl->procname,
- 		.data		= &polarization,
- 		.maxlen		= sizeof(int),
-diff --git a/arch/s390/mm/cmm.c b/arch/s390/mm/cmm.c
-index 939e3bec2db7..8e354c90a3dd 100644
---- a/arch/s390/mm/cmm.c
-+++ b/arch/s390/mm/cmm.c
-@@ -263,7 +263,7 @@ static int cmm_pages_handler(const struct ctl_table *ctl, int write,
- 			     void *buffer, size_t *lenp, loff_t *ppos)
- {
- 	long nr = cmm_get_pages();
--	struct ctl_table ctl_entry = {
-+	const struct ctl_table ctl_entry = {
- 		.procname	= ctl->procname,
- 		.data		= &nr,
- 		.maxlen		= sizeof(long),
-@@ -283,7 +283,7 @@ static int cmm_timed_pages_handler(const struct ctl_table *ctl, int write,
- 				   loff_t *ppos)
- {
- 	long nr = cmm_get_timed_pages();
--	struct ctl_table ctl_entry = {
-+	const struct ctl_table ctl_entry = {
- 		.procname	= ctl->procname,
- 		.data		= &nr,
- 		.maxlen		= sizeof(long),
+When a read subrequest finishes, if it doesn't have sufficient coverage to
+complete the folio(s) covering either side of it, it will donate the excess
+coverage to the adjacent subrequests on either side, offloading
+responsibility for unlocking the folio(s) covered to them.
+
+Now, preference is given to donating down to a lower file offset over
+donating up because that check is done first - but there's no check that
+the lower subreq is actually contiguous, and so we can end up donating
+incorrectly.
+
+The scenario seen[1] is that an 8MiB readahead request spanning four 2MiB
+folios is split into eight 1MiB subreqs (numbered 1 through 8).  These
+terminate in the order 1,6,2,5,3,7,4,8.  What happens is:
+
+	- 1 donates to 2
+	- 6 donates to 5
+	- 2 completes, unlocking the first folio (with 1).
+	- 5 completes, unlocking the third folio (with 6).
+	- 3 donates to 4
+	- 7 donates to 4 incorrectly
+	- 4 completes, unlocking the second folio (with 3), but can't use
+	  the excess from 7.
+	- 8 donates to 4, also incorrectly.
+
+Fix this by preventing downward donation if the subreqs are not contiguous
+(in the example above, 7 donates to 4 across the gap left by 5 and 6).
+
+Reported-by: Shyam Prasad N <nspmangalore@gmail.com>
+Closes: https://lore.kernel.org/r/CANT5p=qBwjBm-D8soFVVtswGEfmMtQXVW83=TNfUtvyHeFQZBA@mail.gmail.com/
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/526707.1733224486@warthog.procyon.org.uk/ [1]
+Link: https://lore.kernel.org/r/20241213135013.2964079-3-dhowells@redhat.com
+cc: Steve French <sfrench@samba.org>
+cc: Paulo Alcantara <pc@manguebit.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/netfs/read_collect.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
+index e70eb4ea21c03..a44132c986538 100644
+--- a/fs/netfs/read_collect.c
++++ b/fs/netfs/read_collect.c
+@@ -249,16 +249,17 @@ static bool netfs_consume_read_data(struct netfs_io_subrequest *subreq, bool was
+ 
+ 	/* Deal with the trickiest case: that this subreq is in the middle of a
+ 	 * folio, not touching either edge, but finishes first.  In such a
+-	 * case, we donate to the previous subreq, if there is one, so that the
+-	 * donation is only handled when that completes - and remove this
+-	 * subreq from the list.
++	 * case, we donate to the previous subreq, if there is one and if it is
++	 * contiguous, so that the donation is only handled when that completes
++	 * - and remove this subreq from the list.
+ 	 *
+ 	 * If the previous subreq finished first, we will have acquired their
+ 	 * donation and should be able to unlock folios and/or donate nextwards.
+ 	 */
+ 	if (!subreq->consumed &&
+ 	    !prev_donated &&
+-	    !list_is_first(&subreq->rreq_link, &rreq->subrequests)) {
++	    !list_is_first(&subreq->rreq_link, &rreq->subrequests) &&
++	    subreq->start == prev->start + prev->len) {
+ 		prev = list_prev_entry(subreq, rreq_link);
+ 		WRITE_ONCE(prev->next_donated, prev->next_donated + subreq->len);
+ 		subreq->start += subreq->len;
+-- 
+2.39.5
 
 
-> Best regards,
-> -- 
-> Joel Granados <joel.granados@kernel.org>
 
-Thanks!
