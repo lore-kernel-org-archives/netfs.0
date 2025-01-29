@@ -1,112 +1,173 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19F62D627;
-	Wed, 29 Jan 2025 08:49:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91251552F5;
+	Wed, 29 Jan 2025 18:17:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738140560; cv=none; b=dMzd52IIQTon1xJXbCdXqpfMDcWb2IeXuH9R1SgKanZxacguMprU/Hg7Ll5XYR4ivg3F+1Wv4+aQokMcFTAhcDq4d+nCOB+GPhKIr9OyAgUzDX1zwvcylPdEDf6K7+ZZGzDaSeP8oSXRTqSftjkJMNnYcr8F1auxuXh1eYeMYL8=
+	t=1738174674; cv=none; b=h4oKQa2r1CnnP+SPGNOvoGWxFjGwQHvb7JyQWAaf4QXt1PaVyMu09Z22kfcWDc5WFswb83qUVuQsECn0E/9yxMy/7Bc7ppB1Lm9588BULH/I01u2VnvmNXkbLA4Z2/zkyPj2AOWJLTjbIKNgFHipMfNdBUeTNHHyIfhjAqalSbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738140560; c=relaxed/simple;
-	bh=bkecGghn49Q0kcBr4/Q4RAYEqTU2lzStxg+kMBkUviM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EF0OhxvyF0kaEvrafy1BX3zzWeBuyJSo+qySUHfcv1VSkqFwetU/NmqcRTdUSpAfFwY+MEF00yXvJWaX+n8YqoVny+ir4VpKtsuf6BjmHCrLXTyravxLj1Ov8tO5WrOXCEBSoXa9YI4i3vBsifIaEYj1uHKWsH044/ity2GPCKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D+6QRneb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1738174674; c=relaxed/simple;
+	bh=/XvFYnnOViFH3OGSlL8qyvNFJbMFSdz5+hQNIUYyXgc=;
+	h=Subject:To:Cc:From:Date:Message-Id; b=NqhUl7JfrIKvTNVCAAClWzBx2MGj9tn86FoD9YL15olnpSguyUnAzf6yVp9dfCcl6qzX6bop73Hp0ZVNgIEJMpJBO5ex0EbhlP1qPbk4LNgvYPJK6JCePRZDIeK85ETyVP+dT0XvkmHFSVTIw/0LweHb3b0rc/VSseu9IIuN7us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XhgSWf2R; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D+6QRneb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAFA1C4CED3;
-	Wed, 29 Jan 2025 08:49:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738140558;
-	bh=bkecGghn49Q0kcBr4/Q4RAYEqTU2lzStxg+kMBkUviM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=D+6QRnebTmdCsTn/fBIyawZ8F2h5FOi1VkBceKjrJE9gQqYhsE4MpI+DUnmOyvn9r
-	 jy2STn2XFJrPEPFrh+vO/ZWYbctxdvY6UR3Ry6YZK+y8a1MhcK6ynlBs1p1BMMkJ1P
-	 w6gLTDQPv35AYJJgnh4TzBlS6e9ascDPFne+p1YDjEpGVHG5PR2AxRH9J1o9Q9BPKi
-	 anvTB+Oa86UvplOCcaBDT4qhHCCSJO/P11ip4o+2DBjUNcnkNIz/KxsEnezLq+wofc
-	 pmlKCTkKHhEdUE5jBQ13DTAnVV4ZlV/QW5dr1RzqeBZB57C+fkYnuuFh6jqnxMpijz
-	 QxNX1fm0X2YKQ==
-Date: Wed, 29 Jan 2025 09:49:13 +0100
-From: Joel Granados <joel.granados@kernel.org>
-To: Paul Moore <paul@paul-moore.com>
-Cc: Matthew Wilcox <willy@infradead.org>, 
-	Jani Nikula <jani.nikula@intel.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
-	Kees Cook <kees@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	openipmi-developer@lists.sourceforge.net, intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	intel-xe@lists.freedesktop.org, linux-hyperv@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	linux-raid@vger.kernel.org, linux-scsi@vger.kernel.org, linux-serial@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, linux-aio@kvack.org, linux-fsdevel@vger.kernel.org, 
-	netfs@lists.linux.dev, codalist@coda.cs.cmu.edu, linux-mm@kvack.org, 
-	linux-nfs@vger.kernel.org, ocfs2-devel@lists.linux.dev, fsverity@lists.linux.dev, 
-	linux-xfs@vger.kernel.org, io-uring@vger.kernel.org, bpf@vger.kernel.org, 
-	kexec@lists.infradead.org, linux-trace-kernel@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org, 
-	keyrings@vger.kernel.org, Song Liu <song@kernel.org>, 
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>, "Martin K. Petersen" <martin.petersen@oracle.com>, 
-	"Darrick J. Wong" <djwong@kernel.org>, Corey Minyard <cminyard@mvista.com>
-Subject: Re: Re: Re: Re: Re: [PATCH v2] treewide: const qualify ctl_tables
- where applicable
-Message-ID: <umk5gfo7iq7krppvqsal57hlzds26bdqd3g7kccjzuudjikdws@k2oknd6zx6g7>
-References: <20250110-jag-ctl_table_const-v2-1-0000e1663144@kernel.org>
- <Z4+jwDBrZNRgu85S@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
- <nslqrapp4v3rknjgtfk4cg64ha7rewrrg24aslo2e5jmxfwce5@t4chrpuk632k>
- <CAMj1kXEZPe8zk7s67SADK9wVH3cfBup-sAZSC6_pJyng9QT7aw@mail.gmail.com>
- <f4lfo2fb7ajogucsvisfd5sg2avykavmkizr6ycsllcrco4mo3@qt2zx4zp57zh>
- <87jzag9ugx.fsf@intel.com>
- <Z5epb86xkHQ3BLhp@casper.infradead.org>
- <u2fwibsnbfvulxj6adigla6geiafh2vuve4hcyo4vmeytwjl7p@oz6xonrq5225>
- <CAHC9VhQnB_bsQaezBfAcA0bE7Zoc99QXrvO1qjpHA-J8+_doYg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XhgSWf2R"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738174672; x=1769710672;
+  h=subject:to:cc:from:date:message-id;
+  bh=/XvFYnnOViFH3OGSlL8qyvNFJbMFSdz5+hQNIUYyXgc=;
+  b=XhgSWf2RYjmkTBt8lnhf67z9Qy62jlQeXCNursWCPy0M77gvUkLToaec
+   SyzhIC50aCCkvLdmW74B0eqMGRDsxjkN431Kx+AF3XWOuxQiASlsD0bPk
+   vfe88NqK0ULAR6LI9i7huQE+oAppINxduEd/PLiNEWzKdjQjsaYoCIeUK
+   jQkUy7T8hG21KN+zok7p3cfHkulID1bD5cSoAhuf/rwmIR4DEez8Ptlah
+   aTTGlDYsufIu82jwFseuw/H6zOSayjfalkqmPX+9Tf+3pfryumLztPy1N
+   aQndpeLCfeMZR9D0Xw17OFEUzd77ORXsoiLwlszHerjY+odoAsP+RiA6G
+   A==;
+X-CSE-ConnectionGUID: BTQmSwRmQ7KWrwA+M8un3g==
+X-CSE-MsgGUID: bXS88UdvROqihZCRTKYhtg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11330"; a="38963237"
+X-IronPort-AV: E=Sophos;i="6.13,244,1732608000"; 
+   d="scan'208";a="38963237"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2025 10:17:50 -0800
+X-CSE-ConnectionGUID: w4WrpUeqRruo5DQNnArK+g==
+X-CSE-MsgGUID: WzaeOTwdRtquOnIPieU5dQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,244,1732608000"; 
+   d="scan'208";a="109660676"
+Received: from davehans-spike.ostc.intel.com (HELO localhost.localdomain) ([10.165.164.11])
+  by fmviesa010.fm.intel.com with ESMTP; 29 Jan 2025 10:17:49 -0800
+Subject: [PATCH 0/7] Move prefaulting into write slow paths
+To: linux-kernel@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,Ted Ts'o <tytso@mit.edu>,Christian Brauner <brauner@kernel.org>,Darrick J. Wong <djwong@kernel.org>,Matthew Wilcox (Oracle) <willy@infradead.org>,Al Viro <viro@zeniv.linux.org.uk>,linux-fsdevel@vger.kernel.org,Dave Hansen <dave.hansen@linux.intel.com>,almaz.alexandrovich@paragon-software.com,ntfs3@lists.linux.dev,miklos@szeredi.hu,kent.overstreet@linux.dev,linux-bcachefs@vger.kernel.org,clm@fb.com,josef@toxicpanda.com,dsterba@suse.com,linux-btrfs@vger.kernel.org,dhowells@redhat.com,jlayton@kernel.org,netfs@lists.linux.dev
+From: Dave Hansen <dave.hansen@linux.intel.com>
+Date: Wed, 29 Jan 2025 10:17:49 -0800
+Message-Id: <20250129181749.C229F6F3@davehans-spike.ostc.intel.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHC9VhQnB_bsQaezBfAcA0bE7Zoc99QXrvO1qjpHA-J8+_doYg@mail.gmail.com>
 
-On Tue, Jan 28, 2025 at 10:43:10AM -0500, Paul Moore wrote:
-> On Tue, Jan 28, 2025 at 6:22 AM Joel Granados <joel.granados@kernel.org> wrote:
-> > On Mon, Jan 27, 2025 at 03:42:39PM +0000, Matthew Wilcox wrote:
-> > > On Mon, Jan 27, 2025 at 04:55:58PM +0200, Jani Nikula wrote:
-> > > > You could have static const within functions too. You get the rodata
-> > > > protection and function local scope, best of both worlds?
-> > >
-> > > timer_active is on the stack, so it can't be static const.
-> > >
-> > > Does this really need to be cc'd to such a wide distribution list?
-> > That is a very good question. I removed 160 people from the original
-> > e-mail and left the ones that where previously involved with this patch
-> > and left all the lists for good measure. But it seems I can reduce it
-> > even more.
-> >
-> > How about this: For these treewide efforts I just leave the people that
-> > are/were involved in the series and add two lists: linux-kernel and
-> > linux-hardening.
-> >
-> > Unless someone screams, I'll try this out on my next treewide.
-> 
-> I'm not screaming about it :) but anything that touches the LSM,
-I'll consider it as a scream :) So I'll keep my previous approach of
-leaving only personal mails that are involved, but leaving all the lists
-that b4 suggests.
+tl;dr: The VFS and several filesystems have some suspect prefaulting
+code. It is unnecessarily slow for the common case where a write's
+source buffer is resident and does not need to be faulted in.
 
-> SELinux, or audit code (or matches the regex in MAINTAINERS) I would
-> prefer to see on the associated mailing list.
+Move these "prefaulting" operations to slow paths where they ensure
+forward progress but they do not slow down the fast paths. This
+optimizes the fast path to touch userspace once instead of twice.
 
-General comment sent to the void:
-It is tricky to know exactly who wants to be informed of all this and
-who thinks its useless. I think that if we want more focus it should
-come from automated tools like b4. Maybe some string in MAINTAINERS
-stating that the list should not be used in cases of tree-wide commits?
+Also update somewhat dubious comments about the need for prefaulting.
 
-Best
+This has been very lightly tested. I have not tested any of the fs/
+code explicitly.
 
--- 
+I started by just trying to deal with generic_perform_write() and
+looked at a few more cases after Dave Chinner mentioned there was
+some apparent proliferation of its pattern across the tree.
 
-Joel Granados
+I think the first patch is probably OK for 6.14. If folks are OK
+with other ones, perhaps they can just them up individually for
+their trees.
+
+--
+
+More detailed cover letter below.
+
+There are logically two pieces of data involved in a write operation:
+a source that is read from and a target which is written to, like:
+
+	sys_write(target_fd, &source, len);
+
+This is implemented in generic VFS code and several filesystems
+with loops that look something like this:
+
+	do {
+		fault_in_iov_iter_readable(source)
+		// lock target folios
+		copy_folio_from_iter_atomic()
+		// unlock target folios
+	} while(iov_iter_count(iter))
+
+They fault in the source first and then proceed to do the write.  This
+fault is ostensibly done for a few reasons:
+
+ 1. Deadlock avoidance if the source and target are the same
+    folios.
+ 2. To check the user address that copy_folio_from_iter_atomic()
+    will touch because atomic user copies do not check the address.
+ 3. "Optimization"
+
+I'm not sure any of these are actually valid reasons.
+
+The "atomic" user copy functions disable page fault handling because
+page faults are not very atomic. This makes them naturally resistant
+to deadlocking in page fault handling. They take the page fault
+itself but short-circuit any handling.
+
+copy_folio_from_iter_atomic() also *does* have user address checking.
+I get a little lost in the iov_iter code, but it does know when it's
+dealing with userspace versus kernel addresses and does seem to know
+when to do things like copy_from_user_iter() (which does access_ok())
+versus memcpy_from_iter().[1]
+
+The "optimization" is for the case where 'source' is not faulted in.
+It can avoid the cost of a "failed" page fault (it will fail to be
+handled because of the atomic copy) and then needing to drop locks and
+repeat the fault.
+
+But the common case is surely one where 'source' *is* faulted in.
+Usually, a program will put some data in a buffer and then write it to
+a file in very short order. Think of something as simple as:
+
+	sprintf(buf, "Hello world");
+	write(fd, buf, len);
+
+In this common case, the fault_in_iov_iter_readable() incurs the cost
+of touching 'buf' in userspace twice.  On x86, that means at least an
+extra STAC/CLAC pair.
+
+Optimize for the case where the source buffer has already been faulted
+in. Ensure forward progress by doing the fault in slow paths when the
+atomic copies are not making progress.
+
+That logically changes the above loop to something more akin to:
+
+	do {
+		// lock target folios
+		copied = copy_folio_from_iter_atomic()
+		// unlock target folios
+
+		if (unlikely(!copied))
+			fault_in_iov_iter_readable(source)
+	} while(iov_iter_count(iter))
+
+1. The comment about atomic user copies not checking addresses seems
+   to have originated in 08291429cfa6 ("mm: fix pagecache write
+   deadlocks") circa 2007. It was true then, but is no longer true.
+
+ fs/bcachefs/fs-io-buffered.c |   30 ++++++++++--------------------
+ fs/btrfs/file.c              |   20 +++++++++++---------
+ fs/fuse/file.c               |   14 ++++++++++----
+ fs/iomap/buffered-io.c       |   24 +++++++++---------------
+ fs/netfs/buffered_write.c    |   13 +++----------
+ fs/ntfs3/file.c              |   17 ++++++++++++-----
+ mm/filemap.c                 |   26 +++++++++++++++-----------
+ 7 files changed, 70 insertions(+), 74 deletions(-)
+
+Cc: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Cc: ntfs3@lists.linux.dev
+Cc: Miklos Szeredi <miklos@szeredi.hu>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: linux-bcachefs@vger.kernel.org
+Cc: Chris Mason <clm@fb.com>
+Cc: Josef Bacik <josef@toxicpanda.com>
+Cc: David Sterba <dsterba@suse.com>
+Cc: linux-btrfs@vger.kernel.org
+Cc: David Howells <dhowells@redhat.com>
+Cc: Jeff Layton <jlayton@kernel.org>
+Cc: netfs@lists.linux.dev
