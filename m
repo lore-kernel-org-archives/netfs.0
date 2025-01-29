@@ -1,173 +1,108 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91251552F5;
-	Wed, 29 Jan 2025 18:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7A91EBA07
+	for <netfs@lists.linux.dev>; Wed, 29 Jan 2025 18:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738174674; cv=none; b=h4oKQa2r1CnnP+SPGNOvoGWxFjGwQHvb7JyQWAaf4QXt1PaVyMu09Z22kfcWDc5WFswb83qUVuQsECn0E/9yxMy/7Bc7ppB1Lm9588BULH/I01u2VnvmNXkbLA4Z2/zkyPj2AOWJLTjbIKNgFHipMfNdBUeTNHHyIfhjAqalSbc=
+	t=1738174685; cv=none; b=lWRSvmIFXQMz8N1ggJbWoseAOonJu6rYSO3MEQ9O4EVpkXv0msX4UUXf1AHGdH4bfp56Fo74d4ZCcB9VFzkFBZDYTWbm18FG7zAs6od+34S2Yg3U7yZe0lymgajlgGLvLehLR/11Lj08b9O5TfcyOKO2lDxOJLO5vUnp9nbhX6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738174674; c=relaxed/simple;
-	bh=/XvFYnnOViFH3OGSlL8qyvNFJbMFSdz5+hQNIUYyXgc=;
-	h=Subject:To:Cc:From:Date:Message-Id; b=NqhUl7JfrIKvTNVCAAClWzBx2MGj9tn86FoD9YL15olnpSguyUnAzf6yVp9dfCcl6qzX6bop73Hp0ZVNgIEJMpJBO5ex0EbhlP1qPbk4LNgvYPJK6JCePRZDIeK85ETyVP+dT0XvkmHFSVTIw/0LweHb3b0rc/VSseu9IIuN7us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XhgSWf2R; arc=none smtp.client-ip=192.198.163.14
+	s=arc-20240116; t=1738174685; c=relaxed/simple;
+	bh=9HMpAKh/G4dXrhwsbs3yhGRxyGR4nQmn1BXXS8DWYsE=;
+	h=Subject:To:Cc:From:Date:References:In-Reply-To:Message-Id; b=MlSIpcmmcmwFAzAstpcDH0rnczEIC2bStu4J2jKKOHZSjlbrIPxkZbg2b4rANamZBzA2J0BS0YAQ6j5LGhkKE36OWtYrsWFcLizitnYtGlk5Iz9lIhme7NZ5niKKypIpuoZlECKXH52IQPTluAcqhjQEaSi3oyj0q/LT4d1HAjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TnMaWOHx; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XhgSWf2R"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TnMaWOHx"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738174672; x=1769710672;
-  h=subject:to:cc:from:date:message-id;
-  bh=/XvFYnnOViFH3OGSlL8qyvNFJbMFSdz5+hQNIUYyXgc=;
-  b=XhgSWf2RYjmkTBt8lnhf67z9Qy62jlQeXCNursWCPy0M77gvUkLToaec
-   SyzhIC50aCCkvLdmW74B0eqMGRDsxjkN431Kx+AF3XWOuxQiASlsD0bPk
-   vfe88NqK0ULAR6LI9i7huQE+oAppINxduEd/PLiNEWzKdjQjsaYoCIeUK
-   jQkUy7T8hG21KN+zok7p3cfHkulID1bD5cSoAhuf/rwmIR4DEez8Ptlah
-   aTTGlDYsufIu82jwFseuw/H6zOSayjfalkqmPX+9Tf+3pfryumLztPy1N
-   aQndpeLCfeMZR9D0Xw17OFEUzd77ORXsoiLwlszHerjY+odoAsP+RiA6G
-   A==;
-X-CSE-ConnectionGUID: BTQmSwRmQ7KWrwA+M8un3g==
-X-CSE-MsgGUID: bXS88UdvROqihZCRTKYhtg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11330"; a="38963237"
+  t=1738174684; x=1769710684;
+  h=subject:to:cc:from:date:references:in-reply-to:
+   message-id;
+  bh=9HMpAKh/G4dXrhwsbs3yhGRxyGR4nQmn1BXXS8DWYsE=;
+  b=TnMaWOHxyAe4ENoSZvC+i6KPCsti1e1nS6DP5xZE9Oe0ymbqcBIubzFY
+   9x6TFS8Tvf6pe/2NJmpMkrGjeWPsjn0UsFvHyehdLU73MF5xdThHLX4D9
+   sybgieatb4S+JJ126pc6LGc/G/z6wMCL3vyhBhIKs0CZeJBk4rCrQUlty
+   gYMNkAncfxShlqYDIlAZj9HwGLrFv2f+EoZ+BX24iCwEbH3fHoLMoNsXB
+   dWayiqLmJRFs/vdAHlfCrTJjtYWEz1NhCxTbaW9+jkXNG9op4qKP+tluV
+   xVq3lNfXBnQznhif6OXGqGH79MvVbCNAxOGyCEI1h43rxXcwQesY7sWkw
+   Q==;
+X-CSE-ConnectionGUID: RI7JMLqmR1KobdVaW8oaew==
+X-CSE-MsgGUID: Z11UNJdvSRqh9woWFzCYpg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11330"; a="38963328"
 X-IronPort-AV: E=Sophos;i="6.13,244,1732608000"; 
-   d="scan'208";a="38963237"
+   d="scan'208";a="38963328"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2025 10:17:50 -0800
-X-CSE-ConnectionGUID: w4WrpUeqRruo5DQNnArK+g==
-X-CSE-MsgGUID: WzaeOTwdRtquOnIPieU5dQ==
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2025 10:18:03 -0800
+X-CSE-ConnectionGUID: hsjZ6/uvRziZN2sfKstoGg==
+X-CSE-MsgGUID: l/QrJ4vaTxCyPyjoeQ16lQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.13,244,1732608000"; 
-   d="scan'208";a="109660676"
+   d="scan'208";a="109660718"
 Received: from davehans-spike.ostc.intel.com (HELO localhost.localdomain) ([10.165.164.11])
-  by fmviesa010.fm.intel.com with ESMTP; 29 Jan 2025 10:17:49 -0800
-Subject: [PATCH 0/7] Move prefaulting into write slow paths
+  by fmviesa010.fm.intel.com with ESMTP; 29 Jan 2025 10:18:02 -0800
+Subject: [PATCH 7/7] netfs: Remove outdated comments about prefaulting
 To: linux-kernel@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,Ted Ts'o <tytso@mit.edu>,Christian Brauner <brauner@kernel.org>,Darrick J. Wong <djwong@kernel.org>,Matthew Wilcox (Oracle) <willy@infradead.org>,Al Viro <viro@zeniv.linux.org.uk>,linux-fsdevel@vger.kernel.org,Dave Hansen <dave.hansen@linux.intel.com>,almaz.alexandrovich@paragon-software.com,ntfs3@lists.linux.dev,miklos@szeredi.hu,kent.overstreet@linux.dev,linux-bcachefs@vger.kernel.org,clm@fb.com,josef@toxicpanda.com,dsterba@suse.com,linux-btrfs@vger.kernel.org,dhowells@redhat.com,jlayton@kernel.org,netfs@lists.linux.dev
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,Ted Ts'o <tytso@mit.edu>,Christian Brauner <brauner@kernel.org>,Darrick J. Wong <djwong@kernel.org>,Matthew Wilcox (Oracle) <willy@infradead.org>,Al Viro <viro@zeniv.linux.org.uk>,linux-fsdevel@vger.kernel.org,Dave Hansen <dave.hansen@linux.intel.com>,dhowells@redhat.com,jlayton@kernel.org,netfs@lists.linux.dev
 From: Dave Hansen <dave.hansen@linux.intel.com>
-Date: Wed, 29 Jan 2025 10:17:49 -0800
-Message-Id: <20250129181749.C229F6F3@davehans-spike.ostc.intel.com>
+Date: Wed, 29 Jan 2025 10:18:02 -0800
+References: <20250129181749.C229F6F3@davehans-spike.ostc.intel.com>
+In-Reply-To: <20250129181749.C229F6F3@davehans-spike.ostc.intel.com>
+Message-Id: <20250129181802.6E1E4149@davehans-spike.ostc.intel.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 
-tl;dr: The VFS and several filesystems have some suspect prefaulting
-code. It is unnecessarily slow for the common case where a write's
-source buffer is resident and does not need to be faulted in.
 
-Move these "prefaulting" operations to slow paths where they ensure
-forward progress but they do not slow down the fast paths. This
-optimizes the fast path to touch userspace once instead of twice.
+From: Dave Hansen <dave.hansen@linux.intel.com>
 
-Also update somewhat dubious comments about the need for prefaulting.
+I originally set out to make netfs_perform_write() behavior more
+consistent with generic_perform_write(). However, netfs currently
+treats a failure to make forward progress as a hard error and does not
+retry where the generic code will loop around and retry.
 
-This has been very lightly tested. I have not tested any of the fs/
-code explicitly.
+Instead of a major code restructuring, just focus on improving the
+comments.
 
-I started by just trying to deal with generic_perform_write() and
-looked at a few more cases after Dave Chinner mentioned there was
-some apparent proliferation of its pattern across the tree.
+The comment refers to a possible deadlock and to userspace address
+checks. Neither of those things are a concern when using
+copy_folio_from_iter_atomic() for atomic usercopies. It prevents
+deadlocks by disabling page faults and it leverages user copy
+functions that have their own access_ok() checks.
 
-I think the first patch is probably OK for 6.14. If folks are OK
-with other ones, perhaps they can just them up individually for
-their trees.
-
---
-
-More detailed cover letter below.
-
-There are logically two pieces of data involved in a write operation:
-a source that is read from and a target which is written to, like:
-
-	sys_write(target_fd, &source, len);
-
-This is implemented in generic VFS code and several filesystems
-with loops that look something like this:
-
-	do {
-		fault_in_iov_iter_readable(source)
-		// lock target folios
-		copy_folio_from_iter_atomic()
-		// unlock target folios
-	} while(iov_iter_count(iter))
-
-They fault in the source first and then proceed to do the write.  This
-fault is ostensibly done for a few reasons:
-
- 1. Deadlock avoidance if the source and target are the same
-    folios.
- 2. To check the user address that copy_folio_from_iter_atomic()
-    will touch because atomic user copies do not check the address.
- 3. "Optimization"
-
-I'm not sure any of these are actually valid reasons.
-
-The "atomic" user copy functions disable page fault handling because
-page faults are not very atomic. This makes them naturally resistant
-to deadlocking in page fault handling. They take the page fault
-itself but short-circuit any handling.
-
-copy_folio_from_iter_atomic() also *does* have user address checking.
-I get a little lost in the iov_iter code, but it does know when it's
-dealing with userspace versus kernel addresses and does seem to know
-when to do things like copy_from_user_iter() (which does access_ok())
-versus memcpy_from_iter().[1]
-
-The "optimization" is for the case where 'source' is not faulted in.
-It can avoid the cost of a "failed" page fault (it will fail to be
-handled because of the atomic copy) and then needing to drop locks and
-repeat the fault.
-
-But the common case is surely one where 'source' *is* faulted in.
-Usually, a program will put some data in a buffer and then write it to
-a file in very short order. Think of something as simple as:
-
-	sprintf(buf, "Hello world");
-	write(fd, buf, len);
-
-In this common case, the fault_in_iov_iter_readable() incurs the cost
-of touching 'buf' in userspace twice.  On x86, that means at least an
-extra STAC/CLAC pair.
-
-Optimize for the case where the source buffer has already been faulted
-in. Ensure forward progress by doing the fault in slow paths when the
-atomic copies are not making progress.
-
-That logically changes the above loop to something more akin to:
-
-	do {
-		// lock target folios
-		copied = copy_folio_from_iter_atomic()
-		// unlock target folios
-
-		if (unlikely(!copied))
-			fault_in_iov_iter_readable(source)
-	} while(iov_iter_count(iter))
-
-1. The comment about atomic user copies not checking addresses seems
-   to have originated in 08291429cfa6 ("mm: fix pagecache write
-   deadlocks") circa 2007. It was true then, but is no longer true.
-
- fs/bcachefs/fs-io-buffered.c |   30 ++++++++++--------------------
- fs/btrfs/file.c              |   20 +++++++++++---------
- fs/fuse/file.c               |   14 ++++++++++----
- fs/iomap/buffered-io.c       |   24 +++++++++---------------
- fs/netfs/buffered_write.c    |   13 +++----------
- fs/ntfs3/file.c              |   17 ++++++++++++-----
- mm/filemap.c                 |   26 +++++++++++++++-----------
- 7 files changed, 70 insertions(+), 74 deletions(-)
-
-Cc: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Cc: ntfs3@lists.linux.dev
-Cc: Miklos Szeredi <miklos@szeredi.hu>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: linux-bcachefs@vger.kernel.org
-Cc: Chris Mason <clm@fb.com>
-Cc: Josef Bacik <josef@toxicpanda.com>
-Cc: David Sterba <dsterba@suse.com>
-Cc: linux-btrfs@vger.kernel.org
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Cc: David Howells <dhowells@redhat.com>
 Cc: Jeff Layton <jlayton@kernel.org>
 Cc: netfs@lists.linux.dev
+---
+
+ b/fs/netfs/buffered_write.c |   13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
+
+diff -puN fs/netfs/buffered_write.c~netfs-postfault fs/netfs/buffered_write.c
+--- a/fs/netfs/buffered_write.c~netfs-postfault	2025-01-29 09:03:38.167859749 -0800
++++ b/fs/netfs/buffered_write.c	2025-01-29 09:03:38.171860082 -0800
+@@ -152,16 +152,9 @@ ssize_t netfs_perform_write(struct kiocb
+ 		offset = pos & (max_chunk - 1);
+ 		part = min(max_chunk - offset, iov_iter_count(iter));
+ 
+-		/* Bring in the user pages that we will copy from _first_ lest
+-		 * we hit a nasty deadlock on copying from the same page as
+-		 * we're writing to, without it being marked uptodate.
+-		 *
+-		 * Not only is this an optimisation, but it is also required to
+-		 * check that the address is actually valid, when atomic
+-		 * usercopies are used below.
+-		 *
+-		 * We rely on the page being held onto long enough by the LRU
+-		 * that we can grab it below if this causes it to be read.
++		/* Bring in the user folios that are copied from before taking
++		 * locks on the mapping folios. This helps ensure forward
++		 * progress if they are the same folios.
+ 		 */
+ 		ret = -EFAULT;
+ 		if (unlikely(fault_in_iov_iter_readable(iter, part) == part))
+_
