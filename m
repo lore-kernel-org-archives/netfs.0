@@ -1,82 +1,44 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0E41F1314
-	for <netfs@lists.linux.dev>; Thu, 30 Jan 2025 21:36:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3408182
+	for <netfs@lists.linux.dev>; Fri, 31 Jan 2025 00:56:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738272996; cv=none; b=IYiUc8fdamxOC6DgdxRTTbMr5JJeN5eyn9kd187SLNyCixfiwQTIEDBPshB19gyjOH9h0IG8Y+TjqkHawZ/HsYu2BHxRJtrNyTH8dVy/Md4Ue1PREEDnMUyXnbcwq479KBbLzBImkJCxnZ3dAoEB8IfXrQsX2nsijfjFqN8/RZ8=
+	t=1738284997; cv=none; b=nO0vbJTppFiRv9XYWCxjBPUnrv55RyMdPiDcqhm17313Q0MXoWmF8phpRb1OcTM8pDTLPBku53J7E4qhRr/Kh8NoHfIfpBzVHoKd4I8okcEpvhx4c4wcBqDzPOOJmuZLdCe2+SdQebHOoxJVQTGb1V/VdOD2C7GoOXpVY5BSkWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738272996; c=relaxed/simple;
-	bh=3ZdxPvAfcmQNlIJmdWCIqX/gQrdKdUCtNB+7Kj0py+c=;
+	s=arc-20240116; t=1738284997; c=relaxed/simple;
+	bh=DmlkNGIwBq2BHFfe9dTN8ulaWDFYJ9ajgeQxzc4gLcI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QVc8P+X7KWn7SRrGo2Tx9k3G8SLLEr1viCnXXmsItP1indqXiKE+amwfvhDii2LBk6Tel8jtu0OHH4rec0Tvua5UeHExxr33KqdOsSKcFfBiyduTqixw+JiUPSMYHeeHJyovqnkym77Zlxgdnd341ipkqb6Hnp1FB2tTY3Boxt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com; spf=pass smtp.mailfrom=fromorbit.com; dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b=GEvp5KDI; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fromorbit.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=krdPe9Y1mwGeorE7CUakdKIXM0UNFISPST94aUkePB02vr6hw/rALx7QhyQRDNioWb3vYMJ6oKV0p7S/cYMc+mb5LKA+tWCf69DHYzt4YqadUzqYuncimfnBLBzZa+KxpwLzuva1667EJHBz93Uf4sfBOQYLB1L/lfi0MCBlpes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=J7bvUW8n; arc=none smtp.client-ip=95.215.58.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b="GEvp5KDI"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2164b662090so26057595ad.1
-        for <netfs@lists.linux.dev>; Thu, 30 Jan 2025 13:36:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1738272994; x=1738877794; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=s9ijuiEZzKjbqvpEPNvRB635Y5i4hqTbnqe3HTPqnhM=;
-        b=GEvp5KDIy3Oz9ORUA1e/1nAEJAXHzURAlVXKKtlP/pKZkKfmuyaqyTWAT5qIMD6XCO
-         w0NvDiNf3AdmKtxwD63PPVwq4qZeHajHNt1Ufz0BUPjTiK8v+g9YIlGfGcl18hplSqe8
-         DECXgpfXpuDPumzPJ3SO275b589mvK7xpQHhab4yoyFywDINDcc2m8FOXFhm7qOMIZB/
-         H2CbEAk+QhZ5ZuPFsTG4qIoN4Jbi7zZnHOerAfsy9C7h+pZtMTScggJKpSW54ovJr1Wy
-         d7K6HB/rnZGOIuZ6mFZce61Wxj8XpD5wLoZqH3L4Jt6bS/vYZqOKqiByzYGAQKChKGxI
-         nBpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738272994; x=1738877794;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=s9ijuiEZzKjbqvpEPNvRB635Y5i4hqTbnqe3HTPqnhM=;
-        b=oy5CoaawpH05aPtpzFky8B2smXQ5rfdNQ3qlRg2f/inqzUMz9cN00WA6oQ0ogS7dyj
-         Ietcwm6o/Ivg8Qj9mXEq9TlU1w2vhWdyTiGLzalr6Hag5tqgFE1Ecj4nqeVILY4nKeka
-         ErV0k2C66QqFsGnTZGLK8ZEJVMIjeHxWct1c5TiYSfIr0pn//elH3ec77/gBpc2W98Vo
-         ok3DLl2iIjqvXKCgtte9PzLbCsvUYfEa52Az5htD1FqSR0gVw3amK1KGBlkpLjyRudXh
-         LpjElj2OH4k6sIO1WGWGwdy9RKVucT6ZzVXQxkTyVj3Dt2St82zC00jszc3X4hIkL+qS
-         obaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXewubR5ZqGDkh/1Au1UJfOFYUMo5LDbcIWHJhvP/Dwv7MdVFdll+zVFteKDRCMlbYNFB2Stg==@lists.linux.dev
-X-Gm-Message-State: AOJu0YzU+q2wV0Oki9oSuuFvxH38Hn4nfWphG48Qgk/AtrtazWlAJ34C
-	T8XgfBxfs5ILKNQZLFVAHTgMrxKAHm1KE4YZkTT6P3pcmDvp1emW21AkAtRtzsc=
-X-Gm-Gg: ASbGnct8wpBoHg3SlaqsPe3DHQWXV6JYY4v1lFmVgQEg1hTp7eEqfIiKgpOYSHNzEwY
-	LVku/phP09nThRMmPSuFjr1RfdlFZf+dGk7QClckR+UI761e8PVv2Gd+px1peVgJZhVgDzorG1j
-	Fwfd/9Tl9IId6S+/Bpe1ORLDmKsHVC7LlqmD++r7Yv4GTaj2bWLaG8h2wWauJsufgQBbryWTE/u
-	yyG2KraFpvl4Jtmbuqv3re+3fsYbx3dO1hhlsXuhT4QwI5RDRsW9niFTCrRfDEkmyG0mRQ/OgUN
-	VwJzIxH6cv0P9eiMtXK8qWzBI9h+tkTLorcnsP3RKu8uBmNJo2tHluOuOMUESPcZuCo=
-X-Google-Smtp-Source: AGHT+IFi7KP/uFWpdWAegIG7HhkzsEsibzJqO2iNuwK1YAkhLz6wsiYT3eWBWRTxK1zOZlc8uBTEzg==
-X-Received: by 2002:a05:6a21:4598:b0:1e1:e2d8:fd1d with SMTP id adf61e73a8af0-1ed7a6b1784mr14087254637.33.1738272994219;
-        Thu, 30 Jan 2025 13:36:34 -0800 (PST)
-Received: from dread.disaster.area (pa49-186-89-135.pa.vic.optusnet.com.au. [49.186.89.135])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72fe6a1cbc8sm1991253b3a.177.2025.01.30.13.36.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jan 2025 13:36:33 -0800 (PST)
-Received: from dave by dread.disaster.area with local (Exim 4.98)
-	(envelope-from <david@fromorbit.com>)
-	id 1tdcD8-0000000CZwg-00Ha;
-	Fri, 31 Jan 2025 08:36:30 +1100
-Date: Fri, 31 Jan 2025 08:36:29 +1100
-From: Dave Chinner <david@fromorbit.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="J7bvUW8n"
+Date: Thu, 30 Jan 2025 19:56:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1738284992;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=avPaJpVH7Pab5E/nLZyJe7cNB2w6WY4JGgMxsQQZoLo=;
+	b=J7bvUW8n2NgMEXZfxwPtNK23tPZ8+mIgYT4W3XuWAuPzEMMTvfECV0iGcuG4YXwhhthKs2
+	91dHafAdZJe4aUK/OlNIGFIJv1yRInCsiwlx4Jnepv0D1RIs5nXKJoYN7IDfKPCpQNzr9j
+	RLaQ35L+7VIjl210A9SG64wpAI7tdJ0=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
 To: Dave Hansen <dave.hansen@intel.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	linux-kernel@vger.kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Ted Ts'o <tytso@mit.edu>, Christian Brauner <brauner@kernel.org>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Al Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org,
-	almaz.alexandrovich@paragon-software.com, ntfs3@lists.linux.dev,
-	miklos@szeredi.hu, linux-bcachefs@vger.kernel.org, clm@fb.com,
-	josef@toxicpanda.com, dsterba@suse.com, linux-btrfs@vger.kernel.org,
-	dhowells@redhat.com, jlayton@kernel.org, netfs@lists.linux.dev
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, 
+	linux-kernel@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>, 
+	Ted Ts'o <tytso@mit.edu>, Christian Brauner <brauner@kernel.org>, 
+	"Darrick J. Wong" <djwong@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org, 
+	almaz.alexandrovich@paragon-software.com, ntfs3@lists.linux.dev, miklos@szeredi.hu, 
+	linux-bcachefs@vger.kernel.org, clm@fb.com, josef@toxicpanda.com, dsterba@suse.com, 
+	linux-btrfs@vger.kernel.org, dhowells@redhat.com, jlayton@kernel.org, netfs@lists.linux.dev
 Subject: Re: [PATCH 0/7] Move prefaulting into write slow paths
-Message-ID: <Z5vw3SBNkD-CTuVE@dread.disaster.area>
+Message-ID: <t7rjw6a462k5sm2tdviyd7sq6n44uxb3haai566m4hm7dvvlpi@btt3blanouck>
 References: <20250129181749.C229F6F3@davehans-spike.ostc.intel.com>
  <qpeao3ezywdn5ojpcvchaza7gd6qeb57kvvgbxt2j4qsk4qoey@vrf4oy2icixd>
  <f35aa9a2-edac-4ada-b10b-8a560460d358@intel.com>
@@ -89,6 +51,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <f35aa9a2-edac-4ada-b10b-8a560460d358@intel.com>
+X-Migadu-Flow: FLOW_OUT
 
 On Thu, Jan 30, 2025 at 08:04:49AM -0800, Dave Hansen wrote:
 > On 1/29/25 23:44, Kent Overstreet wrote:
@@ -113,36 +76,7 @@ On Thu, Jan 30, 2025 at 08:04:49AM -0800, Dave Hansen wrote:
 > > threw it at my CI.
 > > 
 > > This is getting _utterly ridiculous_.
-
-That's a bit of an over-reaction, Kent.
-
-IMO, the developers and/or maintainers of each filesystem have some
-responsibility to test changes like this themselves as part of their
-review process.
-
-That's what you have just done, Kent. Good work!
-
-However, it is not OK to rant about how the proposed change failed
-because it was not exhaustively tested on every filesytem before it
-was posted.
-
-I agree with Dave - it is difficult for someone to test widepsread
-changes in code outside their specific expertise. In many cases, the
-test infrastructure just doesn't exist or, if it does, requires
-specialised knowledge and tools to run.
-
-In such cases, we have to acknowledge that best effort testing is
-about as good as we can do without overly burdening the author of
-such a change. In these cases, it is best left to the maintainer of
-that subsystem to exhaustively test the change to their
-subsystem....
-
-Indeed, this is the whole point of extensive post-merge integration
-testing (e.g. the testing that gets run on linux-next -every day-).
-It reduces the burden on individuals proposing changes created by
-requiring exhaustive testing before review by amortising the cost of
-that exhaustive testing over many peer reviewed changes....
-
+> 
 > In this case, I started with a single patch for generic code that I knew
 > I could test. In fact, I even had the 9-year-old binary sitting on my
 > test box.
@@ -152,20 +86,118 @@ that exhaustive testing over many peer reviewed changes....
 > think. But I ended up touching corners of the tree I don't know well and
 > don't have test cases for.
 
-Many thanks for doing the search, identifying all the places
-where this pattern existed and trying to address them, Dave. 
+That's all well and good, but the testing thing is really coming to a
+head. I have enough on my plate without back-and-forth 
 
+> > I built multiuser test infrastructure with a nice dashboard that anyone
+> > can use, and the only response I've gotten from the old guard is Ted
+> > jumping in every time I talk about it to say "no, we just don't want to
+> > rewrite our stuff on _your_ stuff!". Real helpful, that.
+> 
+> Sounds pretty cool! Is this something that I could have and should have
+> used to test the bcachefs patch?  I see some trees in here:
+> 
+> 	https://evilpiepirate.org/~testdashboard/ci
+> 
+> But I'm not sure how to submit patches to it. Do you need to add users
+> manually? I wonder, though, how we could make it easier to find. I
+> didn't see anything Documentation/filesystems/bcachefs/ about this.
+
+Yes, I give out user accounts and that gives you a config file you can
+edit to specify branches to test and tests to run; it then automatically
+watches those branch(es).
+
+Here's the thing though, the servers cost real money. I give out
+accounts to community members (and people working on bcachefs are using
+it and it's working wel), but if you've got a big tech company email
+address you (or your managers) will have to be pitching in. Not
+subsidizing you guys :)
+
+> 
+> >>  1. Deadlock avoidance if the source and target are the same
+> >>     folios.
+> >>  2. To check the user address that copy_folio_from_iter_atomic()
+> >>     will touch because atomic user copies do not check the address.
+> >>  3. "Optimization"
+> >>
+> >> I'm not sure any of these are actually valid reasons.
+> >>
+> >> The "atomic" user copy functions disable page fault handling because
+> >> page faults are not very atomic. This makes them naturally resistant
+> >> to deadlocking in page fault handling. They take the page fault
+> >> itself but short-circuit any handling.
+> > 
+> > #1 is emphatically valid: the deadlock avoidance is in _both_ using
+> > _atomic when we have locks held, and doing the actual faulting with
+> > locks dropped... either alone would be a buggy incomplete solution.
+> 
+> I was (badly) attempting to separate out the two different problems:
+> 
+> 	1. Doing lock_page() twice, which I was mostly calling the
+> 	   "deadlock"
+> 	2. Retrying the copy_folio_from_iter_atomic() forever which I
+> 	   was calling the "livelock"
+> 
+> Disabling page faults fixes #1.
+> Doing faulting outside the locks somewhere fixes #2.
+> 
+> So when I was talking about "Deadlock avoidance" in the cover letter, I
+> was trying to focus on the double lock_page() problem.
+> 
+> > This needs to be reflected and fully described in the comments, since
+> > it's subtle and a lot of people don't fully grok what's going on.
+> 
+> Any suggestions for fully describing the situation? I tried to sprinkle
+> comments liberally but I'm also painfully aware that I'm not doing a
+> perfect job of talking about the fs code.
+
+The critical thing to cover is the fact that mmap means that page faults
+can recurse into arbitrary filesystem code, thus blowing a hole in all
+our carefully crafted lock ordering if we allow that while holding
+locks - you didn't mention that at all.
+
+> > I'm fairly certain we have ioctl code where this is mishandled and thus
+> > buggy, because it takes some fairly particular testing for lockdep to
+> > spot it.
+> 
+> Yeah, I wouldn't be surprised. It was having a little chuckle thinking
+> about how many engineers have discovered and fixed this problem
+> independently over the years in all the file system code in all the OSes.
+
+Oh, this is the easy one - mmap and dio is where it really gets into
+"stories we tell young engineers to keep them awake at night".
+
+> 
+> >> copy_folio_from_iter_atomic() also *does* have user address checking.
+> >> I get a little lost in the iov_iter code, but it does know when it's
+> >> dealing with userspace versus kernel addresses and does seem to know
+> >> when to do things like copy_from_user_iter() (which does access_ok())
+> >> versus memcpy_from_iter().[1]
+> >>
+> >> The "optimization" is for the case where 'source' is not faulted in.
+> >> It can avoid the cost of a "failed" page fault (it will fail to be
+> >> handled because of the atomic copy) and then needing to drop locks and
+> >> repeat the fault.
+> > 
+> > I do agree on moving it to the slowpath - I think we can expect the case
+> > where the process's immediate workingset is faulted out while it's
+> > running to be vanishingly small.
+> 
+> Great! I'm glad we're on the same page there.
+> 
 > For bcachefs specifically, how should we move forward? If you're happy
 > with the concept, would you prefer that I do some manual bcachefs
 > testing? Or leave a branch sitting there for a week and pray the robots
 > test it?
 
-The public automated test robots are horribly unreliable with their
-coverage of proposed changes. Hence my comment above about the
-subsystem maintainers bearing some responsibility to test the code
-as part of their review process....
+No to the sit and pray. If I see one more "testing? that's something
+other people do" conversation I'll blow another gasket.
 
--Dave.
--- 
-Dave Chinner
-david@fromorbit.com
+xfstests supports bcachefs, and if you need a really easy way to run it
+locally on all the various filesystems, I have a solution for that:
+
+https://evilpiepirate.org/git/ktest.git/
+
+If you want access to my CI that runs all that in parallel across 120
+VMs with the nice dashboard - shoot me an email and I'll outline server
+costs and we can work something out.
