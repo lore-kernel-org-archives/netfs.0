@@ -1,68 +1,58 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039931C701D
-	for <netfs@lists.linux.dev>; Mon, 10 Feb 2025 11:12:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4563231A56
+	for <netfs@lists.linux.dev>; Mon, 10 Feb 2025 14:08:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739185972; cv=none; b=iVFQteFL7nz7ftIwwGf/M5F2olDDf1y7tv3rNGn1z3mu+Ic5oNyZOaFmQACFzK38T1ToAv/XIIvHkT45xpehB8dMWWakC64y8xb9jAOX/sfuzLdXJq+Guw8Dj6jaDEtg1N7Oq13+dylvNe/b84ROFg5KE9CLlW8hTaaDV/y4At8=
+	t=1739196482; cv=none; b=uhRdnmWi0L38Lo1dCJ4BP9Hf1IFtafyO1ueVt46cPF3TLHjosjWSG7yEkbQUDYzyEfPdgIHSb0FYQPs2Qk+2IFCxnIAwYaScqb2vFpCSrko7PAqXfVww0t6MZgBSa84WveCtAKdIf40zGIo3M5AUR1tlQZmbWe4TLyIPghBj2rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739185972; c=relaxed/simple;
-	bh=kLa245Ex+g41bu7Cp8rMbIVdC/gRWBdIQ6HQlDIJzmE=;
+	s=arc-20240116; t=1739196482; c=relaxed/simple;
+	bh=Qnyg4AhO7AlWzaAjgnfboS2ahykzojmyYz/dy7vhqn4=;
 	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=GSykvnSpqSD8otMoQ2i1J9zHR2AmuS/XPQIfnNNSBeSFN8g4ocT0s96+ez5oKkBy7qSYO5EyF4BjKm8qFOlWFLBeU91BwSruwGs+kegr+zdQUdrFsPUxh4znnaErHlOr1EKVlll52BRB/6XsQ1KZC2C72sHYsqgimAQHfBU0zpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=a5birJGk; arc=none smtp.client-ip=170.10.129.124
+	 Content-Type:Date:Message-ID; b=V8x91+C2QysJNCrrnswedppyDClyIIlBNDVI/9vybqGYY2vZbkOS2P2zgMqzHKPL6T4Gd7ppW7+VE5HTPONpkucbkqJg89EHkUGoMjn7gj9mysTWU8akmj/ZJNY/UCruJ8p8gAcnITmRX/HJLYnWiA7dAAsTm2lnLrj1rsUDVhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UthEJcYs; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="a5birJGk"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UthEJcYs"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1739185970;
+	s=mimecast20190719; t=1739196479;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=XghnrJPPKnRqzZD+n1h385B8O5oGF3rpRLFRKp+cnJM=;
-	b=a5birJGkR3nk33WPpcTzniqJQaf8fAJSsNhVynbA6oZ4NNuvX3KQgRazzQAgF7hQAY5dJX
-	pJA4fYiCzwddR46xivWK01oVN7G+hoxOArhJPZbFz999AyatotC1JebrLvv1g+kNDZNAaQ
-	r+SLcBG1CbxLxtCXoRXSF6qRuABK69k=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=sNF2zPwPgiY6vDrjo37ivtvlQa7hoNvAO5mHqkBo7W0=;
+	b=UthEJcYsEzu+AXID907OKOGUVSkK2JI07iFxaqbpRL7nlnFQeUWYBk/Eysmf88wObW+zqr
+	YMiMjd4bVSi4peNhFwYH+NkupWSNECCpT/0GW81zVGcFZOrhaKX5j9SQjQOEigyyDKc7pA
+	6Y35XoRRn25WGEiQIIygXR3zg2N0Qxk=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-435-lL-aKo8QNE22K11qKeSweQ-1; Mon,
- 10 Feb 2025 06:12:46 -0500
-X-MC-Unique: lL-aKo8QNE22K11qKeSweQ-1
-X-Mimecast-MFC-AGG-ID: lL-aKo8QNE22K11qKeSweQ
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-198-SyPxNyfjPEedBtdoOq5Ryw-1; Mon,
+ 10 Feb 2025 09:07:58 -0500
+X-MC-Unique: SyPxNyfjPEedBtdoOq5Ryw-1
+X-Mimecast-MFC-AGG-ID: SyPxNyfjPEedBtdoOq5Ryw
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EEA431800873;
-	Mon, 10 Feb 2025 11:12:42 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9FC581955D8E;
+	Mon, 10 Feb 2025 14:07:49 +0000 (UTC)
 Received: from warthog.procyon.org.uk (unknown [10.42.28.92])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D41DB195608D;
-	Mon, 10 Feb 2025 11:12:37 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 38B7B3001D19;
+	Mon, 10 Feb 2025 14:07:48 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
 	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
 	Kingdom.
 	Registered in England and Wales under Company Registration No. 3798903
 From: David Howells <dhowells@redhat.com>
-In-Reply-To: <335ad811ae2cf5ebdfc494c185b9f02e9ca40c3e@linux.dev>
-References: <335ad811ae2cf5ebdfc494c185b9f02e9ca40c3e@linux.dev> <3173328.1738024385@warthog.procyon.org.uk> <3187377.1738056789@warthog.procyon.org.uk>
-To: "Ihor Solodrai" <ihor.solodrai@linux.dev>
-Cc: dhowells@redhat.com, "Marc Dionne" <marc.dionne@auristor.com>,
-    "Steve French" <stfrench@microsoft.com>,
-    "Eric Van Hensbergen" <ericvh@kernel.org>,
-    "Latchesar
- Ionkov" <lucho@ionkov.net>,
-    "Dominique Martinet" <asmadeus@codewreck.org>,
-    "Christian Schoenebeck" <linux_oss@crudebyte.com>,
-    "Paulo Alcantara" <pc@manguebit.com>,
-    "Jeff Layton" <jlayton@kernel.org>,
-    "Christian Brauner" <brauner@kernel.org>, v9fs@lists.linux.dev,
-    linux-cifs@vger.kernel.org, netfs@lists.linux.dev,
-    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-    ast@kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH] netfs: Add retry stat counters
+In-Reply-To: <CAKPOu+_4mUwYgQtRTbXCmi+-k3PGvLysnPadkmHOyB7Gz0iSMA@mail.gmail.com>
+References: <CAKPOu+_4mUwYgQtRTbXCmi+-k3PGvLysnPadkmHOyB7Gz0iSMA@mail.gmail.com>
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: dhowells@redhat.com, netfs@lists.linux.dev,
+    LKML <linux-kernel@vger.kernel.org>, linux-nfs@vger.kernel.org
+Subject: Re: "netfs: Can't donate prior to front"
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -70,78 +60,38 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2986468.1739185956.1@warthog.procyon.org.uk>
-Date: Mon, 10 Feb 2025 11:12:36 +0000
-Message-ID: <2986469.1739185956@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-ID: <3052001.1739196466.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 10 Feb 2025 14:07:46 +0000
+Message-ID: <3052002.1739196466@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Ihor Solodrai <ihor.solodrai@linux.dev> wrote:
+Can you apply the attached patch to your kernel, and then run with:
 
-> Bash piece starting a process collecting /proc/fs/netfs/stats:
-> 
->     function tail_netfs {
->         echo -n > /mnt/vmtest/netfs-stats.log
->         while true; do
->             echo >> /mnt/vmtest/netfs-stats.log
->             cat /proc/fs/netfs/stats >> /mnt/vmtest/netfs-stats.log
->             sleep 1
->         done
->     }
->     export -f tail_netfs
->     nohup bash -c 'tail_netfs' & disown
+   echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_read/enable
+   echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_rreq/enable
+   echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_sreq/enable
+   echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_failure/enable
+   echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_donate/enable
+   echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_progress/enable
 
-I'm afraid, intermediate snapshots of this file aren't particularly useful -
-just the last snapshot:
+enabled.  If you can capture the trace output (and compress it!), that sho=
+uld
+hopefully help debug this.
 
-> Last recored /proc/fs/netfs/stats (note 0 retries):
-> 
->     Reads  : DR=0 RA=15184 RF=5 RS=0 WB=0 WBZ=0
->     Writes : BW=488 WT=0 DW=0 WP=488 2C=0
->     ZeroOps: ZR=7964 sh=0 sk=0
->     DownOps: DL=15189 ds=15189 df=0 di=0
->     CaRdOps: RD=0 rs=0 rf=0
->     UpldOps: UL=488 us=488 uf=0
->     CaWrOps: WR=0 ws=0 wf=0
->     Retries: rq=0 rs=0 wq=0 ws=0
->     Objs   : rr=2 sr=1 foq=1 wsc=0
->     WbLock : skip=0 wait=0
->     -- FS-Cache statistics --
->     Cookies: n=0 v=0 vcol=0 voom=0
->     Acquire: n=0 ok=0 oom=0
->     LRU    : n=0 exp=0 rmv=0 drp=0 at=0
->     Invals : n=0
->     Updates: n=0 rsz=0 rsn=0
->     Relinqs: n=0 rtr=0 drop=0
->     NoSpace: nwr=0 ncr=0 cull=0
->     IO     : rd=0 wr=0 mis=0
-
-Could you collect some tracing:
-
-echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_read/enable
-echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_write/enable
-echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_write_iter/enable
-echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_rreq/enable
-echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_rreq_ref/enable
-echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_sreq/enable
-echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_sreq_ref/enable
-echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_failure/enable
-
-and then collect the tracelog:
-
-trace-cmd show | bzip2 >some_file_somewhere.bz2
-
-And if you could collect /proc/fs/netfs/requests as well, that will show the
-debug IDs of the hanging requests.  These can be used to grep the trace by
-prepending "R=".  For example, if you see:
-
-	REQUEST  OR REF FL ERR  OPS COVERAGE
-	======== == === == ==== === =========
-	00000043 WB   1 2120    0   0 @34000000 0/0
-
-then:
-
-	trace-cmd show | grep R=00000043
-
-Thanks,
 David
+
+diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
+index e8624f5c7fcc..8b78c1ec0677 100644
+--- a/fs/netfs/read_collect.c
++++ b/fs/netfs/read_collect.c
+@@ -312,6 +312,7 @@ static bool netfs_consume_read_data(struct netfs_io_su=
+brequest *subreq, bool was
+ 	printk("folio: %llx-%llx\n", fpos, fend - 1);
+ 	printk("donated: prev=3D%zx next=3D%zx\n", prev_donated, next_donated);
+ 	printk("s=3D%llx av=3D%zx part=3D%zx\n", start, avail, part);
++	tracing_off();
+ 	BUG();
+ }
+ =
 
