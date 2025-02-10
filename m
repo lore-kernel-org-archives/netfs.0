@@ -1,164 +1,175 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3F22512ED
-	for <netfs@lists.linux.dev>; Mon, 10 Feb 2025 22:31:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62DA325EFBE
+	for <netfs@lists.linux.dev>; Mon, 10 Feb 2025 23:19:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739226712; cv=none; b=FZ8qLqg8mfhfM0mxynUdfjgLkAfbrejN55bMr3njaVC8NpQIjc41PN0vwFe+c3Eb2mV2bp9MbBmK9Qq1glwXLfJkAhoMFzZ03rQQf5hzBf7slY2a8wqmK+Ia7ClT7gaf+ox34q1R+JS+qH9tzxCjhNrjmwjwQkKSEKFN/V5qy1U=
+	t=1739229552; cv=none; b=iFYZAcicrRsCNy7mDL6Gwn5gi89UMDn4vrglqs05gyAD9+4TIAv+Zc3iz36Cz7anoIiya9oEtDUxYywyJNcd7gfzgEez/JKxEIRj4mw9f7+4pX88dyE7Y4aTw19HSps3HmparDtIenmuPsTmBxDfVz5JUnbiAB8BxvMNpcCk58I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739226712; c=relaxed/simple;
-	bh=pTRZmgPDUm60FMsGqnRNJP4E0Tz9Yq6UC2rtO3tHUvQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bVxK0T/b7bhFqYsR/Gfpsb11bOM/uMFNoLDX7GiVpZ1UI9Fa+AUD2XgRUT3uEOfDl+W9CobECEbiOju6HfzGJlV4RslGJzxFZwO30cuVSAs4hQTnznr1NbtOe7C1pM0ORXcWS29Ttv8qTNmTJ3iJbwoWUz6lEVmEWc8+tEAe/6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=T2UZtlwv; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+	s=arc-20240116; t=1739229552; c=relaxed/simple;
+	bh=WtfLk+YtNZL/W7iw8DNGwzsp9tN0JOYfou8cMl9XKtI=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=gBy9GK08aRAkpcr/iUueD1w8zeFw0jV56D1c9lKXUh3q1BzxN/tn7bpGxJXKh0JLlIQ0vvUDoFZYvHTIolwJ/paf8oB8Xxe4RC62NYso61O1DBaAnkoRe64QN8UcyEjSQ/mxgUPKk5cyn53/zimysrRX59cdNordECs5XRt8GbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TjOe4yai; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="T2UZtlwv"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-aaee2c5ee6eso798638766b.1
-        for <netfs@lists.linux.dev>; Mon, 10 Feb 2025 14:31:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1739226708; x=1739831508; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xU+5Hff3ByaZYFLomcfM/RhqG5OmVBr1nASPzJa0E9g=;
-        b=T2UZtlwvqttsBQJ0ksgZA2aln0Iegjyf6qvLu3ofuNrRjetF7YN+OwLhUIK7/jb5vY
-         ZHd+wmi9Z2hn4Fi+EPCAx42sxcKJIMaSWM97KTIlf8cFeHz6YNPcx3Fridq7yTjSFwD9
-         6XmP9bRTNF4dqydctYPNkXES5xOTUwVHdOHM6gPIaZbKcKOi4BexKvenCXIKQlTRM6a5
-         OPhGQAkPbFb1GyCQB1BpXgVBaE9dh6woXw7E67wxSO/NQwDaPJqAjGJxcHsa1trq2DtB
-         cM+T/hz/axL9VERL62wuCi1MtHUd8sTZopL7mg8nF1sj+XednFoSExCirYrPgu0nfpLd
-         ZFaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739226708; x=1739831508;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xU+5Hff3ByaZYFLomcfM/RhqG5OmVBr1nASPzJa0E9g=;
-        b=WaqRUH91kJMkOblD791d9YDWdmiDooM4PPkHcqLFUo4m3EAJUk2+0nRRnCzuHZxonr
-         bxQUT7eNd+NoawKJxYF0clZtZEMSXMlnsd2SSrUvbm/VpkuSclA+CHH15De9XHIAzNah
-         pmJ+9ctNuxYyEZbekteSQGExiezV8ijGrR57fjaY7admBDHY8u71RwMIfGk3wFVuWkd9
-         oHxolTjB+DSL6dO/dz2GKxScwlM89PrCV7tCbNQZ3KTzXL+Xeyfhv/gOpF9PZCWmgkpA
-         Yiht/PBIfpD91j8Wdx1Ee9iah1/olloKSiBK2ANTRXLbC1sdw0tO5+OQa26VNCD18ng4
-         ymfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXr5YUoNu0hAN8Eohvn8RbzKLAhaEAGTNqf7QuWWY335MSDD3hiHD5B99Rs41xr5fgYHLpMtw==@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz/diOw1Um6qUl/0AlvW0be4+VsLPjsmzs6Xq3IK6qOHN6Ewvjs
-	D0wM05torfO1smjqWLFx/EgVGsxEE4izLiirA8M8bcftKz+uvt5IQ1lmcmAuWwpFuAuxsvMBWYA
-	b
-X-Gm-Gg: ASbGnctD4DHFdb8fWZkObRO+MVuelEEVCD61TmhOrKs6R5etR7/luDn79Z4qrPpGWh1
-	OnJj0bmLwPyieEgQssxtO/Xr1tKlGLx1e7X23p74zJT0t4GMLDK7yOu5pxQu0LQmGifooBV6Hwf
-	54dRCl8YFJmsTO6bEq5AvvkxYZEn0hKGQSugxvi2iWC5h3kYnKO0F8f6Y/Qn3frw6gQUFowaBDv
-	RVrRKDkJbR5nDpWzeYUFFSixUI3D2FjzkGYCYKECC8jlebMI4IokF4ZL4UuZTitNkrfGoZVxlJD
-	oK5kzchBmUeMstvGvlsBRAV0duXKb+ReWdvQ7JoItc0pDBoIZgfPqrF8ixqiXz6ah6/7MRZ6a5o
-	gT0YYSete3x4M5/A=
-X-Google-Smtp-Source: AGHT+IHjtW2LQcoXICJ4bXGo/wQbq7YrAWuKqCJ6/w7CIf+NkajZc7njbeyBgfXRV7CZ7jt2R27Isw==
-X-Received: by 2002:a17:906:4796:b0:ab7:59a0:dd16 with SMTP id a640c23a62f3a-ab789a6b646mr1696451266b.2.1739226707788;
-        Mon, 10 Feb 2025 14:31:47 -0800 (PST)
-Received: from raven.intern.cm-ag (p200300dc6f19d800023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f19:d800:230:64ff:fe74:809])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab7afbcdbbesm454870666b.24.2025.02.10.14.31.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Feb 2025 14:31:47 -0800 (PST)
-From: Max Kellermann <max.kellermann@ionos.com>
-To: dhowells@redhat.com,
-	netfs@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Cc: Max Kellermann <max.kellermann@ionos.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v6.13] fs/netfs/read_pgpriv2: skip folio queues without `marks3`
-Date: Mon, 10 Feb 2025 23:31:44 +0100
-Message-ID: <20250210223144.3481766-1-max.kellermann@ionos.com>
-X-Mailer: git-send-email 2.47.2
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TjOe4yai"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1739229549;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BCFGrlEtzNntYujJOFVmJbBSaFSsuqUeDjxzqx00PbU=;
+	b=TjOe4yaicRGLBwjfyGwUoo11vs1415or2xgsmjMAlMacQbACFU17XhCp7wjhYjRVf5bT5X
+	as7NOg7aNLOX9a6IViyhFwDyEzPGPVYSZOkaKpyFAebTs6JXijgJF4tP18BFTZ5WcLdQPt
+	F69asSA+M+LNmfXsuxI8y118++hsKrM=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-497-qujH-pw7NCGUxgAQih54Bg-1; Mon,
+ 10 Feb 2025 18:19:06 -0500
+X-MC-Unique: qujH-pw7NCGUxgAQih54Bg-1
+X-Mimecast-MFC-AGG-ID: qujH-pw7NCGUxgAQih54Bg
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A565B1800374;
+	Mon, 10 Feb 2025 23:19:03 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.92])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C27CE3001D12;
+	Mon, 10 Feb 2025 23:18:58 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <8d8a5d5b00688ea553b106db690e8a01f15b1410@linux.dev>
+References: <8d8a5d5b00688ea553b106db690e8a01f15b1410@linux.dev> <335ad811ae2cf5ebdfc494c185b9f02e9ca40c3e@linux.dev> <3173328.1738024385@warthog.procyon.org.uk> <3187377.1738056789@warthog.procyon.org.uk> <2986469.1739185956@warthog.procyon.org.uk>
+To: "Ihor Solodrai" <ihor.solodrai@linux.dev>
+Cc: dhowells@redhat.com, "Marc Dionne" <marc.dionne@auristor.com>,
+    "Steve
+ French" <stfrench@microsoft.com>,
+    "Eric Van Hensbergen" <ericvh@kernel.org>,
+    "Latchesar  Ionkov" <lucho@ionkov.net>,
+    "Dominique Martinet" <asmadeus@codewreck.org>,
+    "Christian Schoenebeck" <linux_oss@crudebyte.com>,
+    "Paulo Alcantara" <pc@manguebit.com>,
+    "Jeff Layton" <jlayton@kernel.org>,
+    "Christian Brauner" <brauner@kernel.org>, v9fs@lists.linux.dev,
+    linux-cifs@vger.kernel.org, netfs@lists.linux.dev,
+    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+    ast@kernel.org, bpf@vger.kernel.org
+Subject: Re: [PATCH] netfs: Add retry stat counters
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <3210863.1739229537.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 10 Feb 2025 23:18:57 +0000
+Message-ID: <3210864.1739229537@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-At the beginning of the function, folio queues with marks3==0 are
-skipped, but after that, the `marks3` field is ignored.  If one such
-queue is found, `slot` is set to 64 (because `__ffs(0)==64`), leading
-to a buffer overflow in the folioq_folio() call.  The resulting crash
-may look like this:
+Ihor Solodrai <ihor.solodrai@linux.dev> wrote:
 
- BUG: kernel NULL pointer dereference, address: 0000000000000000
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: Oops: 0000 [#1] SMP PTI
- CPU: 11 UID: 0 PID: 2909 Comm: kworker/u262:1 Not tainted 6.13.1-cm4all2-vm #415
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.14.0-2 04/01/2014
- Workqueue: events_unbound netfs_read_termination_worker
- RIP: 0010:netfs_pgpriv2_write_to_the_cache+0x15a/0x3f0
- Code: 48 85 c0 48 89 44 24 08 0f 84 24 01 00 00 48 8b 80 40 01 00 00 48 8b 7c 24 08 f3 48 0f bc c0 89 44 24 18 89 c0 48 8b 74 c7 08 <48> 8b 06 48 c7 04 24 00 10 00 00 a8 40 74 10 0f b6 4e 40 b8 00 10
- RSP: 0018:ffffbbc440effe18 EFLAGS: 00010203
- RAX: 0000000000000040 RBX: ffff96f8fc034000 RCX: 0000000000000000
- RDX: 0000000000000040 RSI: 0000000000000000 RDI: ffff96f8fc036400
- RBP: 0000000000001000 R08: ffff96f9132bb400 R09: 0000000000001000
- R10: ffff96f8c1263c80 R11: 0000000000000003 R12: 0000000000001000
- R13: ffff96f8fb75ade8 R14: fffffaaf5ca90000 R15: ffff96f8fb75ad00
- FS:  0000000000000000(0000) GS:ffff9703cf0c0000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000000 CR3: 000000010c9ca003 CR4: 00000000001706b0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
- Call Trace:
-  <TASK>
-  ? __die+0x1f/0x60
-  ? page_fault_oops+0x158/0x450
-  ? search_extable+0x22/0x30
-  ? netfs_pgpriv2_write_to_the_cache+0x15a/0x3f0
-  ? search_module_extables+0xe/0x40
-  ? exc_page_fault+0x62/0x120
-  ? asm_exc_page_fault+0x22/0x30
-  ? netfs_pgpriv2_write_to_the_cache+0x15a/0x3f0
-  ? netfs_pgpriv2_write_to_the_cache+0xf6/0x3f0
-  netfs_read_termination_worker+0x1f/0x60
-  process_one_work+0x138/0x2d0
-  worker_thread+0x2a5/0x3b0
-  ? __pfx_worker_thread+0x10/0x10
-  kthread+0xba/0xe0
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork+0x30/0x50
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
+> Done. I pushed the logs to the previously mentioned github branch:
+> https://github.com/kernel-patches/bpf/commit/699a3bb95e2291d877737438fb6=
+41628702fd18f
 
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-Cc: stable@vger.kernel.org
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
----
-Note this patch doesn't apply to v6.14 as it was obsoleted by commit
-e2d46f2ec332 ("netfs: Change the read result collector to only use one
-work item").
----
- fs/netfs/read_pgpriv2.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Perfect, thanks.
 
-diff --git a/fs/netfs/read_pgpriv2.c b/fs/netfs/read_pgpriv2.c
-index 54d5004fec18..e72f5e674834 100644
---- a/fs/netfs/read_pgpriv2.c
-+++ b/fs/netfs/read_pgpriv2.c
-@@ -181,16 +181,17 @@ void netfs_pgpriv2_write_to_the_cache(struct netfs_io_request *rreq)
- 			break;
- 
- 		folioq_unmark3(folioq, slot);
--		if (!folioq->marks3) {
-+		while (!folioq->marks3) {
- 			folioq = folioq->next;
- 			if (!folioq)
--				break;
-+				goto end_of_queue;
- 		}
- 
- 		slot = __ffs(folioq->marks3);
- 		folio = folioq_folio(folioq, slot);
- 	}
- 
-+end_of_queue:
- 	netfs_issue_write(wreq, &wreq->io_streams[1]);
- 	smp_wmb(); /* Write lists before ALL_QUEUED. */
- 	set_bit(NETFS_RREQ_ALL_QUEUED, &wreq->flags);
--- 
-2.47.2
+Looking at the last record of /proc/fs/netfs/requests, I see:
+
+	REQUEST  OR REF FL ERR  OPS COVERAGE
+	=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D =3D=3D=3D =3D=3D =3D=3D=3D=3D =3D=3D=3D =3D=
+=3D=3D=3D=3D=3D=3D=3D=3D
+	00000a98 RA   1 2001    0   0 @0000 2000/2000
+
+So the request of interest is R=3D00000a98 in the trace.  Grepping for tha=
+t, I
+see (with a few columns cut out):
+
+ test_progs-no_a-97: netfs_rreq_ref: R=3D00000a98 NEW         r=3D1
+ test_progs-no_a-97: netfs_read: R=3D00000a98 READAHEAD c=3D00000000 ni=3D=
+2ec02f16 s=3D0 l=3D2000 sz=3D17a8
+ test_progs-no_a-97: netfs_rreq_ref: R=3D00000a98 GET SUBREQ  r=3D2
+ test_progs-no_a-97: netfs_sreq: R=3D00000a98[1] DOWN TERM  f=3D192 s=3D0 =
+17a8/17a8 s=3D1 e=3D0
+ test_progs-no_a-97: netfs_rreq_ref: R=3D00000a98 GET WORK    r=3D3
+ test_progs-no_a-97: netfs_sreq_ref: R=3D00000a98[1] PUT TERM    r=3D1
+ test_progs-no_a-97: netfs_rreq_ref: R=3D00000a98 GET SUBREQ  r=3D4
+ test_progs-no_a-97: netfs_sreq: R=3D00000a98[2] ZERO SUBMT f=3D00 s=3D17a=
+8 0/858 s=3D0 e=3D0
+    kworker/u8:2-36: netfs_rreq_ref: R=3D00000a98 SEE WORK    r=3D4
+    kworker/u8:2-36: netfs_rreq: R=3D00000a98 RA COLLECT f=3D2021
+    kworker/u8:2-36: netfs_sreq: R=3D00000a98[1] DOWN DSCRD f=3D92 s=3D0 1=
+7a8/17a8 s=3D1 e=3D0
+    kworker/u8:2-36: netfs_sreq_ref: R=3D00000a98[1] PUT DONE    r=3D0
+    kworker/u8:2-36: netfs_sreq: R=3D00000a98[1] DOWN FREE  f=3D92 s=3D0 1=
+7a8/17a8 s=3D1 e=3D0
+    kworker/u8:2-36: netfs_rreq_ref: R=3D00000a98 PUT SUBREQ  r=3D3
+    kworker/u8:2-36: netfs_rreq: R=3D00000a98 RA COMPLET f=3D2021
+    kworker/u8:2-36: netfs_rreq: R=3D00000a98 RA WAKE-IP f=3D2021
+    kworker/u8:2-36: netfs_rreq: R=3D00000a98 RA DONE    f=3D2001
+    kworker/u8:2-36: netfs_rreq_ref: R=3D00000a98 PUT WORK    r=3D2
+ test_progs-no_a-97: netfs_sreq: R=3D00000a98[2] ZERO TERM  f=3D102 s=3D17=
+a8 858/858 s=3D1 e=3D0
+ test_progs-no_a-97: netfs_rreq_ref: R=3D00000a98 GET WORK    r=3D3
+ test_progs-no_a-97: netfs_sreq_ref: R=3D00000a98[2] PUT TERM    r=3D1
+ test_progs-no_a-97: netfs_rreq_ref: R=3D00000a98 PUT RETURN  r=3D2
+    kworker/u8:2-36: netfs_rreq_ref: R=3D00000a98 SEE WORK    r=3D2
+    kworker/u8:2-36: netfs_rreq_ref: R=3D00000a98 PUT WORK    r=3D1
+
+You can see subrequest 1 completes fine, the subrequest is freed and the r=
+ef
+it had on the request is put:
+
+	netfs_sreq: R=3D00000a98[1] DOWN FREE  f=3D92 s=3D0 17a8/17a8 s=3D1 e=3D0
+	netfs_rreq_ref: R=3D00000a98 PUT SUBREQ  r=3D3
+
+Subrequest 2, however isn't collected:
+
+	netfs_sreq: R=3D00000a98[2] ZERO SUBMT f=3D00 s=3D17a8 0/858 s=3D0 e=3D0
+	netfs_sreq: R=3D00000a98[2] ZERO TERM  f=3D102 s=3D17a8 858/858 s=3D1 e=3D=
+0
+	netfs_sreq_ref: R=3D00000a98[2] PUT TERM    r=3D1
+
+and the work happens again in kworker/u8:2-36 right at the end:
+
+	netfs_rreq_ref: R=3D00000a98 SEE WORK    r=3D2
+	netfs_rreq_ref: R=3D00000a98 PUT WORK    r=3D1
+
+but this doesn't do anything.
+
+The excess buffer clearance happened in the app thread (test_progs-no_a-97=
+):
+
+	netfs_sreq: R=3D00000a98[2] ZERO TERM  f=3D102 s=3D17a8 858/858 s=3D1 e=3D=
+0
+
+> Let me know if I can help with anything else.
+
+Can you add some more tracepoints?
+
+echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_collect/enable
+echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_collect_sreq/enable
+echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_collect_state/enable
+
+However, I think I may have spotted the issue: I'm mixing
+clear_and_wake_up_bit() for NETFS_RREQ_IN_PROGRESS (which will use a commo=
+n
+system waitqueue) with waiting on an rreq-specific waitqueue in such as
+netfs_wait_for_read().
+
+I'll work up a fix patch for that tomorrow.
+
+Thanks,
+David
 
