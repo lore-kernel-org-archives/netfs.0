@@ -1,143 +1,103 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B461A3144
-	for <netfs@lists.linux.dev>; Fri,  7 Feb 2025 18:40:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E1981CB337
+	for <netfs@lists.linux.dev>; Mon, 10 Feb 2025 10:58:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738953638; cv=none; b=K4i+yEvJ+ednVD1g9dSoc4htvh64/0M2lJ50LWCGGJS0Bpft3ekrQIcIxKJhicZ5OtczhcDxS06Rs9j8lcEgfmse8Go3Nw5qO4ArLikB4xj8IyA2zQo8iKyVih6k4o/jP2hp3t2srftxG6leq9jUQzKnex7ZbazpCPIT6vCILFw=
+	t=1739185087; cv=none; b=QL7LhnCGmo7hWO9QoaI+1RqxNyGmSa9X+2UKkrhjyk2hr9+uSDqme3T6rg6dWQBz4ydGhtBHyRcrejS8dMNuBIH6NEwHZyuvvs/NyV2zTVB78qlT8Oa8au5VmfGxjGgColaBGgkmzhxzkM5kGLE6ZW0byjaYDRwhwToxBXXFYJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738953638; c=relaxed/simple;
-	bh=VTB46/0sISArTiJeOu2Tixa/98RJnTC76varRmbdaas=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=cdzXvpc7prZTJ5hYhqYSQcxHMdF5oXFjiP9H9x9d2tawABmDOhr7m05bpBMB56ocGUJMnsmS9H64KGt0ZML5jg+bOdfrS2cPZYF+PVZDWOjmsYcTRxBncbgMlWnEzeQDhZSWhQO3N6ZIupWcchrCbh5gGyCUPgasbammGnUXfOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=KWZBpxL8; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+	s=arc-20240116; t=1739185087; c=relaxed/simple;
+	bh=vWv7UNywuHbbX95H499CJg9o/VWBHM3d/g4SWjJwcx0=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=mcjZ6nkykmbA4uhQWCOibXZLXY1d9mQfndEIcVrk2bUQErzGduO9lxhYe+typz9XmoZ1idCMMMQ+wPKQtBa+c0/e3nqupCKba0ZHEnd0r5UtAkDjsfsSLQ7eQOnlLGVf/hjQMmS2ZMjinLDZp2FmwBgmUz4lGJO898GQxKBOnV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=boPdFcxG; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="KWZBpxL8"
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-aaf900cc7fbso419366366b.3
-        for <netfs@lists.linux.dev>; Fri, 07 Feb 2025 10:40:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1738953634; x=1739558434; darn=lists.linux.dev;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=N7UQx8ofkruRoZGyQgvBGKJ0B34UHRuZDuLQLSOhp+8=;
-        b=KWZBpxL8qo7Q39Lqyh/N0B4wa4bcfadfj4wMr2KTWP+UC0LxNU0dCMxFqEQaKHvN0Y
-         Kcc4DeMAD/LZ5F1B0EUDUBIlmatBkQ6oF1MwKUwTVfpvHEU666zX43K6UmIwCkaMCwH5
-         X4CHXFhQlm35L9Sjf+aTqAfe650AEHuRlvHnhnhBd2yGmf/al7/u39ktl45y/trjNXY7
-         iVeRmnFxX2OxqM1n4D4Bcutu+P+XGJgBZz0UNxm2dzpdGCZtpmZqTpLwDjAFWP7D55dF
-         sAgrGgLOgRxmVfUhEvaKq+oYIQDM2rH4trpd+DwOlJnNzetn7seF6XXcY+ikRONDam6w
-         LwsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738953634; x=1739558434;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=N7UQx8ofkruRoZGyQgvBGKJ0B34UHRuZDuLQLSOhp+8=;
-        b=hPkX7tG6TTQYxBXzzG1IeTuz/kOdUklpFBzfZU1/yBUF7iDWVKozIVxgM0OVpH15Eo
-         YsHSpovcS7PcNj7OgqFCOkGU41DWfoKsnWvF05y34K5d6UKDHdzIeSrHKVIwwaX6kVfm
-         QZCOuhC8WWBkpX0rWMpxK5VM1sejGcjDy0EtQBKnJnCf/8oArirtSLpnrf9sU6Nd9VQa
-         7JyxIMZW9tbx9Q7WAp1PJlWbYkggT69CBDR25RV9KPZTY9KS3WN3l+ZUTCLaTMuObs+Y
-         J9G+g7SPDjqkxH9Bp9E26Dw196gRLvlSJmhcNDk/eSgSxabt9nb8t1Cbf5iLjeCsrzjS
-         dCcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUJHWD3VDyRJqInRDrJ+qb2yZFg85J8nFdTaXlEPNHVLpg73E+XTMIwbGFWwf3UGbLqdch88A==@lists.linux.dev
-X-Gm-Message-State: AOJu0YwAx3odpn7uT6cTlK6BLPWy41CKX1KxUvyLHMpOH5q6qRZ1TLTv
-	hdS9ZWFlEJyVDRGikBFspM7OZ1LhYchWPESOiqUGAnHA24wmsrJEQeg3uqVgLpGHnKUMMuprK2s
-	hWkKVQ70TjYoQ59AMvb5HBbd+zEublssssl341Q==
-X-Gm-Gg: ASbGncttm/Ql5U2RlneqHStKFO5cLvATF3IOReTxJKALBouh2bUKY5TUuk856UnOUbj
-	XZM77JuxVnAD8wKmd+bxOHimwWGaLGsRmBW6Tw+7UmiV5UixSsMcfi8MTTRUTk8DYmbXKF2GXdT
-	nubgXIXuDF7JoYeNGxZhWdU5r+9A==
-X-Google-Smtp-Source: AGHT+IF+rdiRwpjE2SYvjnMVb7c5EyeDPHUuoHbmLbCjryYQnZ3NOp27ohv8g5IHTGnjgTTuzlsBWDMzy/gISWA1Nnw=
-X-Received: by 2002:a17:906:ef0d:b0:ab3:4b0c:ea44 with SMTP id
- a640c23a62f3a-ab789a67db2mr496614966b.9.1738953633765; Fri, 07 Feb 2025
- 10:40:33 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="boPdFcxG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1739185084;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qyNTaqn/k/Z/XNNjhpEEGmhvU1IQLM++33YHYodhCTg=;
+	b=boPdFcxGDFdOkYBon7p9CxXE4eNYFQpt0UwH9x+qJ1VthhxPeuPzI+A0xHmr8PAiexsOJV
+	siTD7JLgyWZeZ76FCee/fiGPpt0udkbsx+yhnnNX6r8Kth/TSPX8f7FMcPQs7iENK4agpl
+	dGBD0PI/LdAldk1yWv6Z+t99ZUF5Jno=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-44-CEEK-4T5M4mNX5PdTFK0ug-1; Mon,
+ 10 Feb 2025 05:58:00 -0500
+X-MC-Unique: CEEK-4T5M4mNX5PdTFK0ug-1
+X-Mimecast-MFC-AGG-ID: CEEK-4T5M4mNX5PdTFK0ug
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4747A195604F;
+	Mon, 10 Feb 2025 10:57:57 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.92])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E900218004A7;
+	Mon, 10 Feb 2025 10:57:51 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <335ad811ae2cf5ebdfc494c185b9f02e9ca40c3e@linux.dev>
+References: <335ad811ae2cf5ebdfc494c185b9f02e9ca40c3e@linux.dev> <3173328.1738024385@warthog.procyon.org.uk> <3187377.1738056789@warthog.procyon.org.uk>
+To: "Ihor Solodrai" <ihor.solodrai@linux.dev>
+Cc: dhowells@redhat.com, "Marc Dionne" <marc.dionne@auristor.com>,
+    "Steve French" <stfrench@microsoft.com>,
+    "Eric Van Hensbergen" <ericvh@kernel.org>,
+    "Latchesar
+ Ionkov" <lucho@ionkov.net>,
+    "Dominique Martinet" <asmadeus@codewreck.org>,
+    "Christian Schoenebeck" <linux_oss@crudebyte.com>,
+    "Paulo Alcantara" <pc@manguebit.com>,
+    "Jeff Layton" <jlayton@kernel.org>,
+    "Christian Brauner" <brauner@kernel.org>, v9fs@lists.linux.dev,
+    linux-cifs@vger.kernel.org, netfs@lists.linux.dev,
+    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+    ast@kernel.org, bpf@vger.kernel.org
+Subject: Re: [PATCH] netfs: Add retry stat counters
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Max Kellermann <max.kellermann@ionos.com>
-Date: Fri, 7 Feb 2025 19:40:23 +0100
-X-Gm-Features: AWEUYZkCyX8DjjF12TNsjDfa6XpP_u6-S4Qa_aFIAHNlLhxJKVB5hDN6wSQeBYU
-Message-ID: <CAKPOu+_4mUwYgQtRTbXCmi+-k3PGvLysnPadkmHOyB7Gz0iSMA@mail.gmail.com>
-Subject: "netfs: Can't donate prior to front"
-To: David Howells <dhowells@redhat.com>, netfs@lists.linux.dev, 
-	LKML <linux-kernel@vger.kernel.org>, linux-nfs@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2985986.1739185070.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 10 Feb 2025 10:57:50 +0000
+Message-ID: <2985987.1739185070@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Hi,
+Ihor Solodrai <ihor.solodrai@linux.dev> wrote:
 
-the following crash occurs with 6.13.1 on our servers every 20 minutes or so:
+> I recommend trying to reproduce with steps I shared in my initial report=
+:
+> https://lore.kernel.org/bpf/a7x33d4dnMdGTtRivptq6S1i8btK70SNBP2XyX_xwDAh=
+LvgQoPox6FVBOkifq4eBinfFfbZlIkMZBe3QarlWTxoEtHZwJCZbNKtaqrR7PvI=3D@pm.me/
+> =
 
- netfs: Can't donate prior to front
- R=00070d30[3] s=9a000-9bfff 0/2000/2000
- folio: 98000-9bfff
- donated: prev=0 next=0
- s=9a000 av=2000 part=2000
- ------------[ cut here ]------------
- kernel BUG at fs/netfs/read_collect.c:315!
- Oops: invalid opcode: 0000 [#1] SMP PTI
- CPU: 7 UID: 0 PID: 0 Comm: swapper/7 Not tainted 6.13.1-cm4all2-hp #416
- Hardware name: HP ProLiant DL380 Gen9/ProLiant DL380 Gen9, BIOS P89 11/23/2021
- RIP: 0010:netfs_consume_read_data.isra.0+0xa72/0xab0
- Code: 48 89 ea 31 f6 48 c7 c7 bb 7a d0 ae e8 b7 d2 d1 ff 48 8b 4c 24
-20 4c 89 e2 48 c7 c7 d7 7a d0 ae 48 8b 74 24 18 e8 9e d2 d1 ff <0f> 0b
-4c 89 ef 48 89 54 24 10 4c 89 44 24 08 e8 1a 4e b5 00 48 c7
- RSP: 0018:ffffb434cc448db0 EFLAGS: 00010246
- RAX: 0000000000000019 RBX: ffff8fa63d9cbec0 RCX: 0000000000000027
- RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff8fbb1f9db840
- RBP: 0000000000000000 R08: 00000000ffffbfff R09: 0000000000000001
- R10: 0000000000000003 R11: ffff8fd31f6a0000 R12: 0000000000002000
- R13: ffff8fa5350aaee8 R14: 0000000000004000 R15: ffff8fa5350aaee8
- FS:  0000000000000000(0000) GS:ffff8fbb1f9c0000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00007f9c5000ef48 CR3: 0000000bcee2e001 CR4: 00000000001706f0
- Call Trace:
-  <IRQ>
-  ? die+0x32/0x80
-  ? do_trap+0xd8/0x100
-  ? do_error_trap+0x65/0x80
-  ? netfs_consume_read_data.isra.0+0xa72/0xab0
-  ? exc_invalid_op+0x4c/0x60
-  ? netfs_consume_read_data.isra.0+0xa72/0xab0
-  ? asm_exc_invalid_op+0x16/0x20
-  ? netfs_consume_read_data.isra.0+0xa72/0xab0
-  ? __pfx_cachefiles_read_complete+0x10/0x10
-  netfs_read_subreq_terminated+0x22d/0x370
-  cachefiles_read_complete+0x48/0xf0
-  iomap_dio_bio_end_io+0x125/0x160
-  blk_update_request+0xea/0x3e0
-  scsi_end_request+0x27/0x190
-  scsi_io_completion+0x43/0x6c0
-  blk_complete_reqs+0x40/0x50
-  handle_softirqs+0xd1/0x280
-  irq_exit_rcu+0x91/0xb0
-  common_interrupt+0x79/0xa0
-  </IRQ>
-  <TASK>
-  asm_common_interrupt+0x22/0x40
- RIP: 0010:cpuidle_enter_state+0xba/0x3b0
- Code: 00 e8 ea 86 1c ff e8 45 f7 ff ff 8b 53 04 49 89 c5 0f 1f 44 00
-00 31 ff e8 73 b9 1b ff 45 84 ff 0f 85 f8 01 00 00 fb 45 85 f6 <0f> 88
-46 01 00 00 48 8b 04 24 49 63 ce 48 6b d1 68 49 29 c5 48 89
- RSP: 0018:ffffb434c018be98 EFLAGS: 00000202
- RAX: ffff8fbb1f9c0000 RBX: ffffd41cbe7e3448 RCX: 000000000000001f
- RDX: 0000000000000007 RSI: 000000003149acb2 RDI: 0000000000000000
- RBP: 0000000000000004 R08: 0000000000000002 R09: 0000000000000000
- R10: 0000000000000004 R11: 000000000000001f R12: ffffffffaf660060
- R13: 0000030f6179fa73 R14: 0000000000000004 R15: 0000000000000000
-  ? cpuidle_enter_state+0xad/0x3b0
-  cpuidle_enter+0x29/0x40
-  do_idle+0x19c/0x200
-  cpu_startup_entry+0x25/0x30
-  start_secondary+0xf3/0x100
-  common_startup_64+0x13e/0x148
-  </TASK>
- Modules linked in:
- ---[ end trace 0000000000000000 ]---
+> I know it may not be very convenient due to all the CI stuff,
 
-This is a server with heavy NFS traffic (with fscache enabled).
+That's an understatement. :-)
 
-Please help - and let me know if you need more information.
+> but you should be able to use it to iterate on the kernel source locally=
+ and
+> narrow down the problem.
 
-Max
+Can you share just the reproducer without all the docker stuff?  Is this o=
+ne
+of those tests that requires 9p over virtio?  I have a different environme=
+nt
+for that.
+
+David
+
