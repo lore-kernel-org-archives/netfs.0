@@ -1,111 +1,245 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC451F4639
-	for <netfs@lists.linux.dev>; Mon, 10 Feb 2025 19:11:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3708E24CEF5
+	for <netfs@lists.linux.dev>; Mon, 10 Feb 2025 21:54:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739214687; cv=none; b=QfaB/AbBc1LFjNyMMeb+mxZTd2wpG6IhYYJt2+13ZBFpZvIEXsyet4Bt7HFcXV68Jr2hNuXAu/5VzP4FbBNGMBxsjZxxepbVH56/ckY8D2CU5FY01rAf06yKjruAohULeNN9ia42O2GqBVUhhyqVC5mHYhpbhc3VljPVT1DjZWw=
+	t=1739224476; cv=none; b=Cykp9ax/kCHRrkVw3UBJoKwlJAm+n/jyJ+Sj1zVso7yE+g+ZPxOx9pzbEy4FheOt8qOdPav8jJU/YQtkRvWHuLGYsbobJW601fHWK0YvbVAymQoZ/MRY/hbULXQLF1xfUBLjFDKgUbIVFx7ocIvW8d68AwQxEwTBrUCmZF0Evvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739214687; c=relaxed/simple;
-	bh=FuRalVomnUo4fAYGb7ePQCR9+STX3xDmBsVlwWk2WsU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=btRflk5muZGM2YzIlqHwrEhNJO8hsu16KgUuF1HSlRaSo8vxTUtR3CT9elQlr1ZUo50VvhESsYyue6hU9GlXChAFcVzkCN+QdzAbJj/DjK+ZGeMilLuIsZPkslKzCWQeuf4GvAr508YfWlb7FzHVp4SOQGlPjYpeybzKgafjo/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=Tbs7Ean9; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+	s=arc-20240116; t=1739224476; c=relaxed/simple;
+	bh=AyQraTfsD0eAKJNbpAIj37781+CGfi6OdK1JVn5lhT4=;
+	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
+	 In-Reply-To:References; b=CadWTTC3+lr9nEMMim8NeboHksDkhueuQPcysn5wMAXQrJaTFvdq02yVduDZwMrqrSJgooaye2qoBOxq5jU1prWPYWlUktkrnekOz8OoWA2+/dLsLTO+0t29exEPAt71HnhkXeh+RoW02y7hcTNgunCYHWYmYaK52pctITTWtZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=f65VgwxR; arc=none smtp.client-ip=91.218.175.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="Tbs7Ean9"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-ab7d451f7c4so83352766b.0
-        for <netfs@lists.linux.dev>; Mon, 10 Feb 2025 11:11:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1739214682; x=1739819482; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KRdLgzD1wD3MEmKM8GjV3bFdVy6SihSEQKzMmUmzv9E=;
-        b=Tbs7Ean9tvLQDTWNN1rNh9NtawFA4ccwu1RC6vVqEV3vKPkN4IPVwKZcoyQV0pcp/i
-         4hGaQPMA62/86ahWBKY9UZ7cKJZVjEOjfK7YnmZ87ApKme97p31Mg3cpJPeO7MXYPP5A
-         QRnRaKvrB8cLpw1nSspVsin5Hz2WAVPHkB1Nf2QHjiqTT/bqTS2T962qy4aFZATg3XxK
-         cZ20iHBtlxsURcVkqdQyKiEYGuj2JyNL4vuuSuJ63YTMUkvzTGCjSDLOnXUXQuujYRdk
-         y/3/ENYXEZuInwg807KnckzXlaCyIMgv9HeQEiygqnMrUexkFQubpLe9980PHew4IB1g
-         IviA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739214682; x=1739819482;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KRdLgzD1wD3MEmKM8GjV3bFdVy6SihSEQKzMmUmzv9E=;
-        b=VPJvm5pJ+l7kHFE92PutcvVt2BNStHtpCKdKG4Rs5jI6uFpEr7ljZEE/5yjMv8OpEr
-         nbErke3FkEyqudgJzpwCojDvacR26UbFkbbJ6Ay0A97lLTh/CzcNlvgDMZDAordqaRX4
-         w2lhPQMwlGwMXW9miSI6jolWyXwO5VyKiIAySUB3nBDew8ioqR53EYgVOH0JYnp2Ogm7
-         cIseua5ZmSjXbbAdwOP/FslTTrsGxp4WRadIEyWMUUpr3/5EQDRQ+LQxsJeMfvE+uSeZ
-         JT6oTZD6anIH0hkXRRTd8//Mki6UwjWGP2ymwoI8T9e4bRdqyu4E3/W69WqXGrgGKus7
-         JIqg==
-X-Forwarded-Encrypted: i=1; AJvYcCVUuU+8huzLVHKSzpxxX2fNSBOLNLIpfiTWckY8I3Q7u9cRcVrGzy1IwTy4c5XAJpah/a3L5A==@lists.linux.dev
-X-Gm-Message-State: AOJu0YyTppp4ucoWW545W55sGC/R4v/8sd+/H3vg6zAHvdrZXpJbwZwX
-	4ufEcDONb0O041kopihuYO/2y79iTJzXHEpOnA1ZWuLosNhlU5BDmRooroBYbJ0=
-X-Gm-Gg: ASbGncswwi7LD852byDUxQsmpM8GEbWKR+JvL3A1Fu+E0fp00Au0L2grWymK92bK6us
-	bT3zhzXC0iR8g0yalD2TjudtbpF0X5rAtK7odA2WRVqV8stIrPF84Qbb/u0MaMcprffGW1WUPO7
-	lOjIQc6EcwF8DOlIDjBUr4iYAMmKYN366Wj/tChRtE0Dd8zrLXJakOG+E4nS3zJxE8kiRzAkaFJ
-	74Z8bay7HnjWXAUdRg4j2YVdpt2kNph3qnEKq2yIA7YFiYM8/BnKpLgOmjpgYdX+7OrnT/mT3pC
-	5HgY5KpWgRGrFBY4Xymd+WSkGXnJeLTNLwwv+zKeMs/iViR5/2Rqu7Y8qoKdKCqFXrTTGCWuYAV
-	c/TWQidapaovCuxw=
-X-Google-Smtp-Source: AGHT+IGhMqK5v2fSt6EV9RNWf/Z5VkBUx+UNoSTflx/SUbiE5SXTICj9mdVUZA6Z3mG7mSkQBoQAnA==
-X-Received: by 2002:a17:906:4fc5:b0:aa6:79fa:b480 with SMTP id a640c23a62f3a-ab789a6b504mr1707903766b.10.1739214682515;
-        Mon, 10 Feb 2025 11:11:22 -0800 (PST)
-Received: from raven.intern.cm-ag (p200300dc6f19d800023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f19:d800:230:64ff:fe74:809])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab786aa2c60sm812424766b.102.2025.02.10.11.11.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Feb 2025 11:11:22 -0800 (PST)
-From: Max Kellermann <max.kellermann@ionos.com>
-To: dhowells@redhat.com,
-	netfs@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-nfs@vger.kernel.org
-Cc: Max Kellermann <max.kellermann@ionos.com>
-Subject: [PATCH] fs/netfs/read_collect: add to next->prev_donated
-Date: Mon, 10 Feb 2025 20:11:18 +0100
-Message-ID: <20250210191118.3444416-1-max.kellermann@ionos.com>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <CAKPOu+_4mUwYgQtRTbXCmi+-k3PGvLysnPadkmHOyB7Gz0iSMA@mail.gmail.com>
-References: <CAKPOu+_4mUwYgQtRTbXCmi+-k3PGvLysnPadkmHOyB7Gz0iSMA@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="f65VgwxR"
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1739224461;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=41Jhkvba1WFpStcLbcComfly4EhWKsI/5ZXXHmjcCPc=;
+	b=f65VgwxRDwvtEdsu7NuNmtX7Cgk1A2R7ciEt77+LFeoEdkDCJpP46zQl/tiWsPH6GSyHXV
+	3BH4gtWmgsJ/ZkYujW+eU7UhgmO9yYvbv9BNFhJxWx7L9V32PfS1aGM82g5GOAQqkBbJN7
+	tc0lxdvFecc/O7MqyUewFbtWj8ltvmk=
+Date: Mon, 10 Feb 2025 21:54:19 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Ihor Solodrai" <ihor.solodrai@linux.dev>
+Message-ID: <8d8a5d5b00688ea553b106db690e8a01f15b1410@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH] netfs: Add retry stat counters
+To: "David Howells" <dhowells@redhat.com>
+Cc: dhowells@redhat.com, "Marc Dionne" <marc.dionne@auristor.com>, "Steve
+ French" <stfrench@microsoft.com>, "Eric Van Hensbergen"
+ <ericvh@kernel.org>, "Latchesar  Ionkov" <lucho@ionkov.net>, "Dominique
+ Martinet" <asmadeus@codewreck.org>, "Christian Schoenebeck"
+ <linux_oss@crudebyte.com>, "Paulo Alcantara" <pc@manguebit.com>, "Jeff
+ Layton" <jlayton@kernel.org>, "Christian Brauner" <brauner@kernel.org>,
+ v9fs@lists.linux.dev, linux-cifs@vger.kernel.org, netfs@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ast@kernel.org, bpf@vger.kernel.org
+In-Reply-To: <2986469.1739185956@warthog.procyon.org.uk>
+References: <335ad811ae2cf5ebdfc494c185b9f02e9ca40c3e@linux.dev>
+ <3173328.1738024385@warthog.procyon.org.uk>
+ <3187377.1738056789@warthog.procyon.org.uk>
+ <2986469.1739185956@warthog.procyon.org.uk>
+X-Migadu-Flow: FLOW_OUT
 
-If multiple subrequests donate data to the same "next" request
-(depending on the subrequest completion order), each of them would
-overwrite the `prev_donated` field, causing data corruption and a
-BUG() crash ("Can't donate prior to front").
+On 2/10/25 2:57 AM, David Howells wrote:
+> Ihor Solodrai <ihor.solodrai@linux.dev> wrote:
+>
+>> I recommend trying to reproduce with steps I shared in my initial repo=
+rt:
+>> https://lore.kernel.org/bpf/a7x33d4dnMdGTtRivptq6S1i8btK70SNBP2XyX_xwD=
+AhLvgQoPox6FVBOkifq4eBinfFfbZlIkMZBe3QarlWTxoEtHZwJCZbNKtaqrR7PvI=3D@pm.m=
+e/
+>>
+>> I know it may not be very convenient due to all the CI stuff,
+>
+> That's an understatement. :-)
+>
+>> but you should be able to use it to iterate on the kernel source local=
+ly and
+>> narrow down the problem.
+>
+> Can you share just the reproducer without all the docker stuff?=20=20
 
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-Closes: https://lore.kernel.org/netfs/CAKPOu+_4mUwYgQtRTbXCmi+-k3PGvLysnPadkmHOyB7Gz0iSMA@mail.gmail.com/
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
----
-David, this seems to fix the bug for me.  Please also check if we need
-a "donation_changed" check.
----
- fs/netfs/read_collect.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I=20wrote a couple of shell scripts with a gist of what's happening on
+CI: build kernel, build selftests and run. You may try them.
 
-diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
-index 0d95cdbe5611..681b630b4f06 100644
---- a/fs/netfs/read_collect.c
-+++ b/fs/netfs/read_collect.c
-@@ -284,7 +284,7 @@ static bool netfs_consume_read_data(struct netfs_io_subrequest *subreq, bool was
- 				   netfs_trace_donate_to_deferred_next);
- 	} else {
- 		next = list_next_entry(subreq, rreq_link);
--		WRITE_ONCE(next->prev_donated, excess);
-+		WRITE_ONCE(next->prev_donated, next->prev_donated + excess);
- 		trace_netfs_donate(rreq, subreq, next, excess,
- 				   netfs_trace_donate_to_next);
- 	}
--- 
-2.47.2
+Pull this branch from my github:
+https://github.com/theihor/bpf/tree/netfs-debug
 
+It's the kernel source in a broken state with the scripts.
+Inlining the scripts here:
+
+## ./reproducer.sh
+
+#!/bin/bash
+
+set -euo pipefail
+
+export KBUILD_OUTPUT=3D$(realpath kbuild-output)
+mkdir -p $KBUILD_OUTPUT
+
+cp -f repro.config $KBUILD_OUTPUT/.config
+make olddefconfig
+make -j$(nproc) all
+make -j$(nproc) headers
+
+# apt install lsb-release wget software-properties-common gnupg
+# bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+export LLVM_VERSION=3D18
+
+make -C tools/testing/selftests/bpf \
+     CLANG=3Dclang-${LLVM_VERSION} \
+     LLC=3Dllc-${LLVM_VERSION} \
+     LLVM_STRIP=3Dllvm-strip-${LLVM_VERSION} \
+     -j$(nproc) test_progs-no_alu32
+
+# wget https://github.com/danobi/vmtest/releases/download/v0.15.0/vmtest-=
+x86_64
+# chmod +x vmtest-x86_64
+./vmtest-x86_64 -k $KBUILD_OUTPUT/$(make -s image_name) ./run-bpf-selftes=
+ts.sh | tee test.log
+
+## end of ./reproducer.sh
+
+## ./run-bpf-selftests.sh
+
+#!/bin/bash
+
+/bin/mount bpffs /sys/fs/bpf -t bpf
+ip link set lo up
+
+echo 10 > /proc/sys/kernel/hung_task_timeout_secs
+echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_read/enable
+echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_write/enable
+echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_write_iter/enable
+echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_rreq/enable
+echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_rreq_ref/enable
+echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_sreq/enable
+echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_sreq_ref/enable
+echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_failure/enable
+
+function tail_proc {
+    src=3D$1
+    dst=3D$2
+    echo -n > $dst
+    while true; do
+        echo >> $dst
+        cat $src >> $dst
+        sleep 1
+    done
+}
+export -f tail_proc
+
+nohup bash -c 'tail_proc /proc/fs/netfs/stats netfs-stats.log' & disown
+nohup bash -c 'tail_proc /proc/fs/netfs/requests netfs-requests.log' & di=
+sown
+nohup bash -c 'trace-cmd show -p > trace-cmd.log' & disown
+
+cd tools/testing/selftests/bpf
+./test_progs-no_alu32
+
+## end of ./run-bpf-selftests.sh
+
+One of the reasons for suggesting docker is that all the dependencies
+are pre-packaged in the image, and so the environment is pretty close
+to the actual CI environment. With only shell scripts you will have to
+detect and install missing dependencies on your system and hope
+package versions are more or less the same and don't affect the issue.
+
+Notable things: LLVM 18, pahole, qemu, qemu-guest-agent, vmtest tool.
+
+> Is this one
+> of those tests that requires 9p over virtio?  I have a different enviro=
+nment
+> for that.
+
+We run the tests via vmtest tool: https://github.com/danobi/vmtest
+This is essentially a qemu wrapper.
+
+I am not familiar with its internals, but for sure it is using 9p.
+
+
+On 2/10/25 3:12 AM, David Howells wrote:
+> Ihor Solodrai <ihor.solodrai@linux.dev> wrote:
+>
+>> Bash piece starting a process collecting /proc/fs/netfs/stats:
+>>
+>>     function tail_netfs {
+>>         echo -n > /mnt/vmtest/netfs-stats.log
+>>         while true; do
+>>             echo >> /mnt/vmtest/netfs-stats.log
+>>             cat /proc/fs/netfs/stats >> /mnt/vmtest/netfs-stats.log
+>>             sleep 1
+>>         done
+>>     }
+>>     export -f tail_netfs
+>>     nohup bash -c 'tail_netfs' & disown
+>
+> I'm afraid, intermediate snapshots of this file aren't particularly use=
+ful -
+> just the last snapshot:
+
+The reason I wrote it like this is because the test runner hangs, and
+so I have to kill qemu to stop it (with no ability to run
+post-processing within qemu instance; well, at least I don't know how
+to do it).
+
+>
+> [...]
+>
+> Could you collect some tracing:
+>
+> echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_read/enable
+> echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_write/enable
+> echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_write_iter/enable
+> echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_rreq/enable
+> echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_rreq_ref/enable
+> echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_sreq/enable
+> echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_sreq_ref/enable
+> echo 1 >/sys/kernel/debug/tracing/events/netfs/netfs_failure/enable
+>
+> and then collect the tracelog:
+>
+> trace-cmd show | bzip2 >some_file_somewhere.bz2
+>
+> And if you could collect /proc/fs/netfs/requests as well, that will sho=
+w the
+> debug IDs of the hanging requests.  These can be used to grep the trace=
+ by
+> prepending "R=3D".  For example, if you see:
+>
+> 	REQUEST  OR REF FL ERR  OPS COVERAGE
+> 	=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D =3D=3D=3D =3D=3D =3D=3D=3D=3D =3D=3D=
+=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D
+> 	00000043 WB   1 2120    0   0 @34000000 0/0
+>
+> then:
+>
+> 	trace-cmd show | grep R=3D00000043
+
+Done. I pushed the logs to the previously mentioned github branch:
+https://github.com/kernel-patches/bpf/commit/699a3bb95e2291d877737438fb64=
+1628702fd18f
+
+Let me know if I can help with anything else.
+
+>
+> Thanks,
+> David
+>
