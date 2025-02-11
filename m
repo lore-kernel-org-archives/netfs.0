@@ -1,110 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE981E571F;
-	Tue, 11 Feb 2025 06:30:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA7D1EDA1C
+	for <netfs@lists.linux.dev>; Tue, 11 Feb 2025 08:05:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739255421; cv=none; b=ZU9mByPKn08rlmavmKuFwBW8ze343vi3Z09vJv7owDkpPPpGKd3ae9tq+tqiDlHODERgydjZh5s2Z7agQoJ6PbhhkWcqKw6sjy/G0UF6xlcKMWhH3eXVgIHtXtpXsDBBGIPJ8s/CNjghGU+UKV4rimmuRfh26xbb0AQmudg1DQI=
+	t=1739261159; cv=none; b=W0fQExbkf6W4auxC8FiWoxp1mOi6lQm0uzAGHIvYF5XxgUpgWMk9BujQXwU5VzbNx+LHH2yUr5K9BwzYZKlrFP9PSnIfdwjkQyyR6GdX8CNoLYX45JG1zt5MnvAsMFFcyoRlW0aWqLX11+4wE6x3d8x1Du3pF+m+kqP5yGYmiwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739255421; c=relaxed/simple;
-	bh=SQDUVh0rl3WKxWIUb4gCysRh4Aphb9hA44Jm/KJPB0c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qn2Z06aXoHAYTAbK729emusw2dV+3Bv2Qpj6N4nNdLRIOkWkDr+KLzH/+TXtIAlSHEvM5TWB3Yktnf/OlkdOcJuOTJuk7XQqADfXGzGWLrqUJTv5h9i3DdkbdROYxOsdeopJtA5FhQfRsbBwjBhXCk+gWLDToy6fhlFaOAQyWEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gI919JrA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1739261159; c=relaxed/simple;
+	bh=oZul2d/wKFmYJJHdQwxELki+d2o5+CW8gJ8R+CmprR0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pyOGTktE/B69LeSJ4/pgv/ZKPjU9b8ZcUCsCZfT/1R66oB6iayhPj/otDjVQAlfzQTHfehb8uOcYVSjh3G5JcYu4KJoHCpbpa/1RzAU+eWFkmBCwhkzVgl+BcM9Ze6eoj/nzzeD2dUs+c/ZBCBh3wz0/X0W8uKL82tGyeRMSHA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=e9bczBaU; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gI919JrA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ACF8C4CEDD;
-	Tue, 11 Feb 2025 06:30:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1739255419;
-	bh=SQDUVh0rl3WKxWIUb4gCysRh4Aphb9hA44Jm/KJPB0c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gI919JrAc4NqCB6truU0+B3zgHB/rIxKwp4qv9j4YjzXsAFjSIRNY6cvPYq+n7zcr
-	 bcNFC0bCRuSiv1e86MepP1ldqSU5M5hO2fr2ZvVDHQ1jDeHuiV3vGrFYmCwkIZdzOI
-	 /q1XfZyVU8UPtbCTAHrQi0xXbFapmx8AYtZT4fek=
-Date: Tue, 11 Feb 2025 07:29:17 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: dhowells@redhat.com, netfs@lists.linux.dev,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v6.13] fs/netfs/read_pgpriv2: skip folio queues without
- `marks3`
-Message-ID: <2025021138-track-liberty-f5d9@gregkh>
-References: <20250210223144.3481766-1-max.kellermann@ionos.com>
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="e9bczBaU"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-ab7e1286126so68999866b.0
+        for <netfs@lists.linux.dev>; Tue, 11 Feb 2025 00:05:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1739261155; x=1739865955; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VJrOUp+F89GFnzwAsaIErFuCcKPjmLvk5s9hg9IRNZc=;
+        b=e9bczBaU0Cn4/JSRC/Z8ekBmJrVj7kSg8DFZJwgnUThk4Noe1o1go5AneJc0jCx6H9
+         AYJIM3xOiqr9/nDsThnzjdgXjGfoqAP9TCGjDY6SUABRrOVj/WBHKBnHNcl3H+Qg3xBG
+         xoEEbsbTSQl87kRrQVv2VK4Wr+Sh3jdmYezlxEz5kGQNVu0yDQKpN6r+2XikLPYrAhGY
+         YwBA2wtyVQybKLr9hgWRZZjYWT/xvBd5kOpThKlR3YnZ52SYDjUfaXzQZ5Hfj3TTD8MV
+         eq/QXh53w/o2Ch/2yU5opaXK8K5jNhWXBFLc3Kx6EROFGPZTtQbkJNclrOAjXRJ71fjX
+         ccmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739261155; x=1739865955;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VJrOUp+F89GFnzwAsaIErFuCcKPjmLvk5s9hg9IRNZc=;
+        b=WiZrbztDKFNMTHZcmQF1wtlYIKnjkhfAv5M2R4sMaG5SN88/gzE0uBELs9Snfu4w5X
+         crACCxarSPm5nJ891u9bcvvKBEt++zMp5gSN4f9/dkaCUcSz7f3feRKQYHwXIOSqsRu+
+         +RCxbY0IGcz6lTS+1IMU2i4p8T1bTv1zzlI78F/OpWZoRbR0sKxekvtRU2Uun7+k4P84
+         FEOfEnjwusWtPZXpefTVHF3XBgowIrhVXNppfYSzN0nOXaz+77CIh5EAQXa1k5vXbPhs
+         8o0sfIAKCYZvKvBrLzrB8RqPkpkkzjXi/wZE9e634EXRmcG4P3BJN/Y+nBLndMsNOtxV
+         52SA==
+X-Forwarded-Encrypted: i=1; AJvYcCXd5rxx3HBpMhHwXt7qUZyE6qdrq73jfoh6ilLoD3oIwj/6onDIGQ9Q+0mTiVOXkhxL3+5CFA==@lists.linux.dev
+X-Gm-Message-State: AOJu0YwUpxGcGv0lkJthiKeGIzfvw499TzzPTHx76pjlHLbjNq1DrMmP
+	Se/Y0oOR/w1TZm/CnKFudCSeSHJ8WyS2i8Yrb989YUiKayDgLAPy/zTgyLyd68rgqBAJUAyatuD
+	tbEE3BQFKhI/U18eBSzZgVo+SbjQHklRUVjJwqdMPjW+hDomHWRE=
+X-Gm-Gg: ASbGnct0/EuuSAlCVWlnK1OE7NG0QxfkVFkvSyMfQvS8sPKZ6lRTyjlbrw8Eap7I8xs
+	XbfbCvTfz58ghq27EUgKqpaoPsqTFLsdMKTpa91M7cpNYx8rVVD119jgBTQNpZEIgr44k9AJNOO
+	FPcyvm/Dzoe9rLcjgyPnx7HglElQ==
+X-Google-Smtp-Source: AGHT+IEvCt8BeOXdJg8lh6Pl0LfjKQqELNkqQazSvkXvBC8ZT59e0sRDOAAy7KvIr0fZcwzxkMFleImklwBwEspDSj8=
+X-Received: by 2002:a17:906:6a29:b0:aa6:a572:49fd with SMTP id
+ a640c23a62f3a-ab789ca2972mr1452330266b.54.1739261155397; Tue, 11 Feb 2025
+ 00:05:55 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250210223144.3481766-1-max.kellermann@ionos.com>
+References: <20250210223144.3481766-1-max.kellermann@ionos.com> <2025021138-track-liberty-f5d9@gregkh>
+In-Reply-To: <2025021138-track-liberty-f5d9@gregkh>
+From: Max Kellermann <max.kellermann@ionos.com>
+Date: Tue, 11 Feb 2025 09:05:44 +0100
+X-Gm-Features: AWEUYZn8IYtLkGvSdhSF9RacLZqPPLjjSSgyWsPBEwf3ckYtzh6gc1WMb8IYbZw
+Message-ID: <CAKPOu+-Mi1oCNvk3SJnui3484wpfru3fE1gA72XVcX77PFOjVA@mail.gmail.com>
+Subject: Re: [PATCH v6.13] fs/netfs/read_pgpriv2: skip folio queues without `marks3`
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: dhowells@redhat.com, netfs@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 10, 2025 at 11:31:44PM +0100, Max Kellermann wrote:
-> At the beginning of the function, folio queues with marks3==0 are
-> skipped, but after that, the `marks3` field is ignored.  If one such
-> queue is found, `slot` is set to 64 (because `__ffs(0)==64`), leading
-> to a buffer overflow in the folioq_folio() call.  The resulting crash
-> may look like this:
-> 
->  BUG: kernel NULL pointer dereference, address: 0000000000000000
->  #PF: supervisor read access in kernel mode
->  #PF: error_code(0x0000) - not-present page
->  PGD 0 P4D 0
->  Oops: Oops: 0000 [#1] SMP PTI
->  CPU: 11 UID: 0 PID: 2909 Comm: kworker/u262:1 Not tainted 6.13.1-cm4all2-vm #415
->  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.14.0-2 04/01/2014
->  Workqueue: events_unbound netfs_read_termination_worker
->  RIP: 0010:netfs_pgpriv2_write_to_the_cache+0x15a/0x3f0
->  Code: 48 85 c0 48 89 44 24 08 0f 84 24 01 00 00 48 8b 80 40 01 00 00 48 8b 7c 24 08 f3 48 0f bc c0 89 44 24 18 89 c0 48 8b 74 c7 08 <48> 8b 06 48 c7 04 24 00 10 00 00 a8 40 74 10 0f b6 4e 40 b8 00 10
->  RSP: 0018:ffffbbc440effe18 EFLAGS: 00010203
->  RAX: 0000000000000040 RBX: ffff96f8fc034000 RCX: 0000000000000000
->  RDX: 0000000000000040 RSI: 0000000000000000 RDI: ffff96f8fc036400
->  RBP: 0000000000001000 R08: ffff96f9132bb400 R09: 0000000000001000
->  R10: ffff96f8c1263c80 R11: 0000000000000003 R12: 0000000000001000
->  R13: ffff96f8fb75ade8 R14: fffffaaf5ca90000 R15: ffff96f8fb75ad00
->  FS:  0000000000000000(0000) GS:ffff9703cf0c0000(0000) knlGS:0000000000000000
->  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->  CR2: 0000000000000000 CR3: 000000010c9ca003 CR4: 00000000001706b0
->  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
->  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
->  Call Trace:
->   <TASK>
->   ? __die+0x1f/0x60
->   ? page_fault_oops+0x158/0x450
->   ? search_extable+0x22/0x30
->   ? netfs_pgpriv2_write_to_the_cache+0x15a/0x3f0
->   ? search_module_extables+0xe/0x40
->   ? exc_page_fault+0x62/0x120
->   ? asm_exc_page_fault+0x22/0x30
->   ? netfs_pgpriv2_write_to_the_cache+0x15a/0x3f0
->   ? netfs_pgpriv2_write_to_the_cache+0xf6/0x3f0
->   netfs_read_termination_worker+0x1f/0x60
->   process_one_work+0x138/0x2d0
->   worker_thread+0x2a5/0x3b0
->   ? __pfx_worker_thread+0x10/0x10
->   kthread+0xba/0xe0
->   ? __pfx_kthread+0x10/0x10
->   ret_from_fork+0x30/0x50
->   ? __pfx_kthread+0x10/0x10
->   ret_from_fork_asm+0x1a/0x30
->   </TASK>
-> 
-> Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-> ---
-> Note this patch doesn't apply to v6.14 as it was obsoleted by commit
-> e2d46f2ec332 ("netfs: Change the read result collector to only use one
-> work item").
+On Tue, Feb 11, 2025 at 7:30=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
 
-Why can't we just take what is upstream instead?
+> > Note this patch doesn't apply to v6.14 as it was obsoleted by commit
+> > e2d46f2ec332 ("netfs: Change the read result collector to only use one
+> > work item").
+>
+> Why can't we just take what is upstream instead?
+>
+> Diverging from that ALWAYS ends up being more work and problems in the
+> end.  Only do so if you have no other choice.
 
-Diverging from that ALWAYS ends up being more work and problems in the
-end.  Only do so if you have no other choice.
+Usually I agree with that, and I trust that you will make the right decisio=
+n.
 
-thanks,
+Before you decide, let me point out that netfs has been extremely
+unstable since 6.10 (July 2024), ever since commit 2e9d7e4b984a ("mm:
+Remove the PG_fscache alias for PG_private_2). All of our web servers
+have been crashing since 6.10 all the time (see
+https://lore.kernel.org/netfs/CAKPOu+_DA8XiMAA2ApMj7Pyshve_YWknw8Hdt1=3DzCy=
+9Y87R1qw@mail.gmail.com/
+for one of several bug reports I posted), and I went through
+considerable trouble by resisting the pressure from people asking me
+to downgrade to 6.6. (I want the bugs fixed, I don't want to go back.)
+For several months, 6.12 had been crashing instantly on boot due to
+yet another netfs regression
+(https://lore.kernel.org/netfs/CAKPOu+_4m80thNy5_fvROoxBm689YtA0dZ-=3Dgcmkz=
+wYSY4syqw@mail.gmail.com/)
+which wasn't fixed until 6.12.11, so our production servers are still
+on 6.11.11 today.
+Before these bugs got ironed out, v6.11 commit ee4cdf7ba857 ("netfs:
+Speed up buffered reading") wreaked more havoc, leading to 8 "Fixes"
+commits so far, plus the 2 I posted yesterday.
 
-greg k-h
+I wrote that e2d46f2ec332 has obsoleted my patch (actually both
+patches), but I don't know if it really fixes both bugs. The code that
+was buggy does not exist anymore in the form that my patch addresses,
+but I don't know if it was just refactored and the bugs were kept (or
+maybe yet more bugs sneaked in).
+
+
+Max
