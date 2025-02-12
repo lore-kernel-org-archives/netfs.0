@@ -1,96 +1,127 @@
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D705474C
-	for <netfs@lists.linux.dev>; Wed, 12 Feb 2025 18:01:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74965203706
+	for <netfs@lists.linux.dev>; Wed, 12 Feb 2025 22:24:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739383316; cv=none; b=gZQ8Yfov2GdMf7JPaCyg0t86JCbnOpqQ+eRyRfKT4rz0GBybTkOcQIGbE5wSe7XuvhgObEQWU+nO1IbWL7gA1YswOj2Y1+QQ7bKF0XLHZFoB2R/1Od2JG7Yx3tbxL16IOf8fG0FSu/71wgtO62fP6ElRkZnVxhoJ9wXs/D4sySU=
+	t=1739399064; cv=none; b=liREfO/uO5SXO24A9Fxy+Vt1hXpWx1bGsSv6PgGp8WwBzvoMV8dIqw8riydEWcXKBpQxRzpP5WBrAHzsdK2I5jZjcvBn7JEwAwQq+Eia0GYzJFIFEBQbqEAq/WFpvC5W+XRs5/pXieiT0yc7HmMF8eqtOol5gRf7Torj5h/ai14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739383316; c=relaxed/simple;
-	bh=ApVjZL7R4gIKkJK0P861NvcM7oao9TZoGvth5kdN1QI=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=lQx03JAm39pJTkb7a+2a/+7/9l39bFmaPTbDjdtWyFVSRHHHBBlbENERze7IOIzThmp2BTFbRT+gfr++D7ffk3LP+FlD+/xrltPYA3fNz+qxhkBiSkJM3FhHSiDvOJKOL8doAU6+tFyl0xzHrqf85X7nW5txMeEpvmAgo8cY3PQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=gnECJf1c; arc=none smtp.client-ip=95.215.58.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1739399064; c=relaxed/simple;
+	bh=o9Rvw5bGAnROKjad7sMpqrfxb3P+iaNsiQvl674qxYA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Gj0M62/3a0GL7QF06SXFjfYIdmp8TKGo10482P6LgFEP0VgcaiTVQSmwq5e0Bnsw66E19K1aXuYtZOUcXPCEpJPvsxpJIjJ2WFWFPtx6ySmaEJxUmEaTl3oA2U4hkQ2BuW41xtsphUU8QcekcfABTycF9r4FPSLATOYp3rGliIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Bbffjb2n; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="gnECJf1c"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Bbffjb2n"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1739399061;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=j/hFCuHm3dQy3yCXNlW7/z5EXWgYM+xOP2nJGIBn15Q=;
+	b=Bbffjb2n20i4wPWH+dKTMaVn1FDC9OT2iRVuwDF+EMneJbYRg0l3R/G/qO8PULdBJM1dnt
+	qQebRsM5Nn8v4j2el7msZfiHKmwPbCEOn9+ZxIX99vk1eLASMZOruesMh5lzFvHVvmyjvI
+	HOQ9B8E/UUlosxW9zhFHKIrhvgwHLI0=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-605-iPLvlH5hPsCaSV9rKTnwgQ-1; Wed,
+ 12 Feb 2025 17:24:18 -0500
+X-MC-Unique: iPLvlH5hPsCaSV9rKTnwgQ-1
+X-Mimecast-MFC-AGG-ID: iPLvlH5hPsCaSV9rKTnwgQ
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 25E25180087B;
+	Wed, 12 Feb 2025 22:24:13 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.42.28.92])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CBFAE19560A3;
+	Wed, 12 Feb 2025 22:24:05 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>
+Cc: David Howells <dhowells@redhat.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Max Kellermann <max.kellermann@ionos.com>,
+	Steve French <sfrench@samba.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Tom Talpey <tom@talpey.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/3] netfs: Miscellaneous fixes
+Date: Wed, 12 Feb 2025 22:23:58 +0000
+Message-ID: <20250212222402.3618494-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1739383303;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xzDmp7n11SXDWq7ajSDnUq46FyfKrhpeHIHAWHCUuZw=;
-	b=gnECJf1cKJ5M5rm0NV6epIvN4swhWMvhk8bPz5Q9uS0EFIW2dkZiBTPUjQZ0NEcqzvBJOq
-	lfZQGt6LRxQMhPn63eFx7OnBzTUmwErFPiocGe/S79yjXcM7Zbq6Oxf3AAO6CT1fXcQGn0
-	zNpCUiqYtLRaoeUvCLbFpdv+c0cx1HY=
-Date: Wed, 12 Feb 2025 18:01:40 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Ihor Solodrai" <ihor.solodrai@linux.dev>
-Message-ID: <62dacb9480327bfececb60e956f18f6f1924745b@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH] netfs: Fix setting NETFS_RREQ_ALL_QUEUED to be after all
- subreqs queued
-To: "David Howells" <dhowells@redhat.com>
-Cc: dhowells@redhat.com, "Marc Dionne" <marc.dionne@auristor.com>, "Steve 
- French" <stfrench@microsoft.com>, "Eric Van Hensbergen"
- <ericvh@kernel.org>, "Latchesar  Ionkov" <lucho@ionkov.net>, "Dominique
- Martinet" <asmadeus@codewreck.org>, "Christian Schoenebeck"
- <linux_oss@crudebyte.com>, "Paulo Alcantara" <pc@manguebit.com>, "Jeff
- Layton" <jlayton@kernel.org>, "Christian Brauner" <brauner@kernel.org>,
- v9fs@lists.linux.dev, linux-cifs@vger.kernel.org, netfs@lists.linux.dev,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- ast@kernel.org, bpf@vger.kernel.org
-In-Reply-To: <3459755.1739353676@warthog.procyon.org.uk>
-References: <84a8e6737fca05dd3ec234760f1c77901d915ef9@linux.dev>
- <8d8a5d5b00688ea553b106db690e8a01f15b1410@linux.dev>
- <335ad811ae2cf5ebdfc494c185b9f02e9ca40c3e@linux.dev>
- <3173328.1738024385@warthog.procyon.org.uk>
- <3187377.1738056789@warthog.procyon.org.uk>
- <2986469.1739185956@warthog.procyon.org.uk>
- <3210864.1739229537@warthog.procyon.org.uk>
- <3459755.1739353676@warthog.procyon.org.uk>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-On 2/12/25 1:47 AM, David Howells wrote:
-> Hi Ihor,
->
-> Okay, the bug you're hitting appears to be a different one to the one I
-> thought first.  Can you try the attached patch?  I managed to reproduce=
- it
-> with AFS by injecting a delay.
->
-> [...]
->
-> netfs: Fix setting NETFS_RREQ_ALL_QUEUED to be after all subreqs queued
->
-> [...]
+Hi Christian,
 
-Hi David.
+Here are some miscellaneous fixes and changes for netfslib, if you could
+pull them:
 
-I tried this patch locally, and then on BPF CI. It fixes the 9p hanging i=
-ssue.
-A couple of platforms and toolchains are tested there:
-https://github.com/kernel-patches/vmtest/actions/runs/13291034531
+ (1) Fix a number of read-retry hangs, including:
 
-Tested-by: Ihor Solodrai <ihor.solodrai@linux.dev>
+     (a) Incorrect getting/putting of references on subreqs as we retry
+     	 them.
 
-Note that on CI the "netfs: Fix a number of read-retry hangs" patch [1]
-is *not* applied. Only this one.
+     (b) Failure to track whether a last old subrequest in a retried set is
+     	 superfluous.
 
-Thank you!
+     (c) Inconsistency in the usage of wait queues used for subrequests
+     	 (ie. using clear_and_wake_up_bit() whilst waiting on a private
+     	 waitqueue).
 
-[1] https://lore.kernel.org/v9fs/3173328.1738024385@warthog.procyon.org.u=
-k/
+     	 (Note that waitqueue consistency also needs looking at for
+     	 netfs_io_request structs.)
 
-> [...]
+ (2) Add stats counters for retries and publish in /proc/fs/netfs/stats.
+     This is not a fix per se, but is useful in debugging and shouldn't
+     otherwise change the operation of the code.
+
+ (3) Fix the ordering of queuing subrequests with respect to setting the
+     request flag that says we've now queued them all.
+
+The patches can also be found here:
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-fixes
+
+Thanks,
+David
+
+David Howells (3):
+  netfs: Fix a number of read-retry hangs
+  netfs: Add retry stat counters
+  netfs: Fix setting NETFS_RREQ_ALL_QUEUED to be after all subreqs
+    queued
+
+ fs/netfs/buffered_read.c     | 19 +++++++++++-----
+ fs/netfs/internal.h          |  4 ++++
+ fs/netfs/read_collect.c      |  6 +++--
+ fs/netfs/read_retry.c        | 43 +++++++++++++++++++++++++++---------
+ fs/netfs/stats.c             |  9 ++++++++
+ fs/netfs/write_issue.c       |  1 +
+ fs/netfs/write_retry.c       |  2 ++
+ include/linux/netfs.h        |  2 +-
+ include/trace/events/netfs.h |  4 +++-
+ 9 files changed, 70 insertions(+), 20 deletions(-)
+
