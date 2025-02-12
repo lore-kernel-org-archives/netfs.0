@@ -1,181 +1,302 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7057C1E9B39
-	for <netfs@lists.linux.dev>; Tue, 11 Feb 2025 09:34:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739266479; cv=none; b=hsR5BrLv4h86mcUNQM2KGm3rB//+Kd+q5LyK4bGB88H5xWdh/g10/l+qosNTS2AFH9Anc4eBAaC61PqL+Q9w3Bh/09DzoVFKCBtkxqw3H1gfQoIjUpegdImBpw0YG4W7MlqQOJ7CISe+ZxYJRMjydanWSBGChcuFloe0zEFg/I4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739266479; c=relaxed/simple;
-	bh=2DXwQ0Dv3SXEo6ey+zzdnIRAelLdPDTRqsXXy4q80eM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aCJmOTWQLlv/awRWdwoYJRNR5ImhtC5KKKOflZv/VKYdNujm59sg1Qc72BdYUAMJNEUjTa/slmKUj5hmjoWBJ8tPBu6M024fap1eXaKJ0QmOzVwizbQuIJOjgaSJCaORUS4o8XO/nC3d+PGmqln7z7u2Ewx+sDNjGODkI+Lzymk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=Jww7tElq; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60B1204F64;
+	Wed, 12 Feb 2025 08:20:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1739348460; cv=fail; b=RGV4qWghFoBYnDcNwFKJiQ38gJRv+rsLKlejjlt3FfOKr3BhhQVARV7GLMrtbAcdwmJfFFr+qXowz3jcr6Jw3k/ptvQMcaFpK8ZHdRZITiA5XcOYrzUCbWCAIMkt8zSkAGVvjeh7H2/jlh8JlhjIoerfZ8XfZSNfK22qo6zsPnE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1739348460; c=relaxed/simple;
+	bh=Flq1d5U0eEY8Uks4cxRQ/ffjpHNzofTBrWjIIGMLSoE=;
+	h=Date:From:To:CC:Subject:Message-ID:Content-Type:
+	 Content-Disposition:MIME-Version; b=ZPmaw9MPj54fnH7xkOvCBW/nEnO54lBUlRE5BHiusya6ACsEa7yiUR4VyUWf2OWQsr4Xg3dhUoJiOo3ttisvjrNKuYq4/f7EK4JAiBsk/2drb8+VoGc0wFYbGDP8yyLD4ZhXVHJOZQpul/OfBkA3JxLIFmJN1cL6CHZDx1vzNWc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IEfX2CmL; arc=fail smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="Jww7tElq"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-ab7c14b880dso387965766b.1
-        for <netfs@lists.linux.dev>; Tue, 11 Feb 2025 01:34:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1739266476; x=1739871276; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JWZrRCAqmm1HJq4yoBamD/E8kURmTGZ8stbmrSYpKAI=;
-        b=Jww7tElqaLop7rdNgUKWEyecDp5+URV6CPZQoc1N9P3xYCSq0GbDOR1+VeMkdV/pUO
-         fG3oHlr58JuJ2KptKrwX84tvEToifKZORzcHkSmCIkyn92/GUBl8/VUV8juatnV9QTNO
-         6lTRZAHqpNFB1jhg4J5uVDc0FUCdfZpY8Qq08AAWnf0v5cX7Do0IX4pOvRZsaVUtGmd2
-         2lRhzsXTHak46CISr4mbi1ahLlRunUeLwui+iZ/Qa5O0syrQTHqhv7Uvzr+G1CELJJe+
-         GRxPgKsrZ7xJuM4DHtw+jzJ4EsnmZ0FR/c5A9LgZiiII7nujXNxieMFWra56a2nll1Cb
-         7g4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739266476; x=1739871276;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JWZrRCAqmm1HJq4yoBamD/E8kURmTGZ8stbmrSYpKAI=;
-        b=mKYnGxIzCpmVAbTXVLXaBOGrQiQ7/q5Ksa/OrO3wN3aJGhfO1/0YpwITHH0f7wr7VG
-         TqDOHX0qWud/RJ8V10qljV/DXtrfPML4SQ2fpcVgdmqQxaS8Qu/ZpRiGeG0/0x6kS0Ys
-         YHQBd6NLx2/2vOPTZQccAYU5kBP3I84PGVxlIdhX6GfRVu9wVxN9894u/nNt3hhR1FV7
-         DazW3WDr2BHpfEFXHWu9xXgU9AhAeCmdId5MS8cedgnaz64vhCmtpYTHJkxMglWz2UYl
-         ciNTBDuYEo+tzBArByZuL6CIoiZYsM1U5rPmh6Qqt177mOnekCc6BsvkVWJ23Ep9Q530
-         NxDw==
-X-Forwarded-Encrypted: i=1; AJvYcCW3VbEWGC46mLouyYiz2xTibeGVPs7CrMKFe7YCoGoyWsretjg9+rnSmtbbd+JrddVH8IkR+w==@lists.linux.dev
-X-Gm-Message-State: AOJu0YyaP3JJLJWWmG7ixg++l4AXbezgZ7MIyX9vNcWvdIvBKOc/kDi+
-	BRNqyZbpbpXpGxTMdzjrcXjflzJha7xxAT+QGtoWdQc0nhok5OP4a/yscYpavW/2F25jrhunFKy
-	f
-X-Gm-Gg: ASbGncsqEgyzn+CCCvNfagPbcYE72VS0iqqWOcRTXUIfUlIW8RzJUA42eNZZrSlseMZ
-	QybylbNtKXJ/wDwcIov8y7g4zquhgcTNeq02giGDhW/c3b5Bs3meGovUpUPg0YsqwyqR1nvYs4O
-	o532wBZS0px7I01/iLAA8EXqzWejiVFdzah72YlG0Y4zpRvMSiC+zSK0h1dNhTbZbhkv3JOsEB6
-	2l2NT66Yz7NM9JQfC5/kCAdlpxYnNyTurD462Hc2sJDL6q2idwSickuOz6ApuwMh5VUIsnIBm5Y
-	Xu818dF+zyq3PNi2n1/CjmexizgHEFQdIivIkfs41Zf80Oh1uuIm3Qittpr9P26n9W7AqbILncr
-	2M9Ei7yD434P0Yyg=
-X-Google-Smtp-Source: AGHT+IHDDasHCdrvqrKdpCEPB2/a6ZQXLLnon5IvhjBOb5WHhk7B9V6sO1FIu7eIIDlvI9dDI7iAoA==
-X-Received: by 2002:a17:907:96aa:b0:ab2:bd0b:acdf with SMTP id a640c23a62f3a-ab7da4be883mr295839466b.36.1739266475632;
-        Tue, 11 Feb 2025 01:34:35 -0800 (PST)
-Received: from raven.intern.cm-ag (p200300dc6f19d800023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f19:d800:230:64ff:fe74:809])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab7bbf40b2bsm418668666b.23.2025.02.11.01.34.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Feb 2025 01:34:35 -0800 (PST)
-From: Max Kellermann <max.kellermann@ionos.com>
-To: dhowells@redhat.com,
-	netfs@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Cc: Max Kellermann <max.kellermann@ionos.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v6.13] fs/netfs/read_collect: fix crash due to uninitialized `prev` variable
-Date: Tue, 11 Feb 2025 10:34:32 +0100
-Message-ID: <20250211093432.3524035-1-max.kellermann@ionos.com>
-X-Mailer: git-send-email 2.47.2
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IEfX2CmL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739348459; x=1770884459;
+  h=date:from:to:cc:subject:message-id:
+   content-transfer-encoding:mime-version;
+  bh=Flq1d5U0eEY8Uks4cxRQ/ffjpHNzofTBrWjIIGMLSoE=;
+  b=IEfX2CmLFQ9tAk/6iHgMhEzIN8yac2SjF+bgGwfAP5vKn9ffeIJAI/Oy
+   qb+WM/uKKWNbE/Pu3LmyCkSdTDb6PajgXJOW6YNO2RXQeeymOznUB7992
+   AyG+JKgLpthBFRzuciYoTUTpsLENJRdd0eBDYspAfdzR+6EicNMkLSPD1
+   PrNrleHQK5hxXgEiOagHG5l5x0fVtr6gMx2DB37i1WrNO6taAfRITUfsJ
+   QIC/wxRHmwFUx3RKsdJ4/1Zv24gISrRMMX+PZo9yilv6XJMp1+XRwFN1Y
+   OPjLhqgPZ6e4h5m1+k7lxse+ZcwInVqAyR/AL3JbtPAKXIn+oUzgwn7VP
+   Q==;
+X-CSE-ConnectionGUID: 8GSJqcttSLi5v62pinLEVA==
+X-CSE-MsgGUID: K0P2otZ7TOS0eV6gn+xPyw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="50636852"
+X-IronPort-AV: E=Sophos;i="6.13,279,1732608000"; 
+   d="scan'208";a="50636852"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 00:20:57 -0800
+X-CSE-ConnectionGUID: kqLPjs1NT8a3rtvF26HdLQ==
+X-CSE-MsgGUID: LBIIzv6HR7yJaHsVjFfkBw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,279,1732608000"; 
+   d="scan'208";a="112706654"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by orviesa006.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 12 Feb 2025 00:20:57 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Wed, 12 Feb 2025 00:20:56 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Wed, 12 Feb 2025 00:20:56 -0800
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (104.47.74.47) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Wed, 12 Feb 2025 00:20:54 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WVL5EyVgImhEw5PyBepLZILz/xzNzkwKm+DdNQG9lK8s277MboICSqhChs7vEjY+9KmM9nY6/lfAf4NxdvmV9F2ajXyh14WIkLA44zPG2zR/sOiPV3L2VqElUPX8wCRMofTcr4a5uB6iDQkwaGL3sAfhq63jfuGvkiEVxU03MlZTg3ZPRHcxeaM6SgTeA4Pk9tcMN2ugN/l2JblKYJAjNBFMCDN9AAqU3pl1ligEjzxTYovI1LBarkVqVpeYxxE0d8sjKx3jaAS0uBJg4GrzEvRn9OI56mbtgwQKnZYcnbmAnBXmcZTbG+aGgsW35zIMkp981aCJKZFYTVwHpIY+aQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Uj+LC5aR5mZb3VDwrcH4T7bR6pztau2gug2bc/uuHtw=;
+ b=CeF2QY7RMut31cGk7vHwsAJfl/1L8APPqU0cxAmwXtQigB+8EsJO8ESfL5yyd8x3KRI8wbufKZasJZpPnb3E/x8NIq4N7kGNxyoV98BwH5o1xsO/mzj34t7jG/59SA64nEJ9EXluVGBT3oKUDKwmqCWN/XK5kANW9dm+wFw/U6kbWad4018WtpTMGci6I5befUnTz0pfFfuMjHEuCQUn01GAjmuisEOyOEvjWRz+b+ZbEj70y6+svUGqXmnWuB3l58ef6/k9TuTLwiPC6VVzbhMgt5Zwls8fxqj1NdQB2r5uhw/4ezShAYqzI6UyFfKVaULF7EW8Ypt3eCYj6zm1KQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from LV3PR11MB8603.namprd11.prod.outlook.com (2603:10b6:408:1b6::9)
+ by SJ2PR11MB7519.namprd11.prod.outlook.com (2603:10b6:a03:4c0::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.19; Wed, 12 Feb
+ 2025 08:20:52 +0000
+Received: from LV3PR11MB8603.namprd11.prod.outlook.com
+ ([fe80::4622:29cf:32b:7e5c]) by LV3PR11MB8603.namprd11.prod.outlook.com
+ ([fe80::4622:29cf:32b:7e5c%3]) with mapi id 15.20.8422.015; Wed, 12 Feb 2025
+ 08:20:52 +0000
+Date: Wed, 12 Feb 2025 16:20:41 +0800
+From: kernel test robot <oliver.sang@intel.com>
+To: David Howells <dhowells@redhat.com>
+CC: <oe-lkp@lists.linux.dev>, <lkp@intel.com>, <linux-kernel@vger.kernel.org>,
+	Christian Brauner <brauner@kernel.org>, Jeff Layton <jlayton@kernel.org>,
+	<v9fs@lists.linux.dev>, <linux-afs@lists.infradead.org>,
+	<ceph-devel@vger.kernel.org>, <netfs@lists.linux.dev>,
+	<linux-fsdevel@vger.kernel.org>, <linux-cifs@vger.kernel.org>,
+	<samba-technical@lists.samba.org>, <oliver.sang@intel.com>
+Subject: [linus:master] [netfs]  e2d46f2ec3:  filebench.sum_operations/s
+ 50.0% regression
+Message-ID: <202502121520.d583b3c3-lkp@intel.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SI2P153CA0025.APCP153.PROD.OUTLOOK.COM
+ (2603:1096:4:190::12) To LV3PR11MB8603.namprd11.prod.outlook.com
+ (2603:10b6:408:1b6::9)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR11MB8603:EE_|SJ2PR11MB7519:EE_
+X-MS-Office365-Filtering-Correlation-Id: 48195e4e-314f-4c88-3cc1-08dd4b3e2a00
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?qtsiaud99NwVtu4RA79aWyfyzhUy7KMvlsk2EfxGlG+aw96OXjq/0KN4ed?=
+ =?iso-8859-1?Q?8RBwUo3anzrwXpsdetLcvJRoHyOK+FH9RLtbJe/Zp7FOPUrmqFxg3AlfPg?=
+ =?iso-8859-1?Q?4qPf5rWOPqkeZOK6nlLGg931iAzQuB5sABcpf2vq84Shp/suSiVgiMvVtz?=
+ =?iso-8859-1?Q?gwPcYmP5ctFsmF4e0sfKmR1ABJ417fpxKDlB7aS4oVSGabABPgB0Lu8tS3?=
+ =?iso-8859-1?Q?T2s2V1lJ19K50T5JfXOr5arcHBPMuVkT2xq+DrAkf2kTwPxY5nYuQaNI7n?=
+ =?iso-8859-1?Q?Bjf1JGV3JlifFw49wlxTSrWt56i08tfXZ1LyGbZPRF5qriNoUGp8wz5gvK?=
+ =?iso-8859-1?Q?O0RU5GaXSlY5R027AZVRtfeUsvmi70mHDepq15rib5P3TZBUAzkyg7dVeg?=
+ =?iso-8859-1?Q?TElZFFQVYIcgkIcI3CPHSmCBXul7S/i5B16SmJ1HR57m49QQIvfa9krsZZ?=
+ =?iso-8859-1?Q?SIKZfluhbn4CD6GAS62h1c3AV7zcZfNNkgOLArHApI69FYC8TsUSy+QYrW?=
+ =?iso-8859-1?Q?M6YgSLDcrxS2BsF56tKik2yT3eBoi4TUsnmdgFlcYKDMt/U2d8sdSyxqcc?=
+ =?iso-8859-1?Q?GUI127fscaCMwpolyIgtCIzWV4BlKUP4xEqFrxVH3IOmPmre0FJ058lrz5?=
+ =?iso-8859-1?Q?tor9/lbsReovKO7yMW/+N3wjxW6oDB1JFnRQdM+bfSRFyTkeve86dRojsP?=
+ =?iso-8859-1?Q?mJSbS26+MnNhWVPJ6eXjp5iIE1FgBMGllDTtITUoJe+Qeoyi3LGU4atriH?=
+ =?iso-8859-1?Q?f0RNSpoTvIll75XjSMsoQIhD7IWp27m6CHz4w9bRe7xIZVu8dqq0WljtCS?=
+ =?iso-8859-1?Q?j+Zvdbf0dF4hwNSFQV49X9iQ3ph8Wq5CUlKjcb08nTwHhdIY4tDLTCxE6/?=
+ =?iso-8859-1?Q?D8opoYItteqCx5ld3JeC0k2TzgJHusxtxe3qlybRxMuO1S3Pjma8TFcwQA?=
+ =?iso-8859-1?Q?AFeMAt41lyAjSxCaFSyW0FpbfRYamKmzW0teJh/vbwgQ7s0uTKB6QWoZba?=
+ =?iso-8859-1?Q?Fq76rlkG+fwjEyQPoYD12vUR7c0mxdcOXzbV+kgO6gixtuL/RDMhYGa+tN?=
+ =?iso-8859-1?Q?s94D/rhmBRjtu0fxn/eXUpFSeNjqbXpTfg5nQvmSDKUhd6pbhYsF2Ign74?=
+ =?iso-8859-1?Q?t7nIYnHjxkcud+BCY1eQCeZjUGTwbSVPrdTuzibcY7YFIpBGzxbNd8tXqi?=
+ =?iso-8859-1?Q?DG1Wa5Aa27mwMO2LcI3lrNkGIsbRXSaXOr2zyxEgQ8LDACVIzjkV1abR1H?=
+ =?iso-8859-1?Q?/FKAh/PBsFSM3mjTAcmTlrI/CZB5a9eHHzScpWUaNslpvFaVl8HLepqkxt?=
+ =?iso-8859-1?Q?J05C9PEu2QZuSd6j+Z2352FZQMCGwyN8SvlLfuY5ASxDWjnViJbs+Cz9mZ?=
+ =?iso-8859-1?Q?7I26yxbUqeBNLq9t3lo2AZEa0ctStyMA=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8603.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?ibdvSHX1bQHHZ7YZiT37VaMK4/zCoQYhNbh/TfiHVMPSSw3BffujEf1VQ0?=
+ =?iso-8859-1?Q?+EGuRoJgFNNpXHeSF7bokQSFEQ3BRc6SsnejNIadi7aAHO5nT3oxSkF0bt?=
+ =?iso-8859-1?Q?i0rhA2iBN/se7lNTt8l5ms6bVYyWWNgEXcRlnzFWlfa+NDbBKrbfpDHeGM?=
+ =?iso-8859-1?Q?WsUqewEsu7sY5AMyzPatCrupK3xsFQQ/tGd42Kd4Qmg0wTR7oODEcIYeJZ?=
+ =?iso-8859-1?Q?tjPz71slyDCr3WMF1d2x6nxCtJN8tXuERBDonNt6tg8Nt8GkUnATpEjUr4?=
+ =?iso-8859-1?Q?MqiJmf2SshaZQqp+5i7tJg+RQvA3pvmwJ21KzElxVPFzYpKLphLOABMwXC?=
+ =?iso-8859-1?Q?TyBqMT7tXj7EPOncY86I/2wJu8On4FKPfd++tL3MbB0n8c+rHM/83a8+hs?=
+ =?iso-8859-1?Q?rpaxVAGX5XM+i8/bA6NhvlsRW2gMkF6ktQKCnWYulbhU4B5r8vGJp1rUMx?=
+ =?iso-8859-1?Q?3UW/FKq6+Q0Fplstx/q/Alr323B+DNo0cNlTYGcAWSHkFAtQD9975rPnz4?=
+ =?iso-8859-1?Q?s+YpQBe96EfHdXYGD7+lEqwayFm9CKdT+uctYJEKs65yKTgu2eb1sp1lFA?=
+ =?iso-8859-1?Q?x16kcHErlmz/IIZkWsPJ+DR6gH8uwVNwxf5Mxmd2pvtGydKO/y18OB7B9T?=
+ =?iso-8859-1?Q?1/HkhIHApuUlj8Top268bvzYFFNO3hlNj2BXlomwzBE7AJgrbEQQpivBa2?=
+ =?iso-8859-1?Q?Ze2AB1hAcMB0kZNu0lB1VAgEUlVZuPLEJoXVwFjudghgjCPpu0hg78o+ns?=
+ =?iso-8859-1?Q?GjNqSGlahrPfmDEiZS3Kc470wuRxywEsEUqxYK/uqGtLTICGuU3Jvrj3XS?=
+ =?iso-8859-1?Q?owtGopcK6GT7KXebQnAlcm18QZWry34SQgVpLjSFdibCpGomFDDH1nV7r3?=
+ =?iso-8859-1?Q?h7u62Ke5zhMrgj+VGp/QZNrbaPD9Dk5kCpv0t2pVRnklxMetQ3EIJ0zbjW?=
+ =?iso-8859-1?Q?yBgWAaXtFQy5If+TXGVDFDSFi+dtYGiF2MMjrsTl/SRMCckDfV4QtFtL+9?=
+ =?iso-8859-1?Q?dTd7hlv0Sl6M9PPSy+0247Kh6Vqc2+gV/cHhUmH2pBsflArtXv1Ghoo+jN?=
+ =?iso-8859-1?Q?8dSqnAV4YGi1rferUpGJZHwhPeMzv+pR8pOsuIbyHGI4JDjzzjUOy7gMoP?=
+ =?iso-8859-1?Q?GzehBh8XD8X6E2JbBreC7HPKN04bpoypL6Ug/AxGbTtvqbD0igFUdA7RNV?=
+ =?iso-8859-1?Q?0y35ZGBQ5jQNZMzvVCRmNCXcZVrbLpmFJbF3pOlIzGd2VIBvYmW/S4GKoe?=
+ =?iso-8859-1?Q?JayDhjHJ9yEeXYH9OzGwt/y9db9ZE+vn3Kul9hhnYBXM99s81EoBufsFAV?=
+ =?iso-8859-1?Q?AGlNs6TvNgt5/ffe69jjzkMTC/bHqAWd3pNPF/6tRXeYYkRbM329F23txc?=
+ =?iso-8859-1?Q?hLUXOmdI4tlsBnkz4OX3H8w1qZ8e6HVRd4DXS5NgCGUBIctOWEQqSIkXMa?=
+ =?iso-8859-1?Q?iOv0e/wHcTk7JmHRLdSmALEU/51m1O/FoHmn0DpEkrKdZK0ka45w+Wxpu2?=
+ =?iso-8859-1?Q?5gHi8RpcU4SoffUe2WuDs1+MrLOpT+u/pWfqzKwH+qsOWESGg3WRl7rHiD?=
+ =?iso-8859-1?Q?zji1BkqetGc9b9rdtTcx0vT6EopDhbzSBOympoGG6on7PLgxbxL1aH6YFI?=
+ =?iso-8859-1?Q?F/OAN4g+pJ7rzS3E3jGaIAlC24CSaz5kmH5EsiS72XGvH4tGgmSUjeQQ?=
+ =?iso-8859-1?Q?=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 48195e4e-314f-4c88-3cc1-08dd4b3e2a00
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8603.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Feb 2025 08:20:52.4225
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sGjV/FU1SfNr3KkuTITxaFqgJFoOCRTKn3DJ02vgJxu0G8sz0OFpAZes/TegHhks30m8oqLzY6pIepu2taxKkQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB7519
+X-OriginatorOrg: intel.com
 
-When checking whether the edges of adjacent subrequests touch, the
-`prev` variable is deferenced, but it might not have been initialized.
-This causes crashes like this one:
 
- BUG: unable to handle page fault for address: 0000000181343843
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 8000001c66db0067 P4D 8000001c66db0067 PUD 0
- Oops: Oops: 0000 [#1] SMP PTI
- CPU: 1 UID: 33333 PID: 24424 Comm: php-cgi8.2 Kdump: loaded Not tainted 6.13.2-cm4all0-hp+ #427
- Hardware name: HP ProLiant DL380 Gen9/ProLiant DL380 Gen9, BIOS P89 11/23/2021
- RIP: 0010:netfs_consume_read_data.isra.0+0x5ef/0xb00
- Code: fe ff ff 48 8b 83 88 00 00 00 48 8b 4c 24 30 4c 8b 43 78 48 85 c0 48 8d 51 70 75 20 48 8b 73 30 48 39 d6 74 17 48 8b 7c 24 40 <48> 8b 4f 78 48 03 4f 68 48 39 4b 68 0f 84 ab 02 00 00 49 29 c0 48
- RSP: 0000:ffffc90037adbd00 EFLAGS: 00010283
- RAX: 0000000000000000 RBX: ffff88811bda0600 RCX: ffff888620e7b980
- RDX: ffff888620e7b9f0 RSI: ffff88811bda0428 RDI: 00000001813437cb
- RBP: 0000000000000000 R08: 0000000000004000 R09: 0000000000000000
- R10: ffffffff82e070c0 R11: 0000000007ffffff R12: 0000000000004000
- R13: ffff888620e7bb68 R14: 0000000000008000 R15: ffff888620e7bb68
- FS:  00007ff2e0e7ddc0(0000) GS:ffff88981f840000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000181343843 CR3: 0000001bc10ba006 CR4: 00000000001706f0
- Call Trace:
-  <TASK>
-  ? __die+0x1f/0x60
-  ? page_fault_oops+0x15c/0x450
-  ? search_extable+0x22/0x30
-  ? netfs_consume_read_data.isra.0+0x5ef/0xb00
-  ? search_module_extables+0xe/0x40
-  ? exc_page_fault+0x5e/0x100
-  ? asm_exc_page_fault+0x22/0x30
-  ? netfs_consume_read_data.isra.0+0x5ef/0xb00
-  ? intel_iommu_unmap_pages+0xaa/0x190
-  ? __pfx_cachefiles_read_complete+0x10/0x10
-  netfs_read_subreq_terminated+0x24f/0x390
-  cachefiles_read_complete+0x48/0xf0
-  iomap_dio_bio_end_io+0x125/0x160
-  blk_update_request+0xea/0x3e0
-  scsi_end_request+0x27/0x190
-  scsi_io_completion+0x43/0x6c0
-  blk_complete_reqs+0x40/0x50
-  handle_softirqs+0xd1/0x280
-  irq_exit_rcu+0x91/0xb0
-  common_interrupt+0x3b/0xa0
-  asm_common_interrupt+0x22/0x40
- RIP: 0033:0x55fe8470d2ab
- Code: 00 00 3c 7e 74 3b 3c b6 0f 84 dd 03 00 00 3c 1e 74 2f 83 c1 01 48 83 c2 38 48 83 c7 30 44 39 d1 74 3e 48 63 42 08 85 c0 79 a3 <49> 8b 46 48 8b 04 38 f6 c4 04 75 0b 0f b6 42 30 83 e0 0c 3c 04 75
- RSP: 002b:00007ffca5ef2720 EFLAGS: 00000216
- RAX: 0000000000000023 RBX: 0000000000000008 RCX: 000000000000001b
- RDX: 00007ff2e0cdb6f8 RSI: 0000000000000006 RDI: 0000000000000510
- RBP: 00007ffca5ef27a0 R08: 00007ffca5ef2720 R09: 0000000000000001
- R10: 000000000000001e R11: 00007ff2e0c10d08 R12: 0000000000000001
- R13: 0000000000000120 R14: 00007ff2e0cb1ed0 R15: 00000000000000b0
-  </TASK>
 
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-Cc: stable@vger.kernel.org
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
----
-David/Greg: just like the other two netfs patches I sent yesterday,
-this one doesn't apply to v6.14 as it was obsoleted by commit
-e2d46f2ec332 ("netfs: Change the read result collector to only use one
-work item").
----
- fs/netfs/read_collect.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+Hello,
 
-diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
-index e8624f5c7fcc..a7f285c52a79 100644
---- a/fs/netfs/read_collect.c
-+++ b/fs/netfs/read_collect.c
-@@ -258,17 +258,19 @@ static bool netfs_consume_read_data(struct netfs_io_subrequest *subreq, bool was
- 	 */
- 	if (!subreq->consumed &&
- 	    !prev_donated &&
--	    !list_is_first(&subreq->rreq_link, &rreq->subrequests) &&
--	    subreq->start == prev->start + prev->len) {
-+	    !list_is_first(&subreq->rreq_link, &rreq->subrequests)) {
- 		prev = list_prev_entry(subreq, rreq_link);
--		WRITE_ONCE(prev->next_donated, prev->next_donated + subreq->len);
--		subreq->start += subreq->len;
--		subreq->len = 0;
--		subreq->transferred = 0;
--		trace_netfs_donate(rreq, subreq, prev, subreq->len,
--				   netfs_trace_donate_to_prev);
--		trace_netfs_sreq(subreq, netfs_sreq_trace_donate_to_prev);
--		goto remove_subreq_locked;
-+		if (subreq->start == prev->start + prev->len) {
-+			prev = list_prev_entry(subreq, rreq_link);
-+			WRITE_ONCE(prev->next_donated, prev->next_donated + subreq->len);
-+			subreq->start += subreq->len;
-+			subreq->len = 0;
-+			subreq->transferred = 0;
-+			trace_netfs_donate(rreq, subreq, prev, subreq->len,
-+					   netfs_trace_donate_to_prev);
-+			trace_netfs_sreq(subreq, netfs_sreq_trace_donate_to_prev);
-+			goto remove_subreq_locked;
-+		}
- 	}
- 
- 	/* If we can't donate down the chain, donate up the chain instead. */
+kernel test robot noticed a 50.0% regression of filebench.sum_operations/s on:
+
+
+commit: e2d46f2ec332533816417b60933954173f602121 ("netfs: Change the read result collector to only use one work item")
+https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
+
+[test failed on linus/master      69b54314c975f4dfd3a29d6b9211ab68fff46682]
+[test failed on linux-next/master ed58d103e6da15a442ff87567898768dc3a66987]
+
+testcase: filebench
+config: x86_64-rhel-9.4
+compiler: gcc-12
+test machine: 128 threads 2 sockets Intel(R) Xeon(R) Platinum 8358 CPU @ 2.60GHz (Ice Lake) with 128G memory
+parameters:
+
+	disk: 1HDD
+	fs: ext4
+	fs2: cifs
+	test: copyfiles.f
+	cpufreq_governor: performance
+
+
+
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <oliver.sang@intel.com>
+| Closes: https://lore.kernel.org/oe-lkp/202502121520.d583b3c3-lkp@intel.com
+
+
+Details are as below:
+-------------------------------------------------------------------------------------------------->
+
+
+The kernel config and materials to reproduce are available at:
+https://download.01.org/0day-ci/archive/20250212/202502121520.d583b3c3-lkp@intel.com
+
+=========================================================================================
+compiler/cpufreq_governor/disk/fs2/fs/kconfig/rootfs/tbox_group/test/testcase:
+  gcc-12/performance/1HDD/cifs/ext4/x86_64-rhel-9.4/debian-12-x86_64-20240206.cgz/lkp-icl-2sp6/copyfiles.f/filebench
+
+commit: 
+  eddf51f2bb ("afs: Make {Y,}FS.FetchData an asynchronous operation")
+  e2d46f2ec3 ("netfs: Change the read result collector to only use one work item")
+
+eddf51f2bb2c28b0 e2d46f2ec332533816417b60933 
+---------------- --------------------------- 
+         %stddev     %change         %stddev
+             \          |                \  
+    111550 ± 17%     -17.2%      92328        sched_debug.cfs_rq:/.load.stddev
+      4.52 ±218%     -98.3%       0.08 ± 12%  perf-sched.sch_delay.avg.ms.schedule_timeout.kcompactd.kthread.ret_from_fork
+      0.15 ±  2%     +22.0%       0.19 ± 12%  perf-sched.sch_delay.max.ms.schedule_timeout.rcu_gp_fqs_loop.rcu_gp_kthread.kthread
+   9404404            +5.0%    9871609        perf-stat.i.cache-references
+      4.82            +0.1        4.87        perf-stat.overall.branch-miss-rate%
+      4.88            -0.3        4.63 ±  2%  perf-stat.overall.cache-miss-rate%
+   9290667            +5.0%    9751847        perf-stat.ps.cache-references
+     31.30           -50.2%      15.60        filebench.sum_bytes_mb/s
+      6001           -50.0%       3000        filebench.sum_operations/s
+      1001           -50.0%     500.00        filebench.sum_reads/s
+      0.11 ± 14%    +104.3%       0.23 ±  8%  filebench.sum_time_ms/op
+      1000           -50.0%     500.00        filebench.sum_writes/s
+      5.89 ±  8%      -1.4        4.52 ± 45%  perf-profile.calltrace.cycles-pp.ast_primary_plane_helper_atomic_update.drm_atomic_helper_commit_planes.drm_atomic_helper_commit_tail.ast_mode_config_helper_atomic_commit_tail.commit_tail
+      5.88 ±  8%      -1.4        4.52 ± 45%  perf-profile.calltrace.cycles-pp.drm_fb_memcpy.ast_primary_plane_helper_atomic_update.drm_atomic_helper_commit_planes.drm_atomic_helper_commit_tail.ast_mode_config_helper_atomic_commit_tail
+      5.81 ±  8%      -1.3        4.47 ± 45%  perf-profile.calltrace.cycles-pp.memcpy_toio.drm_fb_memcpy.ast_primary_plane_helper_atomic_update.drm_atomic_helper_commit_planes.drm_atomic_helper_commit_tail
+      6.58 ±  7%      -0.5        6.10 ±  4%  perf-profile.calltrace.cycles-pp.process_one_work.worker_thread.kthread.ret_from_fork.ret_from_fork_asm
+      6.74 ±  8%      -0.5        6.26 ±  4%  perf-profile.calltrace.cycles-pp.worker_thread.kthread.ret_from_fork.ret_from_fork_asm
+      2.35 ±  9%      -0.5        1.88 ± 10%  perf-profile.calltrace.cycles-pp.getxattr
+      5.35 ±  3%      -0.3        5.08 ±  2%  perf-profile.calltrace.cycles-pp.console_flush_all.console_unlock.vprintk_emit.devkmsg_emit.devkmsg_write
+      5.35 ±  3%      -0.3        5.08 ±  2%  perf-profile.calltrace.cycles-pp.console_unlock.vprintk_emit.devkmsg_emit.devkmsg_write.vfs_write
+      5.35 ±  3%      -0.3        5.09 ±  2%  perf-profile.calltrace.cycles-pp.devkmsg_emit.devkmsg_write.vfs_write.ksys_write.do_syscall_64
+      5.35 ±  3%      -0.3        5.09 ±  2%  perf-profile.calltrace.cycles-pp.vprintk_emit.devkmsg_emit.devkmsg_write.vfs_write.ksys_write
+      5.35 ±  3%      -0.3        5.10 ±  2%  perf-profile.calltrace.cycles-pp.devkmsg_write.vfs_write.ksys_write.do_syscall_64.entry_SYSCALL_64_after_hwframe
+      0.59 ± 10%      +0.1        0.66 ±  6%  perf-profile.calltrace.cycles-pp.do_sys_openat2.__x64_sys_openat.do_syscall_64.entry_SYSCALL_64_after_hwframe.openat64
+      2.16 ±  2%      +0.2        2.32 ±  2%  perf-profile.calltrace.cycles-pp.do_execveat_common.__x64_sys_execve.do_syscall_64.entry_SYSCALL_64_after_hwframe.execve
+      2.17 ±  3%      +0.2        2.33 ±  2%  perf-profile.calltrace.cycles-pp.__x64_sys_execve.do_syscall_64.entry_SYSCALL_64_after_hwframe.execve
+      2.17 ±  3%      +0.2        2.33 ±  2%  perf-profile.calltrace.cycles-pp.do_syscall_64.entry_SYSCALL_64_after_hwframe.execve
+      2.17 ±  3%      +0.2        2.33 ±  2%  perf-profile.calltrace.cycles-pp.entry_SYSCALL_64_after_hwframe.execve
+      2.17 ±  3%      +0.2        2.33 ±  2%  perf-profile.calltrace.cycles-pp.execve
+      1.39 ± 10%      +0.2        1.62 ± 11%  perf-profile.calltrace.cycles-pp.sched_ttwu_pending.__flush_smp_call_function_queue.flush_smp_call_function_queue.do_idle.cpu_startup_entry
+      1.44 ±  9%      +0.2        1.68 ±  7%  perf-profile.calltrace.cycles-pp.bprm_execve.do_execveat_common.__x64_sys_execve.do_syscall_64.entry_SYSCALL_64_after_hwframe
+      6.58 ±  7%      -0.5        6.10 ±  4%  perf-profile.children.cycles-pp.process_one_work
+      6.74 ±  8%      -0.5        6.26 ±  4%  perf-profile.children.cycles-pp.worker_thread
+      2.37 ±  9%      -0.4        1.92 ± 11%  perf-profile.children.cycles-pp.getxattr
+      5.35 ±  3%      -0.3        5.08 ±  2%  perf-profile.children.cycles-pp.console_flush_all
+      5.35 ±  3%      -0.3        5.08 ±  2%  perf-profile.children.cycles-pp.console_unlock
+      5.35 ±  3%      -0.3        5.09 ±  2%  perf-profile.children.cycles-pp.devkmsg_emit
+      5.35 ±  3%      -0.3        5.09 ±  2%  perf-profile.children.cycles-pp.vprintk_emit
+      5.35 ±  3%      -0.3        5.10 ±  2%  perf-profile.children.cycles-pp.devkmsg_write
+      0.54 ± 17%      -0.1        0.39 ± 16%  perf-profile.children.cycles-pp.cifs_d_revalidate
+      0.57 ± 15%      -0.1        0.44 ± 14%  perf-profile.children.cycles-pp.lookup_one_qstr_excl
+      0.57 ± 14%      -0.1        0.43 ± 15%  perf-profile.children.cycles-pp.lookup_dcache
+      0.21 ± 45%      -0.1        0.08 ± 51%  perf-profile.children.cycles-pp._copy_from_iter
+      0.03 ±141%      +0.1        0.13 ± 38%  perf-profile.children.cycles-pp.__run_timers
+      0.09 ± 56%      +0.1        0.21 ± 34%  perf-profile.children.cycles-pp.__x64_sys_munmap
+      0.04 ±147%      +0.1        0.16 ± 47%  perf-profile.children.cycles-pp.tmigr_inactive_up
+      0.17 ± 25%      +0.1        0.29 ± 22%  perf-profile.children.cycles-pp.xas_find
+      0.23 ± 22%      +0.1        0.36 ± 10%  perf-profile.children.cycles-pp.native_irq_return_iret
+      0.19 ± 24%      +0.1        0.34 ±  9%  perf-profile.children.cycles-pp.entry_SYSRETQ_unsafe_stack
+      0.04 ±147%      +0.2        0.18 ± 46%  perf-profile.children.cycles-pp.tmigr_cpu_deactivate
+      2.17 ±  3%      +0.2        2.33 ±  2%  perf-profile.children.cycles-pp.execve
+      2.19 ±  3%      +0.2        2.36        perf-profile.children.cycles-pp.__x64_sys_execve
+      2.18 ±  2%      +0.2        2.34        perf-profile.children.cycles-pp.do_execveat_common
+      0.50 ± 12%      +0.2        0.69 ± 27%  perf-profile.children.cycles-pp.enqueue_entity
+      0.15 ± 57%      +0.2        0.36 ± 16%  perf-profile.children.cycles-pp.perf_read
+      0.49 ± 25%      +0.3        0.74 ± 23%  perf-profile.children.cycles-pp.tick_nohz_restart_sched_tick
+      0.35 ± 29%      +0.3        0.63 ± 15%  perf-profile.children.cycles-pp.readn
+      0.77 ± 18%      +0.3        1.09 ± 19%  perf-profile.children.cycles-pp.tick_nohz_idle_exit
+      0.19 ± 24%      +0.1        0.31 ± 10%  perf-profile.self.cycles-pp.entry_SYSRETQ_unsafe_stack
+      0.23 ± 22%      +0.1        0.36 ± 10%  perf-profile.self.cycles-pp.native_irq_return_iret
+
+
+
+
+Disclaimer:
+Results have been estimated based on internal Intel analysis and are provided
+for informational purposes only. Any difference in system hardware or software
+design or configuration may affect actual performance.
+
+
 -- 
-2.47.2
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
