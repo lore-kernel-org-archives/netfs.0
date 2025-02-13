@@ -1,50 +1,34 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A52211288
-	for <netfs@lists.linux.dev>; Wed, 12 Feb 2025 22:24:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40DF1148855;
+	Thu, 13 Feb 2025 15:01:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739399086; cv=none; b=N6NHTPdPBiIv1z/lKkUkpMGk2O2OOqLsRO1vA8xUIXinn5Z+Db1zgIzN8Y75OCgEu3uMyighJBuQKWgo7ILxVKiYHapzkMD0zjSQNdG0ZAman5LdaCFT1JN+moYXBrq/xfkmiLsKNAXjddfybhHwzFTC8tFiU68QkjXkH8jIqTs=
+	t=1739458905; cv=none; b=Q8GPrG7Spj997zNbW3wPi4GJa5sge6WHOoIe95RTtMTdlc/1uYxCaZr9NlDOwo/OLQJseNLmmPQ/aHVPo41imocAODFpOqAKMVKMdr4lXeNiZIiEjGqf3X59dYbw6NeoxVEF9Jy+oogwhojZKJiujh6roTgC4Nv+dzDzDo57XE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739399086; c=relaxed/simple;
-	bh=yWnkbiNcQ6t7qYxrt46zdDa0QIZXGwyGHgRdFljHBVA=;
+	s=arc-20240116; t=1739458905; c=relaxed/simple;
+	bh=M392JolpqBN59UU7gj1lCbZNzReqJFGeXEqLCAtPZIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kJ5bUkUPkc3Beb4eLzvuxYQMrCG/GIMS4gwr+SaQE/VAobesEh0fKOU+8suRrnmelprxuSKqwCobjmEfSO0r+cS0kuMXb9jZvShXFoWhRyjmwHvwBuVnxvyGAt4VMTspPod1UQVCc8dQiTiDwzflQwRYCTlwQlsw+I1v3kCjsIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=g85hxtSl; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 MIME-Version:Content-Type; b=u08Q8hKKewjA/jOEwxAsPpv7+yyDbQoUVmu4QdjBo3e6BANPTgkxLoA9bvfbshyg4xtr36PINphRNHtO2QUnQX0gZ8ni4Tn7WSH/Ty7Npru/48kfpcO5Un68UqD9DRQ8ubUbk9Rbb3kyU4js1867rR9Y9JJuLe93+e0DHG86BWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a05nNJBU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="g85hxtSl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1739399083;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EHAXmEebuXfGaW+Cbp856q5t3oORgVUeZdmoxZNWAV4=;
-	b=g85hxtSlLAmGhyh28+aEt4Hs1NQ8ZNnAr+gJeHzW0sWyTB0+wUbtgIxnhPz3PRKyNxKhjU
-	eJ1eDXBb8Tb+7/sfkUyb0mZ5UWfvdCHqEmABrzCt/KTsdibekiF2krqqIblo2ScsuoJJ4W
-	oOLjrYXI64jdUt8AA+lgKV96/59umaA=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-117-0JhFd5MBMq-N6YBSpy5hVg-1; Wed,
- 12 Feb 2025 17:24:40 -0500
-X-MC-Unique: 0JhFd5MBMq-N6YBSpy5hVg-1
-X-Mimecast-MFC-AGG-ID: 0JhFd5MBMq-N6YBSpy5hVg_1739399077
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B56B7195608B;
-	Wed, 12 Feb 2025 22:24:36 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.42.28.92])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B79951955F21;
-	Wed, 12 Feb 2025 22:24:29 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>
-Cc: David Howells <dhowells@redhat.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a05nNJBU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4582FC4CED1;
+	Thu, 13 Feb 2025 15:01:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739458905;
+	bh=M392JolpqBN59UU7gj1lCbZNzReqJFGeXEqLCAtPZIo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=a05nNJBUGp8ldp6m7CxxQpionQHaidKP1wtCgpsDBiaAlk+TJxXuOBid1JHLpxhYe
+	 RRYvXjSgJTb6djMCF88SXDmbPfTU0RCq+MnBP1LFA1VUpRPXpjZ+Tsd1Uj4GPOGDW5
+	 xtZETGfyQamJSU/DaXSN7wG1yuq0y70qozSS5ztzjnvGF0RNaFQc+F50d9FkkZ3u22
+	 GlXPPbGgDI6NkXrMxE7EfE8Gkq5jopatEuyWY70TopeDiNOx6MUkF17E9PZvSjUnaR
+	 yASl9kNkKq706ougqtL3coEehtbb9A3sEraayr/vC1irSrBQB9IyKkJu8PdoHDmbFP
+	 DKMMA1AQurMGQ==
+From: Christian Brauner <brauner@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>,
 	Ihor Solodrai <ihor.solodrai@linux.dev>,
 	Max Kellermann <max.kellermann@ionos.com>,
 	Steve French <sfrench@samba.org>,
@@ -63,14 +47,11 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-erofs@lists.ozlabs.org,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Ihor Solodrai <ihor.solodrai@pm.me>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 3/3] netfs: Fix setting NETFS_RREQ_ALL_QUEUED to be after all subreqs queued
-Date: Wed, 12 Feb 2025 22:24:01 +0000
-Message-ID: <20250212222402.3618494-4-dhowells@redhat.com>
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/3] netfs: Miscellaneous fixes
+Date: Thu, 13 Feb 2025 16:01:24 +0100
+Message-ID: <20250213-kosenamen-bestochen-0d997261875e@brauner>
+X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250212222402.3618494-1-dhowells@redhat.com>
 References: <20250212222402.3618494-1-dhowells@redhat.com>
 Precedence: bulk
@@ -79,98 +60,40 @@ List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1290; i=brauner@kernel.org; h=from:subject:message-id; bh=M392JolpqBN59UU7gj1lCbZNzReqJFGeXEqLCAtPZIo=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaSv4wx4qRqnFzRflWne51XHu+cbHcxM/LR4XWtwoIP68 pjO1Di5jlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIncUGH4Hzljn3D5UVnhu+8v H3HpkQj4c+vpHef+E9JuPMKmR1fNfsfwP+BBsxSb6ufgd6c/ROlzPtv598zXZ99Sq1J6GpewNHO oMAAA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
-Due to the code that queues a subreq on the active subrequest list getting
-moved to netfs_issue_read(), the NETFS_RREQ_ALL_QUEUED flag may now get set
-before the list-add actually happens.  This is not a problem if the
-collection worker happens after the list-add, but it's a race - and, for
-9P, where the read from the server is synchronous and done in the
-submitting thread, this is a lot more likely.
+On Wed, 12 Feb 2025 22:23:58 +0000, David Howells wrote:
+> Here are some miscellaneous fixes and changes for netfslib, if you could
+> pull them:
+> 
+>  (1) Fix a number of read-retry hangs, including:
+> 
+>      (a) Incorrect getting/putting of references on subreqs as we retry
+>      	 them.
+> 
+> [...]
 
-The result is that, if the timing is wrong, a ref gets leaked because the
-collector thinks that all the subreqs have completed (because it can't see
-the last one yet) and clears NETFS_RREQ_IN_PROGRESS - at which point, the
-collection worker no longer goes into the collector.
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-This can be provoked with AFS by injecting an msleep() right before the
-final subreq is queued.
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-Fix this by splitting the queuing part out of netfs_issue_read() into a new
-function, netfs_queue_read(), and calling it separately.  The setting of
-NETFS_RREQ_ALL_QUEUED is then done by netfs_queue_read() whilst it is
-holding the spinlock (that's probably unnecessary, but shouldn't hurt).
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-It might be better to set a flag on the final subreq, but this could be a
-problem if an error occurs and we can't queue it.
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
-Fixes: e2d46f2ec332 ("netfs: Change the read result collector to only use one work item")
-Reported-by: Ihor Solodrai <ihor.solodrai@pm.me>
-Closes: https://lore.kernel.org/r/a7x33d4dnMdGTtRivptq6S1i8btK70SNBP2XyX_xwDAhLvgQoPox6FVBOkifq4eBinfFfbZlIkMZBe3QarlWTxoEtHZwJCZbNKtaqrR7PvI=@pm.me/
-Signed-off-by: David Howells <dhowells@redhat.com>
-Tested-by: Ihor Solodrai <ihor.solodrai@linux.dev>
-cc: Eric Van Hensbergen <ericvh@kernel.org>
-cc: Latchesar Ionkov <lucho@ionkov.net>
-cc: Dominique Martinet <asmadeus@codewreck.org>
-cc: Christian Schoenebeck <linux_oss@crudebyte.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Steve French <stfrench@microsoft.com>
-cc: Paulo Alcantara <pc@manguebit.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: v9fs@lists.linux.dev
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
----
- fs/netfs/buffered_read.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index f761d44b3436..0d1b6d35ff3b 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -155,8 +155,9 @@ static void netfs_read_cache_to_pagecache(struct netfs_io_request *rreq,
- 			netfs_cache_read_terminated, subreq);
- }
- 
--static void netfs_issue_read(struct netfs_io_request *rreq,
--			     struct netfs_io_subrequest *subreq)
-+static void netfs_queue_read(struct netfs_io_request *rreq,
-+			     struct netfs_io_subrequest *subreq,
-+			     bool last_subreq)
- {
- 	struct netfs_io_stream *stream = &rreq->io_streams[0];
- 
-@@ -177,8 +178,17 @@ static void netfs_issue_read(struct netfs_io_request *rreq,
- 		}
- 	}
- 
-+	if (last_subreq) {
-+		smp_wmb(); /* Write lists before ALL_QUEUED. */
-+		set_bit(NETFS_RREQ_ALL_QUEUED, &rreq->flags);
-+	}
-+
- 	spin_unlock(&rreq->lock);
-+}
- 
-+static void netfs_issue_read(struct netfs_io_request *rreq,
-+			     struct netfs_io_subrequest *subreq)
-+{
- 	switch (subreq->source) {
- 	case NETFS_DOWNLOAD_FROM_SERVER:
- 		rreq->netfs_ops->issue_read(subreq);
-@@ -293,11 +303,8 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq)
- 		}
- 		size -= slice;
- 		start += slice;
--		if (size <= 0) {
--			smp_wmb(); /* Write lists before ALL_QUEUED. */
--			set_bit(NETFS_RREQ_ALL_QUEUED, &rreq->flags);
--		}
- 
-+		netfs_queue_read(rreq, subreq, size <= 0);
- 		netfs_issue_read(rreq, subreq);
- 		cond_resched();
- 	} while (size > 0);
-
+[1/3] netfs: Fix a number of read-retry hangs
+      https://git.kernel.org/vfs/vfs/c/1d0013962d22
+[2/3] netfs: Add retry stat counters
+      https://git.kernel.org/vfs/vfs/c/d01c495f432c
+[3/3] netfs: Fix setting NETFS_RREQ_ALL_QUEUED to be after all subreqs queued
+      https://git.kernel.org/vfs/vfs/c/5de0219a9bb9
