@@ -1,79 +1,92 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486BB264A79
-	for <netfs@lists.linux.dev>; Fri, 14 Feb 2025 13:03:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7297B23A992
+	for <netfs@lists.linux.dev>; Fri, 14 Feb 2025 13:08:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739538237; cv=none; b=cRcbMTSCGkamiQSIVQXpxaCMtwXQLJOwJ1X5QC36vnjvhts0M4bSR3qrXYlfwX3RnDdCK3gdR36BR7UWjbDc37+dTRPFzyb1b5oVqNArwEuZnWqgOG0nW0qhkBsfPfJP+aiOtvb5Hqp/wLCkrSTPJyo+aoOsJjhzVwbeEdSmxT0=
+	t=1739538520; cv=none; b=P/VlhYVGHL0W9mhjZV5z65O+qZiN8PykiBjgKLc2W6Bs+mf8tZqgp6OrUvBy2rB1rtk01oHrMN9KVoX75P6HujaS3369721ijaq5UIMxZodu8M/u4Qhwn1knsRfKsUzupMkbyrk87+o2aDm4O/rZIVD2G1oBjBhPeEWLZVrW5DU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739538237; c=relaxed/simple;
-	bh=+dRvZAEpzggpCGdlVHWJjVQQHmFiEjX9LCOV2fbhmjE=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=WPcpAWMHYbFMx+vBB1L0YPGDGZCP9RHiJCvRDiod3nTplExuaPb6a9OAUaTt9uuwQhdA6Ako2merAqvtWWCjyxCXAsQnUjbEcdNIC6hyCsD2ETFYOZbUnHPvQsohlHFng1RrqhE+LTpWisdPSccESGzuJR6UTCAkzmQatamAJwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=crKONSKN; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1739538520; c=relaxed/simple;
+	bh=neEm4+Cx/iEQVvb4iKsSOqlmD79lxM637n3ua8WM8qI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=reu9FJPB1VzdBCSnujPE993WAI9c4q5oUTLS0D6QHzqTLTMqiINPkQDVBgzpW6CraLC+08F9THY7r041T9ZxGObwzCMsLzB2fDljMsLw6PQCZUJBWQURx4UIwGCX9YSVs+ITKNS5+btmdcFHvdMNGrzlogxp9ZOQQNqJ3AB0fM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=Pnwk7EP8; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="crKONSKN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1739538234;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HkmQoBgY6ibrO0SJlNLLatAXD9nZtLfLlyNK+9OBhaI=;
-	b=crKONSKN+Hu0vh0OBsnGzatB1xNS08JnsSxPLc+5PqKiILkouxZWy2D8yvGXOc9P+Mznml
-	Po2UD72qSAAcP7s9fgWp//yn/emdKNYqmnh6G5DTNK1NQsgYvwmeqQJD3tdNRzepyvIGMa
-	B/JlQrUJLXM+FyrIs0lnlafUsCi5Ypg=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-657-Nol8qBg2MiuZsh45u0WI8Q-1; Fri,
- 14 Feb 2025 08:03:52 -0500
-X-MC-Unique: Nol8qBg2MiuZsh45u0WI8Q-1
-X-Mimecast-MFC-AGG-ID: Nol8qBg2MiuZsh45u0WI8Q_1739538231
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5FD5C18D95DE;
-	Fri, 14 Feb 2025 13:03:51 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.92])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 847C51800352;
-	Fri, 14 Feb 2025 13:03:49 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20250211093432.3524035-1-max.kellermann@ionos.com>
-References: <20250211093432.3524035-1-max.kellermann@ionos.com>
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: dhowells@redhat.com, Johannes Berg <johannes@sipsolutions.net>,
-    netfs@lists.linux.dev, linux-kernel@vger.kernel.org,
-    stable@vger.kernel.org
-Subject: Re: [PATCH v6.13] fs/netfs/read_collect: fix crash due to uninitialized `prev` variable
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="Pnwk7EP8"
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ab771575040so627839866b.1
+        for <netfs@lists.linux.dev>; Fri, 14 Feb 2025 05:08:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1739538517; x=1740143317; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FblFcMwedzNnfAxN1Z4KRU7BW8Pt4N7aNbycDWrv6Kc=;
+        b=Pnwk7EP8x+/GSfFrolO0D8ujrIwReylX6VtpzD1Jh0uBVbn3NeBvzKS+r1H4437GdM
+         KifjzBL1sJbDUt89aLdsEBXyAC6m1mqqFKycXjYxRBE2Uj5fxUPkEJrVlNTcDGERSn5L
+         tKGjsE+BOpM5PofEWQ3w2S5NBSopPea4+sdL0Aekmp4PtzsPKvGDlu1SqnRImiwpUDff
+         wF0/7sRet9WkLU15EwqT1B/PYcW2wkBlEw1jSq1LabWC8Rme3d4JFZVDDr6jscOdO9zC
+         6Rq0Y5eo+Zx9krsU0WwmRJsNvnjbKU8LAqmw71XFdSTuDWgVZrCGN6AHjwL404sSWH3D
+         EcHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739538517; x=1740143317;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FblFcMwedzNnfAxN1Z4KRU7BW8Pt4N7aNbycDWrv6Kc=;
+        b=iy+bsHB6+ZFZ6UqoENaNr4gBnZKq/dQA/1X0cqXtM+DnJN2Fn/vclj8gMBqIfpKoRx
+         4E/3ty5f+H2PmN3oprrpH7BxgTxJW3EWkIiFTGeT38iDm3OW12oA1vobiV2ejH/+OwO6
+         s+tOpyIIYGgeP9AXYkpTM7DtANrsVsu4xF9oswmP18LJPfS53yMmibyE+If4qzar9+wp
+         ox8euFdlGdallBQ9/xRyoEXSi4vltlPv9PYZmtTRlaVg9PvP0dQ23YzZA9Urh8WUWepE
+         1dVl9hfED32w4KteRrPlH+C22JXx+q01L4IVCI4WNHBwBtyDZmSGfMLTRPMEHS9uiAiw
+         R8ZA==
+X-Forwarded-Encrypted: i=1; AJvYcCUvsVPgTiDxPTqn4YwAj/SNdCrtxldjJN/u6hQNVbqE6BU2JDDyxt5k0G7780NkHJrMBN4NTQ==@lists.linux.dev
+X-Gm-Message-State: AOJu0YwijlI+XPV5DoQ9eSPG2P+Zf0kNJkJol37cmEouaCjM3eLsVDHA
+	jt0ElDxK6Vc57sfo4cGmuQn2YnEhb8e3j240WpcEGIujUT2OTAGXkOn2v0Y7KUj/xF4dnWvzBPh
+	eYcZr2aEzRu0FI9ZAqVw1s9ZzUpzLqxfK/WjtXA==
+X-Gm-Gg: ASbGncsNRXJo/GKwBl6W4my+ysrlxX5wRwdfOdGAf3xdhQJ96zaWw8ILMUaL1mMhpqs
+	0KtV5Y36OYtfd8mJL0PuPgE/mifCLVIbV7WqU+dyPiO+tl9y6MI5CYKNFzSuuXAiN0/AY9cCdYA
+	g5I8I6VbuXE9vV13R+Q+KJVpRt1g==
+X-Google-Smtp-Source: AGHT+IF50ioArXYzWdb9AwMM5Jd2Q6Gaky4E7wPQIfV+mgA5jj7trK1nfZmCALNES+0mGT+0rIc/VOt17oANdRVwXjc=
+X-Received: by 2002:a17:907:2dac:b0:ab7:462d:77a5 with SMTP id
+ a640c23a62f3a-aba50fa00c1mr561174666b.7.1739538516107; Fri, 14 Feb 2025
+ 05:08:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3978534.1739538228.1@warthog.procyon.org.uk>
-Date: Fri, 14 Feb 2025 13:03:48 +0000
-Message-ID: <3978535.1739538228@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+References: <20250211093432.3524035-1-max.kellermann@ionos.com> <3978535.1739538228@warthog.procyon.org.uk>
+In-Reply-To: <3978535.1739538228@warthog.procyon.org.uk>
+From: Max Kellermann <max.kellermann@ionos.com>
+Date: Fri, 14 Feb 2025 14:08:24 +0100
+X-Gm-Features: AWEUYZnphr9tXHnNU_D4Lm2cTV5HRLCiurerIEsfzwR7a2ytXNxgP0imZ2tMeI0
+Message-ID: <CAKPOu+8fGrCgzL6q0SA+WKesMTDEMWkOgTDb1AA_=GN4_k3abg@mail.gmail.com>
+Subject: Re: [PATCH v6.13] fs/netfs/read_collect: fix crash due to
+ uninitialized `prev` variable
+To: David Howells <dhowells@redhat.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>, netfs@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Max Kellermann <max.kellermann@ionos.com> wrote:
+On Fri, Feb 14, 2025 at 2:03=E2=80=AFPM David Howells <dhowells@redhat.com>=
+ wrote:
+>
+> Max Kellermann <max.kellermann@ionos.com> wrote:
+>
+> >               prev =3D list_prev_entry(subreq, rreq_link);
+> > ...
+> > +             if (subreq->start =3D=3D prev->start + prev->len) {
+> > +                     prev =3D list_prev_entry(subreq, rreq_link);
+>
+> Actually, that doubles the setting of prev redundantly.  It shouldn't hur=
+t,
+> but we might want to remove the inner one.
 
->  		prev = list_prev_entry(subreq, rreq_link);
-> ...
-> +		if (subreq->start == prev->start + prev->len) {
-> +			prev = list_prev_entry(subreq, rreq_link);
-
-Actually, that doubles the setting of prev redundantly.  It shouldn't hurt,
-but we might want to remove the inner one.
-
-David
-
+Oh right, that line shouldn't exist twice. (Previously, it was set too
+late, after the variable had already been dereferenced.) I'll send v2
+with only one copy.
