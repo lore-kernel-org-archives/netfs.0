@@ -1,150 +1,83 @@
-Received: from mail-il1-f205.google.com (mail-il1-f205.google.com [209.85.166.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0991E1FFC72
-	for <netfs@lists.linux.dev>; Fri, 14 Feb 2025 06:39:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE8C263F41
+	for <netfs@lists.linux.dev>; Fri, 14 Feb 2025 12:42:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739515167; cv=none; b=VjqZc/e9Z9BxH04QclM6aeEqfkhwVwPt/gy5DHsl254xhGdBcR/adQ+ryGHYfLJ+lT3FyCMnd5BVzKfMw06uMmrog52SO5bsS8hXccz61VrYJg1VJ6mWZKi3ybh6ZmVdNLN801bU4R/UrMr29NjS09XztKjheOeoTJfbQQoU/hY=
+	t=1739536968; cv=none; b=hJYTrDt2f9IEkYbfVfymTVgbDq6DvA9qzPinKs4bpwLtaM1reCmQ0Mcv1GjqHbdi72DAu6t05dTFlcDjZ4RRwz6RmJ1k3Ti1n5dlLWqBJBaux4vK+Kk2DGkrzFOnkwX4UD6SBDji8NYHnjGxPtfY4Zz/rib79lkRbe59FYBCsWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739515167; c=relaxed/simple;
-	bh=RPRcBdYTiyPNkll2YVDappoe1ToG6ZsC+q9BYPD/0KM=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=K/XZVznJXhY7NhXc8oRaU2OycYVqTCE/Dy3M1VNblk0nvRTFVAUlEmNSCG6WAgdbu0XhRPhvaMuPmS4v8w27F3Fl+ri45MZ89jH1RVpzxBDufkbNYKUrYNjKjR2EPqMkROfMaYZr31dn3Eqkd52PoF+UDnBmv7Aki9H19hrKJh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f205.google.com with SMTP id e9e14a558f8ab-3ce8cdf1898so12132925ab.1
-        for <netfs@lists.linux.dev>; Thu, 13 Feb 2025 22:39:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739515165; x=1740119965;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=eHhZV9Csomr8XUspDhbBmbn5Y6J59ZTrAZNyV8CqFaE=;
-        b=SyHnsAP1mdZjUn/jbMCImwRwVHYKK7nioDnssIBmn83Tv3Be/tOl0eZu6m0YxsQ2Ly
-         h/sq49gh5Ul1Br9zb7ghV2F6lXNeDHPGQiqo4HkI7emQn+7S0fyznzG15c+2vPietaEU
-         Q0GdSZS81KzwdHbO1u2vr3jJyDjFCmZv0bAGOUK6OSrDmNXu4ejG385wtVUG3JYUDsYG
-         x0VAgqtkU5tLguG1vOWPodoZEog4vphusvucZQ0Uo2vlcXvS8GoCYTnWXq35NkdMkI+6
-         hREITXRpRa604ntKnc2J1NQtp6F1usLppVuanbajEPzZUSv5dRHG4n94ti0wipVl88MZ
-         LiaA==
-X-Forwarded-Encrypted: i=1; AJvYcCWMWIw9VsOEk8vYtqoYLCLeOx4fXk7nzX4xW2rkspxyY1l5aT1C466Rcs3th4rjvA3lH6bXrQ==@lists.linux.dev
-X-Gm-Message-State: AOJu0YwXkhef5CZIzpXkUhJEmMtqYggX0fb9N6jRJPaKQtK4SsNBu0lc
-	KzdSKmskK6a4mQViGmmF4sA7cwLGRdOaNJia5ngTS8OCP3FdO6D/JPuOalQxK9AUZ12pLaW9RkX
-	1kjAAil2rNC5Wn8AqFzwVfAfBtr6FP2GHPwmF3RW9rLTyKCR634//4dI=
-X-Google-Smtp-Source: AGHT+IF/Hv/mD9dUCycNVAxCnDojNZtBwU1TsxPI3uWgYvdBobM+POkLBFJq1PuAq/ogiC5/7/BSp0H9LhxEj11P/yyJn+ZlrKo4
+	s=arc-20240116; t=1739536968; c=relaxed/simple;
+	bh=d11x50LxRQmrP1+dyTgBwa9f88B58AqvvEqtw+md3vo=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=goUpGWemFj4VdavVlWSFKoSBcn8nxtKhEw3p0M7DS7Uvn8u18mw3CuaTBiHcC6619J/TmSMS9a7w0L5g6yps+5OtmuD+MHmRslNheNzDnFQpfW/5ldYdciOsaQHtQlHl98HvbtN1iv/CwNT8T5Z5E0sygihvKNtCDizHE9ye45Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LyALb3t9; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LyALb3t9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1739536965;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qeI2phbh9W6eJPANE+hSKKu7J5Y3ZY+RS2E2MDT+/Mg=;
+	b=LyALb3t98TxxQD49E/sWFi19ZgwWEm5nos6PLFLXEjgjtTog/onBDx/BABbC2ARCAF/KOM
+	d6bQMuvxlZrX0y3AJ8ZXg6etDInwYpnZyQvTxzskkxYXQFpPKLO30ECOv2mJetK+dZsYN8
+	TGiGB+1fiYg+tLmy+AlKXc7+MLlYVbU=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-356-a9oD0zXqNjK2Sbi1lAnHAA-1; Fri,
+ 14 Feb 2025 07:42:42 -0500
+X-MC-Unique: a9oD0zXqNjK2Sbi1lAnHAA-1
+X-Mimecast-MFC-AGG-ID: a9oD0zXqNjK2Sbi1lAnHAA_1739536961
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BBD93180087F;
+	Fri, 14 Feb 2025 12:42:40 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.92])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EC8621955DCE;
+	Fri, 14 Feb 2025 12:42:38 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20250210223144.3481766-1-max.kellermann@ionos.com>
+References: <20250210223144.3481766-1-max.kellermann@ionos.com>
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: dhowells@redhat.com, netfs@lists.linux.dev,
+    linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v6.13] fs/netfs/read_pgpriv2: skip folio queues without `marks3`
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:2168:b0:3d0:255e:fdc with SMTP id
- e9e14a558f8ab-3d17bfde1f2mr94773195ab.15.1739515165127; Thu, 13 Feb 2025
- 22:39:25 -0800 (PST)
-Date: Thu, 13 Feb 2025 22:39:25 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <67aee51d.050a0220.21dd3.002f.GAE@google.com>
-Subject: [syzbot] [netfs?] WARNING: refcount bug in netfs_put_subrequest
-From: syzbot <syzbot+d9890527385ab9767e03@syzkaller.appspotmail.com>
-To: dhowells@redhat.com, jlayton@kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netfs@lists.linux.dev, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <3977862.1739536957.1@warthog.procyon.org.uk>
+Date: Fri, 14 Feb 2025 12:42:37 +0000
+Message-ID: <3977863.1739536957@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-Hello,
+Max Kellermann <max.kellermann@ionos.com> wrote:
 
-syzbot found the following issue on:
+> At the beginning of the function, folio queues with marks3==0 are
+> skipped, but after that, the `marks3` field is ignored.  If one such
+> queue is found, `slot` is set to 64 (because `__ffs(0)==64`), leading
+> to a buffer overflow in the folioq_folio() call.  The resulting crash
+> may look like this:
+> 
+>  BUG: kernel NULL pointer dereference, address: 0000000000000000
+> ...
+> 
+> Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 
-HEAD commit:    69b54314c975 Merge tag 'kbuild-fixes-v6.14' of git://git.k..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=106d6bdf980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=a7ddf49cf33ba213
-dashboard link: https://syzkaller.appspot.com/bug?extid=d9890527385ab9767e03
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=13aafdf8580000
+Signed-off-by: David Howells <dhowells@redhat.com>
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7feb34a89c2a/non_bootable_disk-69b54314.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/2d0a58d1d655/vmlinux-69b54314.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/b99949b40299/bzImage-69b54314.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+d9890527385ab9767e03@syzkaller.appspotmail.com
-
-netfs: Couldn't get user pages (rc=-14)
-------------[ cut here ]------------
-refcount_t: underflow; use-after-free.
-WARNING: CPU: 3 PID: 6306 at lib/refcount.c:28 refcount_warn_saturate+0x14a/0x210 lib/refcount.c:28
-Modules linked in:
-CPU: 3 UID: 0 PID: 6306 Comm: syz.2.100 Not tainted 6.14.0-rc1-syzkaller-00276-g69b54314c975 #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:refcount_warn_saturate+0x14a/0x210 lib/refcount.c:28
-Code: ff 89 de e8 78 71 f5 fc 84 db 0f 85 66 ff ff ff e8 cb 76 f5 fc c6 05 e5 68 86 0b 01 90 48 c7 c7 00 fb d2 8b e8 97 b2 b5 fc 90 <0f> 0b 90 90 e9 43 ff ff ff e8 a8 76 f5 fc 0f b6 1d c0 68 86 0b 31
-RSP: 0018:ffffc900030d7750 EFLAGS: 00010286
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff817a1159
-RDX: ffff88805135c880 RSI: ffffffff817a1166 RDI: 0000000000000001
-RBP: ffff88802d916fa0 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000001 R12: 0000000000000005
-R13: 000000000000006f R14: 0000000000000001 R15: ffff88802d916fa0
-FS:  00007fee79bce6c0(0000) GS:ffff88806a900000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fee79bad000 CR3: 00000000233ec000 CR4: 0000000000352ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- __refcount_sub_and_test include/linux/refcount.h:275 [inline]
- __refcount_dec_and_test include/linux/refcount.h:307 [inline]
- netfs_put_subrequest+0x2c1/0x4d0 fs/netfs/objects.c:230
- netfs_collect_read_results fs/netfs/read_collect.c:300 [inline]
- netfs_read_collection+0x25af/0x3cb0 fs/netfs/read_collect.c:417
- netfs_wait_for_pause+0x31c/0x3e0 fs/netfs/read_collect.c:689
- netfs_dispatch_unbuffered_reads fs/netfs/direct_read.c:106 [inline]
- netfs_unbuffered_read fs/netfs/direct_read.c:144 [inline]
- netfs_unbuffered_read_iter_locked+0xb50/0x1610 fs/netfs/direct_read.c:229
- netfs_unbuffered_read_iter+0xc5/0x100 fs/netfs/direct_read.c:264
- v9fs_file_read_iter+0xbf/0x100 fs/9p/vfs_file.c:361
- aio_read+0x313/0x4e0 fs/aio.c:1602
- __io_submit_one fs/aio.c:2003 [inline]
- io_submit_one+0x1580/0x1da0 fs/aio.c:2052
- __do_sys_io_submit fs/aio.c:2111 [inline]
- __se_sys_io_submit fs/aio.c:2081 [inline]
- __x64_sys_io_submit+0x1b2/0x340 fs/aio.c:2081
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fee78d8cde9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fee79bce038 EFLAGS: 00000246 ORIG_RAX: 00000000000000d1
-RAX: ffffffffffffffda RBX: 00007fee78fa5fa0 RCX: 00007fee78d8cde9
-RDX: 00004000000002c0 RSI: 0000000000000001 RDI: 00007fee79bad000
-RBP: 00007fee78e0e2a0 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000000 R14: 00007fee78fa5fa0 R15: 00007ffe1e525b98
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
