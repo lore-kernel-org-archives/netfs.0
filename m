@@ -1,83 +1,170 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7812135A5;
-	Thu, 20 Feb 2025 16:15:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E383B1F152F
+	for <netfs@lists.linux.dev>; Thu, 20 Feb 2025 23:46:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740068158; cv=none; b=neEZ9dw6RYOnG7dA1fIhzckzN8HmPxH90PuMfGyF2QfcRgWcfA4fC2VUgyILe/PSxDfvQ4ezMo2VksDQN2DCt8VvBQegoXHNUpZ+YwAiwIuDSEYweYy/ODj3cE20YDehJYhDG1p26Ulr/j6qVF0CG0scJLFbDpfXFgg2Ezahb7o=
+	t=1740095217; cv=none; b=hhuXChZJGwegNQo3bjM7Lq2/6yj4vKRqgI7gvq+pd06TXGUao9bXCuRI5ivDeAcJATbW61A2z3pOPe2IWGTnKubkvdEP5DAWIDPMRCkA+CM5b+lSTAUGpDXboCtiIwt6aqT5ye6feTcxOjb0plNSmBmlAO9HHCSvFXKe5B5Fvuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740068158; c=relaxed/simple;
-	bh=v5jU51XdS5IxHtGzZ0jSCWi4nb+5lghXAbNiqz17AXo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MXpidfhOqiK1jrhH7EljeAZnvP7Ift89wlE2XpFTXdYFp71TnlUrNcbErWmb/pw+sSQl+vb6xqy3i19txyxWdhKlv/omhmmjg3O2d+JJwdgtmLg0XS1Rfp8uxgsvoxjXsK7HJpxbAir5Vy/PjZpzDxwUp8ilG0FaFFQUEc+eAt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=fSEQdgil; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1740095217; c=relaxed/simple;
+	bh=eWd5HI0vsvP8HxPzVasSu9I8QttKgdYd+/RmF+FUhfE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hAJHiUbA0gV5nBCGllY1Id7GSVBzm7aVtUquMXz+kfT5mb5Lep9Gk6s3OT7WYmSY/9LSHwp+WtQbULsZDTj2kuSS3Ygr0o50xNLZJskz6PFdqC0meqg+LIv63hjgyytSCjbA8HTPf7yZZ5DFuTBZGx+SKIzNciTpItRfNzflKBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=rrngyKDT; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=7cAjpZsq; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=dBnjMwlA; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ywLnnzUG; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="fSEQdgil"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=/v0e059AYWdCApNiIRf7ofl3oeJFZjMI+2NzL/MN+sA=; b=fSEQdgil+eU5Ey5bdxle+6sEXy
-	2jGSwL1/1bSyKEksuPVT+RKzowhvqnldQwuTQiIhBtSePe42QjCLkNb67YnEUEaLkAWHrv5Ym6+Vi
-	uDZbZW2W6Q0OfG/HxGypfBxH75KYG+2Jgx3sBR14qG7evqfnJTktW+YVk/rHbzHdHT5qgrlP7nIFa
-	xcx9xU12o+VB08HLU2uHS77KYBiMGbo81IQg6iJ5nRlUpp71aFufA9bo+IjJmmDavrDyoPs3s+Gv7
-	U11z9Yqkp3aldNMLrewhuDPZFZ5V4HqubXHWuRkF3yvV9XMEWVg4Bm5PcAHu3naXNQMmd0m9P2aL0
-	iZEmNnqQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1tl9DN-0000000A9dX-408l;
-	Thu, 20 Feb 2025 16:15:53 +0000
-Date: Thu, 20 Feb 2025 16:15:53 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: syzbot <syzbot+c0dc46208750f063d0e0@syzkaller.appspotmail.com>
-Cc: Dominique Martinet <asmadeus@codewreck.org>, v9fs@lists.linux.dev,
-	dhowells@redhat.com, jlayton@kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netfs@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [netfs?] kernel BUG in folio_unlock (3)
-Message-ID: <Z7dVOaTWTVCojNzr@casper.infradead.org>
-References: <67b75198.050a0220.14d86d.02e2.GAE@google.com>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="rrngyKDT";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="7cAjpZsq";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="dBnjMwlA";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ywLnnzUG"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id BA8BC2118F;
+	Thu, 20 Feb 2025 23:46:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1740095214; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=NKmjAFBT7eSImzI2Bx6YtHkPCpS652+riXhLoV4+ieA=;
+	b=rrngyKDTIuVUlFfElLWo7EhzXkEtalhEyykIKpJMYDFXIgHMC40fjWd7PAGLhVU9Q0kGBd
+	FInwcvn3bFD97Pkh9vJbEGjgepUrs756C19rVt0qbdeMfolM5/h3OdCGV2688S9WlYFVET
+	pwEr+yvuQn8Eiwsq0z4Dx+u0fCjOHrY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1740095214;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=NKmjAFBT7eSImzI2Bx6YtHkPCpS652+riXhLoV4+ieA=;
+	b=7cAjpZsquc/3J3Xjl/gvkGvsoco+0TIJPIX2X9Uq29Q8/arLiv7r3qTk5CJSKRugXjOB9F
+	/l5qQU3ayirmD/AQ==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=dBnjMwlA;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ywLnnzUG
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1740095212; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=NKmjAFBT7eSImzI2Bx6YtHkPCpS652+riXhLoV4+ieA=;
+	b=dBnjMwlAct0U3lEFzWEOOKSD+aGq6HdY4tK4XOlKziuZX8ECWwgJ5RlGxjK28sO2a1TfC5
+	pu4zrPTuSCYbCuAJm4DEFUeiQ4ft8//oGa5imuR3g33yodtMUcZsUhBErCa9CrNkaCrbwm
+	r+UDoSLT4Mi5KMAF8BQla1598Prgwt8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1740095212;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=NKmjAFBT7eSImzI2Bx6YtHkPCpS652+riXhLoV4+ieA=;
+	b=ywLnnzUGae02JEL6IHG/zhEGMHmegAa7EKCPR2yFjqpGzupyG1sbSTo0V4EboTO/RaUzKp
+	w7whJyxUsDr+yxAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 58C6913301;
+	Thu, 20 Feb 2025 23:46:45 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 07ZuBOW+t2f+AgAAD6G6ig
+	(envelope-from <neilb@suse.de>); Thu, 20 Feb 2025 23:46:45 +0000
+From: NeilBrown <neilb@suse.de>
+To: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Xiubo Li <xiubli@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	ceph-devel@vger.kernel.org,
+	netfs@lists.linux.dev
+Subject: [PATCH 0/6] Change ->mkdir() and vfs_mkdir() to return a dentry.
+Date: Fri, 21 Feb 2025 10:36:29 +1100
+Message-ID: <20250220234630.983190-1-neilb@suse.de>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <67b75198.050a0220.14d86d.02e2.GAE@google.com>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: BA8BC2118F
+X-Spam-Score: -3.01
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-0.999];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RCPT_COUNT_TWELVE(0.00)[24];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FREEMAIL_TO(0.00)[zeniv.linux.org.uk,kernel.org,suse.cz,szeredi.hu,redhat.com,gmail.com,nod.at,cambridgegreys.com,sipsolutions.net,oracle.com,talpey.com,chromium.org];
+	MIME_TRACE(0.00)[0:+];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:dkim];
+	R_RATELIMIT(0.00)[from(RLewrxuus8mos16izbn)];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-On Thu, Feb 20, 2025 at 08:00:24AM -0800, syzbot wrote:
-> ------------[ cut here ]------------
-> kernel BUG at mm/filemap.c:1499!
+I'm posting this to a wider audience now as I think it is close to its final form.
+I have not included every fs maintainer explicitly (though this patch touches every writable FS)
+but hope that fsdevel will catch enough of those).  I have included the affected clients
+of vfs_mkdir: nfsd, smb/server, cachefiles, and the filesystems with non-trivial changes:
+nfs, cephfs, hostfs, fuse.
 
-Tried to unlock a folio that wasn't locked.
+mkdir is unique among object creation interfaces as there can only be
+one dentry for an directory inode.  There is a possibilty of races which
+could result in the inode created by mkdir already having a dentry when
+mkdir comes to attach one.  To cope with this, three users of
+vfs_mkdir() sometimes do a lookup to find the correct dentry when the
+one that was passed in wasn't used.  This lookup is clumsy and racy.
 
-The entire log is interesting:
+This patch set changes mkdir interface so that the filesystem can
+provide the correct dentry.  Some times this still requires a look-up
+which can be racey, but having the filesystem do it limits this to only
+when it is absolutely necessary.
 
-https://syzkaller.appspot.com/x/log.txt?x=12af2fdf980000
+So this series changes ->mkdir and vfs_mkdir() to allow a dentry to be
+returned, changes a few filesystems to actually return a dentry
+sometimes, and changes the callers of vfs_mkdir() to use the returned dentry.
 
-It injects a failure which hits p9_tag_alloc() (so adding the 9p people
-to the cc)
+I think it best if this could all land through the VFS tree as ask maitainers of:
+ cachefiles nfsd smb/server
+ hostfs ceph nfs fuse
+to provide a Reviewed-by.
 
-The page dump is:
+Thanks,
+NeilBrown
 
- page: refcount:1 mapcount:0 mapping:ffff888035b30890 index:0x0 pfn:0x37e9a
- memcg:ffff88801c6be000
- aops:v9fs_addr_operations ino:2721d72 dentry name(?):"file0"
- flags: 0xfff20000000020(lru|node=0|zone=1|lastcpupid=0x7ff)
- raw: 00fff20000000020 ffffea0000e1d1c8 ffff88801b0b31a0 ffff888035b30890
- raw: 0000000000000000 0000000000000000 00000001ffffffff ffff88801c6be000
- page dumped because: VM_BUG_ON_FOLIO(!folio_test_locked(folio))
 
-> Call Trace:
->  <TASK>
->  netfs_perform_write+0xc04/0x2140 fs/netfs/buffered_write.c:400
->  netfs_buffered_write_iter_locked fs/netfs/buffered_write.c:445 [inline]
->  netfs_file_write_iter+0x494/0x550 fs/netfs/buffered_write.c:484
->  v9fs_file_write_iter+0x9b/0x100 fs/9p/vfs_file.c:407
->  new_sync_write fs/read_write.c:586 [inline]
->  vfs_write+0x5ae/0x1150 fs/read_write.c:679
->  ksys_write+0x12b/0x250 fs/read_write.c:731
