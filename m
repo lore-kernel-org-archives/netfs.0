@@ -1,186 +1,80 @@
-Received: from mail-il1-f205.google.com (mail-il1-f205.google.com [209.85.166.205])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08A0622E40A
-	for <netfs@lists.linux.dev>; Tue, 18 Feb 2025 09:37:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0561F7914
+	for <netfs@lists.linux.dev>; Thu, 20 Feb 2025 13:09:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739871446; cv=none; b=XyC09Z13duDUMOfIR7lN+E+O5UJu/GAqJhRvqE2zK18aqxvH4MYrdjFV9FEFGjo1z2jyEe6si7MbveEpFaenDg3V6TvkSOvaBNj2xW9/xWM313BGbeBs9dHRjc2X01OAl7zNxS86YyVjGFreZGGfPAughAGiglCSy4+nVLpGtOY=
+	t=1740056973; cv=none; b=LWQjYQXjn7Zm73qxbp5g8imF/FXQr5xRIcjpygCu6jXx3MXCjqgMkeO6O6LcQVP/iafKtyYWPjCodcyozFUb5QTe1mOqlVJ0G8LE9GTyuiVRj+mFQgKBlAVFuQ+16Z+ZQXtZZI0bkoc63JDqmtfEqw+/fWE4MJO9BOguYT2jhiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739871446; c=relaxed/simple;
-	bh=1vzXxAhEudrAhyb1CsSMVfihnBRlSdyHD0J4se+ZkKs=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=GNz8VAfksU8ksuPrZ0wR+qtkJ9yyUg2q/a6yrXIsLJp1xNBilQnCC6mkurzXusx6QRZqwnyloFUup3fwV/FJ+MMBwdlf13Npw+/SbF7r1s+lCJaAR0rlI8tcno35iC2UCeVOP6dvmgM2r7eFgz/4Cy9LclN8oTCRGCuP7jsKphY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f205.google.com with SMTP id e9e14a558f8ab-3d18e28a0c1so97200485ab.3
-        for <netfs@lists.linux.dev>; Tue, 18 Feb 2025 01:37:24 -0800 (PST)
+	s=arc-20240116; t=1740056973; c=relaxed/simple;
+	bh=659Z5MgEmFp3Njkp+0t+ptDcYZt275fHIOylgA3dWnI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pIYpKqaayCVUXwDgzAMYgSJewv30k3c3Mt94alY2Gk4oGCecFhSmtqSkIQuI04qUB85SUJVpzzb8d3qczxuHycdtRPNK44DZqwgBqwybPLknxJzepR3wKy2Oc6nWw2wKJh3VWvnTWntqx3YNIkNYEx71Q3cRu2GmVXhuejN2ePI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=LHJKlwUN; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="LHJKlwUN"
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5e0452f859cso1398212a12.2
+        for <netfs@lists.linux.dev>; Thu, 20 Feb 2025 05:09:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1740056970; x=1740661770; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=659Z5MgEmFp3Njkp+0t+ptDcYZt275fHIOylgA3dWnI=;
+        b=LHJKlwUNKwG8SHk082Zeo74fmVMczmi3ceDifIievhbpR6uXXCV59U682Rx3KUwQ1G
+         E/GMLw+1AIhM1vZm0AnhQ6xKWQpCnQp9Lp3Rd3qM4Gw0mAbf/2UG5L8iJhZK/tC5LxpH
+         ah3MexNVp7XeFi5JAAcfEFWBRjnxE8F9qkKW7fCFqKVF4I3tJGduUVIMgmtBf4Zo8QBg
+         3SwxSvEscOqsGTPq2JIkSGxmKCKucP3yQyO+Pqng4jc/bXBxrFHlze0YcZ0PK9R0RfW+
+         ctYWbQ1XKRc6eMR+oWN2GS8IUEhkRnH+7Rs5+gOc1VJp0W9TZCJRAgpogRRczBbRzsn5
+         Bd8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739871444; x=1740476244;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=FLZ4fY1/NxqwbUdjoAoI1yEPFjdoeZ2kiHEcyPZJC1Y=;
-        b=rPMKNwh6oDyzOvKGut1ZvjXj53cSCQok8ubwn6WeoJFQOFlV/seFAGJMhObH+DGesF
-         +cAl85o5P0B1jtScJ21j2KXYgw02OMDcD1/911T8fKr46KxVA/cBhvtC58720LUf0yQH
-         YHM2KZmrzXkqP3Da0UiX8kvqq9z6n28rNvufswSleUOxey7RBTHxUGY6PZiI6HcvZMSU
-         ScwNwpJJ21u1SfEFg7gxBK5i5kBbymSM2NOCL9jWHNPUvAcqOH9IR8GNzMYvnvYDE6hB
-         6DT6aduv+hai241xYDGtis51ArTOBIS10c19hdJLIvJ+dc9TUdqKJDz7AiwAQR/SRpWK
-         5IoA==
-X-Forwarded-Encrypted: i=1; AJvYcCVRylDqqzuNskFrQIlj0oEccIP6ViGDg0O9rx6rmc6z2zZByhT4BsjkVAFiRdqP/wQM02poug==@lists.linux.dev
-X-Gm-Message-State: AOJu0YwgEXS6W1uMJ7zqhAZ3jjkCMX/MJpq7xpE3YpI5iVDN8EolpISC
-	FYfLjFTtBmBhBYi7m6cw1i2ivuaV+t3oJwFNKe75JvWP6YLCTShpYvlA38rJi72TluU8fWe5d38
-	fOxtxsDjQrTB6QSpt7imyskD7ZR7UnPYqRMqQmEXG207XgKcVcFTXyjk=
-X-Google-Smtp-Source: AGHT+IEm82RK3nnYqiu/mYzAVrx+dILIstbP39Ck3XYMaxYLNL9eyMHJ8hlfxzpUGC53uwrwTtS1l7Y1imi/shDsJlP6RzNpi6m1
+        d=1e100.net; s=20230601; t=1740056970; x=1740661770;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=659Z5MgEmFp3Njkp+0t+ptDcYZt275fHIOylgA3dWnI=;
+        b=hBb86QFwVkXtFTx+u6v4NZvvBYJWsgf3BcU3scjj71RoE97tL25i4mHQJYNKnBqgqE
+         VDCnQS002hB5SMWs9NAuDdNQxcxV3oAeqf8BmDQXTQAgsKYDr0SBLfCfFnlqM6W4JM1N
+         EMHRfI6hqSXNXD7B0t8dFZ447OkVRn+fikz9jfdvQ9b1IHZ8ne4HC9Mw2mR6mmsfrE3h
+         4kh7vgr+/cieAVm9EZ9MFUUmfJke/NaBShRck72/uP/iIl/f68cOXnVoJ6BkhbpwCYHG
+         H/Fwkbxt1ayACh6j9Ozj9eUgyq2rMZ7pp8csWJQW7KnMJR20FY9udJGcl9LeoYAGQsBE
+         V5mw==
+X-Gm-Message-State: AOJu0YxhAThdaIdIzp0BzUXQ40hlCtw2XvVQNYfGokU/AkHiqM5Rzkc9
+	4AnR4xmwh5dlNoRt9/D5pl/99+kj49HoTtCVtK5nC/C18p6NpYl+g6Pk+0pFqHNalwXjhoyVB8y
+	8MDxEnDOPhdMDqEN74QfTNUgD9VuXKhfegwJnWQ==
+X-Gm-Gg: ASbGncu8dJxVZ9iH64KzQOacAVhlp3xcKu32l9/EyiP2Ty6oe0DC2Zk8WA5dpTYX66A
+	IwAWpeQ5wySBTVSLu484RLKxgeNGyvssMt9a92zKLw5gCDbONegRTvRJ+eRq1PMfd1y+A+Fvk9M
+	91cBY2NYp8S2oHh1VRWoVVPlo0HA==
+X-Google-Smtp-Source: AGHT+IGPoX+5794U07EydT48UEKhGOyMUOF2FtzKyULbqoGRP0V32LcSKq9unFMC783mM102XE9wLcWd7UMwvlaZCoY=
+X-Received: by 2002:a17:906:dc90:b0:ab7:86af:9e19 with SMTP id
+ a640c23a62f3a-abbcd05a611mr799771966b.43.1740056969659; Thu, 20 Feb 2025
+ 05:09:29 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1c8c:b0:3d0:21aa:a756 with SMTP id
- e9e14a558f8ab-3d2807aba07mr117250795ab.5.1739871444163; Tue, 18 Feb 2025
- 01:37:24 -0800 (PST)
-Date: Tue, 18 Feb 2025 01:37:24 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <67b454d4.050a0220.173698.0051.GAE@google.com>
-Subject: [syzbot] [netfs?] INFO: task hung in pipe_write (6)
-From: syzbot <syzbot+5984e31a805252b3b40a@syzkaller.appspotmail.com>
-To: brauner@kernel.org, ceph-devel@vger.kernel.org, dhowells@redhat.com, 
-	idryomov@gmail.com, jack@suse.cz, jlayton@kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, mathieu.desnoyers@efficios.com, 
-	mhiramat@kernel.org, netfs@lists.linux.dev, rostedt@goodmis.org, 
-	syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk, xiubli@redhat.com
+References: <CAKPOu+_4mUwYgQtRTbXCmi+-k3PGvLysnPadkmHOyB7Gz0iSMA@mail.gmail.com>
+ <20250210191118.3444416-1-max.kellermann@ionos.com> <3978045.1739537266@warthog.procyon.org.uk>
+In-Reply-To: <3978045.1739537266@warthog.procyon.org.uk>
+From: Max Kellermann <max.kellermann@ionos.com>
+Date: Thu, 20 Feb 2025 14:09:17 +0100
+X-Gm-Features: AWEUYZmpP9P0Gfh3rezBjkEnKqpCWeO7xkkWonrM0Uq7UsX6pZI6C3FwpwtpoBk
+Message-ID: <CAKPOu+8cD=HkoNYYknivDJnb6Pfxv+KF28SBUDEqha4NE5sxhg@mail.gmail.com>
+Subject: Re: [PATCH] fs/netfs/read_collect: add to next->prev_donated
+To: David Howells <dhowells@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: netfs@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-nfs@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+On Fri, Feb 14, 2025 at 1:47=E2=80=AFPM David Howells <dhowells@redhat.com>=
+ wrote:
+> Signed-off-by: David Howells <dhowells@redhat.com>
 
-syzbot found the following issue on:
-
-HEAD commit:    ad1b832bf1cf Merge tag 'devicetree-fixes-for-6.14-1' of gi..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1251a898580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e55cabe422b4fcaf
-dashboard link: https://syzkaller.appspot.com/bug?extid=5984e31a805252b3b40a
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=170d57df980000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12df35a4580000
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/9de6d97a8d34/disk-ad1b832b.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/258463d6a9b5/vmlinux-ad1b832b.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/f0449b94f00a/bzImage-ad1b832b.xz
-
-The issue was bisected to:
-
-commit 7ba167c4c73ed96eb002c98a9d7d49317dfb0191
-Author: David Howells <dhowells@redhat.com>
-Date:   Mon Mar 18 16:57:31 2024 +0000
-
-    netfs: Switch to using unsigned long long rather than loff_t
-
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=166625b0580000
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=156625b0580000
-console output: https://syzkaller.appspot.com/x/log.txt?x=116625b0580000
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+5984e31a805252b3b40a@syzkaller.appspotmail.com
-Fixes: 7ba167c4c73e ("netfs: Switch to using unsigned long long rather than loff_t")
-
-INFO: task kworker/1:2:837 blocked for more than 143 seconds.
-      Not tainted 6.14.0-rc2-syzkaller-00303-gad1b832bf1cf #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:kworker/1:2     state:D stack:25360 pid:837   tgid:837   ppid:2      task_flags:0x4208060 flags:0x00004000
-Workqueue: events p9_write_work
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5377 [inline]
- __schedule+0x18bc/0x4c40 kernel/sched/core.c:6764
- __schedule_loop kernel/sched/core.c:6841 [inline]
- schedule+0x14b/0x320 kernel/sched/core.c:6856
- schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:6913
- __mutex_lock_common kernel/locking/mutex.c:662 [inline]
- __mutex_lock+0x817/0x1010 kernel/locking/mutex.c:730
- pipe_write+0x1c6/0x1a30 fs/pipe.c:456
- __kernel_write_iter+0x433/0x950 fs/read_write.c:612
- __kernel_write fs/read_write.c:632 [inline]
- kernel_write+0x214/0x330 fs/read_write.c:653
- p9_fd_write net/9p/trans_fd.c:432 [inline]
- p9_write_work+0x57d/0xd70 net/9p/trans_fd.c:483
- process_one_work kernel/workqueue.c:3236 [inline]
- process_scheduled_works+0xabe/0x18e0 kernel/workqueue.c:3317
- worker_thread+0x870/0xd30 kernel/workqueue.c:3398
- kthread+0x7a9/0x920 kernel/kthread.c:464
- ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
-
-Showing all locks held in the system:
-1 lock held by khungtaskd/30:
- #0: ffffffff8eb38f60 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:337 [inline]
- #0: ffffffff8eb38f60 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:849 [inline]
- #0: ffffffff8eb38f60 (rcu_read_lock){....}-{1:3}, at: debug_show_all_locks+0x55/0x2a0 kernel/locking/lockdep.c:6746
-3 locks held by kworker/1:2/837:
- #0: ffff88801b080d48 ((wq_completion)events){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3211 [inline]
- #0: ffff88801b080d48 ((wq_completion)events){+.+.}-{0:0}, at: process_scheduled_works+0x98b/0x18e0 kernel/workqueue.c:3317
- #1: ffffc90003547c60 ((work_completion)(&m->wq)){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3212 [inline]
- #1: ffffc90003547c60 ((work_completion)(&m->wq)){+.+.}-{0:0}, at: process_scheduled_works+0x9c6/0x18e0 kernel/workqueue.c:3317
- #2: ffff8880233c5468 (&pipe->mutex){+.+.}-{4:4}, at: pipe_write+0x1c6/0x1a30 fs/pipe.c:456
-2 locks held by getty/5577:
- #0: ffff8880354a20a0 (&tty->ldisc_sem){++++}-{0:0}, at: tty_ldisc_ref_wait+0x25/0x70 drivers/tty/tty_ldisc.c:243
- #1: ffffc9000332b2f0 (&ldata->atomic_read_lock){+.+.}-{4:4}, at: n_tty_read+0x616/0x1770 drivers/tty/n_tty.c:2211
-2 locks held by syz-executor138/5815:
- #0: ffff8880233c5468 (&pipe->mutex){+.+.}-{4:4}, at: pipe_write+0x1c6/0x1a30 fs/pipe.c:456
- #1: ffff888077e802e8 (mapping.invalidate_lock#3){.+.+}-{4:4}, at: filemap_invalidate_lock_shared include/linux/fs.h:932 [inline]
- #1: ffff888077e802e8 (mapping.invalidate_lock#3){.+.+}-{4:4}, at: page_cache_ra_unbounded+0x156/0x820 mm/readahead.c:229
-
-=============================================
-
-NMI backtrace for cpu 1
-CPU: 1 UID: 0 PID: 30 Comm: khungtaskd Not tainted 6.14.0-rc2-syzkaller-00303-gad1b832bf1cf #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 12/27/2024
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- nmi_cpu_backtrace+0x49c/0x4d0 lib/nmi_backtrace.c:113
- nmi_trigger_cpumask_backtrace+0x198/0x320 lib/nmi_backtrace.c:62
- trigger_all_cpu_backtrace include/linux/nmi.h:162 [inline]
- check_hung_uninterruptible_tasks kernel/hung_task.c:236 [inline]
- watchdog+0x1058/0x10a0 kernel/hung_task.c:399
- kthread+0x7a9/0x920 kernel/kthread.c:464
- ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
-Sending NMI from CPU 1 to CPUs 0:
-NMI backtrace for cpu 0 skipped: idling at native_safe_halt arch/x86/include/asm/irqflags.h:48 [inline]
-NMI backtrace for cpu 0 skipped: idling at arch_safe_halt arch/x86/include/asm/irqflags.h:106 [inline]
-NMI backtrace for cpu 0 skipped: idling at acpi_safe_halt+0x21/0x30 drivers/acpi/processor_idle.c:111
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+Greg, you merged my other two netfs fixes into 6.13.3, but omitted
+this one. Did you miss it, or was there another reason?
