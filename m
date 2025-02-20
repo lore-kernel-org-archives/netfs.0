@@ -1,106 +1,163 @@
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from mail-il1-f208.google.com (mail-il1-f208.google.com [209.85.166.208])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6701D61A3
-	for <netfs@lists.linux.dev>; Thu, 20 Feb 2025 15:24:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988B1155336
+	for <netfs@lists.linux.dev>; Thu, 20 Feb 2025 16:00:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.208
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740065099; cv=none; b=QO+YfOZ8+KkG89UkGDWTzqZCTKBtERkrVhZ3VRhKn39vWmjnfQGr9gxvhYuwiwNLSFrt6+JD6j0EufqVFD0WoPNQVa/hepqNbQCp/6XYXQFbxDbf3ep4l0geNSVQ5N1YwJ3gecVVMD+5gx2AhNccmknJ2DPDGzme/NVSmkNc/4A=
+	t=1740067227; cv=none; b=jO0WPsR6Iy8Py+z/3OOuJKQWWs8dxwe57DdJuIaIJKIwisMyqfcCZuHEm90b+Hdxe1uE9MNt5IW4/MCbxLVi15+WhF5sryup+p9a3F60Om6tDKbpl8XVC/euGwH/TXs/1Y/vwILizVJCodUjuSaDxRwdsbPWjYdYkz6ZawmxV3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740065099; c=relaxed/simple;
-	bh=GHKtQKfRX625ruMmSBwhohcDd+91MZuTfcrrZYKfjbs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jCj8e3vlfwonxldISUigpHc3zqKpDWxM+bipfo9kZxMYSDAFK4UQ5qclaszufrvRAoUSEuAmS9MW6Id3T+rrjoNgcxnUDoDJ+RYab6ICy9hItGLRYyoRVDNEiHwHO6TbuFcNUFX0IvhN/T5wLsfeZ15uZK+YiCT1mVqv3GL/uiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=AvitxqQb; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="AvitxqQb"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-abb81285d33so220131866b.0
-        for <netfs@lists.linux.dev>; Thu, 20 Feb 2025 07:24:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1740065095; x=1740669895; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y956Nga+wi17KckdN9/Mw3XRjcXaF3kNwC0PxZ5/5C8=;
-        b=AvitxqQb6g4vJez8D9XVuGrY2q/1ua0E0dcYrJLILjFC0xKqwNtQbMBg63oF+Ojte7
-         BuMZHWNfujQAxNfAn/Jf1iJSfqWxvBH35GFiKWIAq6KYgP3rsdU1X/cYpvllTttgQBTQ
-         1lolQjDRgbQX0EyDxNr41MRkN8GueaKC/i+fi3NJNJSBV37ovdDoftX1Lefz6UCJodMz
-         SwtDGl6vnYEFz6AVB10Zt5GUeXtocAlk/VHRaZziGURuqIHf0gT7P+jMYZ8UvpoygzZt
-         wxZtldMjCsucuLhHcxdWG4A9rK28d6+1Eqtii+jg4/KoawtjySe+2q+zlPnEAZxmKq6A
-         hYXQ==
+	s=arc-20240116; t=1740067227; c=relaxed/simple;
+	bh=YxQajyH+IN9SN8lh/zKBA+mhYBVHiFlPZXI6BhyiMxU=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=G+Li9Xq8rJyeo47p8o1K2uVhbzJvBFFnfaI7qg4W/sb1bfbunDvWlgds79Biz/YC/kkLf4Jm/rT5Qq7Xb8ZC4HrvWN179ZsctI2Z1i2pQXxc6cncXXysObaMwnMyJ+8NamnfyvLmpViGP0MYzebk2iFVB3p/42D4zSyOrCJoUF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.208
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f208.google.com with SMTP id e9e14a558f8ab-3ce3bbb2b9dso7736215ab.3
+        for <netfs@lists.linux.dev>; Thu, 20 Feb 2025 08:00:25 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740065095; x=1740669895;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Y956Nga+wi17KckdN9/Mw3XRjcXaF3kNwC0PxZ5/5C8=;
-        b=iRbdA4wQ+HlaiosUYXe6LZZ+X4ifqwP9Xwpr9NOYK8wlv402oaCw39pemSv67y3a/L
-         UYZrn+BbEMochO7ez2YRzeelVVRm3PWPPiB5pbldabqQOOHAtU0esnZdU8G6MQhAlneo
-         0uri+GXkYGI5O0W8nscjaIEPa0QH13kCoH/9qO/E5BlhDaASgmfdw/DbXBWbUqIO3TUl
-         eOdSG12eRp5bfQHH7JMnAW9W9vLiYh+0yst8FmrYHni8VCLQIXlWy6cZ8ifXduWWq+df
-         73cWuI94rRvdhT1SHHWJqfSUQH8FStfC9ldF2/JaXhzUr8lFENxYLWG3fTz/zmF0/zD2
-         fNZA==
-X-Forwarded-Encrypted: i=1; AJvYcCWY1CU6LmYKOUiSXuHOGnBFzl0rhdB9rS+ZLlN2ca7dT+0izAzndteD/iTG3S7bQcTxULv7Qw==@lists.linux.dev
-X-Gm-Message-State: AOJu0YxMY/XkaEDUXIKDjGljBfN1SiFVDJs9iOQe2syQVK+3Sfagsrhb
-	3CrMr4cZq1FKyg9p+7NW4QFuz/gpZxFVo17wj0NhVjwCRYVCNAUrcnScTIrUoks=
-X-Gm-Gg: ASbGncv44GcK6wNtZkPVgJKRaSaVjxnSUFoRWd7hHCzrq8NZwOKP/JiEQ8qOvdFlgsm
-	lvDsl3gw5We1SshrsgftMvxERgFOO9CUfxChvIl56ae8EGMJ1SJf01n/vQQr253bXTKQERjeEtP
-	Lyo1xdKZlyTc0mWqR+rlGTVqh+3s9W/SFY16NigKbx/SR6UaaVyCc1ekf/kgd1zr2inPnwUE0jD
-	OLNQKhIph25mlm6GTMyigjAgfLLHcnOIrcT8OKxnqrot7YyNm/pDz15VqePKRV069lXfCY2KBWt
-	jFPwMAQmd6pGCHCZ7JyJZLqkuYyFMJAW+ZVXxN/JESi2za1pyeCMJbDX0MhDXZau8HGVPY7I2Gm
-	nlExo+53pfJpuVUs=
-X-Google-Smtp-Source: AGHT+IGpFy9Nqr+lyOCNzWNyFcfvqTsorGUY2iR8cFQABQ8lCUVSSIHVamd16JAap5iL/T/ZJ53L+w==
-X-Received: by 2002:a17:906:d554:b0:ab7:ef38:1277 with SMTP id a640c23a62f3a-abbf3885ecamr256927166b.26.1740065094910;
-        Thu, 20 Feb 2025 07:24:54 -0800 (PST)
-Received: from raven.intern.cm-ag (p200300dc6f007700023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f00:7700:230:64ff:fe74:809])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abb9f3a695dsm751274266b.2.2025.02.20.07.24.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Feb 2025 07:24:54 -0800 (PST)
-From: Max Kellermann <max.kellermann@ionos.com>
-To: dhowells@redhat.com,
-	netfs@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Cc: Max Kellermann <max.kellermann@ionos.com>,
-	stable@vger.kernel.org
-Subject: [PATCH RESEND] fs/netfs/read_collect: add to next->prev_donated
-Date: Thu, 20 Feb 2025 16:24:50 +0100
-Message-ID: <20250220152450.1075727-1-max.kellermann@ionos.com>
-X-Mailer: git-send-email 2.47.2
+        d=1e100.net; s=20230601; t=1740067225; x=1740672025;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uCQNcIKHaZp9R0+muKHEhzMyApNHh6tu+d5HdAXMj6s=;
+        b=OC0rL3zerO5huzu7b0dVUlddvxBekvuQ8FjL756zRL10lwavQPj/aBHC56xlKtclCc
+         Wq6lphZQEFynquOgbS5wzaGZtWnKkKP87+Dlh77TQLMaPxwz3SqEDqnoBdnHrAaErDoN
+         lF1odw2ikzSus/yJ/bhLp+q7ApIXouxzvix4p650mRV6Z3soIXoc2pZsF3VEKVlKB66A
+         G/Nuvg1JYpgjjfJ3bong7ysshVIjaG2AJy6DMxHHjmmN8t5aGHXzgjGSMSSpfiQJtSGJ
+         0LEY/9Jvx9YCWb0XIeZFOZKlnDNGfylmByMhAyUtJbTZ/xC9lTQaMRNDRLMT6zb6Og6e
+         WqFg==
+X-Forwarded-Encrypted: i=1; AJvYcCVN4e8g8KD8LQ0NHj4ALv6JVTQF/eTandecH31pUuGR6+Q3eWpGejLsWlvnJ8nMDxvhYsRpvw==@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz2JWol6h5nKhSGjM71J94+0WdVnmc4hwjeb72gC68NVi1VuVsZ
+	1AQgBbSlgFKFfrQedI/kYBPnXpi8cpdaMVvj/8o/VAM/H2FcVDEgyysimfpiX0FWqX/94z51MQ8
+	50ritFfU/15QQUpYh2XxsHDiX2tV1KmpjJ6dAG6kKf/LCkDRnsp5yF0Y=
+X-Google-Smtp-Source: AGHT+IH5QN70LqIk9UbBfYPN8ydbtw9LdvO4dGiI/PvEXs64CCRDaYvzTRZSGWgK9cHRhV3eye6Zrz0/wYClGduI2Kd+mg5m3FgI
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6e02:461a:b0:3d2:b295:6653 with SMTP id
+ e9e14a558f8ab-3d2b29567cemr73962215ab.13.1740067224347; Thu, 20 Feb 2025
+ 08:00:24 -0800 (PST)
+Date: Thu, 20 Feb 2025 08:00:24 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <67b75198.050a0220.14d86d.02e2.GAE@google.com>
+Subject: [syzbot] [netfs?] kernel BUG in folio_unlock (3)
+From: syzbot <syzbot+c0dc46208750f063d0e0@syzkaller.appspotmail.com>
+To: dhowells@redhat.com, jlayton@kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netfs@lists.linux.dev, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-If multiple subrequests donate data to the same "next" request
-(depending on the subrequest completion order), each of them would
-overwrite the `prev_donated` field, causing data corruption and a
-BUG() crash ("Can't donate prior to front").
+Hello,
 
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-Closes: https://lore.kernel.org/netfs/CAKPOu+_4mUwYgQtRTbXCmi+-k3PGvLysnPadkmHOyB7Gz0iSMA@mail.gmail.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
+syzbot found the following issue on:
+
+HEAD commit:    6537cfb395f3 Merge tag 'sound-6.14-rc4' of git://git.kerne..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=12af2fdf980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=f4f6914bcba459be
+dashboard link: https://syzkaller.appspot.com/bug?extid=c0dc46208750f063d0e0
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=165827f8580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=141b4ba4580000
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7feb34a89c2a/non_bootable_disk-6537cfb3.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/c6f2faba4c42/vmlinux-6537cfb3.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/16fc32b66fc0/bzImage-6537cfb3.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+c0dc46208750f063d0e0@syzkaller.appspotmail.com
+
+ __vm_munmap+0x19b/0x390 mm/vma.c:2951
+ __do_sys_munmap mm/mmap.c:1084 [inline]
+ __se_sys_munmap mm/mmap.c:1081 [inline]
+ __x64_sys_munmap+0x59/0x80 mm/mmap.c:1081
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+------------[ cut here ]------------
+kernel BUG at mm/filemap.c:1499!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
+CPU: 3 UID: 0 PID: 5937 Comm: syz-executor137 Not tainted 6.14.0-rc3-syzkaller-00060-g6537cfb395f3 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:folio_unlock mm/filemap.c:1499 [inline]
+RIP: 0010:folio_unlock+0xb3/0xd0 mm/filemap.c:1494
+Code: f3 68 ca ff 48 89 ef 31 f6 e8 e9 ed ff ff 5b 5d e9 e2 68 ca ff e8 dd 68 ca ff 48 c7 c6 00 8a 78 8b 48 89 ef e8 de c9 11 00 90 <0f> 0b 48 89 df e8 d3 83 2d 00 e9 7b ff ff ff 66 66 2e 0f 1f 84 00
+RSP: 0018:ffffc9000359f988 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffc9000359f830
+RDX: ffff888027d14880 RSI: ffffffff81ef7612 RDI: ffff888027d14cc4
+RBP: ffffea0000dfa680 R08: 0000000000000000 R09: fffffbfff20c49e2
+R10: ffffffff90624f17 R11: 0000000000000003 R12: ffff888035b30890
+R13: ffff888035b30bb0 R14: ffffea0000dfa680 R15: ffffc9000359fde8
+FS:  0000555555b9a380(0000) GS:ffff88806a900000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f5e877c6264 CR3: 0000000031914000 CR4: 0000000000352ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ netfs_perform_write+0xc04/0x2140 fs/netfs/buffered_write.c:400
+ netfs_buffered_write_iter_locked fs/netfs/buffered_write.c:445 [inline]
+ netfs_file_write_iter+0x494/0x550 fs/netfs/buffered_write.c:484
+ v9fs_file_write_iter+0x9b/0x100 fs/9p/vfs_file.c:407
+ new_sync_write fs/read_write.c:586 [inline]
+ vfs_write+0x5ae/0x1150 fs/read_write.c:679
+ ksys_write+0x12b/0x250 fs/read_write.c:731
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f5e87770829
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 a1 1a 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffd7fd729d8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 00007ffd7fd729f0 RCX: 00007f5e87770829
+RDX: 000000000000000a RSI: 0000400000000080 RDI: 0000000000000004
+RBP: 0000000000000001 R08: 00007ffd7fd72777 R09: 00000000000000a0
+R10: 0000000000000001 R11: 0000000000000246 R12: 00007ffd7fd729ec
+R13: 431bde82d7b634db R14: 0000000000000001 R15: 0000000000000001
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:folio_unlock mm/filemap.c:1499 [inline]
+RIP: 0010:folio_unlock+0xb3/0xd0 mm/filemap.c:1494
+Code: f3 68 ca ff 48 89 ef 31 f6 e8 e9 ed ff ff 5b 5d e9 e2 68 ca ff e8 dd 68 ca ff 48 c7 c6 00 8a 78 8b 48 89 ef e8 de c9 11 00 90 <0f> 0b 48 89 df e8 d3 83 2d 00 e9 7b ff ff ff 66 66 2e 0f 1f 84 00
+RSP: 0018:ffffc9000359f988 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffc9000359f830
+RDX: ffff888027d14880 RSI: ffffffff81ef7612 RDI: ffff888027d14cc4
+RBP: ffffea0000dfa680 R08: 0000000000000000 R09: fffffbfff20c49e2
+R10: ffffffff90624f17 R11: 0000000000000003 R12: ffff888035b30890
+R13: ffff888035b30bb0 R14: ffffea0000dfa680 R15: ffffc9000359fde8
+FS:  0000555555b9a380(0000) GS:ffff88806a600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00005595a83ba0f8 CR3: 0000000031914000 CR4: 0000000000352ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+
+
 ---
- fs/netfs/read_collect.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
-index 8878b46589ff..cafadfe8e858 100644
---- a/fs/netfs/read_collect.c
-+++ b/fs/netfs/read_collect.c
-@@ -284,7 +284,7 @@ static bool netfs_consume_read_data(struct netfs_io_subrequest *subreq, bool was
- 				   netfs_trace_donate_to_deferred_next);
- 	} else {
- 		next = list_next_entry(subreq, rreq_link);
--		WRITE_ONCE(next->prev_donated, excess);
-+		WRITE_ONCE(next->prev_donated, next->prev_donated + excess);
- 		trace_netfs_donate(rreq, subreq, next, excess,
- 				   netfs_trace_donate_to_next);
- 	}
--- 
-2.47.2
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
