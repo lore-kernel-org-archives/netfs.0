@@ -1,82 +1,62 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EEAC15574E
-	for <netfs@lists.linux.dev>; Thu, 20 Feb 2025 15:01:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0A21D5CF5;
+	Thu, 20 Feb 2025 15:10:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740063665; cv=none; b=HJwW6turF16dT5wo9CnSeqoIuur+UHp0qg4DWi5+/rKIy4KwDD+W4u7/2TtQ4OiIiar40Bia/4KoRpX2PJBLQBTtw426lGIvpe9hhCSBJHxFRy77pNR0Tn856QWxlZAJe0k+EsNZXArlbB0hkuhFSKNjb77kHLk/wf9mImVo6Yk=
+	t=1740064223; cv=none; b=e9Z9SZ6iK1zG9LYZC/vLZuSSpAZJWT4dCpxSfsWaP8eTbgREp2nOkLPRombLxKlOyRPtYzdXo7qaoi2Ib1BC2+BzGEwXXRndkPO2BtHr/x13TAGEAuNSlZVE2mYX7e6m3kb+ejv4F4W8R6vp/DDQG4+0VjBGVdHf92UJkkHpMpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740063665; c=relaxed/simple;
-	bh=QX45Sw49DqWmVMlR4tXEGRM0noTXirnZFmIFacKpQVc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NupOp1inYTDUmOwkWyK8pVuVQxuwUtsJ5CPogAjbKyyIxZ/ZJ/owQtlzGP3FIcP0Fyt4tBWrvlziwV0f1zfzYEqFEsM7WoF9N2uiR/d+ISZRmjHXPZeeyiOakkuOwrdLiLyMph9lrUv8bL4NCjMRG/F9YayntD/qFh6p1QnJKpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=J0BpPz6t; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+	s=arc-20240116; t=1740064223; c=relaxed/simple;
+	bh=sUDbrXGBYsw+XenGslrGS2PO/Lmr2+Q+DVVbF8cnyrI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jK/ZLBXRJWaUitsNuNK3G4X1lKQyLfCPnqV/r+DSvNeDD4bNC7qCFRLsAn0tsRWnWJyd7dAW/1beZeQROrsNL+B5wQ/dyjA6PU2SNGXDNSLUPDOqXIeYcRWW+EAPTYkkRaTSZio/7Y2QiuMgkMBkkNCLVp9hTJhuWJ5Hue5WU7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vDhtkZkC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="J0BpPz6t"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5e04f87584dso1628322a12.3
-        for <netfs@lists.linux.dev>; Thu, 20 Feb 2025 07:01:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1740063661; x=1740668461; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QX45Sw49DqWmVMlR4tXEGRM0noTXirnZFmIFacKpQVc=;
-        b=J0BpPz6t3bY1zTyt5H4h20in2wuNbv4XDXR7U32Oe1VIL/bR9kyCFp1ZWF/ZZrp7sO
-         0zEJjehNJ0vOCciOgIGf5YLY9zvHf1fZg1VrZb19rt1V2E8xFnWPEWxiDN1KbLk1y1rY
-         jGlMyOug3Wns0lw7tTC1qFk7rsqR34q8vnvoib3ISZsgVsJd3vLLbnPgjOHmsaMzJSqj
-         SaDQuVuKaBI+YCY8zoBU1t+a5ndrEp7au/tuqEjk7IHZh2C6nlBJyx0j6zGeKjRNBTQl
-         eyaXQlBGv6Lv9IsIl75n+ZXQEnxLkNw9vCtYPzjHR8f3Xt/22GcuO1LWqPeSFLthBwmc
-         yeDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740063661; x=1740668461;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QX45Sw49DqWmVMlR4tXEGRM0noTXirnZFmIFacKpQVc=;
-        b=chQ3B8C84DdQFnuc+J78zoeYL0MJ48BmbT+n2ldL9s6Ex1Hxcj4jUa7+2absx4okbr
-         XidpsZvQglBHTfvOzF2b7C+/ulc1UIp2iB2dboly93SHGZjhJFDsU7FvdoSykTALY8HB
-         oh18P2vun5/Q0fj2dc/U+r/54nPbHmkW5kW7MoWNSaVV9NRX6vGDI28b5CTyiXA+9uTN
-         co6n2S9uKNHtbRjVerNzqx4TBS6SVzcFEsMHba474VWY3FEJXgs2xj+34fGDij9/dvqQ
-         eCBgVtzqA9/MJu+r87/th07ltaPJzNqC1W71HTbCzxnX9R7VYxIFMhHdRfOsBtL9qm0f
-         DW3w==
-X-Forwarded-Encrypted: i=1; AJvYcCWl+As+Qdm/rKARuvFn0TPPanS5UXuUd1zm/qfTHbvdWAJds/xLNyqK9AlXDwn3fTZ1MYXhuQ==@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw17PYWqRgK7ISnduH5ZVk1XgMVBGbbE7YhHI0B9tKo5Tl/T3tl
-	LUkqaJeuwlBB2TMaicqQGsEeGYy07NiDokZZMWJ3nkzqLCYvC2h53oF55EuTUPJqfvI8pql2Ut5
-	q8TcEIwAwj64R85UYYjKmC+L58DzINuHJrfvnyA==
-X-Gm-Gg: ASbGncsn8uR7vHWrRNRQx3bpQI03Ufu8BLPCtTBOOq/YdU3fcyGnOiwQeRS3gTnL1RO
-	ZdZCYrhVQRbOR1idXIRNiKSh9hONxJvOUkl2h5pKFttk00Ofk/OrpN6Z2uJY97Ea/K0wo90IN35
-	zKhOELJ+ZuE32Ef3oJDvSLwO0f6w==
-X-Google-Smtp-Source: AGHT+IFsNIPyDQGc+75Qve6xdXZqYra68xghYqvPNR/a93wAgL+cet1YYKlnIsmF7J644V3bLmLkzN1ceWcyLicDD5A=
-X-Received: by 2002:a17:907:3d8b:b0:abb:b1a4:b0fd with SMTP id
- a640c23a62f3a-abbccccfde8mr753397866b.7.1740063661328; Thu, 20 Feb 2025
- 07:01:01 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vDhtkZkC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C78BFC4CED1;
+	Thu, 20 Feb 2025 15:10:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1740064223;
+	bh=sUDbrXGBYsw+XenGslrGS2PO/Lmr2+Q+DVVbF8cnyrI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vDhtkZkCOEs4sBFWmws20R/QQgL4NenYuKAGJlJ9DWclITVNv0wRC6xg6Hb+v8FYv
+	 aCypdQ0XaMJgMGi+3etgVF16cj4Mx6VT2hY23qEfaKfFawPyvjfrXFHm/83W/8KOrv
+	 pU5FPyPl9+j+g8Xcrc90Xd+C2i7LFe7ZT+bGHjNM=
+Date: Thu, 20 Feb 2025 16:10:14 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: David Howells <dhowells@redhat.com>, netfs@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org
+Subject: Re: [PATCH] fs/netfs/read_collect: add to next->prev_donated
+Message-ID: <2025022005-doily-tiara-b2b9@gregkh>
+References: <CAKPOu+_4mUwYgQtRTbXCmi+-k3PGvLysnPadkmHOyB7Gz0iSMA@mail.gmail.com>
+ <20250210191118.3444416-1-max.kellermann@ionos.com>
+ <3978045.1739537266@warthog.procyon.org.uk>
+ <CAKPOu+8cD=HkoNYYknivDJnb6Pfxv+KF28SBUDEqha4NE5sxhg@mail.gmail.com>
+ <2025022051-rockband-hydroxide-7471@gregkh>
+ <CAKPOu+_WsE_HZ_u_sbP8aPnCXknU51fM9t_L-g+xmNVwWGDHVg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAKPOu+_4mUwYgQtRTbXCmi+-k3PGvLysnPadkmHOyB7Gz0iSMA@mail.gmail.com>
- <20250210191118.3444416-1-max.kellermann@ionos.com> <3978045.1739537266@warthog.procyon.org.uk>
- <CAKPOu+8cD=HkoNYYknivDJnb6Pfxv+KF28SBUDEqha4NE5sxhg@mail.gmail.com> <2025022051-rockband-hydroxide-7471@gregkh>
-In-Reply-To: <2025022051-rockband-hydroxide-7471@gregkh>
-From: Max Kellermann <max.kellermann@ionos.com>
-Date: Thu, 20 Feb 2025 16:00:49 +0100
-X-Gm-Features: AWEUYZn11RtW2auyLztupwrGFbfU0x95LBmhMBqsyNDNUcIi41ux5lVFUDQ1JfI
-Message-ID: <CAKPOu+_WsE_HZ_u_sbP8aPnCXknU51fM9t_L-g+xmNVwWGDHVg@mail.gmail.com>
-Subject: Re: [PATCH] fs/netfs/read_collect: add to next->prev_donated
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: David Howells <dhowells@redhat.com>, netfs@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKPOu+_WsE_HZ_u_sbP8aPnCXknU51fM9t_L-g+xmNVwWGDHVg@mail.gmail.com>
 
-On Thu, Feb 20, 2025 at 3:17=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
-> It wasn't sent to me or to the stable list, so how could have I seen it?
+On Thu, Feb 20, 2025 at 04:00:49PM +0100, Max Kellermann wrote:
+> On Thu, Feb 20, 2025 at 3:17 PM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> > It wasn't sent to me or to the stable list, so how could have I seen it?
+> 
+> Oh, of course, I forgot to add stable. How shall we proceed? Do you
+> want me to resend to you with David's Signed-off-by?
 
-Oh, of course, I forgot to add stable. How shall we proceed? Do you
-want me to resend to you with David's Signed-off-by?
+Please do, and cc: stable.
+
+thanks,
+
+greg k-h
