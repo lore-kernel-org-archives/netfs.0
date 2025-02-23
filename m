@@ -1,80 +1,83 @@
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E4913B58A;
-	Sat, 22 Feb 2025 04:56:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18441ACEA7
+	for <netfs@lists.linux.dev>; Sun, 23 Feb 2025 22:20:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740200207; cv=none; b=t7lUtyjP76gYDZMuTo/KHrn7IduCGplWxrTIJtAMYLcMggtxTKguOVVMUbdDUzuUBqlwafQWyQ0BRJv3VHCuk401SD0dbNVxH84jY17zpNQP8XGmSdONQ4rh0o2qdJcvnwOHjBXQrpq8zae4r8mwNzzoTiOZC3OksY2C+eQG42w=
+	t=1740349230; cv=none; b=AWqo2AmU+qhH8nOLnxoJgQG1Y3XBenO/bltdPm8q1mdEJVx5BG0/ndtky+Gz2raXGvN+qqmM9EcaaFYCOFUaXtD9aThhO+IRHesuVjKl4dFuBI8j6EiGRDlWWiEod4QLCR53N9egwiFJ4M1Kvc1NSVCT33UMSd8K3IxuCXmUca4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740200207; c=relaxed/simple;
-	bh=OOhrnSxoUgAKIMfjUUYFxd8ZK7oaj2BSOj8MQe2HJMg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BL/+dQkkHkZal+T9Myp5/VQ5AcNvQw8Ekij62lhzlLgTW3BSa0FmhWrL3HgsmqMcfZXgpe9RszX706UaiUd34MMQ0/yH9O69GQmIOebhkrISeCOpb6GshrNd7WZTHcNjUNKXd9p8YAvWgJCsfibB4Ls9TWDsE0dU4OvpBdhP87I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=ISd9hrzW; arc=none smtp.client-ip=62.89.141.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="ISd9hrzW"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=zK7Q2y4vb1Jl3/aS9MBSQWpnKf9/zrIOVxSewBZmwJg=; b=ISd9hrzWXrpL02sSPfl5grZm4N
-	OJp0CAQv3yrKxnknEU7KGWDEVMlTfLGAtrH3qw+7n30pO5S0/ir++dmGoijujkkuoeIhyYF4X04sC
-	UfdOwtYU5OilalGsqgrlhMFSWVxYOe09PBjkEoTCNy5e6n8eg0LtzKdhowS+D54SNwoua8/7LiWES
-	eVmuM1YDiKrq8ZOlavxoxJ6xVZHIMonVRSWxz8A27L07vH+9cX1tFY16dhoRpHNc6BHQ6ScGmHA7O
-	Yhd427npxUuD2zEax0QZsBpKkEzual4Xm7dvjxqFovlmK4Pi0pSdD2xzNJNtF+6UPZ6jqkzGmwGus
-	Dmg0S1Wg==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1tlhZ6-00000004fZs-15x8;
-	Sat, 22 Feb 2025 04:56:36 +0000
-Date: Sat, 22 Feb 2025 04:56:36 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: NeilBrown <neilb@suse.de>
-Cc: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Miklos Szeredi <miklos@szeredi.hu>, Xiubo Li <xiubli@redhat.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
-	linux-um@lists.infradead.org, ceph-devel@vger.kernel.org,
-	netfs@lists.linux.dev
-Subject: Re: [PATCH 1/6] Change inode_operations.mkdir to return struct
- dentry *
-Message-ID: <20250222045636.GP1977892@ZenIV>
-References: <20250220234630.983190-1-neilb@suse.de>
- <20250220234630.983190-2-neilb@suse.de>
+	s=arc-20240116; t=1740349230; c=relaxed/simple;
+	bh=4q+jpYig8+lGmn0wOK0GfqUH3CgPPbw/JiQVIVEvhEE=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=NSDTMQG7RloOeJzCXnI6QwU5mgG3lHDIQGiO2z7YfH0hM6oEyzE4UcrpcRka4UfaS3ByPWDGi3sC4ji1QqEztn2T6vHefiKfQe7j4rqS8QkLUDl2qoWHoNhL3MZZb5D2dot5Uv410/cqaINovnPagM1xWR8JuwLlINRHHgwznRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3ce8dadfb67so35010175ab.1
+        for <netfs@lists.linux.dev>; Sun, 23 Feb 2025 14:20:28 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740349228; x=1740954028;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mS1ypvNRaPahBWxFrx6PlbD10RNfGLusDYKckKCNbJQ=;
+        b=hfXjD5xIU6nXtLTPhdYiRBkSFb3jj+GzElNfH629BNOX/ZkYKtcApGxJWQfNSVSs2y
+         DvTkrp1VfNKA3S79MzQJfGUH7GpWRZIqv3AYkeVLvv8yhIjm4ajznbEy+wKaRYNuLvqa
+         PMokUhw8iLYh+SIfpyC2+NOSqgoyjKO1jiEDAeNGkhQ+UMwE/POWpoVOKGi/Oj6KPDUJ
+         wi+VCNduacQQF/SdqMpdWEtnj8KzMXrxu2UVM8D9NJ6k4wF5YtmDTAhRP0c/aspWHooT
+         VHNnzDiRbqrxqnjX2if/LKXkpWHI3FS6v8uzziLNVnkh6ON/xWBNj/RnfIHXQSNMUxsN
+         tNYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUaAXBS18h76SOCbWJ2Liype28qs4ku6W5OX/M644lEx4RkKbW2UPRPheC+/6kaZAYyUprOGw==@lists.linux.dev
+X-Gm-Message-State: AOJu0YxSAdDtwF2kyi5Mb8AKrVhaWqSYlrYv5Y6MHt58nR9NIOhOYdMc
+	Pz5D5iuVe0Gbtj97mOEKqARqbuvcD6jmbDrgO9/dFrGsfS6JLZDYeuMpV9MrckZ42QI23ht7K2e
+	71c1t/nxTC3fEWr1ftmv13dtdQ/mVV+GGyYOGapB1gUDVIXPLXxHJHso=
+X-Google-Smtp-Source: AGHT+IGQqcaW4Hu1YQC7Fp50SrwGoWLTurWsEPiiey8K4lpKcyZU6Y9+fHhmn5Tx372K/FSdOrLJ2IIN5VP0GgJ7mHenujBZqrTq
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250220234630.983190-2-neilb@suse.de>
-Sender: Al Viro <viro@ftp.linux.org.uk>
+X-Received: by 2002:a05:6e02:1448:b0:3d0:10a6:99b9 with SMTP id
+ e9e14a558f8ab-3d2cae474a7mr93378615ab.3.1740349228258; Sun, 23 Feb 2025
+ 14:20:28 -0800 (PST)
+Date: Sun, 23 Feb 2025 14:20:28 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <67bb9f2c.050a0220.bbfd1.003e.GAE@google.com>
+Subject: [syzbot] Monthly netfs report (Feb 2025)
+From: syzbot <syzbot+list734458d14554b90e6367@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, netfs@lists.linux.dev, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Feb 21, 2025 at 10:36:30AM +1100, NeilBrown wrote:
+Hello netfs maintainers/developers,
 
-> Not all filesystems reliably result in a positive hashed dentry:
-> 
-> - NFS, cifs, hostfs will sometimes need to perform a lookup of
->   the name to get inode information.  Races could result in this
->   returning something different. Note that this lookup is
->   non-atomic which is what we are trying to avoid.  Placing the
->   lookup in filesystem code means it only happens when the filesystem
->   has no other option.
+This is a 31-day syzbot report for the netfs subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/netfs
 
-At least in case of cifs I don't see that lookup anywhere in your
-series.  Have I missed it, or...?
+During the period, 4 new issues were detected and 0 were fixed.
+In total, 8 issues are still open and 3 have already been fixed.
+
+Some of the still happening issues:
+
+Ref Crashes Repro Title
+<1> 49      Yes   INFO: task hung in netfs_retry_writes
+                  https://syzkaller.appspot.com/bug?extid=666a9cb4c41986207cdf
+<2> 10      Yes   WARNING in netfs_writepages
+                  https://syzkaller.appspot.com/bug?extid=06023121b0153752a3d3
+<3> 4       Yes   INFO: task hung in pipe_write (6)
+                  https://syzkaller.appspot.com/bug?extid=5984e31a805252b3b40a
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
+
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
