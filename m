@@ -1,83 +1,157 @@
-Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18441ACEA7
-	for <netfs@lists.linux.dev>; Sun, 23 Feb 2025 22:20:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577E0155CB3
+	for <netfs@lists.linux.dev>; Mon, 24 Feb 2025 01:34:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740349230; cv=none; b=AWqo2AmU+qhH8nOLnxoJgQG1Y3XBenO/bltdPm8q1mdEJVx5BG0/ndtky+Gz2raXGvN+qqmM9EcaaFYCOFUaXtD9aThhO+IRHesuVjKl4dFuBI8j6EiGRDlWWiEod4QLCR53N9egwiFJ4M1Kvc1NSVCT33UMSd8K3IxuCXmUca4=
+	t=1740360862; cv=none; b=fVJK5pAbMndPP7cGbTAchKqbCF2GDm2Eeep7O81M0dWm8hG19hj9ObX8BUGonB8Gukezpi9KuC5V+fGsFV2zqQRwTWEozjxwqWzz9pbkfjWTcXpda2HSICxJ2YiXLIJ947dVofB1nYQgVZr9iMgBe54/GQjwJk30lWPv4MBx7aE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740349230; c=relaxed/simple;
-	bh=4q+jpYig8+lGmn0wOK0GfqUH3CgPPbw/JiQVIVEvhEE=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=NSDTMQG7RloOeJzCXnI6QwU5mgG3lHDIQGiO2z7YfH0hM6oEyzE4UcrpcRka4UfaS3ByPWDGi3sC4ji1QqEztn2T6vHefiKfQe7j4rqS8QkLUDl2qoWHoNhL3MZZb5D2dot5Uv410/cqaINovnPagM1xWR8JuwLlINRHHgwznRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3ce8dadfb67so35010175ab.1
-        for <netfs@lists.linux.dev>; Sun, 23 Feb 2025 14:20:28 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740349228; x=1740954028;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mS1ypvNRaPahBWxFrx6PlbD10RNfGLusDYKckKCNbJQ=;
-        b=hfXjD5xIU6nXtLTPhdYiRBkSFb3jj+GzElNfH629BNOX/ZkYKtcApGxJWQfNSVSs2y
-         DvTkrp1VfNKA3S79MzQJfGUH7GpWRZIqv3AYkeVLvv8yhIjm4ajznbEy+wKaRYNuLvqa
-         PMokUhw8iLYh+SIfpyC2+NOSqgoyjKO1jiEDAeNGkhQ+UMwE/POWpoVOKGi/Oj6KPDUJ
-         wi+VCNduacQQF/SdqMpdWEtnj8KzMXrxu2UVM8D9NJ6k4wF5YtmDTAhRP0c/aspWHooT
-         VHNnzDiRbqrxqnjX2if/LKXkpWHI3FS6v8uzziLNVnkh6ON/xWBNj/RnfIHXQSNMUxsN
-         tNYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUaAXBS18h76SOCbWJ2Liype28qs4ku6W5OX/M644lEx4RkKbW2UPRPheC+/6kaZAYyUprOGw==@lists.linux.dev
-X-Gm-Message-State: AOJu0YxSAdDtwF2kyi5Mb8AKrVhaWqSYlrYv5Y6MHt58nR9NIOhOYdMc
-	Pz5D5iuVe0Gbtj97mOEKqARqbuvcD6jmbDrgO9/dFrGsfS6JLZDYeuMpV9MrckZ42QI23ht7K2e
-	71c1t/nxTC3fEWr1ftmv13dtdQ/mVV+GGyYOGapB1gUDVIXPLXxHJHso=
-X-Google-Smtp-Source: AGHT+IGQqcaW4Hu1YQC7Fp50SrwGoWLTurWsEPiiey8K4lpKcyZU6Y9+fHhmn5Tx372K/FSdOrLJ2IIN5VP0GgJ7mHenujBZqrTq
+	s=arc-20240116; t=1740360862; c=relaxed/simple;
+	bh=Al6jKkOiVhexQTQI4Zbtqw8ZvF2LAQnFfueXusXBnhk=;
+	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
+	 References:Date:Message-id; b=TgCosaNdmUN717Kj7gODHOG/c01UiNVNV5K5VMPH7zXr7mMOppUuhj4dLZTBPzs4HlrSJZSrD+LK89EH5waJCpScH5n053Wzr1ewL0AHn/Xtd+OUfgfadhc1zxDhVK8N+GcOsMAmGyyCTewkPd4PJL5LhHrgTTg4ntFYjwaUu2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=rzonImDk; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=wKHL00mL; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=qCjqXg8K; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=NnMPKFp7; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="rzonImDk";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="wKHL00mL";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="qCjqXg8K";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="NnMPKFp7"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8CC902116D;
+	Mon, 24 Feb 2025 01:34:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1740360858; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N6DmzFO4HIzWBxdCLLN4FbtoKwoidbgVbtC5hcg04Dc=;
+	b=rzonImDkwJoVgWfKV5OP1Ih17Ix4H0Uj8cYlPZ+aY6Hdv0gpMIjIyh0ZkQKVgVT/FndPIi
+	sZMx93YtVbo91VfBLYw5Sd6QCpfSxUdFevY2NXEwZL0R6VVTI4hCqHByOBkOvB43Ien6pD
+	P/6G9UJwoNlFoBYkRddy4ZWrLNokImU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1740360858;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N6DmzFO4HIzWBxdCLLN4FbtoKwoidbgVbtC5hcg04Dc=;
+	b=wKHL00mL1XwcnqReM3IXJ5QvOzvSSWlBJfXq7VRTKaOqqQlFbKoDoTYOYWQwP6zgNjjEty
+	3hVZKYyoFwDy9BDQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1740360857; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N6DmzFO4HIzWBxdCLLN4FbtoKwoidbgVbtC5hcg04Dc=;
+	b=qCjqXg8KOIWeT3woveYRbx7VhkwuOymOoulEdAyAbzEyKPU1njqvzcfJPElrVedFsxBHIA
+	hxTuG7Yu2Md3OY4EmdKk88M7EAXGOkBVk431FVrQCkAV3L5EonJ6odzCnm3MPhvA4Tkm0C
+	xCoR6Ww2x6WwPLM+/hg9l/iLduL29nU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1740360857;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N6DmzFO4HIzWBxdCLLN4FbtoKwoidbgVbtC5hcg04Dc=;
+	b=NnMPKFp7uSRVRE7AKEKm5nzIqIWLBtvgf0+qLo3xf1arIZxW9yW/A3b6APtVdlgfYPoB/h
+	GnKso9DG+FqdTyDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 903E0136B3;
+	Mon, 24 Feb 2025 01:34:09 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 2AUiCpHMu2dQagAAD6G6ig
+	(envelope-from <neilb@suse.de>); Mon, 24 Feb 2025 01:34:09 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1448:b0:3d0:10a6:99b9 with SMTP id
- e9e14a558f8ab-3d2cae474a7mr93378615ab.3.1740349228258; Sun, 23 Feb 2025
- 14:20:28 -0800 (PST)
-Date: Sun, 23 Feb 2025 14:20:28 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <67bb9f2c.050a0220.bbfd1.003e.GAE@google.com>
-Subject: [syzbot] Monthly netfs report (Feb 2025)
-From: syzbot <syzbot+list734458d14554b90e6367@syzkaller.appspotmail.com>
-To: linux-kernel@vger.kernel.org, netfs@lists.linux.dev, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+From: "NeilBrown" <neilb@suse.de>
+To: "Al Viro" <viro@zeniv.linux.org.uk>
+Cc: "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>,
+ "Miklos Szeredi" <miklos@szeredi.hu>, "Xiubo Li" <xiubli@redhat.com>,
+ "Ilya Dryomov" <idryomov@gmail.com>, "Richard Weinberger" <richard@nod.at>,
+ "Anton Ivanov" <anton.ivanov@cambridgegreys.com>,
+ "Johannes Berg" <johannes@sipsolutions.net>,
+ "Trond Myklebust" <trondmy@kernel.org>, "Anna Schumaker" <anna@kernel.org>,
+ "Chuck Lever" <chuck.lever@oracle.com>, "Jeff Layton" <jlayton@kernel.org>,
+ "Olga Kornievskaia" <okorniev@redhat.com>, "Dai Ngo" <Dai.Ngo@oracle.com>,
+ "Tom Talpey" <tom@talpey.com>,
+ "Sergey Senozhatsky" <senozhatsky@chromium.org>,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
+ linux-um@lists.infradead.org, ceph-devel@vger.kernel.org,
+ netfs@lists.linux.dev
+Subject:
+ Re: [PATCH 1/6] Change inode_operations.mkdir to return struct dentry *
+In-reply-to: <20250222041937.GM1977892@ZenIV>
+References: <>, <20250222041937.GM1977892@ZenIV>
+Date: Mon, 24 Feb 2025 12:34:06 +1100
+Message-id: <174036084630.74271.16513912864596248299@noble.neil.brown.name>
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCPT_COUNT_TWELVE(0.00)[24];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,suse.cz,szeredi.hu,redhat.com,gmail.com,nod.at,cambridgegreys.com,sipsolutions.net,oracle.com,talpey.com,chromium.org,vger.kernel.org,lists.infradead.org,lists.linux.dev];
+	R_RATELIMIT(0.00)[from(RLewrxuus8mos16izbn)];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-Hello netfs maintainers/developers,
+On Sat, 22 Feb 2025, Al Viro wrote:
+> On Fri, Feb 21, 2025 at 10:36:30AM +1100, NeilBrown wrote:
+>=20
+> > +In general, filesystems which use d_instantiate_new() to install the new
+> > +inode can safely return NULL.  Filesystems which may not have an I_NEW i=
+node
+> > +should use d_drop();d_splice_alias() and return the result of the latter.
+>=20
+> IMO that's a bad pattern, _especially_ if you want to go for "in-update"
+> kind of stuff later.
 
-This is a 31-day syzbot report for the netfs subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/netfs
+Agreed.  I have a draft patch to change d_splice_alias() and
+d_exact_alias() to work on hashed dentrys.  I thought it should go after
+these mkdir patches rather than before.
 
-During the period, 4 new issues were detected and 0 were fixed.
-In total, 8 issues are still open and 3 have already been fixed.
+Thanks,
+NeilBrown
 
-Some of the still happening issues:
 
-Ref Crashes Repro Title
-<1> 49      Yes   INFO: task hung in netfs_retry_writes
-                  https://syzkaller.appspot.com/bug?extid=666a9cb4c41986207cdf
-<2> 10      Yes   WARNING in netfs_writepages
-                  https://syzkaller.appspot.com/bug?extid=06023121b0153752a3d3
-<3> 4       Yes   INFO: task hung in pipe_write (6)
-                  https://syzkaller.appspot.com/bug?extid=5984e31a805252b3b40a
+>=20
+> That's pretty much the same thing as d_drop()/d_rehash() window.
+>=20
+> We'd be better off dropping that BUG_ON() in d_splice_alias() and teaching
+> __d_add() to handle the "it's a hashed negative" case.
+>=20
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
-
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
