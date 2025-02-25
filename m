@@ -1,134 +1,103 @@
-Received: from mail-il1-f208.google.com (mail-il1-f208.google.com [209.85.166.208])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34ED31C84B7
-	for <netfs@lists.linux.dev>; Tue, 25 Feb 2025 10:36:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.208
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112FB19CD16
+	for <netfs@lists.linux.dev>; Tue, 25 Feb 2025 22:25:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740479792; cv=none; b=qTSn5O6WDycC1sVCGFtnWcAbJdD2nltVK1Gs2D2xshomnrtwdk2dE0hLzLBHDSiLZYjJbRTlNzIWXpEkTe2bpeUNaXsmq/J5oq6pp3F3kNZfQ80tiOcOHftd3oqAMAoVVsFMaOGZgsuSliNkHPp3cxBneUrsT5ZL0rgGCQIFL2I=
+	t=1740522311; cv=none; b=Iuft8f3vigVSRPmiTp0oX5makaXEze3bk0/R+EkKTpPuDhOIPF341f3x4j1rLJeeq48hu0hrp5ZHNgu2WcVAC5FBZsTH/7W2Gq73tP7poiWk1NZfReji3YOVkOlSoDaAnHzpUPiEciSNFwV0Y1iHbxkMwRc+cGAZRGxZuJQThX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740479792; c=relaxed/simple;
-	bh=XjsAgpsN0j5oRHDKfW6dWsYs0oKQaUu98fmWODDFbQs=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Ck/FbSPtC+pXnicm1tLimUXN+ZrGg7X6Evm0A0PDJ+6b5z2csm+FLfWLKboxLx3SYvjVnvVyglPY3HC+uUoInv7CLsyKWMlQLDOMfTjZ8QUbdVC/bIfSb38j6etiv910Zt8I9tbezy0IpWkzu4JLTJgwVuJPwDJRc8r+afY/ibA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.208
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f208.google.com with SMTP id e9e14a558f8ab-3ce8dadfb67so51226175ab.1
-        for <netfs@lists.linux.dev>; Tue, 25 Feb 2025 02:36:30 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740479790; x=1741084590;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=itkP3+EqX5jDHrJ5nqo1dq9K7WbkKJPEFcpMjPBhsv4=;
-        b=fxlHpazw/a9VauGTTD50lfJ7zUISpQiKdHW4W+rB+rPTm1+nPwZjq1qsvmil1SM0wi
-         jVtNNAtYUGSjZr879N87wXU7oKDG2n5IsO+bYQEdhIxYCK57k1w3Fg7fXBFvZOoUfNm5
-         Sqcv9abTAYGweGfz2lWYoZ2aVfugyFnn+rRUwgMgvcDvhXEAg/027kacO3k6+fdbOxq7
-         GMOiixAREkxzTK5aL24JZFCb4vrvKh3DX9nUNNSX9PGPfA4oE3ilm/XxFQ+oWrBl10FR
-         quMPd/oxuj6TecWL3MLK9bY/3XgGK8S0q8CAWQ5tappHq6AVl/OEJnZIOUZUf2k3iDAn
-         t6FQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWMTIl896XU4KLDqVGIvgqznLBsmpapMidcXK/BDMzmUcZOgNpCfzT5zTrGXoRpkQrPc6Hu2g==@lists.linux.dev
-X-Gm-Message-State: AOJu0YxZGUZX0rCoqOpCZRKK+TedQyhZkizMxG+H0ITxXqIFAev6H/3O
-	+656t/bv6cAUrg3sK7dREgSHXZwpJT+a4BVOBxMt+1U9eX35/3ZE117mHZ+C08RMTmlBe8YjTXa
-	NQ3RytbSVkVjEAmrCX+sq3S0PrxOF3LVBAQsgDQm4hbG+mrXKKF7t/e0=
-X-Google-Smtp-Source: AGHT+IFbCtGYN61vjgMvuKY9FqO2iFg0X/7ZT3gxl6WR+kyIz5LfL7pn902vPL7OLDRZM32Vw31ljX1b8mS3lYQ1iGrVPm6ofRIE
+	s=arc-20240116; t=1740522311; c=relaxed/simple;
+	bh=KXlYWUh3jzPsB3e6Jub6qaBP9V1vHUn0C3CMX0MeeIA=;
+	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=PS5s9TEhKRi+uEl+MqK4UUBu/XZHnGt+67lNsFE2h1GkFi8+xg82sOtCF3C5/PMbgwH5HePd5n3hneJ+8vlrwMrIjxCW9b7l+tDeOrjvKPdNNQieq3k5RVhppscuYtfuTgjK1jhAy7cP4FqufXLA5UWorsmOCYikDQ5K1ZwgGcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dw5iBDY8; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dw5iBDY8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1740522308;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=UdIY4LA/abxDdip0z8MCHMGQUxuNsPZqkPtoJHXgADk=;
+	b=dw5iBDY8rN0W27ivwV+7Uo7rllAtMYy1ZEj4EC78BLttG6MoB+WdaqH42EpmaxGoS9Jy6N
+	bBkYy5e6y2vvdJs7T2A1QZA6Rh7bKM24JMHeDAcBkT8CLDcKvebLRpKkfQpbfgveV4kz8c
+	vxLlXeIK01alo8rKr4SZeEz4anQcBgU=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-618-KCqN38PhMoK0Y7O-N8DGsw-1; Tue,
+ 25 Feb 2025 17:25:06 -0500
+X-MC-Unique: KCqN38PhMoK0Y7O-N8DGsw-1
+X-Mimecast-MFC-AGG-ID: KCqN38PhMoK0Y7O-N8DGsw_1740522304
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6868319560B5;
+	Tue, 25 Feb 2025 22:25:04 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.9])
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8663E19560AE;
+	Tue, 25 Feb 2025 22:25:01 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: Steve French <stfrench@microsoft.com>,
+    Jean-Christophe Guillain <jean-christophe@guillain.net>
+cc: dhowells@redhat.com, Pali =?utf-8?Q?Roh=C3=A1r?= <pali@kernel.org>,
+    Paulo Alcantara <pc@manguebit.com>, Jeff Layton <jlayton@kernel.org>,
+    Christian Brauner <brauner@kernel.org>, linux-cifs@vger.kernel.org,
+    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: [PATCH] cifs: Fix the smb1 readv callback to correctly call netfs
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1f04:b0:3cf:b87b:8fde with SMTP id
- e9e14a558f8ab-3d2caefdc5cmr154864735ab.17.1740479790345; Tue, 25 Feb 2025
- 02:36:30 -0800 (PST)
-Date: Tue, 25 Feb 2025 02:36:30 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <67bd9d2e.050a0220.bbfd1.00a5.GAE@google.com>
-Subject: [syzbot] [netfs?] KCSAN: data-race in netfs_advance_write / netfs_write_collection_worker
-From: syzbot <syzbot+912f708269025e337cba@syzkaller.appspotmail.com>
-To: dhowells@redhat.com, jlayton@kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netfs@lists.linux.dev, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 25 Feb 2025 22:25:00 +0000
+Message-ID: <2433838.1740522300@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
-Hello,
+=20=20=20=20
+Fix cifs_readv_callback() to call netfs_read_subreq_terminated() rather
+than queuing the subrequest work item (which is unset).  Also call the
+I/O progress tracepoint.
 
-syzbot found the following issue on:
-
-HEAD commit:    d082ecbc71e9 Linux 6.14-rc4
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=130277f8580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e9dd6c7eeba2114e
-dashboard link: https://syzkaller.appspot.com/bug?extid=912f708269025e337cba
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/2b352c2abb77/disk-d082ecbc.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/c5f4a062a264/vmlinux-d082ecbc.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/c3a86625df5a/bzImage-d082ecbc.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+912f708269025e337cba@syzkaller.appspotmail.com
-
-==================================================================
-BUG: KCSAN: data-race in netfs_advance_write / netfs_write_collection_worker
-
-write to 0xffff8881188765b8 of 8 bytes by task 3523 on cpu 0:
- netfs_prepare_write fs/netfs/write_issue.c:210 [inline]
- netfs_advance_write+0x36f/0x610 fs/netfs/write_issue.c:298
- netfs_unbuffered_write+0xde/0x330 fs/netfs/write_issue.c:721
- netfs_unbuffered_write_iter_locked+0x2b7/0x570 fs/netfs/direct_write.c:100
- netfs_unbuffered_write_iter+0x2b7/0x3b0 fs/netfs/direct_write.c:195
- v9fs_file_write_iter+0x60/0x80 fs/9p/vfs_file.c:404
- new_sync_write fs/read_write.c:586 [inline]
- vfs_write+0x77b/0x920 fs/read_write.c:679
- ksys_write+0xe8/0x1b0 fs/read_write.c:731
- __do_sys_write fs/read_write.c:742 [inline]
- __se_sys_write fs/read_write.c:739 [inline]
- __x64_sys_write+0x42/0x50 fs/read_write.c:739
- x64_sys_call+0x287e/0x2dc0 arch/x86/include/generated/asm/syscalls_64.h:2
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xc9/0x1c0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-read to 0xffff8881188765b8 of 8 bytes by task 50 on cpu 1:
- netfs_collect_write_results fs/netfs/write_collect.c:231 [inline]
- netfs_write_collection_worker+0x3ee/0x2530 fs/netfs/write_collect.c:374
- process_one_work kernel/workqueue.c:3236 [inline]
- process_scheduled_works+0x4db/0xa20 kernel/workqueue.c:3317
- worker_thread+0x51d/0x6f0 kernel/workqueue.c:3398
- kthread+0x4ae/0x520 kernel/kthread.c:464
- ret_from_fork+0x4b/0x60 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-
-value changed: 0x0000000000000000 -> 0xffff888103259900
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 UID: 0 PID: 50 Comm: kworker/u8:3 Not tainted 6.14.0-rc4-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
-Workqueue: events_unbound netfs_write_collection_worker
-==================================================================
-
-
+Fixes: e2d46f2ec332 ("netfs: Change the read result collector to only use o=
+ne work item")
+Reported-by: Jean-Christophe Guillain <jean-christophe@guillain.net>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D219793
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Steve French <stfrench@microsoft.com>
+cc: Pali Roh=C3=A1r <pali@kernel.org>
+cc: Paulo Alcantara <pc@manguebit.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ fs/smb/client/cifssmb.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
+index 6a3e287eabfa..bf9acea53ccb 100644
+--- a/fs/smb/client/cifssmb.c
++++ b/fs/smb/client/cifssmb.c
+@@ -1338,7 +1338,8 @@ cifs_readv_callback(struct mid_q_entry *mid)
+ 	rdata->credits.value =3D 0;
+ 	rdata->subreq.error =3D rdata->result;
+ 	rdata->subreq.transferred +=3D rdata->got_bytes;
+-	queue_work(cifsiod_wq, &rdata->subreq.work);
++	trace_netfs_sreq(&rdata->subreq, netfs_sreq_trace_io_progress);
++	netfs_read_subreq_terminated(&rdata->subreq);
+ 	release_mid(mid);
+ 	add_credits(server, &credits, 0);
+ }
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
