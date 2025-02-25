@@ -1,334 +1,134 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-il1-f208.google.com (mail-il1-f208.google.com [209.85.166.208])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062692080DB
-	for <netfs@lists.linux.dev>; Mon, 24 Feb 2025 23:29:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34ED31C84B7
+	for <netfs@lists.linux.dev>; Tue, 25 Feb 2025 10:36:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.208
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740439793; cv=none; b=rToHjWaDeVtV51qQ2CRYdDCcrXEM7FuiFJe2CWFJ1F6vEpVI7RCJljA4qvg1HvJi43ZFcnKNBdSV2rJq4RRfRrXqR42vDTQkXSnz1CCDKr6EXUJzKQx7nJm3mjolA8s0XYD+1p7ijCoVy/mhUP8st/YbCtUgdorOImchMbJUuEA=
+	t=1740479792; cv=none; b=qTSn5O6WDycC1sVCGFtnWcAbJdD2nltVK1Gs2D2xshomnrtwdk2dE0hLzLBHDSiLZYjJbRTlNzIWXpEkTe2bpeUNaXsmq/J5oq6pp3F3kNZfQ80tiOcOHftd3oqAMAoVVsFMaOGZgsuSliNkHPp3cxBneUrsT5ZL0rgGCQIFL2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740439793; c=relaxed/simple;
-	bh=vt/y9E4/DcaZ9NV1EBDUcDNYGDvwjv/mQRtyYJZcYqk=;
-	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
-	 References:Date:Message-id; b=rJKAGfRyYwq5M7OklXBAuVch6gY7JhFlF3sRdIJl1Ra+W69G8YTYT8eP6tuj1NISEurSFpGp0R4BJLEZJi8HdwsArCxjPLSts6ziak94ngKrjDJHMCQW2J29XvOj6UqZ1on8aJwu9J4AX7gFmGDgBUKeUX/ud0H8Tv2Bwmt2qMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=loBfTiR6; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=J3mvHyzY; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=loBfTiR6; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=J3mvHyzY; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="loBfTiR6";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="J3mvHyzY";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="loBfTiR6";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="J3mvHyzY"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 1769F1F44E;
-	Mon, 24 Feb 2025 23:29:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1740439789; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2oj990YaLGkPA4ae4sIKmdEX5RxKU3jTg87RjSWSYeg=;
-	b=loBfTiR6kAlC/sS0ot1CDtcKEiKmB6GXrsHNK+SsrbeZzGdV6O2ZrsmO8jw3wvJPHK58Kj
-	glzLsVFTkUpcycBhzhfiLzoYOAwECgg5wubkGZIw8GCF2DWKEIFm9faiQIbZ45b9stImh9
-	J9FQoxLwzfFLcLMM4Nzxcdvxtbe/i94=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1740439789;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2oj990YaLGkPA4ae4sIKmdEX5RxKU3jTg87RjSWSYeg=;
-	b=J3mvHyzY65SyoNedSF0MYSEG2w3R6giaas15VW09Vb9TUfaAv1RMGveIpiZI1/xnVIoKU6
-	p9GIZjyHOh0bImAQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1740439789; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2oj990YaLGkPA4ae4sIKmdEX5RxKU3jTg87RjSWSYeg=;
-	b=loBfTiR6kAlC/sS0ot1CDtcKEiKmB6GXrsHNK+SsrbeZzGdV6O2ZrsmO8jw3wvJPHK58Kj
-	glzLsVFTkUpcycBhzhfiLzoYOAwECgg5wubkGZIw8GCF2DWKEIFm9faiQIbZ45b9stImh9
-	J9FQoxLwzfFLcLMM4Nzxcdvxtbe/i94=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1740439789;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2oj990YaLGkPA4ae4sIKmdEX5RxKU3jTg87RjSWSYeg=;
-	b=J3mvHyzY65SyoNedSF0MYSEG2w3R6giaas15VW09Vb9TUfaAv1RMGveIpiZI1/xnVIoKU6
-	p9GIZjyHOh0bImAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A647613332;
-	Mon, 24 Feb 2025 23:29:40 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 5OlzEuQAvWc2awAAD6G6ig
-	(envelope-from <neilb@suse.de>); Mon, 24 Feb 2025 23:29:40 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1740479792; c=relaxed/simple;
+	bh=XjsAgpsN0j5oRHDKfW6dWsYs0oKQaUu98fmWODDFbQs=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Ck/FbSPtC+pXnicm1tLimUXN+ZrGg7X6Evm0A0PDJ+6b5z2csm+FLfWLKboxLx3SYvjVnvVyglPY3HC+uUoInv7CLsyKWMlQLDOMfTjZ8QUbdVC/bIfSb38j6etiv910Zt8I9tbezy0IpWkzu4JLTJgwVuJPwDJRc8r+afY/ibA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.208
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f208.google.com with SMTP id e9e14a558f8ab-3ce8dadfb67so51226175ab.1
+        for <netfs@lists.linux.dev>; Tue, 25 Feb 2025 02:36:30 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740479790; x=1741084590;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=itkP3+EqX5jDHrJ5nqo1dq9K7WbkKJPEFcpMjPBhsv4=;
+        b=fxlHpazw/a9VauGTTD50lfJ7zUISpQiKdHW4W+rB+rPTm1+nPwZjq1qsvmil1SM0wi
+         jVtNNAtYUGSjZr879N87wXU7oKDG2n5IsO+bYQEdhIxYCK57k1w3Fg7fXBFvZOoUfNm5
+         Sqcv9abTAYGweGfz2lWYoZ2aVfugyFnn+rRUwgMgvcDvhXEAg/027kacO3k6+fdbOxq7
+         GMOiixAREkxzTK5aL24JZFCb4vrvKh3DX9nUNNSX9PGPfA4oE3ilm/XxFQ+oWrBl10FR
+         quMPd/oxuj6TecWL3MLK9bY/3XgGK8S0q8CAWQ5tappHq6AVl/OEJnZIOUZUf2k3iDAn
+         t6FQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWMTIl896XU4KLDqVGIvgqznLBsmpapMidcXK/BDMzmUcZOgNpCfzT5zTrGXoRpkQrPc6Hu2g==@lists.linux.dev
+X-Gm-Message-State: AOJu0YxZGUZX0rCoqOpCZRKK+TedQyhZkizMxG+H0ITxXqIFAev6H/3O
+	+656t/bv6cAUrg3sK7dREgSHXZwpJT+a4BVOBxMt+1U9eX35/3ZE117mHZ+C08RMTmlBe8YjTXa
+	NQ3RytbSVkVjEAmrCX+sq3S0PrxOF3LVBAQsgDQm4hbG+mrXKKF7t/e0=
+X-Google-Smtp-Source: AGHT+IFbCtGYN61vjgMvuKY9FqO2iFg0X/7ZT3gxl6WR+kyIz5LfL7pn902vPL7OLDRZM32Vw31ljX1b8mS3lYQ1iGrVPm6ofRIE
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "NeilBrown" <neilb@suse.de>
-To: "Viacheslav Dubeyko" <Slava.Dubeyko@ibm.com>
-Cc: "brauner@kernel.org" <brauner@kernel.org>, "Xiubo Li" <xiubli@redhat.com>,
- "idryomov@gmail.com" <idryomov@gmail.com>,
- "Olga Kornievskaia" <okorniev@redhat.com>,
- "linux-cifs@vger.kernel.org" <linux-cifs@vger.kernel.org>,
- "Dai.Ngo@oracle.com" <Dai.Ngo@oracle.com>,
- "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
- "chuck.lever@oracle.com" <chuck.lever@oracle.com>,
- "jlayton@kernel.org" <jlayton@kernel.org>,
- "anna@kernel.org" <anna@kernel.org>, "miklos@szeredi.hu" <miklos@szeredi.hu>,
- "trondmy@kernel.org" <trondmy@kernel.org>,
- "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>,
- "jack@suse.cz" <jack@suse.cz>, "tom@talpey.com" <tom@talpey.com>,
- "richard@nod.at" <richard@nod.at>,
- "anton.ivanov@cambridgegreys.com" <anton.ivanov@cambridgegreys.com>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "netfs@lists.linux.dev" <netfs@lists.linux.dev>,
- "linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>,
- "ceph-devel@vger.kernel.org" <ceph-devel@vger.kernel.org>,
- "senozhatsky@chromium.org" <senozhatsky@chromium.org>
-Subject: RE:  [PATCH 3/6] ceph: return the correct dentry on mkdir
-In-reply-to: <f7d3e39f5ced7832d451de172004172b59a994eb.camel@ibm.com>
-References: <>, <f7d3e39f5ced7832d451de172004172b59a994eb.camel@ibm.com>
-Date: Tue, 25 Feb 2025 10:29:37 +1100
-Message-id: <174043977707.74271.6498110571534472585@noble.neil.brown.name>
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	RCVD_TLS_ALL(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,redhat.com,gmail.com,vger.kernel.org,oracle.com,lists.infradead.org,sipsolutions.net,szeredi.hu,zeniv.linux.org.uk,suse.cz,talpey.com,nod.at,cambridgegreys.com,lists.linux.dev,chromium.org];
-	R_RATELIMIT(0.00)[from(RLewrxuus8mos16izbn)];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email]
-X-Spam-Score: -4.30
-X-Spam-Flag: NO
+X-Received: by 2002:a05:6e02:1f04:b0:3cf:b87b:8fde with SMTP id
+ e9e14a558f8ab-3d2caefdc5cmr154864735ab.17.1740479790345; Tue, 25 Feb 2025
+ 02:36:30 -0800 (PST)
+Date: Tue, 25 Feb 2025 02:36:30 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <67bd9d2e.050a0220.bbfd1.00a5.GAE@google.com>
+Subject: [syzbot] [netfs?] KCSAN: data-race in netfs_advance_write / netfs_write_collection_worker
+From: syzbot <syzbot+912f708269025e337cba@syzkaller.appspotmail.com>
+To: dhowells@redhat.com, jlayton@kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netfs@lists.linux.dev, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 25 Feb 2025, Viacheslav Dubeyko wrote:
-> On Mon, 2025-02-24 at 13:15 +1100, NeilBrown wrote:
-> > On Fri, 21 Feb 2025, Viacheslav Dubeyko wrote:
-> > > On Fri, 2025-02-21 at 10:36 +1100, NeilBrown wrote:
-> > > > ceph already splices the correct dentry (in splice_dentry()) from the
-> > > > result of mkdir but does nothing more with it.
-> > > >=20
-> > > > Now that ->mkdir can return a dentry, return the correct dentry.
-> > > >=20
-> > > > Signed-off-by: NeilBrown <neilb@suse.de>
-> > > > ---
-> > > >  fs/ceph/dir.c | 9 ++++++++-
-> > > >  1 file changed, 8 insertions(+), 1 deletion(-)
-> > > >=20
-> > > > diff --git a/fs/ceph/dir.c b/fs/ceph/dir.c
-> > > > index 39e0f240de06..c1a1c168bb27 100644
-> > > > --- a/fs/ceph/dir.c
-> > > > +++ b/fs/ceph/dir.c
-> > > > @@ -1099,6 +1099,7 @@ static struct dentry *ceph_mkdir(struct mnt_idm=
-ap *idmap, struct inode *dir,
-> > > >  	struct ceph_client *cl =3D mdsc->fsc->client;
-> > > >  	struct ceph_mds_request *req;
-> > > >  	struct ceph_acl_sec_ctx as_ctx =3D {};
-> > > > +	struct dentry *ret =3D NULL;
-> > >=20
-> > > I believe that it makes sense to initialize pointer by error here and a=
-lways
-> > > return ret as output. If something goes wrong in the logic, then we alr=
-eady have
-> > > error.
-> >=20
-> > I'm not certain that I understand, but I have made a change which seems
-> > to be consistent with the above and included it below.  Please let me
-> > know if it is what you intended.
-> >=20
-> > >=20
-> > > >  	int err;
-> > > >  	int op;
-> > > > =20
-> > > > @@ -1166,14 +1167,20 @@ static struct dentry *ceph_mkdir(struct mnt_i=
-dmap *idmap, struct inode *dir,
-> > > >  	    !req->r_reply_info.head->is_dentry)
-> > > >  		err =3D ceph_handle_notrace_create(dir, dentry);
-> > > >  out_req:
-> > > > +	if (!err && req->r_dentry !=3D dentry)
-> > > > +		/* Some other dentry was spliced in */
-> > > > +		ret =3D dget(req->r_dentry);
-> > > >  	ceph_mdsc_put_request(req);
-> > > >  out:
-> > > >  	if (!err)
-> > > > +		/* Should this use 'ret' ?? */
-> > >=20
-> > > Could we make a decision should or shouldn't? :)
-> > > It looks not good to leave this comment instead of proper implementatio=
-n. Do we
-> > > have some obstacles to make this decision?
-> >=20
-> > I suspect we should use ret, but I didn't want to make a change which
-> > wasn't directly required by my needed.  So I highlighted this which
-> > looks to me like a possible bug, hoping that someone more familiar with
-> > the code would give an opinion.  Do you agree that 'ret' (i.e.
-> > ->r_dentry) should be used when ret is not NULL?
-> >=20
->=20
-> I think if we are going to return ret as a dentry, then it makes sense to c=
-all
-> the ceph_init_inode_acls() for d_inode(ret). I don't see the point to call
-> ceph_init_inode_acls() for d_inode(dentry) then.
+Hello,
 
-If the mkdir used the original dentry, then ->mkdir returns NULL so ret
-is NULL.  If the mkdir used a different dentry it returns that, so ret
-is not NULL.
+syzbot found the following issue on:
 
-I'll try to re-organise the code so that "dentry" is the correct dentry
-on success, and "ret" is the returned dentry, which might be NULL.
+HEAD commit:    d082ecbc71e9 Linux 6.14-rc4
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=130277f8580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=e9dd6c7eeba2114e
+dashboard link: https://syzkaller.appspot.com/bug?extid=912f708269025e337cba
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
 
-Thanks,
-NeilBrown
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/2b352c2abb77/disk-d082ecbc.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/c5f4a062a264/vmlinux-d082ecbc.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/c3a86625df5a/bzImage-d082ecbc.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+912f708269025e337cba@syzkaller.appspotmail.com
+
+==================================================================
+BUG: KCSAN: data-race in netfs_advance_write / netfs_write_collection_worker
+
+write to 0xffff8881188765b8 of 8 bytes by task 3523 on cpu 0:
+ netfs_prepare_write fs/netfs/write_issue.c:210 [inline]
+ netfs_advance_write+0x36f/0x610 fs/netfs/write_issue.c:298
+ netfs_unbuffered_write+0xde/0x330 fs/netfs/write_issue.c:721
+ netfs_unbuffered_write_iter_locked+0x2b7/0x570 fs/netfs/direct_write.c:100
+ netfs_unbuffered_write_iter+0x2b7/0x3b0 fs/netfs/direct_write.c:195
+ v9fs_file_write_iter+0x60/0x80 fs/9p/vfs_file.c:404
+ new_sync_write fs/read_write.c:586 [inline]
+ vfs_write+0x77b/0x920 fs/read_write.c:679
+ ksys_write+0xe8/0x1b0 fs/read_write.c:731
+ __do_sys_write fs/read_write.c:742 [inline]
+ __se_sys_write fs/read_write.c:739 [inline]
+ __x64_sys_write+0x42/0x50 fs/read_write.c:739
+ x64_sys_call+0x287e/0x2dc0 arch/x86/include/generated/asm/syscalls_64.h:2
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xc9/0x1c0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+read to 0xffff8881188765b8 of 8 bytes by task 50 on cpu 1:
+ netfs_collect_write_results fs/netfs/write_collect.c:231 [inline]
+ netfs_write_collection_worker+0x3ee/0x2530 fs/netfs/write_collect.c:374
+ process_one_work kernel/workqueue.c:3236 [inline]
+ process_scheduled_works+0x4db/0xa20 kernel/workqueue.c:3317
+ worker_thread+0x51d/0x6f0 kernel/workqueue.c:3398
+ kthread+0x4ae/0x520 kernel/kthread.c:464
+ ret_from_fork+0x4b/0x60 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+
+value changed: 0x0000000000000000 -> 0xffff888103259900
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 UID: 0 PID: 50 Comm: kworker/u8:3 Not tainted 6.14.0-rc4-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
+Workqueue: events_unbound netfs_write_collection_worker
+==================================================================
 
 
->=20
-> > >=20
-> > > >  		ceph_init_inode_acls(d_inode(dentry), &as_ctx);
-> > > >  	else
-> > > >  		d_drop(dentry);
-> > > >  	ceph_release_acl_sec_ctx(&as_ctx);
-> > > > -	return ERR_PTR(err);
-> > > > +	if (err)
-> > > > +		return ERR_PTR(err);
-> > > > +	return ret;
-> > >=20
-> > > What's about this?
-> > >=20
-> > > return err ? ERR_PTR(err) : ret;
-> >=20
-> > We could do that, but you said above that you thought we should always
-> > return 'ret' - which does make some sense.
-> >=20
-> > What do you think of the following alternate patch?
-> >=20
->=20
-> Patch looks good to me. Thanks.
->=20
-> Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
->=20
-> > Thanks,
-> > NeilBrown
-> >=20
-> > diff --git a/fs/ceph/dir.c b/fs/ceph/dir.c
-> > index 39e0f240de06..d2e5c557df83 100644
-> > --- a/fs/ceph/dir.c
-> > +++ b/fs/ceph/dir.c
-> > @@ -1099,6 +1099,7 @@ static struct dentry *ceph_mkdir(struct mnt_idmap *=
-idmap, struct inode *dir,
-> >  	struct ceph_client *cl =3D mdsc->fsc->client;
-> >  	struct ceph_mds_request *req;
-> >  	struct ceph_acl_sec_ctx as_ctx =3D {};
-> > +	struct dentry *ret;
-> >  	int err;
-> >  	int op;
-> > =20
-> > @@ -1116,32 +1117,32 @@ static struct dentry *ceph_mkdir(struct mnt_idmap=
- *idmap, struct inode *dir,
-> >  		      ceph_vinop(dir), dentry, dentry, mode);
-> >  		op =3D CEPH_MDS_OP_MKDIR;
-> >  	} else {
-> > -		err =3D -EROFS;
-> > +		ret =3D ERR_PTR(-EROFS);
-> >  		goto out;
-> >  	}
-> > =20
-> >  	if (op =3D=3D CEPH_MDS_OP_MKDIR &&
-> >  	    ceph_quota_is_max_files_exceeded(dir)) {
-> > -		err =3D -EDQUOT;
-> > +		ret =3D ERR_PTR(-EDQUOT);
-> >  		goto out;
-> >  	}
-> >  	if ((op =3D=3D CEPH_MDS_OP_MKSNAP) && IS_ENCRYPTED(dir) &&
-> >  	    !fscrypt_has_encryption_key(dir)) {
-> > -		err =3D -ENOKEY;
-> > +		ret =3D ERR_PTR(-ENOKEY);
-> >  		goto out;
-> >  	}
-> > =20
-> > =20
-> >  	req =3D ceph_mdsc_create_request(mdsc, op, USE_AUTH_MDS);
-> >  	if (IS_ERR(req)) {
-> > -		err =3D PTR_ERR(req);
-> > +		ret =3D ERR_CAST(req);
-> >  		goto out;
-> >  	}
-> > =20
-> >  	mode |=3D S_IFDIR;
-> >  	req->r_new_inode =3D ceph_new_inode(dir, dentry, &mode, &as_ctx);
-> >  	if (IS_ERR(req->r_new_inode)) {
-> > -		err =3D PTR_ERR(req->r_new_inode);
-> > +		ret =3D ERR_CAST(req->r_new_inode);
-> >  		req->r_new_inode =3D NULL;
-> >  		goto out_req;
-> >  	}
-> > @@ -1165,15 +1166,23 @@ static struct dentry *ceph_mkdir(struct mnt_idmap=
- *idmap, struct inode *dir,
-> >  	    !req->r_reply_info.head->is_target &&
-> >  	    !req->r_reply_info.head->is_dentry)
-> >  		err =3D ceph_handle_notrace_create(dir, dentry);
-> > +	ret =3D ERR_PTR(err);
-> >  out_req:
-> > +	if (!IS_ERR(ret) && req->r_dentry !=3D dentry)
-> > +		/* Some other dentry was spliced in */
-> > +		ret =3D dget(req->r_dentry);
-> >  	ceph_mdsc_put_request(req);
-> >  out:
-> > -	if (!err)
-> > -		ceph_init_inode_acls(d_inode(dentry), &as_ctx);
-> > -	else
-> > +	if (!IS_ERR(ret)) {
-> > +		if (ret)
-> > +			ceph_init_inode_acls(d_inode(ret), &as_ctx);
-> > +		else
-> > +			ceph_init_inode_acls(d_inode(dentry), &as_ctx);
-> > +	} else {
-> >  		d_drop(dentry);
-> > +	}
-> >  	ceph_release_acl_sec_ctx(&as_ctx);
-> > -	return ERR_PTR(err);
-> > +	return ret;
-> >  }
-> > =20
-> >  static int ceph_link(struct dentry *old_dentry, struct inode *dir,
-> >=20
->=20
-> Thanks,
-> Slava.
->=20
->=20
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
