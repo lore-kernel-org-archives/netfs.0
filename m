@@ -1,170 +1,111 @@
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0FA7080C
-	for <netfs@lists.linux.dev>; Sat,  1 Mar 2025 00:55:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58216A936
+	for <netfs@lists.linux.dev>; Sat,  1 Mar 2025 14:17:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740790508; cv=none; b=SLf878UilcUnl2UqRXIxa8CfLjDG7NvbUZSvHDH6t94+y32hIkK6yjfkqKI2Kc7QlLlVX3mOqkaRk11/6tyqjhBWltUUbsMSrh4DL6McKmTJJ8Gm1FaHym4cpJ26GYBP0v1YFTEdDetr2ydjLyieieiUxOxVh24XcBoYJ9fHr4M=
+	t=1740838649; cv=none; b=J2EeWdJm6bkCMabI6CF0Kl9HG9Xtm0hwyM+tqJta8YHes7RZTK3WV2ZI0sZZTG7W+PCLp8MAoSr950Ign+r6mDksq69iQVjYVMo3kxXZvqqKTghFWs0IoXBgj9Tgf2XA+fZkhuZX0toPej2b8jd2hjMMmg1qX8/sSBEwhK/s6gY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740790508; c=relaxed/simple;
-	bh=3FoZOvTBwt9MqRNEV8L9QF54pvSeq7iiX7+LkWBYvxk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BEoZ7GcPqSDQjWayyDDt30Tod0P0i2iYP7+GCkjedKgZoMrjA9CdQg0GWFg4lcsQaSzDtr9b2OJ0Y7QtexTPbQ88s/dS+Qy3GwpNOL/Ato3GXEPiCEyA9xqrkQyOZnyGr5aLTbRjC3KoyJogRo4lK2BNudBLMKj5xjf1cui8kvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E5nVeigu; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1740838649; c=relaxed/simple;
+	bh=/DF2JoumYBYqsnFTIdin6swrkcPaU5ofu3NC6lS6/zs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jPS4K1ZXxM/ZvzN+eRNnXnREiLL46AByyNzfQUVatfXjyU/P9MIE4eQMeCRspKq+ZbPSNn+1Z9J3yG3WGmFpmRnrBp5xvXsVnhG2hFnfPVpeLEXTd5SoEsH/73yryuf6Pw8SSWKVoUbBs5SHwtKbSDOIVt1or2B8kJUVpHkEnf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f2CrHz66; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E5nVeigu"
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-54843052bcdso2444227e87.1
-        for <netfs@lists.linux.dev>; Fri, 28 Feb 2025 16:55:06 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f2CrHz66"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43996e95114so20865625e9.3
+        for <netfs@lists.linux.dev>; Sat, 01 Mar 2025 06:17:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740790505; x=1741395305; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sprwftPaK8bnJWe55CjWfHUR1fUrCBkvZCI+DKsADHg=;
-        b=E5nVeiguaBlhfzAYv6YdpH4YoSGB4L2WcB/tNz109T8IqH1BQFK6CjDSGKBAC9oRgB
-         u2MmBQns3HIGybusDn6+XHa3CO43KEn57tQaTQue6Dmx/gmjD0UbiOmtgzTWk8QdSdDy
-         HeGdygjgJibtJC08AZR3yiBJ0Wb0Db/UoUE0m/D78d2EE4ar3FsngcAdS2lArok/H9w6
-         enjn7hZwxcv5ohauEqqZp1wMdWOc+9yb6qKFqberl8O4LmrV94o39aWFYu6faeyg00hA
-         t5qlU/0WYrBYckrgyLlWKoXOefEZUt/nCjOK3q9uYMPgjS1j0vitj2IbAqZMUlx2JWkk
-         hWzA==
+        d=gmail.com; s=20230601; t=1740838645; x=1741443445; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PahHoOir8qfv1LTrsi6925KzDdTFMUlnOTruGGEqzcE=;
+        b=f2CrHz66wnm+zHJiGOG5odYAewTTbbpmRWS+0uKkCDFhe1NHysd683hjc0dDHtvuRk
+         cGFcJXNf0q6dX3/jGorr5qxTQEr190ablWcJCZ5yAmG/HjAltzkvrc6Vt8sor5bkK5+D
+         EIRJwYks2KdBiGn5tIw3DB9LUjiI+jgcgSD/3qdB5nPacuFg8aFkNJbGtnpGXR5RrJ/j
+         13d985afxJAwxYVU1oWKYe2QYFKpQ4RuIUkB1siLePhzpXPiJ8agKYy1bId5AGNYF9yR
+         GMck+tq0s4ReBAk2EFck45u90cTFwt2LEYFIYi6w5DjqZS1GgdeEe28Yv+H+upR6Qtb1
+         SOhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740790505; x=1741395305;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sprwftPaK8bnJWe55CjWfHUR1fUrCBkvZCI+DKsADHg=;
-        b=gsQW9l3uUNjNvAmK5JiX43iQPSkInLC+TBkMKya55P9jemv3zkwxPao97hH8FQcsB3
-         cF5VZnnIPpYkEndSXxbkPM0C4/Xlr/etzDI2+ZrhffdT+R3YcsS6xPZ3sF/Ji9T2KV7U
-         bFKSHei62JdXaNS0tpJTk9eQQKK4jNyb34+WJ43QE4JxouYNV1Si7xm+7/zxiP3kdwd8
-         ziK1PPAnEru1tsfznZBJp7lZGtv2V/4Cp651QFA5UajhmAmGqz9ETfmPiXNqbYLGTG0X
-         wUJ+N0LaCVpuwqlgvUqSlpR5UIBECXQR7s2hy2yf5B7Y+F7aAUKgi9AFjHlceaqmZnIu
-         DmhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWsAzMHxPv0f9ZWiG6rIGyI4RivV5TFrWjcNaX85jL6Qz3ZWsMLJJ+73whUvXmD95ccihVK9g==@lists.linux.dev
-X-Gm-Message-State: AOJu0YxKwOXHPSPUC7eBZvAIsHyuHsmshezTplMqG2dTmbAz7u3mQ3GP
-	7FtEMxPCSFCOWAHgSy96UZlf0pivEtTkjbSviFQS7FLe1uuknhSfSCXIP2JJ061kwTbF/+qlOUq
-	WwZEA3gejJVEwR+c+tbAygbZTr0w=
-X-Gm-Gg: ASbGncs/jpW+LT+M5iykeUtqIh1Ns6DrQXCkPAbgh0WiQdns6w78Ixgk6B0HWmih23z
-	sA4IhEDBDfBgz1N+mtexalJhdN+CDc+s49UbIrVNbiASSFO9SocwlFpGbL5BJSMZNN5+gMMMrpU
-	4VxRwYxoYve4ajcmBZH645OqBKZuL/zKWp2gEp2djM4Zzd98GlAqIpJWs6kxWv
-X-Google-Smtp-Source: AGHT+IHasULvzr6B7U4Upg+LWLLBexoCp44DyPdSPr89MzEo775rgHSkb2PdpFFLnM6x/nmZMvWiKvdDQoOUjK3LOkE=
-X-Received: by 2002:a05:6512:3405:b0:545:746:f36a with SMTP id
- 2adb3069b0e04-5494c32fac4mr2277268e87.34.1740790504591; Fri, 28 Feb 2025
- 16:55:04 -0800 (PST)
+        d=1e100.net; s=20230601; t=1740838645; x=1741443445;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PahHoOir8qfv1LTrsi6925KzDdTFMUlnOTruGGEqzcE=;
+        b=vvUCMM4A47+KWYjVPRgOUxMKKDdm5BZC9S9aJ3RYSmuxTQ2IqW3JDCKjg28OBX0UzJ
+         iozrTzXyvnwPPatlF9moIOsT7jD2kVh1fe2+UqbXwZC2nCgMg2wP0s4HIUu+EHBuw0qP
+         rxrDQuvleOK3TL0kjZn2RI3sHPRScai8JcTlm59agPjzFmQaR1xlKqYaRGZGE5LlpCgo
+         mi5qKJROfZGb5ml2i5eEoV/Sy8TElFfwhVDq0vQCfCubK9ofX/BMxDcOxuVBCnGKghYQ
+         Tz3/99ZKT5ctdxjYt87V5PVIG6zchrWGVfDGAC5+Nzee5N/t1Es7iLYupv7SMasKJXL+
+         ikIg==
+X-Forwarded-Encrypted: i=1; AJvYcCUK9wKUE3R393krlGMI+sT7qOeKJAglecl3/nyl2OB6pMtlG3A9UKIzvWFyFZx0j+n/EKhx5g==@lists.linux.dev
+X-Gm-Message-State: AOJu0YxiSsrKNqnaM5xdUFiN16vrBJeVMxKNv5IMXcUX8Edm210cewdQ
+	k0xg/XUxCTlFy6a2pAcVji3kyN15hXjWkEz5BFM2d4j62zpkobfE
+X-Gm-Gg: ASbGncusmmkIFnz+yIE5Pl/Ocsvaoi6httSy4/8ijPJlrCjFPrKGc8iFgd6jhLqYFpV
+	Beb3cE8OXqYYDhR7mwmLEthTibo2Dl5nO+tSETu+KzB/Cjw4T3b4gycWhGouszu3aEM8qASTcIS
+	rryFioQwoemHyB7EifCby97yJ3tsC4JoafVDgs8tKWownMLMM6/hXHfC1hXO3FYSdOdHj+lfT90
+	vgdfvSmtsnzWQKFpe1rC9lE8xMyS9XZ4+wnnVrbMsphk1g0MvnZvXz6QNpeL4FebGgO7Up6rbC6
+	rmogoN3Lt5QhAZ9DC7Wvr6V1BnqwvQIf6p7mmZA3t4TT7JlF616QL6pabtD+uE3lXmDlc/VQL4p
+	YFw==
+X-Google-Smtp-Source: AGHT+IHu+uW89Mv4jA7RdnRSpYtxvOY2+1IkdU5Ipoc2fSlHUuZeY5k321zzQexeQH1iEHNQ0xrsAg==
+X-Received: by 2002:a05:600c:3ca8:b0:439:a88f:8523 with SMTP id 5b1f17b1804b1-43ba6760622mr54184245e9.21.1740838645395;
+        Sat, 01 Mar 2025 06:17:25 -0800 (PST)
+Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43aba53945bsm124253195e9.23.2025.03.01.06.17.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 01 Mar 2025 06:17:24 -0800 (PST)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id C2D63BE2DE0; Sat, 01 Mar 2025 15:17:23 +0100 (CET)
+Date: Sat, 1 Mar 2025 15:17:23 +0100
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	David Howells <dhowells@redhat.com>, netfs@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org
+Subject: Re: [PATCH] fs/netfs/read_collect: add to next->prev_donated
+Message-ID: <Z8MW86zYK3VEPcHF@eldamar.lan>
+References: <CAKPOu+_4mUwYgQtRTbXCmi+-k3PGvLysnPadkmHOyB7Gz0iSMA@mail.gmail.com>
+ <20250210191118.3444416-1-max.kellermann@ionos.com>
+ <3978045.1739537266@warthog.procyon.org.uk>
+ <CAKPOu+8cD=HkoNYYknivDJnb6Pfxv+KF28SBUDEqha4NE5sxhg@mail.gmail.com>
+ <2025022051-rockband-hydroxide-7471@gregkh>
+ <CAKPOu+_WsE_HZ_u_sbP8aPnCXknU51fM9t_L-g+xmNVwWGDHVg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <3431541.1740763345@warthog.procyon.org.uk>
-In-Reply-To: <3431541.1740763345@warthog.procyon.org.uk>
-From: Steve French <smfrench@gmail.com>
-Date: Fri, 28 Feb 2025 18:54:53 -0600
-X-Gm-Features: AQ5f1Jq1RjqOGjIbPeaUziZPzZ5R67gITUoR5QKVQ8qxJA12twJdkCZSGGMTfgg
-Message-ID: <CAH2r5mvidbjFykpwyhicaz2nk+-Vbau2RRXqcD4u4u5qT71xUg@mail.gmail.com>
-Subject: Re: [PATCH] netfs: Fix collection of results during pause when
- collection offloaded
-To: David Howells <dhowells@redhat.com>
-Cc: Steve French <stfrench@microsoft.com>, Paulo Alcantara <pc@manguebit.com>, 
-	Christian Brauner <brauner@kernel.org>, Jeff Layton <jlayton@kernel.org>, linux-cifs@vger.kernel.org, 
-	netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKPOu+_WsE_HZ_u_sbP8aPnCXknU51fM9t_L-g+xmNVwWGDHVg@mail.gmail.com>
 
-Am testing this fix now (especially with multichannel scenarios which
-were failing before)
+Hi
 
-On Fri, Feb 28, 2025 at 11:22=E2=80=AFAM David Howells <dhowells@redhat.com=
-> wrote:
->
->
-> A netfs read request can run in one of two modes: for synchronous reads
-> writes, the app thread does the collection of results and for asynchronou=
-s
-> reads, this is offloaded to a worker thread.  This is controlled by the
-> NETFS_RREQ_OFFLOAD_COLLECTION flag.
->
-> Now, if a subrequest incurs an error, the NETFS_RREQ_PAUSE flag is set to
-> stop the issuing loop temporarily from issuing more subrequests until a
-> retry is successful or the request is abandoned.
->
-> When the issuing loop sees NETFS_RREQ_PAUSE, it jumps to
-> netfs_wait_for_pause() which will wait for the PAUSE flag to be cleared -
-> and whilst it is waiting, it will call out to the collector as more resul=
-ts
-> acrue...  But this is the wrong thing to do if OFFLOAD_COLLECTION is set =
-as
-> we can then end up with both the app thread and the work item collecting
-> results simultaneously.
->
-> This manifests itself occasionally when running the generic/323 xfstest
-> against multichannel cifs as an oops that's a bit random but frequently
-> involving io_submit() (the test does lots of simultaneous async DIO reads=
-).
->
-> Fix this by only doing the collection in netfs_wait_for_pause() if the
-> NETFS_RREQ_OFFLOAD_COLLECTION is not set.
->
-> Fixes: e2d46f2ec332 ("netfs: Change the read result collector to only use=
- one work item")
-> Reported-by: Steve French <stfrench@microsoft.com>
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> cc: Paulo Alcantara <pc@manguebit.com>
-> cc: Jeff Layton <jlayton@kernel.org>
-> cc: linux-cifs@vger.kernel.org
-> cc: netfs@lists.linux.dev
-> cc: linux-fsdevel@vger.kernel.org
-> ---
->  fs/netfs/read_collect.c |   18 ++++++++++--------
->  1 file changed, 10 insertions(+), 8 deletions(-)
->
-> diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
-> index 636cc5a98ef5..23c75755ad4e 100644
-> --- a/fs/netfs/read_collect.c
-> +++ b/fs/netfs/read_collect.c
-> @@ -682,14 +682,16 @@ void netfs_wait_for_pause(struct netfs_io_request *=
-rreq)
->                 trace_netfs_rreq(rreq, netfs_rreq_trace_wait_queue);
->                 prepare_to_wait(&rreq->waitq, &myself, TASK_UNINTERRUPTIB=
-LE);
->
-> -               subreq =3D list_first_entry_or_null(&stream->subrequests,
-> -                                                 struct netfs_io_subrequ=
-est, rreq_link);
-> -               if (subreq &&
-> -                   (!test_bit(NETFS_SREQ_IN_PROGRESS, &subreq->flags) ||
-> -                    test_bit(NETFS_SREQ_MADE_PROGRESS, &subreq->flags)))=
- {
-> -                       __set_current_state(TASK_RUNNING);
-> -                       netfs_read_collection(rreq);
-> -                       continue;
-> +               if (!test_bit(NETFS_RREQ_OFFLOAD_COLLECTION, &rreq->flags=
-)) {
-> +                       subreq =3D list_first_entry_or_null(&stream->subr=
-equests,
-> +                                                         struct netfs_io=
-_subrequest, rreq_link);
-> +                       if (subreq &&
-> +                           (!test_bit(NETFS_SREQ_IN_PROGRESS, &subreq->f=
-lags) ||
-> +                            test_bit(NETFS_SREQ_MADE_PROGRESS, &subreq->=
-flags))) {
-> +                               __set_current_state(TASK_RUNNING);
-> +                               netfs_read_collection(rreq);
-> +                               continue;
-> +                       }
->                 }
->
->                 if (!test_bit(NETFS_RREQ_IN_PROGRESS, &rreq->flags) ||
->
->
+(btw side question from a bystander looking a the bug)
 
+On Thu, Feb 20, 2025 at 04:00:49PM +0100, Max Kellermann wrote:
+> On Thu, Feb 20, 2025 at 3:17 PM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> > It wasn't sent to me or to the stable list, so how could have I seen it?
+> 
+> Oh, of course, I forgot to add stable. How shall we proceed? Do you
+> want me to resend to you with David's Signed-off-by?
 
---=20
-Thanks,
+Do I see it correctly that this will be 6.12.y and 6.13.y specific
+backports since the code in mainline changed substantially with
+e2d46f2ec332 ("netfs: Change the read result collector to only use one
+work item") and so your change does not apply there anymore?
 
-Steve
+I'm asking since we got a bug report in Debian which seems to idicate
+it might have the same root cause as you report, and it is at
+https://bugs.debian.org/1098698 .
+
+Regards,
+Salvatore
