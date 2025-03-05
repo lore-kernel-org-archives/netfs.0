@@ -1,106 +1,82 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68EC223F376
-	for <netfs@lists.linux.dev>; Sat,  1 Mar 2025 16:51:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F761862BD
+	for <netfs@lists.linux.dev>; Wed,  5 Mar 2025 16:34:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740847897; cv=none; b=ev3CFvo9DIeu5mgZzhDFu3GRjhb8LSLIsJwY10LsYPWdQmT5KQim5Z3Lvh/8QviTLVAFxe7hnQBOC7yd/jkyU9NOdMFMu4ZUIUv3qdpSIeacZjnIabqxeKRjgGQ3dW3LXWfaCwgZYBjgNtfiJbwkTUNTKmEeIUDWxAGsses+TvM=
+	t=1741192472; cv=none; b=Nkz7mMSK6PuY1CWtzjoHT20MofBjmZhtn2Jto+Nwl0ZDKL3bbXCLMinYWQM7NJiyn3zlejcwgOCsmfXJ915sC9JltYxyNeARCtR1y5rEOQifSQ2LuhIXqh2+lrwcXebk+txLTVRQtwUoS49Hvu+stsDCwYo/8J3Ygocg95/bbN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740847897; c=relaxed/simple;
-	bh=n9y1XIaCS4/WCdSoAgaT9vij7r3yu0+o9mPq0TfXXQY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r+iVBSwpzd0sD7/M2+voIOhUmGM0+iNt9IWBMrDWR0a3vvh4KPhQiFqKQmyCLX0eu6apWum59syib5DyZamBxakvMzS+LNYbA/wNXEO4OztJR7K+ka0kSbo60hHR7s+f1OBUtIb35VAUtikHxaxGV61dsQg8xXwKfwcQn8tgOWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=IXBmBxUW; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+	s=arc-20240116; t=1741192472; c=relaxed/simple;
+	bh=MvcvTZROJ3YamGgkejX20F8DFgN4bMQ5gW19e6QGox4=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=r+c6H5AVNE/ZiiNTs0GHgyqL04WTwoSJHQnmJiKkdcCrubRtDcWPPkyvRvPApRAv1fCFm8PbWbqQMmtSRTval+1wK+YBXUJh8Ud+U9k016SxzlEXTNnWPhhqQZ4JXFr6PW33OsOuMllppfZikN2yfrKYeqmq6R5CLNleC4l9J9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=entUvCOS; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="IXBmBxUW"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-abf4b376f2fso136494466b.3
-        for <netfs@lists.linux.dev>; Sat, 01 Mar 2025 08:51:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1740847894; x=1741452694; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=n9y1XIaCS4/WCdSoAgaT9vij7r3yu0+o9mPq0TfXXQY=;
-        b=IXBmBxUWOV0w2HCQLbu9Jc5MVhEqrC0H9h+YbhcZNE88Wt4n9dY0OzpBzgqyXR5FeS
-         B1RIzS3YeJndTbHajHIms4cGKLLaqwJbBwtXTIRgdMWKRmTIZuV5UrQgCyFflCkRW/Qx
-         NA7qCVa/W1MSYvzNCsom8FK+XDz3smjxr3SQ8oI460BVVzevXTu/ll+LXg1Ov4Z/O6Di
-         C+/0qn5uqwQAE2u7d9KPt+0tTBFEtApJl8vTvWXQKt3sKzjK7vjclDksOvikm/Etokel
-         yY3USSEOJ1RSYnJNPsFbejzHFbFzfZz72j4krPfq04b0Nmqly1eSDqPAppRomWInY2Xl
-         aq6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740847894; x=1741452694;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=n9y1XIaCS4/WCdSoAgaT9vij7r3yu0+o9mPq0TfXXQY=;
-        b=iphxymJKCtjurNwhLCtYfPcy3HglkxOREDlu32ckftVZLvH5b/8do0WddAmpCiiGqk
-         +YxOXEfv7LjdwEp82lWYjqCpsOTozQ4c9VAL79xtBlNhfgXKDEm8MBj8b+1mpFdEvIHw
-         yYp3K7iBwPiOr5MmqRkD9oBY/sMdSyylu3tc89i3GAv76lk/s9EoN/PY9oJ3bP+FuWf3
-         JzcZCZchL+9e7zji5fnzMlJ4223aZi0hV6dHZg5QBi41CEqwe62PmbtrwjkfkWWGt1VW
-         9UHyBqmHCuTi6XA8UPGV3uwWQ1ivneUNeIr/l3wABiXZSsrwG+vbQ1FK9s1Rd59SIh2X
-         RF8g==
-X-Forwarded-Encrypted: i=1; AJvYcCU9oYQj4OsLk71N7Sz4lkwKFXKJiF/xymUN+foJ8uuxmHEdBS2bi/lIeQg7jYNut992s27S4A==@lists.linux.dev
-X-Gm-Message-State: AOJu0YxU+UeZv9ylKTx6M3YHFAwUs+cEsGP1L6go1fcgpLKxx9zlKugD
-	l/epJFK5YhS7KHRw4xLF4y3tfWFJPckVqJF3MJeQ+CNE3OynsGMObOeZinSi6z6ahe1JNn3fiQ5
-	+abxm/4zfFy0xggNMtgU8tXE3RSdkMxserJHkrg==
-X-Gm-Gg: ASbGncu+yLkx7ub2UfepZx7SG+ZdwsBfw/0MV3j1Wm5c5z8moRqIRFXXeeGs1J1cUtp
-	bgHb7ZaAkqkO/oHawcDiAUjSu6x7ip47uodW+7+QKvy7rLIh3PCtgqYvUb+P8bp/kXAu6ufGTig
-	uosO2PtA+0xbuGe8ew8fDG18yjOq3qXsFQpgQgScX7rRzcgyGaOFcwY4I=
-X-Google-Smtp-Source: AGHT+IFYXvc121y6bi2508QH8dUTqeSWY5NhZJZqG4nMfOIOhL1fYaF1K2onpqRPcyP27mIyLfm41qyBG2MUuYbO9F0=
-X-Received: by 2002:a17:907:9494:b0:abf:5d3e:7ca5 with SMTP id
- a640c23a62f3a-abf5d3e800amr254015566b.3.1740847893706; Sat, 01 Mar 2025
- 08:51:33 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="entUvCOS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741192469;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MXm3fOyBN0R7dMmHNgkn5/hPY8QOMikcdewS0mfYvqk=;
+	b=entUvCOSpfmYxj2tllWWJkM2s6ksA23Cp3QCXeF1aS479QIpgP+Y3wbUIv9Y3lLHCxUXPj
+	1qsiakUMduhe2HWfFpbAVx3DuujEuREv1CfvxDOoD7GBgbXovLif6dj50GLtJ82Y58hbtu
+	Jnxt+zbhHxCAL7/ZZgX4WbELhpD4i+A=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-111-C-2xn6rMMuGyUpMotejvxw-1; Wed,
+ 05 Mar 2025 11:34:11 -0500
+X-MC-Unique: C-2xn6rMMuGyUpMotejvxw-1
+X-Mimecast-MFC-AGG-ID: C-2xn6rMMuGyUpMotejvxw_1741192450
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F1E61180035C;
+	Wed,  5 Mar 2025 16:34:09 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.32.200])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F089E18001F5;
+	Wed,  5 Mar 2025 16:34:06 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <3989572.1734546794@warthog.procyon.org.uk>
+References: <3989572.1734546794@warthog.procyon.org.uk>
+To: Alex Markuze <amarkuze@redhat.com>,
+    Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+    Ilya Dryomov <idryomov@gmail.com>
+Cc: dhowells@redhat.com, Xiubo Li <xiubli@redhat.com>,
+    Jeff Layton <jlayton@kernel.org>, ceph-devel@vger.kernel.org,
+    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org
+Subject: Is EOLDSNAPC actually generated? -- Re: Ceph and Netfslib
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAKPOu+_4mUwYgQtRTbXCmi+-k3PGvLysnPadkmHOyB7Gz0iSMA@mail.gmail.com>
- <20250210191118.3444416-1-max.kellermann@ionos.com> <3978045.1739537266@warthog.procyon.org.uk>
- <CAKPOu+8cD=HkoNYYknivDJnb6Pfxv+KF28SBUDEqha4NE5sxhg@mail.gmail.com>
- <2025022051-rockband-hydroxide-7471@gregkh> <CAKPOu+_WsE_HZ_u_sbP8aPnCXknU51fM9t_L-g+xmNVwWGDHVg@mail.gmail.com>
- <Z8MW86zYK3VEPcHF@eldamar.lan>
-In-Reply-To: <Z8MW86zYK3VEPcHF@eldamar.lan>
-From: Max Kellermann <max.kellermann@ionos.com>
-Date: Sat, 1 Mar 2025 17:51:22 +0100
-X-Gm-Features: AQ5f1Jq9sC4S5xjkMHqwwE2FS3xuXaRrtGAbEBdSC6KdiEIvXgpvhHXpBM86jWw
-Message-ID: <CAKPOu+_WAM3RQJnHsKfEh5sG5tBuCPt1EWtoUFVC2ma=ORjHkg@mail.gmail.com>
-Subject: Re: [PATCH] fs/netfs/read_collect: add to next->prev_donated
-To: Salvatore Bonaccorso <carnil@debian.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, David Howells <dhowells@redhat.com>, 
-	netfs@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-nfs@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <4170996.1741192445.1@warthog.procyon.org.uk>
+Date: Wed, 05 Mar 2025 16:34:05 +0000
+Message-ID: <4170997.1741192445@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On Sat, Mar 1, 2025 at 3:17=E2=80=AFPM Salvatore Bonaccorso <carnil@debian.=
-org> wrote:
-> Do I see it correctly that this will be 6.12.y and 6.13.y specific
-> backports since the code in mainline changed substantially with
-> e2d46f2ec332 ("netfs: Change the read result collector to only use one
-> work item") and so your change does not apply there anymore?
+Hi Alex, Slava,
 
-Correct.
+I'm looking at making a ceph_netfs_write_iter() to handle writing to ceph
+files through netfs.  One thing I'm wondering about is the way
+ceph_write_iter() handles EOLDSNAPC.  In this case, it goes back to
+retry_snap and renegotiates the caps (amongst other things).  Firstly, does it
+actually need to do this?  And, secondly, I can't seem to find anything that
+actually generates EOLDSNAPC (or anything relevant that generates ERESTART).
 
-> I'm asking since we got a bug report in Debian which seems to idicate
-> it might have the same root cause as you report, and it is at
-> https://bugs.debian.org/1098698 .
+Is it possible that we could get rid of the code that handles EOLDSNAPC?
 
-This indeed looks similar.
+David
 
-Note that this is one of four netfs crash fixes I posted recently.
-Two other fixes have been released with 6.13.4 already:
-https://lore.kernel.org/netfs/20250211093432.3524035-1-max.kellermann@ionos=
-.com/
-https://lore.kernel.org/netfs/20250210223144.3481766-1-max.kellermann@ionos=
-.com/
-The fourth bug (that got no reviews so far) is here (this one affects
-master as well):
-https://lore.kernel.org/netfs/20250228123602.2140459-1-max.kellermann@ionos=
-.com/
-
-Max
