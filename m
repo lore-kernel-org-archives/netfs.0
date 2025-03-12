@@ -1,39 +1,39 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8411E8359;
-	Mon, 10 Mar 2025 22:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B2E1DB377;
+	Wed, 12 Mar 2025 20:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741645447; cv=none; b=NIoQoszq5n2d9pntSyqgUvPPjFan8/Gb25omMqrbeSdsbEee1PP3MfWW5ftjfW3qUJHnBrfv9PMSzKRLxF3s3Bdoo0cRbMrWSFLFoy176xitYsQeJWWDP+vIM67pjyIgoEQuUOVVY4V+iVVIfDL3b53kAxkol0TT9MJsmvKFVa4=
+	t=1741810110; cv=none; b=GlDgCRy0nKYI2CvmiPljnhy+ztb9UeCTal1gBhi1Ut9DVPliQyXG7EIbTSmh2o2Pmf68KUGgznRm0mRbcwic9Ao0VTP4HGRmJmuN0eWmexgKDE9LB7L926OVBBfWG/2nVrU6OMJq1ORLhdPmpD+Sq6inDHsEUQG/mE8A7wtfjgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741645447; c=relaxed/simple;
-	bh=U+WjwQ3yEna/R5MZcY8dgC4to4hN7KZ1NERYUP5gC5Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dxVVKjy/yRyQoP3xZl52xGuYuF0lbOALMUPiX4ZTwLQbUVHzPLDXokhimCWo5BU6U86b6K9ZaU5di/cVsBLhRNMsHoRJYf1sVHGL/1WXkuYqHepn06+He3ZJe9g1WiR1k2NhJh1WLArOvtZHU73ujsaukCHdvZzCyPDbk+8lo5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s4Bp23km; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741810110; c=relaxed/simple;
+	bh=4nbhLrM4R3uCRysS/wOgPvMWhmlLUvMyPt285TlrSZg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VOo9ove6w4QuxnT1cgPtsHxGthqosL/M0dG2E7Bp8R9Q+2DXUojFYHykB0ZqKyTR1VoFFwf7vX7rBBG7/jyvXGTu7zyTLDM9bdsyJQjaA/x4dPOSlYwVWAHxSEkrHoazWs9j06o98k5QRYsvnrOUC+r+nTU2nyXOS/crLchdYB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IC6l+VBG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s4Bp23km"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47909C4CEE5;
-	Mon, 10 Mar 2025 22:24:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IC6l+VBG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0AFAC4CEEA;
+	Wed, 12 Mar 2025 20:08:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741645447;
-	bh=U+WjwQ3yEna/R5MZcY8dgC4to4hN7KZ1NERYUP5gC5Q=;
+	s=k20201202; t=1741810110;
+	bh=4nbhLrM4R3uCRysS/wOgPvMWhmlLUvMyPt285TlrSZg=;
 	h=From:To:Cc:Subject:Date:From;
-	b=s4Bp23kmp/24x+roeS+rwdE3uj2N2pAo9uQPcnrWPHChFeJxRvoCJyQmWbGDrobhu
-	 q4ElAJ7u6jYBx4To5jmFKzWhuqkWcDEydFN6Tn48at3GnM9KYMS9o6hXQTttX/cB9H
-	 g+IOJLikJIAiMP0jVF+OcMe5Q8W0vhcJPjkYYolkJSniH0w2n2lKsFnJIgHB38CdSu
-	 7Fefy7y+oapFysHbqoU92leif6bzR11mJKlNBUzJ5FgYGoO4R4fyRsyxApb/aQsegw
-	 pHrjvxaMd1EwhYJzunyGQHnGz84HeXFDuP/9rmlcyXH3aycTOT/uD4N9t/nfObD2Jx
-	 LtayYKTTETqxQ==
+	b=IC6l+VBGXXsMnJHckbQnyRdl++3S2R+zv41eR3brzUVvUJKOIvz8XmQDXFdI+ybEB
+	 D1CQvAcK0m5M6SzzYWIbfz477KMaPnlAMcqRVX8Br5LVgRNFME2ghZDOosrzR5Y4qv
+	 axiTUDRpPfpaD3y0qwkYQi7kE7ROVHo2vtbuqHFvs7vvefcts0owBTULGVwdrvzwiL
+	 +LOcN8vfrxfCIpRlt3PQixHW8tBU9FJXTxiyRgX0wm/w0qedj6PivPDsEe0nDfqkYm
+	 qbQ+vitniFGQ0xjdaVaxp6k/xs6YRZ+fM0wlDktzceKt5LlyT84D/EltB+/KvLD4Pz
+	 iswnpxvhiBXJw==
 From: Kees Cook <kees@kernel.org>
 To: David Howells <dhowells@redhat.com>
 Cc: Kees Cook <kees@kernel.org>,
 	netfs@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-hardening@vger.kernel.org
-Subject: [PATCH] cachefiles: Add __nonstring annotations for unterminated strings
-Date: Mon, 10 Mar 2025 15:24:03 -0700
-Message-Id: <20250310222402.work.925-kees@kernel.org>
+Subject: [PATCH v2] cachefiles: Add __nonstring annotations for unterminated strings
+Date: Wed, 12 Mar 2025 13:08:26 -0700
+Message-Id: <20250312200825.it.269-kees@kernel.org>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
@@ -41,20 +41,35 @@ List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1048; i=kees@kernel.org; h=from:subject:message-id; bh=U+WjwQ3yEna/R5MZcY8dgC4to4hN7KZ1NERYUP5gC5Q=; b=owGbwMvMwCVmps19z/KJym7G02pJDOnn05p8lWqXzT24uOVuzav98+een2xUnXP55Hmdc83lJ pqHzm++1FHKwiDGxSArpsgSZOce5+Lxtj3cfa4izBxWJpAhDFycAjCR6xMZ/pffmPrfVTMufbrz b+eowlOP9pk5JR0NnOvU8Wzn9x52r7WMDKun5gilXF9dFM8308TTeG7Kg2r1daKJP3qV56n6qCy M4AYA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1880; i=kees@kernel.org; h=from:subject:message-id; bh=4nbhLrM4R3uCRysS/wOgPvMWhmlLUvMyPt285TlrSZg=; b=owGbwMvMwCVmps19z/KJym7G02pJDOkXX+5K3rN0gfKkmN1WLhvOncls3Ko5f5r1qW1vbip75 fr/3rgjoqOUhUGMi0FWTJElyM49zsXjbXu4+1xFmDmsTCBDGLg4BWAij1YxMny8IpN8cAVvmXHJ /XatH9cd5O8uUJl5TGBOlcd/i4ZVoi0M/x2VTQv5Q8+x8HlrOxQsOtnhm3qM68zlzaIN81c/Tlz zkRUA
 X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
 
 When a character array without a terminating NUL character has a static
 initializer, GCC 15's -Wunterminated-string-initialization will only
-warn if the array lacks the "nonstring" attribute[1]. Mark the arrays
-with __nonstring to and correctly identify the char array as "not a C
-string" and thereby eliminate the warning.
+warn if the array lacks the "nonstring" attribute[1]. Mark the array
+with __nonstring to correctly identify the char array as "not a C string"
+and thereby eliminate the warning:
+
+../fs/cachefiles/key.c:12:9: warning: initializer-string for array of 'char' truncates NUL terminator but destination lacks 'nonstring' attribute (65 chars into 64 available) [-Wunterminated-string-initialization]
+   12 |         "0123456789"                    /* 0 - 9 */
+      |         ^~~~~~~~~~~~
+
+Since the array is used only for single character look-ups, use
+__nonstring:
+
+fs/cachefiles/key.c:123:                name[len++] = cachefiles_charmap[acc & 63];
+fs/cachefiles/key.c:125:                name[len++] = cachefiles_charmap[acc & 63];
+fs/cachefiles/key.c:127:                name[len++] = cachefiles_charmap[acc & 63];
+fs/cachefiles/key.c:129:                name[len++] = cachefiles_charmap[acc & 63];
 
 Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=117178 [1]
+Signed-off-by: Kees Cook <kees@kernel.org>
+---
+ v2: improve commit log
+ v1: https://lore.kernel.org/lkml/20250310222402.work.925-kees@kernel.org/
 Cc: David Howells <dhowells@redhat.com>
 Cc: netfs@lists.linux.dev
-Signed-off-by: Kees Cook <kees@kernel.org>
 ---
  fs/cachefiles/key.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
