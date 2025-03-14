@@ -1,82 +1,136 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C6A158870
-	for <netfs@lists.linux.dev>; Fri, 14 Mar 2025 07:35:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF6F1F1934;
+	Fri, 14 Mar 2025 10:39:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741937748; cv=none; b=Q2BdpaateTHF33xIcd8mwUd691SRHbOto/caOEUCqkmpPJ/GvLa6m9NUAEiq07l15n8ebe8M6KS07ku3OvC0RUXCwEPO1e74BuWzURz5eDk91C5EzFX22OAk+Lws4gQWzbp8yHHqlexUwy2y+qR5MtKJhPhlr2YFQhc2+3Zu7KE=
+	t=1741948744; cv=none; b=annqEmkVSYXqvKXbC5ldELaJXfLaErh2vgAl504ONY75qaAaMt102FcJeAWRLR9uUbWK+iYZMEJQvfQY7FaBMLu2XFybtgpPakJRLMK7Tu7g6UOazL/KkQ46H7K/tHlYgEA7DudlTKSkqNS5qyFk1YBZ/zoyf82PX/4gPs1RXhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741937748; c=relaxed/simple;
-	bh=BKb0+8vbrDMdWpSZOZ73KCKfNl8XpBBpEuDQ9z5rALw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=e5BHvFFpnubPlBmhsosOBVuvD2u1t5GI+wcjcxUj8959oTuqedqr6VzSB2c1X12NC3C1eB2BtI+T0q1EfB5HNVjKBNWj3QeW2UrEPER6tzf7WAOUHs17K0zWba7apsjrElV7zLrDQxHVTn8/Ru1BWtFQHW8kZ2Jls0HRSf+oJng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=IlU8rp0H; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+	s=arc-20240116; t=1741948744; c=relaxed/simple;
+	bh=ViuVFqdum2mxJWZUNzKOl9aYIxyVR8GlAtNOhK+gL84=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BeQmqwOGheuZhSEZTYngiGW4TEBA+dS1tEH/YQi4adRdKNSMDXITScc22GEGQ+zoApNs+4WHeTtIdRb9Exk3n4eavveMqW5IruFxVuRWuwwQ4x91QSDjjO0AkD+6A306XRIotBc1oEh7qlXA3m6vIQwlncTQzUItvXNfl88bti0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tfUKyGEp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="IlU8rp0H"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-ac2dfdf3c38so337395366b.3
-        for <netfs@lists.linux.dev>; Fri, 14 Mar 2025 00:35:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1741937744; x=1742542544; darn=lists.linux.dev;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FlmZlv3M6KwRa5lk0ty8uEbkHF2GhMIuGONmyl2bBXA=;
-        b=IlU8rp0HV/Y8srWNLJkPpXUhtFIG+f3FHDqYuBpxkPzWU1cMEunKWZajsmfySjulDU
-         PHwxOOBEmQnTvtiUtfw2G19jiJDqpgsVX8QEm+Z91q7wzvBTXPNDIStZZmBY0LDWuWEs
-         TbKSYAKnonI4mQJRLOrx9zqMLcLqu2whR1DE+BIOtoaFA0faItDsRm49WVcXsASs0tfI
-         FvWkvjVCoz1jtnBSY0yFsoqBOB7YdstZCqNN7csB2DmYYPRkS6D6vBjTFkepoFDJjnYa
-         un4E+YYaaMoDOg0xwBmlJCx39kJK5oRD0s5lM5OAY1u+TbqTMceKWz0aKYMX9wOyj0uP
-         y7nA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741937744; x=1742542544;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FlmZlv3M6KwRa5lk0ty8uEbkHF2GhMIuGONmyl2bBXA=;
-        b=W7bP31ZuwnL91ngc7Tyxwi5LeD68OL6aaTr2Nnoek8QbVFtHixNpVCfUl90Vgmbbnc
-         BrsLCr7zpOA7paY5NJya/0Pv29lk5nXtyWxEIdgolgfunw/f7rJEcia+DWUYX0MvT3p2
-         Fg2kSJgvo/2DJl317x8OmvzD1XAkciYUQYCq5ZIbwJQN+/RcBNl/LJ3HLzQmla3aMaBl
-         L14JvbKMG3kfgtGNU24SlRHufrNEu4zb3Fl6CmEVAhCawbIBrDIE5sxyGXEhS6Ylu2gO
-         m8bcEgaTbCVgHKQ2WOKNzkVBqxOezaLed0xQu+ecqFglZRUjGq4oABMsv/CHZpvh3xSE
-         SWAw==
-X-Forwarded-Encrypted: i=1; AJvYcCWxKo2ruGDxcFFsD8nV60Ckj9t8q1pLw36b66+WTGThTqzISQsNqm6mDcq9Lr4R6Ub/V5sBHQ==@lists.linux.dev
-X-Gm-Message-State: AOJu0YwEbl0uGV7u5duPM7SSJCxoPaKjfi66qwKqT6tVWQ866cRGS757
-	CORiWGPSAf+3mv7zzsSubw3nPyFHsznXVUbKf0cGm/fbAZZ3G2DZNFVd2G4LxRnpd3fnyVSDgn4
-	WZo23PL9XhwFc5kZkBpiVsiaRnZEq46Ha36aj+A==
-X-Gm-Gg: ASbGncu/l7r6NI6Jiu1e7JyMfnMxLLhNfRh9bvqIYQjdUDZwbrMNXRQ5bwbwMezEXSE
-	l02uBuWrV7XnAgRWP9mhbW5LYgSzam4jy4YkaHCPoaPDWJ6988lj3ECDGUEOORyIF/Pg7Fbf9fR
-	322d9gOQyqodOQoYRc2jE03ldhpW8dEI1BizzcNRLwpSg4uMX5F63vtFo=
-X-Google-Smtp-Source: AGHT+IE7Xaa46SPAaXON+whlmQwGK4hrFPmRNmw/cKo9nkMuQI2CfRhnfIk0Y82sVcmMcd8X/iKP//nfd54dSp/6HqQ=
-X-Received: by 2002:a17:907:2dac:b0:abf:7b38:7e64 with SMTP id
- a640c23a62f3a-ac330396bccmr157332166b.43.1741937744629; Fri, 14 Mar 2025
- 00:35:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tfUKyGEp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F9EC4CEE3;
+	Fri, 14 Mar 2025 10:39:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741948744;
+	bh=ViuVFqdum2mxJWZUNzKOl9aYIxyVR8GlAtNOhK+gL84=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tfUKyGEpWdoJUFDyizWtcR6MTcBD03ipKELIl9a2+429VyrZo0qU+WNG81OB5RcXA
+	 9NO4E/SWfO5gnwHwy1hyTciOFqNNpAL4qGVP7HhiQgVIOs/IR4VKfeLHdUGKbqOsjc
+	 9UZFhi7GAwPSAd3nhcnN8Iu+KHaKEtlPLGykS+5mfdloi+auywWOQDbGYEos/8+Qq0
+	 DHD/LPicakk5T/1iWPZ6GbiUzH8JSfEIjjEvT+IEfq2GT4xSquIYXnKKRQ6IpHTHqd
+	 VDwXSeYRKED+917tj82eDvROJYfAs1PC4DjMHNgzQ0dXG87df0711wtnhbkEVI1eqm
+	 yHS6q9D8PNVvg==
+Date: Fri, 14 Mar 2025 11:38:58 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: NeilBrown <neil@brown.name>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+	David Howells <dhowells@redhat.com>, Chuck Lever <chuck.lever@oracle.com>, 
+	Jeff Layton <jlayton@kernel.org>, linux-nfs@vger.kernel.org, netfs@lists.linux.dev, 
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 0/8 RFC] tidy up various VFS lookup functions
+Message-ID: <20250314-geprobt-akademie-cae577d90899@brauner>
+References: <20250314045655.603377-1-neil@brown.name>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250228123602.2140459-1-max.kellermann@ionos.com>
-In-Reply-To: <20250228123602.2140459-1-max.kellermann@ionos.com>
-From: Max Kellermann <max.kellermann@ionos.com>
-Date: Fri, 14 Mar 2025 08:35:33 +0100
-X-Gm-Features: AQ5f1Jpirsc84DWFiXiiJv-4Da16R-ZlTaCwBS8wuRISQWEDlmmeBRkTXeg9pmA
-Message-ID: <CAKPOu+8XzPixswU9srF=DK=MkE9tUhHtVxAwwA-xq=NAo9Ljjw@mail.gmail.com>
-Subject: Re: [PATCH] fs/netfs/write_collect: call `invalidate_cache` only if implemented
-To: dhowells@redhat.com, netfs@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250314045655.603377-1-neil@brown.name>
 
-On Fri, Feb 28, 2025 at 1:36=E2=80=AFPM Max Kellermann <max.kellermann@iono=
-s.com> wrote:
->
-> Many filesystems such as NFS and Ceph do not implement the
-> `invalidate_cache` method.  On those filesystems, if writing to the
-> cache (`NETFS_WRITE_TO_CACHE`) fails for some reason, the kernel
-> crashes like this:
+On Fri, Mar 14, 2025 at 11:34:06AM +1100, NeilBrown wrote:
+> VFS has some functions with names containing "lookup_one_len" and others
+> without the "_len".  This difference has nothing to do with "len".
+> 
+> The functions without "_len" take a "mnt_idmap" pointer.  This is found
 
-David, it's been more than two weeks - please don't forget this patch.
-It's yet another netfs crash bug fix.
+When we added idmapped mounts there were all these *_len() helpers and I
+orignally had just ported them to pass mnt_idmap. But we decided to not
+do this. The argument might have been that most callers don't need to be
+switched (I'm not actually sure if that's still true now that we have
+quite a few filesystems that do support idmapped mounts.).
+
+So then we added new helper and then we decided to use better naming
+then that *_len() stuff. That's about it.
+
+> in the "vfsmount" and that is an important question when choosing which
+> to use: do you have a vfsmount, or are you "inside" the filesystem.  A
+> related question is "is permission checking relevant here?".
+> 
+> nfsd and cachefiles *do* have a vfsmount but *don't* use the non-_len
+> functions.  They pass nop_mnt_idmap which is not correct if the vfsmount
+> is actually idmaped.  For cachefiles it probably (?) doesn't matter as
+> the accesses to the backing filesystem are always does with elevated privileged (?).
+
+Cachefiles explicitly refuse being mounted on top of an idmapped mount
+and they require that the mount is attached (check_mnt()) and an
+attached mount can never be idmapped as it has already been exposed in
+the filesystem hierarchy.
+
+> 
+> For nfsd it would matter if anyone exported an idmapped filesystem.  I
+> wonder if anyone has tried...
+
+nfsd doesn't support exporting idmapped mounts. See check_export() where
+that's explicitly checked.
+
+If there are ways to circumvent this I'd be good to know.
+
+> 
+> These patches change the "lookup_one" functions to take a vfsmount
+> instead of a mnt_idmap because I think that makes the intention clearer.
+
+Please don't!
+
+These internal lookup helpers intentionally do not take a vfsmount.
+First, because they can be called in places where access to a vfsmount
+isn't possible and we don't want to pass vfsmounts down to filesystems
+ever!
+
+Second, the mnt_idmap pointer is - with few safe exceptions - is
+retrieved once in the VFS and then passed down so that e.g., permission
+checking and file creation are guaranteed to use the same mnt_idmap
+pointer.
+
+A caller may start out with a non-idmapped detached mount (e.g., via
+fsmount() or OPEN_TREE_CLONE) (nop_mnt_idmap) and call
+inode_permission(). Now someone idmaps that mount. Now further down the
+callchain someone calls lookup_one() which now retrieves the idmapping
+again and now it's an idmapped mount. Now permission checking is out of
+sync. That's an unlikely scenario but it's possible so lookup_one() is
+not supposed to retrieve the idmapping again. Please keep passing it
+explicitly. I've also written that down in the Documenation somewhere.
+
+> 
+> It also renames the "_one" functions to be "_noperm" and removes the
+> permission checking completely.  In all cases where they are (correctly)
+> used permission checking is irrelevant.
+
+Ok, that sounds fine. Though I haven't taken the time to check the
+callers yet. I'll try to do that during the weekend.
+
+> 
+> I haven't included changes to afs because there are patches in vfs.all
+> which make a lot of changes to lookup in afs.  I think (if they are seen
+> as a good idea) these patches should aim to land after the afs patches
+> and any further fixup in afs can happen then.
+> 
+> The nfsd and cachefiles patches probably should be separate.  Maybe I
+> should submit those to relevant maintainers first, and one afs,
+> cachefiles, and nfsd changes have landed I can submit this series with
+> appropriate modifications.
+> 
+> May main question for review is : have I understood mnt_idmap correctly?
+
+I mean, you didn't ask semantic questions so much as syntactic, I think.
+I hope I explained the reasoning sufficiently.
+
+Thanks for the cleanups.
