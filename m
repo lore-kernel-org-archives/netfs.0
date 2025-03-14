@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C4D2045B2
-	for <netfs@lists.linux.dev>; Fri, 14 Mar 2025 16:42:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD74618B494
+	for <netfs@lists.linux.dev>; Fri, 14 Mar 2025 16:42:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741970546; cv=none; b=JlYOLfbHsXI6FIjGlRFL2GG97JnS1bHJ7oE4dqlZ3YoB8pQcCFmzAATdTUlZS3j2tguhdJudhYSXWWDDS2dPMY4vwlOioTNNQgCKvap0RHlBj/IR4njWG0/6rwJDHmfGauXCvXOA3NQqBAc5BSyuWMn9F036A4NqMuuVC6JHKRU=
+	t=1741970549; cv=none; b=qIAXq9gqEKBRzXi8GJDT1kptKIafMH3/cRVQHdiw/zIsS1EIKozSQJw6qHkm4Garz0jDblZS2BujQ8KYuC4wr+N0HbGyTE2qjAa0lsoC/MT4EEhI/W8sn9ZndIakEA2ImAd19gMeSe2Wj3BYzenKqNoGlEYImeWKyMzagdVVQ9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741970546; c=relaxed/simple;
-	bh=bcuzJjM92SaHRB6hoSe8xIWoPbg8ScRbZsayAknw+7Q=;
+	s=arc-20240116; t=1741970549; c=relaxed/simple;
+	bh=Zfo7G8ZZVI56easMvzkUxJjm7RkyPqw27btY50SXyBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DsOVsAl05/HtvRe44kXrfqAMqROi5a1//iytY7BdLnUm60flN3IwMLF9RcSY8qWMoXfcgkQWRu4fsM+P5TRlfVWN9x6c8yqP2lLgLMjX4RIaY5eC1raAd1tvz+PtURoml+ZCtdOh5OwzwgBJ9hnQieXN2GFvPDPgXIHRZv5Dp3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZSg2pYdl; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=hsRtSnV4XF+rAG3FD81bl0XcOfRrUclTq6hOYCEvzdBiVuKTvBXnzMdMZOQYtBb4zHE2iho5J1stzJ/g6nUKb1djMdtK4+MJMbxOapquycqlBKuPySLaGbcwJcah8mgL9VHaCMVuvoVGeB1qC9hhtc3IthGJ9RnBgfhkpX/y7/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VVdO1fBR; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZSg2pYdl"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VVdO1fBR"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741970543;
+	s=mimecast20190719; t=1741970546;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=n/cafhc4nnnQEwFVw0Q6oJte6Nc/tJJuXAQXURFTgx8=;
-	b=ZSg2pYdlVaDgZm1ZH2dY/20EJbT7ZY6PQ6Fdin2/iAJd+Ylc+MiALrQJGan8ROxbOG5Sns
-	73NZPVS/Jyoe3pMxSge5oZ7a2vU0X1eh9uA1rM1F21cNDWHnI+1/m8CAuFHUYJe6ageaCG
-	yzSBAzoPwrnkNTRWFC1WU7T6YBLyWdM=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+	bh=kgs68JnbqfGZwJrqZ31YpM64s8X6n5iWQDAIZUpopD8=;
+	b=VVdO1fBR+dQOrjIEFKFsFSbOkxbI05TG4JLSEY9AJwX3JDqJuKAoe60V0FzqscgYcrcUHr
+	dnFaYtseLx9vlK403oIrJxRBwoc86pP6LOF0LEJYreCoOazycG7kwAiH7giDkSB9G+s6k8
+	lm1FVihhQQh7l+cVzN5vENg3fVnti2s=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-693-2zuPdtzHNfyUoe7oIN-B_Q-1; Fri,
- 14 Mar 2025 12:42:20 -0400
-X-MC-Unique: 2zuPdtzHNfyUoe7oIN-B_Q-1
-X-Mimecast-MFC-AGG-ID: 2zuPdtzHNfyUoe7oIN-B_Q_1741970538
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-526-ELC-7-6yMxSrihokJSDULg-1; Fri,
+ 14 Mar 2025 12:42:25 -0400
+X-MC-Unique: ELC-7-6yMxSrihokJSDULg-1
+X-Mimecast-MFC-AGG-ID: ELC-7-6yMxSrihokJSDULg_1741970543
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C82C61956087;
-	Fri, 14 Mar 2025 16:42:17 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 19609195605E;
+	Fri, 14 Mar 2025 16:42:23 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.42.28.61])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5DA851955F2D;
-	Fri, 14 Mar 2025 16:42:13 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 485451955BCB;
+	Fri, 14 Mar 2025 16:42:19 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>
 Cc: David Howells <dhowells@redhat.com>,
@@ -55,10 +55,11 @@ Cc: David Howells <dhowells@redhat.com>,
 	v9fs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH 2/4] netfs: Call `invalidate_cache` only if implemented
-Date: Fri, 14 Mar 2025 16:41:57 +0000
-Message-ID: <20250314164201.1993231-3-dhowells@redhat.com>
+	Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.com>
+Subject: [PATCH 3/4] netfs: Fix rolling_buffer_load_from_ra() to not clear mark bits
+Date: Fri, 14 Mar 2025 16:41:58 +0000
+Message-ID: <20250314164201.1993231-4-dhowells@redhat.com>
 In-Reply-To: <20250314164201.1993231-1-dhowells@redhat.com>
 References: <20250314164201.1993231-1-dhowells@redhat.com>
 Precedence: bulk
@@ -68,82 +69,40 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-From: Max Kellermann <max.kellermann@ionos.com>
+rolling_buffer_load_from_ra() looms large in the perf report because it
+loops around doing an atomic clear for each of the three mark bits per
+folio.  However, this is both inefficient (it would be better to build a
+mask and atomically AND them out) and unnecessary as they shouldn't be set.
 
-Many filesystems such as NFS and Ceph do not implement the
-`invalidate_cache` method.  On those filesystems, if writing to the
-cache (`NETFS_WRITE_TO_CACHE`) fails for some reason, the kernel
-crashes like this:
+Fix this by removing the loop.
 
- BUG: kernel NULL pointer dereference, address: 0000000000000000
- #PF: supervisor instruction fetch in kernel mode
- #PF: error_code(0x0010) - not-present page
- PGD 0 P4D 0
- Oops: Oops: 0010 [#1] SMP PTI
- CPU: 9 UID: 0 PID: 3380 Comm: kworker/u193:11 Not tainted 6.13.3-cm4all1-hp #437
- Hardware name: HP ProLiant DL380 Gen9/ProLiant DL380 Gen9, BIOS P89 10/17/2018
- Workqueue: events_unbound netfs_write_collection_worker
- RIP: 0010:0x0
- Code: Unable to access opcode bytes at 0xffffffffffffffd6.
- RSP: 0018:ffff9b86e2ca7dc0 EFLAGS: 00010202
- RAX: 0000000000000000 RBX: 0000000000000000 RCX: 7fffffffffffffff
- RDX: 0000000000000001 RSI: ffff89259d576a18 RDI: ffff89259d576900
- RBP: ffff89259d5769b0 R08: ffff9b86e2ca7d28 R09: 0000000000000002
- R10: ffff89258ceaca80 R11: 0000000000000001 R12: 0000000000000020
- R13: ffff893d158b9338 R14: ffff89259d576900 R15: ffff89259d5769b0
- FS:  0000000000000000(0000) GS:ffff893c9fa40000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: ffffffffffffffd6 CR3: 000000054442e003 CR4: 00000000001706f0
- Call Trace:
-  <TASK>
-  ? __die+0x1f/0x60
-  ? page_fault_oops+0x15c/0x460
-  ? try_to_wake_up+0x2d2/0x530
-  ? exc_page_fault+0x5e/0x100
-  ? asm_exc_page_fault+0x22/0x30
-  netfs_write_collection_worker+0xe9f/0x12b0
-  ? xs_poll_check_readable+0x3f/0x80
-  ? xs_stream_data_receive_workfn+0x8d/0x110
-  process_one_work+0x134/0x2d0
-  worker_thread+0x299/0x3a0
-  ? __pfx_worker_thread+0x10/0x10
-  kthread+0xba/0xe0
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork+0x30/0x50
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
- Modules linked in:
- CR2: 0000000000000000
-
-This patch adds the missing `NULL` check.
-
-Fixes: 0e0f2dfe880f ("netfs: Dispatch write requests to process a writeback slice")
-Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
 Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: Steve French <sfrench@samba.org>
+cc: Paulo Alcantara <pc@manguebit.com>
 cc: netfs@lists.linux.dev
 cc: linux-cifs@vger.kernel.org
 cc: linux-fsdevel@vger.kernel.org
-cc: stable@vger.kernel.org
 ---
- fs/netfs/write_collect.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/netfs/rolling_buffer.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
-index 294f67795f79..3fca59e6475d 100644
---- a/fs/netfs/write_collect.c
-+++ b/fs/netfs/write_collect.c
-@@ -400,7 +400,8 @@ void netfs_write_collection_worker(struct work_struct *work)
- 	trace_netfs_rreq(wreq, netfs_rreq_trace_write_done);
+diff --git a/fs/netfs/rolling_buffer.c b/fs/netfs/rolling_buffer.c
+index 75d97af14b4a..207b6a326651 100644
+--- a/fs/netfs/rolling_buffer.c
++++ b/fs/netfs/rolling_buffer.c
+@@ -146,10 +146,6 @@ ssize_t rolling_buffer_load_from_ra(struct rolling_buffer *roll,
  
- 	if (wreq->io_streams[1].active &&
--	    wreq->io_streams[1].failed) {
-+	    wreq->io_streams[1].failed &&
-+	    ictx->ops->invalidate_cache) {
- 		/* Cache write failure doesn't prevent writeback completion
- 		 * unless we're in disconnected mode.
- 		 */
+ 	/* Store the counter after setting the slot. */
+ 	smp_store_release(&roll->next_head_slot, to);
+-
+-	for (; ix < folioq_nr_slots(fq); ix++)
+-		folioq_clear(fq, ix);
+-
+ 	return size;
+ }
+ 
 
