@@ -1,120 +1,190 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from neil.brown.name (neil.brown.name [103.29.64.221])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5358C18FC9F
-	for <netfs@lists.linux.dev>; Sat, 15 Mar 2025 14:06:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED70D79D2;
+	Mon, 17 Mar 2025 02:07:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.29.64.221
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742047621; cv=none; b=ZHJtukKHuramFT1JgCIxH7Sb71g3MVrI2HJQ+LcxTfnvKFyfecCxZJ1ohLBfoJ3mjbL0xRWlaKbwtXZyDG0nE/oPAYFcDwUhkR4x0j7OShW3Wi9kn09z+xFoDF2k3akp35yR5UfZ0AEvIgakq/d9XMCSSrJwgUmbYl3X9b4j0FM=
+	t=1742177232; cv=none; b=nLR+Gcn3SJ/lxU+WlmZZO7zpu0ST7AzckaYb9T8xkp04vUR2kzIisQD/mvCqCXWSCj7aJ1vSUvDvXAkLTpvb/5wtG66M9gxVn6TA0WybbuPhmtqjhWZGxI6gtixaV3MrbdVR7KZsrG9iJqlHGoZ8iMtDyqnHIlSjc+g+azBAfZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742047621; c=relaxed/simple;
-	bh=JVDbtLCVlsfAE0DKLnc7htPf2h9AUEfuVUxHXsmEtW0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nwzXJUpgeZ26d1JoY8/2DHPu8xXfY4gQ2z+Np9+PHSCeSeBPG8xoO2PKwkEZpfb8NfDOYLs6AQvNHfnrC1ysLcjtTnT69SuVn9CX2RMUPzGyZj5qqHurNHGPca0Q8fBPzwQsW+DqH+hQsj1e71VrqV8+6azAlmeBfOVgrPrhMgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CSG7RaEm; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CSG7RaEm"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-ac25313ea37so607902566b.1
-        for <netfs@lists.linux.dev>; Sat, 15 Mar 2025 07:06:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742047617; x=1742652417; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fu6S1gMTWBKKSz25cBF2A3XN/mQqBpDLU5UkcNDyaKE=;
-        b=CSG7RaEmVv4eKCBZMuoe+rgDdpGhf1mIHsKwJThzDhUhsgoyWVmtn75P45tWHHLdlo
-         RPcw0xQ9whkpDkXOScP7jP0RO3A/tarIbp/RaXNNJGyxojgtnx6wRKgUYdW36b9wgpTD
-         wKwUjx+JoIj9+wHeLpyQwgPgYXUnZfFEM3AWpOLIwOhViK/R6LA8j8blAepz3Itl/7yf
-         tWuPcBzaT23qeyRFPnfCZzHYAebISE/KgPdsT5W/5tPvveeW14BCh6t9vHqjQWdyxSkN
-         EYcBLchjkY95KmElO7tRPOndWMpdHv9PeOTAC5HNJ7zOQ2Kf12zmwFP92F4/qQul9Xgh
-         kNQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742047617; x=1742652417;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fu6S1gMTWBKKSz25cBF2A3XN/mQqBpDLU5UkcNDyaKE=;
-        b=lrdjBgC9WUZydjHepJB8Wo4tDYySuf8AH3xzzv+ZM8eTj4M0ZPoS9bzcNemGoC1clt
-         z7Bzwgquj1vOCHx4fFShFD6sdoCbQyP0fPBfJQIi6mIppdrZGlTxgJ+33uagwInTLj5Z
-         ei6M3wTGTlZxHyPJ4Urkg9kgI5JEBKUcuHdPn3EpbRJVnXN5Z7rCDz6YdeMPcJBkDYVD
-         vUvl/XPoRXIsQzgOV1z0hRgIQqunFekqrDuSRlYln0DhK1qkLoZKS1gLIHKgA5s+BAPx
-         BdlPNTMyBMjR7t9Lv6MOL/bj8Fr0IUkVqei6v39xJLwmv8n+4M7Rpr3akNmVgIv+owAU
-         jZ9g==
-X-Forwarded-Encrypted: i=1; AJvYcCWcOLgra0WYH7CoSsp6Cw4X5d6k3aeDJN1q7axiMb5JRTffvyMyjqpeQ7PvYmIfaRLetpe4nQ==@lists.linux.dev
-X-Gm-Message-State: AOJu0YwyYQBIxONZq3X00RcS3aAdzd+vZzlukhJBiIRQc+euJOG7uhV/
-	DZksFwZjbyTo9/s/R4h7/d6dwmMaxhk1z5nWukNlMDbMDEDNNdS1
-X-Gm-Gg: ASbGnctVl/Qo0KXsmaRcRTxjQrXFblUbKBOFHGQSUyDcxvYjS+cyVTYtKnzd9DwF7VQ
-	wFWm5g+4NGfs59zOyD2wTBlCRawyl8QMpTI8kH8x22Fr3fTd2NV8z+FJI38mOGeMkyzhISAxjxk
-	Lb/YbGr2DS/AiTM9YDPsQjru3Dpwyk2K82hWolSNPxuYKRgPNNlo6j/IUbxnGzouaRE7SOZt47C
-	DiiUEWvnF1+YR07sUlQDuq+Gn370GQS+67QY8OS+HLJks4m1llxuQ0o4zINf3YqLkssECvOsYRR
-	hW56P+pYo7rVRqRdGylYHWht8/BtYFgAx4Y04b7gWI66nL66gdPSqgoNV5ALSM84SxOFTCc4LVI
-	fHA==
-X-Google-Smtp-Source: AGHT+IFx4VLev9/ZgAGMtNB8wK/8e3AAjc3fTszFJmkBl77vfh+FSoCGptuIx+WDl8NiHsj9YK4mXg==
-X-Received: by 2002:a17:907:3e06:b0:ac2:166f:42eb with SMTP id a640c23a62f3a-ac330110f59mr810161066b.2.1742047617447;
-        Sat, 15 Mar 2025 07:06:57 -0700 (PDT)
-Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac314a9bce7sm372338766b.164.2025.03.15.07.06.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Mar 2025 07:06:56 -0700 (PDT)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id CA3B5BE2DE0; Sat, 15 Mar 2025 15:06:55 +0100 (CET)
-Date: Sat, 15 Mar 2025 15:06:55 +0100
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: dhowells@redhat.com, netfs@lists.linux.dev,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH RESEND] fs/netfs/read_collect: add to next->prev_donated
-Message-ID: <Z9WJfyaaF1s_eJg_@eldamar.lan>
-References: <20250220152450.1075727-1-max.kellermann@ionos.com>
+	s=arc-20240116; t=1742177232; c=relaxed/simple;
+	bh=jeEByFFPgdnLDeam8TpTWXZ7GYpK8mHWzg/d9BDeTTE=;
+	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
+	 References:Date:Message-id; b=rywXZFPktCGIib8Sl7Vu8ByGb+vPiwd1JJ/AVTfAp+qkZAN8yQq29dAMe9SXp5MZMs00+V+mw+ePlw7jen6D6SSPB/BXZbBL8UNFMchIsWuF90wcTS2ABXXyZv2i3YP17OIMn1UKARyc3CpROia6/+cl15MvL7zOAD+ZDT13Aqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brown.name; spf=pass smtp.mailfrom=neil.brown.name; arc=none smtp.client-ip=103.29.64.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brown.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=neil.brown.name
+Received: from 196.186.233.220.static.exetel.com.au ([220.233.186.196] helo=home.neil.brown.name)
+	by neil.brown.name with esmtp (Exim 4.95)
+	(envelope-from <mr@neil.brown.name>)
+	id 1ttzsX-00Ex48-GZ;
+	Mon, 17 Mar 2025 02:06:57 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250220152450.1075727-1-max.kellermann@ionos.com>
+From: "NeilBrown" <neil@brown.name>
+To: "Christian Brauner" <brauner@kernel.org>
+Cc: "Alexander Viro" <viro@zeniv.linux.org.uk>, "Jan Kara" <jack@suse.cz>,
+ "David Howells" <dhowells@redhat.com>, "Chuck Lever" <chuck.lever@oracle.com>,
+ "Jeff Layton" <jlayton@kernel.org>, linux-nfs@vger.kernel.org,
+ netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 0/8 RFC] tidy up various VFS lookup functions
+In-reply-to: <20250314-geprobt-akademie-cae577d90899@brauner>
+References: <20250314045655.603377-1-neil@brown.name>,
+ <20250314-geprobt-akademie-cae577d90899@brauner>
+Date: Mon, 17 Mar 2025 13:06:57 +1100
+Message-id: <174217721714.9342.9504907056839144338@noble.neil.brown.name>
 
-Hi,
+On Fri, 14 Mar 2025, Christian Brauner wrote:
+> On Fri, Mar 14, 2025 at 11:34:06AM +1100, NeilBrown wrote:
+> > VFS has some functions with names containing "lookup_one_len" and others
+> > without the "_len".  This difference has nothing to do with "len".
+> >=20
+> > The functions without "_len" take a "mnt_idmap" pointer.  This is found
+>=20
+> When we added idmapped mounts there were all these *_len() helpers and I
+> orignally had just ported them to pass mnt_idmap. But we decided to not
+> do this. The argument might have been that most callers don't need to be
+> switched (I'm not actually sure if that's still true now that we have
+> quite a few filesystems that do support idmapped mounts.).
+>=20
+> So then we added new helper and then we decided to use better naming
+> then that *_len() stuff. That's about it.
+>=20
+> > in the "vfsmount" and that is an important question when choosing which
+> > to use: do you have a vfsmount, or are you "inside" the filesystem.  A
+> > related question is "is permission checking relevant here?".
+> >=20
+> > nfsd and cachefiles *do* have a vfsmount but *don't* use the non-_len
+> > functions.  They pass nop_mnt_idmap which is not correct if the vfsmount
+> > is actually idmaped.  For cachefiles it probably (?) doesn't matter as
+> > the accesses to the backing filesystem are always does with elevated priv=
+ileged (?).
+>=20
+> Cachefiles explicitly refuse being mounted on top of an idmapped mount
+> and they require that the mount is attached (check_mnt()) and an
+> attached mount can never be idmapped as it has already been exposed in
+> the filesystem hierarchy.
+>=20
+> >=20
+> > For nfsd it would matter if anyone exported an idmapped filesystem.  I
+> > wonder if anyone has tried...
+>=20
+> nfsd doesn't support exporting idmapped mounts. See check_export() where
+> that's explicitly checked.
+>=20
+> If there are ways to circumvent this I'd be good to know.
 
-On Thu, Feb 20, 2025 at 04:24:50PM +0100, Max Kellermann wrote:
-> If multiple subrequests donate data to the same "next" request
-> (depending on the subrequest completion order), each of them would
-> overwrite the `prev_donated` field, causing data corruption and a
-> BUG() crash ("Can't donate prior to front").
-> 
-> Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-> Closes: https://lore.kernel.org/netfs/CAKPOu+_4mUwYgQtRTbXCmi+-k3PGvLysnPadkmHOyB7Gz0iSMA@mail.gmail.com/
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> ---
->  fs/netfs/read_collect.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
-> index 8878b46589ff..cafadfe8e858 100644
-> --- a/fs/netfs/read_collect.c
-> +++ b/fs/netfs/read_collect.c
-> @@ -284,7 +284,7 @@ static bool netfs_consume_read_data(struct netfs_io_subrequest *subreq, bool was
->  				   netfs_trace_donate_to_deferred_next);
->  	} else {
->  		next = list_next_entry(subreq, rreq_link);
-> -		WRITE_ONCE(next->prev_donated, excess);
-> +		WRITE_ONCE(next->prev_donated, next->prev_donated + excess);
->  		trace_netfs_donate(rreq, subreq, next, excess,
->  				   netfs_trace_donate_to_next);
->  	}
-> -- 
-> 2.47.2
+I should have checked that they rejected idmapped mounts
+(is_idmapped_mnt()).  But I think that just changes my justification for
+the change, not my desire to make the change.
 
-Unless I did some mistakes researching both the stable, netfs lists,
-did this felt through the cracks and is still missing for to be picked
-for the 6.12.y and 6.13.y series?
+There are two contexts in which lookup is done.  One is the common
+context when there is a vfsmount present and permission checking is
+expected.  nfsd and cachefiles both fit this context.
 
-Regards,
-Salvatore
+The other is when there is no vfsmount and/or permission checking is not
+relevant.  This happens after lookup_parentat when the permission check
+has already been performed, and in various virtual filesystems when the
+filesystem itself is adding/removing files or in normal filesystems
+where dedicated names like "lost+found" and "quota" are being accessed.
+
+I would like to make a clear distinction between these, and for that to
+be done nfsd and cachefiles need to be changed to clearly fit the first
+context.  Whether they should allow idmapped mounts or not is to some
+extent a separate question.  They do want to do permission checking
+(certainly nfsd does) so they should use the same API as other
+permission-checking code.
+
+>=20
+> >=20
+> > These patches change the "lookup_one" functions to take a vfsmount
+> > instead of a mnt_idmap because I think that makes the intention clearer.
+>=20
+> Please don't!
+>=20
+> These internal lookup helpers intentionally do not take a vfsmount.
+> First, because they can be called in places where access to a vfsmount
+> isn't possible and we don't want to pass vfsmounts down to filesystems
+> ever!
+
+There are two sorts of internal lookup helpers.
+Those that currently don't even take a mnt_idmap and are called, as you
+say, in places where a vfsmount isn't available.
+And those that are currently called with a mnt_idmap and called (after a
+few cleanup) in places where a vfsmount is readily available.
+
+
+>=20
+> Second, the mnt_idmap pointer is - with few safe exceptions - is
+> retrieved once in the VFS and then passed down so that e.g., permission
+> checking and file creation are guaranteed to use the same mnt_idmap
+> pointer.
+
+In every case that I changed a call to pass a vfsmount instead of a
+mnt_idmap, the mnt_idmap had recently been fetched from the vfsmount,
+often by mnt_idmap() in the first argument to lookup_one().  Sometimes
+by file_mnt_idmap() or similar.  So the patch never changed the safety
+of the idmap.
+
+One purpose of this change is to force callers to either acknowledge
+that not permission checking is needed (by using a _noperm interface),
+or to provide the correct idmap (not nop_mnt_idmap).
+
+I understand that for object creation interfaces (vfs_mkdir etc) this
+wouldn't work.  For these the idmap isn't needed only for permission
+checking, but also for assigning an initial uid so the simple "vfsmount
+or noperm" distinction doesn't work.  But for lookup I think it does.
+
+>=20
+> A caller may start out with a non-idmapped detached mount (e.g., via
+> fsmount() or OPEN_TREE_CLONE) (nop_mnt_idmap) and call
+> inode_permission(). Now someone idmaps that mount. Now further down the
+> callchain someone calls lookup_one() which now retrieves the idmapping
+> again and now it's an idmapped mount. Now permission checking is out of
+> sync. That's an unlikely scenario but it's possible so lookup_one() is
+> not supposed to retrieve the idmapping again. Please keep passing it
+> explicitly. I've also written that down in the Documenation somewhere.
+>=20
+
+I couldn't easily find such documentation but I didn't look *very* hard.
+fsmount and OPEN_TREE_CLONE only seem to be used in selftests though I
+guess they could get used elsewhere.  However current callers of
+lookup_one() always get the idmap from the vfsmount shortly before
+calling lookup_one.
+
+>=20
+> >=20
+> > It also renames the "_one" functions to be "_noperm" and removes the
+> > permission checking completely.  In all cases where they are (correctly)
+> > used permission checking is irrelevant.
+>=20
+> Ok, that sounds fine. Though I haven't taken the time to check the
+> callers yet. I'll try to do that during the weekend.
+>=20
+> >=20
+> > I haven't included changes to afs because there are patches in vfs.all
+> > which make a lot of changes to lookup in afs.  I think (if they are seen
+> > as a good idea) these patches should aim to land after the afs patches
+> > and any further fixup in afs can happen then.
+> >=20
+> > The nfsd and cachefiles patches probably should be separate.  Maybe I
+> > should submit those to relevant maintainers first, and one afs,
+> > cachefiles, and nfsd changes have landed I can submit this series with
+> > appropriate modifications.
+> >=20
+> > May main question for review is : have I understood mnt_idmap correctly?
+>=20
+> I mean, you didn't ask semantic questions so much as syntactic, I think.
+> I hope I explained the reasoning sufficiently.
+>=20
+
+You have helped me see some aspects of idmapping which I hadn't seen as
+clearly before - thanks.
+
+NeilBrown
