@@ -1,79 +1,175 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E37221D99
-	for <netfs@lists.linux.dev>; Mon, 17 Mar 2025 10:03:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A7B276026;
+	Tue, 18 Mar 2025 13:57:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742205804; cv=none; b=uNh8bJC2IggfmE5wIJTWVjCfrIh/mAiMDeCZDPM0GrvDzeyuyxRxIWv6v7TnrcMC2kDU1P+V/sFIKZTZxrCZpdin0OmlcOg3Yp7PSbxgcI6FRkQ5x3uxiI8EIVoxRyboVoIIYvrLKXvbxQDN+OvQjdWNBzh5ym43mUhcfPaQygc=
+	t=1742306259; cv=none; b=aWNvTHfIh9nlRcSmaNSm7cw8XT1nzLio7+A6TprYrBHkEXakLHdrtah43wrAOITE5AJR+yyN12mOpW9FS1bwwKnzQcdJnYOOQnhpbjkx74QEfAeb4f5vbQHSXJK3z2+JJrr33ZHEM3vAuOHL/xXHUt1M0m9nE8E+VoMU3qx04Ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742205804; c=relaxed/simple;
-	bh=ypZ17jJfpN+bq6gupq+Ho+KrCCKX7qiYeSCHx1uvw2M=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=JYgmKiAvwPA+B5qvR2w7t5ladbyfhK+zJwi1qYQ/u/0OVIRwe26/+4yUTUBM/h207Oa1vUMjEQhkiNxrfKqAIkw/Fvs8nPD+liqNg5A09QyUPyUBu0NWB0HrLGiLJgfFyC75AnmfwaEzvNwzlUP4lhe3vB+EKjde28kfQoDAUSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QaeQsD7C; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1742306259; c=relaxed/simple;
+	bh=640pjyCCFM0HPbzddzhSVRq68zzvtQCSwus+WHQec5s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JPBObyI3J4VIC66T2iHS+WwJwX0LTVia1r6eyAS9ySy2Tdw2FjtyPYTlpxuxEnrrmZQnGdo2DtDlH+xdG0niBBshg9BIDIJ6sH2BZ8p0WwHkfz2qdZX0z9UO8V0gebHFiGcvjgLZJSi6eHBvB4TD+Y1zzn9rnY7CVJmchOVbkRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bTFKbk6F; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QaeQsD7C"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1742205801;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ypZ17jJfpN+bq6gupq+Ho+KrCCKX7qiYeSCHx1uvw2M=;
-	b=QaeQsD7CW0rIYkrF4QWhRKWEFgds2QpaLKnwW5dQS1Ob+7KQeNERS0HUIKna7nKSHL5Xuf
-	7I+4Wh0sRO490u2JsHQVSsBdd729/7SIkPmR2UdW45ooFXsPbhGenx18ieCZ5IyqloFN42
-	D7sZuwauMA5pwfpqRIdJ2WtI5kiyFb8=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-479-GtkgsP6UO8qCsvDShsm1mg-1; Mon,
- 17 Mar 2025 06:03:18 -0400
-X-MC-Unique: GtkgsP6UO8qCsvDShsm1mg-1
-X-Mimecast-MFC-AGG-ID: GtkgsP6UO8qCsvDShsm1mg_1742205796
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D8CFB18001E6;
-	Mon, 17 Mar 2025 10:03:15 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.61])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F2DD519560AD;
-	Mon, 17 Mar 2025 10:03:13 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20250220152450.1075727-1-max.kellermann@ionos.com>
-References: <20250220152450.1075727-1-max.kellermann@ionos.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: dhowells@redhat.com, Max Kellermann <max.kellermann@ionos.com>,
-    netfs@lists.linux.dev, linux-kernel@vger.kernel.org,
-    stable@vger.kernel.org
-Subject: Re: [PATCH RESEND] fs/netfs/read_collect: add to next->prev_donated
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bTFKbk6F"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54485C4CEDD;
+	Tue, 18 Mar 2025 13:57:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742306258;
+	bh=640pjyCCFM0HPbzddzhSVRq68zzvtQCSwus+WHQec5s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bTFKbk6Ff6esbCcGPcwNLuOb+hbF+/KQNSgZC+9lnSqVL7spOORQk7xaJaV/SgWwV
+	 lUe4G2daxs42y8oQxvysaq9cfz3ff7YgkSladGBXFlT+XBZFk0jQPSPbDWrYHMjy1y
+	 nbEjnYoujX5Dht5dscgF1pVnL2QPjNLLQ4XSr9e5DSWj+gkrV/gkaa/1u5hxwK/Znm
+	 yVwsBmCokRmjNNS0u8vAFvwbomII5r9aHDqIvILjsVp+pdgIMvDr7KzbkALSoGln9z
+	 O2IaHMy7phH288PwjsADw4X2ll8luVCpTAHbyuxiVymjP4osSEwcBr0iiIowVeArn2
+	 eEHpBaa11B8XA==
+Date: Tue, 18 Mar 2025 14:57:33 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: NeilBrown <neil@brown.name>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+	David Howells <dhowells@redhat.com>, Chuck Lever <chuck.lever@oracle.com>, 
+	Jeff Layton <jlayton@kernel.org>, linux-nfs@vger.kernel.org, netfs@lists.linux.dev, 
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 0/8 RFC] tidy up various VFS lookup functions
+Message-ID: <20250318-audienz-radeln-17745f4c6b8e@brauner>
+References: <20250314045655.603377-1-neil@brown.name>
+ <20250314-geprobt-akademie-cae577d90899@brauner>
+ <174217721714.9342.9504907056839144338@noble.neil.brown.name>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2110404.1742205792.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 17 Mar 2025 10:03:12 +0000
-Message-ID: <2110405.1742205792@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <174217721714.9342.9504907056839144338@noble.neil.brown.name>
 
-Hi Greg,
+On Mon, Mar 17, 2025 at 01:06:57PM +1100, NeilBrown wrote:
+> On Fri, 14 Mar 2025, Christian Brauner wrote:
+> > On Fri, Mar 14, 2025 at 11:34:06AM +1100, NeilBrown wrote:
+> > > VFS has some functions with names containing "lookup_one_len" and others
+> > > without the "_len".  This difference has nothing to do with "len".
+> > > 
+> > > The functions without "_len" take a "mnt_idmap" pointer.  This is found
+> > 
+> > When we added idmapped mounts there were all these *_len() helpers and I
+> > orignally had just ported them to pass mnt_idmap. But we decided to not
+> > do this. The argument might have been that most callers don't need to be
+> > switched (I'm not actually sure if that's still true now that we have
+> > quite a few filesystems that do support idmapped mounts.).
+> > 
+> > So then we added new helper and then we decided to use better naming
+> > then that *_len() stuff. That's about it.
+> > 
+> > > in the "vfsmount" and that is an important question when choosing which
+> > > to use: do you have a vfsmount, or are you "inside" the filesystem.  A
+> > > related question is "is permission checking relevant here?".
+> > > 
+> > > nfsd and cachefiles *do* have a vfsmount but *don't* use the non-_len
+> > > functions.  They pass nop_mnt_idmap which is not correct if the vfsmount
+> > > is actually idmaped.  For cachefiles it probably (?) doesn't matter as
+> > > the accesses to the backing filesystem are always does with elevated privileged (?).
+> > 
+> > Cachefiles explicitly refuse being mounted on top of an idmapped mount
+> > and they require that the mount is attached (check_mnt()) and an
+> > attached mount can never be idmapped as it has already been exposed in
+> > the filesystem hierarchy.
+> > 
+> > > 
+> > > For nfsd it would matter if anyone exported an idmapped filesystem.  I
+> > > wonder if anyone has tried...
+> > 
+> > nfsd doesn't support exporting idmapped mounts. See check_export() where
+> > that's explicitly checked.
+> > 
+> > If there are ways to circumvent this I'd be good to know.
+> 
+> I should have checked that they rejected idmapped mounts
+> (is_idmapped_mnt()).  But I think that just changes my justification for
+> the change, not my desire to make the change.
+> 
+> There are two contexts in which lookup is done.  One is the common
+> context when there is a vfsmount present and permission checking is
+> expected.  nfsd and cachefiles both fit this context.
+> 
+> The other is when there is no vfsmount and/or permission checking is not
+> relevant.  This happens after lookup_parentat when the permission check
+> has already been performed, and in various virtual filesystems when the
+> filesystem itself is adding/removing files or in normal filesystems
+> where dedicated names like "lost+found" and "quota" are being accessed.
+> 
+> I would like to make a clear distinction between these, and for that to
+> be done nfsd and cachefiles need to be changed to clearly fit the first
+> context.  Whether they should allow idmapped mounts or not is to some
+> extent a separate question.  They do want to do permission checking
+> (certainly nfsd does) so they should use the same API as other
+> permission-checking code.
+> 
+> > 
+> > > 
+> > > These patches change the "lookup_one" functions to take a vfsmount
+> > > instead of a mnt_idmap because I think that makes the intention clearer.
+> > 
+> > Please don't!
+> > 
+> > These internal lookup helpers intentionally do not take a vfsmount.
+> > First, because they can be called in places where access to a vfsmount
+> > isn't possible and we don't want to pass vfsmounts down to filesystems
+> > ever!
+> 
+> There are two sorts of internal lookup helpers.
+> Those that currently don't even take a mnt_idmap and are called, as you
+> say, in places where a vfsmount isn't available.
+> And those that are currently called with a mnt_idmap and called (after a
+> few cleanup) in places where a vfsmount is readily available.
 
-Could you pick this up for 6.12.y and 6.13.y?
+That's not the point. The vfsmount is the wrong data structure to pass
+to lookup_one(). The mount is completely immaterial to what it does. The
+only thing that matters is the idmap. Passing the vfsmount is actively
+misleading.
 
-https://lore.kernel.org/netfs/20250220152450.1075727-1-max.kellermann@iono=
-s.com/
+> 
+> 
+> > 
+> > Second, the mnt_idmap pointer is - with few safe exceptions - is
+> > retrieved once in the VFS and then passed down so that e.g., permission
+> > checking and file creation are guaranteed to use the same mnt_idmap
+> > pointer.
+> 
+> In every case that I changed a call to pass a vfsmount instead of a
+> mnt_idmap, the mnt_idmap had recently been fetched from the vfsmount,
+> often by mnt_idmap() in the first argument to lookup_one().  Sometimes
+> by file_mnt_idmap() or similar.  So the patch never changed the safety
+> of the idmap.
 
-Thanks,
-David
+Taking btrfs:
 
+        dentry = lookup_one(parent->mnt, QSTR_LEN(name, namelen), parent->dentry);
+        error = PTR_ERR(dentry);
+        if (IS_ERR(dentry))
+                goto out_unlock;
+
+        error = btrfs_may_create(idmap, dir, dentry);
+        if (error)
+                goto out_dput;
+
+You fetch the idmap pointer twice here. The only reason that this is
+safe is because I made it so that while an active writer is on a mount
+the idmap cannot be changed. But that's subtle knowledge. By passing the
+idmap pointer directly it is visually trivial to figure out that it is
+guaranteed to be the same idmap without having to know how
+mnt_want_write_file() interacts with mount_setattr().
+
+The changes here also make following the logic complex. The idmap
+pointer is fetched once and passed down everywhere it is needed. But
+suddenly that's not true anymore for lookup_one() where its the
+vfsmount. First question this raises is whether the mount topology
+somehow matters for the lookup when really it doesn't.
+
+Your cleanup series is really good with or without stuffing vfsmount
+into all of these helpers. So please just either resend it and continue
+passing struct mnt_idmap or I'll change it when I apply.
