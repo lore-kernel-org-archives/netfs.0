@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26221B6CE4;
-	Wed, 19 Mar 2025 14:21:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C120C1A3035;
+	Wed, 19 Mar 2025 14:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394110; cv=none; b=Ju1bb+s1RGXVr7XgMrcH7fki5J2/OrvTadnClEw7nOGZVws0d7I+Mp6pbueLNweMjGOcWZCnsauoXZ4ISBnGBicFB7WgiVht9r5Ii8EUgb0HZBiXYV1udzIyVGUPPaHrB4MEEyLJjybeURDooSXjy4/eKqymIaESbdZvFwHlbyw=
+	t=1742394133; cv=none; b=K5AJ7djHPnOozV+DsGqX0SVTI9eFEy3qKtpklc7Vd9/rgq8BHW1+gBbkr+8mS6rDJdn9hMENWNLhQlYFiHFJ1K/jcIZV88eqCSPp0hDy3fqJVoD4igvBhEKZ+Us8rBGWgadjFTZiyWqx0WdEBReMfsBkywleYcC1fD7t9qaqzqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394110; c=relaxed/simple;
-	bh=soauma06WUNMltjNHA6/kgyyRx+0y2ige4mJ9DWmGZI=;
+	s=arc-20240116; t=1742394133; c=relaxed/simple;
+	bh=H+gN1AibjtcsEJf9piaM0d1tmgVMeXaJuGgkrc7LZE8=;
 	h=Subject:To:Cc:From:Date:In-Reply-To:Message-ID:MIME-Version:
-	 Content-Type; b=rEVzOqA1nVUnProhTdzvP39Nv3pQfHd98hfVkccx62M8rsmTa2ZN+EXybRAzTXwU/tomDojW0sWzfrP1Bts8sn9YguVK197Jf6apBB63U75ElnoEs5nsfeOAfq5g9VLnptebeajWbQmTQ1z/5zBp/2BaRANnwYPxOZdwSL4FByQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mfg5ZIpM; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type; b=qnPrq0PybXJKqeaRPWEsXlW+otHAkqGDANM/tsvAWEX/GFCvTxOb+e/ImjW1amhRq0EvHT4yCndpAfrn+H0GAL5OHZ9x3Ifluf5EoUNgIKSGK0/KvaCMGl5yXTVbfzaJMtuwBHJRAqF1e9nkt8zQhA+j0wMt47/0eJISdecOV6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sjfsFcFz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mfg5ZIpM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA08C4CEE4;
-	Wed, 19 Mar 2025 14:21:50 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sjfsFcFz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F5AC4CEE4;
+	Wed, 19 Mar 2025 14:22:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742394110;
-	bh=soauma06WUNMltjNHA6/kgyyRx+0y2ige4mJ9DWmGZI=;
+	s=korg; t=1742394133;
+	bh=H+gN1AibjtcsEJf9piaM0d1tmgVMeXaJuGgkrc7LZE8=;
 	h=Subject:To:Cc:From:Date:In-Reply-To:From;
-	b=Mfg5ZIpMdFacDcFtjFEq1Hvu7nMNlF81e+f3CN38oqPAeKfEnlE7eAF82pHXmS4/L
-	 TinDk2oulsKtIEQV8qlb25VfebV8tl36X7ZavRXteUGx7/Vfklq4fRUViGFXrsNx3S
-	 eH+SYycMJbtpNJ24snkD0fG5VAZn3X7WApBn4sdc=
-Subject: Patch "fs/netfs/read_collect: add to next->prev_donated" has been added to the 6.12-stable tree
+	b=sjfsFcFzsME8IiiETsJnTSCFGM3SF4AfsLh5Uqxn+Jc3+9G9JoLQoFNKRIZ2F5Rvz
+	 gOLFmhsFlQr1vWpIohUuASQqKYV7F0d1KlLu3Do8sItoe9vzipkeNlHUDIn98ifjn6
+	 OaG2TlIR57bTHMyIA3LhkK4Fsjtf8w/vOThvX9PI=
+Subject: Patch "fs/netfs/read_collect: add to next->prev_donated" has been added to the 6.13-stable tree
 To: dhowells@redhat.com,gregkh@linuxfoundation.org,max.kellermann@ionos.com,netfs@lists.linux.dev
 Cc: <stable-commits@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 19 Mar 2025 07:20:31 -0700
+Date: Wed, 19 Mar 2025 07:20:53 -0700
 In-Reply-To: <20250220152450.1075727-1-max.kellermann@ionos.com>
-Message-ID: <2025031931-trousers-cinnamon-2266@gregkh>
+Message-ID: <2025031953-hunter-litter-778a@gregkh>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -46,12 +46,12 @@ This is a note to let you know that I've just added the patch titled
 
     fs/netfs/read_collect: add to next->prev_donated
 
-to the 6.12-stable tree which can be found at:
+to the 6.13-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
      fs-netfs-read_collect-add-to-next-prev_donated.patch
-and it can be found in the queue-6.12 subdirectory.
+and it can be found in the queue-6.13 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
 please let <stable@vger.kernel.org> know about it.
@@ -79,14 +79,12 @@ Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 Signed-off-by: David Howells <dhowells@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/netfs/read_collect.c | 2 +-
+ fs/netfs/read_collect.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
-index 8878b46589ff..cafadfe8e858 100644
 --- a/fs/netfs/read_collect.c
 +++ b/fs/netfs/read_collect.c
-@@ -284,7 +284,7 @@ static bool netfs_consume_read_data(struct netfs_io_subrequest *subreq, bool was
+@@ -284,7 +284,7 @@ donation_changed:
  				   netfs_trace_donate_to_deferred_next);
  	} else {
  		next = list_next_entry(subreq, rreq_link);
@@ -95,11 +93,8 @@ index 8878b46589ff..cafadfe8e858 100644
  		trace_netfs_donate(rreq, subreq, next, excess,
  				   netfs_trace_donate_to_next);
  	}
--- 
-2.47.2
-
 
 
 Patches currently in stable-queue which might be from max.kellermann@ionos.com are
 
-queue-6.12/fs-netfs-read_collect-add-to-next-prev_donated.patch
+queue-6.13/fs-netfs-read_collect-add-to-next-prev_donated.patch
