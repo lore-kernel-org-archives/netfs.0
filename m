@@ -1,89 +1,77 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB581FB3
-	for <netfs@lists.linux.dev>; Thu, 20 Mar 2025 13:49:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A764223327;
+	Thu, 20 Mar 2025 14:04:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742478578; cv=none; b=b15QcjsbUgTtogUG//ckhxe7yN26DDYXjGPJ+jv/AeFnFDYMFJl84G9w8ZzSr/+i9da0qudqIaP7gj9qNmarReH7+bLWBxZKZMMIgqDQyIwsb5cvNIQpsxVvSPJvHU6M1IJ2r4rkuA70OYqNBdtpQ1GNoH1fJQvDTOBBqzrDalA=
+	t=1742479449; cv=none; b=D/MxOGHAY5x/6zXggDHLfwZJyXt/7gH8oJLCVWMi1leit4sZHAcW9nZtx0mHyJg6oIoewXvIxd36AdjEu/Nvd/LLfdZNgGDL1nHfbzWFmgQH3CCAxY8094NQlj68iasqFnwH7WhyrXt5zDfGYeud1rNsxoR3kMLWi2ZDJf0Rzss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742478578; c=relaxed/simple;
-	bh=Vp5FyzqPsmlPXh/HHjTNFz3/y0/vLZFHi8YPl/640QY=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=u+E2N4moSJ5VibsAQHq35SDJEOLCkgY4+LvLp9iHEjExoMLMojZfCHvEW1IBlEovjcpkvOmmaS6UolE29549XfJHm75t3u8t9IGRQ4mi0fiW1MDllWlrowsr1pvzqGVfvN75BodGW7UxtPAExThyNfnz6wa3/1xAEOaQO9oSv/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YOM8M31y; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1742479449; c=relaxed/simple;
+	bh=KdGTcau9+SJS9CSWGq7TBl9V6nm+hHWTO0B1pT3se2U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ErLLaK1deXUfa0d+BQ+sIEkpR5UhcOkXknAuGgC4dde3K9bNKeuapectR5YwE99NgbCDvtJDIhcyzlPwImRcqnhxaAUYkQeHlZQfKAff9FHGsRyxznW4/ThlTk2HLoJa0vN62mc204vg6V5Dp1RSSyI7VvdmSdb0pVGSQasllWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qckZgwbG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YOM8M31y"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1742478575;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hrU0uEtyRGySnnXxrdQSoop8bdInMwNlwF4N216RXFI=;
-	b=YOM8M31yBE08hGmxcYiGnbEbNCChhAoMmAbmJYs9p6xde3EGON7qli3KSe56HjGm3xTpUB
-	TGSX4aPiJUJ5fIY8NuccoFf55z0B+cbFHvroKCUk3S25YkD6dc5Hx5m/i4NtLv2pvGlx2E
-	DGqEuU4TCxFVwKf7+aOVnZGjFBGRavw=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-553-FGT0v92ZNrm_0m0apwrEfA-1; Thu,
- 20 Mar 2025 09:49:32 -0400
-X-MC-Unique: FGT0v92ZNrm_0m0apwrEfA-1
-X-Mimecast-MFC-AGG-ID: FGT0v92ZNrm_0m0apwrEfA_1742478569
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 72799180AF50;
-	Thu, 20 Mar 2025 13:49:29 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.61])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A36B71800946;
-	Thu, 20 Mar 2025 13:49:26 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20250320-goldbarren-brauhaus-6d6ff0a7be72@brauner>
-References: <20250320-goldbarren-brauhaus-6d6ff0a7be72@brauner> <20250319031545.2999807-1-neil@brown.name> <20250319031545.2999807-4-neil@brown.name> <ee36dab38583d28205c4b40a87126c44cab69dc9.camel@kernel.org>
-To: Christian Brauner <brauner@kernel.org>
-Cc: dhowells@redhat.com, Jeff Layton <jlayton@kernel.org>,
-    NeilBrown <neil@brown.name>,
-    Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
-    Chuck Lever <chuck.lever@oracle.com>, linux-nfs@vger.kernel.org,
-    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 3/6] cachefiles: Use lookup_one() rather than lookup_one_len()
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qckZgwbG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F834C4CEDD;
+	Thu, 20 Mar 2025 14:04:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742479448;
+	bh=KdGTcau9+SJS9CSWGq7TBl9V6nm+hHWTO0B1pT3se2U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qckZgwbGBfIFsYC5+kKyLRkgRuuc8erSc0QgWpImdT3j9VH22JqEkbTw1IvMeDI9p
+	 nJOyFgIxtO9pj9vAyAA1elKUL+XTX+YTcUEG/qZi9+uONQaRVS1mtf8zWfIG7gvAuU
+	 DLukU/Jqms9kr4xzWU8UGmm/UpKk0peJHKF6evDiPV81wAgoxiVAaurcB0iobFKAiV
+	 RoayGOCgJIoURhsQVYM49TXI43dkd9qmzrzZeYMSa9H/oWXag8K+sShv9r0ckp0EvP
+	 DNw0oxeszERyUhz3FPtt/BqYGF5ZIremgkaR+Z2Xwr44Rs9v6XrV8mM/LNwF0LbMBg
+	 s51a44cd2PVTQ==
+Date: Thu, 20 Mar 2025 15:04:04 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Chuck Lever <chuck.lever@oracle.com>, 
+	linux-nfs@vger.kernel.org, netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 3/6] cachefiles: Use lookup_one() rather than
+ lookup_one_len()
+Message-ID: <20250320-dreck-landzunge-1d090b52153a@brauner>
+References: <20250320-goldbarren-brauhaus-6d6ff0a7be72@brauner>
+ <20250319031545.2999807-1-neil@brown.name>
+ <20250319031545.2999807-4-neil@brown.name>
+ <ee36dab38583d28205c4b40a87126c44cab69dc9.camel@kernel.org>
+ <3170280.1742478565@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3170279.1742478565.1@warthog.procyon.org.uk>
-Date: Thu, 20 Mar 2025 13:49:25 +0000
-Message-ID: <3170280.1742478565@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <3170280.1742478565@warthog.procyon.org.uk>
 
-Christian Brauner <brauner@kernel.org> wrote:
-
-> > > It also uses the lookup_one_len() family of functions which implicitly
-> > > use &nop_mnt_idmap.  This mixture of implicit and explicit could be
-> > > confusing.  When we eventually update cachefiles to support idmap mounts
-> > > it
+On Thu, Mar 20, 2025 at 01:49:25PM +0000, David Howells wrote:
+> Christian Brauner <brauner@kernel.org> wrote:
+> 
+> > > > It also uses the lookup_one_len() family of functions which implicitly
+> > > > use &nop_mnt_idmap.  This mixture of implicit and explicit could be
+> > > > confusing.  When we eventually update cachefiles to support idmap mounts
+> > > > it
+> > > 
+> > > Is that something we ever plan to do?
 > > 
-> > Is that something we ever plan to do?
+> > It should be pretty easy to do. I just didn't see a reason to do it yet.
+> > 
+> > Fwiw, the cache paths that cachefiles uses aren't private mounts like
+> > overlayfs does it, i.e., cachefiles doesn't do clone_private_mount() before
+> > stashing cache->mnt. ...
 > 
-> It should be pretty easy to do. I just didn't see a reason to do it yet.
-> 
-> Fwiw, the cache paths that cachefiles uses aren't private mounts like
-> overlayfs does it, i.e., cachefiles doesn't do clone_private_mount() before
-> stashing cache->mnt. ...
+> This is probably something cachefilesd needs to do in userspace before telling
+> the kernel through /dev/cachefiles where to find the cache.
 
-This is probably something cachefilesd needs to do in userspace before telling
-the kernel through /dev/cachefiles where to find the cache.
+Afaict, I don't think it matters whether the mount is actually attached
+to a mount namespace so cachefilesd could just do:
 
-David
+fd_tree = open_tree(AT_FDCWD, "/path/to/cache", AT_EMPTY_PATH | OPEN_TREE_CLONE);
 
+and use the detached mount for all cachefilesd interactions.
