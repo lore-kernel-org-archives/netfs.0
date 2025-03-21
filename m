@@ -1,136 +1,114 @@
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70FB78F5B
-	for <netfs@lists.linux.dev>; Fri, 21 Mar 2025 03:28:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB1F1E00B4
+	for <netfs@lists.linux.dev>; Fri, 21 Mar 2025 16:14:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742527697; cv=none; b=JUFSUn3AQDjS6zrPwSNSRTi6IgkNUqoCK42pCQ0KJ+yum2DEbkqRPoyQ/TIrUtzVlXVkGQN3dpFmqvZem9oo0JR6u4JrsmcikM0HDq0OVCsfyaXwwBExX2ESDBFPNuNJ383uM9oDnqtIWdBZcU4K2Q+8iafg+69wlkvFv7vGNxA=
+	t=1742573664; cv=none; b=kUW7zzXpISJyVC/40qqrbM/8CxUV4EaYAtp3z86bd5TnpC9zn7bMB6FF6BDJdAo8S1Uufe4p0vyYPhxrVi4Dbt6nyxdnR4lqhbDR6zYsze/cYR0N0w4y+vrsuLDo7JIrQQCK3fhXv2g6nrTX8it39y7URtg/15HLwIDj7ALsKYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742527697; c=relaxed/simple;
-	bh=7EB+XLUj7WAxah0ncVurTZhcT9/+thyh/oFOcciuKRM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=N0mlT99Wr5O1xUBlpzUgEpvhgFpktgLVEXVe636ZxdC31ZYqHVOVNjqQ8kSWW0qQpBgrTv/ynicXeMwwwFAPrAyeq7OCGI46EBzCLht5Mug9EKLSbrgetMUkCIvu+s6f+Fn+aixFL4j3b+TelU/ufagHrDmL7y71j1dCA4tCar8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JpZG7k0X; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742573664; c=relaxed/simple;
+	bh=E5flJCcw4QgcMHbG2/ZcWDVulabStm+nbnS5uKJa5d4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cn/MMnIMBxawxdhS5A3w9it6i5iC9mEVPs8evmZpymlGFq/oLorBaAr0eZ9id56h7o2sQ3p9I1TxMZt0GEccu8/VtuQIVsUZ0vRPyoziYW6x0N59K4aKBxHOYPYe/x48Xh+AWAnU4qm/CmIb4ftSx1qr+98ZC3yDbnHI/noyeU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=F/ijzHY8; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JpZG7k0X"
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5493b5bc6e8so1560834e87.2
-        for <netfs@lists.linux.dev>; Thu, 20 Mar 2025 20:28:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742527692; x=1743132492; darn=lists.linux.dev;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=q/1VHqP2pY1nreUUm6WpUhlMBXqnkAhk2/iI8qjStqc=;
-        b=JpZG7k0XL3b/3HXIXQEVZ+B4T/Nz2N0mZvhgIT7KqMbc/eXmTwjwANsi4355IhxQgP
-         pToxBj76PD/fJOjjbZ8kIEI+/Nrr313OduoCxs5wM8Wrqbc14hQ1KgH/YaFQ1cCnE8oH
-         //ACnWcX++nweQ1+q8lRUhc8wdlyrSZxp9rWU4Gd/8XQpkQl0EIaosq/gmknLpRzztVL
-         HXfsS59yuCRzMCHsOWHJ6rpj2MMinLaokwxSx7CfsnWPyLI+fGf067ZibT+gBzH3IwJH
-         0SZMtOYnnrqnG3iJs1jHn9//J1Ign8/JOQ6gbu+DeagQX2yqA2eO1KZC/xkV3S0jRtF8
-         vfJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742527692; x=1743132492;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=q/1VHqP2pY1nreUUm6WpUhlMBXqnkAhk2/iI8qjStqc=;
-        b=mJUyWIUajD8cnYs8vzllKZ8dpphW5hZ6cQDOugDLSVCRVP1zJUggEFQ6HLkXbquDjf
-         Xrmke+V3gCN0G6tHzgxoh1753bIAOD1V3mer5bsW3adJ833BhqhaMYRfjG2pp/DxjFjd
-         Dc2PUlSuA86b2dnhRq1VQcVYDrAr/MAm8N+Gmhe3O/waAgKPxNWE1PGLbxNPwOH8x9mf
-         kFk0mpPIRGS3qDDNCBHBdAnEOuuTy/SjwxIt0EyJcpHR1gFzCa4Tkj+S1BIQ/tc/nGbB
-         2C5j3SQJgbo2nLglaLK+D2fnjE7xjGCZEGxj16h91j3WNEW/tG/CgH3ZzeCxx9TuTgJB
-         qRrA==
-X-Gm-Message-State: AOJu0YzNBZ1Mw5tsJ0vtjDa5BkcrPwyZx/XFYwZwXXHHD+hknWEB6mB0
-	qFMTBoUJ51TBF6qlwq8s28pVDTa5z6zQb8jTImHV4lHpGnsiJo+pBhnFfICTSkgqJtf1yM9aJ7H
-	AW3HnrrAjSj6swrAic/r+CPNCV7DOmQ==
-X-Gm-Gg: ASbGncvpUC0fYYwX6EfEpjPT8yjiTkEPQ42qLAfrS+dmAnFmgElMIEvV5csFYcXXCYD
-	AJAwmm/sIDl0rlRMqLEANybnV1hKLVREt1CGF3qmqhN3/HunfR1NmyXGXkz683gDDllclFseDZd
-	ul9wVVXJyQ2Yw2XmGDDCAygY1/5PHR2VQmaYH8umrYXfWKpRHcXaJgJUSujvA=
-X-Google-Smtp-Source: AGHT+IEF6ouerg6OeEOuUYBiqOE05byojgX7xAJ513eHxIIG/2nHbYKY5t3q1qtPyhOmsErZdjJk/1SYcQGiDG1RgmM=
-X-Received: by 2002:a05:6512:1103:b0:549:7330:6a5a with SMTP id
- 2adb3069b0e04-54ad648f09dmr545113e87.23.1742527691530; Thu, 20 Mar 2025
- 20:28:11 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="F/ijzHY8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1742573660;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=r/FYjqrm1cAaAJapi0Y0E/iGdoYerOobI/I6FmFCbNM=;
+	b=F/ijzHY8bJ9J/D/M45RYlw+XotVhgsqNeA9Ix0qo2knxTn34Gc4S+sXjVkVvG8bIsPuH5q
+	qiTbprD2QelYLbeZfD+6ZtBtVYAFy79mkQyTuv38ilswbXw1RViP0/M6eXEte8CPNZG4et
+	gyj9GTa9uJR5PBnJnpvHqbH/YUr8/LU=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-583-ZVfXcCV0Pz25ASpylU61oA-1; Fri,
+ 21 Mar 2025 12:14:17 -0400
+X-MC-Unique: ZVfXcCV0Pz25ASpylU61oA-1
+X-Mimecast-MFC-AGG-ID: ZVfXcCV0Pz25ASpylU61oA_1742573655
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2CF751800259;
+	Fri, 21 Mar 2025 16:14:14 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.42.28.61])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A9D7F1801752;
+	Fri, 21 Mar 2025 16:14:10 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Leon Romanovsky <leonro@nvidia.com>
+Cc: David Howells <dhowells@redhat.com>,
+	Christian Brauner <christian@brauner.io>,
+	Matthew Wilcox <willy@infradead.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Steve French <smfrench@gmail.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH 0/4] iov_iter: Add composite, scatterlist and skbuff iterator types
+Date: Fri, 21 Mar 2025 16:14:00 +0000
+Message-ID: <20250321161407.3333724-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAH2r5muHk=mUQo_SPk3DdzC7=0VCNiS3fDtotHxYUkT746RP=w@mail.gmail.com>
-In-Reply-To: <CAH2r5muHk=mUQo_SPk3DdzC7=0VCNiS3fDtotHxYUkT746RP=w@mail.gmail.com>
-From: Steve French <smfrench@gmail.com>
-Date: Thu, 20 Mar 2025 22:27:53 -0500
-X-Gm-Features: AQ5f1Jp4O_xFycMeQS_QobF2XVQAOxR8prWmvK6Y7UCLqxUlI9wRdqEFiy5sSc4
-Message-ID: <CAH2r5mtKitjzG0jGiS7Z5PCAFiR3EAMP7oi+RNwj-4zvQeyNXA@mail.gmail.com>
-Subject: Fwd: xfstest results
-To: netfs@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-With the first four netfs patches + 6.14-rc7 running our standard
-regression tests to Azure with multichannel, I saw a couple of
-unexpected failures.
+Hi Leon,
 
-23dbb8c5ffaf netfs: Fix netfs_unbuffered_read() to return ssize_t
-rather than int
-78067c2bd7f9 netfs: Fix rolling_buffer_load_from_ra() to not clear mark bits
-6be938f6c265 netfs: Call `invalidate_cache` only if implemented
-5fb49e95f2c2 netfs: Fix collection of results during pause when
-collection offloaded
+Here are some patches that illustrate some of what I'm thinking of doing to
+iov iterators.  Note that they are incomplete as I won't have time to
+finish or test them before LSF, but I thought I'd post them for use as a
+discussion point.
 
-See:
-http://smb311-linux-testing.southcentralus.cloudapp.azure.com/#/builders/5/builds/403
+So the first thing I want to do is to move certain iterators out of line
+from the main inline iteration multiplexor.  This code gets relentlessly
+duplicated and adding further iterator types expands a whole load of
+places.  So the DISCARD iterator (which is just a simple short circuit) and
+the XARRAY iterator (which is obsolete) move out of line.
 
-Test generic/604
-+/mnt/scratch/48: No such file or directory
+Then I want to add three more types, for now:
 
-and also test generic/738
+ (1) ITER_ITERLIST.  A compound iterator that takes an array of iterators
+     of disparate types.  The aim here is to make it possible to fabricate
+     an network message in one go (say an RPC call) and pass it to a socket
+     without the need for corking.
 
-    +/data/xfstests-dev/tests/generic/738: line 31: /mnt/scratch/48:
-No such file or directory
-    +/data/xfstests-dev/tests/generic/738: line 31: /mnt/scratch/48:
-No such file or directory
-    +/data/xfstests-dev/tests/generic/738: line 31: /mnt/scratch/48:
-No such file or directory
-    +/data/xfstests-dev/tests/generic/738: line 31: /mnt/scratch/48:
-No such file or directory
-    +/data/xfstests-dev/tests/generic/738: line 31: /mnt/scratch/48:
-No such file or directory
+ (2) ITER_SCATTERLIST.  An iterator that takes a scatterlist.  This can be
+     used to act as a bridge in converting interfaces that currently take a
+     scatterlist (e.g. crypto).  It requires extra fields adding to the
+     iov_iter struct because chained scatterlists do not have have a rewind
+     capability and so iov_iter_revert() must go back to the beginning and
+     fast-forward.
 
-But with all six current netfs patches (including the two additional below):
-68109110fec1 netfs: Fix wait/wake to be consistent about the waitqueue used
-4f8443992c8c netfs: Fix the request's work item to not require a ref
+ (3) ITER_SKBUFF.  An iterator that takes a network buffer.  The aim here
+     is to render skb_to_sgvec() unnecessary for doing crypto operations.
 
-http://smb311-linux-testing.southcentralus.cloudapp.azure.com/#/builders/5/builds/404
+The patches can also be found here:
 
-I see a hang early on e.g. in cifs/100 then in cifs/103 (and all
-following cifs/105 generic/001 etc).  I don't see anything useful in
-/var/log/messages
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=iov-experimental
 
-I don't see anything suspicious in /proc/fs/cifs/DebugData but in
-/proc/fs/cifs/Stats I do see it shows a session reconnect, and I do
-see a suspicious number of open files (which oddly enough is created
-by an earlier test, before the hang cifs/100)
+David
 
-          Open files: 1 total (local), -2 open on server
+David Howells (4):
+  iov_iter: Move ITER_DISCARD and ITER_XARRAY iteration out-of-line
+  iov_iter: Add an iterator-of-iterators
+  iov_iter: Add a scatterlist iterator type
+  iov_iter: Add a scatterlist iterator type [INCOMPLETE]
 
-root@fedora29:~# cat /proc/fs/cifs/open_files
-# Version:1
-# Format:
-# <tree id> <ses id> <persistent fid> <flags> <count> <pid> <uid>
-<filename> <mid>
-0x5 0x792a00b20000a11 0x56ce090b 0x8001 2 5497 0 big-file 23
+ include/linux/iov_iter.h |  77 +----
+ include/linux/uio.h      |  37 +++
+ lib/iov_iter.c           | 675 ++++++++++++++++++++++++++++++++++++++-
+ 3 files changed, 710 insertions(+), 79 deletions(-)
 
-I will also try a more general test run to see if I can reproduce
-anything useful with those
-
-
---
-Thanks,
-
-Steve
-
-
--- 
-Thanks,
-
-Steve
