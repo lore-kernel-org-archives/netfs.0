@@ -1,90 +1,136 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC27715C158
-	for <netfs@lists.linux.dev>; Thu, 20 Mar 2025 14:04:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70FB78F5B
+	for <netfs@lists.linux.dev>; Fri, 21 Mar 2025 03:28:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742479501; cv=none; b=HLPQuukQoBrNiKZfCsjKpUZF3yaZAT4tAFeAEfRAq68NNiNioYKm/YEphTxF6V7WR14nLShQN4f2czmxzjbZLgJNHy+3ZdVpfOhpMT+O9nPrfwKqxvp4TlVxj4sKYP1rPRGx8OcMS25LhUsc6ZhZkllx9sWBuArq5wgEWgOrSbk=
+	t=1742527697; cv=none; b=JUFSUn3AQDjS6zrPwSNSRTi6IgkNUqoCK42pCQ0KJ+yum2DEbkqRPoyQ/TIrUtzVlXVkGQN3dpFmqvZem9oo0JR6u4JrsmcikM0HDq0OVCsfyaXwwBExX2ESDBFPNuNJ383uM9oDnqtIWdBZcU4K2Q+8iafg+69wlkvFv7vGNxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742479501; c=relaxed/simple;
-	bh=XDULgroMUvUU3j8Wr5RA8fyDZq/uwMLnQq9aIlty9JA=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=jLo4OJhZMM9EsGz8I7MV8iallB6HVQiB6LXZjuBf45VOz2uelLwBnfOTB/dOM6ksktvHaQczT7taWK/g0sHQRk5AQ2CfQwR4lNQCPYZjiauxUSaeTTRa7jhQVJtC6JXuEZbJjOEAe91/dcYI3oymR8JQ0sOSHKMSdmd8AiFn7oY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CTOpwTPa; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1742527697; c=relaxed/simple;
+	bh=7EB+XLUj7WAxah0ncVurTZhcT9/+thyh/oFOcciuKRM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Content-Type; b=N0mlT99Wr5O1xUBlpzUgEpvhgFpktgLVEXVe636ZxdC31ZYqHVOVNjqQ8kSWW0qQpBgrTv/ynicXeMwwwFAPrAyeq7OCGI46EBzCLht5Mug9EKLSbrgetMUkCIvu+s6f+Fn+aixFL4j3b+TelU/ufagHrDmL7y71j1dCA4tCar8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JpZG7k0X; arc=none smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CTOpwTPa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1742479498;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=btUkWu1ncXCsNFem2XFocy6A3pII+7ssUPnWyb31aMs=;
-	b=CTOpwTPaxLhyz7cdr/EpLUjdr0ovKeHy7EPKBlqIa4HoEjxvxksZ12gIdSUqeB7yLRJAmx
-	L54UMwrkruhLMdaAaIyhaMLYKOuZBl1Bl4lr8790oSqg5+Ni25OnOt9BoK2ekM0qaZx5cC
-	dXbuEYFC0IpoIDbLsuUfXfC8OBu5rwE=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-97-72OSsSbtO4KsID3Dzapgmw-1; Thu,
- 20 Mar 2025 10:04:55 -0400
-X-MC-Unique: 72OSsSbtO4KsID3Dzapgmw-1
-X-Mimecast-MFC-AGG-ID: 72OSsSbtO4KsID3Dzapgmw_1742479494
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 89F121801A06;
-	Thu, 20 Mar 2025 14:04:53 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.61])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C60E93001D21;
-	Thu, 20 Mar 2025 14:04:50 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20250319031545.2999807-2-neil@brown.name>
-References: <20250319031545.2999807-2-neil@brown.name> <20250319031545.2999807-1-neil@brown.name>
-To: NeilBrown <neil@brown.name>
-Cc: dhowells@redhat.com, Alexander Viro <viro@zeniv.linux.org.uk>,
-    Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-    Chuck Lever <chuck.lever@oracle.com>,
-    Jeff Layton <jlayton@kernel.org>, linux-nfs@vger.kernel.org,
-    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 1/6] VFS: improve interface for lookup_one functions
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JpZG7k0X"
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5493b5bc6e8so1560834e87.2
+        for <netfs@lists.linux.dev>; Thu, 20 Mar 2025 20:28:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742527692; x=1743132492; darn=lists.linux.dev;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=q/1VHqP2pY1nreUUm6WpUhlMBXqnkAhk2/iI8qjStqc=;
+        b=JpZG7k0XL3b/3HXIXQEVZ+B4T/Nz2N0mZvhgIT7KqMbc/eXmTwjwANsi4355IhxQgP
+         pToxBj76PD/fJOjjbZ8kIEI+/Nrr313OduoCxs5wM8Wrqbc14hQ1KgH/YaFQ1cCnE8oH
+         //ACnWcX++nweQ1+q8lRUhc8wdlyrSZxp9rWU4Gd/8XQpkQl0EIaosq/gmknLpRzztVL
+         HXfsS59yuCRzMCHsOWHJ6rpj2MMinLaokwxSx7CfsnWPyLI+fGf067ZibT+gBzH3IwJH
+         0SZMtOYnnrqnG3iJs1jHn9//J1Ign8/JOQ6gbu+DeagQX2yqA2eO1KZC/xkV3S0jRtF8
+         vfJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742527692; x=1743132492;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=q/1VHqP2pY1nreUUm6WpUhlMBXqnkAhk2/iI8qjStqc=;
+        b=mJUyWIUajD8cnYs8vzllKZ8dpphW5hZ6cQDOugDLSVCRVP1zJUggEFQ6HLkXbquDjf
+         Xrmke+V3gCN0G6tHzgxoh1753bIAOD1V3mer5bsW3adJ833BhqhaMYRfjG2pp/DxjFjd
+         Dc2PUlSuA86b2dnhRq1VQcVYDrAr/MAm8N+Gmhe3O/waAgKPxNWE1PGLbxNPwOH8x9mf
+         kFk0mpPIRGS3qDDNCBHBdAnEOuuTy/SjwxIt0EyJcpHR1gFzCa4Tkj+S1BIQ/tc/nGbB
+         2C5j3SQJgbo2nLglaLK+D2fnjE7xjGCZEGxj16h91j3WNEW/tG/CgH3ZzeCxx9TuTgJB
+         qRrA==
+X-Gm-Message-State: AOJu0YzNBZ1Mw5tsJ0vtjDa5BkcrPwyZx/XFYwZwXXHHD+hknWEB6mB0
+	qFMTBoUJ51TBF6qlwq8s28pVDTa5z6zQb8jTImHV4lHpGnsiJo+pBhnFfICTSkgqJtf1yM9aJ7H
+	AW3HnrrAjSj6swrAic/r+CPNCV7DOmQ==
+X-Gm-Gg: ASbGncvpUC0fYYwX6EfEpjPT8yjiTkEPQ42qLAfrS+dmAnFmgElMIEvV5csFYcXXCYD
+	AJAwmm/sIDl0rlRMqLEANybnV1hKLVREt1CGF3qmqhN3/HunfR1NmyXGXkz683gDDllclFseDZd
+	ul9wVVXJyQ2Yw2XmGDDCAygY1/5PHR2VQmaYH8umrYXfWKpRHcXaJgJUSujvA=
+X-Google-Smtp-Source: AGHT+IEF6ouerg6OeEOuUYBiqOE05byojgX7xAJ513eHxIIG/2nHbYKY5t3q1qtPyhOmsErZdjJk/1SYcQGiDG1RgmM=
+X-Received: by 2002:a05:6512:1103:b0:549:7330:6a5a with SMTP id
+ 2adb3069b0e04-54ad648f09dmr545113e87.23.1742527691530; Thu, 20 Mar 2025
+ 20:28:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3170777.1742479489.1@warthog.procyon.org.uk>
-Date: Thu, 20 Mar 2025 14:04:49 +0000
-Message-ID: <3170778.1742479489@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+References: <CAH2r5muHk=mUQo_SPk3DdzC7=0VCNiS3fDtotHxYUkT746RP=w@mail.gmail.com>
+In-Reply-To: <CAH2r5muHk=mUQo_SPk3DdzC7=0VCNiS3fDtotHxYUkT746RP=w@mail.gmail.com>
+From: Steve French <smfrench@gmail.com>
+Date: Thu, 20 Mar 2025 22:27:53 -0500
+X-Gm-Features: AQ5f1Jp4O_xFycMeQS_QobF2XVQAOxR8prWmvK6Y7UCLqxUlI9wRdqEFiy5sSc4
+Message-ID: <CAH2r5mtKitjzG0jGiS7Z5PCAFiR3EAMP7oi+RNwj-4zvQeyNXA@mail.gmail.com>
+Subject: Fwd: xfstest results
+To: netfs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-NeilBrown <neil@brown.name> wrote:
+With the first four netfs patches + 6.14-rc7 running our standard
+regression tests to Azure with multichannel, I saw a couple of
+unexpected failures.
 
-> Also the path component name is passed as "name" and "len" which are
-> (confusingly?) separate by the "base".  In some cases the len in simply
-> "strlen" and so passing a qstr using QSTR() would make the calling
-> clearer.
-> Other callers do pass separate name and len which are stored in a
-> struct.  Sometimes these are already stored in a qstr, other times it
-> easily could be.
-> 
-> So this patch changes these three functions to receive a 'struct qstr',
-> and improves the documentation.
+23dbb8c5ffaf netfs: Fix netfs_unbuffered_read() to return ssize_t
+rather than int
+78067c2bd7f9 netfs: Fix rolling_buffer_load_from_ra() to not clear mark bits
+6be938f6c265 netfs: Call `invalidate_cache` only if implemented
+5fb49e95f2c2 netfs: Fix collection of results during pause when
+collection offloaded
 
-You did want 'struct qstr' not 'struct qstr *' right?  I think there are
-arches where this will cause the compiler to skip a register argument or two
-if it's the second argument or third argument - i386 for example.  Plus you
-have an 8-byte alignment requirement because of the u64 in it that may suck if
-passed through several layers of function.
+See:
+http://smb311-linux-testing.southcentralus.cloudapp.azure.com/#/builders/5/builds/403
 
-David
+Test generic/604
++/mnt/scratch/48: No such file or directory
 
+and also test generic/738
+
+    +/data/xfstests-dev/tests/generic/738: line 31: /mnt/scratch/48:
+No such file or directory
+    +/data/xfstests-dev/tests/generic/738: line 31: /mnt/scratch/48:
+No such file or directory
+    +/data/xfstests-dev/tests/generic/738: line 31: /mnt/scratch/48:
+No such file or directory
+    +/data/xfstests-dev/tests/generic/738: line 31: /mnt/scratch/48:
+No such file or directory
+    +/data/xfstests-dev/tests/generic/738: line 31: /mnt/scratch/48:
+No such file or directory
+
+But with all six current netfs patches (including the two additional below):
+68109110fec1 netfs: Fix wait/wake to be consistent about the waitqueue used
+4f8443992c8c netfs: Fix the request's work item to not require a ref
+
+http://smb311-linux-testing.southcentralus.cloudapp.azure.com/#/builders/5/builds/404
+
+I see a hang early on e.g. in cifs/100 then in cifs/103 (and all
+following cifs/105 generic/001 etc).  I don't see anything useful in
+/var/log/messages
+
+I don't see anything suspicious in /proc/fs/cifs/DebugData but in
+/proc/fs/cifs/Stats I do see it shows a session reconnect, and I do
+see a suspicious number of open files (which oddly enough is created
+by an earlier test, before the hang cifs/100)
+
+          Open files: 1 total (local), -2 open on server
+
+root@fedora29:~# cat /proc/fs/cifs/open_files
+# Version:1
+# Format:
+# <tree id> <ses id> <persistent fid> <flags> <count> <pid> <uid>
+<filename> <mid>
+0x5 0x792a00b20000a11 0x56ce090b 0x8001 2 5497 0 big-file 23
+
+I will also try a more general test run to see if I can reproduce
+anything useful with those
+
+
+--
+Thanks,
+
+Steve
+
+
+-- 
+Thanks,
+
+Steve
