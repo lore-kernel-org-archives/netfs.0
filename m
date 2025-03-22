@@ -1,291 +1,131 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4225C22DFA6
-	for <netfs@lists.linux.dev>; Fri, 21 Mar 2025 16:14:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942F61FC3;
+	Sat, 22 Mar 2025 00:27:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742573686; cv=none; b=rA2okusg6LJfvIiJoNJahYzhE8AAtnmxaovZxcDWB+VPYKpbSgsMVz18lcqGxU7PH1UvN/hWCmJKOCBXJO56XOqvdKOjE6rEt7QFydYZS36gMODjKasGYmRBxJa46mCvnG0NMN/E+FFpBii6KjKkczJ4rQYDKoUNgoykBUzIKqQ=
+	t=1742603247; cv=none; b=O7zx/tZocuU8LCPISDk5AhRWuliIgOpochY42IVaPZSLrRtOg+OfeL0bCc/kAYB6SQb2VxZ0kCaPZgfBs04RtyalGvpYTScRPoK2pgLFhFy36fCYpsFvS5AVh/QmTYpM/4y5k6ThW0+hR4uXYDifuJLtGr04ANdZFCk0Eb72Vgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742573686; c=relaxed/simple;
-	bh=QJbi407Gq8VLLgi9E0vdiZ8uX6C0oRfqhu+9aRZPznQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aE1PBbPaaSb6QyzuJBJrCsBhb9ymC0IzDpl2dFfmzVUgdB0HT+B9A3v1k97hav6VTzwfN41sF7g4Jf0ZEzpRCdwy7tu9R3UNC0fKOgGqhMllNUaH77v0tH1UVM60BSJ8b4PcPymw8v4QAWkOSS7abm3WLsCOMA15yOfCzacwzsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HabGai7G; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1742603247; c=relaxed/simple;
+	bh=DrlCH/iqHTEpFQKgA/k9tNIYbEIxWdNnYd18HL0MgrA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VchMRm50LdcNBPlNSR6f/mdWWpEq6hRmfN7GLT637NsbBYVX1ZWeLUTkCclS84vyvuHY8xze3qo7+F1b+2qKo/nKVMV9Q2B7XLV8GjQQxe5d5x1igLOh59Wcvzd6ugAyeNbXO0jOrosahO+rdMfRhQJJ5nzfy5qeMBeft3GzwrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=MrzpIxk5; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HabGai7G"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1742573682;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZSC5YwicpO03gYExoUotpiHs2EHAFn+TU50pqasUPmU=;
-	b=HabGai7GfQgOh2CFTJWPaOqVh8LOD9JM14mKMs75kiV4u+agWMX+kqHPL2kjNSDHhycAb1
-	pPGgrJ0pprfGB3OjTJCCDNpQi+ExbTQ/PkbA0WLX+yfZKDuQLdBrfeth7/uaMgVG2++NOg
-	Xhl8Gt4nkBGcchq93ROSHuj2VS3y0aE=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-208-Ev37cor8PDCv9N0Af2ivaQ-1; Fri,
- 21 Mar 2025 12:14:37 -0400
-X-MC-Unique: Ev37cor8PDCv9N0Af2ivaQ-1
-X-Mimecast-MFC-AGG-ID: Ev37cor8PDCv9N0Af2ivaQ_1742573674
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3680C1801A07;
-	Fri, 21 Mar 2025 16:14:34 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.42.28.61])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id ED872180174E;
-	Fri, 21 Mar 2025 16:14:30 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Leon Romanovsky <leonro@nvidia.com>
-Cc: David Howells <dhowells@redhat.com>,
-	Christian Brauner <christian@brauner.io>,
-	Matthew Wilcox <willy@infradead.org>,
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="MrzpIxk5"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=6RcqxdhK4NkqWrwbthS7JFj+tnwiFnWkiu0VDGcpYi4=; b=MrzpIxk5R2ZUlhwuk0T29nzgGL
+	Ol7c8OeagDLEvy/MsscjiFPPBEEdVLTlrM0zP1H4ApYBuUFcUmKN4+imBzMlvz9NXd4H5ke3Nu0vO
+	BYB2i2iP9WXuBEpNhjUnAsnCQIuX9UTjJFABlF2/28/rpi6JokFdazrmU39f/fG/KSHaU4P69wvtI
+	YH+GhMZhcq3P8CUJs7BpaFM9RLiKvefBGwTpogLiR6jEbjCXc2rHOUA9IQVxRH/BDoMG9ZfM7EWbC
+	otrdyhvVuauKvB76tjNjsfcUqzDqUXqa0uYxEbM2f7/mjpMB07ipsv3f41UZLeFZfrW3R6QlzZ7fv
+	Xst0QPeg==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.1 #2 (Red Hat Linux))
+	id 1tvmhr-0000000BBMu-21PF;
+	Sat, 22 Mar 2025 00:27:19 +0000
+Date: Sat, 22 Mar 2025 00:27:19 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: NeilBrown <neil@brown.name>
+Cc: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	David Howells <dhowells@redhat.com>,
 	Chuck Lever <chuck.lever@oracle.com>,
-	Steve French <smfrench@gmail.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 4/4] iov_iter: Add a scatterlist iterator type [INCOMPLETE]
-Date: Fri, 21 Mar 2025 16:14:04 +0000
-Message-ID: <20250321161407.3333724-5-dhowells@redhat.com>
-In-Reply-To: <20250321161407.3333724-1-dhowells@redhat.com>
-References: <20250321161407.3333724-1-dhowells@redhat.com>
+	Jeff Layton <jlayton@kernel.org>, linux-nfs@vger.kernel.org,
+	netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 1/6] VFS: improve interface for lookup_one functions
+Message-ID: <20250322002719.GC2023217@ZenIV>
+References: <20250319031545.2999807-1-neil@brown.name>
+ <20250319031545.2999807-2-neil@brown.name>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250319031545.2999807-2-neil@brown.name>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-Add an iterator type that can iterate over a socket buffer.
+On Wed, Mar 19, 2025 at 02:01:32PM +1100, NeilBrown wrote:
 
-[!] Note this is not yet completely implemented and won't compile.
+> -struct dentry *lookup_one(struct mnt_idmap *idmap, const char *name,
+> -			  struct dentry *base, int len)
+> +struct dentry *lookup_one(struct mnt_idmap *idmap, struct qstr name,
+> +			  struct dentry *base)
 
-Signed-off-by: David Howells <dhowells@redhat.com>
----
- include/linux/uio.h |  10 ++++
- lib/iov_iter.c      | 121 ++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 131 insertions(+)
+>  {
+>  	struct dentry *dentry;
+>  	struct qstr this;
+> @@ -2942,7 +2940,7 @@ struct dentry *lookup_one(struct mnt_idmap *idmap, const char *name,
+>  
+>  	WARN_ON_ONCE(!inode_is_locked(base->d_inode));
+>  
+> -	err = lookup_one_common(idmap, name, base, len, &this);
+> +	err = lookup_one_common(idmap, name.name, base, name.len, &this);
 
-diff --git a/include/linux/uio.h b/include/linux/uio.h
-index 0e50f4af6877..87d6ba660489 100644
---- a/include/linux/uio.h
-+++ b/include/linux/uio.h
-@@ -13,6 +13,7 @@
- struct page;
- struct folio_queue;
- struct scatterlist;
-+struct sk_buff;
- 
- typedef unsigned int __bitwise iov_iter_extraction_t;
- 
-@@ -32,6 +33,7 @@ enum iter_type {
- 	ITER_DISCARD,
- 	ITER_ITERLIST,
- 	ITER_SCATTERLIST,
-+	ITER_SKBUFF,
- };
- 
- #define ITER_SOURCE	1	// == WRITE
-@@ -77,6 +79,7 @@ struct iov_iter {
- 				void __user *ubuf;
- 				struct iov_iterlist *iterlist;
- 				struct scatterlist *sglist;
-+				const struct sk_buff *skb;
- 			};
- 			size_t count;
- 		};
-@@ -171,6 +174,11 @@ static inline bool iov_iter_is_scatterlist(const struct iov_iter *i)
- 	return iov_iter_type(i) == ITER_SCATTERLIST;
- }
- 
-+static inline bool iov_iter_is_skbuff(const struct iov_iter *i)
-+{
-+	return iov_iter_type(i) == ITER_SKBUFF;
-+}
-+
- static inline unsigned char iov_iter_rw(const struct iov_iter *i)
- {
- 	return i->data_source ? WRITE : READ;
-@@ -329,6 +337,8 @@ void iov_iter_iterlist(struct iov_iter *i, unsigned int direction,
- 		       size_t count);
- void iov_iter_scatterlist(struct iov_iter *i, unsigned int direction,
- 			  struct scatterlist *sglist, size_t count);
-+void iov_iter_skbuff(struct iov_iter *i, unsigned int direction,
-+		     const struct sk_buff *skb, size_t count);
- ssize_t iov_iter_get_pages2(struct iov_iter *i, struct page **pages,
- 			size_t maxsize, unsigned maxpages, size_t *start);
- ssize_t iov_iter_get_pages_alloc2(struct iov_iter *i, struct page ***pages,
-diff --git a/lib/iov_iter.c b/lib/iov_iter.c
-index ed9859af3c5d..01215316d272 100644
---- a/lib/iov_iter.c
-+++ b/lib/iov_iter.c
-@@ -12,6 +12,7 @@
- #include <linux/scatterlist.h>
- #include <linux/instrumented.h>
- #include <linux/iov_iter.h>
-+#include <linux/skbuff.h>
- 
- static __always_inline
- size_t copy_to_user_iter(void __user *iter_to, size_t progress,
-@@ -918,6 +919,29 @@ void iov_iter_scatterlist(struct iov_iter *iter, unsigned int direction,
- }
- EXPORT_SYMBOL(iov_iter_scatterlist);
- 
-+/**
-+ * iov_iter_skbuff - Initialise an I/O iterator for a socket buffer
-+ * @iter: The iterator to initialise.
-+ * @direction: The direction of the transfer.
-+ * @skb: The socket buffer
-+ * @count: The size of the I/O buffer in bytes.
-+ *
-+ * Set up an I/O iterator that walks over a socket buffer.
-+ */
-+void iov_iter_skbuff(struct iov_iter *i, unsigned int direction,
-+		     const struct sk_buff *skb, size_t count)
-+{
-+	WARN_ON(direction & ~(READ | WRITE));
-+	*iter = (struct iov_iter){
-+		.iter_type	= ITER_SKBUFF,
-+		.data_source	= direction,
-+		.skb		= skb,
-+		.iov_offset	= 0,
-+		.count		= count,
-+	};
-+}
-+EXPORT_SYMBOL(iov_iter_skbuff);
-+
- static bool iov_iter_aligned_iovec(const struct iov_iter *i, unsigned addr_mask,
- 				   unsigned len_mask)
- {
-@@ -2314,6 +2338,10 @@ ssize_t iov_iter_extract_pages(struct iov_iter *i,
- 		return iov_iter_extract_scatterlist_pages(i, pages, maxsize,
- 							  maxpages, extraction_flags,
- 							  offset0);
-+	if (iov_iter_is_skbuff(i))
-+		return iov_iter_extract_skbuff_pages(i, pages, maxsize,
-+						     maxpages, extraction_flags,
-+						     offset0);
- 	return -EFAULT;
- }
- EXPORT_SYMBOL_GPL(iov_iter_extract_pages);
-@@ -2449,6 +2477,97 @@ static size_t iterate_scatterlist(struct iov_iter *iter, size_t len, void *priv,
- 	return progress;
- }
- 
-+struct skbuff_iter_ctx {
-+	iov_step_f	step;
-+	size_t		progress;
-+	void		*priv;
-+	void		*priv2;
-+};
-+
-+static bool iterate_skbuff_frag(const struct sk_buff *skb, struct skbuff_iter_ctx *ctx,
-+				int offset, int len, int recursion_level)
-+{
-+	struct sk_buff *frag_iter;
-+	size_t skip = offset, part, remain, consumed;
-+
-+	if (unlikely(recursion_level >= 24))
-+		return false;
-+
-+	part = skb_headlen(skb);
-+	if (skip < part) {
-+		part = umin(part - skip, len);
-+		remain = ctx->step(skb->data + skip, ctx->progress, part,
-+				   ctx->priv, ctx->priv2);
-+		consumed = part - remain;
-+		ctx->progress += consumed;
-+		len -= consumed;
-+		if (remain > 0 || len <= 0)
-+			return false;
-+		skip = 0;
-+	} else {
-+		skip -= part;
-+	}
-+
-+	for (int i = 0; i < skb_shinfo(skb)->nr_frags; i++) {
-+		const skb_frag_t *frag = &skb_shinfo(skb)->frags[i];
-+		size_t fsize = skb_frag_size(frag);
-+
-+		if (skip >= fsize) {
-+			skip -= fsize;
-+			continue;
-+		}
-+
-+		part = umin(fsize - skip, len);
-+		remain = ctx->step(skb_frag_address(frag) + skip,
-+				   ctx->progress, part, ctx->priv, ctx->priv2);
-+		consumed = part - remain;
-+		ctx->progress += consumed;
-+		len -= consumed;
-+		if (remain > 0 || len <= 0)
-+			return false;
-+		skip = 0;
-+	}
-+
-+	skb_walk_frags(skb, frag_iter) {
-+		size_t fsize = frag_iter->len;
-+
-+		if (skip >= fsize) {
-+			skip -= fsize;
-+			continue;
-+		}
-+
-+		part = umin(fsize - skip, len);
-+		if (!iterate_skbuff_frag(frag_iter, ctx, skb_headlen(skb) + skip,
-+					 part, recursion_level + 1))
-+			return false;
-+		len -= part;
-+		if (len <= 0)
-+			return false;
-+		skip = 0;
-+	}
-+	return true;
-+}
-+
-+/*
-+ * Handle iteration over ITER_SKBUFF.  Modelled on __skb_to_sgvec().
-+ */
-+static size_t iterate_skbuff(struct iov_iter *iter, size_t len, void *priv, void *priv2,
-+			     iov_step_f step)
-+{
-+	struct skbuff_iter_ctx ctx = {
-+		.step		= step,
-+		.progress	= 0,
-+		.priv		= priv,
-+		.priv2		= priv2,
-+	};
-+
-+	iterate_skbuff_frag(iter->skb, &ctx, iter->iov_offset, len, 0);
-+
-+	iter->iov_offset += ctx.progress;
-+	iter->count -= ctx.progress;
-+	return ctx.progress;
-+}
-+
- /*
-  * Out of line iteration for iterator types that don't need such fast handling.
-  */
-@@ -2463,6 +2582,8 @@ size_t __iterate_and_advance2(struct iov_iter *iter, size_t len, void *priv,
- 		return iterate_iterlist(iter, len, priv, priv2, ustep, step);
- 	if (iov_iter_is_scatterlist(iter))
- 		return iterate_scatterlist(iter, len, priv, priv2, step);
-+	if (iov_iter_is_skbuff(iter))
-+		return iterate_skbuff(iter, len, priv, priv2, step);
- 	WARN_ON(1);
- 	return 0;
- }
+No.  Just look at what lookup_one_common() is doing as the first step.
 
+        this->name = name;
+	this->len = len;
+
+You copy your argument's fields to corresponding fields of *&this.  It might make
+sense to pass a qstr, but not like that - just pass a _pointer_ to struct qstr instead.
+
+Have lookup_one_common() do this:
+
+static int lookup_one_common(struct mnt_idmap *idmap,
+                             struct qstr *this, struct dentry *base)
+{
+	const unsigned char *name = this->name;
+	int len = this->len;
+        if (!len)
+                return -EACCES;
+
+        this->hash = full_name_hash(base, name, len);
+        if (is_dot_dotdot(name, len))
+                return -EACCES;
+
+        while (len--) {
+                unsigned int c = *name++;
+                if (c == '/' || c == '\0')
+                        return -EACCES;
+        }
+        /*
+         * See if the low-level filesystem might want
+         * to use its own hash..
+         */
+        if (base->d_flags & DCACHE_OP_HASH) {
+                int err = base->d_op->d_hash(base, this);
+                if (err < 0)
+                        return err;
+        }
+
+        return inode_permission(idmap, base->d_inode, MAY_EXEC);
+}
+
+and adjust the callers; e.g.
+struct dentry *lookup_one(struct mnt_idmap *idmap, struct qstr *this,
+			  struct dentry *base)
+{
+        struct dentry *dentry;
+        int err;
+
+        WARN_ON_ONCE(!inode_is_locked(base->d_inode));
+
+        err = lookup_one_common(idmap, this, base);
+        if (err)
+                return ERR_PTR(err);
+
+        dentry = lookup_dcache(this, base, 0);
+        return dentry ? dentry : __lookup_slow(this, base, 0);
+}
+
+with callers passing idmap, &QSTR_LEN(name, len), base instead of
+idmap, name, base, len.  lookup_one_common() looks at the fields
+separately; its callers do not.
