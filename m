@@ -1,237 +1,140 @@
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11208198E77
-	for <netfs@lists.linux.dev>; Sun, 23 Mar 2025 20:43:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3276EB7C
+	for <netfs@lists.linux.dev>; Sun, 23 Mar 2025 21:03:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742762586; cv=none; b=WBFLDJeu4YLKmWZr/6etVrIuKyyreS22vZtc+VQFJkSkoeZ503S16ciIitUeYZU6Dn8c2HDPS/e/KGasT8YNxVNBi9SatrnZ5LgZ6H0GDx7aRNLNol3mrjcaKDvM82OJqSfRdicLQaeBCRXqmHH0aIM1Fn+w/Bdy7hCOh+DA9iA=
+	t=1742763826; cv=none; b=i7zT9wQbD5k8LPYZsfdEakhJ/jd8FuL3QY20qlFTG4NJf88Tf9WvrKqUdbyWhxajfhE1qBwPkpZQK49G3SrchJNFg1IjuR6cUelR2bH2hvuda/WawsEVfarCZpnI0ZA9Fm0YJng/bfhRrnI8GXtKOHhQ2BF6XGqPsDe//l67D2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742762586; c=relaxed/simple;
-	bh=rzEwX5PH/qAGY+bhsRL81jqJv6vs5mkFpvoAbiwi2SA=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=DjILjUBjcDPh0gzIkHW+gfqTQIUEj9DqcHheqSrW2kDMkQuqKBMZTibV1HlLbP1wYeC00jYWI/yvXsIvft7DLdT4D2vgOQp7fVbG8sh6uvvTO3+YOUykrL4/Lfb8sj5j1sONbtY4DMCutLrkEllqp24CD/dN+ms44V9FuweAr78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-3d43c0dbe6aso76961505ab.1
-        for <netfs@lists.linux.dev>; Sun, 23 Mar 2025 13:43:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742762584; x=1743367384;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PNknJcMk1YTbqvhhfgGi4v6+sWs6yFszc7c3LyWQGFg=;
-        b=PdkdM6hypErbsba4qnwsXbOfqlqNmevvzik2gfQ2zw/EfdNEUSk0vN/UhGTTsZYgqo
-         XS4HhumF/YZGy0vmlqOJvqX3WHV1KjCmqTc98L5FNrlHEHr7FaiZ3/rbI+80iDgtCxVX
-         RgrrhvVfw5uH0JubqC8bCyPAbKzTqww4MMQKTca5elBllVsV72Z1oHdVz97sbsjEDuHX
-         hGc10EVxlNN0d8bK9d4TkXBXNIk/5hiyfLvrOtHo4Vc59bKCsvDh7n8auozLS6gBHqi1
-         r1WGXbouDnRbV1qSmLLHCl621MwvNk9gfMNjTJwgiMa6PogJFkhSiqk49dQpcW8zz/YN
-         Qt7w==
-X-Forwarded-Encrypted: i=1; AJvYcCVISQYlASKAgf0KNu1Zn9NMIygN1+Ls637vZHw0wg6pAsPnMap0558a1bHym7aTz1C7aO3bRA==@lists.linux.dev
-X-Gm-Message-State: AOJu0YwBjFsZcmtbiCXPSFHYfAvrt5cjTGhE6kDW77Jhg6ber5DP4o+U
-	zT1C30mHjS8hzxCBxSOb8DGB22gPfL3ud0OjxxFElIas6LCGOe7l7Uk+8muSjZOpqDwt94n2qlF
-	LZZTj5YthN1PjoVe9fTBrikBaHdEA7b22EiMhTG5IrOqHPqNZ89t6CG4=
-X-Google-Smtp-Source: AGHT+IGhdN9eAgoZzkNFnMHrWSO8u1g1bwivmbDZaTKCgl37ObpudXjSqxqMPA/IgCFVhWmR4Yo8YSRo074qzBqL3mZlVjFXMdnS
+	s=arc-20240116; t=1742763826; c=relaxed/simple;
+	bh=3JIOq5ochZh3ws1s6lkhbkBuciyTNdAoIUvUlBxhw4Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UYTbCUHcae7CtEDbFAupjHZswMR37Zv03B2vqKehcZPY90thiFbS6OdYsTI9UaRCKY6iTEmMP7NiIe2IQAl3PNAri7Lx+WaBl1z2pk/NWeHeIB/9TQ2jPG6fTsSNIbY14r5aoaKLb0RDnMT2Nn/4irG7bUn8q81cp/+sx5KPiH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WhA2nw0c; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WhA2nw0c"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1742763824;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5vpBGKmNly8SWNcuxVYwn8ZTG+u+mEvCdgvHyTuKsXM=;
+	b=WhA2nw0coodqe47hmw/wk9TZGynTMbYwdhmUEf/04N3h/7qU1z1hQoQ3s17L8Ui454eLFn
+	cxrVp6ZdjWOpLPQO7oWNFj42ogwXWNCQwfYm3D2k64Ku3zhPPfJmAaDlcNZRnQIxclpM01
+	1PVZtYWfvLJmPHmYCGrBW1DHGhjSihg=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-594-n1SnNG9dOo-weTbTFX0LEw-1; Sun,
+ 23 Mar 2025 17:03:34 -0400
+X-MC-Unique: n1SnNG9dOo-weTbTFX0LEw-1
+X-Mimecast-MFC-AGG-ID: n1SnNG9dOo-weTbTFX0LEw_1742763812
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BA2F01801A12;
+	Sun, 23 Mar 2025 21:03:31 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.224.42])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id A60EE180A803;
+	Sun, 23 Mar 2025 21:03:26 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Sun, 23 Mar 2025 22:02:58 +0100 (CET)
+Date: Sun, 23 Mar 2025 22:02:52 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: Mateusz Guzik <mjguzik@gmail.com>
+Cc: syzbot <syzbot+62262fdc0e01d99573fc@syzkaller.appspotmail.com>,
+	brauner@kernel.org, dhowells@redhat.com, jack@suse.cz,
+	jlayton@kernel.org, kprateek.nayak@amd.com,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netfs@lists.linux.dev, swapnil.sapkal@amd.com,
+	syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk
+Subject: Re: [syzbot] [netfs?] INFO: task hung in netfs_unbuffered_write_iter
+Message-ID: <20250323210251.GD14883@redhat.com>
+References: <20250323184848.GB14883@redhat.com>
+ <67e05e30.050a0220.21942d.0003.GAE@google.com>
+ <20250323194701.GC14883@redhat.com>
+ <CAGudoHHmvU54MU8dsZy422A4+ZzWTVs7LFevP7NpKzwZ1YOqgg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a92:c263:0:b0:3cf:c773:6992 with SMTP id
- e9e14a558f8ab-3d59611acdbmr121196155ab.12.1742762584071; Sun, 23 Mar 2025
- 13:43:04 -0700 (PDT)
-Date: Sun, 23 Mar 2025 13:43:04 -0700
-In-Reply-To: <cqyyq5vbtxbz3cpvgdy4hupy3eykhv5fzc46aehgjnk2lifda4@w3jnwtvigvoh>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <67e07258.050a0220.21942d.0007.GAE@google.com>
-Subject: Re: [syzbot] [netfs?] INFO: task hung in netfs_unbuffered_write_iter
-From: syzbot <syzbot+62262fdc0e01d99573fc@syzkaller.appspotmail.com>
-To: brauner@kernel.org, dhowells@redhat.com, jack@suse.cz, jlayton@kernel.org, 
-	kprateek.nayak@amd.com, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, mjguzik@gmail.com, netfs@lists.linux.dev, 
-	oleg@redhat.com, swapnil.sapkal@amd.com, syzkaller-bugs@googlegroups.com, 
-	viro@zeniv.linux.org.uk
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGudoHHmvU54MU8dsZy422A4+ZzWTVs7LFevP7NpKzwZ1YOqgg@mail.gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Hello,
+Prateek, Mateusz, thanks for your participation!
 
-syzbot has tested the proposed patch but the reproducer is still triggering an issue:
-INFO: task hung in netfs_unbuffered_write_iter
+On 03/23, Mateusz Guzik wrote:
+>
+> On Sun, Mar 23, 2025 at 8:47 PM Oleg Nesterov <oleg@redhat.com> wrote:
+> >
+> > OK, as expected.
+> >
+> > Dear syzbot, thank you.
+> >
+> > So far I think this is another problem revealed by aaec5a95d59615523db03dd5
+> > ("pipe_read: don't wake up the writer if the pipe is still full").
+> >
+> > I am going to forget about this report for now and return to it later, when
+> > all the pending pipe-related changes in vfs.git are merged.
+> >
+>
+> How do you ask syzbot for all stacks?
 
-INFO: task syz.0.17:6690 blocked for more than 143 seconds.
-      Not tainted 6.13.0-rc1-syzkaller-00017-gaaec5a95d596-dirty #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz.0.17        state:D stack:25184 pid:6690  tgid:6689  ppid:6491   flags:0x00004004
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5369 [inline]
- __schedule+0xe58/0x5ad0 kernel/sched/core.c:6756
- __schedule_loop kernel/sched/core.c:6833 [inline]
- schedule+0xe7/0x350 kernel/sched/core.c:6848
- bit_wait+0x15/0xe0 kernel/sched/wait_bit.c:237
- __wait_on_bit+0x62/0x180 kernel/sched/wait_bit.c:49
- out_of_line_wait_on_bit+0xda/0x110 kernel/sched/wait_bit.c:64
- wait_on_bit include/linux/wait_bit.h:77 [inline]
- netfs_unbuffered_write_iter_locked+0xba8/0xe70 fs/netfs/direct_write.c:105
- netfs_unbuffered_write_iter+0x413/0x6d0 fs/netfs/direct_write.c:193
- v9fs_file_write_iter+0xbf/0x100 fs/9p/vfs_file.c:404
- new_sync_write fs/read_write.c:586 [inline]
- vfs_write+0x5ae/0x1150 fs/read_write.c:679
- ksys_write+0x12b/0x250 fs/read_write.c:731
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fbba998d169
-RSP: 002b:00007fbba97f9038 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 00007fbba9ba5fa0 RCX: 00007fbba998d169
-RDX: 0000000000007fec RSI: 0000400000000540 RDI: 0000000000000007
-RBP: 00007fbba9a0e2a0 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000000 R14: 00007fbba9ba5fa0 R15: 00007ffea301fe68
- </TASK>
+Heh, I don't know.
 
-Showing all locks held in the system:
-2 locks held by kworker/u8:0/11:
- #0: ffff88801b081148 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work+0x1293/0x1ba0 kernel/workqueue.c:3204
- #1: ffffc90000107d80 ((work_completion)(&rreq->work)){+.+.}-{0:0}, at: process_one_work+0x921/0x1ba0 kernel/workqueue.c:3205
-2 locks held by kworker/u8:1/12:
- #0: ffff88801b081148 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work+0x1293/0x1ba0 kernel/workqueue.c:3204
- #1: ffffc90000117d80 ((work_completion)(&rreq->work)){+.+.}-{0:0}, at: process_one_work+0x921/0x1ba0 kernel/workqueue.c:3205
-1 lock held by khungtaskd/30:
- #0: ffffffff8e1bac80 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:337 [inline]
- #0: ffffffff8e1bac80 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:849 [inline]
- #0: ffffffff8e1bac80 (rcu_read_lock){....}-{1:3}, at: debug_show_all_locks+0x7f/0x390 kernel/locking/lockdep.c:6744
-2 locks held by kworker/u8:2/35:
- #0: ffff88801b081148 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work+0x1293/0x1ba0 kernel/workqueue.c:3204
- #1: ffffc90000ab7d80 ((work_completion)(&rreq->work)){+.+.}-{0:0}, at: process_one_work+0x921/0x1ba0 kernel/workqueue.c:3205
-2 locks held by kworker/u8:4/80:
- #0: ffff88801b081148 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work+0x1293/0x1ba0 kernel/workqueue.c:3204
- #1: ffffc9000213fd80 ((work_completion)(&rreq->work)){+.+.}-{0:0}, at: process_one_work+0x921/0x1ba0 kernel/workqueue.c:3205
-3 locks held by kworker/u8:6/2887:
-2 locks held by kworker/u8:7/2936:
- #0: ffff88801b081148 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work+0x1293/0x1ba0 kernel/workqueue.c:3204
- #1: ffffc9000bc87d80 ((work_completion)(&rreq->work)){+.+.}-{0:0}, at: process_one_work+0x921/0x1ba0 kernel/workqueue.c:3205
-2 locks held by kworker/u8:8/3460:
- #0: ffff88801b081148 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work+0x1293/0x1ba0 kernel/workqueue.c:3204
- #1: ffffc9000c917d80 ((work_completion)(&rreq->work)){+.+.}-{0:0}, at: process_one_work+0x921/0x1ba0 kernel/workqueue.c:3205
-2 locks held by kworker/u8:9/3519:
- #0: ffff88801b081148 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work+0x1293/0x1ba0 kernel/workqueue.c:3204
- #1: ffffc9000c757d80 ((work_completion)(&rreq->work)){+.+.}-{0:0}, at: process_one_work+0x921/0x1ba0 kernel/workqueue.c:3205
-2 locks held by kworker/u8:10/3600:
- #0: ffff88801b081148 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work+0x1293/0x1ba0 kernel/workqueue.c:3204
- #1: ffffc9000cbe7d80 ((work_completion)(&rreq->work)){+.+.}-{0:0}, at: process_one_work+0x921/0x1ba0 kernel/workqueue.c:3205
-2 locks held by kworker/u8:11/3645:
- #0: ffff88801b081148 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work+0x1293/0x1ba0 kernel/workqueue.c:3204
- #1: ffffc9000d047d80 ((work_completion)(&rreq->work)){+.+.}-{0:0}, at: process_one_work+0x921/0x1ba0 kernel/workqueue.c:3205
-2 locks held by kworker/u8:12/3693:
- #0: ffff88801b081148 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work+0x1293/0x1ba0 kernel/workqueue.c:3204
- #1: ffffc9000d437d80 ((work_completion)(&rreq->work)){+.+.}-{0:0}, at: process_one_work+0x921/0x1ba0 kernel/workqueue.c:3205
-2 locks held by getty/5579:
- #0: ffff8880315940a0 (&tty->ldisc_sem){++++}-{0:0}, at: tty_ldisc_ref_wait+0x24/0x80 drivers/tty/tty_ldisc.c:243
- #1: ffffc90002fde2f0 (&ldata->atomic_read_lock){+.+.}-{4:4}, at: n_tty_read+0xfba/0x1480 drivers/tty/n_tty.c:2211
-3 locks held by syz.0.17/6690:
- #0: ffff88807c837eb8 (&f->f_pos_lock){+.+.}-{4:4}, at: fdget_pos+0x267/0x390 fs/file.c:1191
- #1: ffff88807341a420 (sb_writers#14){.+.+}-{0:0}, at: ksys_write+0x12b/0x250 fs/read_write.c:731
- #2: ffff8880739f0148 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: netfs_start_io_direct+0x116/0x260 fs/netfs/locking.c:188
-3 locks held by syz.1.19/6790:
- #0: ffff88802beef7b8 (&f->f_pos_lock){+.+.}-{4:4}, at: fdget_pos+0x267/0x390 fs/file.c:1191
- #1: ffff888055054420 (sb_writers#14){.+.+}-{0:0}, at: ksys_write+0x12b/0x250 fs/read_write.c:731
- #2: ffff8880739f07b8 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: netfs_start_io_direct+0x116/0x260 fs/netfs/locking.c:188
-3 locks held by syz.2.22/6813:
- #0: ffff888034a757b8 (&f->f_pos_lock){+.+.}-{4:4}, at: fdget_pos+0x267/0x390 fs/file.c:1191
- #1: ffff8880736a2420 (sb_writers#14){.+.+}-{0:0}, at: ksys_write+0x12b/0x250 fs/read_write.c:731
- #2: ffff8880739f0e28 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: netfs_start_io_direct+0x116/0x260 fs/netfs/locking.c:188
-3 locks held by syz.3.24/6832:
- #0: ffff88802fbce9b8 (&f->f_pos_lock){+.+.}-{4:4}, at: fdget_pos+0x267/0x390 fs/file.c:1191
- #1: ffff888030d96420 (sb_writers#14){.+.+}-{0:0}, at: ksys_write+0x12b/0x250 fs/read_write.c:731
- #2: ffff888073af0148 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: netfs_start_io_direct+0x116/0x260 fs/netfs/locking.c:188
-3 locks held by syz.4.26/6857:
- #0: ffff8880355be638 (&f->f_pos_lock){+.+.}-{4:4}, at: fdget_pos+0x267/0x390 fs/file.c:1191
- #1: ffff8880331c0420 (sb_writers#14){.+.+}-{0:0}, at: ksys_write+0x12b/0x250 fs/read_write.c:731
- #2: ffff888073af07b8 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: netfs_start_io_direct+0x116/0x260 fs/netfs/locking.c:188
-3 locks held by syz.5.28/6882:
- #0: ffff8880635d1eb8 (&f->f_pos_lock){+.+.}-{4:4}, at: fdget_pos+0x267/0x390 fs/file.c:1191
- #1: ffff88807347c420 (sb_writers#14){.+.+}-{0:0}, at: ksys_write+0x12b/0x250 fs/read_write.c:731
- #2: ffff8880739f1498 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: netfs_start_io_direct+0x116/0x260 fs/netfs/locking.c:188
-3 locks held by syz.6.30/6910:
- #0: ffff88807b32e2b8 (&f->f_pos_lock){+.+.}-{4:4}, at: fdget_pos+0x267/0x390 fs/file.c:1191
- #1: ffff888029cb0420 (sb_writers#14){.+.+}-{0:0}, at: ksys_write+0x12b/0x250 fs/read_write.c:731
- #2: ffff8880739f1b08 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: netfs_start_io_direct+0x116/0x260 fs/netfs/locking.c:188
-3 locks held by syz.7.32/6938:
- #0: ffff88802fba9278 (&f->f_pos_lock){+.+.}-{4:4}, at: fdget_pos+0x267/0x390 fs/file.c:1191
- #1: ffff88806225e420 (sb_writers#14){.+.+}-{0:0}, at: ksys_write+0x12b/0x250 fs/read_write.c:731
- #2: ffff888073af0e28 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: netfs_start_io_direct+0x116/0x260 fs/netfs/locking.c:188
-3 locks held by syz.8.34/6969:
- #0: ffff8880336ea478 (&f->f_pos_lock){+.+.}-{4:4}, at: fdget_pos+0x267/0x390 fs/file.c:1191
- #1: ffff88802a7a4420 (sb_writers#14){.+.+}-{0:0}, at: ksys_write+0x12b/0x250 fs/read_write.c:731
- #2: ffff888073af1498 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: netfs_start_io_direct+0x116/0x260 fs/netfs/locking.c:188
-3 locks held by syz.9.36/6996:
- #0: ffff88801e2c27f8 (&f->f_pos_lock){+.+.}-{4:4}, at: fdget_pos+0x267/0x390 fs/file.c:1191
- #1: ffff88802d796420 (sb_writers#14){.+.+}-{0:0}, at: ksys_write+0x12b/0x250 fs/read_write.c:731
- #2: ffff8880739f2178 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: netfs_start_io_direct+0x116/0x260 fs/netfs/locking.c:188
+> The reproducer *does* use pipes, but it is unclear to me if they play
+> any role here
 
-=============================================
+please see the reproducer,
 
-NMI backtrace for cpu 1
-CPU: 1 UID: 0 PID: 30 Comm: khungtaskd Not tainted 6.13.0-rc1-syzkaller-00017-gaaec5a95d596-dirty #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- nmi_cpu_backtrace+0x27b/0x390 lib/nmi_backtrace.c:113
- nmi_trigger_cpumask_backtrace+0x29c/0x300 lib/nmi_backtrace.c:62
- trigger_all_cpu_backtrace include/linux/nmi.h:162 [inline]
- check_hung_uninterruptible_tasks kernel/hung_task.c:234 [inline]
- watchdog+0xf14/0x1240 kernel/hung_task.c:397
- kthread+0x2c1/0x3a0 kernel/kthread.c:389
- ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
-Sending NMI from CPU 1 to CPUs 0:
-NMI backtrace for cpu 0
-CPU: 0 UID: 0 PID: 5871 Comm: kworker/0:4 Not tainted 6.13.0-rc1-syzkaller-00017-gaaec5a95d596-dirty #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
-Workqueue: events_power_efficient gc_worker
-RIP: 0010:__lock_acquire+0x2fe/0x3c40 kernel/locking/lockdep.c:5162
-Code: 47 10 48 89 c2 48 89 44 24 50 48 b8 00 00 00 00 00 fc ff df 48 c1 ea 03 80 3c 02 00 0f 85 70 2b 00 00 49 8d 47 18 4d 89 67 10 <48> 89 c2 48 89 44 24 48 48 b8 00 00 00 00 00 fc ff df 48 c1 ea 03
-RSP: 0018:ffffc90003ad7990 EFLAGS: 00000046
-RAX: ffff8880315f53c8 RBX: 0000000000000000 RCX: 0000000000000002
-RDX: 1ffff110062bea78 RSI: 1ffff110062bea75 RDI: ffff8880315f53b8
-RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000001
-R10: 000000000000000a R11: 0000000000000003 R12: ffffffff8e1bac80
-R13: ffff8880315f4880 R14: 0000000000000021 R15: ffff8880315f53b0
-FS:  0000000000000000(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000000c008d0a000 CR3: 000000000df7e000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <NMI>
- </NMI>
- <TASK>
- lock_acquire.part.0+0x11b/0x380 kernel/locking/lockdep.c:5849
- rcu_lock_acquire include/linux/rcupdate.h:337 [inline]
- rcu_read_lock include/linux/rcupdate.h:849 [inline]
- gc_worker+0x24d/0x1760 net/netfilter/nf_conntrack_core.c:1532
- process_one_work+0x9c5/0x1ba0 kernel/workqueue.c:3229
- process_scheduled_works kernel/workqueue.c:3310 [inline]
- worker_thread+0x6c8/0xf00 kernel/workqueue.c:3391
- kthread+0x2c1/0x3a0 kernel/kthread.c:389
- ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
+	https://syzkaller.appspot.com/x/repro.c?x=10d6a44c580000
 
+  res = syscall(__NR_pipe2, /*pipefd=*/0x400000001900ul, /*flags=*/0ul);
+  if (res != -1) {
+    r[2] = *(uint32_t*)0x400000001900;
+    r[3] = *(uint32_t*)0x400000001904;
+  }
 
-Tested on:
+then
 
-commit:         aaec5a95 pipe_read: don't wake up the writer if the pi..
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-console output: https://syzkaller.appspot.com/x/log.txt?x=11550804580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=8d5a2956e94d7972
-dashboard link: https://syzkaller.appspot.com/bug?extid=62262fdc0e01d99573fc
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=10e90804580000
+  res = syscall(__NR_dup, /*oldfd=*/r[3]);
+  if (res != -1)
+    r[4] = res;
+
+so r[2] and r[4] are the read/write fd's.
+
+then later
+
+   memcpy((void*)0x400000000280, "trans=fd,", 9);
+   ...
+   memcpy((void*)0x400000000289, "rfdno", 5);
+   ...
+   sprintf((char*)0x40000000028f, "0x%016llx", (long long)r[2]);
+   ...
+   memcpy((void*)0x4000000002a2, "wfdno", 5);
+   ...
+   sprintf((char*)0x4000000002a8, "0x%016llx", (long long)r[4]);
+   ...
+   syscall(__NR_mount, /*src=*/0ul, /*dst=*/0x400000000000ul,
+           /*type=*/0x400000000040ul, /*flags=*/0ul, /*opts=*/0x400000000280ul);
+
+so this pipe is actually used as "trans=fd".
+
+> -- and notably we don't know if there is someone stuck
+> in pipe code, resulting in not waking up the reported thread.
+
+Yes, I am not familiar with 9p or netfs, so I don't know either.
+
+Oleg.
 
