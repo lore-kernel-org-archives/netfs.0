@@ -1,174 +1,110 @@
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2075.outbound.protection.outlook.com [40.107.212.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18FF0433A6
-	for <netfs@lists.linux.dev>; Sun, 23 Mar 2025 19:50:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.75
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742759460; cv=fail; b=e4WwxFt3LkMxRNkjJ86DK566CP1YtsDEa3DH8CybgLMJU0e0+7IWHEp8o/7aU6wzUISsOV3MeyL9XS7AnKQEzSoBFvo8X4PH5ddK5yZXMlHw9C0M23Kh9HCMPoabLDsziYMHW2u0jUA4ue23mJiRA8zRl9FYMpHmD6hComXWro8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742759460; c=relaxed/simple;
-	bh=z55Gz56za39C3sjAP9Lb4zTVymqC0X6JHvt2n+NVXHw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=eHbYfTSbmEGrH+fyx2xvpy7nt5Xugw67+o/bF0WanOO48MJ3ETnz+sERfD1uo87HRlnNDq0R7QLXYAsXmKxcK5o0ALK64bjdCTtB+gsyj27mcUQxeQDoGFbEPmGOAIwjRcwdZhw4FdDHVFC6mgzxc+FMhFTfg+yN4skdQK2tGaE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=2c4zU1c8; arc=fail smtp.client-ip=40.107.212.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4742353AC
+	for <netfs@lists.linux.dev>; Sun, 23 Mar 2025 19:53:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742759593; cv=none; b=kI8IOZVoo5dO932cPRDfFNR14rbppYT7LCbjwOVpjN0kXuwL7Iy6InjGJHBSq/+ALfllo7Z8nnj5mJXOaSkkqrBCYVTN/gGkvWEfs9cKRj4yOFQs3H01Fnjdj3owEWlfHPSenLhdhADN0G463TpTlTHD/tcI7kln82lHUfZhYGo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742759593; c=relaxed/simple;
+	bh=/D+nG4uW10nRpZVc2GkyF6TytJKeK32ybhtrWcO80fU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=s+G+QoMTXfgj9pphPGXi8vgybvCK3wRpLN2//RatyhoVzuJZkl7pnT3T0Gdf1giJoUmLVxFZsCjMKriLMkYqk93VjJlIFbv+YJJ8nI68O2pnnLaONwQzwz0oTJCEmNB5GCGpwQX7/cQnPcrZH5d5oPW07duEEFJn4LCFKbaIFkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fMFmSPhH; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="2c4zU1c8"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=J+G6pM3V6OHoF5ZYZ3olXLq7zHiNbwFRvW/wpI3qyhmAASf2HzYBxPopAx63pAaPg9DrZaLr6hpz5flaVPfyzmV1Puj89OCXvvXSqysYHDhXfU1XoaCU8G1VXgGrQOWAKVSxCQBfSFzCwTU1+GprKmbvaGIRdiAoyp/CfIUQdYLMqAksXxWaQ0v5x9Jnqd49h6dKyJ9NOmlARviGuazl5z8eALFu0kyWb3Z91ikeBtK1rJsBnO/qNAjO0F0CI66DcOND3gRB9TfxljIS5da2bIBqP64sXjLnntK2ZTx1Hy0wVYWl5EQ+zfYuD2g05MfXR9Uh4ulKWi/xp5dOZdfdUA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bioPFA65gArxZ5kNg6BQB/qc6THJBJWwxanL9UTbMrw=;
- b=zDpB/dwqrFOhJr8PSgg58fKw6glZVrHlfWU/Znif9BKgR4mA/JGcu4i0JS/ckFecdf391oVGnoFS1ieWbHt7AdXiGjDRxJ7dGTWslDOfvBk6dTixjQ3s8yNf5CZouiGyqYRfImXNwZFSDWIwi9Us+bl0ao50tGKj9vQ/xMQpV20eS9PBsnrUS0kq3fu5MVTGa0n6ECDemLD7LPPeRdgXsxGGKk3vCNIROB0hsA44K9ravqeLgpJIn+BteBngnBCF/sON0s12J0W4eySG+ElfLAD8Ywf67fL641itLMY3EUk7X3TVSFf6IFto4y8F7SrEhv0zDOE8TrHxeeO2fFVIrg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bioPFA65gArxZ5kNg6BQB/qc6THJBJWwxanL9UTbMrw=;
- b=2c4zU1c8KaKf2nj44OXevjKtWrqBUEIhgXWdAbFfT2N9/1E/UXN+g6nctUD2Jmqe5EYpk3JA0vRR/8xbwudq7SAY0bLdjbxKjZA2f/roDN8+zNiFzf8rxImJEQAfZ4rAPSCTvkBmv/mKT3WnDi74OikJFI3YZSb5FFmfo/vTeTE=
-Received: from SJ0PR03CA0033.namprd03.prod.outlook.com (2603:10b6:a03:33e::8)
- by IA1PR12MB9531.namprd12.prod.outlook.com (2603:10b6:208:596::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.28; Sun, 23 Mar
- 2025 19:50:56 +0000
-Received: from CY4PEPF0000FCBE.namprd03.prod.outlook.com
- (2603:10b6:a03:33e:cafe::dc) by SJ0PR03CA0033.outlook.office365.com
- (2603:10b6:a03:33e::8) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8534.37 via Frontend Transport; Sun,
- 23 Mar 2025 19:50:55 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000FCBE.mail.protection.outlook.com (10.167.242.100) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8534.20 via Frontend Transport; Sun, 23 Mar 2025 19:50:54 +0000
-Received: from [10.252.90.31] (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Sun, 23 Mar
- 2025 14:50:50 -0500
-Message-ID: <791d5b5a-3204-41cf-8796-b26018824333@amd.com>
-Date: Mon, 24 Mar 2025 01:20:47 +0530
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fMFmSPhH"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5e5e63162a0so5791198a12.3
+        for <netfs@lists.linux.dev>; Sun, 23 Mar 2025 12:53:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742759590; x=1743364390; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/D+nG4uW10nRpZVc2GkyF6TytJKeK32ybhtrWcO80fU=;
+        b=fMFmSPhHFW8ehXtipJd9syxJ90igdYEFdNrjxHrludyIc9P8eXEhnUYXo6EyEW8AiE
+         KpvdUsyywT95syD2Myw0gLM4lJSLFq0XPDYYsDDZ6/hh0HSjA7M2XWwPBqeQKNkEVxdA
+         COOkfp687v4oBKkyDPz9Uwx2fOQYessk/0kye0Jrnty2899+sosUYus3bihWojjIahyb
+         Bv1D07yjdOrKqr0g1Pq9s40ccggAmZZg4BImQJHjMJ1LKeP4OzvFnH8WIhE0pMwjD5Zs
+         mS2W9awsiMCp50jPEHrctmFBbceSqSUFRQ8bY5ugTSbPc4NumTjn5K61rHTk4R7ItcE0
+         RRqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742759590; x=1743364390;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/D+nG4uW10nRpZVc2GkyF6TytJKeK32ybhtrWcO80fU=;
+        b=i0K0owZ0uZj9cwu7TbYQAv1Dth4DH0vfFPznuOf5wT6lcVvzI3AovmGc+KDh3R5RiL
+         Ku8gxzUIUDRAdOqpSgPjIrM0zdNK1Vcq9D8IgTNrCgNWTZafypdfMsYl4FVNLYC6P9KN
+         4vk9udVwcAZw7/fO3f7x3unOsDkdu9aoigHt2YBDa5Ho5v734W6qYNNaOF6Y/3Niqof9
+         R0wLtcNokSeuSa3TnBRBd9rjenUmav/9trFAVaszpgG8zpUQpJ1k/mG+sWhuYVPTjPbl
+         viB24Deb8Qhwr3ncGZv/nhiK8gw8cvVH9piYqYA90djMMmOR6OQGV4irHM5HkdoJ1EmJ
+         eYKw==
+X-Forwarded-Encrypted: i=1; AJvYcCWGUXzFfVNdBmLCTLatJFA+x5OwHKbuAqzz9Lj+UWwaxdx00nv5VYt16Eq3ROXZX8Cc+5t7Fg==@lists.linux.dev
+X-Gm-Message-State: AOJu0YyDR1M5HrI/gpE7tcC5DL7y5fH1vcVavILBMcJyuhxHTP19pEnc
+	/oCiPTp00QhE7P8HzMailFFDG2me/hkZKlVx2evn+RKPh1of+V/7MpCJLgMKpSJ709wAGWelTv0
+	8XGjZ5o2t6fDeglqC/eiS7J6Sloo=
+X-Gm-Gg: ASbGncvGWbnjvc0WKquHJ98mv9eHq9zR3FTj0VTkeYGuFpsYS3OjG+J6TN1lxDXRi52
+	mmCJMlrprVyTSQF2H7+YV0G7elcPHzjXtMkyiznSYmnQ9JitadHAzpHvLWEDwo7Ce/ia2VjOz5+
+	XZcuhN2rt7iEE814RMzAC+/PooFw==
+X-Google-Smtp-Source: AGHT+IHoxQWQN8FbIDI0a4E/ODBLoiOjcLkhiQ5MPps/DpREbWQPxM3AVzbSmry+3Kvx9vewOOtvo2jMDaQvoLHZ3vQ=
+X-Received: by 2002:a05:6402:270d:b0:5eb:cc1b:773a with SMTP id
+ 4fb4d7f45d1cf-5ebcd4f709dmr7581807a12.23.1742759590271; Sun, 23 Mar 2025
+ 12:53:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [syzbot] [netfs?] INFO: task hung in netfs_unbuffered_write_iter
-To: Oleg Nesterov <oleg@redhat.com>, syzbot
-	<syzbot+62262fdc0e01d99573fc@syzkaller.appspotmail.com>
-CC: <brauner@kernel.org>, <dhowells@redhat.com>, <jack@suse.cz>,
-	<jlayton@kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <mjguzik@gmail.com>, <netfs@lists.linux.dev>,
-	<swapnil.sapkal@amd.com>, <syzkaller-bugs@googlegroups.com>,
-	<viro@zeniv.linux.org.uk>
-References: <20250323184848.GB14883@redhat.com>
- <67e05e30.050a0220.21942d.0003.GAE@google.com>
+References: <20250323184848.GB14883@redhat.com> <67e05e30.050a0220.21942d.0003.GAE@google.com>
  <20250323194701.GC14883@redhat.com>
-Content-Language: en-US
-From: K Prateek Nayak <kprateek.nayak@amd.com>
 In-Reply-To: <20250323194701.GC14883@redhat.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000FCBE:EE_|IA1PR12MB9531:EE_
-X-MS-Office365-Filtering-Correlation-Id: 300e54d9-b91a-478b-6ec1-08dd6a44060b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|7416014|376014|30052699003;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cHNRdHVyZEdJMlMzVzJrdUdkOVRhM0pNNmJQcnMzV1dXR2RSbTdzQ0IzaXBF?=
- =?utf-8?B?MUR0ZHRySHNxUzFFMlJ5Wkd1RHphSzlJT0NUQnFmV1pvZmR1L0pyY29vOG96?=
- =?utf-8?B?a3dRMzcrR1JJemhoSVd1Q2hyanJRSXpFRkd5YlpUZDdFWWwySGVIKzN0VnYw?=
- =?utf-8?B?R3gyWUFjRDhGVnBBd0FQYzVNSHFZS016bzZNcXJYQ2Q5RllZL29KS2I3dmYv?=
- =?utf-8?B?TEhQbVg1QkZkNVRLS1RpeHk1L21sRGR5dCtzWEh5NnJZdERiUE9xYUR4bmRo?=
- =?utf-8?B?SEFUOHVveTBvQjJOTmEyaFFHNjZ1ejc4SkVYN3NkMXhFamFhVUlaUk5mM0ZL?=
- =?utf-8?B?MElMN3pmV1JqTlFINm56clh2YjIvekduYk5iN1c4VFlka2s3MEYzQjBMWjJX?=
- =?utf-8?B?RVIyank3SGlpWEVKS3A1K3FpcHNvbDVrczVWRlJrU1ROWlJTckRMeTlTRWNk?=
- =?utf-8?B?RmxXZTdONlhqZ0ZVeHYzSTJsdEt4ZkJENEtvWWxWaytCOGE1K3FIUEVBZFFS?=
- =?utf-8?B?a3llaXVQMWI1QTlyNFJERkZBTHBxZm1mVUxPTFBBMCswTDhPbnpJR0I2eUwy?=
- =?utf-8?B?amlTTUZOYkthN3hRYjVmV1Rzb2NVK0t4Wlc2QTdWK1VvUWx5NzJaOCtNNHFs?=
- =?utf-8?B?U3hlWCswSTRyZlhHQVp4QUlzZUhLUWh0NHF1TGZBSkJ5cTAwazhvc0U2ZWRw?=
- =?utf-8?B?L0xFYUxnT3lLVHE4SG45dHZUUk5CdGRjaXl2NTcvckR6aHVjNHZiRlZDVUlO?=
- =?utf-8?B?ditTWG1EcHFQVFZOVXV1eHR0cnhTY3BIMXd6d2hrWTFqMnhPYXhnbFRiekJX?=
- =?utf-8?B?MjdpNjgxa21tN0xWZUM4cUd4MmJkWExwamJWYmdZdktEanhRVVA2WjdmaE5E?=
- =?utf-8?B?YkJZSGtyak5IdFNVOW1WY3pvSnBOcWdmTFZ2Vzc2VFB5MkhLSVdnbUp3STlE?=
- =?utf-8?B?R1hnYVIzQ1Nna3gxNHpXMEpOejJzNjExU1ZYQ1pzODFOdThvMmRhdnh2Qm1Q?=
- =?utf-8?B?L21uY1FML3VhUjZrUWl3SVdDbXQ5bE9UbFlFS09wSmJmRFlpMkJjZ1BkN2t3?=
- =?utf-8?B?RnJTRkhkRTduc25UeE5sbVIvSWt1YlppQ3ZsdGdQQXAwOTJGZTg4R3k4ZGVq?=
- =?utf-8?B?eDVkM01HZGRsVW5iN205TERkYjh5R2dzd1hFcVBzTDNDVHkzRXNVWlBIYzN1?=
- =?utf-8?B?RllVczRPSG0rL1BpTG9mK2t3L1hUVkNwN1J0dEpwbDluQUs5YllHSjNUa1lG?=
- =?utf-8?B?K0xCNWRlNDNoNWMreVlEaHhFU1ZKV2F5WFlROUtvRHVBUElxK1FhVnNLVVU1?=
- =?utf-8?B?czZlaE9oWEFteC9NakRCOURLK1ROWGlGb1RUTkN1Qm1wcndINHVNZVB1MXVn?=
- =?utf-8?B?cVh0UkZkL2g2bGFkZEpyWDdIMlB4bWl0T09vcjlueE5BZVZMajMzRzlpaGlv?=
- =?utf-8?B?bmU0eGphVDZhcWovcFJ0RzdNY2RpZFpoaU5MK21BbkNUS2paL015bHc5bWln?=
- =?utf-8?B?YWs4TkZnT1lDQ1NGemRDRHRodktpV3JxQjlQUDJ1QWpoRXB3R1FQUTBmVHcx?=
- =?utf-8?B?Qk9NQTZtOU1DbWVMMk5oclBJeDRDdktONzYyRWhjUnhtdmhXT2IzMTJTSzV6?=
- =?utf-8?B?V0EzNjRCVlVOb0NtdHFvSE0wMXE4TWNtRmlnY3NCQkltcXRZTUQxWkplUVdB?=
- =?utf-8?B?QzFLZTgrYUEzbmFhYUQ2eElueVBvbFQ3UmJBYjJMTy9nbVBCSkNhOXlzMmor?=
- =?utf-8?B?N3JvN1pxdTFpQ1BPa0YvU3hVSXYreTQ3dlF6bVliZjY1TTVnQlJUenQwVDQ3?=
- =?utf-8?B?VlByY2dxVWxRVWJiaWlCOHhMeXhYZnorYytKcDZFKy8rR09rL2dJVmdybVha?=
- =?utf-8?B?MEJFVGFvWlkvc2VIb0lLbFZNN01QSnNUSmNpT2VKL0dzY0FQWVJmb1BVL3dZ?=
- =?utf-8?B?WjRPUCtNQW5Wa2FQbG5ZWWpaSXhGSGRGOEhwTVpaa21HNWkweE5aSHJabzY3?=
- =?utf-8?B?TUIzR09WUGJ3PT0=?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(7416014)(376014)(30052699003);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2025 19:50:54.6648
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 300e54d9-b91a-478b-6ec1-08dd6a44060b
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000FCBE.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB9531
+From: Mateusz Guzik <mjguzik@gmail.com>
+Date: Sun, 23 Mar 2025 20:52:58 +0100
+X-Gm-Features: AQ5f1JqRBzcP3FWhh1V2ofCMs00Xh5Dt75eWXWr3JMV0jNgQshHIIMywyiTDbrQ
+Message-ID: <CAGudoHHmvU54MU8dsZy422A4+ZzWTVs7LFevP7NpKzwZ1YOqgg@mail.gmail.com>
+Subject: Re: [syzbot] [netfs?] INFO: task hung in netfs_unbuffered_write_iter
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: syzbot <syzbot+62262fdc0e01d99573fc@syzkaller.appspotmail.com>, 
+	brauner@kernel.org, dhowells@redhat.com, jack@suse.cz, jlayton@kernel.org, 
+	kprateek.nayak@amd.com, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netfs@lists.linux.dev, swapnil.sapkal@amd.com, 
+	syzkaller-bugs@googlegroups.com, viro@zeniv.linux.org.uk
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello Oleg,
-
-On 3/24/2025 1:17 AM, Oleg Nesterov wrote:
+On Sun, Mar 23, 2025 at 8:47=E2=80=AFPM Oleg Nesterov <oleg@redhat.com> wro=
+te:
+>
 > On 03/23, syzbot wrote:
->>
->> Hello,
->>
->> syzbot has tested the proposed patch but the reproducer is still triggering an issue:
->> INFO: task hung in netfs_unbuffered_write_iter
-> 
+> >
+> > Hello,
+> >
+> > syzbot has tested the proposed patch but the reproducer is still trigge=
+ring an issue:
+> > INFO: task hung in netfs_unbuffered_write_iter
+>
 > OK, as expected.
-> 
+>
 > Dear syzbot, thank you.
-> 
-> So far I think this is another problem revealed by aaec5a95d59615523db03dd5
+>
+> So far I think this is another problem revealed by aaec5a95d59615523db03d=
+d5
 > ("pipe_read: don't wake up the writer if the pipe is still full").
-> 
-> I am going to forget about this report for now and return to it later, when
+>
+> I am going to forget about this report for now and return to it later, wh=
+en
 > all the pending pipe-related changes in vfs.git are merged.
+>
 
-P.S. I'm trying to repro this on my machine on latest upstream. Haven't
-gotten lucky yet with the C reproducer with my config. I'm moving to the
-the syzbot's config to see if it reveals something. If I have something
-I'll report back here.
+How do you ask syzbot for all stacks?
 
-> 
-> Oleg.
-> 
+The reproducer *does* use pipes, but it is unclear to me if they play
+any role here -- and notably we don't know if there is someone stuck
+in pipe code, resulting in not waking up the reported thread.
 
--- 
-Thanks and Regards,
-Prateek
-
+--=20
+Mateusz Guzik <mjguzik gmail.com>
