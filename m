@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3A8262D28;
-	Mon, 24 Mar 2025 16:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AEE12638B1;
+	Mon, 24 Mar 2025 16:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742833023; cv=none; b=hrS/HcwAMBgvuh4S/2D0zkRaWVTNx7udonU3irI7mFQUQlbnLxCwph4XHtG5/5cNq3LGfoO8SWG+fq3sISXa0EBv/E/kGHIZDeNTKGvn5l9rfTw1d2wu5Y/g7hQqow6MUBIUiSU8FIQJrS8DXip560CDXXho3O/Throm5pDhIIs=
+	t=1742833130; cv=none; b=IrTwDR5gOBfsz36vxX7jCh/7eRDiZwaiV+8TVL9K/7Z389GUg5Xbd/XAB0QxlWmdrgwTZov8L6cdyFY0eQLlPr5DWhxHCU/vRcPHXd9trvFzKNrp+j5WSWUcebZCizFKuMzFfR0jBFZXk3u6qrhVlmcg5ma6PLHlVrwApi0junM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742833023; c=relaxed/simple;
-	bh=2jd1mKcnL8xg7XY37QSxwDya031QXSnWdEv89A1BFEo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=T1Y4kVP3uuotDwXaJQoqb/ctjTff006hzbwdh4Q87IPaMkDkx4+Z+WvKaOlYXyamLjeNdu9WC4EbRI5vM+XPAMvP+41CtekNhvEigw/H5k32Cxrg7zV2I9xEMSs5oqIllU1rJwTvTZcg5oV/nI1Sa8p3Gw28IklagOuvFMAjM74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHG4Kn4B; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742833130; c=relaxed/simple;
+	bh=3JtewHZLxetEGezPiOyN8pZ4BxTDGBa+EUF6CC0lDJ8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fqwSECmCPG8EVDnNymWhrIT1SUeZVnn6AxgWmJzzl25MBv4EigTfoaY/clZ174S1W0zKhgTkCIEOkRlWe8sVc4OmJ7I5l2Tbmue3a3Yp+cwIowjVW2GN+XUMP8+jBPbTaL9I5YS/VBRWz72a8e5oLzzJCBcvMBywBtT8eHsXSO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zT8ETZIC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHG4Kn4B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B5D9C4CEDD;
-	Mon, 24 Mar 2025 16:17:03 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zT8ETZIC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA5EDC4CEE9;
+	Mon, 24 Mar 2025 16:18:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742833023;
-	bh=2jd1mKcnL8xg7XY37QSxwDya031QXSnWdEv89A1BFEo=;
+	s=korg; t=1742833129;
+	bh=3JtewHZLxetEGezPiOyN8pZ4BxTDGBa+EUF6CC0lDJ8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=CHG4Kn4BPfTcJwdH1VnpbNi3G6fJDx++L9oGDD3L8ifmKOMKXDbHGrjTdx4s8ZYm/
-	 nRAWKbU61fDaXI6Nez8ODKADNrrr1r/8WVGSBkNTO/4uS8XGdJUQ1myxOSRB+C8egi
-	 LZtUlDTm08/tTrOk5Jts9OwwmcCkmGE97zCwaVbM=
-Subject: Patch "netfs: Call `invalidate_cache` only if implemented" has been added to the 6.12-stable tree
+	b=zT8ETZICrMeMZZIoCIP7p50OBc9VMYlTNPIVLbUNxlK7OnX2af8XAMXIyXllL5avg
+	 6vQywawSvzxEGrC3DeMMjGVORMntmyUs/QUucKmsSvDQQxo2v4vto+Nm2mBltdpYRT
+	 1Fb8i0hHLPvGoQOrzxBthE8/OUOIj2OcXERX2tfQ=
+Subject: Patch "netfs: Call `invalidate_cache` only if implemented" has been added to the 6.13-stable tree
 To: brauner@kernel.org,dhowells@redhat.com,gregkh@linuxfoundation.org,max.kellermann@ionos.com,netfs@lists.linux.dev,pc@manguebit.com
 Cc: <stable-commits@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 24 Mar 2025 09:13:24 -0700
-Message-ID: <2025032424-recognize-skid-4abb@gregkh>
+Date: Mon, 24 Mar 2025 09:13:47 -0700
+Message-ID: <2025032447-mortician-catalyze-76bd@gregkh>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -44,12 +44,12 @@ This is a note to let you know that I've just added the patch titled
 
     netfs: Call `invalidate_cache` only if implemented
 
-to the 6.12-stable tree which can be found at:
+to the 6.13-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
      netfs-call-invalidate_cache-only-if-implemented.patch
-and it can be found in the queue-6.12 subdirectory.
+and it can be found in the queue-6.13 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
 please let <stable@vger.kernel.org> know about it.
@@ -130,7 +130,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/fs/netfs/write_collect.c
 +++ b/fs/netfs/write_collect.c
-@@ -576,7 +576,8 @@ void netfs_write_collection_worker(struc
+@@ -575,7 +575,8 @@ void netfs_write_collection_worker(struc
  	trace_netfs_rreq(wreq, netfs_rreq_trace_write_done);
  
  	if (wreq->io_streams[1].active &&
@@ -144,4 +144,4 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 Patches currently in stable-queue which might be from max.kellermann@ionos.com are
 
-queue-6.12/netfs-call-invalidate_cache-only-if-implemented.patch
+queue-6.13/netfs-call-invalidate_cache-only-if-implemented.patch
