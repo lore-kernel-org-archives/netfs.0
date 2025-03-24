@@ -1,46 +1,46 @@
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2061.outbound.protection.outlook.com [40.107.220.61])
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2069.outbound.protection.outlook.com [40.107.244.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F8538DE9
-	for <netfs@lists.linux.dev>; Mon, 24 Mar 2025 13:20:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F400E25FA2D
+	for <netfs@lists.linux.dev>; Mon, 24 Mar 2025 14:52:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.69
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742822404; cv=fail; b=jWnKmPV7wR9TNic12W8akLrDjPP6IiTBPYfAEHFAsfrLkaMOwjwY5kHhLE7Jwl//mHvbIlO//6KFLTzZWZTkbLnfGvnq5WIgWjWBOXfQs1Q2GjRvDwh5im1ccDw6Av72YVndn2SIUvN5Bm5hImN1lpgSj+sIO6ehMqK++W3cwHg=
+	t=1742827978; cv=fail; b=F2spUyzoSzZ0YPayNn2eOVTjPVICsJdlcpWQHqHRBEyYKb6hGOyZIpyyXf+VHyikcY58zxOvcvzkor9ZYpzGCRWENdIjWWVeG0t2SBDnZMLV5i7S2Pbl1a2xLuAEPVTqk+LExLXkkfhks2O+wR9zsBVVYpbZiUMWde0WsMoBeSw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742822404; c=relaxed/simple;
-	bh=vtS6LslM6TOa1SdM9G8uRVsRp/A2I/8DCFtetXTdJAQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=XRc04agnDxymthZLVbtlOUEd/2YsRE8aK3iojDB2tDWxmW8VLBzGGZfSENUZ19CsDy+DXvzUyMDGJsSj4n6b9tm92Z/GfJ8QSy64l2Es5zFP9N/pmpocUHIFb7UpvUI3wXhUyszr0r5OsXZroKetrLPS1Tsgj/qdmst39ZNNHMA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=aJRV1W0E; arc=fail smtp.client-ip=40.107.220.61
+	s=arc-20240116; t=1742827978; c=relaxed/simple;
+	bh=cF52773kte2rGBPyuR/oCDTVnNcTfLKO4VBzhwra4GQ=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=qu326t/KVxD8IRjKmihB7wdCwh01Sf6gKN+O/kCZoeINf2six7VLfTke7UKYXnN4+ISzuHTIMiE3ylbi6MzqCqoGOpQbXTEX2aIVNeQH8zVtgXRzm/WRfTaL2RVxYUOcERoZKKaJg7e2xUh9aFqEV6It8Gj+M+zQ1LxC0o8QbpU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ZBD8CGds; arc=fail smtp.client-ip=40.107.244.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="aJRV1W0E"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ZBD8CGds"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=S2zzSsH0UuqBu4FR1YPz+CqNiQd2uQPtXhztR0EDj9giuytgyXxdszdWwxnn1P8l4iMVNx6h6G0X3EjKND7LhZFdHel8ZFBVb2Efp+KKSwUg+PeZaj57j7IRt4Ehe2ZGlu0JIzYdaoLL6I3oLTbbNMtOgQfDfvJe49OTyWQOQD46/JsiiA/qmKS/7U5ZwBLwZqJTErUced0KD/Mkg0GW3gfkasvBltpspbPwDtr5HsKSXkYF+KXxLcTYNT0MtKxeel+AOyr/GNzNfxh1muXgUt5F8yHEtxA+n6jsALYZDbK0xYID2+ObcyGA422R1BQo1RPkVCMWKsEnrucy3qx3Vw==
+ b=TqQc4NTDQYcwDEDTkGTdDJOBDQgPsmFTEFox4/4n1l/ocSmkOM8TywjoQPJX0pTtyD13y4uac9tQvzPjEIkuqZ8YgrzhWafmcw5RZnI1zDORr+1n8dmWSyiZPe+F8VzOx7E/4ETWm1fhX67BLmRVxOmVT9IQIhWWOb95uZKPJY37Pqm3/Ji8pw3IGSR5vhSgRVaejyi5w0OaglHtZiH5xZPtirmBmWma4lVq884ybbepLI1rMmBX/lzgZVLC0r8pgI7E1uVpjEwsNmM07RSS5FDcDL34x5fD85gLpSbTXWtlOZbOWMJP+U7FFEtG3Fw5jxOw8ublwQT8FpiCxT5ToA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2LR8aijfESUl9oohdfxBcWAWSJvHmsjabmxGsVDgKP0=;
- b=EdxxIJnt2VSu4VYfyQH8Mr0qqQ1G7FHHNXIm+xFrQuRdd4DA535l9zwroYdz8m2Zz8Gh/f3u7InuFJkDg8ir1c2OC9WVX2sPBtIDnQywm2CShkzgK41WHKsHdMxAn14cxreRtPZyFLcSVK3uJDqTgFSPkZznHFQFsDW3JES2AEn6w4zXo+0vm4esr5YnP9Z1LFY0iaNChjPUrsjAk4WRf262Ud9BBaFttEBrLYj3ZZ1aG/kzjwh3/cq/5RFsh328nJMoN8//4nM0nFcZjdC5PpXqUF8DU3pPQZemvfnAzDPU+BOeDQLYPn3a6qe/nHwXwAPQagckHIDucKPlK/AlBQ==
+ bh=ydZ+/XW+/lksHcvfKlJe0MqRUM65EDxihesQxkDiuTk=;
+ b=fvByEYo/zxyRpolIoM2DOzFp3LweJRpVQQLjbY/BY8ePjCiqp1BFgsPRY2fan3ycFdkY8IKpvvsrR3Z7B/bOs93RXsKAP3mNUbab/6XkLm6wE6kLkjuzzMMIu1L8e07C0+suTqxnDTZbz7r76Rid7qL3SN1YLGlKV5KO12sCEPx5NmfFnujMSCoEJeA1zUnxEt85z3vvTcNBsVV78/ed9DHnnEpkftIr/N130hIho+dgqrpLAiHdy4qONj9nypHGxCUILce2DFfkAiRC9mblS7y6eIlD8STBllEk/M0IOnhmRHLv0DFyz9ZK8bS7fXsmnURk/AE0mIBInl69CzD2nQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=gmail.com smtp.mailfrom=amd.com; dmarc=pass
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2LR8aijfESUl9oohdfxBcWAWSJvHmsjabmxGsVDgKP0=;
- b=aJRV1W0EcyzIOVM8+ZvytokYpHdIEKc078g9bg+MAo4PltiavRMnN5KPgwzVn7VudKfeumzHLru5+fLz42t2rcflt2TS45O2RrSge2qMNj9WyZSQkx+xCuEh5M8pZJVKX8s/gx40Nk4k24KChFGBJE0DJx+8G+H6E8ZWCVaLXUA=
-Received: from SA1P222CA0196.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:3c4::23)
- by CH2PR12MB4069.namprd12.prod.outlook.com (2603:10b6:610:ac::18) with
+ bh=ydZ+/XW+/lksHcvfKlJe0MqRUM65EDxihesQxkDiuTk=;
+ b=ZBD8CGdscW+xHsJA3g4HTdVY1CHS/xl6duCpXSKxLaxBBlF+mshpP9Lh95qV83J7TQ+7vfyi8BFIDS9pc/m/9StzWI1s18CIy+kgFUgyc5QOhC4PQVxH4Tj7vVDHIOcFKNBf8UroQoN7lHFfIF6YlteCxNVOWS9VJT0HsRhL8/k=
+Received: from CH5P223CA0008.NAMP223.PROD.OUTLOOK.COM (2603:10b6:610:1f3::29)
+ by SA3PR12MB7951.namprd12.prod.outlook.com (2603:10b6:806:318::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.42; Mon, 24 Mar
- 2025 13:19:59 +0000
-Received: from SN1PEPF0002529E.namprd05.prod.outlook.com
- (2603:10b6:806:3c4:cafe::2c) by SA1P222CA0196.outlook.office365.com
- (2603:10b6:806:3c4::23) with Microsoft SMTP Server (version=TLS1_3,
+ 2025 14:52:52 +0000
+Received: from CH1PEPF0000A345.namprd04.prod.outlook.com
+ (2603:10b6:610:1f3:cafe::72) by CH5P223CA0008.outlook.office365.com
+ (2603:10b6:610:1f3::29) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.8534.42 via Frontend Transport; Mon,
- 24 Mar 2025 13:19:58 +0000
+ 24 Mar 2025 14:52:52 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,15 +48,15 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SN1PEPF0002529E.mail.protection.outlook.com (10.167.242.5) with Microsoft
+ CH1PEPF0000A345.mail.protection.outlook.com (10.167.244.8) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8534.20 via Frontend Transport; Mon, 24 Mar 2025 13:19:58 +0000
+ 15.20.8534.20 via Frontend Transport; Mon, 24 Mar 2025 14:52:52 +0000
 Received: from [10.252.90.31] (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 24 Mar
- 2025 08:19:54 -0500
-Message-ID: <7e377feb-a78b-4055-88cc-2c20f924bf82@amd.com>
-Date: Mon, 24 Mar 2025 18:49:52 +0530
+ 2025 09:52:48 -0500
+Message-ID: <f7585a27-aaef-4334-a1de-5e081f10c901@amd.com>
+Date: Mon, 24 Mar 2025 20:22:40 +0530
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -65,9 +65,9 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [syzbot] [netfs?] INFO: task hung in netfs_unbuffered_write_iter
-To: Mateusz Guzik <mjguzik@gmail.com>
-CC: Oleg Nesterov <oleg@redhat.com>, syzbot
-	<syzbot+62262fdc0e01d99573fc@syzkaller.appspotmail.com>,
+From: K Prateek Nayak <kprateek.nayak@amd.com>
+To: Oleg Nesterov <oleg@redhat.com>, Mateusz Guzik <mjguzik@gmail.com>
+CC: syzbot <syzbot+62262fdc0e01d99573fc@syzkaller.appspotmail.com>,
 	<brauner@kernel.org>, <dhowells@redhat.com>, <jack@suse.cz>,
 	<jlayton@kernel.org>, <linux-fsdevel@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <netfs@lists.linux.dev>,
@@ -80,190 +80,139 @@ References: <20250323184848.GB14883@redhat.com>
  <20250323210251.GD14883@redhat.com>
  <af0134a7-6f2a-46e1-85aa-c97477bd6ed8@amd.com>
  <CAGudoHH9w8VO8069iKf_TsAjnfuRSrgiJ2e2D9-NGEDgXW+Lcw@mail.gmail.com>
+ <7e377feb-a78b-4055-88cc-2c20f924bf82@amd.com>
 Content-Language: en-US
-From: K Prateek Nayak <kprateek.nayak@amd.com>
-In-Reply-To: <CAGudoHH9w8VO8069iKf_TsAjnfuRSrgiJ2e2D9-NGEDgXW+Lcw@mail.gmail.com>
+In-Reply-To: <7e377feb-a78b-4055-88cc-2c20f924bf82@amd.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF0002529E:EE_|CH2PR12MB4069:EE_
-X-MS-Office365-Filtering-Correlation-Id: 839c7cb8-4067-4140-eed9-08dd6ad693a1
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000A345:EE_|SA3PR12MB7951:EE_
+X-MS-Office365-Filtering-Correlation-Id: 822d573b-dff0-4deb-455a-08dd6ae38d9d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|376014|1800799024|82310400026|7416014;
+	BCL:0;ARA:13230040|36860700013|1800799024|7416014|376014|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cGlzSCtwYUN0YVczYzhpNVR2TU5HV0tRaFhHUE1EN2FZRmovNjc4NlM5aHBw?=
- =?utf-8?B?RGJySjZMdlBwTEp0M3hQaXRHYnVvTStOMUVnRHh4dzd2K0NwRjZtRFE1a00z?=
- =?utf-8?B?RjFkUU13emIwQlJhMXZYUFFqWHVpdDM4OGgySVNUR2h0eGNsR244QWtIVG1u?=
- =?utf-8?B?Wm9hbTczYWFvcXZPK3ZJSVhtcUpTYStJVXNQZVNNcXRkbHU0aldYL0t3Y0VE?=
- =?utf-8?B?WGt3ZmtiUll0OVI2WUU1RzdraDRBL2ZNam9OSWhSYjZ1Q1VaeDlRbGRKR2d0?=
- =?utf-8?B?UitCZnFtSFdFNC90ak5SSlhoR2NpMWJTRGR4akFvb2VmL2xiWnRQVnZxbUhi?=
- =?utf-8?B?QktyTVRYdERLQVp5TEZIS0JVTldIUDl4Tm5rNUwyRTN3MzVBV0h0ZTEvakZa?=
- =?utf-8?B?c2pKZWlKOTFrajlET3VmWDRGL3FXQ0laQVliQkdMQ2xpZVlDbnJsaWlwMGw1?=
- =?utf-8?B?RXZqSDZpNnlXWVZVUzBscitRTkk0SG1RNmlrbmdObzdvZTcwK29nRVREMUY3?=
- =?utf-8?B?ZkNOZnphbytzWnJpWnZlL0o2QmlGajRHYk5jU1V4RDFyZGlIYlFLN2NzMUZ4?=
- =?utf-8?B?TEszTWg1N0NWcnVDbHdvYzFUTWwwSlZmS21nOTRwbllWakFDZksxMEJRT3kx?=
- =?utf-8?B?VXZka2FqdFdIcnVnRVR3cEJHU0dSaENhampJM0gxZGhaT1lsSjBlVGx1Zmhw?=
- =?utf-8?B?ZDR0ZFZOSzBqRGQ5VVlQUXJwZ0E0NjhYSG0rMGI3dUMzMnNKVllqZEljVWVZ?=
- =?utf-8?B?T1RwQUlNWFpWKzhjRWxoY2FzUVVkVzZFWEczQUZGTjJ6WjVBVWhSejlGUkth?=
- =?utf-8?B?RzFSNmpUaTY4U21OMDhpckhTbXNldkErTlp0YkZ1OUw1WVRHWUIvcGZ2VnhN?=
- =?utf-8?B?TXlUQzRHV0NSZTV6RDV0S0lCd1dzNHJ6Wmt4TnVwUHFNd0pzbGx4aHpHTXU2?=
- =?utf-8?B?bU1CS3FtZU4yaExOc28rdk9WRTBrV1poZTFWbkNYTmlLZXJOU2lnMS9zc2hn?=
- =?utf-8?B?c2hEZXN0UXhmQzFHSFNkdWtGT1pyWW55ZGFiR2xXbGNldU8vWkpDZ093T05L?=
- =?utf-8?B?YzUweTN4eWVsNkVQWTFqT2d0WW5RN3hUV3U2S09hdUg5S0hpR3VuZ2E1bUd6?=
- =?utf-8?B?eUZjTFFUY245cFdkMDRaOGpORVdvZEpKY1djazNZUjJQL1pLamFIa3BzR2VZ?=
- =?utf-8?B?MnlEUHN5Z3NTaUYrbkJtUVRQd29DcmZZOFRRVE5rckZvUVorUWExRXVZcDVZ?=
- =?utf-8?B?WHlGODFjVEdHSkFjSXFMZmw5T2hEQWQxam1xNnFILzNnVi9EZHZTbE9Rb1c0?=
- =?utf-8?B?U2czMkhkVDR4U3BRaDR2R1oyRVZLYUZqMDhmU3pqK3JkRjVLWUpKZjlWSzBQ?=
- =?utf-8?B?RllHb2FYMkhUOWNCeTBTYTROcGlkbkp5Tjl6ZU5USGxoVTdWOU1hcHVtSjJp?=
- =?utf-8?B?Y0U0NVRFNHBCQUVqUGxocW1sTWRHTnY1NWxobmFBczR0NVd3K2VvdU4rMWFV?=
- =?utf-8?B?b1RkWDdoZHlBdW9hM1FRWGZlb1oyS3ZZbEdWa05hNU5JLzh0dUdEblMzN2p5?=
- =?utf-8?B?cVVlb3kvVWVQUmpwcjB3WG1SdkFnN2xXbDIvZEpjR0JzOFpWNE81VWpnNEhy?=
- =?utf-8?B?ekU5NGdqWDF1SmcreDcvbmFZT2pmdkZIRFBwc09lcDY4aHZNZ01yZGtXVnJk?=
- =?utf-8?B?RTdSK3lzRW9BWUY0THdUbGNDRjY4c0w2QnhkS1FuTlExWmJQRzZkRjA1Y1Rl?=
- =?utf-8?B?WktWMG5PcUVlVUhXR1lQTVhxdDY4cHFXY1RLSGc2TjVlNHArRUFpeGJxL1d2?=
- =?utf-8?B?MHJJMnBwZFNzbHg2QTRCbFFsMk1rbmxpaWhrWWZ4Y1FlZWd0YUpVYjliWFhv?=
- =?utf-8?B?YkVCMm4xYmJjMFJyWW54Y1pNdGVCYVN4Vmw2MlN2cGNMMjNnQXgwandGTk1t?=
- =?utf-8?Q?9eaZwLVh7Lw=3D?=
+	=?utf-8?B?eGhCS1J5MHcycWlrTFM1bTlHMUpUZ0FaZmpFYTNoZHcvSDdFSUx2VUpTT240?=
+ =?utf-8?B?QlZNSGQ2dWdoTlc3d2ZlVTBoUk5ZVDE3N0I3Zi9HY3RLUU9JakpwYTdGa3E0?=
+ =?utf-8?B?ZVRyYndyT3prVUphb1hqc0t2U2VmcDMvdkk4T05iVUVXSHkySldab3RBdGlE?=
+ =?utf-8?B?VjQwdTVEL0ZZL2xtNDRGWkE5L3lMeWZyTkhTWWZxOXB1TzY3Mk9rMmxnRWFC?=
+ =?utf-8?B?bnFjbGZMUU02QzB4amJDbVliazczZDdKbVhZRUZUR094OVlVbHVYalM1b3RP?=
+ =?utf-8?B?Zm1BN1E1Vm8yNFFLK0IzVFl6YTMzOGdwWGZFU0l4RjJxaDFDbkpPM1Jua3lv?=
+ =?utf-8?B?NndoZlAwNmNYQzdDOHdkWlRybUl1MlFqSGtYSjNPSmZUU0VwaFpnRUlVN1Mr?=
+ =?utf-8?B?MmVlc2ZTTmtIaWgrcXo5aFlwcUhNci80cHJMK2xUSzZSWDhOQjJvT3hLT2Ri?=
+ =?utf-8?B?NTVKUjNVaW9XQVlaazhkek5McUVhOWJ1NVJzZ09pWVVQbUZhVDlRQ1ArN0Jj?=
+ =?utf-8?B?SHZtTFV2YXBGRDl6L3Q2MkpnREZpSXA4MnJ5aFA3Q1RLMWQ2YlNZdDVIUkg2?=
+ =?utf-8?B?dVYyaktpU3h1cHU0NlNJRE5mSEh2MHU2ak5xcVZLZkFZT21ud3ZnTGdPakZC?=
+ =?utf-8?B?SXNPVTNtcUtmclllQzRnSFRqRGs0bkpsVktMcFkyWS8wWTBhOVppNnpidXcv?=
+ =?utf-8?B?bWtCUWVTQVh3Q0pucXpLcUJ0azN1TjQyT1UrQ0dOaFFNZ1ZOWUxEUW9qNWIy?=
+ =?utf-8?B?aTBBWTFXd09HZXBqMVFDT2hya01TekNhRVluWHhuQ2w0Qk1WNWdxZFByU1pm?=
+ =?utf-8?B?VU13Vlo2VmV3T3RmRDlPWVhUdWUxT2V2VTI3bzkxdGs2VlpTb25yNDgxZnJE?=
+ =?utf-8?B?Wk1tRlEvMFNkSTFoamZ4QmhVQWVxZmFEcFpYc2pmWU1DYkJqWjVYOTcyMFVx?=
+ =?utf-8?B?ektRb2VRWUhOcGQwWHV6VmI0Z3BLcUluMld1RW5TV2pCY0lYK044S1VYNG5P?=
+ =?utf-8?B?VXB3RmNHVDhoMzZNTzFrNkw3T2Z0UldNZVRDWVdvL0FkRDNWSVRJWUYwc01B?=
+ =?utf-8?B?NnFEbXJOdWRhSEpySlM4MHBSbG14TW44RFA2MHlpNHlpNXBrN3FhRTBYVVdZ?=
+ =?utf-8?B?LzU5aGp5cXdURjRjbmVBR2JHeWcvNk9pckVnSXY5a1VsNVNyZmRIS2lpekxM?=
+ =?utf-8?B?dWZ1cHp3NVczU3dmLzdjT2I2czJXU2FEMUg3cjg3Q0plcFhUMEdnRzZPWkJh?=
+ =?utf-8?B?UVVwTjhLWlBEZFBrbEFOb3htWFVJTkxGenN5UmNOUHNHdmovcVlSV21RZHNv?=
+ =?utf-8?B?VFVyMXdkaGIyU0pWVnBYVkREQ3VzTVZOejdYWk10cThtQSsyZGJvd1V3ckZL?=
+ =?utf-8?B?K0J6VVlWempCalJ4Y1ZadnpvaDJFaHc0Z0cyT2V5T1R3STR2K21WVGM3Nk16?=
+ =?utf-8?B?YU50UTRjTDRyNkNMaTNDT2Y1NFhhRTRLdEo3K3JwdGpQKy9uU2NuQ29CRlRZ?=
+ =?utf-8?B?em8yanFYeTNEbVAwb0lwK1UyVDk2bUZZekk5OFRnYWxTVHF1cHlobS9sWUZW?=
+ =?utf-8?B?Y3JmeVpzbXd1U21xZE9Nczg3UW5ra1dVZndOQ2RibFdPK0ppcWZrTEhYeXB1?=
+ =?utf-8?B?V2NzdDdLNGU2Z1kzR1lLb1RodkxhSUM3cjZ5dGlBMElKc2pzdG1qb2hSOWJX?=
+ =?utf-8?B?STV5bVdmMkVydndRMDAwYXptdWxhRk81V2gyaXJCald2cUVNQ3lHVTBpZ24v?=
+ =?utf-8?B?T0paLzdiU3Nwcm5sWk82UHZQVjNOblRWTHdZSndNbFZCSFFCL1doZ0xZUGFJ?=
+ =?utf-8?B?VytXMkNvbUxuYTBDbUxpT2l6ZnBHZzdTRm45ZDNYNmVsbmpSdGx2OWVlRHIr?=
+ =?utf-8?B?UkxNbkpMaHNJSE9VMXovYUVXNm1zQ2FYSUg5bERTVjVNdGh1ZEFqVnRSWENh?=
+ =?utf-8?B?S21wS0lzMU5PT2krR01rTU5yY0IwYkFvYW9CT1Y4TlNXbHNiT2RJVlM2VEQv?=
+ =?utf-8?Q?cBOCHYbGTXJOssqEA47WN3mXbE9Ckk=3D?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(376014)(1800799024)(82310400026)(7416014);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(7416014)(376014)(82310400026);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2025 13:19:58.8262
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2025 14:52:52.1868
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 839c7cb8-4067-4140-eed9-08dd6ad693a1
+X-MS-Exchange-CrossTenant-Network-Message-Id: 822d573b-dff0-4deb-455a-08dd6ae38d9d
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF0002529E.namprd05.prod.outlook.com
+	CH1PEPF0000A345.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4069
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7951
 
-Hello Mateusz,
+Hello folks,
 
-On 3/24/2025 6:47 PM, Mateusz Guzik wrote:
-> On Mon, Mar 24, 2025 at 11:48 AM K Prateek Nayak <kprateek.nayak@amd.com> wrote:
->>
->> Hello Oleg, Mateusz,
->>
->> On 3/24/2025 2:32 AM, Oleg Nesterov wrote:
->>> Prateek, Mateusz, thanks for your participation!
->>>
->>> On 03/23, Mateusz Guzik wrote:
->>>>
->>>> On Sun, Mar 23, 2025 at 8:47 PM Oleg Nesterov <oleg@redhat.com> wrote:
->>>>>
->>>>> OK, as expected.
->>>>>
->>>>> Dear syzbot, thank you.
->>>>>
->>>>> So far I think this is another problem revealed by aaec5a95d59615523db03dd5
->>>>> ("pipe_read: don't wake up the writer if the pipe is still full").
->>>>>
->>>>> I am going to forget about this report for now and return to it later, when
->>>>> all the pending pipe-related changes in vfs.git are merged.
->>>>>
->>>>
->>>> How do you ask syzbot for all stacks?
->>>
->>> Heh, I don't know.
->>>
->>>> The reproducer *does* use pipes, but it is unclear to me if they play
->>>> any role here
->>>
->>> please see the reproducer,
->>>
->>>        https://syzkaller.appspot.com/x/repro.c?x=10d6a44c580000
->>>
->>>     res = syscall(__NR_pipe2, /*pipefd=*/0x400000001900ul, /*flags=*/0ul);
->>>     if (res != -1) {
->>>       r[2] = *(uint32_t*)0x400000001900;
->>>       r[3] = *(uint32_t*)0x400000001904;
->>>     }
->>>
->>> then
->>>
->>>     res = syscall(__NR_dup, /*oldfd=*/r[3]);
->>>     if (res != -1)
->>>       r[4] = res;
->>>
->>> so r[2] and r[4] are the read/write fd's.
->>>
->>> then later
->>>
->>>      memcpy((void*)0x400000000280, "trans=fd,", 9);
->>>      ...
->>>      memcpy((void*)0x400000000289, "rfdno", 5);
->>>      ...
->>>      sprintf((char*)0x40000000028f, "0x%016llx", (long long)r[2]);
->>>      ...
->>>      memcpy((void*)0x4000000002a2, "wfdno", 5);
->>>      ...
->>>      sprintf((char*)0x4000000002a8, "0x%016llx", (long long)r[4]);
->>>      ...
->>>      syscall(__NR_mount, /*src=*/0ul, /*dst=*/0x400000000000ul,
->>>              /*type=*/0x400000000040ul, /*flags=*/0ul, /*opts=*/0x400000000280ul);
->>>
->>> so this pipe is actually used as "trans=fd".
->>>
->>>> -- and notably we don't know if there is someone stuck
->>>> in pipe code, resulting in not waking up the reported thread.
->>>
->>> Yes, I am not familiar with 9p or netfs, so I don't know either.
->>
->> Didn't have any luck reproducing this yet but I'm looking at
->> https://syzkaller.appspot.com/x/log.txt?x=1397319b980000
->> which is the trimmed log from original report and I see ...
->>
->> [pid  5842] creat("./file0", 000)       = 7
->> [  137.753309][   T30] audit: type=1400 audit(1742312362.045:90): avc:  denied  { mount } for  pid=5842 comm="syz-executor309" name="/" dev="9p" ino=2 scontext=root:sysadm_r:sysadm_t tcontext=system_u:object_r:unlabeled_t tclass=filesystem permissive=1
->> [  137.775741][   T30] audit: type=1400 audit(1742312362.065:91): avc:  denied  { setattr } for  pid=5842 comm="syz-executor309" name="/" dev="9p" ino=2 scontext=root:sysadm_r:sysadm_t tcontext=system_u:object_r:unlabeled_t tclass=file permissive=1
->> [  137.798215][   T30] audit: type=1400 audit(1742312362.075:92): avc:  denied  { write } for  pid=5842 comm="syz-executor309" dev="9p" ino=2 scontext=root:sysadm_r:sysadm_t tcontext=system_u:object_r:unlabeled_t tclass=file permissive=1
->> [  137.819189][   T30] audit: type=1400 audit(1742312362.075:93): avc:  denied  { open } for  pid=5842 comm="syz-executor309" path="/file0" dev="9p" ino=2 scontext=root:sysadm_r:sysadm_t tcontext=system_u:object_r:unlabeled_t tclass=file permissive=1
->> [pid  5842] write(7, "\x08\x00\x00\x00\x1a\x17\x92\x4a\xb2\x18\xea\xcb\x15\xa3\xfc\xcf\x92\x9e\x2d\xd2\x49\x79\x03\xc1\xf8\x53\xd9\x5b\x99\x5c\x65\xe9\x94\x49\xff\x95\x3f\xa1\x1c\x77\x23\xb2\x14\x9e\xcd\xaa\x7f\x83\x3f\x60\xe1\x3b\x19\xa6\x6e\x96\x3f\x7e\x8d\xa4\x29\x7e\xbb\xfd\xda\x5b\x36\xfb\x4d\x01\xbd\x02\xe6\xc6\x52\xdc\x4d\x99\xe2\xcb\x82\xc2\xa1\xd4\xa4\x5e\x4c\x89\xba\x99\x94\xe8\x2f\x85\x4b\xbc\x34\xa4\x0b\x3a"..., 32748 <unfinished ...>
->>
->> So we have a "write" denied for pid 5842 and then it tries a write that
->> seems to hangs. In all the traces for hang, I see a denied for a task
->> followed by a hang for the task in the same tgid.
->>
->> But since this is a "permissive" policy, it should not cause a hang,
->> only report that the program is in violation. Also I have no clue how a
->> spurious wakeup of a writer could then lead to progress.
->>
->> Since in all cases the thread info flags "flags:0x00004006" has the
->> TIF_NOTIFY_SIGNAL bit set, I'm wondering if it has something to do with
->> the fact that pipe_read() directly return -ERESTARTSYS in case of a
->> pending signal without any wakeups?
->>
-> 
-> Per syzbot this attempt did not work out either.
-> 
-> I think the blind stabs taken by everyone here are enough.
-> 
-> The report does not provide the crucial bit: what are the other
-> threads doing. Presumably someone else is stuck somewhere, possibly
-> not even in pipe code and that stuck thread was supposed to wake up
-> the one which trips over hung task detector. Figuring out what that
-> thread is imo the next step.
-> 
-> I failed to find a relevant command in
-> https://github.com/google/syzkaller/blob/master/docs/syzbot.md
-> 
-> So if you guys know someone on syzkaller side, maybe you can ask them
-> to tweak the report *or* maybe syzbot can test a "fix" which makes
-> hung task detector also report all backtraces? I don't know if that
-> can work, the output may be long enough that it will get trimmed by
-> something.
-> 
-> I don't have to time work on this for now, just throwing ideas.
+Some updates.
 
-I got the reproducer running locally. Tracing stuff currently to see
-what is tripping. Will report back once I find something interesting.
-Might take a while since the 9p bits are so far spread out.
+On 3/24/2025 6:49 PM, K Prateek Nayak wrote:
+>>
+>> Per syzbot this attempt did not work out either.
+>>
+>> I think the blind stabs taken by everyone here are enough.
+>>
+>> The report does not provide the crucial bit: what are the other
+>> threads doing. Presumably someone else is stuck somewhere, possibly
+>> not even in pipe code and that stuck thread was supposed to wake up
+>> the one which trips over hung task detector. Figuring out what that
+>> thread is imo the next step.
+>>
+>> I failed to find a relevant command in
+>> https://github.com/google/syzkaller/blob/master/docs/syzbot.md
+>>
+>> So if you guys know someone on syzkaller side, maybe you can ask them
+>> to tweak the report *or* maybe syzbot can test a "fix" which makes
+>> hung task detector also report all backtraces? I don't know if that
+>> can work, the output may be long enough that it will get trimmed by
+>> something.
+>>
+>> I don't have to time work on this for now, just throwing ideas.
+> 
+> I got the reproducer running locally. Tracing stuff currently to see
+> what is tripping. Will report back once I find something interesting.
+> Might take a while since the 9p bits are so far spread out.
+> 
+
+So far, with tracing, this is where I'm:
+
+o Mainline + Oleg's optimization reverted:
+
+     ...
+     kworker/43:1-1723    [043] .....   115.309065: p9_read_work: Data read wait 55
+     kworker/43:1-1723    [043] .....   115.309066: p9_read_work: Data read 55
+     kworker/43:1-1723    [043] .....   115.309067: p9_read_work: Data read wait 7
+     kworker/43:1-1723    [043] .....   115.309068: p9_read_work: Data read 7
+            repro-4138    [043] .....   115.309084: netfs_wake_write_collector: Wake collector
+            repro-4138    [043] .....   115.309085: netfs_wake_write_collector: Queuing collector work
+            repro-4138    [043] .....   115.309088: netfs_unbuffered_write: netfs_unbuffered_write
+            repro-4138    [043] .....   115.309088: netfs_end_issue_write: netfs_end_issue_write
+            repro-4138    [043] .....   115.309089: netfs_end_issue_write: Write collector need poke 0
+            repro-4138    [043] .....   115.309091: netfs_unbuffered_write_iter_locked: Waiting on NETFS_RREQ_IN_PROGRESS!
+  kworker/u1030:1-1951    [168] .....   115.309096: netfs_wake_write_collector: Wake collector
+  kworker/u1030:1-1951    [168] .....   115.309097: netfs_wake_write_collector: Queuing collector work
+  kworker/u1030:1-1951    [168] .....   115.309102: netfs_write_collection_worker: Write collect clearing and waking up!
+     ... (syzbot reproducer continues)
+
+o Mainline:
+
+    kworker/185:1-1767    [185] .....   109.485961: p9_read_work: Data read wait 7
+    kworker/185:1-1767    [185] .....   109.485962: p9_read_work: Data read 7
+    kworker/185:1-1767    [185] .....   109.485962: p9_read_work: Data read wait 55
+    kworker/185:1-1767    [185] .....   109.485963: p9_read_work: Data read 55
+            repro-4038    [185] .....   114.225717: netfs_wake_write_collector: Wake collector
+            repro-4038    [185] .....   114.225723: netfs_wake_write_collector: Queuing collector work
+            repro-4038    [185] .....   114.225727: netfs_unbuffered_write: netfs_unbuffered_write
+            repro-4038    [185] .....   114.225727: netfs_end_issue_write: netfs_end_issue_write
+            repro-4038    [185] .....   114.225728: netfs_end_issue_write: Write collector need poke 0
+            repro-4038    [185] .....   114.225728: netfs_unbuffered_write_iter_locked: Waiting on NETFS_RREQ_IN_PROGRESS!
+    ... (syzbot reproducer hangs)
+
+There is a third "kworker/u1030" component that never gets woken up for
+reasons currently unknown to me with Oleg's optimization. I'll keep
+digging.
 
 -- 
 Thanks and Regards,
