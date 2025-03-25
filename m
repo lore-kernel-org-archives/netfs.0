@@ -1,114 +1,83 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07212E55B
-	for <netfs@lists.linux.dev>; Tue, 25 Mar 2025 13:04:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E87C257ACF;
+	Tue, 25 Mar 2025 14:00:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742907900; cv=none; b=ppYFGsLNWsj4D7On1HePKoKl3ou92PsO6H+AV7OvleuY5WzYYe2bOtZO71s3UQGBRvwi8pEMmd4ZADDh3MTEfpCYzQkKHNguFcNimeGpDa2GN9KjCAxyMUbvb9zPTB/S8/Q88Fu6h7IypQ6G/wHrAshcXQ1ZzDQIVtxSouVzYkE=
+	t=1742911201; cv=none; b=Sv0s4c+HY5f3LH++FT68VbjHacNdUfgbMrtBc/LqpNs1ey1dUxpLq2CjhNwSWhQJ99zVMxWDlPQVNXNtAa3kSAIZmGPUqu+2Kq0Eptl7OAjNxtFGVptouyl9fiWC6G4gdju+l2qRkFsb+F4XKLUtAPhCXqUWhJUGV/k2Q8wyKNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742907900; c=relaxed/simple;
-	bh=KtXukF7zS507yXC0bV3Lgtc0k1fuYoFUyPiii35Srw4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MtpJh7K86uIJtOLs6oeLN8CeMVCXptnmj1XynAneFUAKPJFMtZTqV1nlYkoG88JkkXzHiKprkgUy3hCdlQpUUxTnXpA9Zm0fjkoQGGPZWFGOgnPzMk4yCu7JJI4RwbgpHJoKO+qujXz8qRHPDH2YZ4YFm8pM/zocSG39q/yOT44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YU9OVafZ; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1742911201; c=relaxed/simple;
+	bh=lJZXYZiR4HQG5j87rd/oFQOmLKxt2PFOJshchMR61d4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eTSumjwZfX1qFBZBnQFfu/39w9EdbsEPdocjemp938ZIXdH/LkBT+O1xYJYJMTzsHcXHHd+ZUuGgBZ4pOPZwE9llHaqc/7HRj1TRzuModMflPv1ZSu1wIRmB3r9bMUMQ9aBAi1l22bJwY4al0BuGCl60MdmQYalpaUKeGa910M8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lCbpXa1O; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YU9OVafZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1742907897;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=a717aorAR0FFD6ZXSPKWzRFsANFSqFlPrG/xcqr9NTM=;
-	b=YU9OVafZAgzynuL3xyL4Cf5Gx/TXMMkPm2thizX1ws8braLuDCE6Ic9w7YRV/u7goukamr
-	+EsZ3825Nr4TWyZxUH3bQvgD1MsqAhA6Mmtd9vvY5RtYwyHDemcpStRi7mSbnp3m3c9A+q
-	OF/BX3lWFSr9KV5j6jy6fodH+0N4aLI=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-688-ONqfwzWAMceN_6i1pbI_rA-1; Tue,
- 25 Mar 2025 09:04:54 -0400
-X-MC-Unique: ONqfwzWAMceN_6i1pbI_rA-1
-X-Mimecast-MFC-AGG-ID: ONqfwzWAMceN_6i1pbI_rA_1742907891
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E66D21956067;
-	Tue, 25 Mar 2025 13:04:50 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.224.42])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 719BF19541A5;
-	Tue, 25 Mar 2025 13:04:44 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Tue, 25 Mar 2025 14:04:17 +0100 (CET)
-Date: Tue, 25 Mar 2025 14:04:10 +0100
-From: Oleg Nesterov <oleg@redhat.com>
-To: K Prateek Nayak <kprateek.nayak@amd.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: Mateusz Guzik <mjguzik@gmail.com>,
-	syzbot <syzbot+62262fdc0e01d99573fc@syzkaller.appspotmail.com>,
-	brauner@kernel.org, dhowells@redhat.com, jack@suse.cz,
-	jlayton@kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netfs@lists.linux.dev,
-	swapnil.sapkal@amd.com, syzkaller-bugs@googlegroups.com,
-	viro@zeniv.linux.org.uk, v9fs@lists.linux.dev
-Subject: Re: [syzbot] [netfs?] INFO: task hung in netfs_unbuffered_write_iter
-Message-ID: <20250325130410.GA10828@redhat.com>
-References: <67e05e30.050a0220.21942d.0003.GAE@google.com>
- <20250323194701.GC14883@redhat.com>
- <CAGudoHHmvU54MU8dsZy422A4+ZzWTVs7LFevP7NpKzwZ1YOqgg@mail.gmail.com>
- <20250323210251.GD14883@redhat.com>
- <af0134a7-6f2a-46e1-85aa-c97477bd6ed8@amd.com>
- <CAGudoHH9w8VO8069iKf_TsAjnfuRSrgiJ2e2D9-NGEDgXW+Lcw@mail.gmail.com>
- <7e377feb-a78b-4055-88cc-2c20f924bf82@amd.com>
- <f7585a27-aaef-4334-a1de-5e081f10c901@amd.com>
- <ff294b3c-cd24-4aa6-9d03-718ff7087158@amd.com>
- <20250325121526.GA7904@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lCbpXa1O"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50340C4CEE4;
+	Tue, 25 Mar 2025 14:00:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742911201;
+	bh=lJZXYZiR4HQG5j87rd/oFQOmLKxt2PFOJshchMR61d4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=lCbpXa1O8Yj6Hh7dKDkc8Sd9AwtQSDeaMt0akk69E/2XjE6QIoNLksf151kNbRUXz
+	 6pDIkXF2b5BNqxfjvICdUArSS2ZOf3mAkhtWb6mA335ndmnX2vrIVHxQu9lXszI38w
+	 Kmgt1d7NWx4g5n+8hwOr35ytAhrxx4goFNdTyJLV4bV8+Fkh/M73g49gB7ZsY8whyH
+	 Tkx1lTbJHFtMMH42y9mGNCn5rUVbjSS8xb26MAFaSeqe7hOvfcvRpYi62R73P9VX/7
+	 2Fxza532w5/qwzNATTHIIWndyOtg7ZEdThJ+jp9aMY3nVUBfD8B8aGOpE4Pt4khsSs
+	 J1ZQ6b8bE42JQ==
+From: Christian Brauner <brauner@kernel.org>
+To: linux-fsdevel@vger.kernel.org,
+	David Howells <dhowells@redhat.com>,
+	NeilBrown <neilb@suse.de>,
+	Marc Dionne <marc.dionne@auristor.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	netfs@lists.linux.dev
+Subject: Re: [PATCH] cachefiles: Fix oops in vfs_mkdir from cachefiles_get_directory
+Date: Tue, 25 Mar 2025 14:59:55 +0100
+Message-ID: <20250325-nirgendwo-zugang-8e179ba0ac57@brauner>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250325125905.395372-1-marc.dionne@auristor.com>
+References: <20250325125905.395372-1-marc.dionne@auristor.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250325121526.GA7904@redhat.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1395; i=brauner@kernel.org; h=from:subject:message-id; bh=lJZXYZiR4HQG5j87rd/oFQOmLKxt2PFOJshchMR61d4=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaQ/2naveHJLeWzE38Vs2xXeRdRFv+Z81ttf12V+he35f mmu/uvRHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABPh4WD4Hzm95epi/ktbOIW/ z5Ptldm/reVV2cEFWafO7y02/7T0zAVGhi1MiTY86h4TjpT/+z1foH1u4WXz28KLDjuHyH24c1R AmQkA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-On 03/25, K Prateek Nayak wrote:
->
-> I chased this down to p9_client_rpc() net/9p/client.c specifically:
->
->         err = c->trans_mod->request(c, req);
->         if (err < 0) {
->                 /* write won't happen */
->                 p9_req_put(c, req);
->                 if (err != -ERESTARTSYS && err != -EFAULT)
->                         c->status = Disconnected;
->                 goto recalc_sigpending;
->         }
->
-> c->trans_mod->request() calls p9_fd_request() in net/9p/trans_fd.c
-> which basically does a p9_fd_poll().
+On Tue, 25 Mar 2025 09:59:05 -0300, Marc Dionne wrote:
+> Commit c54b386969a5 ("VFS: Change vfs_mkdir() to return the dentry.")
+> changed cachefiles_get_directory, replacing "subdir" with a ERR_PTR
+> from the result of cachefiles_inject_write_error, which is either 0
+> or some error code.  This causes an oops when the resulting pointer
+> is passed to vfs_mkdir.
+> 
+> Use a similar pattern to what is used earlier in the function; replace
+> subdir with either the return value from vfs_mkdir, or the ERR_PTR
+> of the cachefiles_inject_write_error() return value, but only if it
+> is non zero.
+> 
+> [...]
 
-Again, I know nothing about 9p... but if p9_fd_request() returns
-an err < 0, then it comes from p9_conn->err and p9_fd_request()
-does nothing else.
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-> Previously, the above would fail with err as -EIO which would
-> cause the client to "Disconnect" and the retry logic would make
-> progress. Now however, the err returned is -ERESTARTSYS
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-OK... So p9_conn->err = -ERESTARTSYS was set by p9_conn_cancel()
-called by p9_write_work() because pipe_write() returns ERESTARTSYS?
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-But I don't understand -EIO with the reverted commit aaec5a95d59615
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
-Oleg.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
 
+[1/1] cachefiles: Fix oops in vfs_mkdir from cachefiles_get_directory
+      https://git.kernel.org/vfs/vfs/c/406fad7698f5
