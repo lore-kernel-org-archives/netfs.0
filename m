@@ -1,44 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E87C257ACF;
-	Tue, 25 Mar 2025 14:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4046F31E;
+	Tue, 25 Mar 2025 14:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742911201; cv=none; b=Sv0s4c+HY5f3LH++FT68VbjHacNdUfgbMrtBc/LqpNs1ey1dUxpLq2CjhNwSWhQJ99zVMxWDlPQVNXNtAa3kSAIZmGPUqu+2Kq0Eptl7OAjNxtFGVptouyl9fiWC6G4gdju+l2qRkFsb+F4XKLUtAPhCXqUWhJUGV/k2Q8wyKNA=
+	t=1742913781; cv=none; b=ijHVOWDliP4KEK+xwHA7tcxHikQP+k10aol2oYHsLL0S8wVum6+royK3pT/D10w9FH3kC8UCE1s7TJlIoqgrk9CMEOTsp4Nu9RirWjUTMNBLblYdkdl7Z/CvHL0tNet92cUiHUzWqBqRdbhK9rxRAExGLoet1Z/L47QzoHjgSoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742911201; c=relaxed/simple;
-	bh=lJZXYZiR4HQG5j87rd/oFQOmLKxt2PFOJshchMR61d4=;
+	s=arc-20240116; t=1742913781; c=relaxed/simple;
+	bh=lmIrBROtKRFCCWLUgzAzJqkCXPp1Qx01fWTc2rvFYFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eTSumjwZfX1qFBZBnQFfu/39w9EdbsEPdocjemp938ZIXdH/LkBT+O1xYJYJMTzsHcXHHd+ZUuGgBZ4pOPZwE9llHaqc/7HRj1TRzuModMflPv1ZSu1wIRmB3r9bMUMQ9aBAi1l22bJwY4al0BuGCl60MdmQYalpaUKeGa910M8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lCbpXa1O; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=sp5woRGd0dMJptvLlPXPPjzlieJEayB9g2o0vhkkwvlWIIqfrJxgtsjyP7In74fzx+VrOS3fhDqAeT2b2/IbpM1Ug5Gt8J9sE5PwJfNpTFj49eRFwKI3yYLVznenKS/+QBzBZ0iX5nnJHpYlsfb3MIwxh3xMLl+OBwjxghToesg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XclqaUB2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lCbpXa1O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50340C4CEE4;
-	Tue, 25 Mar 2025 14:00:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XclqaUB2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E6BFC4CEE4;
+	Tue, 25 Mar 2025 14:43:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742911201;
-	bh=lJZXYZiR4HQG5j87rd/oFQOmLKxt2PFOJshchMR61d4=;
+	s=k20201202; t=1742913780;
+	bh=lmIrBROtKRFCCWLUgzAzJqkCXPp1Qx01fWTc2rvFYFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lCbpXa1O8Yj6Hh7dKDkc8Sd9AwtQSDeaMt0akk69E/2XjE6QIoNLksf151kNbRUXz
-	 6pDIkXF2b5BNqxfjvICdUArSS2ZOf3mAkhtWb6mA335ndmnX2vrIVHxQu9lXszI38w
-	 Kmgt1d7NWx4g5n+8hwOr35ytAhrxx4goFNdTyJLV4bV8+Fkh/M73g49gB7ZsY8whyH
-	 Tkx1lTbJHFtMMH42y9mGNCn5rUVbjSS8xb26MAFaSeqe7hOvfcvRpYi62R73P9VX/7
-	 2Fxza532w5/qwzNATTHIIWndyOtg7ZEdThJ+jp9aMY3nVUBfD8B8aGOpE4Pt4khsSs
-	 J1ZQ6b8bE42JQ==
+	b=XclqaUB2rG4UNBogPMGQDviRUqnMR2uosSLTTYSi27oo9YrVe5oVhp+gwqHPmp/x+
+	 JX30bRnWDmpfXxo2YKtHyYOcPwDSxGJJXNGVIPw9P0HbWuspbgTlVBVba36VLoZg61
+	 Ky7AX7MTjMpwM/EAGfF4jdT6ZSW2ymLZ47v8mVb6CCXC5OXi0xIDBGWagawr+WsIaF
+	 kYnlZyiqCkLPnI1ekSnv+bs92UJVBA720wtfUgCCk7wNXKmVf1cG0OIFhPt08CwHTD
+	 n1Euqd2KYe/lZ81Ac40t4sOFv9lO4zCyzw94PXBhpS8pNPd4P8rNkKYXoQqtFyDT1t
+	 tboArCEMXGg3A==
 From: Christian Brauner <brauner@kernel.org>
-To: linux-fsdevel@vger.kernel.org,
-	David Howells <dhowells@redhat.com>,
-	NeilBrown <neilb@suse.de>,
-	Marc Dionne <marc.dionne@auristor.com>
+To: David Howells <dhowells@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>
 Cc: Christian Brauner <brauner@kernel.org>,
-	netfs@lists.linux.dev
-Subject: Re: [PATCH] cachefiles: Fix oops in vfs_mkdir from cachefiles_get_directory
-Date: Tue, 25 Mar 2025 14:59:55 +0100
-Message-ID: <20250325-nirgendwo-zugang-8e179ba0ac57@brauner>
+	Paulo Alcantara <pc@manguebit.com>,
+	netfs@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH] netfs: add Paulo as maintainer and remove myself as Reviewer
+Date: Tue, 25 Mar 2025 15:42:56 +0100
+Message-ID: <20250325-badeort-biomedizin-2fa6a73ec24a@brauner>
 X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250325125905.395372-1-marc.dionne@auristor.com>
-References: <20250325125905.395372-1-marc.dionne@auristor.com>
+In-Reply-To: <20250324-master-v1-1-e2dd2fdb15b4@kernel.org>
+References: <20250324-master-v1-1-e2dd2fdb15b4@kernel.org>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -46,23 +47,16 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1395; i=brauner@kernel.org; h=from:subject:message-id; bh=lJZXYZiR4HQG5j87rd/oFQOmLKxt2PFOJshchMR61d4=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaQ/2naveHJLeWzE38Vs2xXeRdRFv+Z81ttf12V+he35f mmu/uvRHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABPh4WD4Hzm95epi/ktbOIW/ z5Ptldm/reVV2cEFWafO7y02/7T0zAVGhi1MiTY86h4TjpT/+z1foH1u4WXz28KLDjuHyH24c1R AmQkA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1018; i=brauner@kernel.org; h=from:subject:message-id; bh=lmIrBROtKRFCCWLUgzAzJqkCXPp1Qx01fWTc2rvFYFA=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaQ/OvAp4uUP1o4lPdKnuM89cUjz0jU9XcH3Vcj2GP85z 1KPRc2+HaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABN5tZSR4fGlv6+2WwVd0Jhw Jvi2+A/Rec06MR9S7Sf7zGadK/fnPw/DX7meV91rpLcebK5dYHWn5ucmr0c+7tovWeU/Cu72eKq 1nBEA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-On Tue, 25 Mar 2025 09:59:05 -0300, Marc Dionne wrote:
-> Commit c54b386969a5 ("VFS: Change vfs_mkdir() to return the dentry.")
-> changed cachefiles_get_directory, replacing "subdir" with a ERR_PTR
-> from the result of cachefiles_inject_write_error, which is either 0
-> or some error code.  This causes an oops when the resulting pointer
-> is passed to vfs_mkdir.
+On Mon, 24 Mar 2025 16:11:03 -0400, Jeff Layton wrote:
+> My role has changed since I originally agreed to help with netfs, and
+> I'm no longer providing a lot of value here. Luckily, Paulo has agreed
+> to step in as co-maintainer.
 > 
-> Use a similar pattern to what is used earlier in the function; replace
-> subdir with either the return value from vfs_mkdir, or the ERR_PTR
-> of the cachefiles_inject_write_error() return value, but only if it
-> is non zero.
 > 
-> [...]
 
 Applied to the vfs.fixes branch of the vfs/vfs.git tree.
 Patches in the vfs.fixes branch should appear in linux-next soon.
@@ -79,5 +73,5 @@ trailer updates or similar. If in doubt, please check the listed branch.
 tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
 branch: vfs.fixes
 
-[1/1] cachefiles: Fix oops in vfs_mkdir from cachefiles_get_directory
-      https://git.kernel.org/vfs/vfs/c/406fad7698f5
+[1/1] netfs: add Paulo as maintainer and remove myself as Reviewer
+      https://git.kernel.org/vfs/vfs/c/1243045c9448
