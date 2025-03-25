@@ -1,94 +1,109 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E105CA2D;
-	Tue, 25 Mar 2025 14:59:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A8C1F3B94;
+	Tue, 25 Mar 2025 18:42:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742914762; cv=none; b=DnpF4+qCt+jfw2Kw/Lp0vxEvSe4qkw1+3mkaH6P9rhCSCb7z8jqHfquAB0Ecevvowk1kioMmOwE2XuGXRJRY4ax64T3tjCgkPHKDfV8Wt0Q+3XWckSMASLXK1/VRCnvXUPojlTDzXv6i/NqpY1PHbtxljNW+jY+Lf8GcEglSezk=
+	t=1742928155; cv=none; b=GkDb70itGq13rOji/cdxE7WDLLAKcJjisbunV0luWbKdcFCbW/2a1yiY0A1EAmI/SY9mj3kh4VQgQ1crNzEk4kXLjijTFeRTavKRncbpKKEq34uoiNr0T8CXpt2HewqvJCn7XEHdV2o+i68JGqhTcKYnnxWCU1ytQLWUU2fMMrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742914762; c=relaxed/simple;
-	bh=jFKEhjNjq9tWLi1tufH12YoYuLncNqbR/nzyYY8yoFc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NGLFVkiCOiHzA4Bsg/ZvvgR2Euwg2WGw9qdKsoC1JT58k99EEkANMUcw/iX6RYlenJLUqpO/jeK2czJ5Y1uSLaSakP5FDcp7CxyvrfY2v5gozSnUlywpjUNPe85e0OcLCLo1pT0+Yot1GxHyKJQIdPY/xYVnvdMsnWOzakxGvCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=W3/5436i; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1742928155; c=relaxed/simple;
+	bh=70LDVfYt6ryFikxs5Zc6nLO59eM2YSuiLbb1gCwwUno=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=H5Mw9cg5WTs2CP3p+Oty8WIoGPIv2yeNKAYcT642FnmJ/OB1wCDKCuj6kiOGzJG6tg0C0pwUzQ/NW6prJal4Tsk1sxXdxKteYNLgIzPcNhQW1eU3VlLDqK6ubzFvgnzAe6W0z43pNLoBsbTvthTgwERF/eyPrCZurGK9OIjkv44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VYcWVURq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="W3/5436i"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 494BD14C2D3;
-	Tue, 25 Mar 2025 15:59:13 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1742914758;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LA2ZWfipp543V5Octm+YivgRf31pm38h6sG4nFoFVL4=;
-	b=W3/5436ielp+x8Mg+ylaT1KwQLXmybgWQDRFANia1QIR5etK8+gW7Dk4fWWTQlCrj6Tkad
-	vgLy5gZ/5N8CvbH+NS29LwIEi23qDuWlaxtwdi8nV8zNAN8L0Ztf0cUYdpEIPrYOvKrtL0
-	nKtHroMZM9HTu/lCxJ7sBGryNeMS1iRjuWs2kl7o1BM6Pg1FkZkhBBAwWCpBVnvNcGzq3s
-	rVAXnUzgy8K1U3e/Qn6FeFY4w8hcycOuxZKajjueOVaqnN0z4ieDQOQEqh70519uT/MjvE
-	cWZOqiDjql//4x7MeXIQ9UiRxAtbG0VD4DWlRRn0JeRy5uelCkgZgtw/6cgWlg==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id ad07f38a;
-	Tue, 25 Mar 2025 14:59:11 +0000 (UTC)
-Date: Tue, 25 Mar 2025 23:58:56 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: K Prateek Nayak <kprateek.nayak@amd.com>
-Cc: Oleg Nesterov <oleg@redhat.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	syzbot <syzbot+62262fdc0e01d99573fc@syzkaller.appspotmail.com>,
-	brauner@kernel.org, dhowells@redhat.com, jack@suse.cz,
-	jlayton@kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netfs@lists.linux.dev,
-	swapnil.sapkal@amd.com, syzkaller-bugs@googlegroups.com,
-	viro@zeniv.linux.org.uk, v9fs@lists.linux.dev
-Subject: Re: [syzbot] [netfs?] INFO: task hung in netfs_unbuffered_write_iter
-Message-ID: <Z-LEsPFE4e7TTMiY@codewreck.org>
-References: <CAGudoHHmvU54MU8dsZy422A4+ZzWTVs7LFevP7NpKzwZ1YOqgg@mail.gmail.com>
- <20250323210251.GD14883@redhat.com>
- <af0134a7-6f2a-46e1-85aa-c97477bd6ed8@amd.com>
- <CAGudoHH9w8VO8069iKf_TsAjnfuRSrgiJ2e2D9-NGEDgXW+Lcw@mail.gmail.com>
- <7e377feb-a78b-4055-88cc-2c20f924bf82@amd.com>
- <f7585a27-aaef-4334-a1de-5e081f10c901@amd.com>
- <ff294b3c-cd24-4aa6-9d03-718ff7087158@amd.com>
- <20250325121526.GA7904@redhat.com>
- <20250325130410.GA10828@redhat.com>
- <f855a988-d5e9-4f5a-8b49-891828367ed7@amd.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VYcWVURq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46D3C4CEF4;
+	Tue, 25 Mar 2025 18:42:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742928155;
+	bh=70LDVfYt6ryFikxs5Zc6nLO59eM2YSuiLbb1gCwwUno=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=VYcWVURqIwaCtmAZiE0YLRzuHlbY2G2BDsGQ4QuYHEgBc9/XAgVVSEOYgSb7f4A8z
+	 aXidqYOIhn4eUKEOs9cHVaDOq1JnC3Kp41qibpxafbvUn+w5MK56x/NtQehTJIMlBz
+	 /FBuFxMQELgAj8pxJQ8vJmZ4G0++oyIBsWh1ol60tlTVgw1CYFOs7rrVCj5yXDScdY
+	 3OXbo+psyWBcW9cydHw4fzotq1jvBa5IMlTzJFCvxoVFSPNLkQ6X7o8vJ0zbMI8x5p
+	 aMLiqayLwMi1N9Vg7Mt+AqsWWvyIOcf13G1mCww0WAyHzS6OIRum9K5H5hwmlN3+jJ
+	 EXIbTJVp0X3Aw==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: David Howells <dhowells@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Alex Markuze <amarkuze@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	ceph-devel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	netfs@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.13 7/7] netfs: Fix netfs_unbuffered_read() to return ssize_t rather than int
+Date: Tue, 25 Mar 2025 14:42:15 -0400
+Message-Id: <20250325184215.2152123-7-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250325184215.2152123-1-sashal@kernel.org>
+References: <20250325184215.2152123-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <f855a988-d5e9-4f5a-8b49-891828367ed7@amd.com>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.13.8
+Content-Transfer-Encoding: 8bit
 
-Thanks for the traces.
+From: David Howells <dhowells@redhat.com>
 
-w/ revert
-K Prateek Nayak wrote on Tue, Mar 25, 2025 at 08:19:26PM +0530:
->    kworker/100:1-1803    [100] .....   286.618822: p9_fd_poll: p9_fd_poll rd poll
->    kworker/100:1-1803    [100] .....   286.618822: p9_fd_poll: p9_fd_request wr poll
->    kworker/100:1-1803    [100] .....   286.618823: p9_read_work: Data read wait 7
+[ Upstream commit 07c574eb53d4cc9aa7b985bc8bfcb302e5dc4694 ]
 
-new behavior
->            repro-4076    [031] .....    95.011394: p9_fd_poll: p9_fd_poll rd poll
->            repro-4076    [031] .....    95.011394: p9_fd_poll: p9_fd_request wr poll
->            repro-4076    [031] .....    99.731970: p9_client_rpc: Wait event killable (-512)
+Fix netfs_unbuffered_read() to return an ssize_t rather than an int as
+netfs_wait_for_read() returns ssize_t and this gets implicitly truncated.
 
-For me the problem isn't so much that this gets ERESTARTSYS but that it
-nevers gets to read the 7 bytes that are available?
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20250314164201.1993231-5-dhowells@redhat.com
+Acked-by: "Paulo Alcantara (Red Hat)" <pc@manguebit.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: Viacheslav Dubeyko <slava@dubeyko.com>
+cc: Alex Markuze <amarkuze@redhat.com>
+cc: Ilya Dryomov <idryomov@gmail.com>
+cc: ceph-devel@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/netfs/direct_read.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-If the repro has already written the bytes in both cases then there's no
-reason to wait 5 seconds here...
-
-OTOH syzbot 9p code is silly and might have been depending on something
-that's not supposed to work e.g. they might be missing a flush or
-equivalent for all I know (I still haven't looked at the repro)
-
+diff --git a/fs/netfs/direct_read.c b/fs/netfs/direct_read.c
+index b1a66a6e6bc2d..917b7edc34ef5 100644
+--- a/fs/netfs/direct_read.c
++++ b/fs/netfs/direct_read.c
+@@ -108,9 +108,9 @@ static int netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
+  * Perform a read to an application buffer, bypassing the pagecache and the
+  * local disk cache.
+  */
+-static int netfs_unbuffered_read(struct netfs_io_request *rreq, bool sync)
++static ssize_t netfs_unbuffered_read(struct netfs_io_request *rreq, bool sync)
+ {
+-	int ret;
++	ssize_t ret;
+ 
+ 	_enter("R=%x %llx-%llx",
+ 	       rreq->debug_id, rreq->start, rreq->start + rreq->len - 1);
+@@ -149,7 +149,7 @@ static int netfs_unbuffered_read(struct netfs_io_request *rreq, bool sync)
+ 	}
+ 
+ out:
+-	_leave(" = %d", ret);
++	_leave(" = %zd", ret);
+ 	return ret;
+ }
+ 
 -- 
-Dominique
+2.39.5
+
