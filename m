@@ -1,259 +1,260 @@
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2071.outbound.protection.outlook.com [40.107.220.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462A115B102;
-	Thu, 27 Mar 2025 17:46:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.71
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743097606; cv=fail; b=jqKcfg6Toe6dkJ3FwOtSvJE1yq87sQgVxKy15j19CwTNqWnKDWPRHBI98sksprSej0zJbETv6GZqo323VFmXHO63+3agTTC7z3uhKPh55QuMESyvS1x3QQcpFWpTGHbCgF1ryCRyIEQqCR5johP6EyF1OyXs4dFJ+7nEYs8Sj80=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743097606; c=relaxed/simple;
-	bh=L5W6OatC1aE6Wo+1AbpDOQpq8udLMTLIMpnvbdAMZCE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Tdbdx1hL7xCh01oobGDkwr80uCJXKCFYda3c7aWhwoIRHVm+d/LL0igFwuVUTGenB1JtQe4UM733JdIuTy05f17ufjZvVjL9BaFUSU8VXONE5M5D9pUO3FibUrAVAi8h8pIhTaD8VE77sfpaiFiyIE0sqG9ttaKG4WNrandCgSI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=o/FLpEOO; arc=fail smtp.client-ip=40.107.220.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="o/FLpEOO"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sNgPUvUoYA9d7EW2WYFByzt5uzD2npUPdYSn+G87i9NrT0Bv0waGkLFNzlXD0ynQpv8admosWx7kM+e4NKT9SXzZqb1sfGxCJblFmxspkQV9qmFfvml5xHRiYBVQ18Z/om+i45QthalSQT++zfp7NhgeHrQpx3mJFgn1HtUwahAscpCa7xhwnZOgiYaIklkazFjxno5RE66V4tlY9AVTP5eV+qQo3oPBD/K6e5BRnKcF7Spyo7qYVUt5cG3pktAhtS8UVTyD+qtFRtS5bwlEIC5TfTxY+zu1WA6Xwg/ZsT2XNgaE5BThRd/e55U2pAD8Uw+xiZvQwj6JL0hRQd+3fA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tZPYR1lXleHvKQQlFqRTmNB4YBbwjvmcYM7wCp+4aNs=;
- b=Ka4cAfnZPiCzngvbXA9RsUgLwpryMbS1oepo6mjTBrWvPrNvYqrZCyDPnilQMUvaIG+esSHBfaY18alSX0uEFS5caUg3+oOuMCAdrfHtMfURpT3dXIM8EbEFspOv8KIcVwJKw6vOpgXaFTB1fVH4v7dp6WMi+mz+Fb8nivPir9f6aV6t795kPBrsxH8io3wWYcOybhyz01uWISdnNMJa8k4jxv+vU0SkVMAZuy7sb47YFyCmRHY7v4WhdPb2GO7nyibjqSZOZUZwa/PMh12EcQTtWROrryz/83oJFnlIys+XIXxH6lMc5NoIuH66jv/0P8Evc+2cKnsKJRzyojeBiA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=codewreck.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tZPYR1lXleHvKQQlFqRTmNB4YBbwjvmcYM7wCp+4aNs=;
- b=o/FLpEOOI3JDseZiCgSu6DyeiLyjqOYKQxtC89PwndOz+9pMS9Gvg2EQlXh1Yq3AmNIhmBoyzRkY+la8HWulIMTTv8lvgkoCWp3n47sigOuZtNSV849/8ybdlklh32Btja2h5VODVa6rynLFPq/SA1+kyfZ0sybp0ixA+l5yqlo=
-Received: from BN9PR03CA0117.namprd03.prod.outlook.com (2603:10b6:408:fd::32)
- by MW3PR12MB4346.namprd12.prod.outlook.com (2603:10b6:303:58::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.46; Thu, 27 Mar
- 2025 17:46:40 +0000
-Received: from BN3PEPF0000B070.namprd21.prod.outlook.com
- (2603:10b6:408:fd:cafe::3d) by BN9PR03CA0117.outlook.office365.com
- (2603:10b6:408:fd::32) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8534.42 via Frontend Transport; Thu,
- 27 Mar 2025 17:46:40 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN3PEPF0000B070.mail.protection.outlook.com (10.167.243.75) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8606.2 via Frontend Transport; Thu, 27 Mar 2025 17:46:39 +0000
-Received: from [10.252.205.52] (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 27 Mar
- 2025 12:46:34 -0500
-Message-ID: <377fbe51-2e56-4538-89c5-eb91c13a2559@amd.com>
-Date: Thu, 27 Mar 2025 23:16:27 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDE21C6FF3
+	for <netfs@lists.linux.dev>; Thu, 27 Mar 2025 21:19:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743110346; cv=none; b=tlbjm9+n2cAPPPC97VIi1qSvnGZTfDCNHmpG2xcqvDrXrZMNcUFdLjyHvxyUjde2A1KKynudMy6X8NkMPNTAZBKeipeFgIpNhQQz6HuQctFGizjFY9gMbFhtyAJ77c7L2hwJiBlonj6nBND6Uf72RFU9Ror2ABJMhsyh/eghvBo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743110346; c=relaxed/simple;
+	bh=aCPLkAPNqHPfXXYpF+u5DulW2UrdR85yULyiD3AkK84=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=PW0WlO3MtrryFymXcuNxrv/THTP/69Olj7/kgERsJywIJdqW827/JlE7SbTCIJJhp6qSyOB/vOZNo6Ji46wLCYOtgnCBxA1CUI49T/Aphg46DqY+qCTr2wJt8X8885Q2xlVVIR5DKPQBFSB3NJVfbLwIQnFpbA2tFMFMmWnJ2mU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-3ce8dadfb67so16570035ab.1
+        for <netfs@lists.linux.dev>; Thu, 27 Mar 2025 14:19:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743110343; x=1743715143;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ezyr0ftPfuRnIP/8/87RsgAT60DJXR7veyvFu9Xiw84=;
+        b=JmsK6BpW3ug1QK8C5evjaqGsuQoVvkNmXVT7sC2alQiNGRboJK+l/A585nvanVDwkM
+         5Yrz2Z247A7P8BwCF9ANAFXPNXrFM/WHnsyO8UID5/v2SLrDru8AszqJc2qka+Hz2l24
+         S7jQLXtOupg4boRxmP9Bg/DEOxUBzmlqPQ8/zDmxqmyc3m8QAgTOA78n/WsPbicPtt9h
+         WtY1XlnksaIaa7e8aVVZLKoRnrIy/8hm+LB8qErANvjsH3Dhw2AuXphhZ08sj3nJ43m9
+         4kTW4ZtM6x7gfujV4hOd6fyUKp14z0oXRfIosGZIqzHUQ/08FXDgJfFGVRnmpPQJo1kD
+         QRsA==
+X-Forwarded-Encrypted: i=1; AJvYcCW5iN9RIgqtTgbDW1d/IOSQ26tBEuVsQ+WzeXWntfKNlAviMhRzxM1djlMylbBKz7sLZclQ7A==@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy4zqBwL4gUgOEDQJy0qa5xGCpwsezEunVCQAlgdzCrIJ3l/sxG
+	DclQjLC9qcH+XpRVoRs1oXCroSK52WwrQQQl+b9v/SThPtDePB4VCtecTPyP9FX4Tg+rFoEWKEv
+	Wd+Pyss/JdAn0xzc/txZDMHAyTDprUv1f8mpl5HrJ6sjtmiWSdMmXYZw=
+X-Google-Smtp-Source: AGHT+IFsGXdWVqU303kA5D+rW++qjzNC9PAP4fF99w7bb3PZFy5VjrvILDf0672csmbEocTzep7lHYv7wyQ7x+6KqjIhmfvgIGtd
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+X-Received: by 2002:a92:cd8e:0:b0:3d4:3ab3:daf0 with SMTP id
+ e9e14a558f8ab-3d5ccdca0ebmr64790405ab.7.1743110343462; Thu, 27 Mar 2025
+ 14:19:03 -0700 (PDT)
+Date: Thu, 27 Mar 2025 14:19:03 -0700
+In-Reply-To: <377fbe51-2e56-4538-89c5-eb91c13a2559@amd.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <67e5c0c7.050a0220.2f068f.004c.GAE@google.com>
 Subject: Re: [syzbot] [netfs?] INFO: task hung in netfs_unbuffered_write_iter
-To: Dominique Martinet <asmadeus@codewreck.org>, Oleg Nesterov
-	<oleg@redhat.com>
-CC: Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
-	<lucho@ionkov.net>, Christian Schoenebeck <linux_oss@crudebyte.com>, "Mateusz
- Guzik" <mjguzik@gmail.com>, syzbot
-	<syzbot+62262fdc0e01d99573fc@syzkaller.appspotmail.com>,
-	<brauner@kernel.org>, <dhowells@redhat.com>, <jack@suse.cz>,
-	<jlayton@kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <netfs@lists.linux.dev>,
-	<swapnil.sapkal@amd.com>, <syzkaller-bugs@googlegroups.com>,
-	<viro@zeniv.linux.org.uk>, <v9fs@lists.linux.dev>
-References: <CAGudoHHmvU54MU8dsZy422A4+ZzWTVs7LFevP7NpKzwZ1YOqgg@mail.gmail.com>
- <20250323210251.GD14883@redhat.com>
- <af0134a7-6f2a-46e1-85aa-c97477bd6ed8@amd.com>
- <CAGudoHH9w8VO8069iKf_TsAjnfuRSrgiJ2e2D9-NGEDgXW+Lcw@mail.gmail.com>
- <7e377feb-a78b-4055-88cc-2c20f924bf82@amd.com>
- <f7585a27-aaef-4334-a1de-5e081f10c901@amd.com>
- <ff294b3c-cd24-4aa6-9d03-718ff7087158@amd.com>
- <20250325121526.GA7904@redhat.com> <20250325130410.GA10828@redhat.com>
- <f855a988-d5e9-4f5a-8b49-891828367ed7@amd.com>
- <Z-LEsPFE4e7TTMiY@codewreck.org>
-Content-Language: en-US
-From: K Prateek Nayak <kprateek.nayak@amd.com>
-In-Reply-To: <Z-LEsPFE4e7TTMiY@codewreck.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B070:EE_|MW3PR12MB4346:EE_
-X-MS-Office365-Filtering-Correlation-Id: 363ceb3a-939d-43b6-ed16-08dd6d575438
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|376014|7416014|82310400026|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ZXg4dDFnQTJCN1g5eU83Wkg1NTBhT3FBcWFKQ1AzUlpLM0xDNGE0VllJZGcv?=
- =?utf-8?B?UWhweHRVVzd6MVN6Z0hoUVpJRmhTMjh0SGpNYXNDWUorVVpuNWxON01DMHJ0?=
- =?utf-8?B?VG9sbEdhWlo3a1hTb0dOaWhON3VWdVFwSE5pMVg0YnNRSEs0Yy9HcHk2d3ha?=
- =?utf-8?B?cHkzMng5eXVrS0hsa2g1dDA2VHRBdmhGMGFxQklrajhaWkN6U2lIbC9oNk5y?=
- =?utf-8?B?Z1VLUEkwczhUeUtGQTI4QXk5QWUzRDJ1aWh4VkRDSGsrT0plQmZ5Z0hqWFBT?=
- =?utf-8?B?aEs1a1RCU0E5SjZVWDlKWiswditkTytLMlZVbk5sOU1ieE0vbUF3dHEwZ092?=
- =?utf-8?B?TnQzZkZTekJoOHNKa2VJTDVOR01VVXhUZkNDcjBQMHhvOHcwb0Y0NWRKS2wy?=
- =?utf-8?B?TFZEMWxwNmlnQWFuWENSSnJVc1RGSXk3bnBlNTljMURIcmxiQ3kxeVFNL3hU?=
- =?utf-8?B?cWR3S1d0SkJNdXBmanpNdFlMaXp1S2JRTW4wNkF0Ujd0dXNZUkZmS3NUUlFp?=
- =?utf-8?B?eVR4UzlEZUNqSHBaYzRocVlvL2trQ25IT29jbjZma0NRL3czN1hqcGZEaXBL?=
- =?utf-8?B?OEFjV3UxTFBJc0M5eUJLMldMNldoa2hXNjliK3FtSGRzdkRnQ1Yyem55UU9C?=
- =?utf-8?B?KzlDclNnUng1d2Fob2dDcGlNaFZPRmVmQitxWStBTFJMUktvQitQSkdjZmg2?=
- =?utf-8?B?aTNXc1ZvV3pNcVlEaGlQQXBKYkhIbWNPajF4NnNzRk4zZHh5Wk1mQW15WkVQ?=
- =?utf-8?B?SHRCRkcrM0JBa0VFeU91Rkt4RlpRUU5lcVM2SjhSVUV3ZFJ3OXpCYmRtUFlm?=
- =?utf-8?B?TjFxS1QyM0kvMjQ1TFBpeGsxVUtFNUNRR3JFdUlZSlFtdWRYOHdFcm1SWkxy?=
- =?utf-8?B?aEI1RXM4MEpnU2dFYmxsYjBRN29hVW9JVzBNVEMvTnZDSEFPYTIybVB4YTlM?=
- =?utf-8?B?LzRYbjdGUkpIVjRFdWhoOGc1aXlVRlVkVnBpMTlLV0l3VXZFRjVZVkRxaXlt?=
- =?utf-8?B?YzVkdi9LUmNhOU9ndlJuL3hHTkN4N0pyZDVPRHlITnZVa1pHbHh2L1VCZnUr?=
- =?utf-8?B?a1BmQjBuZVM3T1lMZVN6Um5LU0YyTndmWElXMXpvVkRJRHl1amJ1OEVFZ2dv?=
- =?utf-8?B?YjhjU3hudExPbW1EVGN3T0kyYTBjRXpFV1czdVNhRWR2bnU1aldkQ1pLRjJS?=
- =?utf-8?B?aGJmYXFRa0xlc3M0bHhSc3YyeHhYaGZpN0grR3RDdUtianFEWlp6UGYrU2hT?=
- =?utf-8?B?M0JhQ29qdHJVaWNyQ2k0Wm5RK0RxVzl6SDdtaDYvMXpBQ296dVdWK0VyZHZw?=
- =?utf-8?B?czhpVnRpRUlSTEVRQ21YMWNONjZoVVl1N0pMMmlvN1FiblZVaXl1NGdqWEwv?=
- =?utf-8?B?b2Z3dU05NStHeEFISkIxZnBZenZiNklBS3JRZTg4S2lXTi9OajBBdmgwM0tF?=
- =?utf-8?B?REtlV1NoQzBJZFhoYmgzMHREMEpzZ1FNaVIrUitqTndBcU1UOGl1MTlIWmhz?=
- =?utf-8?B?Z3dqT09OZXV0b2l5ajlJZXhuL3FsQmZLYW9ScG5tZlBWQ1ZVdVdKV3FOTDc1?=
- =?utf-8?B?U2FBZktZeHJtYjQwQ3JZZFhkN2ZFK3pDbnBleVk0d0pJbDAyaVhPN2hOazcx?=
- =?utf-8?B?SCtHcXVFeUpCOFFoenJyYlQ2dDByK08xRTAxWktZbFlaek5TYXI1bHRTNzFM?=
- =?utf-8?B?TTZmaGU1V0VzVnl0NnVWa2dHTnh5dnJ6NGlONXZTTVFvUHA2MnprUEVwbU9j?=
- =?utf-8?B?S3dQSUlrSE1hbWFHTGR6dnhuQk50UmplWlN3UEVwQW5tVTFMUU05SktCL1By?=
- =?utf-8?B?VGhlL2tSN0o2ZXMwdC9adGpRTGVMazUxVlFSUGNsNkVJd1JzVTRQdlBJeFVD?=
- =?utf-8?B?L29vYk9HN3ZDb3R2bk9CVHdmdTFLaG9ZcERnVzlRdXFTcndwZXF0eUhsaHFi?=
- =?utf-8?B?YW51akNJSkphLzhRbnkxNU5xNDMwMzB2WkZ4TXd3YnU1REJicE56YlB6emZp?=
- =?utf-8?Q?R0QgJp1weBIKdMa0uvOcycYLhAixiU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(376014)(7416014)(82310400026)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Mar 2025 17:46:39.8641
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 363ceb3a-939d-43b6-ed16-08dd6d575438
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF0000B070.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4346
+From: syzbot <syzbot+62262fdc0e01d99573fc@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, brauner@kernel.org, dhowells@redhat.com, 
+	ericvh@kernel.org, jack@suse.cz, jlayton@kernel.org, kprateek.nayak@amd.com, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux_oss@crudebyte.com, lucho@ionkov.net, mjguzik@gmail.com, 
+	netfs@lists.linux.dev, oleg@redhat.com, swapnil.sapkal@amd.com, 
+	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev, 
+	viro@zeniv.linux.org.uk
+Content-Type: text/plain; charset="UTF-8"
 
-Hello all,
+Hello,
 
-On 3/25/2025 8:28 PM, Dominique Martinet wrote:
-> Thanks for the traces.
-> 
-> w/ revert
-> K Prateek Nayak wrote on Tue, Mar 25, 2025 at 08:19:26PM +0530:
->>     kworker/100:1-1803    [100] .....   286.618822: p9_fd_poll: p9_fd_poll rd poll
->>     kworker/100:1-1803    [100] .....   286.618822: p9_fd_poll: p9_fd_request wr poll
->>     kworker/100:1-1803    [100] .....   286.618823: p9_read_work: Data read wait 7
-> 
-> new behavior
->>             repro-4076    [031] .....    95.011394: p9_fd_poll: p9_fd_poll rd poll
->>             repro-4076    [031] .....    95.011394: p9_fd_poll: p9_fd_request wr poll
->>             repro-4076    [031] .....    99.731970: p9_client_rpc: Wait event killable (-512)
-> 
-> For me the problem isn't so much that this gets ERESTARTSYS but that it
-> nevers gets to read the 7 bytes that are available?
+syzbot has tested the proposed patch but the reproducer is still triggering an issue:
+KASAN: slab-use-after-free Read in p9_conn_cancel
 
-I'm back after getting distracted for a bit. So here it goes:
+==================================================================
+BUG: KASAN: slab-use-after-free in p9_conn_cancel+0x900/0x910 net/9p/trans_fd.c:205
+Read of size 8 at addr ffff88807b19ea50 by task syz-executor/6595
 
-On the mainline, the signal is actually SIGKILL from parent thread
-due to a timeout:
+CPU: 0 UID: 0 PID: 6595 Comm: syz-executor Not tainted 6.13.0-rc1-syzkaller-00017-gaaec5a95d596-dirty #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xc3/0x620 mm/kasan/report.c:489
+ kasan_report+0xd9/0x110 mm/kasan/report.c:602
+ p9_conn_cancel+0x900/0x910 net/9p/trans_fd.c:205
+ p9_conn_destroy net/9p/trans_fd.c:927 [inline]
+ p9_fd_close+0x3c5/0x590 net/9p/trans_fd.c:951
+ p9_client_destroy+0xce/0x480 net/9p/client.c:1077
+ v9fs_session_close+0x49/0x2d0 fs/9p/v9fs.c:506
+ v9fs_kill_super+0x4d/0xa0 fs/9p/vfs_super.c:196
+ deactivate_locked_super+0xbe/0x1a0 fs/super.c:473
+ deactivate_super+0xde/0x100 fs/super.c:506
+ cleanup_mnt+0x222/0x450 fs/namespace.c:1373
+ task_work_run+0x14e/0x250 kernel/task_work.c:239
+ exit_task_work include/linux/task_work.h:43 [inline]
+ do_exit+0xadd/0x2d70 kernel/exit.c:938
+ do_group_exit+0xd3/0x2a0 kernel/exit.c:1087
+ get_signal+0x24ed/0x26c0 kernel/signal.c:3017
+ arch_do_signal_or_restart+0x90/0x7e0 arch/x86/kernel/signal.c:337
+ exit_to_user_mode_loop kernel/entry/common.c:111 [inline]
+ exit_to_user_mode_prepare include/linux/entry-common.h:329 [inline]
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
+ syscall_exit_to_user_mode+0x150/0x2a0 kernel/entry/common.c:218
+ do_syscall_64+0xda/0x250 arch/x86/entry/common.c:89
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fa1f978bb7c
+Code: Unable to access opcode bytes at 0x7fa1f978bb52.
+RSP: 002b:00007ffd5c5893b0 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
+RAX: fffffffffffffe00 RBX: 0000000000000003 RCX: 00007fa1f978bb7c
+RDX: 0000000000000030 RSI: 00007ffd5c589470 RDI: 00000000000000f9
+RBP: 00007ffd5c58941c R08: 0000000000000000 R09: 0079746972756365
+R10: 00007ffd5c588d70 R11: 0000000000000246 R12: 0000000000000258
+R13: 00000000000927c0 R14: 0000000000019c1d R15: 00007ffd5c589470
+ </TASK>
 
-            repro-4084    [112] d..2.   233.654264: signal_generate: sig=9 errno=0 code=0 comm=repro pid=4085 grp=1 res=0
-            repro-4084    [112] d..1.   233.654272: signal_generate: sig=9 errno=0 code=0 comm=repro pid=4085 grp=1 res=1
-            repro-4085    [125] .....   233.654304: p9_client_rpc: Wait event killable (-512) (1) (0) (118)
-            repro-4085    [125] .....   233.654308: p9_client_rpc: Flushed (-512)
-            repro-4085    [125] .....   233.654312: p9_client_rpc: Final error (-512)
-            repro-4085    [125] .....   233.654313: p9_client_write: p9_client_rpc done
-            repro-4085    [125] .....   233.654313: p9_client_write: p9_client_rpc error (-512)
-            repro-4085    [125] .....   233.654315: v9fs_issue_write: Issue write done 2 err(-512)
+Allocated by task 52:
+ kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
+ kasan_save_track+0x14/0x30 mm/kasan/common.c:68
+ unpoison_slab_object mm/kasan/common.c:319 [inline]
+ __kasan_slab_alloc+0x89/0x90 mm/kasan/common.c:345
+ kasan_slab_alloc include/linux/kasan.h:250 [inline]
+ slab_post_alloc_hook mm/slub.c:4104 [inline]
+ slab_alloc_node mm/slub.c:4153 [inline]
+ kmem_cache_alloc_noprof+0x226/0x3d0 mm/slub.c:4160
+ p9_tag_alloc+0x9c/0x870 net/9p/client.c:281
+ p9_client_prepare_req+0x19f/0x4d0 net/9p/client.c:644
+ p9_client_rpc+0x1c3/0xc10 net/9p/client.c:691
+ p9_client_write+0x31f/0x680 net/9p/client.c:1645
+ v9fs_issue_write+0xe2/0x180 fs/9p/vfs_addr.c:59
+ netfs_do_issue_write+0x92/0x110 fs/netfs/write_issue.c:233
+ netfs_retry_write_stream fs/netfs/write_collect.c:184 [inline]
+ netfs_retry_writes fs/netfs/write_collect.c:361 [inline]
+ netfs_collect_write_results fs/netfs/write_collect.c:529 [inline]
+ netfs_write_collection_worker+0x3e10/0x47d0 fs/netfs/write_collect.c:551
+ process_one_work+0x9c5/0x1ba0 kernel/workqueue.c:3229
+ process_scheduled_works kernel/workqueue.c:3310 [inline]
+ worker_thread+0x6c8/0xf00 kernel/workqueue.c:3391
+ kthread+0x2c1/0x3a0 kernel/kthread.c:389
+ ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
 
-Specifically, this part:
+Freed by task 5192:
+ kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
+ kasan_save_track+0x14/0x30 mm/kasan/common.c:68
+ kasan_save_free_info+0x3b/0x60 mm/kasan/generic.c:582
+ poison_slab_object mm/kasan/common.c:247 [inline]
+ __kasan_slab_free+0x51/0x70 mm/kasan/common.c:264
+ kasan_slab_free include/linux/kasan.h:233 [inline]
+ slab_free_hook mm/slub.c:2338 [inline]
+ slab_free_after_rcu_debug+0x115/0x340 mm/slub.c:4648
+ rcu_do_batch kernel/rcu/tree.c:2567 [inline]
+ rcu_core+0x79d/0x14d0 kernel/rcu/tree.c:2823
+ handle_softirqs+0x213/0x8f0 kernel/softirq.c:554
+ __do_softirq kernel/softirq.c:588 [inline]
+ invoke_softirq kernel/softirq.c:428 [inline]
+ __irq_exit_rcu+0x109/0x170 kernel/softirq.c:655
+ irq_exit_rcu+0x9/0x30 kernel/softirq.c:671
+ instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1049 [inline]
+ sysvec_apic_timer_interrupt+0xa4/0xc0 arch/x86/kernel/apic/apic.c:1049
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
 
-     for (;;) {
-       sleep_ms(10);
-       if (waitpid(-1, &status, WNOHANG | WAIT_FLAGS) == pid)
-         break;
-       if (current_time_ms() - start < 5000)
-         continue;
-       kill_and_wait(pid, &status); /* <------- here */
-       break;
-     }
+Last potentially related work creation:
+ kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
+ __kasan_record_aux_stack+0xba/0xd0 mm/kasan/generic.c:544
+ slab_free_hook mm/slub.c:2299 [inline]
+ slab_free mm/slub.c:4598 [inline]
+ kmem_cache_free+0x305/0x4c0 mm/slub.c:4700
+ p9_req_put net/9p/client.c:409 [inline]
+ p9_req_put+0x1c6/0x250 net/9p/client.c:402
+ p9_client_rpc+0x591/0xc10 net/9p/client.c:761
+ p9_client_write+0x31f/0x680 net/9p/client.c:1645
+ v9fs_issue_write+0xe2/0x180 fs/9p/vfs_addr.c:59
+ netfs_do_issue_write+0x92/0x110 fs/netfs/write_issue.c:233
+ netfs_retry_write_stream fs/netfs/write_collect.c:184 [inline]
+ netfs_retry_writes fs/netfs/write_collect.c:361 [inline]
+ netfs_collect_write_results fs/netfs/write_collect.c:529 [inline]
+ netfs_write_collection_worker+0x3e10/0x47d0 fs/netfs/write_collect.c:551
+ process_one_work+0x9c5/0x1ba0 kernel/workqueue.c:3229
+ process_scheduled_works kernel/workqueue.c:3310 [inline]
+ worker_thread+0x6c8/0xf00 kernel/workqueue.c:3391
+ kthread+0x2c1/0x3a0 kernel/kthread.c:389
+ ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
 
-Now for the 7 bytes that were not read - If you look at the traces,
-every time there is a valid trans_mod->request(), there is a kworker
-wakeup:
+The buggy address belongs to the object at ffff88807b19e990
+ which belongs to the cache p9_req_t of size 208
+The buggy address is located 192 bytes inside of
+ freed 208-byte region [ffff88807b19e990, ffff88807b19ea60)
 
-            repro-4102    [100] .....   286.618772: p9_client_write: p9_client_rpc
-            repro-4102    [100] .....   286.618780: p9_fd_request: p9_fd_request
-            repro-4102    [100] .....   286.618781: p9_fd_request: p9_fd_request EPOLL
-            repro-4102    [100] .....   286.618781: p9_fd_request: p9_fd_request schedule work  <----- this
-    kworker/100:1-1803    [100] .....   286.618784: p9_write_work: Data write wait 32770
+The buggy address belongs to the physical page:
+page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x7b19e
+flags: 0xfff00000000000(node=0|zone=1|lastcpupid=0x7ff)
+page_type: f5(slab)
+raw: 00fff00000000000 ffff88814c7a0140 ffffea0001dd70c0 0000000000000006
+raw: 0000000000000000 00000000000f000f 00000001f5000000 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 0, migratetype Unmovable, gfp_mask 0x52c40(GFP_NOFS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP), pid 6752, tgid 6751 (syz.0.17), ts 91802565462, free_ts 91788017536
+ set_page_owner include/linux/page_owner.h:32 [inline]
+ post_alloc_hook+0x2d1/0x350 mm/page_alloc.c:1556
+ prep_new_page mm/page_alloc.c:1564 [inline]
+ get_page_from_freelist+0xfce/0x2f80 mm/page_alloc.c:3474
+ __alloc_pages_noprof+0x221/0x2470 mm/page_alloc.c:4751
+ alloc_pages_mpol_noprof+0x2c9/0x610 mm/mempolicy.c:2265
+ alloc_slab_page mm/slub.c:2408 [inline]
+ allocate_slab mm/slub.c:2574 [inline]
+ new_slab+0x2c9/0x410 mm/slub.c:2627
+ ___slab_alloc+0xda4/0x1880 mm/slub.c:3815
+ __slab_alloc.constprop.0+0x56/0xb0 mm/slub.c:3905
+ __slab_alloc_node mm/slub.c:3980 [inline]
+ slab_alloc_node mm/slub.c:4141 [inline]
+ kmem_cache_alloc_noprof+0xfa/0x3d0 mm/slub.c:4160
+ p9_tag_alloc+0x9c/0x870 net/9p/client.c:281
+ p9_client_prepare_req+0x19f/0x4d0 net/9p/client.c:644
+ p9_client_rpc+0x1c3/0xc10 net/9p/client.c:691
+ p9_client_version net/9p/client.c:930 [inline]
+ p9_client_create+0xc65/0x1200 net/9p/client.c:1036
+ v9fs_session_init+0x1f8/0x1a80 fs/9p/v9fs.c:410
+ v9fs_mount+0xc6/0xa30 fs/9p/vfs_super.c:122
+ legacy_get_tree+0x109/0x220 fs/fs_context.c:662
+ vfs_get_tree+0x8f/0x380 fs/super.c:1814
+page last free pid 6750 tgid 6748 stack trace:
+ reset_page_owner include/linux/page_owner.h:25 [inline]
+ free_pages_prepare mm/page_alloc.c:1127 [inline]
+ free_unref_folios+0xa7b/0x14f0 mm/page_alloc.c:2704
+ folios_put_refs+0x587/0x7b0 mm/swap.c:962
+ free_pages_and_swap_cache+0x45f/0x510 mm/swap_state.c:335
+ __tlb_batch_free_encoded_pages+0xf9/0x290 mm/mmu_gather.c:136
+ tlb_batch_pages_flush mm/mmu_gather.c:149 [inline]
+ tlb_flush_mmu_free mm/mmu_gather.c:366 [inline]
+ tlb_flush_mmu mm/mmu_gather.c:373 [inline]
+ tlb_finish_mmu+0x168/0x7b0 mm/mmu_gather.c:465
+ exit_mmap+0x3df/0xb20 mm/mmap.c:1680
+ __mmput+0x12a/0x4c0 kernel/fork.c:1353
+ mmput+0x62/0x70 kernel/fork.c:1375
+ exit_mm kernel/exit.c:570 [inline]
+ do_exit+0x9bf/0x2d70 kernel/exit.c:925
+ do_group_exit+0xd3/0x2a0 kernel/exit.c:1087
+ get_signal+0x24ed/0x26c0 kernel/signal.c:3017
+ arch_do_signal_or_restart+0x90/0x7e0 arch/x86/kernel/signal.c:337
+ exit_to_user_mode_loop kernel/entry/common.c:111 [inline]
+ exit_to_user_mode_prepare include/linux/entry-common.h:329 [inline]
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
+ syscall_exit_to_user_mode+0x150/0x2a0 kernel/entry/common.c:218
+ do_syscall_64+0xda/0x250 arch/x86/entry/common.c:89
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-However, for that last 7 byte read, there is in fact no wakeup:
+Memory state around the buggy address:
+ ffff88807b19e900: 00 00 00 00 00 00 00 00 00 00 fc fc fc fc fc fc
+ ffff88807b19e980: fc fc fa fb fb fb fb fb fb fb fb fb fb fb fb fb
+>ffff88807b19ea00: fb fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
+                                                 ^
+ ffff88807b19ea80: fc fc fc fc 00 00 00 00 00 00 00 00 00 00 00 00
+ ffff88807b19eb00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 fc fc
+==================================================================
 
-            repro-4102    [100] .....   286.618805: p9_client_write: p9_client_rpc
-            repro-4102    [100] .....   286.618817: p9_fd_request: p9_fd_request
-            repro-4102    [100] .....   286.618818: p9_fd_request: p9_fd_request EPOLL
-            repro-4102    [100] .....   286.618818: p9_fd_poll: p9_fd_poll rd poll
-            repro-4102    [100] .....   286.618818: p9_fd_poll: p9_fd_request wr poll  <--- No wakeup after
-    kworker/100:1-1803    [100] .....   286.618822: p9_fd_poll: p9_fd_poll rd poll
-    kworker/100:1-1803    [100] .....   286.618822: p9_fd_poll: p9_fd_request wr poll
-    kworker/100:1-1803    [100] .....   286.618823: p9_read_work: Data read wait 7
-    kworker/100:1-1803    [100] .....   286.618825: p9_read_work: Data read 7
 
-The kworker would spuriously wakeup, do something, realizes it wasn't
-suppose to read it, and then disconnects the connection waking up all
-waiters.
+Tested on:
 
-But if we haven't sent a request, why are we waiting at all?
-
-> 
-> If the repro has already written the bytes in both cases then there's no
-> reason to wait 5 seconds here...
-> 
-> OTOH syzbot 9p code is silly and might have been depending on something
-> that's not supposed to work e.g. they might be missing a flush or
-> equivalent for all I know (I still haven't looked at the repro)
-> 
-
-I believe if c->trans_mod->request(c, req) does not dispatch the
-request to the worker for RPC, the caller must not wait. So here
-goes something that got the benchmark going in my case which might
-be totally wrong but worth a look:
-
-#syz test: upstream aaec5a95d59615523db03dd53c2052f0a87beea7
-
-diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
-index 196060dc6138..148533c993f1 100644
---- a/net/9p/trans_fd.c
-+++ b/net/9p/trans_fd.c
-@@ -687,7 +687,11 @@ static int p9_fd_request(struct p9_client *client, struct p9_req_t *req)
-  	else
-  		n = p9_fd_poll(m->client, NULL, NULL);
-  
--	if (n & EPOLLOUT && !test_and_set_bit(Wworksched, &m->wsched))
-+	/* Request was not sent */
-+	if (!(n & EPOLLOUT))
-+		return -EIO;
-+
-+	if (!test_and_set_bit(Wworksched, &m->wsched))
-  		schedule_work(&m->wq);
-  
-  	return 0;
+commit:         aaec5a95 pipe_read: don't wake up the writer if the pi..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+console output: https://syzkaller.appspot.com/x/log.txt?x=15fafde4580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=8d5a2956e94d7972
+dashboard link: https://syzkaller.appspot.com/bug?extid=62262fdc0e01d99573fc
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=110a3804580000
 
