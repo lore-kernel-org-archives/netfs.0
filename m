@@ -1,79 +1,24 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from neil.brown.name (neil.brown.name [103.29.64.221])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41BB915442A
-	for <netfs@lists.linux.dev>; Thu, 27 Mar 2025 22:41:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395CE3D3B3;
+	Fri, 28 Mar 2025 01:14:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.29.64.221
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743115320; cv=none; b=u+sadwJN6pAT5fQ01oTk7CXMRR4KhZpwbwUh/mNu5JP7pSPBYbHlipx1YiK6k2RfZrQted+f49wzRCbgmJ9jvKouEkU1CiXlHCGd1tLH+tHEprzu013HlBLozUFmLBKFBmYHvl3BYLGHn71Qr58dBGTXPcyh8dGSnkufXf9pDG4=
+	t=1743124491; cv=none; b=kYPYwVYDvFi3pX5o771s1Fh9Q/ssd7p8PiAQRHLKRBNfsS90uTDAakJmOB/65noUy/huft4rVW/sx1RzNl6m9N6O8CDrR9sEggOnHe+f5bquCIQ7TWzSlETallNwQgMfZENUOTs9Zvgprl2Iw9gs00rhOnw0KZBIVTuODWqT5JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743115320; c=relaxed/simple;
-	bh=KHn/nBq0F9UMfUat3NZ4KUTGan8L84wLSAla2hC8Nog=;
+	s=arc-20240116; t=1743124491; c=relaxed/simple;
+	bh=Lrs0qJ2XX490B/P+4HpTQ96ufgdA3j9s94aEfJYo+js=;
 	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
-	 References:Date:Message-id; b=YHQXtQgMj1j0XQjscWdfgOpQsVJ+D9FAI9zvmxmmcmvGpTcJ2slgqHz5uWddJi3OQP+S0PbWxlQqCWM5b+sFNq1DjYYWXVhekFGe5EjRkNycobjndGucpg9EVzQrNGTtvCrmzNpW42btIh2Vvz+9QqNKLbqDbht0kEjlsP9dk64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=dd6WFfMF; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=vlE59MVG; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=dd6WFfMF; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=vlE59MVG; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="dd6WFfMF";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="vlE59MVG";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="dd6WFfMF";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="vlE59MVG"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5BE3D1F388;
-	Thu, 27 Mar 2025 22:41:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1743115316; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mbp6AL8rqFZj5ptz2a0aLb1oBUVouVYJ+S6YTpOTsp4=;
-	b=dd6WFfMFzmonZQRX+LR7LaabCx+WnPZkwjmAxpdr8ylNS8g/rY6eR7z7EcHHB31liOzBaW
-	fHvI+Wm9/8UxsMbzg1NxtuJdw9cSw97+e+5kdWMdLLIsPvx8wddBzdf2tYK7DzkTW20N6H
-	KdAky7jAmOtKhbjxDP+jxIt04nOp2kQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1743115316;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mbp6AL8rqFZj5ptz2a0aLb1oBUVouVYJ+S6YTpOTsp4=;
-	b=vlE59MVG3xmltYpN86oYk3LHFsYAJp9WaXsoF0VSwgJ6Lv1s8HefckacaVGeZ1wh0NSztg
-	Slf99jSClD3snVAQ==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=dd6WFfMF;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=vlE59MVG
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1743115316; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mbp6AL8rqFZj5ptz2a0aLb1oBUVouVYJ+S6YTpOTsp4=;
-	b=dd6WFfMFzmonZQRX+LR7LaabCx+WnPZkwjmAxpdr8ylNS8g/rY6eR7z7EcHHB31liOzBaW
-	fHvI+Wm9/8UxsMbzg1NxtuJdw9cSw97+e+5kdWMdLLIsPvx8wddBzdf2tYK7DzkTW20N6H
-	KdAky7jAmOtKhbjxDP+jxIt04nOp2kQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1743115316;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mbp6AL8rqFZj5ptz2a0aLb1oBUVouVYJ+S6YTpOTsp4=;
-	b=vlE59MVG3xmltYpN86oYk3LHFsYAJp9WaXsoF0VSwgJ6Lv1s8HefckacaVGeZ1wh0NSztg
-	Slf99jSClD3snVAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 69295139D4;
-	Thu, 27 Mar 2025 22:41:55 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id BN86CDPU5WdLbQAAD6G6ig
-	(envelope-from <neilb@suse.de>); Thu, 27 Mar 2025 22:41:55 +0000
+	 References:Date:Message-id; b=WAPqWzuxF4CdLoolT7iEUQRK8P/g4O0aWxckYAnTbTuDAiFZIHHR1cPWj4vajgy1geCSdnZQ2sG1V0RNLP5pwGKLn3lflj2/6u5g+4o+2CUFb0f8lOv4gfImLwTysreLHO9D20PfwwxBSr/IUVyAufBDKYtzZFkjlqEft1Ogfxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brown.name; spf=pass smtp.mailfrom=neil.brown.name; arc=none smtp.client-ip=103.29.64.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brown.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=neil.brown.name
+Received: from 196.186.233.220.static.exetel.com.au ([220.233.186.196] helo=home.neil.brown.name)
+	by neil.brown.name with esmtp (Exim 4.95)
+	(envelope-from <mr@neil.brown.name>)
+	id 1txyJ1-001t2i-99;
+	Fri, 28 Mar 2025 01:14:43 +0000
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -82,90 +27,116 @@ List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "NeilBrown" <neilb@suse.de>
-To: "Dan Carpenter" <dan.carpenter@linaro.org>
-Cc: netfs@lists.linux.dev
-Subject: Re: [bug report] VFS: Change vfs_mkdir() to return the dentry.
-In-reply-to: <ee222b74-6aaa-40f0-8cd1-af0da9e41b37@stanley.mountain>
-References: <ee222b74-6aaa-40f0-8cd1-af0da9e41b37@stanley.mountain>
-Date: Fri, 28 Mar 2025 09:41:52 +1100
-Message-id: <174311531246.9342.4749011922906183800@noble.neil.brown.name>
-X-Rspamd-Queue-Id: 5BE3D1F388
-X-Spam-Score: -4.51
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWO(0.00)[2];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spam-Level: 
+From: "NeilBrown" <neil@brown.name>
+To: "Al Viro" <viro@zeniv.linux.org.uk>
+Cc: "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>,
+ "David Howells" <dhowells@redhat.com>, "Chuck Lever" <chuck.lever@oracle.com>,
+ "Jeff Layton" <jlayton@kernel.org>, linux-nfs@vger.kernel.org,
+ netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 1/6] VFS: improve interface for lookup_one functions
+In-reply-to: <20250322002719.GC2023217@ZenIV>
+References: <>, <20250322002719.GC2023217@ZenIV>
+Date: Fri, 28 Mar 2025 12:14:42 +1100
+Message-id: <174312448295.9342.4725506312787082473@noble.neil.brown.name>
 
-On Thu, 27 Mar 2025, Dan Carpenter wrote:
-> Hello NeilBrown,
+On Sat, 22 Mar 2025, Al Viro wrote:
+> On Wed, Mar 19, 2025 at 02:01:32PM +1100, NeilBrown wrote:
 >=20
-> Commit c54b386969a5 ("VFS: Change vfs_mkdir() to return the dentry.")
-> from Feb 27, 2025 (linux-next), leads to the following Smatch static
-> checker warning:
+> > -struct dentry *lookup_one(struct mnt_idmap *idmap, const char *name,
+> > -			  struct dentry *base, int len)
+> > +struct dentry *lookup_one(struct mnt_idmap *idmap, struct qstr name,
+> > +			  struct dentry *base)
 >=20
-> 	fs/cachefiles/namei.c:133 cachefiles_get_directory()
-> 	warn: 'subdir' can also be NULL
+> >  {
+> >  	struct dentry *dentry;
+> >  	struct qstr this;
+> > @@ -2942,7 +2940,7 @@ struct dentry *lookup_one(struct mnt_idmap *idmap, =
+const char *name,
+> > =20
+> >  	WARN_ON_ONCE(!inode_is_locked(base->d_inode));
+> > =20
+> > -	err =3D lookup_one_common(idmap, name, base, len, &this);
+> > +	err =3D lookup_one_common(idmap, name.name, base, name.len, &this);
+>=20
+> No.  Just look at what lookup_one_common() is doing as the first step.
+>=20
+>         this->name =3D name;
+> 	this->len =3D len;
 
-Thanks Dan.
-This has already be found and fixed:
-   20250325125905.395372-1-marc.dionne@auristor.com
-so no further action needed.
+This code is cleaned up in a later patch. lookup_one_common receives the
+address of just one qstr which is initialised with qstr that is passed
+in.
+So on x86_64, the original qstr is passed in as 2 registers.  These are
+stored in the stack and the address is passed to lookup_noperm_common(),
+as lookup_one_common() gets inlined.
+
+We have to put the two values onto the stack at some point, either in
+the original callers, or in the lookup_one family of functions.  I think
+it is cleaner in lookup_one as we don't need to put a & in front of all
+the QSTR calls.  But we can change it to pass the pointer if you really
+think that is better.
 
 Thanks,
 NeilBrown
 
 
 >=20
-> fs/cachefiles/namei.c
->     124                 _debug("attempt mkdir");
->     125=20
->     126                 path.mnt =3D cache->mnt;
->     127                 path.dentry =3D dir;
->     128                 ret =3D security_path_mkdir(&path, subdir, 0700);
->     129                 if (ret < 0)
->     130                         goto mkdir_error;
->     131                 subdir =3D ERR_PTR(cachefiles_inject_write_error());
+> You copy your argument's fields to corresponding fields of *&this.  It migh=
+t make
+> sense to pass a qstr, but not like that - just pass a _pointer_ to struct q=
+str instead.
 >=20
-> cachefiles_inject_write_error() either return an error pointer or NULL.
-> Never a valid pointer.
+> Have lookup_one_common() do this:
 >=20
->     132                 if (!IS_ERR(subdir))
-> --> 133                         subdir =3D vfs_mkdir(&nop_mnt_idmap, d_inod=
-e(dir), subdir, 0700);
->                                                                            =
-      ^^^^^^
-> Passing a NULL dereference here will lead to a crash.
+> static int lookup_one_common(struct mnt_idmap *idmap,
+>                              struct qstr *this, struct dentry *base)
+> {
+> 	const unsigned char *name =3D this->name;
+> 	int len =3D this->len;
+>         if (!len)
+>                 return -EACCES;
 >=20
+>         this->hash =3D full_name_hash(base, name, len);
+>         if (is_dot_dotdot(name, len))
+>                 return -EACCES;
 >=20
->     134                 ret =3D PTR_ERR(subdir);
->     135                 if (IS_ERR(subdir)) {
->     136                         trace_cachefiles_vfs_error(NULL, d_inode(di=
-r), ret,
+>         while (len--) {
+>                 unsigned int c =3D *name++;
+>                 if (c =3D=3D '/' || c =3D=3D '\0')
+>                         return -EACCES;
+>         }
+>         /*
+>          * See if the low-level filesystem might want
+>          * to use its own hash..
+>          */
+>         if (base->d_flags & DCACHE_OP_HASH) {
+>                 int err =3D base->d_op->d_hash(base, this);
+>                 if (err < 0)
+>                         return err;
+>         }
 >=20
-> regards,
-> dan carpenter
+>         return inode_permission(idmap, base->d_inode, MAY_EXEC);
+> }
+>=20
+> and adjust the callers; e.g.
+> struct dentry *lookup_one(struct mnt_idmap *idmap, struct qstr *this,
+> 			  struct dentry *base)
+> {
+>         struct dentry *dentry;
+>         int err;
+>=20
+>         WARN_ON_ONCE(!inode_is_locked(base->d_inode));
+>=20
+>         err =3D lookup_one_common(idmap, this, base);
+>         if (err)
+>                 return ERR_PTR(err);
+>=20
+>         dentry =3D lookup_dcache(this, base, 0);
+>         return dentry ? dentry : __lookup_slow(this, base, 0);
+> }
+>=20
+> with callers passing idmap, &QSTR_LEN(name, len), base instead of
+> idmap, name, base, len.  lookup_one_common() looks at the fields
+> separately; its callers do not.
 >=20
 
