@@ -1,51 +1,39 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36405322E
-	for <netfs@lists.linux.dev>; Sat, 29 Mar 2025 14:22:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 493A219004B;
+	Sat, 29 Mar 2025 23:27:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743258151; cv=none; b=fWV/UY7Z1n/M36hLmOgN4rvQYlrMsZKdKl5tBFU7bzOXaWU60lRT/FupA6Z1OvPvNpcmO84OI8AtpHZAn02AbA+FduOz7r6J1nHPV8MYy/92PYQ80rEpmMhVWqgNNb3QYcp99fWtAQlUHHnqJlAVWd/A5b/duuKIYbRQZsfnR3g=
+	t=1743290880; cv=none; b=UwaDBiob2eFAiE0yrQSUXs9l3EUVrjLN4H1gUogzNztE1dLV7v+8XKKcbzlwAJ/0bDEz4FcYGieiewnF1ccaX7tC1IUT72HITJd1qRE2FqkFubp3a/ob9BCqhcMp3nmkVVzwHM0FyDWq/MQvgnA7FhGfV6QrolKiT784ePWd62E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743258151; c=relaxed/simple;
-	bh=/I6H4s9GOaBgLTyzZBibv5a29XVJ28Rr+JwaWuJyJkM=;
+	s=arc-20240116; t=1743290880; c=relaxed/simple;
+	bh=2GeF9mw/vkR55QHz+A360axYh48CX3mSIzfzx+BdoNA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rXAlmssx51D81fVkhQbpiDEU3yuDSTI59RNXAln4iUVxBdwnvWs8VQlEcJnUyqEBtjgSvDYOa5STZU4ylqOjgX2Mu6724nrng5Gu4z2/kPcAlxFUqgFRAnobDdupLyjwfVP9HGLLMijbevFaSMykVkVA0zfGlmtr+HSvA4lXt8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IuG+0OHw; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=QpUcX+3v3nixCduQguxJB96KfKHoCKjZ6bLAHY/DWin0KS0tpVFOq6NpY1OzAhH6o5SoMefb2l9WrtvutMBSupZJ/fMy/qTLnkytyvIDr1+qKq/QwrJbNL+je1/XQMXacQIRhkTfp3LmrbAr5N2K/0TUo5+kowQo6N98gl6JMQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=U2dqDAnH; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IuG+0OHw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1743258148;
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="U2dqDAnH"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id BCF9D14C2D3;
+	Sun, 30 Mar 2025 00:27:50 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1743290875;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Cw4rpcZvmTDlrAmFogt4iV7TrragRM8ByhrNacJd/I4=;
-	b=IuG+0OHw9shNK8qU0M3EIwrEVTWnqc7GEPUCd809YMY/qodlWF6712cgrkseEQEJLY3WIC
-	2x4FQ+ogATUq5BHfR0DRnf0A3papceAY5oGWdbRKVrPKyhP52udmYpRsBznc2yPI0uIHiO
-	/HcViHoJAJ4hYDcn8Jx7SbPZiDMGs/M=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-173-xkFppxFqO6CGI1faeSn_QQ-1; Sat,
- 29 Mar 2025 10:22:24 -0400
-X-MC-Unique: xkFppxFqO6CGI1faeSn_QQ-1
-X-Mimecast-MFC-AGG-ID: xkFppxFqO6CGI1faeSn_QQ_1743258142
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2D12D19373D7;
-	Sat, 29 Mar 2025 14:22:21 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.44.33.25])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id D359819560AB;
-	Sat, 29 Mar 2025 14:22:14 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Sat, 29 Mar 2025 15:21:47 +0100 (CET)
-Date: Sat, 29 Mar 2025 15:21:39 +0100
-From: Oleg Nesterov <oleg@redhat.com>
-To: asmadeus@codewreck.org
+	bh=3WeiyxRMgIex99fp1xakmLhCtXZGOkhzhI5rZH/LrpM=;
+	b=U2dqDAnHGruTEEybQgUbQlpesAKQgGQXF0XM65i2aNxHdUWldo9rDYzGptLZ0RpqCz7HIJ
+	p4k3g7Gbo8/DvZoVQH2/JSmVnJxmRC+AqRfoU7rdF1sLpOZ/fFQmt86CBkHhTayBOnHLRR
+	jv45nxgMWGwuU5TnTR42F4UidH4gnHsndYnNDtGSa6H9SsdUYUE2AAl15GUtV4sLF/QpPw
+	qc2TcG2NU6U+ytYs2ruURRH+XIPv2zJiJTS1wUC/A0og0QOQzpou8VcBQy8UwEq+6eriXp
+	ILOXFJV29YSP7GMUiC0sq3KWa7obzWNLVdHSNnP3il07zj9M1VdZWQbxAfpW4w==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id b24f9e42;
+	Sat, 29 Mar 2025 23:27:48 +0000 (UTC)
+Date: Sun, 30 Mar 2025 08:27:33 +0900
+From: asmadeus@codewreck.org
+To: Oleg Nesterov <oleg@redhat.com>
 Cc: syzbot <syzbot+62262fdc0e01d99573fc@syzkaller.appspotmail.com>,
 	brauner@kernel.org, dhowells@redhat.com, ericvh@kernel.org,
 	jack@suse.cz, jlayton@kernel.org, kprateek.nayak@amd.com,
@@ -55,104 +43,78 @@ Cc: syzbot <syzbot+62262fdc0e01d99573fc@syzkaller.appspotmail.com>,
 	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev,
 	viro@zeniv.linux.org.uk
 Subject: Re: [syzbot] [netfs?] INFO: task hung in netfs_unbuffered_write_iter
-Message-ID: <20250329142138.GA9144@redhat.com>
+Message-ID: <Z-iB5QkZyayj0Sua@codewreck.org>
 References: <20250328144928.GC29527@redhat.com>
  <67e6be9a.050a0220.2f068f.007f.GAE@google.com>
  <20250328170011.GD29527@redhat.com>
  <Z-c4B7NbHM3pgQOa@codewreck.org>
+ <20250329142138.GA9144@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <Z-c4B7NbHM3pgQOa@codewreck.org>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+In-Reply-To: <20250329142138.GA9144@redhat.com>
 
-First of all, let me remind that I know nothing about 9p or netfs ;)
-And I am not sure that my patch is the right solution.
+Oleg Nesterov wrote on Sat, Mar 29, 2025 at 03:21:39PM +0100:
+> First of all, let me remind that I know nothing about 9p or netfs ;)
+> And I am not sure that my patch is the right solution.
+> 
+> I am not even sure we need the fix, according to syzbot testing the
+> problem goes away with the fixes from David
+> https://web.git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-fixes
+> but I didn't even try to read them, this is not my area.
 
-I am not even sure we need the fix, according to syzbot testing the
-problem goes away with the fixes from David
-https://web.git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-fixes
-but I didn't even try to read them, this is not my area.
+(gah, I hate emails when one gets added to thread later.. I've just now
+opened the thread on lore and seen David's test :/)
 
-Now, I'll try to answer some of your questions, but I can be easily
-wrong.
+> > - due to the new optimization (aaec5a95d59615 "pipe_read: don't wake up
+> > the writer if the pipe is still full"), that 'if there is room to send'
+> > check started failing and tx thread doesn't start?
+> 
+> Again, I can be easily wrong, but no.
+> 
+> With or without the optimization above, it doesn't make sense to start
+> the tx thread when the pipe is full, p9_fd_poll() can't report EPOLLOUT.
+> 
+> Lets recall that the idle read worker did kernel_read() -> pipe_read().
+> Before this optimization, pipe_read() did the unnecessary
+> 
+> 	wake_up_interruptible_sync_poll(&pipe->wr_wait);
+> 
+> when the pipe was full before the reading _and_ is still full after the
+> reading.
+> 
+> This wakeup calls p9_pollwake() which kicks p9_poll_workfn().
 
-On 03/29, asmadeus@codewreck.org wrote:
->
-> Right, so your patch sounds better than Prateek's initial blowing
-> up workaround, but it's a bit weird anyway so let me recap:
-> - that syz repro has this unnatural pattern where the replies are all
-> written before the requests are sent
+Aah, that's the bit I didn't get, thank you!
 
-Yes,
+> This no longer happens after the optimization. So in some sense the
+> p9_fd_request() -> p9_poll_mux() hack (which wakes the rx thread in this
+> case) restores the old behaviour.
+> 
+> But again, again, quite possibly I completely misread this (nontrivial)
+> code.
 
-> - 9p_read_work() (read worker) has an optimization that if there is no
-> in fly request then there obviously must be nothing to read (9p is 100%
-> client initiated, there's no way the server should send something
-> first), so at this point the reader task is idle
+Yes, this totally makes sense; I agree with your analysis.
 
-Yes. But note that it does kernel_read() -> pipe_read() before it becomes
-idle. See below.
+So basically 9p was optimizing for this impossible (on a normal server)
+behaviour in the 9p side (it doesn't make any sense for the tx pipe to
+be full with 0 in flight request, and tx pipe never goes unfull, and
+reply comes (was there) before the actual write happened!!), but this
+old behaviour made it work anyway...
+So part of me wants to just leave it there and if anything try to make
+this kind of usage impossible by adding more checks to mount -o
+trans=fd, but I don't think it's possible to lock down all kind of weird
+behaviour root users (=syzbot) can engage in...
+OTOH syzbot does find some useful bugs so I guess it might be worth
+fixing, I don't know.
+If David's patch also happens to fix it I guess we can also just wait
+for that?
 
-> - p9_fd_request() (sending a new request) has another optimization that
-> only checks for tx: at this point if another request was already in
-> flight then the rx task should have a poll going on for rx, and if there
-> were no in flight request yet then there should be no point in checking
-> for rx, so p9_fd_request() only kick in the tx worker if there is room
-> to send
-
-Can't comment, but
-
-> - at this point I don't really get the logic that'll wake the rx thread
-> up either... p9_pollwake() will trigger p9_poll_workfn()
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Yes, but where this p9_pollwake() can come from? see below.
-
-> - due to the new optimization (aaec5a95d59615 "pipe_read: don't wake up
-> the writer if the pipe is still full"), that 'if there is room to send'
-> check started failing and tx thread doesn't start?
-
-Again, I can be easily wrong, but no.
-
-With or without the optimization above, it doesn't make sense to start
-the tx thread when the pipe is full, p9_fd_poll() can't report EPOLLOUT.
-
-Lets recall that the idle read worker did kernel_read() -> pipe_read().
-Before this optimization, pipe_read() did the unnecessary
-
-	wake_up_interruptible_sync_poll(&pipe->wr_wait);
-
-when the pipe was full before the reading _and_ is still full after the
-reading.
-
-This wakeup calls p9_pollwake() which kicks p9_poll_workfn().
-
-p9_poll_workfn() calls p9_poll_mux().
-
-p9_poll_mux() does n = p9_fd_poll().
-
-"n & EPOLLOUT" is false, exactly because this wakeup was unnecessary,
-so p9_poll_mux() won't do schedule_work(&m->wq), this is fine,
-
-But, "n & EPOLLIN" is true, so p9_poll_mux() does schedule_work(&m->rq)
-and wakes the rx thread.
-
-p9_read_work() is called again. It reads more data and (I guess) notices
-some problem and does p9_conn_cancel(EIO).
-
-This no longer happens after the optimization. So in some sense the
-p9_fd_request() -> p9_poll_mux() hack (which wakes the rx thread in this
-case) restores the old behaviour.
-
-But again, again, quite possibly I completely misread this (nontrivial)
-code.
-
-Oleg.
-
+Thanks,
+-- 
+Dominique Martinet | Asmadeus
