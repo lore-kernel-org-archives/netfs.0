@@ -1,167 +1,85 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx.manguebit.com (mx.manguebit.com [167.235.159.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABE0205AB1
-	for <netfs@lists.linux.dev>; Tue,  1 Apr 2025 15:01:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69FC2E3372
+	for <netfs@lists.linux.dev>; Wed,  2 Apr 2025 15:33:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.235.159.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743519674; cv=none; b=trsCYnNhoidR9cZGxCjwbWeUXKTmRKH24jX3wT0BgEyg3Y6Nm6HZkBDPhiQ7SEb6G+yFVvcRANWn4yrEisio9ON30ttv7r0UVJm+cQP+wLFyx0QE1cz9NdUE3Py9hK/Gdy0nCi1Z/Q7gKlqxwMAyESFoIpEj4PiHWpiNejeQ8Ys=
+	t=1743608014; cv=none; b=Zrg0Cb12VCWQVZxAWv5rpkiDfUwMN6xaAcmxfeIT9DVlLJHtMXXLUIl0HgT/5LiCppYYAM4Bs9DT2GiwREjxbQkKCkLavsZcoqnWdFLCdU1CE9KEG7AM+nSKoikJT4iqia1YFAKCXIAuhFy8onGkzTG5djyIfxeSUi0q2cuhwjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743519674; c=relaxed/simple;
-	bh=7eZRKXLD9h6rbe+HRh0fJZd7FslC7GDW6CZtEZmHv7c=;
-	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=GL6clPgbda2RzR9pF0ScKGRr0ez/aEIxQ74c8lORnxZIMzFafxy3EuKmhawOLVRuaayevPHYt7ovttHNARTV4ePlHMyFe5dsteuT6mROef6AmDi1Gb5D2eVHPqWLEdrDFFZpFsM0viwP/uAu8jxH+FimQNH0m4iTdEF59VZDPTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RBWkC83k; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1743608014; c=relaxed/simple;
+	bh=syfpsvuH5wQhbNS8WDq0kgGOJr6aNvZQnc8jHmVdMQU=;
+	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Date:
+	 MIME-Version:Content-Type; b=rGn6ij54qI6YLU552+PcGkhKXkc99M//rZhhpxmfzYAI4XCAwlxW4PdL61R1uaHEJfPJy7CwE6GOCSbAasu6mi9MnVXggkwo4/5QWidb/r/A/BWU77budd7AcrlJWpP7J9VwIz1HXRkQ7wDflfZlhg8ARowGtnDTF7fwq2Ttm+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.com; spf=pass smtp.mailfrom=manguebit.com; dkim=pass (2048-bit key) header.d=manguebit.com header.i=@manguebit.com header.b=hCNnZOBh; arc=none smtp.client-ip=167.235.159.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RBWkC83k"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1743519671;
+	dkim=pass (2048-bit key) header.d=manguebit.com header.i=@manguebit.com header.b="hCNnZOBh"
+Message-ID: <bac53deae60fbf5dbcb19feb403d9e9f@manguebit.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
+	s=dkim; t=1743607433;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=KIkzBrgK5G8zz9AJXZ59Q/n7j2KsS+0m8sqEKJiwDKw=;
-	b=RBWkC83kTqFAYAmyQ674zdVQRUPBNCkpM/RheGW0zu3GZkHrsHtH3t35muR4PJZbCGqLtf
-	dxwEHQDXR85qyidI6q4K5EoPOJ80dYNaXH4oyDYJE4T+QoS+y3jh1h5m27y3uFPrKFao1U
-	RPOvWFW022vabsa7ECuZbJJaLgZgaIA=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-412-HC60djJEO3iWe2mzPccZJg-1; Tue,
- 01 Apr 2025 11:01:09 -0400
-X-MC-Unique: HC60djJEO3iWe2mzPccZJg-1
-X-Mimecast-MFC-AGG-ID: HC60djJEO3iWe2mzPccZJg_1743519666
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C78351954B36;
-	Tue,  1 Apr 2025 15:01:05 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.40])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 897631828AAD;
-	Tue,  1 Apr 2025 15:01:03 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-To: Steve French <stfrench@microsoft.com>
-cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.com>,
-    Matthew Wilcox <willy@infradead.org>, linux-cifs@vger.kernel.org,
-    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Subject: [PATCH] cifs: Remove cifs_truncate_page() as it should be superfluous
+	 in-reply-to:in-reply-to:references:references;
+	bh=FawFq1pnlpgkOhxfSYjHGUQvx87dCGjnpIvU2tRWtLc=;
+	b=hCNnZOBhOpJXFp6DW1Enxrx/rOhffbmqXEUTtHWGRP4PcPMqMH1H/wgD1SNQBAvGxOfln2
+	VrU5UJtP7bhhD/jecJGW6/6w5a7j1vRPG7LrwZuhTZk1BVw8DDfaDnW9+VAnqWKhLcIOFu
+	wQEzFQYDTvNInXNmNSCvQE+3QKPw6Ur7t+6hAobgHhu+wK6OXafzugOJ7PKsVrjZXp4yP3
+	mnoaBk53KQOlQhJtL3MAUfkLYU+3AswWadZh3dbW5jbbsawacB6jlTdzMsiH4t0HLcjr0y
+	xr2b2OX4lt4dCXPOT/bjxWo+QQ8ShDhd5JMu4h+EN2122HLPSZQIbIi3Mp7a0w==
+From: Paulo Alcantara <pc@manguebit.com>
+To: David Howells <dhowells@redhat.com>, Steve French <stfrench@microsoft.com>
+Cc: dhowells@redhat.com, Matthew Wilcox <willy@infradead.org>,
+ linux-cifs@vger.kernel.org, netfs@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] cifs: Remove cifs_truncate_page() as it should be
+ superfluous
+In-Reply-To: <559573.1743519662@warthog.procyon.org.uk>
+References: <559573.1743519662@warthog.procyon.org.uk>
+Date: Wed, 02 Apr 2025 12:23:48 -0300
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <559572.1743519662.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 01 Apr 2025 16:01:02 +0100
-Message-ID: <559573.1743519662@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Type: text/plain
 
-The calls to cifs_truncate_page() should be superfluous as the places that
-call it also call truncate_setsize() or cifs_setsize() and therefore
-truncate_pagecache() which should also clear the tail part of the folio
-containing the EOF marker.
+David Howells <dhowells@redhat.com> writes:
 
-Further, smb3_simple_falloc() calls both cifs_setsize() and
-truncate_setsize() in addition to cifs_truncate_page().
+> The calls to cifs_truncate_page() should be superfluous as the places that
+> call it also call truncate_setsize() or cifs_setsize() and therefore
+> truncate_pagecache() which should also clear the tail part of the folio
+> containing the EOF marker.
+>
+> Further, smb3_simple_falloc() calls both cifs_setsize() and
+> truncate_setsize() in addition to cifs_truncate_page().
+>
+> Remove the superfluous calls.
+>
+> This gets rid of another function referring to struct page.
+>
+> [Should cifs_setsize() also set inode->i_blocks?]
 
-Remove the superfluous calls.
+I don't think that's necessary as the current inode will be marked for
+revalidation (e.g. cifsInodeInfo::time is set to 0), so next call to
+cifs_fattr_to_inode() will update inode->i_blocks.  If it isn't being
+updated, then I'm missing something else.
 
-This gets rid of another function referring to struct page.
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> cc: Steve French <stfrench@microsoft.com>
+> cc: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+> cc: Matthew Wilcox <willy@infradead.org>
+> cc: linux-cifs@vger.kernel.org
+> cc: netfs@lists.linux.dev
+> cc: linux-fsdevel@vger.kernel.org
+> ---
+>  fs/smb/client/cifsfs.h  |    1 -
+>  fs/smb/client/inode.c   |   19 -------------------
+>  fs/smb/client/smb2ops.c |    2 --
+>  3 files changed, 22 deletions(-)
 
-[Should cifs_setsize() also set inode->i_blocks?]
+Looks good,
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Steve French <stfrench@microsoft.com>
-cc: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
----
- fs/smb/client/cifsfs.h  |    1 -
- fs/smb/client/inode.c   |   19 -------------------
- fs/smb/client/smb2ops.c |    2 --
- 3 files changed, 22 deletions(-)
-
-diff --git a/fs/smb/client/cifsfs.h b/fs/smb/client/cifsfs.h
-index 8dea0cf3a8de..a769fa7ceece 100644
---- a/fs/smb/client/cifsfs.h
-+++ b/fs/smb/client/cifsfs.h
-@@ -135,7 +135,6 @@ extern ssize_t cifs_file_copychunk_range(unsigned int =
-xid,
- =
-
- extern long cifs_ioctl(struct file *filep, unsigned int cmd, unsigned lon=
-g arg);
- extern void cifs_setsize(struct inode *inode, loff_t offset);
--extern int cifs_truncate_page(struct address_space *mapping, loff_t from)=
-;
- =
-
- struct smb3_fs_context;
- extern struct dentry *cifs_smb3_do_mount(struct file_system_type *fs_type=
-,
-diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-index 3bb21aa58474..a00a9d91d0da 100644
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -2901,23 +2901,6 @@ int cifs_fiemap(struct inode *inode, struct fiemap_=
-extent_info *fei, u64 start,
- 	return -EOPNOTSUPP;
- }
- =
-
--int cifs_truncate_page(struct address_space *mapping, loff_t from)
--{
--	pgoff_t index =3D from >> PAGE_SHIFT;
--	unsigned offset =3D from & (PAGE_SIZE - 1);
--	struct page *page;
--	int rc =3D 0;
--
--	page =3D grab_cache_page(mapping, index);
--	if (!page)
--		return -ENOMEM;
--
--	zero_user_segment(page, offset, PAGE_SIZE);
--	unlock_page(page);
--	put_page(page);
--	return rc;
--}
--
- void cifs_setsize(struct inode *inode, loff_t offset)
- {
- 	struct cifsInodeInfo *cifs_i =3D CIFS_I(inode);
-@@ -3012,8 +2995,6 @@ cifs_set_file_size(struct inode *inode, struct iattr=
- *attrs,
- 		 */
- 		attrs->ia_ctime =3D attrs->ia_mtime =3D current_time(inode);
- 		attrs->ia_valid |=3D ATTR_CTIME | ATTR_MTIME;
--
--		cifs_truncate_page(inode->i_mapping, inode->i_size);
- 	}
- =
-
- 	return rc;
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 4dd11eafb69d..13d060e0fc33 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -3526,8 +3526,6 @@ static long smb3_simple_falloc(struct file *file, st=
-ruct cifs_tcon *tcon,
- 		if (rc =3D=3D 0) {
- 			netfs_resize_file(&cifsi->netfs, new_eof, true);
- 			cifs_setsize(inode, new_eof);
--			cifs_truncate_page(inode->i_mapping, inode->i_size);
--			truncate_setsize(inode, new_eof);
- 		}
- 		goto out;
- 	}
-
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
