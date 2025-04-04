@@ -1,85 +1,109 @@
-Received: from mx.manguebit.com (mx.manguebit.com [167.235.159.17])
+Received: from mail.3xo.fr (mail.3xo.fr [212.129.21.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69FC2E3372
-	for <netfs@lists.linux.dev>; Wed,  2 Apr 2025 15:33:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.235.159.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59699DF49
+	for <netfs@lists.linux.dev>; Fri,  4 Apr 2025 08:57:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.129.21.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743608014; cv=none; b=Zrg0Cb12VCWQVZxAWv5rpkiDfUwMN6xaAcmxfeIT9DVlLJHtMXXLUIl0HgT/5LiCppYYAM4Bs9DT2GiwREjxbQkKCkLavsZcoqnWdFLCdU1CE9KEG7AM+nSKoikJT4iqia1YFAKCXIAuhFy8onGkzTG5djyIfxeSUi0q2cuhwjk=
+	t=1743757071; cv=none; b=jW+yyNWOsMhFFA4VHdgK/Bom4FR0CzXtamNO1p6w3BQxjbvR4uqQ5jVUIRQJJg+JgRX/MX3ZQ1djy1TsD98FPhZSiFqgld4wHdf2w82Gv+FOH3vDvlcu9gNd0z3hp3rJLfyKUZqfYFItptu1zU4awtIvTNhJOIermpYIHm1oHJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743608014; c=relaxed/simple;
-	bh=syfpsvuH5wQhbNS8WDq0kgGOJr6aNvZQnc8jHmVdMQU=;
-	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Date:
-	 MIME-Version:Content-Type; b=rGn6ij54qI6YLU552+PcGkhKXkc99M//rZhhpxmfzYAI4XCAwlxW4PdL61R1uaHEJfPJy7CwE6GOCSbAasu6mi9MnVXggkwo4/5QWidb/r/A/BWU77budd7AcrlJWpP7J9VwIz1HXRkQ7wDflfZlhg8ARowGtnDTF7fwq2Ttm+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.com; spf=pass smtp.mailfrom=manguebit.com; dkim=pass (2048-bit key) header.d=manguebit.com header.i=@manguebit.com header.b=hCNnZOBh; arc=none smtp.client-ip=167.235.159.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.com
+	s=arc-20240116; t=1743757071; c=relaxed/simple;
+	bh=qGpiBlKk4gUz7SGt4N7XSRFqC2Dp6ovYU5+SiSPQizM=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=oSRHVbAWEB4F7MrU7nN8kjBM2Z3OAH1vOv/0Q5zy7EjHUbWOt7wT0/gkBnQGjQv6tf0LJHyHyUpbyDzi4DdKMxdPcESE9I+taXUrlVM14RC7YWj9u9FBmXfJ5x5+yRhOtWfqyOR+tr/J18TXcvcRhCBZqsugQHc/+hKSuglo0K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=3xo.fr; spf=pass smtp.mailfrom=3xo.fr; dkim=pass (2048-bit key) header.d=3xo.fr header.i=@3xo.fr header.b=lb20VlKf; arc=none smtp.client-ip=212.129.21.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=3xo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=3xo.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manguebit.com header.i=@manguebit.com header.b="hCNnZOBh"
-Message-ID: <bac53deae60fbf5dbcb19feb403d9e9f@manguebit.com>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
-	s=dkim; t=1743607433;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FawFq1pnlpgkOhxfSYjHGUQvx87dCGjnpIvU2tRWtLc=;
-	b=hCNnZOBhOpJXFp6DW1Enxrx/rOhffbmqXEUTtHWGRP4PcPMqMH1H/wgD1SNQBAvGxOfln2
-	VrU5UJtP7bhhD/jecJGW6/6w5a7j1vRPG7LrwZuhTZk1BVw8DDfaDnW9+VAnqWKhLcIOFu
-	wQEzFQYDTvNInXNmNSCvQE+3QKPw6Ur7t+6hAobgHhu+wK6OXafzugOJ7PKsVrjZXp4yP3
-	mnoaBk53KQOlQhJtL3MAUfkLYU+3AswWadZh3dbW5jbbsawacB6jlTdzMsiH4t0HLcjr0y
-	xr2b2OX4lt4dCXPOT/bjxWo+QQ8ShDhd5JMu4h+EN2122HLPSZQIbIi3Mp7a0w==
-From: Paulo Alcantara <pc@manguebit.com>
-To: David Howells <dhowells@redhat.com>, Steve French <stfrench@microsoft.com>
-Cc: dhowells@redhat.com, Matthew Wilcox <willy@infradead.org>,
- linux-cifs@vger.kernel.org, netfs@lists.linux.dev,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] cifs: Remove cifs_truncate_page() as it should be
- superfluous
-In-Reply-To: <559573.1743519662@warthog.procyon.org.uk>
-References: <559573.1743519662@warthog.procyon.org.uk>
-Date: Wed, 02 Apr 2025 12:23:48 -0300
+	dkim=pass (2048-bit key) header.d=3xo.fr header.i=@3xo.fr header.b="lb20VlKf"
+Received: from localhost (mail.3xo.fr [212.129.21.66])
+	by mail.3xo.fr (Postfix) with ESMTP id 98EECCD;
+	Fri,  4 Apr 2025 10:50:29 +0200 (CEST)
+X-Virus-Scanned: Debian amavis at nxo2.3xo.fr
+Received: from mail.3xo.fr ([212.129.21.66])
+ by localhost (mail.3xo.fr [212.129.21.66]) (amavis, port 10024) with ESMTP
+ id 8mSLMhAe8CKe; Fri,  4 Apr 2025 10:50:27 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.3xo.fr 83FED8D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=3xo.fr; s=3xo;
+	t=1743756627; bh=CRAJN8+XEA5p31GSsFqFuEJaey0yqN9dDs07tGG1jQA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=lb20VlKfcjY8a7J/mtS3DUFvklSqJjYHbNOpvr5mvDuUiTcUAZTrS4jvwIYi8pDbd
+	 jngz7iyj2q4qcYbEo0GDpo08Z9QRGAjpQdVAP4VFFDrkW8nKXq1Eo/bYXKZQyW/m7B
+	 XtHudX59MBoF8M+9EXMuM/86MpKMuPEiXhr+YP1CU432PwUleI3pWhJKH/mAgcVGfr
+	 mdDYTpedNVvrT51XQzQsffn4Jv0RJ4oEF+cxyX+4fVC8705kTxtdIRIKH8XCDQCNsY
+	 a6gvuy2X4ZE69DNF8SCmUBX3heBPxYDV9qklLKzRt+nmF+63iq/i6DC6LOg1J4dW24
+	 aayyaaredgRCQ==
+Received: from mail.3xo.fr (mail.3xo.fr [212.129.21.66])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by mail.3xo.fr (Postfix) with ESMTPSA id 83FED8D;
+	Fri,  4 Apr 2025 10:50:27 +0200 (CEST)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Date: Fri, 04 Apr 2025 10:50:27 +0200
+From: Nicolas Baranger <nicolas.baranger@3xo.fr>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: hch@lst.de, David Howells <dhowells@redhat.com>, netfs@lists.linux.dev,
+ linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Steve French <smfrench@gmail.com>, Jeff Layton
+ <jlayton@kernel.org>, Christian Brauner <brauner@kernel.org>
+Subject: Re: [netfs/cifs - Linux 6.14] loop on file cat + file copy when files
+ are on CIFS share
+In-Reply-To: <Z-Z95ePf3KQZ2MnB@infradead.org>
+References: <10bec2430ed4df68bde10ed95295d093@3xo.fr>
+ <35940e6c0ed86fd94468e175061faeac@3xo.fr> <Z-Z95ePf3KQZ2MnB@infradead.org>
+Message-ID: <48685a06c2608b182df3b7a767520c1d@3xo.fr>
+X-Sender: nicolas.baranger@3xo.fr
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
 
-David Howells <dhowells@redhat.com> writes:
+Hi Christoph
 
-> The calls to cifs_truncate_page() should be superfluous as the places that
-> call it also call truncate_setsize() or cifs_setsize() and therefore
-> truncate_pagecache() which should also clear the tail part of the folio
-> containing the EOF marker.
->
-> Further, smb3_simple_falloc() calls both cifs_setsize() and
-> truncate_setsize() in addition to cifs_truncate_page().
->
-> Remove the superfluous calls.
->
-> This gets rid of another function referring to struct page.
->
-> [Should cifs_setsize() also set inode->i_blocks?]
+Thanks for answer and help
+Did someone reproduced the issue (very easy) ?
 
-I don't think that's necessary as the current inode will be marked for
-revalidation (e.g. cifsInodeInfo::time is set to 0), so next call to
-cifs_fattr_to_inode() will update inode->i_blocks.  If it isn't being
-updated, then I'm missing something else.
 
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> cc: Steve French <stfrench@microsoft.com>
-> cc: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-> cc: Matthew Wilcox <willy@infradead.org>
-> cc: linux-cifs@vger.kernel.org
-> cc: netfs@lists.linux.dev
-> cc: linux-fsdevel@vger.kernel.org
-> ---
->  fs/smb/client/cifsfs.h  |    1 -
->  fs/smb/client/inode.c   |   19 -------------------
->  fs/smb/client/smb2ops.c |    2 --
->  3 files changed, 22 deletions(-)
+CIFS SHARE is mounted as /mnt/fbx/FBX-24T
+echo toto >/mnt/fbx/FBX-24T/toto
 
-Looks good,
+ls -l /mnt/fbx/FBX-24T/toto
+-rw-rw-rw- 1 root root 5 20 mars  09:20 /mnt/fbx/FBX-24T/toto
 
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+cat /mnt/fbx/FBX-24T/toto
+toto
+toto
+toto
+toto
+toto
+toto
+toto
+^C
+
+
+CIFS mount options:
+grep cifs /proc/mounts
+//10.0.10.100/FBX24T /mnt/fbx/FBX-24T cifs 
+rw,nosuid,nodev,noexec,relatime,vers=3.1.1,cache=none,upcall_target=app,username=fbx,domain=HOMELAN,uid=0,noforceuid,gid=0,noforcegid,addr=10.0.10.100,file_mode=0666,dir_mode=0755,iocharset=utf8,soft,nounix,serverino,mapposix,mfsymlinks,reparse=nfs,nativesocket,symlink=mfsymlinks,rsize=65536,wsize=65536,bsize=16777216,retrans=1,echo_interval=60,actimeo=1,closetimeo=1 
+0 0
+
+KERNEL: uname -a
+Linux 14RV-SERVER.14rv.lan 6.14.0-rc2-amd64 #0 SMP PREEMPT_DYNAMIC Wed 
+Feb 12 18:23:00 CET 2025 x86_64 GNU/Linux
+
+
+Kind regards
+Nicolas Baranger
+
+
+Le 2025-03-28 11:45, Christoph Hellwig a écrit :
+
+> Hi Nicolas,
+> 
+> please wait a bit, many file system developers where at a conference
+> this week.
