@@ -1,109 +1,83 @@
-Received: from mail.3xo.fr (mail.3xo.fr [212.129.21.66])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59699DF49
-	for <netfs@lists.linux.dev>; Fri,  4 Apr 2025 08:57:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.129.21.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D479B1624C9;
+	Fri,  4 Apr 2025 13:41:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743757071; cv=none; b=jW+yyNWOsMhFFA4VHdgK/Bom4FR0CzXtamNO1p6w3BQxjbvR4uqQ5jVUIRQJJg+JgRX/MX3ZQ1djy1TsD98FPhZSiFqgld4wHdf2w82Gv+FOH3vDvlcu9gNd0z3hp3rJLfyKUZqfYFItptu1zU4awtIvTNhJOIermpYIHm1oHJs=
+	t=1743774067; cv=none; b=PhPSbsnfOpgxC5TE0KVzwo34NBDpLiTxvFgkW9e2qO5gRxT69D6IrTxU84xCK3bnIxeJbDJWSTmHgz7tWmQ5vKgupLeTsbQcMPLd7O+X6yQQZmfPJvWnE9KlKS/HOdfVYJLFrZVZYi55NsV1evyrwKM3n9fJOoQ4aR2/8Nf9eUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743757071; c=relaxed/simple;
-	bh=qGpiBlKk4gUz7SGt4N7XSRFqC2Dp6ovYU5+SiSPQizM=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=oSRHVbAWEB4F7MrU7nN8kjBM2Z3OAH1vOv/0Q5zy7EjHUbWOt7wT0/gkBnQGjQv6tf0LJHyHyUpbyDzi4DdKMxdPcESE9I+taXUrlVM14RC7YWj9u9FBmXfJ5x5+yRhOtWfqyOR+tr/J18TXcvcRhCBZqsugQHc/+hKSuglo0K0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=3xo.fr; spf=pass smtp.mailfrom=3xo.fr; dkim=pass (2048-bit key) header.d=3xo.fr header.i=@3xo.fr header.b=lb20VlKf; arc=none smtp.client-ip=212.129.21.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=3xo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=3xo.fr
+	s=arc-20240116; t=1743774067; c=relaxed/simple;
+	bh=Q4xnhejB5l0SgKBzeLzuppiBD0WWWZ+in4TshRMzkSo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KRqXaoqlWqVTdzSuccJIlP+zKFZ2D3i2X2DkYSj/XelujFhARerXTMyVLpZCulT1uPDcjfgBeX+gh0EQZ1d+cT3p9mtSTDap3xwo+ekcRQ4ApkGuEm+zn1vIfzevGu86JywXu9zPLbZCchNOMu9pF3o1MmUQlJEDoKFMujsayRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UvXEJ6n8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=3xo.fr header.i=@3xo.fr header.b="lb20VlKf"
-Received: from localhost (mail.3xo.fr [212.129.21.66])
-	by mail.3xo.fr (Postfix) with ESMTP id 98EECCD;
-	Fri,  4 Apr 2025 10:50:29 +0200 (CEST)
-X-Virus-Scanned: Debian amavis at nxo2.3xo.fr
-Received: from mail.3xo.fr ([212.129.21.66])
- by localhost (mail.3xo.fr [212.129.21.66]) (amavis, port 10024) with ESMTP
- id 8mSLMhAe8CKe; Fri,  4 Apr 2025 10:50:27 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.3xo.fr 83FED8D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=3xo.fr; s=3xo;
-	t=1743756627; bh=CRAJN8+XEA5p31GSsFqFuEJaey0yqN9dDs07tGG1jQA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=lb20VlKfcjY8a7J/mtS3DUFvklSqJjYHbNOpvr5mvDuUiTcUAZTrS4jvwIYi8pDbd
-	 jngz7iyj2q4qcYbEo0GDpo08Z9QRGAjpQdVAP4VFFDrkW8nKXq1Eo/bYXKZQyW/m7B
-	 XtHudX59MBoF8M+9EXMuM/86MpKMuPEiXhr+YP1CU432PwUleI3pWhJKH/mAgcVGfr
-	 mdDYTpedNVvrT51XQzQsffn4Jv0RJ4oEF+cxyX+4fVC8705kTxtdIRIKH8XCDQCNsY
-	 a6gvuy2X4ZE69DNF8SCmUBX3heBPxYDV9qklLKzRt+nmF+63iq/i6DC6LOg1J4dW24
-	 aayyaaredgRCQ==
-Received: from mail.3xo.fr (mail.3xo.fr [212.129.21.66])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by mail.3xo.fr (Postfix) with ESMTPSA id 83FED8D;
-	Fri,  4 Apr 2025 10:50:27 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UvXEJ6n8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F711C4CEDD;
+	Fri,  4 Apr 2025 13:41:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743774066;
+	bh=Q4xnhejB5l0SgKBzeLzuppiBD0WWWZ+in4TshRMzkSo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UvXEJ6n8cQ+7fHMaSLfPQsjm+XICKAtB3/I0UHEZtQHNuwQjg/CxvVMaYu9BBy3Mc
+	 yB99qP6kzbZ2ylaPLAr+SRN0BW/4HBFp+aUcSFxY8EY57MFnb0qzEjhmbuWysUBpJ9
+	 L++XYjgLMugmCuUlXCBV4dfBWYS5LyC6NEciz0R3kS33JAzId1MW87oHcAfGJt5II2
+	 cbxNiuyzfDhK1Yry+onA38EjZNo1ok3GBTqcrW6oprcWyM68c/GUz+N4wJOrtAnKgR
+	 5PgVIYYi2wDRukuYCvGuXEulx6hu7vYHEil6q00WvjBna5Zl4mJB9vH3gv5UnZjhqL
+	 8itdHW6B7Bzfg==
+Date: Fri, 4 Apr 2025 15:41:01 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: NeilBrown <neil@brown.name>
+Cc: David Howells <dhowells@redhat.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Chuck Lever <chuck.lever@oracle.com>, 
+	Jeff Layton <jlayton@kernel.org>, linux-nfs@vger.kernel.org, netfs@lists.linux.dev, 
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 1/6] VFS: improve interface for lookup_one functions
+Message-ID: <20250404-fanpost-wirkt-9af345e9ebd6@brauner>
+References: <>
+ <3170778.1742479489@warthog.procyon.org.uk>
+ <174312469657.9342.13122047478058505480@noble.neil.brown.name>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Fri, 04 Apr 2025 10:50:27 +0200
-From: Nicolas Baranger <nicolas.baranger@3xo.fr>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: hch@lst.de, David Howells <dhowells@redhat.com>, netfs@lists.linux.dev,
- linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, Steve French <smfrench@gmail.com>, Jeff Layton
- <jlayton@kernel.org>, Christian Brauner <brauner@kernel.org>
-Subject: Re: [netfs/cifs - Linux 6.14] loop on file cat + file copy when files
- are on CIFS share
-In-Reply-To: <Z-Z95ePf3KQZ2MnB@infradead.org>
-References: <10bec2430ed4df68bde10ed95295d093@3xo.fr>
- <35940e6c0ed86fd94468e175061faeac@3xo.fr> <Z-Z95ePf3KQZ2MnB@infradead.org>
-Message-ID: <48685a06c2608b182df3b7a767520c1d@3xo.fr>
-X-Sender: nicolas.baranger@3xo.fr
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <174312469657.9342.13122047478058505480@noble.neil.brown.name>
 
-Hi Christoph
-
-Thanks for answer and help
-Did someone reproduced the issue (very easy) ?
-
-
-CIFS SHARE is mounted as /mnt/fbx/FBX-24T
-echo toto >/mnt/fbx/FBX-24T/toto
-
-ls -l /mnt/fbx/FBX-24T/toto
--rw-rw-rw- 1 root root 5 20 mars  09:20 /mnt/fbx/FBX-24T/toto
-
-cat /mnt/fbx/FBX-24T/toto
-toto
-toto
-toto
-toto
-toto
-toto
-toto
-^C
-
-
-CIFS mount options:
-grep cifs /proc/mounts
-//10.0.10.100/FBX24T /mnt/fbx/FBX-24T cifs 
-rw,nosuid,nodev,noexec,relatime,vers=3.1.1,cache=none,upcall_target=app,username=fbx,domain=HOMELAN,uid=0,noforceuid,gid=0,noforcegid,addr=10.0.10.100,file_mode=0666,dir_mode=0755,iocharset=utf8,soft,nounix,serverino,mapposix,mfsymlinks,reparse=nfs,nativesocket,symlink=mfsymlinks,rsize=65536,wsize=65536,bsize=16777216,retrans=1,echo_interval=60,actimeo=1,closetimeo=1 
-0 0
-
-KERNEL: uname -a
-Linux 14RV-SERVER.14rv.lan 6.14.0-rc2-amd64 #0 SMP PREEMPT_DYNAMIC Wed 
-Feb 12 18:23:00 CET 2025 x86_64 GNU/Linux
-
-
-Kind regards
-Nicolas Baranger
-
-
-Le 2025-03-28 11:45, Christoph Hellwig a écrit :
-
-> Hi Nicolas,
+On Fri, Mar 28, 2025 at 12:18:16PM +1100, NeilBrown wrote:
+> On Fri, 21 Mar 2025, David Howells wrote:
+> > NeilBrown <neil@brown.name> wrote:
+> > 
+> > > Also the path component name is passed as "name" and "len" which are
+> > > (confusingly?) separate by the "base".  In some cases the len in simply
+> > > "strlen" and so passing a qstr using QSTR() would make the calling
+> > > clearer.
+> > > Other callers do pass separate name and len which are stored in a
+> > > struct.  Sometimes these are already stored in a qstr, other times it
+> > > easily could be.
+> > > 
+> > > So this patch changes these three functions to receive a 'struct qstr',
+> > > and improves the documentation.
+> > 
+> > You did want 'struct qstr' not 'struct qstr *' right?  I think there are
+> > arches where this will cause the compiler to skip a register argument or two
+> > if it's the second argument or third argument - i386 for example.  Plus you
+> > have an 8-byte alignment requirement because of the u64 in it that may suck if
+> > passed through several layers of function.
 > 
-> please wait a bit, many file system developers where at a conference
-> this week.
+> I don't think it is passed through several layers - except where the
+> intermediate are inlined.
+> And gcc enforces 16 byte alignment of the stack on function calls for
+> i386, so I don't think alignment will be an issue.
+> 
+> I thought 'struct qstr' would result in slightly cleaner calling.  But I
+> cannot make a strong argument in favour of it so I'm willing to change
+> if there are concerns.
+
+Fwiw, I massaged the whole series to pass struct qstr * instead of
+struct qstr. I just forgot to finish that rebase and push.
+/me doing so now.
