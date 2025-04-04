@@ -1,92 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.manguebit.com (mx.manguebit.com [167.235.159.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4142E62C4;
-	Fri,  4 Apr 2025 13:46:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F127199FC1
+	for <netfs@lists.linux.dev>; Fri,  4 Apr 2025 13:54:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.235.159.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743774395; cv=none; b=kgwTYV3gh2NQHkamRnfZ3G17Uin9/KsUeihBmD0cvXalE0mIRS2MgjucS1Z8S5oVj0S0G50Usib6KvdfNaxalpNZE2pWQZzI/oT3dCBBvWy3JSwMMJZ8socDXduh87ES7usgUT10FpPaSGjMA5HSTJlDt9e+Jenacm154XMf5Qs=
+	t=1743774872; cv=none; b=uhXKjB8V05qZ8MmR4RVPkUD+sCeEXNcRKdd+xgUVhSQjY3rvxaXc7t9BHr/p/8voaKPnYa5aK4EURm25UwMl6tfAjzslpc/a73nW9/gMZomPsAr80zZEqMCe11J0wBhqWncogxY/06piCRnOWHx8zk4Pu5Sl6GOThWZf4Og3dMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743774395; c=relaxed/simple;
-	bh=pLBXfMZtfu0Wdhea/G2lSDI2TOWAUHpUTKmHZ6giqh8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I+z6gOuCLY8IveQS6EWLtw2M8neMHv8CHwubhg6dlLmQx2pMlf2JUEJAMKS8YrT2eyZ68AQSTUT+goa/V0EyXlofOf1XvQEpM43bUATVv6iV8+xEnOBvLxyMCpH9pNK8pSxDxFWDbITXhJJdp5h+OGSMkNtUf9jh9LC5zay3RfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xlnd9DsG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743774872; c=relaxed/simple;
+	bh=fWaw2ZUPGKmOQZAHXiRFC7j4hJRlnQ1r68G5x96Gep0=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=eUg3Te8BtAPkbW44P7BOR+GbL9chJPqqlgevlU+xqIBR4Mct9am39UVux4Cmi8o5rS4dhvDctLMqBCQPS2aB5MjZHkQs+TEKIi0r8ovNZp/b4qzDW+Rk/sHWO6iyvlzlXEuXUbinvMm5NKu4iPo4CdsecSfXRpnJVD8/i6YMJXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.com; spf=pass smtp.mailfrom=manguebit.com; dkim=pass (2048-bit key) header.d=manguebit.com header.i=@manguebit.com header.b=C++QbNXB; arc=none smtp.client-ip=167.235.159.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xlnd9DsG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E9BC4CEDD;
-	Fri,  4 Apr 2025 13:46:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743774395;
-	bh=pLBXfMZtfu0Wdhea/G2lSDI2TOWAUHpUTKmHZ6giqh8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Xlnd9DsGGlLdmpC/48a2DXtoiQCwvqTjyJWjO6nXr6sc3tC7/gjDoR/5PEsSxMZ16
-	 VqMKRZ1WqBdvHvv/O9nPEgf4DLEnX6XCixLRYFfpNbGnfBpJySTXMdsxe8xpRJApES
-	 Ho0pi+LYwI14D+A9mIlYCk4HXGwxMlr2hBsZ9/GAcRDVyjo+aCPr3vlWfsuFU2ExA5
-	 ubOfFXYlQZsJigjglIOvdqnpeE/IIWz38WLM87cXXrrqUW2tcHhx2SKUhA7uZ8INZz
-	 mYnVYokBVLykN9GwWJ0ts2dUVaMfK2Q+Z8VMCQ2yEz9cvUvoZw3JIb5UKfPmmrNg8F
-	 NYcZjaFY2cPTw==
-Date: Fri, 4 Apr 2025 15:46:30 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: NeilBrown <neil@brown.name>
-Cc: David Howells <dhowells@redhat.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Chuck Lever <chuck.lever@oracle.com>, 
-	Jeff Layton <jlayton@kernel.org>, linux-nfs@vger.kernel.org, netfs@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 1/6] VFS: improve interface for lookup_one functions
-Message-ID: <20250404-waldarbeiten-entern-d0ae4513ee41@brauner>
-References: <>
- <3170778.1742479489@warthog.procyon.org.uk>
- <174312469657.9342.13122047478058505480@noble.neil.brown.name>
- <20250404-fanpost-wirkt-9af345e9ebd6@brauner>
+	dkim=pass (2048-bit key) header.d=manguebit.com header.i=@manguebit.com header.b="C++QbNXB"
+Date: Fri, 04 Apr 2025 13:54:16 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
+	s=dkim; t=1743774863;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tBpwiga24ZDFaxXlPSaint51OdZYZUZt9Yg1IPcK0sU=;
+	b=C++QbNXBf9Xz8W7pwLbb3YxlcSx1P7KFpN9LKOg+Ltar2eLyO5PkiHRba0qIEo8t/5bRnD
+	vloHNopiuEv7+u7qeBqWu+BUYyO3sb5w0/gMgjmRGnjFXGcwTLB2bIs1KDFP3535lZNi0x
+	35ViKjTx84H5xvH+KGphILsFiNNllR8mifZ1KaVJ7iP9dxY6wDpkJm/1k73w1vEl5TvpzF
+	9viKAKC4mGJuaNczjwzeqPwfSzbZDNOojhVwZqAKmSGXBK1JJzlOBAeBWkwOULlXtw3NcD
+	c3VtSieMQ5z7Wbip7qzAHWqJfQa9P34VDOBExJGPPkjcD+uu4U8ZfPCG0LHHjQ==
+From: Paulo Alcantara <pc@manguebit.com>
+To: Nicolas Baranger <nicolas.baranger@3xo.fr>,
+ Christoph Hellwig <hch@infradead.org>
+CC: hch@lst.de, David Howells <dhowells@redhat.com>, netfs@lists.linux.dev,
+ linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Steve French <smfrench@gmail.com>,
+ Jeff Layton <jlayton@kernel.org>, Christian Brauner <brauner@kernel.org>
+Subject: =?US-ASCII?Q?Re=3A_=5Bnetfs/cifs_-_Linux_6=2E14=5D_loop_on_file_?=
+ =?US-ASCII?Q?cat_+_file_copy_when_files_are_on_CIFS_share?=
+In-Reply-To: <48685a06c2608b182df3b7a767520c1d@3xo.fr>
+References: <10bec2430ed4df68bde10ed95295d093@3xo.fr> <35940e6c0ed86fd94468e175061faeac@3xo.fr> <Z-Z95ePf3KQZ2MnB@infradead.org> <48685a06c2608b182df3b7a767520c1d@3xo.fr>
+Message-ID: <F89FD4A3-FE54-4DB2-BA08-3BCC8843C60E@manguebit.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250404-fanpost-wirkt-9af345e9ebd6@brauner>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 04, 2025 at 03:41:01PM +0200, Christian Brauner wrote:
-> On Fri, Mar 28, 2025 at 12:18:16PM +1100, NeilBrown wrote:
-> > On Fri, 21 Mar 2025, David Howells wrote:
-> > > NeilBrown <neil@brown.name> wrote:
-> > > 
-> > > > Also the path component name is passed as "name" and "len" which are
-> > > > (confusingly?) separate by the "base".  In some cases the len in simply
-> > > > "strlen" and so passing a qstr using QSTR() would make the calling
-> > > > clearer.
-> > > > Other callers do pass separate name and len which are stored in a
-> > > > struct.  Sometimes these are already stored in a qstr, other times it
-> > > > easily could be.
-> > > > 
-> > > > So this patch changes these three functions to receive a 'struct qstr',
-> > > > and improves the documentation.
-> > > 
-> > > You did want 'struct qstr' not 'struct qstr *' right?  I think there are
-> > > arches where this will cause the compiler to skip a register argument or two
-> > > if it's the second argument or third argument - i386 for example.  Plus you
-> > > have an 8-byte alignment requirement because of the u64 in it that may suck if
-> > > passed through several layers of function.
-> > 
-> > I don't think it is passed through several layers - except where the
-> > intermediate are inlined.
-> > And gcc enforces 16 byte alignment of the stack on function calls for
-> > i386, so I don't think alignment will be an issue.
-> > 
-> > I thought 'struct qstr' would result in slightly cleaner calling.  But I
-> > cannot make a strong argument in favour of it so I'm willing to change
-> > if there are concerns.
-> 
-> Fwiw, I massaged the whole series to pass struct qstr * instead of
-> struct qstr. I just forgot to finish that rebase and push.
-> /me doing so now.
+Hi Nicolas,
 
-Fwiw, there were a bunch of build failures for me when I built the
-individual commits that I fixed up. I generally do:
+I'll look into it as soon as I recover from my illness=2E  Sorry for the d=
+elay=2E
 
-git rebase -i HEAD~XXXXX -x "make -j512"
-
-with an allmodconfig to make sure that it cleanly builds at each commit.
+On 4 April 2025 08:50:27 UTC, Nicolas Baranger <nicolas=2Ebaranger@3xo=2Ef=
+r> wrote:
+>Hi Christoph
+>
+>Thanks for answer and help
+>Did someone reproduced the issue (very easy) ?
+>
+>
+>CIFS SHARE is mounted as /mnt/fbx/FBX-24T
+>echo toto >/mnt/fbx/FBX-24T/toto
+>
+>ls -l /mnt/fbx/FBX-24T/toto
+>-rw-rw-rw- 1 root root 5 20 mars  09:20 /mnt/fbx/FBX-24T/toto
+>
+>cat /mnt/fbx/FBX-24T/toto
+>toto
+>toto
+>toto
+>toto
+>toto
+>toto
+>toto
+>^C
+>
+>
+>CIFS mount options:
+>grep cifs /proc/mounts
+>//10=2E0=2E10=2E100/FBX24T /mnt/fbx/FBX-24T cifs rw,nosuid,nodev,noexec,r=
+elatime,vers=3D3=2E1=2E1,cache=3Dnone,upcall_target=3Dapp,username=3Dfbx,do=
+main=3DHOMELAN,uid=3D0,noforceuid,gid=3D0,noforcegid,addr=3D10=2E0=2E10=2E1=
+00,file_mode=3D0666,dir_mode=3D0755,iocharset=3Dutf8,soft,nounix,serverino,=
+mapposix,mfsymlinks,reparse=3Dnfs,nativesocket,symlink=3Dmfsymlinks,rsize=
+=3D65536,wsize=3D65536,bsize=3D16777216,retrans=3D1,echo_interval=3D60,acti=
+meo=3D1,closetimeo=3D1 0 0
+>
+>KERNEL: uname -a
+>Linux 14RV-SERVER=2E14rv=2Elan 6=2E14=2E0-rc2-amd64 #0 SMP PREEMPT_DYNAMI=
+C Wed Feb 12 18:23:00 CET 2025 x86_64 GNU/Linux
+>
+>
+>Kind regards
+>Nicolas Baranger
+>
+>
+>Le 2025-03-28 11:45, Christoph Hellwig a =C3=A9crit :
+>
+>> Hi Nicolas,
+>>=20
+>> please wait a bit, many file system developers where at a conference
+>> this week=2E
+>
