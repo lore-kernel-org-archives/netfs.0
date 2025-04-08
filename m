@@ -1,138 +1,149 @@
-Received: from mx.manguebit.com (mx.manguebit.com [167.235.159.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F8025EFB7
-	for <netfs@lists.linux.dev>; Tue,  8 Apr 2025 00:51:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.235.159.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88929218821
+	for <netfs@lists.linux.dev>; Tue,  8 Apr 2025 07:17:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744073512; cv=none; b=MG6VGa82iLgzO23qRwQj9/Yy1GbI47uOQ/SYzC993G7dhXf1/E2Nz+/IQEVGLwBvPMlcHHKP9A9RR5nPJlhOSoi1eduZogKi7NpXN9Vod+nN8RLagze+kRyAi5NLB5jXV5HVcr6Ls93gmIvAz0vOvGa5kr1kiR3hU6UNBnI0A5E=
+	t=1744096668; cv=none; b=ZUltJwxcImgHAiN0aw3Tcc0Qud7QSaExrCw4ZLzgvPvxnRVRw/XS4RsphO/UWCiLLd/j1fUqeSfOd/JHFaeJr279p9qS0qaobZK2u3NNgY0rNjA3YmPeodW66pFNW6zyLs3WcpiVMUF/V3Egcc8SoUAVPPQDV0v7VAjpt92wWg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744073512; c=relaxed/simple;
-	bh=otGrTM+fxSGcq6yelD3MNpOPEUh4PYa6liVSiQgXgq8=;
-	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Date:
-	 MIME-Version:Content-Type; b=ds+wlrAMd9LyEujd4qCisJlpzsrVrJwEuAGxGeS7TdJvtyCEQJWO+434cN0Doz4DxB8hd03GhV8UQLoY/CVpYpK1uhyDl4zX/NmeuXqfM/JtTYy7wbpxa1rzEENPMBG6I2XDshAbiUTQo0I61bKozFkebBQTT++49pQQD9i/RQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.com; spf=pass smtp.mailfrom=manguebit.com; dkim=pass (2048-bit key) header.d=manguebit.com header.i=@manguebit.com header.b=djZ5+E7T; arc=none smtp.client-ip=167.235.159.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.com
+	s=arc-20240116; t=1744096668; c=relaxed/simple;
+	bh=QJaTq8DPTo2AfOZqsOxCCBCgtYmWlA3+LXHRBHQTNto=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=t2jXaQWbMY5LmPBkpPX2w+nDcD0Nc+U01V+uRkcj7FIOuvwEuV4xOhLjt3SJ8kQ3Gw9LlnjwQXqvKz+W5XeP+MlNiQn1HtNMF4Zuib/quNgniRRSJkZ+DoPE2Yf2GBgk1xGrL/+xlWdgLqg21qRVCZX2tud/kR2/QNNzQwBgIUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LYEJWrH/; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manguebit.com header.i=@manguebit.com header.b="djZ5+E7T"
-Message-ID: <b395436343d8df2efdebb737580fe976@manguebit.com>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
-	s=dkim; t=1744073508;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RMuKSUtZuVZwIpMHPl0nE/X6Q9X3ze9GVg1L2gw4mcY=;
-	b=djZ5+E7TlQKN0U7snJwHCvAp5bV4naZEONlwz1pDLjE+xuvBvDTh5M8mzEMGg2L078BpfW
-	31ei3oe6Kx9HsZ/7avrEHkVozfmG4JFQJqQfM4iNTkOIQ4jmaV6yCzCijRwXAvTl7+uCc/
-	MUDKAE8MsvComBz8t3SBXOHYDTQ35DSaMQJWkh6r/3S8V9BNhEnPBSd7K5yO0TopbnDnmw
-	zXKgA2UUsv2sLYa8sbqJRLhXP39EmQuo3CIeBzWq33X8VVqEai7E1NMjfADYwKjmK1Gco8
-	6f5uy2WD9EABTRBH++3xQdCfagMTHQR2TaUv65KcXvaJAw1GLctLSXAoS2XfIQ==
-From: Paulo Alcantara <pc@manguebit.com>
-To: Song Liu <song@kernel.org>, netfs@lists.linux.dev,
- linux-fsdevel@vger.kernel.org
-Cc: dhowells@redhat.com, kernel-team@fb.com, Song Liu <song@kernel.org>
-Subject: Re: [PATCH] netfs: Let netfs depends on PROC_FS
-In-Reply-To: <notmuch-sha1-7bf7bb81673494d9bbe96c6cfbeaf9005a6bd491>
-References: <20250407184730.3568147-1-song@kernel.org>
-Date: Mon, 07 Apr 2025 21:51:41 -0300
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LYEJWrH/"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2ff615a114bso5479924a91.0
+        for <netfs@lists.linux.dev>; Tue, 08 Apr 2025 00:17:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744096665; x=1744701465; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=QJaTq8DPTo2AfOZqsOxCCBCgtYmWlA3+LXHRBHQTNto=;
+        b=LYEJWrH/BTwaoO18z68+85KVmgTofzb8O8UuVNT7X/ZKRGabUxdf+4iXK5XXTH0UQf
+         4e6tSv/aswD67n4zxiqk9RK0wEqd8qc60swI+1wXSmJu/Ucxrc6Vq/tZbafZ2Dysy+fZ
+         fFMy6Rdt3mmbBpO1UG8ABS5VVFbEbIsHptqV4mpN9vTTygxoFilTq44wYz6nhJ8Z/Dbq
+         n1FWB6DKlakNu7BrpCPzkTq7D7EMSlpaOZdGl0754Lk/Rr5VFmla5anK7eeH3nF85q9r
+         7G0Goz496NwFe1iL99Waazy020AcOPhCVizQV3rpG7iPqA/zw+v+W74PHv8ItfT3r1Xv
+         Bw2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744096665; x=1744701465;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QJaTq8DPTo2AfOZqsOxCCBCgtYmWlA3+LXHRBHQTNto=;
+        b=LdX1CNhR2lai20iWvxZ3KX7cK3s1Vqdi0MYOnFWHrD0Hpirl7vue0JebIMBghRpaMh
+         m+ukNIbFUMyoH7LAwOeotDBYI/6JXmCZhb4qJpUcqHRPn2NxwNWLxzE2MfIUrQYgUEgI
+         H1Su9MJOPaYRHG2Pkhdh8esN2z4ZTpJJHXvyrEuHTfijCISNdwTlgztSBFuIyqLUeynJ
+         hYHgcWoCLsDZsqHYtqu/meuyGP1xAV68IH2onSA89SVampGyGbj90unevXMuFm/FmQY5
+         FTWZEex3PuiNCuoZfrhoPcLt+wWYrNtmfsFF8papGGxqKkSEIHrQ8PJsRVM4p96lQAE2
+         cBpw==
+X-Gm-Message-State: AOJu0YwNxyO+IycSXFMz7u0VXAbAHw+RKKtOd6sfHiI33woI3lBdZWsf
+	MAg7P6QXXgYqeOG9nJ4uXgQL/gmIrSI1X1IxCpKbCJ1z78gRazgXWP9xdNGOAocYR8HjAz6zscT
+	GLQjCIly30ot6AhrcpK3rPOSDzXhKzl4oz3Ykng==
+X-Gm-Gg: ASbGncs4etlbVL4p49ElblNMRBgoXPvScMG+gM//ATSRTGfn2VQMyIxGT69SwKgCyBT
+	XdzDu8OrqtFq7dH1FeliOv+jNZpCvtZ4rT2OOknzKuhAiWqpeanH5tIzgQ40gJsRkuWo1d17E9K
+	dqC6beUM0PyAGCmeTxiaU0thHI3SY=
+X-Google-Smtp-Source: AGHT+IG4pi9hnvnXX2pYFsiChM3L1nDMt7szbxKDYVS/AO4/E0riHOCSmubJcqI65ssIJWBYh1GhjLfT+4ZpIYWTRlk=
+X-Received: by 2002:a17:90b:2643:b0:2fc:aaf:74d3 with SMTP id
+ 98e67ed59e1d1-306d0bde65dmr3383814a91.4.1744096665088; Tue, 08 Apr 2025
+ 00:17:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+From: Abagail ren <renzezhongucas@gmail.com>
+Date: Tue, 8 Apr 2025 15:17:33 +0800
+X-Gm-Features: ATxdqUGnFE5PrDk8HS1Qt5pOF0Uel3GRFXEtvJEbnDFlumugRHw_Vhr_IiGWFrg
+Message-ID: <CALkECRhMTA5dUcKzAFmyuMfxa_HsA7VRg1N6UxXSms8J9daa5w@mail.gmail.com>
+Subject: [BUG] NULL pointer dereference in iov_iter_revert() via netfs_write_collection_worker
+To: netfs@lists.linux.dev
+Cc: syzkaller@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Song,
+Hi maintainers,
 
-Paulo Alcantara <pc@manguebit.com> writes:
+In case the previous message was rejected due to attachments, I am
+resending this report in plain text format.
 
-> Song Liu <song@kernel.org> writes:
->
->> When testing a special config:
->>
->> CONFIG_NETFS_SUPPORTS=y
->> CONFIG_PROC_FS=n
->>
->> The system crashes with something like:
->>
->> [    3.766197] ------------[ cut here ]------------
->> [    3.766484] kernel BUG at mm/mempool.c:560!
->> [    3.766789] Oops: invalid opcode: 0000 [#1] SMP NOPTI
->> [    3.767123] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Tainted: G        W
->> [    3.767777] Tainted: [W]=WARN
->> [    3.767968] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
->> [    3.768523] RIP: 0010:mempool_alloc_slab.cold+0x17/0x19
->> [    3.768847] Code: 50 fe ff 58 5b 5d 41 5c 41 5d 41 5e 41 5f e9 93 95 13 00
->> [    3.769977] RSP: 0018:ffffc90000013998 EFLAGS: 00010286
->> [    3.770315] RAX: 000000000000002f RBX: ffff888100ba8640 RCX: 0000000000000000
->> [    3.770749] RDX: 0000000000000000 RSI: 0000000000000003 RDI: 00000000ffffffff
->> [    3.771217] RBP: 0000000000092880 R08: 0000000000000000 R09: ffffc90000013828
->> [    3.771664] R10: 0000000000000001 R11: 00000000ffffffea R12: 0000000000092cc0
->> [    3.772117] R13: 0000000000000400 R14: ffff8881004b1620 R15: ffffea0004ef7e40
->> [    3.772554] FS:  0000000000000000(0000) GS:ffff8881b5f3c000(0000) knlGS:0000000000000000
->> [    3.773061] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->> [    3.773443] CR2: ffffffff830901b4 CR3: 0000000004296001 CR4: 0000000000770ef0
->> [    3.773884] PKRU: 55555554
->> [    3.774058] Call Trace:
->> [    3.774232]  <TASK>
->> [    3.774371]  mempool_alloc_noprof+0x6a/0x190
->> [    3.774649]  ? _printk+0x57/0x80
->> [    3.774862]  netfs_alloc_request+0x85/0x2ce
->> [    3.775147]  netfs_readahead+0x28/0x170
->> [    3.775395]  read_pages+0x6c/0x350
->> [    3.775623]  ? srso_alias_return_thunk+0x5/0xfbef5
->> [    3.775928]  page_cache_ra_unbounded+0x1bd/0x2a0
->> [    3.776247]  filemap_get_pages+0x139/0x970
->> [    3.776510]  ? srso_alias_return_thunk+0x5/0xfbef5
->> [    3.776820]  filemap_read+0xf9/0x580
->> [    3.777054]  ? srso_alias_return_thunk+0x5/0xfbef5
->> [    3.777368]  ? srso_alias_return_thunk+0x5/0xfbef5
->> [    3.777674]  ? find_held_lock+0x32/0x90
->> [    3.777929]  ? netfs_start_io_read+0x19/0x70
->> [    3.778221]  ? netfs_start_io_read+0x19/0x70
->> [    3.778489]  ? srso_alias_return_thunk+0x5/0xfbef5
->> [    3.778800]  ? lock_acquired+0x1e6/0x450
->> [    3.779054]  ? srso_alias_return_thunk+0x5/0xfbef5
->> [    3.779379]  netfs_buffered_read_iter+0x57/0x80
->> [    3.779670]  __kernel_read+0x158/0x2c0
->> [    3.779927]  bprm_execve+0x300/0x7a0
->> [    3.780185]  kernel_execve+0x10c/0x140
->> [    3.780423]  ? __pfx_kernel_init+0x10/0x10
->> [    3.780690]  kernel_init+0xd5/0x150
->> [    3.780910]  ret_from_fork+0x2d/0x50
->> [    3.781156]  ? __pfx_kernel_init+0x10/0x10
->> [    3.781414]  ret_from_fork_asm+0x1a/0x30
->> [    3.781677]  </TASK>
->> [    3.781823] Modules linked in:
->> [    3.782065] ---[ end trace 0000000000000000 ]---
->>
->> This is caused by the following error path in netfs_init():
->>
->>         if (!proc_mkdir("fs/netfs", NULL))
->>                 goto error_proc;
->>
->> Fix this by letting netfs depends on PROC_FS.
->>
->> Signed-off-by: Song Liu <song@kernel.org>
->> ---
->>  fs/netfs/Kconfig | 3 ++-
->>  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+During fuzzing with the Linux kernel,
+we encountered a kernel crash (KASAN null-ptr-deref)
 
-Sorry, I take it back.  Reviewed it way too soon :-/
+in `iov_iter_revert()` triggered in the `netfs_write_collection_worker` context.
 
-It wouldn't make sense to make it depend on PROC_FS.
+The bug was reproduced on `v6.12-rc6`.
 
-I see two problems here:
+## Crash Details:
 
-(1) We shouldn't be creating /proc/fs/netfs if CONFIG_PROC_FS=n
+Oops: general protection fault, probably for non-canonical address
+0xdffffc0000000023: 0000 [#1] PREEMPT SMP KASAN NOPTI KASAN:
+null-ptr-deref in range [0x0000000000000118-0x000000000000011f]
 
-(2) There's a wrong assumption in the API that @netfs_request_pool and
-@netfs_subrequest_pool will always be initialized.  For example, we
-should return an error from netfs_alloc_[sub]rquest() functions in case
-@mempool == NULL.
+CPU: 1 PID: 3000 Comm: kworker/u10:3 Not tainted 6.12.0-rc6 #2
+Workqueue: events_unbound netfs_write_collection_worker
 
-Dave, any thoughts?
+RIP: 0010:folioq_folio_order include/linux/folio_queue.h:291 [inline]
+RIP: 0010:folioq_folio_size include/linux/folio_queue.h:305 [inline]
+RIP: 0010:iov_iter_folioq_revert lib/iov_iter.c:599 [inline] RIP:
+0010:iov_iter_revert lib/iov_iter.c:644 [inline] RIP:
+0010:iov_iter_revert+0x2ec/0x5a0 lib/iov_iter.c:611
+
+Call Trace: netfs_retry_write_stream fs/netfs/write_collect.c:181 [inline]
+
+netfs_retry_writes fs/netfs/write_collect.c:361 [inline]
+
+netfs_collect_write_results fs/netfs/write_collect.c:529 [inline]
+netfs_write_collection_worker+0x3c94/0x46f0
+fs/netfs/write_collect.c:551 process_one_work+0x99c/0x1b80
+kernel/workqueue.c:3229
+
+worker_thread+0x677/0xe90 kernel/workqueue.c:3391
+
+kthread+0x2c7/0x3b0 kernel/kthread.c:389
+
+## Summary
+
+The crash happens during a call to `iov_iter_revert()`
+
+inside a `netfs_write_collection_worker` task.
+
+The `iov_iter` appears to contain an invalid pointer,
+
+leading to a general protection fault when dereferencing memory in
+`folioq_folio_size()`.
+
+Specifically, it crashes at:
+
+movzbl (%rax,%rcx,1),%eax <-- trapping instruction
+
+with:
+
+RAX: 0000000000000023 RCX: dffffc0000000000 RDI: 000000000000011e
+
+This implies an invalid `folio` object is being accessed.
+
+A check on the validity of the folio (e.g., via `WARN_ON()` or `IS_ERR()`)
+
+before use in `iov_iter_folioq_revert()` might prevent the crash.
+
+## Environment
+
+- Kernel: `6.12.0-rc6`
+- Platform: QEMU
+- Trigger: workload involving `netfs` writeback
+
+I checked the dashboard, I think this is highly related to :
+
+https://syzkaller.appspot.com/text?tag=CrashReport&x=1300b618580000
+
+https://syzkaller.appspot.com/bug?id=78d77d1af0176dc57be694578c1ac93e92587191
+
+I hope this can give you more information about the opening bug.
+
+Let me know if you need additional repro information or traces.
+
+Thanks,
+Zezhong Ren
