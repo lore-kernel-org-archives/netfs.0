@@ -1,60 +1,63 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE9F25E447
-	for <netfs@lists.linux.dev>; Wed,  9 Apr 2025 11:57:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD93625DAE8
+	for <netfs@lists.linux.dev>; Wed,  9 Apr 2025 13:24:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744199824; cv=none; b=SJ0r2U4gUXIX2JdFEgmrQjErCAQ4a8VjDh/GuSA3fLeJWTNsbdQWkiQLkjUDWv9m2vV6I7dQT8LaZevK65B1yksO9TEM4a6PSsoh9DqVHvoGB8CPwYL1spLXS2Jhg037Mb9YVefhlHuF0NZhz6GDlx+d+Nd5s6PFQRYs7CrJjCc=
+	t=1744205076; cv=none; b=uFapT++gy7AtfYF08SmHubGCaYezPAy6y8hvqy1ZlCU6MYKsncAQn5lyTMcwq0NkH18uCE012oI7ROBehcdk9bHjIuonq3pHRdJ3MXGwF2NRI7MnamcOa1Gf2284jUDsENAp5EVPriw5lFQOpO9T++tLKEBGyS9TaoDX+QU3LCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744199824; c=relaxed/simple;
-	bh=bYsI9fKny4SxKbP5giJ46oTfBA030R5OcsLlxdPQ3rc=;
+	s=arc-20240116; t=1744205076; c=relaxed/simple;
+	bh=lR6HbIW46Lo1luKRc0aisq12HHbyplNXNMAdbjw83Qw=;
 	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=l251DVhJlQam+BBLC1Rn01MFNZ5y+rxPcRSh9A/TxCeQ18YauMr2ETsJDGd5wBn89JQOL4aEdOyf/da36iMEAAsTiSPB3t0X34tZu6UfYauF86rfJAVU+ni6QaqXr5wLLj21/fWJSE2rxIeBwZHCFNL7uaWCiYJGt1B+j9Vmgq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cEQ/C4K7; arc=none smtp.client-ip=170.10.129.124
+	 Content-Type:Date:Message-ID; b=s0F2KwpVtos8hdQpd+/QYX5zkeneiGg6wgPc2priTYCcCDU8klDFE8qJ3OhtT5MlRQoZAPtyhxHoEnKgMT3s9qLtYvyENoTqzeaELZCqI2JDI/lnzm+E4n44D4pXaIPB0NDN31YsAuhMalmVdAM3o4JmoUVcFrhw5ABOZNEfNfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fZnPtZRl; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cEQ/C4K7"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fZnPtZRl"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744199821;
+	s=mimecast20190719; t=1744205073;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9NW6RqANC34MSybPlsfK/Ojrrpi57Btk5nqfiDMR41o=;
-	b=cEQ/C4K75LplDH0TI5d6WlfgTRDYcOsMXuKrZqAsTiAzdhzSBolNssRtyinwJQl7m+pu9I
-	Z+Wdl9q7pqaNsS3W5VYFLwAbm3NY3qrK5bAWPdvbSHKyXlNjWM4pT22CYv6VnbtJLMl1A/
-	vo3wJJ6/SoreiyXkiLBxFJqIcuJCvIQ=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+	bh=lfwYYsGrLuBzhEjko8XOF3Kr8lKmO5hpl5xF++WtSAA=;
+	b=fZnPtZRl73M0z+lcx/Y9yccDrAEhDIB79CytU0CVUOQSy357iSRuVmSG+nGCKp5eOyKLP+
+	AUkdk/GjlAJGrI5af3EPsw2PB4ySeqPtndQmcpVlBY5fNxbuA1TvLBoyBo0Yu/U4mxkasG
+	A59yrhL67rAcwrOJhBXX9/jQL9gu19Q=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-509-DD6Y0lk6PsChPzmI_5p8DQ-1; Wed,
- 09 Apr 2025 07:56:57 -0400
-X-MC-Unique: DD6Y0lk6PsChPzmI_5p8DQ-1
-X-Mimecast-MFC-AGG-ID: DD6Y0lk6PsChPzmI_5p8DQ_1744199816
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-282-0sGq1VTdOK6CsMIJAsgGDg-1; Wed,
+ 09 Apr 2025 09:24:30 -0400
+X-MC-Unique: 0sGq1VTdOK6CsMIJAsgGDg-1
+X-Mimecast-MFC-AGG-ID: 0sGq1VTdOK6CsMIJAsgGDg_1744205068
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4E9BE195609E;
-	Wed,  9 Apr 2025 11:56:56 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1F214195606A;
+	Wed,  9 Apr 2025 13:24:28 +0000 (UTC)
 Received: from warthog.procyon.org.uk (unknown [10.42.28.40])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7B71A180B488;
-	Wed,  9 Apr 2025 11:56:54 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B9ECE19560AD;
+	Wed,  9 Apr 2025 13:24:24 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
 	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
 	Kingdom.
 	Registered in England and Wales under Company Registration No. 3798903
 From: David Howells <dhowells@redhat.com>
-In-Reply-To: <1BEAB585-4A65-475C-85CC-332C98859546@fb.com>
-References: <1BEAB585-4A65-475C-85CC-332C98859546@fb.com> <b395436343d8df2efdebb737580fe976@manguebit.com> <20250407184730.3568147-1-song@kernel.org> <1478622.1744097510@warthog.procyon.org.uk> <05f5b9f694ca9b1573ea8e1801098b65@manguebit.com>
-To: Song Liu <songliubraving@meta.com>
-Cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.com>,
-    Song Liu <song@kernel.org>,
-    "netfs@lists.linux.dev" <netfs@lists.linux.dev>,
-    "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-    Kernel Team <kernel-team@meta.com>
-Subject: Re: [PATCH] netfs: Let netfs depends on PROC_FS
+In-Reply-To: <Z_ZHoCgi2BY5lVjN@archie.me>
+References: <Z_ZHoCgi2BY5lVjN@archie.me> <Z_XOr4Ak4S0EOdrw@archie.me> <1565252.1744124997@warthog.procyon.org.uk> <1657441.1744189529@warthog.procyon.org.uk>
+To: Bagas Sanjaya <bagasdotme@gmail.com>
+Cc: dhowells@redhat.com, Christian Brauner <brauner@kernel.org>,
+    Paulo Alcantara <pc@manguebit.com>, Jeff Layton <jlayton@kernel.org>,
+    Viacheslav Dubeyko <slava@dubeyko.com>,
+    Alex Markuze <amarkuze@redhat.com>, Timothy Day <timday@amazon.com>,
+    Jonathan Corbet <corbet@lwn.net>, netfs@lists.linux.dev,
+    linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] netfs: Update main API document
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -62,22 +65,126 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1672920.1744199813.1@warthog.procyon.org.uk>
-Date: Wed, 09 Apr 2025 12:56:53 +0100
-Message-ID: <1672921.1744199813@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-ID: <1676059.1744205063.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 09 Apr 2025 14:24:23 +0100
+Message-ID: <1676060.1744205063@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Song Liu <songliubraving@meta.com> wrote:
+Bagas Sanjaya <bagasdotme@gmail.com> wrote:
 
-> Thanks for the review. I guess we will need the following changes, 
+> > > > +Further, if a read from the cache fails, the library will ask the=
+ filesystem to
+> > > > +do the read instead, renegotiating and retiling the subrequests a=
+s necessary.
+> > > Read from the filesystem itself or direct read?
+> > =
 
-You need a little bit more.  The error handling in the init function also
-needs #ifdef'ing too lest the compiler warn about unused goto labels.
+> > I'm not sure what you mean.  Here, I'm talking about read subrequests =
+- i.e. a
+> > subrequest that corresponds to a BIO issued to the cache or a single R=
+PC
+> > issued to the server.  Things like DIO and pagecache are at a higher l=
+evel and
+> > not directly exposed to the filesystem.
+> > =
 
-> probably in two separate patches?
+> > Maybe I should amend the text to read:
+> > =
 
-Hmmm... yes.  I'm suddenly uncertain about the order modules are inited.  It
-might actually need to be fs_initcall().
+> > 	Further, if one or more subrequests issued to read from the cache
+> > 	fail, the library will issue them to the filesystem instead,
+> > 	renegotiating and retiling the subrequests as necessary.
+> =
 
+> That one sounds better to me.
+
+I think I like this better:
+
+	Further, if one or more contiguous cache-read subrequests fail, the
+	library will pass them to the filesystem to perform instead,
+	renegotiating and retiling them as necessary to fit with the
+	filesystem's parameters rather than those of the cache.
+
+> > > > +Netfslib will pin resources on an inode for future writeback (suc=
+h as pinning
+> > > > +use of an fscache cookie) when an inode is dirtied.  However, thi=
+s needs
+> > > > +managing.  Firstly, a function is provided to unpin the writeback=
+ in
+> > > inode management?
+> > > > +``->write_inode()``::
+> > =
+
+> > Is "inode management" meant to be a suggested insertion or an alternat=
+ive for
+> > the subsection title?
+> =
+
+> I mean "However, this needs managing the inode (inode management)". Is i=
+t
+> correct to you?
+
+Um.  "However, this needs managing the inode (inode management)" isn't val=
+id
+English and "(inode management)" is superfluous with "managing the inode" =
+also
+in the sentence.
+
+How about:
+
+	Netfslib will pin resources on an inode for future writeback (such as pin=
+ning
+	use of an fscache cookie) when an inode is dirtied.  However, this pinnin=
+g
+	needs careful management.  To manage the pinning, the following sequence
+	occurs:
+
+	 1) An inode state flag ``I_PINNING_NETFS_WB`` is set by netfslib when th=
+e
+	    pinning begins (when a folio is dirtied, for example) if the cache is
+	    active to stop the cache structures from being discarded and the cach=
+e
+	    space from being culled.  This also prevents re-getting of cache reso=
+urces
+	    if the flag is already set.
+
+	 2) This flag then cleared inside the inode lock during inode writeback i=
+n the
+	    VM - and the fact that it was set is transferred to ``->unpinned_netf=
+s_wb``
+	    in ``struct writeback_control``.
+
+	 3) If ``->unpinned_netfs_wb`` is now set, the write_inode procedure is f=
+orced.
+
+	 4) The filesystem's ``->write_inode()`` function is invoked to do the cl=
+eanup.
+
+	 5) The filesystem invokes netfs to do its cleanup.
+
+	To do the cleanup, netfslib provides a function to do the resource unpinn=
+ing::
+
+		int netfs_unpin_writeback(struct inode *inode, struct writeback_control =
+*wbc);
+
+	If the filesystem doesn't need to do anything else, this may be set as a =
+its
+	``.write_inode`` method.
+
+	Further, if an inode is deleted, the filesystem's write_inode method may =
+not
+	get called, so::
+
+		void netfs_clear_inode_writeback(struct inode *inode, const void *aux);
+
+	must be called from ``->evict_inode()`` *before* ``clear_inode()`` is cal=
+led.
+
+
+instead?
+
+Thanks,
 David
 
