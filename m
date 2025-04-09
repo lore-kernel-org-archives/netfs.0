@@ -1,195 +1,175 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF918250EC
-	for <netfs@lists.linux.dev>; Wed,  9 Apr 2025 01:34:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A56325A2D7
+	for <netfs@lists.linux.dev>; Wed,  9 Apr 2025 09:05:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744162486; cv=none; b=UO2ToPfBJ4ZWehoHlsktpcrXWVzPBKjAwe0HtrIcK4gFSVRArOFSeyokrylVCK/7jR9x5Bs7oQ4MW7ErVXJCAi/JfGqlbQMU0hpbSTe5c2OSQ6/nRaqcgS8DSsDLJGqSB6K2YHzVPgU4xxfhF1NnfykvLTGOSGFGoTFNPGqhHc4=
+	t=1744189545; cv=none; b=hVEiVhQhcvGDrqEIVW9O0o699QvZCutBzzkjagja5QdDQTvbHi1zhOP344f43YprFJg7K/FbZiPDwLnoGRKA8Ynp00WwkGLy9atAkia+/z+nN0GcyBGTm4AxoF5qRHXZWhR1Qiw3lTKdIPiWWupva8wJnKmn76TFO9i2d8hFKPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744162486; c=relaxed/simple;
-	bh=oeG+4HAagfYJR67bmiU5uGwhjpjwSraicPyYZz+OtWU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vEwYOacRXDg5kyRvKPGTWz6vhOK4IgJPNX5THY9NVPNoaGj4jGllMywEt9xX0tN+n+WstKPHJ35uLA3zo8uiVTsYUAyY0joaT9M+kgSJD85ig7CguJ0MNNhSwj6eG0e1a3YDRrAdQQALj9rdAMip5OgXIctsULo6Sg1dRtJcA4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WgBNXcQ/; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744189545; c=relaxed/simple;
+	bh=4FJQGC34wMHXrFTz2OgWJo2CC4YJBjF3ZTFg3I0hoCo=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=QA1FO7MnewdCTo2EpAvD6+XdAKbix3seBNsoTtXMyE0MzGgbknGBMZt758d1vKtuHmnpqoiuyGUAmsIYx/iKYkHMPw8wLJ9Qc/L2HgyieOMctdFOWqKxvLvwmVbzEzCHa7GNXz8PhUm36AQZkxgOtmo0cSFG+QJnB+Zp0PgtNCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f2E1gcU8; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WgBNXcQ/"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-736c1cf75e4so5377943b3a.2
-        for <netfs@lists.linux.dev>; Tue, 08 Apr 2025 18:34:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744162484; x=1744767284; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3gWW7mQrB9d+AnX17ft9zAf82G6HqoBmSe5FjNlAnCs=;
-        b=WgBNXcQ/rtwbbp5b/qsUFuacOm4i9lR69uonIOaGJWtYIJy0PfUSbSYZLK5CtLY0hR
-         yFyBYwSszkZ1xTRP8Go6usSW2FgZZVmNEL5UFircDWwW3QdauoG8Ctj8JeUdtUO12/Xa
-         772wP6R6/Fjt4XexcTeiATdh5y6Nai1DpM/vCmlqiWuvPW70O5F5tI2g6E5fCJAXxgGJ
-         n7cY565CCLpEBHC4kCdymk+lYOpeGvikGtYcXKO3pw8NAMRMExyi0cN/CHzo/64cFPez
-         D8/vxhuqDPGBmJtICJRRSJWeqpgtfiwqpWgvCgKE7fpmaOvn54A6rE+0RrCr95eSurE5
-         /BsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744162484; x=1744767284;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3gWW7mQrB9d+AnX17ft9zAf82G6HqoBmSe5FjNlAnCs=;
-        b=CFaJGGVIzr4BjzsW5OT4DJWhPqxOb4d0l15L8U+e7FBOJFXax22L5epfm0vADBPQd8
-         yIeg301woEiMiWohQjO1gBFaUctYES/yUKG7ZJ80EFCvXW+Z+aucmOYo78b2LFdG7nPn
-         iNoq/ioLfZcLWNQ4b/Z9dqiLhI8+ARyo0eBXR4PpAYHX9vYzGLmOrXbUwfMjr1PKTMNV
-         XsY5F5kwkmRYqfmZhFYiJXSyBNFi3lNr//vmrz94pnxz/kE+CorqbGp4Bq/rc1k7gJAh
-         FWJqmsXIj8WBizGXh51Bj01n+orChjBTJADnGxwXsrPDMMWaj9IWja0WeNaQFyZOx6Nk
-         WbSg==
-X-Forwarded-Encrypted: i=1; AJvYcCVOyRIllAdwtEs79YivQtBHLW9IrCM52774UeEkXV4zznW8bJu0DUZ13j4kLdF5W9FMZOwvww==@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx5VbxRVhmDFqXAFo0RCSkuUaCp1SJIyzSfUbEOazIMFzQpH6ZE
-	iia/a9iIFQLdGS7wYZAnb6PzmSS5bTvqV+/LtRsR5OXWLNgilIC/
-X-Gm-Gg: ASbGncsdj+XVPUUdxyzuCokgF24ae+p8hTWqYlUSXXcrS1pWedaO3/SIb9yPU9rHn1C
-	BN9BRfRgcxLCwCSqfl/bwv4iNm8nln1Knx6iy7bQuSdcL4di439LnfmZd/pzVC+w/8cGvm2a08U
-	v6zpCutMs23R245Gbxs9RxFo5VPse3lY8dOojGBHiEmgBM9vfwSvoB0+MToiFNbpeUGkU17tIgR
-	slF+pLWIgXj3PsX534waVHh0xVvHKshxekcCTL2GF1by2rxM2EyOz8zZa76sZ4VbLJ3+dbm1cWM
-	YusNPOTiYDWBtnF0ymDTuBH/StIu/OK92ObJCdy1++YzwvpDQMqcGkI=
-X-Google-Smtp-Source: AGHT+IE3yPMa/eAyrcIcKnygKFejo73k37164uoaXWheqCJIVO7kLvZ6j6r+yahYkE1fLzUTtnx2sQ==
-X-Received: by 2002:a05:6a00:1484:b0:736:4d44:8b77 with SMTP id d2e1a72fcca58-73bae4b3d15mr1532729b3a.8.1744162483721;
-        Tue, 08 Apr 2025 18:34:43 -0700 (PDT)
-Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bb1d2b108sm55039b3a.19.2025.04.08.18.34.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Apr 2025 18:34:42 -0700 (PDT)
-Received: by archie.me (Postfix, from userid 1000)
-	id 0FFEF4236D23; Wed, 09 Apr 2025 08:34:39 +0700 (WIB)
-Date: Wed, 9 Apr 2025 08:34:39 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: David Howells <dhowells@redhat.com>,
-	Christian Brauner <brauner@kernel.org>
-Cc: Paulo Alcantara <pc@manguebit.com>, Jeff Layton <jlayton@kernel.org>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Alex Markuze <amarkuze@redhat.com>, Timothy Day <timday@amazon.com>,
-	Jonathan Corbet <corbet@lwn.net>, netfs@lists.linux.dev,
-	linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f2E1gcU8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1744189543;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3UGFJDqQi62IFAxWY5NIIYa7i9DNA3RekQiT9pyITt0=;
+	b=f2E1gcU8PnliLyJmhlBYnZ6ft/0ZBdPuFzhTDTNqh/GggCvfoW2SJtBgWB8zCsNU9DH7K4
+	wHcJSIYGymBd0tesyJq3uIJ1AFGAEMibKbU8YtPsVxumOfFNWFLb43L3r6X1KdrfT8sVsd
+	7EPGogV8kspCunJrCWsMztmCYX64FVc=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-574-KrVHnKwZPtiWgWF8QTwieQ-1; Wed,
+ 09 Apr 2025 05:05:37 -0400
+X-MC-Unique: KrVHnKwZPtiWgWF8QTwieQ-1
+X-Mimecast-MFC-AGG-ID: KrVHnKwZPtiWgWF8QTwieQ_1744189536
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C525D195608F;
+	Wed,  9 Apr 2025 09:05:35 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.40])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EC937180175B;
+	Wed,  9 Apr 2025 09:05:30 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <Z_XOr4Ak4S0EOdrw@archie.me>
+References: <Z_XOr4Ak4S0EOdrw@archie.me> <1565252.1744124997@warthog.procyon.org.uk>
+To: Bagas Sanjaya <bagasdotme@gmail.com>
+Cc: dhowells@redhat.com, Christian Brauner <brauner@kernel.org>,
+    Paulo Alcantara <pc@manguebit.com>, Jeff Layton <jlayton@kernel.org>,
+    Viacheslav Dubeyko <slava@dubeyko.com>,
+    Alex Markuze <amarkuze@redhat.com>, Timothy Day <timday@amazon.com>,
+    Jonathan Corbet <corbet@lwn.net>, netfs@lists.linux.dev,
+    linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] netfs: Update main API document
-Message-ID: <Z_XOr4Ak4S0EOdrw@archie.me>
-References: <1565252.1744124997@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="cxzS9cWmxd0BSJ70"
-Content-Disposition: inline
-In-Reply-To: <1565252.1744124997@warthog.procyon.org.uk>
-
-
---cxzS9cWmxd0BSJ70
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1657440.1744189529.1@warthog.procyon.org.uk>
 Content-Transfer-Encoding: quoted-printable
+Date: Wed, 09 Apr 2025 10:05:29 +0100
+Message-ID: <1657441.1744189529@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Tue, Apr 08, 2025 at 04:09:57PM +0100, David Howells wrote:
-> + * For writeback, it is unknown how much there will be to write until the
-                                             "... will be written ..."
-> +   pagecache is walked, so no limit is set by the library.
-> <snipped>...
-> +Further, if a read from the cache fails, the library will ask the filesy=
-stem to
-> +do the read instead, renegotiating and retiling the subrequests as neces=
-sary.
-Read from the filesystem itself or direct read?
+Bagas Sanjaya <bagasdotme@gmail.com> wrote:
 
-> +When writeback occurs, folios that are so marked will only be written to=
+> > + * For writeback, it is unknown how much there will be to write until=
  the
-> +cache and not to the server.  Writeback handles mixed cache-only writes =
-and
-> +server-and-cache writes by using two streams, sending one to the cache a=
-nd one
-> +to the server.  The server stream will have gaps in it corresponding to =
-those
-"... and another to the server."
-> +folios.
-> +
-> <snipped>...
-> +Netfslib will pin resources on an inode for future writeback (such as pi=
-nning
-> +use of an fscache cookie) when an inode is dirtied.  However, this needs
-> +managing.  Firstly, a function is provided to unpin the writeback in
-inode management?
-> +``->write_inode()``::
-> =20
-> <snipped>...
-> +The fields generally of interest to a filesystem are::
-> =20
->  	struct netfs_io_request {
-> +		enum netfs_io_origin	origin;
->  		struct inode		*inode;
->  		struct address_space	*mapping;
-> -		struct netfs_cache_resources cache_resources;
-> +		struct netfs_group	*group;
-> +		struct netfs_io_stream	io_streams[];
->  		void			*netfs_priv;
-> -		loff_t			start;
-> -		size_t			len;
-> -		loff_t			i_size;
-> -		const struct netfs_request_ops *netfs_ops;
-> +		void			*netfs_priv2;
-> +		unsigned long long	start;
-> +		unsigned long long	len;
-> +		unsigned long long	i_size;
->  		unsigned int		debug_id;
-> +		unsigned long		flags;
->  		...
->  	};
-> =20
-> -The above fields are the ones the netfs can use.  They are:
-> +They are:
-"These fields are, in detail:"
-> <snipped>...
-> +The stream struct looks like::
-"The stream struct is defined as::"
-> +
-> +	struct netfs_io_stream {
-> +		unsigned char		stream_nr;
-> +		bool			avail;
-> +		size_t			sreq_max_len;
-> +		unsigned int		sreq_max_segs;
-> +		unsigned int		submit_extendable_to;
-> +		...
-> +	};
-> +
-> <snipped>...
-> +The table starts with a pair of optional pointers to memory pools from w=
-hich
-> +requests and subrequests can be allocated.  If these are not given, netf=
-slib
-> +has default pools that it will use.  If the filesystem wraps the netfs s=
-tructs
-                     "... it will use instead."
-> +in its own larger structs, then it will need to use its own pools.  Netf=
-slib
-> +will allocate directly from the pools.
-> =20
-> <snipped>...
-> +   This is not permitted to return an error.  In the event of failure,
-> +   ``netfs_prepare_write_failed()`` must be called.
-"This method is not permitted to return an error. Instead, in the event of
-failure, ..."
+>                                              "... will be written ..."
+> > +   pagecache is walked, so no limit is set by the library.
 
-Thanks.
+No, I mean "how much there will be to write" - ie. how much dirty data the=
+re
+is in the pagecache.
 
---=20
-An old man doll... just what I always wanted! - Clara
+> > +Further, if a read from the cache fails, the library will ask the fil=
+esystem to
+> > +do the read instead, renegotiating and retiling the subrequests as ne=
+cessary.
+> Read from the filesystem itself or direct read?
 
---cxzS9cWmxd0BSJ70
-Content-Type: application/pgp-signature; name=signature.asc
+I'm not sure what you mean.  Here, I'm talking about read subrequests - i.=
+e. a
+subrequest that corresponds to a BIO issued to the cache or a single RPC
+issued to the server.  Things like DIO and pagecache are at a higher level=
+ and
+not directly exposed to the filesystem.
 
------BEGIN PGP SIGNATURE-----
+Maybe I should amend the text to read:
 
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZ/XOqgAKCRD2uYlJVVFO
-oxwDAQCIp2Z67CrtkEI2vxhnwb/3m5aDgDDO7eFv+9qsvmRlTQD9GbhobtuuelYe
-u6w0SgAN6bt+eNQLl6cm97wW0cB66A8=
-=TxHk
------END PGP SIGNATURE-----
+	Further, if one or more subrequests issued to read from the cache
+	fail, the library will issue them to the filesystem instead,
+	renegotiating and retiling the subrequests as necessary.
 
---cxzS9cWmxd0BSJ70--
+> > +Netfslib will pin resources on an inode for future writeback (such as=
+ pinning
+> > +use of an fscache cookie) when an inode is dirtied.  However, this ne=
+eds
+> > +managing.  Firstly, a function is provided to unpin the writeback in
+> inode management?
+> > +``->write_inode()``::
+
+Is "inode management" meant to be a suggested insertion or an alternative =
+for
+the subsection title?
+
+> > -The above fields are the ones the netfs can use.  They are:
+> > +They are:
+> "These fields are, in detail:"
+
+It feels unnecessarily repetitive to say "these fields", but "they are" al=
+so
+sounds stilted.  How about I rearrange things a little.
+
+    The request structure manages the request as a whole, holding some res=
+ources
+    and state on behalf of the filesystem and tracking the collection of r=
+esults::
+
+	    struct netfs_io_request {
+		    enum netfs_io_origin	origin;
+		    struct inode		*inode;
+		    struct address_space	*mapping;
+		    struct netfs_group	*group;
+		    struct netfs_io_stream	io_streams[];
+		    void			*netfs_priv;
+		    void			*netfs_priv2;
+		    unsigned long long	start;
+		    unsigned long long	len;
+		    unsigned long long	i_size;
+		    unsigned int		debug_id;
+		    unsigned long		flags;
+		    ...
+	    };
+
+    Many of the fields are for internal use, but the fields shown here are=
+ of
+    interest to the filesystem:
+
+     * ``origin``
+    ...
+
+And then put the bit about wrapping the struct after the field explanation=
+:
+    =
+
+    If the filesystem wants more private data than is afforded by this str=
+ucture,
+    then it should wrap it and provide its own allocator.
+
+> > +   This is not permitted to return an error.  In the event of failure=
+,
+> > +   ``netfs_prepare_write_failed()`` must be called.
+> "This method is not permitted to return an error. Instead, in the event =
+of
+> failure, ..."
+
+Seems superfluous, but okay.
+
+(Btw, can you put a blank line before your "> <snipped>..." to make it eas=
+ier
+to go through your reply?)
+
+Thanks,
+David
+
