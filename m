@@ -1,153 +1,80 @@
-Received: from mail.3xo.fr (mail.3xo.fr [212.129.21.66])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FEBD20AF94
-	for <netfs@lists.linux.dev>; Thu, 10 Apr 2025 08:43:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.129.21.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACBE113957E;
+	Fri, 11 Apr 2025 13:24:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744274643; cv=none; b=CLSMW1bo1TdeBx3lRrCQlRi1ufZerGSK5aJvVrATgQcc3TonUM6Q8YrFp+YEXBzp8+XvcM4Dt6b5n0TsGPGPiHNmQ019bAtjmJRaaWTbE2uxSA0V1s0nWvM1kVOkG7gbe2R9R1weQqGBqX3b8ez+XcsGdp02KyoxHSZtnIxl6ps=
+	t=1744377853; cv=none; b=OFb5DQCcihUuShq23HAsLL2uzieH3U8X7VgZMMhKbnuXKkcEdBSOZZhAv7aNTW8c/MOz7eRt0xAW8ynY8kHp4XHl9lccPohFkK73wsHjH9UgNdcPa3X1Hnca8cA/XtUWp708uxe8xzMaywvALJYV+oYXD2gstra9+Yz3Mv5kcUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744274643; c=relaxed/simple;
-	bh=Vpk8nplB1wj9E13TXADDvPqFxzaBerQ86uW89U5RWo8=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=tcTWBHmEYMHz/ZIjCoXhQxGFCny0bTg7YP4VdQhvD91U9zCnUlH7XQ3GaWXcMSyGX23WQf1Cg9WP6R7vYGZVDp2FG6XZj4rEuwrum5BMpwVrRXU2s+C5CywOkqhHRuK6FuptC7wAtA0RtyMJ5uY/gUAqZHKMaoocFsT3sa75eTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=3xo.fr; spf=pass smtp.mailfrom=3xo.fr; dkim=pass (2048-bit key) header.d=3xo.fr header.i=@3xo.fr header.b=Wwv6qlzo; arc=none smtp.client-ip=212.129.21.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=3xo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=3xo.fr
+	s=arc-20240116; t=1744377853; c=relaxed/simple;
+	bh=NVhl8TTovP9OlgHH9p6aeeDp9nCAEbN6fMbgpNg+ELo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ox8B8qX5CeYLS/5ChRAZ70eSL8E+gI5oDxrZWKEX3/oBmak2ut5PISutka0KRli3PW67eBV2a63B1UpBvVYcT23RNyScx3K7vD5nGIcgyWcLpJoGVNf+9klg8BowBV6YOz4qgbj0uncoNXUE3oGAKjk8kkI+LmfQ8F6Fak8q8S8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g5sHMEaA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=3xo.fr header.i=@3xo.fr header.b="Wwv6qlzo"
-Received: from localhost (mail.3xo.fr [212.129.21.66])
-	by mail.3xo.fr (Postfix) with ESMTP id 0B10ECB;
-	Thu, 10 Apr 2025 10:43:52 +0200 (CEST)
-X-Virus-Scanned: Debian amavis at nxo2.3xo.fr
-Received: from mail.3xo.fr ([212.129.21.66])
- by localhost (mail.3xo.fr [212.129.21.66]) (amavis, port 10024) with ESMTP
- id ST9nfpKQCXh0; Thu, 10 Apr 2025 10:43:49 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.3xo.fr ABFAE8D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=3xo.fr; s=3xo;
-	t=1744274629; bh=gpkc/Zuf1WpbTIAUiJ2w1zOFyK70naPcUp8Y7Qf8Rks=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Wwv6qlzo797zVLcsFEVhEgyNU5WA0ftIIq7sRw1Vu0WUatXNcyOH308kJ/7gwF1Dv
-	 u8L1xk1W7EaC6HEJyLMFGmdAv9NykvD/HnVgCqd5HhQNbYWgfyHFkXvMBS8I0rgnlG
-	 8tAqiJuQ/XDrKGrMo+77ReTMe4U3LF/jiPbgLO2xVbwPSC0CRHc27LlPxNCqKkmKmY
-	 16QwBhUPQ6S9/Ps1bSKPEnM4+yaFmYTbZRbGIZIkRyARC46eYaLeIwg6K/DsWAAmb7
-	 tnfWqMI24Zegf/+W42lHj0YH/tUCbJPI+zqY/ImlCjWauxAfhZhOusDNo7A3XuldlI
-	 I2RD4XgqQacsQ==
-Received: from mail.3xo.fr (mail.3xo.fr [212.129.21.66])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by mail.3xo.fr (Postfix) with ESMTPSA id ABFAE8D;
-	Thu, 10 Apr 2025 10:43:49 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g5sHMEaA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 248C9C4CEE2;
+	Fri, 11 Apr 2025 13:24:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744377853;
+	bh=NVhl8TTovP9OlgHH9p6aeeDp9nCAEbN6fMbgpNg+ELo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=g5sHMEaAzS8YWt5ClST/ZaFQlWaxqoSS+1lvrgg7DPwi19XkaEnsTiBOUxzhvhhvC
+	 W+7YTNnSXofwontPAU2hlZSmGnuSeSkBhtdycKg4bW4v3145X+3kiDgrsVZTxixnac
+	 ldJ2oRjd00VdKUsDK6WD/bHAslZan4vvK9Hr2Uu4mWQ5PHWcneawWhaBsLZnWVlxko
+	 MnXRWypbi8tRSwSdkB444QPN6A5Yx4gUEO+/zJUujp5KtMZfmIyoXljEEdMLgBm1Xp
+	 nJx62n+ihxWz2UyOL5eEZ0dERc2q6/eI2zRgSwK4t0lRNT3ceHCwMPnZkk2yuEX+vx
+	 ixpuF+fEJsdlQ==
+From: Christian Brauner <brauner@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Alex Markuze <amarkuze@redhat.com>,
+	Timothy Day <timday@amazon.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	netfs@lists.linux.dev,
+	linux-doc@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] netfs: Update main API document
+Date: Fri, 11 Apr 2025 15:24:03 +0200
+Message-ID: <20250411-modewelt-fachkenntnis-2ea37a35a620@brauner>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <1690127.1744208325@warthog.procyon.org.uk>
+References: <1565252.1744124997@warthog.procyon.org.uk> <1690127.1744208325@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Thu, 10 Apr 2025 10:43:49 +0200
-From: Nicolas Baranger <nicolas.baranger@3xo.fr>
-To: Paulo Alcantara <pc@manguebit.com>
-Cc: Christoph Hellwig <hch@infradead.org>, hch@lst.de, David Howells
- <dhowells@redhat.com>, netfs@lists.linux.dev, linux-cifs@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, Steve French
- <smfrench@gmail.com>, Jeff Layton <jlayton@kernel.org>, Christian Brauner
- <brauner@kernel.org>
-Subject: Re: [netfs/cifs - Linux 6.14] loop on file cat + file copy when files
- are on CIFS share
-In-Reply-To: <F89FD4A3-FE54-4DB2-BA08-3BCC8843C60E@manguebit.com>
-References: <10bec2430ed4df68bde10ed95295d093@3xo.fr>
- <35940e6c0ed86fd94468e175061faeac@3xo.fr> <Z-Z95ePf3KQZ2MnB@infradead.org>
- <48685a06c2608b182df3b7a767520c1d@3xo.fr>
- <F89FD4A3-FE54-4DB2-BA08-3BCC8843C60E@manguebit.com>
-Message-ID: <5087f9cb3dc1487423de34725352f57c@3xo.fr>
-X-Sender: nicolas.baranger@3xo.fr
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=869; i=brauner@kernel.org; h=from:subject:message-id; bh=NVhl8TTovP9OlgHH9p6aeeDp9nCAEbN6fMbgpNg+ELo=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaT/FP/isP1hYMuFpIjkZ29TKo9cU33z8OP/ZPeX802d/ PN19m326ShlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjI4xUM/zPfPsnw7DyZc9J3 lt6qoGMTW7/edNl/ilOcTUW36/F8xbeMDGtFMrbsCGBOfv482jPi4+mlUaqNebNEN14y0fsbnGw pwAYA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-Hi Paulo
+On Wed, 09 Apr 2025 15:18:45 +0100, David Howells wrote:
+> Bring the netfs documentation up to date.
+> 
+> 
 
-Thanks for answer and help
+Applied to the vfs-6.16.misc branch of the vfs/vfs.git tree.
+Patches in the vfs-6.16.misc branch should appear in linux-next soon.
 
-> I'll look into it as soon as I recover from my illness.
-Hope you're doing better
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-I had to rollback to linux 6.13.8 to be able to use the SMB share and 
-here is what I constat
-(don't know if it's a normal behavior but if yes, SMB seems to be a very 
-very unefficient protocol)
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-I think the issue can be buffer related:
-On Linux 6.13.8 the copy and cat of the 5 bytes 'toto' file containing 
-only ascii string 'toto' is working fine but here is what I capture with 
-tcpdump during transfert of toto file:
-https://xba.soartist.net/t6.pcap
-131 tcp packets to transfer a 5 byte file...
-Isn't there a problem ?
-Openning the pcap file with wireshark show a lot of lines:
-25	0.005576	10.0.10.100	10.0.10.25	SMB2	1071	Read Response, Error: 
-STATUS_END_OF_FILE
-It seems that those lines appears after the 5 bytes 'toto' file had been 
-transferred, and it continue until the last ACK recieved
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
-I will try to reboot on Linux 6.14.0 mainline to see if I have the same 
-behavior or to see what I get in the packet capture
-(system is in production, I cannot reboot on a failing kernel when I 
-want, it should be organised... sorry)
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs-6.16.misc
 
-Let me know if you reproduced the issue
-
-Kind regards
-Nicolas Baranger
-
-
-
-Le 2025-04-04 15:54, Paulo Alcantara a écrit :
-
-> Hi Nicolas,
-> 
-> I'll look into it as soon as I recover from my illness.  Sorry for the 
-> delay.
-> 
-> On 4 April 2025 08:50:27 UTC, Nicolas Baranger 
-> <nicolas.baranger@3xo.fr> wrote: Hi Christoph
-> 
-> Thanks for answer and help
-> Did someone reproduced the issue (very easy) ?
-> 
-> CIFS SHARE is mounted as /mnt/fbx/FBX-24T
-> echo toto >/mnt/fbx/FBX-24T/toto
-> 
-> ls -l /mnt/fbx/FBX-24T/toto
-> -rw-rw-rw- 1 root root 5 20 mars  09:20 /mnt/fbx/FBX-24T/toto
-> 
-> cat /mnt/fbx/FBX-24T/toto
-> toto
-> toto
-> toto
-> toto
-> toto
-> toto
-> toto
-> ^C
-> 
-> CIFS mount options:
-> grep cifs /proc/mounts
-> //10.0.10.100/FBX24T /mnt/fbx/FBX-24T cifs 
-> rw,nosuid,nodev,noexec,relatime,vers=3.1.1,cache=none,upcall_target=app,username=fbx,domain=HOMELAN,uid=0,noforceuid,gid=0,noforcegid,addr=10.0.10.100,file_mode=0666,dir_mode=0755,iocharset=utf8,soft,nounix,serverino,mapposix,mfsymlinks,reparse=nfs,nativesocket,symlink=mfsymlinks,rsize=65536,wsize=65536,bsize=16777216,retrans=1,echo_interval=60,actimeo=1,closetimeo=1 
-> 0 0
-> 
-> KERNEL: uname -a
-> Linux 14RV-SERVER.14rv.lan 6.14.0-rc2-amd64 #0 SMP PREEMPT_DYNAMIC Wed 
-> Feb 12 18:23:00 CET 2025 x86_64 GNU/Linux
-> 
-> Kind regards
-> Nicolas Baranger
-> 
-> Le 2025-03-28 11:45, Christoph Hellwig a écrit :
-> 
-> Hi Nicolas,
-> 
-> please wait a bit, many file system developers where at a conference
-> this week.
+[1/1] netfs: Update main API document
+      https://git.kernel.org/vfs/vfs/c/f1745496d3fb
