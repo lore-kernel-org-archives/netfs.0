@@ -1,104 +1,145 @@
-Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EAF718D626
-	for <netfs@lists.linux.dev>; Sat, 12 Apr 2025 19:07:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DDA92750E8
+	for <netfs@lists.linux.dev>; Mon, 14 Apr 2025 14:20:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744484873; cv=none; b=Lbfi4IazlL18TgSm9nMV0mFJav3PDQMAbsmTzHwn/nVUwLZwfgL/Bgi/Q2MRFh4/C63mXLPwAC0SqCQHqx7nh6ryEs9jSOHylBNuriZ3uN5TSH+LmijJDjyZErFsnkhlrRzdN+yFewLkrogVrhyY5fx2gld7jkal/9qNpiNiDLA=
+	t=1744640403; cv=none; b=t1134Ks0sXf+w1G9d9IkaAKZD8weIZv04XwYex5oz4UXl1zx97v+bIvCbffOH9CRQZHODdgWz0qfjODBv6NK5gcs6FclntJInW6v8NdDt/snL1XBoEt2u3KxMpqoAwixpwOsgyBAD7DqoRVMnYToDaTitrjMumK4rAnlhIp2heQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744484873; c=relaxed/simple;
-	bh=LM4Y2I66wt8z3nQIZru/3jsXUlk20qXkrMEf05PQKFk=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=Dmk6E7N6jHMZi0uT6LJlz22xDDdVHlQRwenipCWWXtXe/CzjPQU55Y0zzNTBDdYC3k5y7SwEeOX+lwaDUsN2olg2ivxQ76Hzbr7U5bONPta3IbCTltk0RpUCvpAKbYxobS/zOz3byrdWwY1ZV3YvifLmtlxoLCOL+SMw5sNhYdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GkH5eUUZ; arc=none smtp.client-ip=209.85.222.41
+	s=arc-20240116; t=1744640403; c=relaxed/simple;
+	bh=4HluSwNWTBR8eHRrEF+w8ybc5StWcpkyjDrH6+uQSwI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gvsso3YYcPEq/gVeKIu7OWg5V+y7a9Nc6c296Yay0JmwuXMD8arp0/xBLOD64KGpm0AKorV7tUKK3X1qUeQpkpyqy5DQMSZIg3cyxX67mtxus0jCFl2QC4xUvkiSu8N5dVa6gMv0YwTxWMMJjUtITyhVzmviIKe1ZVJ9L1wA7/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IPXtafR/; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GkH5eUUZ"
-Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-871ac66dcb6so173792241.2
-        for <netfs@lists.linux.dev>; Sat, 12 Apr 2025 12:07:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IPXtafR/"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-43cec5cd73bso29352735e9.3
+        for <netfs@lists.linux.dev>; Mon, 14 Apr 2025 07:20:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744484870; x=1745089670; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=2uqS8Y0JeeNJp+EZoySeyRD8ao4RjMPXd9tkoghzbAA=;
-        b=GkH5eUUZArpgrKpxc/XhnWdX5UaNSr9gaCONbfBaGuuSKNGEBgR2DByYzT9nh32k9Z
-         D80k6pp+2xIU0t94TCRaJp4a7cyq4Bg+1pT3eYulCcgClTPVzbQxJ+TnpWuR6A25kHNp
-         HyebwJP8/0l4lLdlFFEgHbW+fwhm9RiBBicM1qcTfKCcJqdwngEE8G9Rf7/PlOeJIRUA
-         Lctx0AU3FtxJLR/oWKdHklTlqV+Rokt8T89j7NvI6y8KQzV7IQs6v8XGhbcXzfIO8mFq
-         w2B2kt/Pha+xLfz/F4pAxdEpgZqEIE9B/Pnh1ysIpvEYLsrxdceWJJkTmldCMwVIXnC8
-         iR/g==
+        d=gmail.com; s=20230601; t=1744640399; x=1745245199; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=glJjEQgGBLhG4Ninmzh++t+Xe4BZvesnJ6GFYu9vl6g=;
+        b=IPXtafR/xnQjxr+sfXSLP5/xrd1x0HYq5h0jHYOu4Fn0T2jv+7HnTdo7nRNA3V9mQc
+         kXAkZN0DaYWSqXCMmqsiF7hoBn9O4OddoU3fobLX03MyKMe0GHm/0TsBCQ0s5lRl7ne/
+         CUqV6NwyLlwakO9CXVpL9WGQm6HQHJIetR2nXmwkfE3ozNDShTH5D7Jy3TY9TC07r73A
+         KsfVPwrxEoDcGSpO47Y0QYllW9weFMFitO9w6kHhOs2m0e8Ff9EMFgv8pXuy8vAQ7a54
+         /E6KW75LW/krZcvIeU4y3XOG7BP3m9ZeTjKkmcJD3qm5kse40uyJQFON7+d2csCxNhdG
+         ydxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744484870; x=1745089670;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2uqS8Y0JeeNJp+EZoySeyRD8ao4RjMPXd9tkoghzbAA=;
-        b=oANkAINeToDz1l1BSdcfQHRt2ZlKsfrwuU+bWsfoOLKeR+ogI+guTt3rSLupDxfRMV
-         OSs+iCIhtOdlmCQP4+WPI7vYuId7DdiB2UlzDUgIUpIVav593HZmb5IIosZeVRmF/k0K
-         rlQyeqgkCuIBCKdVQmYJmxMSTPZ/viQCn544R/hbbhPf+HP87vV/K0xECTd/uPRzRduu
-         JpYAhynMSn6JQP9BtCxQF3rGG8wdFOhxLZsUYtf+H+X+Po3lzEM/6KQjUWwDqXKWkDL0
-         FbLIrH1AAzg8HA7RA8GX900ma/FxGspn/p6ycSmCh86k6YMzbmwVHB3LNufRIBe9Gtv/
-         AsVw==
-X-Gm-Message-State: AOJu0Yy0saKi/8GNa78AyWPBO1+geBgPdYus8AHnwbt5spwwXdcQaFTe
-	YdyVB/g97ebB+CrQIAeqitAzssFDl/Y1VhlQVgjqianV93BoJJFgUu1DBqXDF9IyC2Z1b+VvyCV
-	fLtxmoKSMMwu3tV4lugoCC/J7eQ==
-X-Gm-Gg: ASbGnctSGJHct8GZ41/D6Wu5ozuZWb7e0jqLqcCVJXW7MILWBveaRxwdBk/d+1asRsX
-	Z5kLaPFeFopdQzSxonV7vqQemFRVcPqVmFGrpgwZ55EPqhYIpzFMaSRZLP90Z7o5iOxuBwvbxBS
-	eAmVt1/2sSw7782DjMXjGUjbc=
-X-Google-Smtp-Source: AGHT+IG0k+yhiUDsMVLkTuLC6kSDyeEJ84uZ4WA2XWYY1KbUy6V+3ZAbK1JX89b7gE6FzLIFEx93nYU8og6BgBz4HiI=
-X-Received: by 2002:a05:6102:3e28:b0:4b9:ba6d:86c1 with SMTP id
- ada2fe7eead31-4c9e768918emr1550739137.1.1744484870238; Sat, 12 Apr 2025
- 12:07:50 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1744640399; x=1745245199;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=glJjEQgGBLhG4Ninmzh++t+Xe4BZvesnJ6GFYu9vl6g=;
+        b=FFEQd8dO6nWVIhDTAyo4Egvj9Dsxc8OOOYGSbOHFTvUb/jxbBO3dml7tOaOgM24WgU
+         yvmU7nZGAE5VT2DoYbw6t6rZpN1y5FjwFG47XlRcITjkxkApSHctbgYB/frnDiPMTeSk
+         dwaYyqMKxPSl7yg9dZ9iOkCY7MVbaQ/QEhz3uKCPPoN6oAj9VLmZX6PF+iaQTRAoXadX
+         oDh2ebHZfuL0aNSVmKsB0OjebyEk0RmKiHyEY+JHuVT0UQ28o1urlAdTci8bHeigsW05
+         6qbx+t4h4B/xv5kWFUsBm/YBCUfgurDQ1Q+u2IOy5seZI3rJ0QeaHyfb3pub6bP2it8e
+         PS/A==
+X-Forwarded-Encrypted: i=1; AJvYcCW/JqPsPeGoywAj0ywi//qdvo/mw/dzizGttlpx9C9m6iVIut3qtVn7psfGwUlnrUegyJtQ9Q==@lists.linux.dev
+X-Gm-Message-State: AOJu0YwRLoPxzPMk4wERWyTZHTlzDNWB09ZKcHeXNIbfgHb/RmzIkd2s
+	jw1ptnqG8tqNiSPdtF3ec3KCD/Xu/ctomxJHbx9kdtPsBuQjSKmq
+X-Gm-Gg: ASbGncth+oJlpwv+IKDvSi8HWLoPAwqoRro3UivFCV1iFHuxI93gW0Lkv1bNccvDqTE
+	qdxWncb+R+aLc/Xk0GSKY6B0cSP2r6yDVQbSHNOhG/QQ2gG352BUkSSoOGhcAoADgXgVduvID7h
+	JbfnS08wZHe0KTcyHhuvxPEo/B8e5h9cNlRHZ9DomxNcajwg8gOK6hn2JBaJT8mSbfaOB0aVeQb
+	+XSX0AFFlTGIbJG6yPYvMO5MUwHUT3AStYeh6REuBYD3Z+9uKbVNtBbmaVpfvaUgqDqUIXlKRY2
+	fHtUcL1Ea2DlAP3kS+15GYmd2n/QwsFimCbWlX9gUfuV7LI=
+X-Google-Smtp-Source: AGHT+IEzS7RuQM+JXTxQhuUASOr5aQ5FuO0AY24LlH9uKFE9DugCkzr8JbnEOiJvoEsrDVG0ljh0UA==
+X-Received: by 2002:a05:600c:6a16:b0:43d:79:ae1b with SMTP id 5b1f17b1804b1-43f415d29a7mr72789265e9.14.1744640398599;
+        Mon, 14 Apr 2025 07:19:58 -0700 (PDT)
+Received: from noctura.suse.cz ([103.210.134.105])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-43f23572bb2sm178143515e9.29.2025.04.14.07.19.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Apr 2025 07:19:58 -0700 (PDT)
+From: Brahmajit Das <brahmajit.xyz@gmail.com>
+X-Google-Original-From: Brahmajit Das <listout@listout.xyz>
+To: 
+Cc: jlayton@kernel.org,
+	David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/1] netfs: fix building with GCC 15
+Date: Mon, 14 Apr 2025 19:49:43 +0530
+Message-ID: <20250414141945.11044-1-listout@listout.xyz>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Chenyuan Yang <chenyuan0y@gmail.com>
-Date: Sat, 12 Apr 2025 14:07:39 -0500
-X-Gm-Features: ATxdqUEU84qA93WFjYZD-conKUCSsApMtwG5XxM0OfTP-Hfdm9RGr15WA6pQlZ0
-Message-ID: <CALGdzuomL+AACikTfBYBU4nCMXGU-eRvSYwdY-b_6n0mUekBOg@mail.gmail.com>
-Subject: Question Regarding Optional ->prepare_read Callback in NETFS
-To: dhowells@redhat.com, pc@manguebit.com
-Cc: netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Dear NETFS Developers,
+Since the Linux kernel initializes many non-C-string char arrays with
+literals. While it would be possible to convert initializers from:
+   { "BOOP", ... }
+to:
+   { { 'B', 'O', 'O', 'P' }, ... }
+that is annoying.
+Making -Wunterminated-string-initialization stay silent about char
+arrays marked with nonstring would be much better.
 
-I am writing to clarify whether the ->prepare_read callback can be
-NULL for a backing filesystem that does not supply it. In particular,
-should we assume that the pointer may be NULL and thus require an
-explicit check before invoking it?
+Without the __attribute__((nonstring)) we would get the following build
+error:
+fs/netfs/fscache_cache.c:375:67: error: initializer-string for array of ‘char’ is too long [-Werror=unterminated-string-initialization]
+  375 | static const char fscache_cache_states[NR__FSCACHE_CACHE_STATE] = "-PAEW";
+      |                                                                   ^~~~~~~
+...
+fs/netfs/fscache_cookie.c:32:69: error: initializer-string for array of ‘char’ is too long [-Werror=unterminated-string-initialization]
+   32 | static const char fscache_cookie_states[FSCACHE_COOKIE_STATE__NR] = "-LCAIFUWRD";
+      |                                                                     ^~~~~~~~~~~~
+cc1: all warnings being treated as errors
 
-For context, commit 904abff4b1b9 ("netfs: Fix read-retry for fs with
-no ->prepare_read()") introduced a similar check in the read-retry
-path. I am proposing that we apply the same consideration to the code
-in netfs_single_cache_prepare_read. Here is the relevant patch snippet
-for reference:
+Upstream GCC has added this commit
+622968990beee7499e951590258363545b4a3b57[0][1] which silences warning
+about truncating NUL char when initializing nonstring arrays.
 
- fs/netfs/read_single.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+[0]: https://gcc.gnu.org/cgit/gcc/commit/?id=622968990beee7499e951590258363545b4a3b57
+[1]: https://gcc.gnu.org/cgit/gcc/commit/?id=afb46540d3921e96c4cd7ba8fa2c8b0901759455
 
-diff --git a/fs/netfs/read_single.c b/fs/netfs/read_single.c
-index fea0ecdecc53..68a5ff1c3d06 100644
---- a/fs/netfs/read_single.c
-+++ b/fs/netfs/read_single.c
-@@ -63,7 +63,7 @@ static void netfs_single_cache_prepare_read(struct
-netfs_io_request *rreq,
- {
-  struct netfs_cache_resources *cres = &rreq->cache_resources;
+Thanks to Jakub Jelinek <jakub@gcc.gnu.org> for the gcc patch.
 
-- if (!cres->ops) {
-+ if (!cres->ops || !cres->ops->prepare_read) {
-  subreq->source = NETFS_DOWNLOAD_FROM_SERVER;
-  return;
-  }
+Signed-off-by: Brahmajit Das <listout@listout.xyz>
+---
+ fs/netfs/fscache_cache.c  | 3 ++-
+ fs/netfs/fscache_cookie.c | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-Could you please confirm if this is the intended design, or if any
-adjustments are needed?
+diff --git a/fs/netfs/fscache_cache.c b/fs/netfs/fscache_cache.c
+index 9397ed39b0b4..ccfe52056ed3 100644
+--- a/fs/netfs/fscache_cache.c
++++ b/fs/netfs/fscache_cache.c
+@@ -372,7 +372,8 @@ void fscache_withdraw_cache(struct fscache_cache *cache)
+ EXPORT_SYMBOL(fscache_withdraw_cache);
+ 
+ #ifdef CONFIG_PROC_FS
+-static const char fscache_cache_states[NR__FSCACHE_CACHE_STATE] = "-PAEW";
++static const char fscache_cache_states[NR__FSCACHE_CACHE_STATE]
++	__attribute__((nonstring)) = "-PAEW";
+ 
+ /*
+  * Generate a list of caches in /proc/fs/fscache/caches
+diff --git a/fs/netfs/fscache_cookie.c b/fs/netfs/fscache_cookie.c
+index d4d4b3a8b106..c455d1b0f440 100644
+--- a/fs/netfs/fscache_cookie.c
++++ b/fs/netfs/fscache_cookie.c
+@@ -29,7 +29,8 @@ static LIST_HEAD(fscache_cookie_lru);
+ static DEFINE_SPINLOCK(fscache_cookie_lru_lock);
+ DEFINE_TIMER(fscache_cookie_lru_timer, fscache_cookie_lru_timed_out);
+ static DECLARE_WORK(fscache_cookie_lru_work, fscache_cookie_lru_worker);
+-static const char fscache_cookie_states[FSCACHE_COOKIE_STATE__NR] = "-LCAIFUWRD";
++static const char fscache_cookie_states[FSCACHE_COOKIE_STATE__NR]
++	__attribute__((nonstring)) = "-LCAIFUWRD";
+ static unsigned int fscache_lru_cookie_timeout = 10 * HZ;
+ 
+ void fscache_print_cookie(struct fscache_cookie *cookie, char prefix)
+-- 
+2.49.0
 
-Thank you for your time and assistance.
-
-Best regards,
-Chenyuan
