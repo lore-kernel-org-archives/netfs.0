@@ -1,163 +1,148 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F06428466A
-	for <netfs@lists.linux.dev>; Mon, 14 Apr 2025 14:45:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0D32DFA5C
+	for <netfs@lists.linux.dev>; Tue, 15 Apr 2025 03:25:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744641922; cv=none; b=OSQUFzBWb5grDcrQNSoAAxQ2mbEJqvb0ci7yxv7aEAOfgmsv5P8YIfzdxHFqXqjyvHZwgTE42b/DYD3UkhQOGVuyiPsjoHpPj7PUvFUFN+5Q6ZF4VCiSL9T7SxoLc71sovTwa91TBci7titnvjNLgLM/EhEBMwlXKXSRLLt3vGo=
+	t=1744687528; cv=none; b=GZaACyOHjhQZ6POqdW5q326aaECK+9Be21EdS2hZ9nYyGO8aw4hB1dUPNJfFvA5HB1Y6QcOXYGZ9lNBGngsR3NE484SWKk9u5yDjH+pREqTCtf8sDdkV/QVWHZBZZP444QiEatSEhvHtMM7pb5UR+J6JgBF7Zi5MAS6IeUtk768=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744641922; c=relaxed/simple;
-	bh=2DpxWFB8GfjCpGlzdPOjDPzw7KOI6edLbKfo8ihKDf0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r7PqG4hh4RZp3FGXKvrGlTz5g0p2gfDbEuzGdrlxOO5rk9ZESm1Kozf1GQbD2XHWLNDCaJes+rAwgt2JkHsgBlcx5Vk6yxoWJGDkRWOyB/GiydZpbjxw9geUgFOFm5hoNIyQs0jw+R/DD3swzWR9wXeCrZ/crZlUaYnzLPUBxRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=itiYhwYX; arc=none smtp.client-ip=209.85.214.170
+	s=arc-20240116; t=1744687528; c=relaxed/simple;
+	bh=AelriznfL9/VcTufYIriBOfOD0UT2WLT7Bv6chbaUI4=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=MSdZc+fefuuJt9i4edTNJ49g4Fl5K26ejcWcdlXou6MLXqoaj35BxrwkdsjatO6dzQU1470DcDJ6tisw2lhsr9i53wz4HCHe6jQzkQIQG+iRpgpqlr4wk1zgzvsJoqyrpZu1OBHn84R/eLtDefJHF93Winm1G66M5WmUt/4ZKjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Id4o1tu5; arc=none smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="itiYhwYX"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-223fb0f619dso46906775ad.1
-        for <netfs@lists.linux.dev>; Mon, 14 Apr 2025 07:45:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Id4o1tu5"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3081fe5987eso4194815a91.3
+        for <netfs@lists.linux.dev>; Mon, 14 Apr 2025 20:25:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744641920; x=1745246720; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+orTHrsoG/ME8bhkDWeas24eb9SABWKneSlnhlLedmM=;
-        b=itiYhwYXTgR424F0tRXJP6ANxrp4ukAxCBgXqQCZ3Gk6GXCU8KeIJGpMaqZWLL6fxM
-         y6OWwKKFlVUVjlP7c1gMOfKHb/Ep+hjpZCMms4UKjR/NvFHhY4N1Qg2NzHz/BO5EX/+M
-         EvnyepCz43JKE2fMTP+qFe9Dy8UJCDcfGRu9gjZc/w/pPWptCLHt6f57llYmLSckrpP6
-         1l7rGAGrj0EYgscHeF6NEd9Hi1lUk+04x3++5ngji75DnGr90EaPKiwySugUD/vKcWWI
-         nc2qCi5ILYSXhk+OTBMJFR3/B1DJu7/7ln7+b4kmUHQilu/0icPOB+GOOA2YT61jHbrD
-         fiJw==
+        d=gmail.com; s=20230601; t=1744687526; x=1745292326; darn=lists.linux.dev;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=AelriznfL9/VcTufYIriBOfOD0UT2WLT7Bv6chbaUI4=;
+        b=Id4o1tu5ddiG4pR8vaLfoPEzjiapH8ZY7/hqm5AOJqVXXxWSNbOOYS9FRlk98Txp3D
+         7GR6Ej9+IVz0PyquJ2ABpX/tgh2+hXT4R3XWTm6KysDf69W4U3YJDUKWfo69tPHZpFuD
+         WztRt/v0Rs9zfn1gwc6HFcrmTMql9Dx9W2bmcVvTwPdKdz1m3I6WTUsrtGONsY/9x2tr
+         +G2AoVFPD+GCnX3IcuQqKdrgLnR1XD7JEi8vgZmPM76Y15yaqaZ4ufz/KitSACoOV6PQ
+         R/+BOD2DYt06zuTd9pAEbczVW+1xpfjliCttnK6B+PydBE97HfPEoNMJ294ScKQbVILF
+         cQQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744641920; x=1745246720;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+orTHrsoG/ME8bhkDWeas24eb9SABWKneSlnhlLedmM=;
-        b=jLZvLfq/MYwJFuMHk0nk6othCUm+kpASZMprOZ5UlsmY3suhmnG6vbB1SMuQ7bCzbj
-         RZ3N+aI5hXeqmSd0bsp+e0WbJEQ7SAEX963NmZ7S5QhEBbqZfz2k+WqEz+Q+ULI0Pp6X
-         k5tdQyQvTnYt3e3tG29ckYtOC51ZNjRKBc3aO/Wcw6/IMUAbMWCasZMt5AmNlnZwyLRh
-         bZ3RP/o1kj99timMlO+gw8nl2+FLZj1OgKYWCcj3WTwSxGkjRRteC61HoRQWqgOmjlkb
-         iMmi6ptw+73rs3l0hJQzPILMXPJyp88Xpyo9OZPj0FUuuQXudjktC6G5qZtHv2INZyvK
-         f1OA==
-X-Forwarded-Encrypted: i=1; AJvYcCVJQrwrzcnId5TKZjV5vUDxRs098dL5HesFuRsFNHHcwUBp/ylPshwuXcXExZFEsNUWNE3xOQ==@lists.linux.dev
-X-Gm-Message-State: AOJu0YzklXRhucKoBlQIpX5WaowtyKu9sIIePXTtsXA1NsXDkmNQtp4T
-	Yq6cDJvYlwmmmLRjLYekYRqmnaNYPgsVa9wNEvccGx1WlDBhCtXg
-X-Gm-Gg: ASbGnctEy9VDAwxAGjfKPXbKVY8vSmoPurzxsL7M2P1WgF6lcf59UC+13bMQ/2i0p8i
-	0RvQC3mtuMNe4NDY4BrsDGQufaaDevzkakZMaUvi6k5t1AB9gatt6JJxg0M3ffpi/0Hy+H4cqok
-	/cfnv0FHybAB0Ttc+c+wGVOHc4FjAlheQ1yRaJdHYwVgBLKZeMdjFJMahgQTyLSlFcaaqvdX7v4
-	S5xnT5ckSphV1cdGZ/tQ/oj7vaai5PBz2VzX39wQTU4b0fdXxXvX4OXroezDwxg6E+0hKzzDlaL
-	LXBOSDJNpOHHx5tPdRVQ3IQ5XalI1RSBKG7sY2gVJgfYRQ4=
-X-Google-Smtp-Source: AGHT+IEMgRpQYfoBA1S0n/al1fUAyAoCcCwKAz83jLvqKd8Jlsw51W5KzaB+ji8UoJnK9Zaf7WJETQ==
-X-Received: by 2002:a17:902:cec9:b0:227:e980:9190 with SMTP id d9443c01a7336-22bea4fcad1mr187715005ad.44.1744641916935;
-        Mon, 14 Apr 2025 07:45:16 -0700 (PDT)
-Received: from noctura.suse.cz ([103.210.134.105])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-22ac7b8b2ccsm99959365ad.70.2025.04.14.07.45.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Apr 2025 07:45:16 -0700 (PDT)
-From: Brahmajit Das <brahmajit.xyz@gmail.com>
-X-Google-Original-From: Brahmajit Das <listout@listout.xyz>
-To: 
-Cc: jlayton@kernel.org,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.com>,
-	netfs@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH v2 1/1] netfs: fix building with GCC 15
-Date: Mon, 14 Apr 2025 20:14:57 +0530
-Message-ID: <20250414144500.20934-1-listout@listout.xyz>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250414141945.11044-1-listout@listout.xyz>
-References: <20250414141945.11044-1-listout@listout.xyz>
+        d=1e100.net; s=20230601; t=1744687526; x=1745292326;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AelriznfL9/VcTufYIriBOfOD0UT2WLT7Bv6chbaUI4=;
+        b=nR/ulMjakDq9VLkNNJlR746DkNp2ufbhbHrYKRNWpjrgJt++6ow6dTzJC2Pwjfwwni
+         fqNi58LLtlBRRYn6RCbHMDemZA/x2jjRMGBJMo05HdQjlEWWBVpGtk0IBWuiU1eqFPON
+         ZaQY38WQO+5o7QQLnf4kgfIfso0UdwLGt6Mapl9FOvHcNDyFj+mNhrMbh5jA90W42P1K
+         /ykNesbMxHD91iVTIJlNJw6HLvdjle6XYL6JfcFA87IWIpAR045zu4Tenrai1hPsFwwL
+         kw6sMOEmH8OoUxNvUN+jFXo7Ie3X/2YChI+WeGM01h+lli0QZLcAa5NHV8nV+/2GFFMn
+         GIQg==
+X-Gm-Message-State: AOJu0YyqxD5s9+Fg59Wv3ZcMgOrpYbZ+bLJx39lI742+VsnS8A0kb0oc
+	tRa/rjJRiyWZp1MtXo1NP7/rRhmCu7QUFYZRUoL+VQJP0+8RI6hjHwz91R/kAjf/MuRB7QeuepJ
+	wTQR54j2q3zetgoPDykN+S1RD30+3/1rHWybojQ==
+X-Gm-Gg: ASbGncu7VfU3R/0Nu2kIGCHSYo/kJSC2I080V7fj+6lpcZQeJGxbL09aXO4Y7C2FPmH
+	sZa+pvGtfydrwTKlmRAyKSUX7Z90Jb942+QFF+dGG6q1rlvpSdOwI5Hiy9+q4jILE7g/AF/tl2o
+	YJ0MuIj+xC5fqpRqmOKaxuNkM=
+X-Google-Smtp-Source: AGHT+IFo+BLfSNpC1vkxUzQ2yLYMWLzOsXqW263jSgJCd3OAIZVjmjTJU001TQASNkxwo9qwUN9m+7QFJ40TWUuM3wQ=
+X-Received: by 2002:a17:90b:38d0:b0:301:1d9f:4ba2 with SMTP id
+ 98e67ed59e1d1-308236723b8mr19423978a91.28.1744687525862; Mon, 14 Apr 2025
+ 20:25:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From: Abagail ren <renzezhongucas@gmail.com>
+Date: Tue, 15 Apr 2025 11:25:13 +0800
+X-Gm-Features: ATxdqUELtm6wSrZR53h52xJZ82hNP4v9iVEe7r3fsdmI8RIk6vfzdn_TIQZrcpQ
+Message-ID: <CALkECRiNhHNT2+Mnykfvs+v1W6wr5RByjr=axhntsFHPryXF0A@mail.gmail.com>
+Subject: [BUG] NULL pointer dereference in iov_iter_revert() via netfs_write_collection_worker
+To: netfs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Since the Linux kernel initializes many non-C-string char arrays with
-literals. While it would be possible to convert initializers from:
-   { "BOOP", ... }
-to:
-   { { 'B', 'O', 'O', 'P' }, ... }
-that is annoying.
-Making -Wunterminated-string-initialization stay silent about char
-arrays marked with nonstring would be much better.
+Hi maintainers,
 
-Without the __attribute__((nonstring)) we would get the following build
-error:
-fs/netfs/fscache_cache.c:375:67: error: initializer-string for array of ‘char’ is too long [-Werror=unterminated-string-initialization]
-  375 | static const char fscache_cache_states[NR__FSCACHE_CACHE_STATE] = "-PAEW";
-      |                                                                   ^~~~~~~
-...
-fs/netfs/fscache_cookie.c:32:69: error: initializer-string for array of ‘char’ is too long [-Werror=unterminated-string-initialization]
-   32 | static const char fscache_cookie_states[FSCACHE_COOKIE_STATE__NR] = "-LCAIFUWRD";
-      |                                                                     ^~~~~~~~~~~~
-cc1: all warnings being treated as errors
+In case the previous message was rejected due to attachments and html link, I am
+resending this report in plain text format.
 
-Upstream GCC has added this commit
-622968990beee7499e951590258363545b4a3b57[0][1] which silences warning
-about truncating NUL char when initializing nonstring arrays.
+During fuzzing with the Linux kernel,
+we encountered a kernel crash (KASAN null-ptr-deref)
 
-[0]: https://gcc.gnu.org/cgit/gcc/commit/?id=622968990beee7499e951590258363545b4a3b57
-[1]: https://gcc.gnu.org/cgit/gcc/commit/?id=afb46540d3921e96c4cd7ba8fa2c8b0901759455
+in `iov_iter_revert()` triggered in the `netfs_write_collection_worker` context.
 
-Thanks to Jakub Jelinek <jakub@gcc.gnu.org> for the gcc patch.
+The bug was reproduced on `v6.12-rc6`.
 
-Signed-off-by: Brahmajit Das <listout@listout.xyz>
----
- fs/cachefiles/key.c       | 2 +-
- fs/netfs/fscache_cache.c  | 3 ++-
- fs/netfs/fscache_cookie.c | 3 ++-
- 3 files changed, 5 insertions(+), 3 deletions(-)
+## Crash Details:
 
-diff --git a/fs/cachefiles/key.c b/fs/cachefiles/key.c
-index bf935e25bdbe..1d5685edd1c9 100644
---- a/fs/cachefiles/key.c
-+++ b/fs/cachefiles/key.c
-@@ -8,7 +8,7 @@
- #include <linux/slab.h>
- #include "internal.h"
- 
--static const char cachefiles_charmap[64] =
-+static const char cachefiles_charmap[64] __attribute((nonstring)) =
- 	"0123456789"			/* 0 - 9 */
- 	"abcdefghijklmnopqrstuvwxyz"	/* 10 - 35 */
- 	"ABCDEFGHIJKLMNOPQRSTUVWXYZ"	/* 36 - 61 */
-diff --git a/fs/netfs/fscache_cache.c b/fs/netfs/fscache_cache.c
-index 9397ed39b0b4..ccfe52056ed3 100644
---- a/fs/netfs/fscache_cache.c
-+++ b/fs/netfs/fscache_cache.c
-@@ -372,7 +372,8 @@ void fscache_withdraw_cache(struct fscache_cache *cache)
- EXPORT_SYMBOL(fscache_withdraw_cache);
- 
- #ifdef CONFIG_PROC_FS
--static const char fscache_cache_states[NR__FSCACHE_CACHE_STATE] = "-PAEW";
-+static const char fscache_cache_states[NR__FSCACHE_CACHE_STATE]
-+	__attribute__((nonstring)) = "-PAEW";
- 
- /*
-  * Generate a list of caches in /proc/fs/fscache/caches
-diff --git a/fs/netfs/fscache_cookie.c b/fs/netfs/fscache_cookie.c
-index d4d4b3a8b106..c455d1b0f440 100644
---- a/fs/netfs/fscache_cookie.c
-+++ b/fs/netfs/fscache_cookie.c
-@@ -29,7 +29,8 @@ static LIST_HEAD(fscache_cookie_lru);
- static DEFINE_SPINLOCK(fscache_cookie_lru_lock);
- DEFINE_TIMER(fscache_cookie_lru_timer, fscache_cookie_lru_timed_out);
- static DECLARE_WORK(fscache_cookie_lru_work, fscache_cookie_lru_worker);
--static const char fscache_cookie_states[FSCACHE_COOKIE_STATE__NR] = "-LCAIFUWRD";
-+static const char fscache_cookie_states[FSCACHE_COOKIE_STATE__NR]
-+	__attribute__((nonstring)) = "-LCAIFUWRD";
- static unsigned int fscache_lru_cookie_timeout = 10 * HZ;
- 
- void fscache_print_cookie(struct fscache_cookie *cookie, char prefix)
--- 
-2.49.0
+Oops: general protection fault, probably for non-canonical address
+0xdffffc0000000023: 0000 [#1] PREEMPT SMP KASAN NOPTI KASAN:
+null-ptr-deref in range [0x0000000000000118-0x000000000000011f]
 
+CPU: 1 PID: 3000 Comm: kworker/u10:3 Not tainted 6.12.0-rc6 #2
+Workqueue: events_unbound netfs_write_collection_worker
+
+RIP: 0010:folioq_folio_order include/linux/folio_queue.h:291 [inline]
+RIP: 0010:folioq_folio_size include/linux/folio_queue.h:305 [inline]
+RIP: 0010:iov_iter_folioq_revert lib/iov_iter.c:599 [inline] RIP:
+0010:iov_iter_revert lib/iov_iter.c:644 [inline] RIP:
+0010:iov_iter_revert+0x2ec/0x5a0 lib/iov_iter.c:611
+
+Call Trace: netfs_retry_write_stream fs/netfs/write_collect.c:181 [inline]
+
+netfs_retry_writes fs/netfs/write_collect.c:361 [inline]
+
+netfs_collect_write_results fs/netfs/write_collect.c:529 [inline]
+netfs_write_collection_worker+0x3c94/0x46f0
+fs/netfs/write_collect.c:551 process_one_work+0x99c/0x1b80
+kernel/workqueue.c:3229
+
+worker_thread+0x677/0xe90 kernel/workqueue.c:3391
+
+kthread+0x2c7/0x3b0 kernel/kthread.c:389
+
+## Summary
+
+The crash happens during a call to `iov_iter_revert()`
+
+inside a `netfs_write_collection_worker` task.
+
+The `iov_iter` appears to contain an invalid pointer,
+
+leading to a general protection fault when dereferencing memory in
+`folioq_folio_size()`.
+
+Specifically, it crashes at:
+
+movzbl (%rax,%rcx,1),%eax <-- trapping instruction
+
+with:
+
+RAX: 0000000000000023 RCX: dffffc0000000000 RDI: 000000000000011e
+
+This implies an invalid `folio` object is being accessed.
+
+A check on the validity of the folio (e.g., via `WARN_ON()` or `IS_ERR()`)
+
+before use in `iov_iter_folioq_revert()` might prevent the crash.
+
+## Environment
+
+- Kernel: `6.12.0-rc6`
+- Platform: QEMU
+- Trigger: workload involving `netfs` writeback
+
+I checked the syzkally dashboard. I think this is highly related to :
+
+-syzkaller.appspot.com/text?tag=CrashReport&x=1300b618580000
+
+-syzkaller.appspot.com/bug?id=78d77d1af0176dc57be694578c1ac93e92587191
+
+I hope this can give you more information about the opening bug.
+
+Let me know if you need additional repro information or traces.
+
+Thanks,
+Zezhong Ren
