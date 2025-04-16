@@ -1,85 +1,104 @@
-Received: from mx.manguebit.com (mx.manguebit.com [167.235.159.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DDEB2222AC
-	for <netfs@lists.linux.dev>; Tue, 15 Apr 2025 18:28:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.235.159.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72791C5D72;
+	Wed, 16 Apr 2025 22:16:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744741702; cv=none; b=i1FgEzGHP+nKqmfxFqrFz98bFzWZR3PNye6tCzQD2UWv43G7gNNPXmCvfwoXe0ny8nojbAc37rs8Kge8akEy/v4I+114DuyFEOidVCZRT04Tpz1fj2Z+kAa9inZdeBzr4jsQToVZgGr52AaYf89CG+5krmTbllrzTHS3wNllt74=
+	t=1744841819; cv=none; b=iAuh5KCuvj9jsS+D7KwsUf4T0DQqkN23PoboYde3RTbAVcOZr6843WTId7YAmRzr50+H+ofoQP0Yotnk9gJul2LxdC+oOIjeiy98awGbDwDhqVqkEGLtTHCvP6BHiZTtyOAPwXGXYRf0IdElvMvPE43L8gaVhcg9mTzXGyLK/xQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744741702; c=relaxed/simple;
-	bh=KBUcfOPfTWKlv1r0T05CNzWz2hKo8/DBtVqmvyTw5cU=;
-	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Date:
-	 MIME-Version:Content-Type; b=UIQbIOWHrhQLIXZYOFyuEaJwELqMHGj8SvNgOSNYclU6T3E65gnkJQTsC5F7h/aobxKbdYCS1npzfpoT1A6108nmUeFzfRcHWc3XpUEl7r86ZTrA6ZWItGjXHb91e0MDnXhgBewMVI4VFdyduDRGQ6ZoklMpNoaNf/SHolvN8Ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.com; spf=pass smtp.mailfrom=manguebit.com; dkim=pass (2048-bit key) header.d=manguebit.com header.i=@manguebit.com header.b=Vmm8yYma; arc=none smtp.client-ip=167.235.159.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.com
+	s=arc-20240116; t=1744841819; c=relaxed/simple;
+	bh=97bRWU25PgosLRHpJQ6h3zrlFJwdICKzb3byRPrU8mE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ru23lif6CRwVsat1luBhB4NZh/vJNzKcIXlEv2KIgCRQe9Y3Z8yTvOlSgq13rrc2wNfOI1nTB/K0PlystQOu1hh5EPQV3vFVFGiHQdN8PiWU/ySDow5qZrFPIknteaihbTFCU6WxZ/XzMS758FhSLvmxai/rs/djpvWz8ryNPRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i1ASBuan; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manguebit.com header.i=@manguebit.com header.b="Vmm8yYma"
-Message-ID: <f12973bcf533a40ca7d7ed78846a0a10@manguebit.com>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
-	s=dkim; t=1744741698;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SQXRd0G+3P1w/z1AT2Nr8p00ZghYti5DoxzAHJ9JJCI=;
-	b=Vmm8yYmaY47rhsPNq32DNzSBuzYfYEzbi8LXZAXCGUdlLurpoOMqKbvxraJCCmWgi2SAYj
-	Y1Io5fZv8eoiIBKDIBBSMt3jm+zVVqHMYz+94GwCeffAcvQoks4U6ZCGnf5Isckgs/Goyp
-	REO7ni9vd5bdUsVPXMWyCizcSZFVcSulPf7MgaKcfXOzsjIGunKEMKOy+gJwlIyoMVj2io
-	9Nc4eAGnijmz6jrp/gXs7SGHWfsuFrE9PM1cNcEMKWLcYS0pfBkvJm514I1gdrwSr8nlih
-	LgfjNdJBEf2uzEYpaTtTPb4CqEEiL7gh/dNVmacqqinoLptfteLJQYxDK1B7hQ==
-From: Paulo Alcantara <pc@manguebit.com>
-To: Nicolas Baranger <nicolas.baranger@3xo.fr>
-Cc: Christoph Hellwig <hch@infradead.org>, hch@lst.de, David Howells
- <dhowells@redhat.com>, netfs@lists.linux.dev, linux-cifs@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, Steve French
- <smfrench@gmail.com>, Jeff Layton <jlayton@kernel.org>, Christian Brauner
- <brauner@kernel.org>
-Subject: Re: [netfs/cifs - Linux 6.14] loop on file cat + file copy when
- files are on CIFS share
-In-Reply-To: <5087f9cb3dc1487423de34725352f57c@3xo.fr>
-References: <10bec2430ed4df68bde10ed95295d093@3xo.fr>
- <35940e6c0ed86fd94468e175061faeac@3xo.fr> <Z-Z95ePf3KQZ2MnB@infradead.org>
- <48685a06c2608b182df3b7a767520c1d@3xo.fr>
- <F89FD4A3-FE54-4DB2-BA08-3BCC8843C60E@manguebit.com>
- <5087f9cb3dc1487423de34725352f57c@3xo.fr>
-Date: Tue, 15 Apr 2025 15:28:14 -0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i1ASBuan"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DA76C4CEE2;
+	Wed, 16 Apr 2025 22:16:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744841819;
+	bh=97bRWU25PgosLRHpJQ6h3zrlFJwdICKzb3byRPrU8mE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=i1ASBuanlv2WTlRNG19Vpk1JVfFJqxb7MN6czXwNZMTo3g8BA11pln/dH7njEEb1W
+	 YHd2sTme/2hHYndVgPPONRFTCw+zUN7PkvMN8aIeU13EWsEohEERtrJAKsbUM8IMeN
+	 aAqASj77aSrNyGLedLa3LLAcPE0TO4ZdmpyBx++6UFdyxSqKO7sZGoE2VIKIPDJgcO
+	 ReoFfNoaRfgHI3XEr/TGqiJLY4sLpMQkqdZkMHW+AzMZIMpkJvp5wfCM9VnZ10N34a
+	 k3SCrF2fRlwW3ehvEMMJMA5nWkotcfNAr6WPr2LR+0JwDRXcgFVeKLkmeUZoGDr3wU
+	 jgF4j6hZf12qA==
+From: Kees Cook <kees@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Kees Cook <kees@kernel.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Christian Brauner <brauner@kernel.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH] netfs: Mark __nonstring lookup tables
+Date: Wed, 16 Apr 2025 15:16:55 -0700
+Message-Id: <20250416221654.work.028-kees@kernel.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2697; i=kees@kernel.org; h=from:subject:message-id; bh=97bRWU25PgosLRHpJQ6h3zrlFJwdICKzb3byRPrU8mE=; b=owGbwMvMwCVmps19z/KJym7G02pJDBkMOuGbOa9fEP7j8tf6ZevfUy/0bvjwtv4pDp7KfzCxK unVgyWNHaUsDGJcDLJiiixBdu5xLh5v28Pd5yrCzGFlAhnCwMUpABOJZWRkOBtgyft8k1ZQ1r29 RwwMOQUOLGqVjf9fPXt/2HZxpuAdHQz/DJmzTet+v5v1qJ6/59efv+8L2ypf/57gzLeNIea4Xu4 KRgA=
+X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
+Content-Transfer-Encoding: 8bit
 
-Hi Nicolas,
+GCC 15's new -Wunterminated-string-initialization notices that the
+character lookup tables "fscache_cache_states" and "fscache_cookie_states"
+(which are not used as a C-String) need to be marked as "nonstring":
 
-Sorry for the delay as I've got busy with some downstream work.
+fs/netfs/fscache_cache.c:375:67: warning: initializer-string for array of 'char' truncates NUL terminator but destination lacks 'nonstring' attribute (6 chars into 5 available) [-Wunterminated-string-initialization]
+  375 | static const char fscache_cache_states[NR__FSCACHE_CACHE_STATE] = "-PAEW";
+      |                                                                   ^~~~~~~
+fs/netfs/fscache_cookie.c:32:69: warning: initializer-string for array of 'char' truncates NUL terminator but destination lacks 'nonstring' attribute (11 chars into 10 available) [-Wunterminated-string-initialization]
+   32 | static const char fscache_cookie_states[FSCACHE_COOKIE_STATE__NR] = "-LCAIFUWRD";
+      |                                                                     ^~~~~~~~~~~~
 
-Nicolas Baranger <nicolas.baranger@3xo.fr> writes:
+Annotate the arrays.
 
->> I'll look into it as soon as I recover from my illness.
-> Hope you're doing better
+Signed-off-by: Kees Cook <kees@kernel.org>
+---
+Cc: David Howells <dhowells@redhat.com>
+Cc: Paulo Alcantara <pc@manguebit.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: netfs@lists.linux.dev
+Cc: linux-fsdevel@vger.kernel.org
+---
+ fs/netfs/fscache_cache.c  | 2 +-
+ fs/netfs/fscache_cookie.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-I'm fully recovered now, thanks :-)
+diff --git a/fs/netfs/fscache_cache.c b/fs/netfs/fscache_cache.c
+index 9397ed39b0b4..8f70f8da064b 100644
+--- a/fs/netfs/fscache_cache.c
++++ b/fs/netfs/fscache_cache.c
+@@ -372,7 +372,7 @@ void fscache_withdraw_cache(struct fscache_cache *cache)
+ EXPORT_SYMBOL(fscache_withdraw_cache);
+ 
+ #ifdef CONFIG_PROC_FS
+-static const char fscache_cache_states[NR__FSCACHE_CACHE_STATE] = "-PAEW";
++static const char fscache_cache_states[NR__FSCACHE_CACHE_STATE] __nonstring = "-PAEW";
+ 
+ /*
+  * Generate a list of caches in /proc/fs/fscache/caches
+diff --git a/fs/netfs/fscache_cookie.c b/fs/netfs/fscache_cookie.c
+index d4d4b3a8b106..3d56fc73435f 100644
+--- a/fs/netfs/fscache_cookie.c
++++ b/fs/netfs/fscache_cookie.c
+@@ -29,7 +29,7 @@ static LIST_HEAD(fscache_cookie_lru);
+ static DEFINE_SPINLOCK(fscache_cookie_lru_lock);
+ DEFINE_TIMER(fscache_cookie_lru_timer, fscache_cookie_lru_timed_out);
+ static DECLARE_WORK(fscache_cookie_lru_work, fscache_cookie_lru_worker);
+-static const char fscache_cookie_states[FSCACHE_COOKIE_STATE__NR] = "-LCAIFUWRD";
++static const char fscache_cookie_states[FSCACHE_COOKIE_STATE__NR] __nonstring = "-LCAIFUWRD";
+ static unsigned int fscache_lru_cookie_timeout = 10 * HZ;
+ 
+ void fscache_print_cookie(struct fscache_cookie *cookie, char prefix)
+-- 
+2.34.1
 
-> I had to rollback to linux 6.13.8 to be able to use the SMB share and 
-> here is what I constat
-> (don't know if it's a normal behavior but if yes, SMB seems to be a very 
-> very unefficient protocol)
->
-> I think the issue can be buffer related:
-> On Linux 6.13.8 the copy and cat of the 5 bytes 'toto' file containing 
-> only ascii string 'toto' is working fine but here is what I capture with 
-> tcpdump during transfert of toto file:
-> https://xba.soartist.net/t6.pcap
-> 131 tcp packets to transfer a 5 byte file...
-> Isn't there a problem ?
-> Openning the pcap file with wireshark show a lot of lines:
-> 25	0.005576	10.0.10.100	10.0.10.25	SMB2	1071	Read Response, Error: 
-> STATUS_END_OF_FILE
-> It seems that those lines appears after the 5 bytes 'toto' file had been 
-> transferred, and it continue until the last ACK recieved
-
-Thanks for the trace.  I was finally able to reproduce your issue and
-will provide you with a fix soon.
