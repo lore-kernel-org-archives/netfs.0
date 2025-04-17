@@ -1,104 +1,85 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72791C5D72;
-	Wed, 16 Apr 2025 22:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31FC225785;
+	Thu, 17 Apr 2025 08:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744841819; cv=none; b=iAuh5KCuvj9jsS+D7KwsUf4T0DQqkN23PoboYde3RTbAVcOZr6843WTId7YAmRzr50+H+ofoQP0Yotnk9gJul2LxdC+oOIjeiy98awGbDwDhqVqkEGLtTHCvP6BHiZTtyOAPwXGXYRf0IdElvMvPE43L8gaVhcg9mTzXGyLK/xQ=
+	t=1744877644; cv=none; b=CdnLV2dBjOtpmTnbJtwEGZN+VJ19/SjoAcSLeC0vzoxEPJXAd7Lt3kXVz5e9H22xVBv/y3Gdpa1DmcOIGPTGTXKnnd/NPa6bKcxwspuXOeF/XZm6SlTlJG6YXT0Su8TK89UBzlClFqLPr+Gd7VGavufOGTJouJKhgUbUje12sEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744841819; c=relaxed/simple;
-	bh=97bRWU25PgosLRHpJQ6h3zrlFJwdICKzb3byRPrU8mE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ru23lif6CRwVsat1luBhB4NZh/vJNzKcIXlEv2KIgCRQe9Y3Z8yTvOlSgq13rrc2wNfOI1nTB/K0PlystQOu1hh5EPQV3vFVFGiHQdN8PiWU/ySDow5qZrFPIknteaihbTFCU6WxZ/XzMS758FhSLvmxai/rs/djpvWz8ryNPRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i1ASBuan; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744877644; c=relaxed/simple;
+	bh=MwepOx7zs2heluVdedWctNgQH1Q2ccAbcwPdl6bA4tw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fTo5XhYMM+t6vky5pnzcFeE92fcMImw2anAm8+0GPAHXNcqnjkV++JWvKC7B+kc/Tn8HjUXP3tDkJkZx8HUASjVCRjiia8ea17BQTzFiJ3Glab4sPdp+Nvios2hfXpnMYYqq9+xaKw1C+cl3sOv8bub4guNWE2TPZQHm3kUbco0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cld+u/Jc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i1ASBuan"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DA76C4CEE2;
-	Wed, 16 Apr 2025 22:16:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cld+u/Jc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BE08C4CEE4;
+	Thu, 17 Apr 2025 08:14:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744841819;
-	bh=97bRWU25PgosLRHpJQ6h3zrlFJwdICKzb3byRPrU8mE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=i1ASBuanlv2WTlRNG19Vpk1JVfFJqxb7MN6czXwNZMTo3g8BA11pln/dH7njEEb1W
-	 YHd2sTme/2hHYndVgPPONRFTCw+zUN7PkvMN8aIeU13EWsEohEERtrJAKsbUM8IMeN
-	 aAqASj77aSrNyGLedLa3LLAcPE0TO4ZdmpyBx++6UFdyxSqKO7sZGoE2VIKIPDJgcO
-	 ReoFfNoaRfgHI3XEr/TGqiJLY4sLpMQkqdZkMHW+AzMZIMpkJvp5wfCM9VnZ10N34a
-	 k3SCrF2fRlwW3ehvEMMJMA5nWkotcfNAr6WPr2LR+0JwDRXcgFVeKLkmeUZoGDr3wU
-	 jgF4j6hZf12qA==
-From: Kees Cook <kees@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Kees Cook <kees@kernel.org>,
+	s=k20201202; t=1744877643;
+	bh=MwepOx7zs2heluVdedWctNgQH1Q2ccAbcwPdl6bA4tw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Cld+u/JcLCjQWyrbdYUIkrIg1xfu7iOwxBuvjfwhvqCVcPHsz/LMH28VMEpv/8TqL
+	 NIORsv1kGbMwhKtx8lFXopYH1tJUpqLqK5dwFT+oTfokwGgSHAgRliQJh37bE8A0YJ
+	 wnxNTGWwF0bhH+4TqxuJylD0cuyd+i0AJPtvMZY94gmeacL6ZlZYhrjgJOWOvTBsHk
+	 GBMNhSKM1WjQuslSganp33+9nl4+IWnolDyHfrEhvt+4dHXysan2LC22CirdgTNTSJ
+	 HpwXfS05v3BgJl0fbRuOHTDx6xR8WmDy89GVwXRbnnq2qsug3QFHTbaiThsvwcee5m
+	 1dCKgFX8SFp4A==
+From: Christian Brauner <brauner@kernel.org>
+To: David Howells <dhowells@redhat.com>,
+	Kees Cook <kees@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>,
 	Paulo Alcantara <pc@manguebit.com>,
-	Christian Brauner <brauner@kernel.org>,
 	netfs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-hardening@vger.kernel.org
-Subject: [PATCH] netfs: Mark __nonstring lookup tables
-Date: Wed, 16 Apr 2025 15:16:55 -0700
-Message-Id: <20250416221654.work.028-kees@kernel.org>
-X-Mailer: git-send-email 2.34.1
+Subject: Re: [PATCH] netfs: Mark __nonstring lookup tables
+Date: Thu, 17 Apr 2025 10:13:57 +0200
+Message-ID: <20250417-manchmal-verbal-7f84877a2c63@brauner>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250416221654.work.028-kees@kernel.org>
+References: <20250416221654.work.028-kees@kernel.org>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2697; i=kees@kernel.org; h=from:subject:message-id; bh=97bRWU25PgosLRHpJQ6h3zrlFJwdICKzb3byRPrU8mE=; b=owGbwMvMwCVmps19z/KJym7G02pJDBkMOuGbOa9fEP7j8tf6ZevfUy/0bvjwtv4pDp7KfzCxK unVgyWNHaUsDGJcDLJiiixBdu5xLh5v28Pd5yrCzGFlAhnCwMUpABOJZWRkOBtgyft8k1ZQ1r29 RwwMOQUOLGqVjf9fPXt/2HZxpuAdHQz/DJmzTet+v5v1qJ6/59efv+8L2ypf/57gzLeNIea4Xu4 KRgA=
-X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1839; i=brauner@kernel.org; h=from:subject:message-id; bh=MwepOx7zs2heluVdedWctNgQH1Q2ccAbcwPdl6bA4tw=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQw7HDzmua4Xa0lvovN5u2fGmlee4v3aQs+ya7dvmHP9 v0J9fccOkpZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACYio8Pw33OzUMSFtfrJGuun rtU1KT7U/Yrvfr3W78DfSt92vb82rZiR4VpwYe+Gtau6o9f/Nay6ZfXz2d+uh8oXKmau8WIUeK1 +jRsA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-GCC 15's new -Wunterminated-string-initialization notices that the
-character lookup tables "fscache_cache_states" and "fscache_cookie_states"
-(which are not used as a C-String) need to be marked as "nonstring":
+On Wed, 16 Apr 2025 15:16:55 -0700, Kees Cook wrote:
+> GCC 15's new -Wunterminated-string-initialization notices that the
+> character lookup tables "fscache_cache_states" and "fscache_cookie_states"
+> (which are not used as a C-String) need to be marked as "nonstring":
+> 
+> fs/netfs/fscache_cache.c:375:67: warning: initializer-string for array of 'char' truncates NUL terminator but destination lacks 'nonstring' attribute (6 chars into 5 available) [-Wunterminated-string-initialization]
+>   375 | static const char fscache_cache_states[NR__FSCACHE_CACHE_STATE] = "-PAEW";
+>       |                                                                   ^~~~~~~
+> fs/netfs/fscache_cookie.c:32:69: warning: initializer-string for array of 'char' truncates NUL terminator but destination lacks 'nonstring' attribute (11 chars into 10 available) [-Wunterminated-string-initialization]
+>    32 | static const char fscache_cookie_states[FSCACHE_COOKIE_STATE__NR] = "-LCAIFUWRD";
+>       |                                                                     ^~~~~~~~~~~~
+> 
+> [...]
 
-fs/netfs/fscache_cache.c:375:67: warning: initializer-string for array of 'char' truncates NUL terminator but destination lacks 'nonstring' attribute (6 chars into 5 available) [-Wunterminated-string-initialization]
-  375 | static const char fscache_cache_states[NR__FSCACHE_CACHE_STATE] = "-PAEW";
-      |                                                                   ^~~~~~~
-fs/netfs/fscache_cookie.c:32:69: warning: initializer-string for array of 'char' truncates NUL terminator but destination lacks 'nonstring' attribute (11 chars into 10 available) [-Wunterminated-string-initialization]
-   32 | static const char fscache_cookie_states[FSCACHE_COOKIE_STATE__NR] = "-LCAIFUWRD";
-      |                                                                     ^~~~~~~~~~~~
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-Annotate the arrays.
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-Signed-off-by: Kees Cook <kees@kernel.org>
----
-Cc: David Howells <dhowells@redhat.com>
-Cc: Paulo Alcantara <pc@manguebit.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: netfs@lists.linux.dev
-Cc: linux-fsdevel@vger.kernel.org
----
- fs/netfs/fscache_cache.c  | 2 +-
- fs/netfs/fscache_cookie.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-diff --git a/fs/netfs/fscache_cache.c b/fs/netfs/fscache_cache.c
-index 9397ed39b0b4..8f70f8da064b 100644
---- a/fs/netfs/fscache_cache.c
-+++ b/fs/netfs/fscache_cache.c
-@@ -372,7 +372,7 @@ void fscache_withdraw_cache(struct fscache_cache *cache)
- EXPORT_SYMBOL(fscache_withdraw_cache);
- 
- #ifdef CONFIG_PROC_FS
--static const char fscache_cache_states[NR__FSCACHE_CACHE_STATE] = "-PAEW";
-+static const char fscache_cache_states[NR__FSCACHE_CACHE_STATE] __nonstring = "-PAEW";
- 
- /*
-  * Generate a list of caches in /proc/fs/fscache/caches
-diff --git a/fs/netfs/fscache_cookie.c b/fs/netfs/fscache_cookie.c
-index d4d4b3a8b106..3d56fc73435f 100644
---- a/fs/netfs/fscache_cookie.c
-+++ b/fs/netfs/fscache_cookie.c
-@@ -29,7 +29,7 @@ static LIST_HEAD(fscache_cookie_lru);
- static DEFINE_SPINLOCK(fscache_cookie_lru_lock);
- DEFINE_TIMER(fscache_cookie_lru_timer, fscache_cookie_lru_timed_out);
- static DECLARE_WORK(fscache_cookie_lru_work, fscache_cookie_lru_worker);
--static const char fscache_cookie_states[FSCACHE_COOKIE_STATE__NR] = "-LCAIFUWRD";
-+static const char fscache_cookie_states[FSCACHE_COOKIE_STATE__NR] __nonstring = "-LCAIFUWRD";
- static unsigned int fscache_lru_cookie_timeout = 10 * HZ;
- 
- void fscache_print_cookie(struct fscache_cookie *cookie, char prefix)
--- 
-2.34.1
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[1/1] netfs: Mark __nonstring lookup tables
+      https://git.kernel.org/vfs/vfs/c/58db1c3cd0ce
