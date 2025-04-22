@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9E519FA93;
-	Tue, 22 Apr 2025 02:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106341DE4E3;
+	Tue, 22 Apr 2025 02:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745288177; cv=none; b=u46kEr9ZUxnb/1wTirj3cBLJn8u1gjqAgTbm4JckfGJ1xrYv+h3IoS6omYc1fyPEHtw1vrp9PP0JHnqB0uR9aciskoJkZdSL6PCWrFSZK813zlKBzg3cZKkA0+WFqWtKsRoRWIijpiYNEZ4QI2KhtlLhWZ/bly5VvMH5Y7Hs8+0=
+	t=1745288240; cv=none; b=jfirSH/Un+dTopRVYwbPSjurtUA3kjad/4xfzPdnJ6ehva0KMkyk+FStX0QzlZNJvIUsGQeQLZWIDxp7bOjW3IoyHJktCB+fdgz19Q5JhcU2OI3w+TggYqdKbMBs49jTYa8nDmVxdlmzGlNP6nPHGV+GIZdmcO71qJyZMB4eYSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745288177; c=relaxed/simple;
-	bh=RlkaiFpPJWW2VjMpxf1KFWzp4AMx1odJq1ZFpDXmgT4=;
+	s=arc-20240116; t=1745288240; c=relaxed/simple;
+	bh=9E9dmMgwvuECvAjtU3yIQp0H2OoNidOKUWTx6hNHrI8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Z42GQOwzSLVaDA/QFE2ps/JYg9dR5A/nR7Nulp1AYeTLV+EapdJppncGdWopdzRTq7C64VNbu+T9wM/MI/wUfowsLBL0glnryGeLpLSAm2MW7hANrkIbIP2tez3hJnFZgBnLcZb7QTbcVAv+RXB7tMqQMlC/UJ5irRNsQf20RjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eVkUnQzX; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=M8H/yRb6H8Z80S/ODnvKneFjYKnmlzEO9Q2bH/6uejcF15C/wcSKxZcbg6ITAQLlY6j3Ar6tlKpDsI32t7EDcCEI7SS0xhkN27/qmf1p5C/XAWHB4mbMbcKCiQvmoulZRxvSU/JBQE3P13Aa/OCkgcZ2p9QNVIGXpnGyPZWb/8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gwCE1ECT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eVkUnQzX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98FCAC4CEEF;
-	Tue, 22 Apr 2025 02:16:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gwCE1ECT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68701C4CEEC;
+	Tue, 22 Apr 2025 02:17:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745288174;
-	bh=RlkaiFpPJWW2VjMpxf1KFWzp4AMx1odJq1ZFpDXmgT4=;
+	s=k20201202; t=1745288239;
+	bh=9E9dmMgwvuECvAjtU3yIQp0H2OoNidOKUWTx6hNHrI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eVkUnQzXzy1y+Hds2gq94bEBA50Ml1+7A3xAtxsayd7zGQ8joxtJy9P3uzpHJA0cO
-	 i8wHYcW8Ho/CFLNmJ8ZY7EuMV7WDs93E/BgOIFXoY2lJwZZAbozLIzUh9VYbtXI2iK
-	 +VrM0Ev+rvW7JP2o+ec6WjQxV4tWNjrD7mjmArz7ke6tpheN1dvQcMMQGbVhfHOCJ6
-	 ZeLh7T1zwrgS1A8lONfadWnUb73HCmVD6u7Nw4kRlhIqNmN6SZt7XtaOjgobZoH+Ya
-	 d9pR4OEXQlDlkTT29JEkVWTCtjwkV62NjMmGCHekOVl73DL/5FSFtd6xs9Is1zdDcx
-	 vc2d2JmVHg4rg==
+	b=gwCE1ECTt8xl5qpCD+3r3tk5RtoGIZ+ym7gbMXlAFdhG0I5G+/WgVFZZG+LBJPhmU
+	 16JtIxrV31ersML5WM084rF/amzqHb57PNgZ6haPzuHQzb2j21L1deCNgGPIiYSFtd
+	 KgqPP5fwEwutBm+gRfp6JwYk0dDSwIj4GuBrmJFsBNfvTXpyYSMzEYQGE9V4X7CnjG
+	 +qWvCKyjs5TUxDOTrHWaJ+ltpVSZ7B1o4glUDA4c6ldj50oLEYSDyxXz6rrEQa0ko5
+	 Vq1ooMXgwriFuyopn9JPsqPljl3XVXKLLX4ZdPsVxBEaZyFvfXHlVsE8EOIf+pyU4V
+	 pcdEqfXfkeJKg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -36,12 +36,12 @@ Cc: Song Liu <song@kernel.org>,
 	pc@manguebit.com,
 	netfs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 12/30] netfs: Only create /proc/fs/netfs with CONFIG_PROC_FS
-Date: Mon, 21 Apr 2025 22:15:32 -0400
-Message-Id: <20250422021550.1940809-12-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 09/23] netfs: Only create /proc/fs/netfs with CONFIG_PROC_FS
+Date: Mon, 21 Apr 2025 22:16:49 -0400
+Message-Id: <20250422021703.1941244-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250422021550.1940809-1-sashal@kernel.org>
-References: <20250422021550.1940809-1-sashal@kernel.org>
+In-Reply-To: <20250422021703.1941244-1-sashal@kernel.org>
+References: <20250422021703.1941244-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -50,7 +50,7 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.14.3
+X-stable-base: Linux 6.12.24
 Content-Transfer-Encoding: 8bit
 
 From: Song Liu <song@kernel.org>
@@ -133,10 +133,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+)
 
 diff --git a/fs/netfs/main.c b/fs/netfs/main.c
-index 4e3e620408314..70ecc8f5f2103 100644
+index 6c7be1377ee0e..3a8433e802cc2 100644
 --- a/fs/netfs/main.c
 +++ b/fs/netfs/main.c
-@@ -127,11 +127,13 @@ static int __init netfs_init(void)
+@@ -125,11 +125,13 @@ static int __init netfs_init(void)
  	if (mempool_init_slab_pool(&netfs_subrequest_pool, 100, netfs_subrequest_slab) < 0)
  		goto error_subreqpool;
  
@@ -150,7 +150,7 @@ index 4e3e620408314..70ecc8f5f2103 100644
  #ifdef CONFIG_FSCACHE_STATS
  	if (!proc_create_single("fs/netfs/stats", S_IFREG | 0444, NULL,
  				netfs_stats_show))
-@@ -144,9 +146,11 @@ static int __init netfs_init(void)
+@@ -142,9 +144,11 @@ static int __init netfs_init(void)
  	return 0;
  
  error_fscache:
