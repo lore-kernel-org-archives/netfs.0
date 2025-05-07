@@ -1,88 +1,101 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.3xo.fr (mail.3xo.fr [212.129.21.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB401D5141
-	for <netfs@lists.linux.dev>; Wed,  7 May 2025 15:48:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045DB26B2CA
+	for <netfs@lists.linux.dev>; Wed,  7 May 2025 16:05:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.129.21.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746632920; cv=none; b=NfCEPPzYYt5UUKBg7yGfeMPWOgv+b4pW+E+LFNr1y84VtwGDefNYRLT3czyw6GGqT718DCj+DdhOQrxe2poweJn0B3GrGG3RSkYO55UT9lO2tdz1Q9xT5saCQO4mbOZWhKW9vlmvUDYDI42NKrGjz+nuzYeHQI0BmFHJ/zz9sXo=
+	t=1746633960; cv=none; b=V6dlYwylhnKFCjkVq3tlbXitqIHdV3QS1nbEt1qJ0BQS26WGb4jMu0LFfKXBdmC327OBSh2Bfgt8+NWUVeMq31lXgKXvCtmx6Rc2emnAJO7FDe/WYMsVDM34HM/EdIVYLMAKukraCA/asMgC4yWsUCYgiHAtAp9tCGhtQIB/iEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746632920; c=relaxed/simple;
-	bh=RmNN38IOqGOxQw3vAObUst92tVyWxds+Q/EvUHM6Nys=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=k/VhK3u5mAQWBEftV+l9kYaB0AihPKkqtc3ZjkMK8EYD/WP6QH1X3pyaWnw95KowfGvQ2t6MKJG3na6E7vuQj5aODfWDnf3UoRR/dr+gBUNaD0aODjuZvxrlybCheqVgfZv4zqr3YN05wQMJSz6h9odUWzeCsAY9Pp98xc959Ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=S98mxF6+; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+	s=arc-20240116; t=1746633960; c=relaxed/simple;
+	bh=x0GhAdTrsUjoll9UJ2scIqlF4JD4LTwaMQXDabkmEbY=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=lfNQX5YqerfgauuNPLHuyWRCEPHWuZpReivuLUljojz/AAVQwBk1DG3Xg7MjNV3ziE6u2Ynt9+ry7dRkFivxhVsvWOTziAR9OQnlpd9nOZm7LZuBhUm21knwT/T2RnCP5QCOnTvw3UGMKahLwOrXwq9jGKvqaUpYuahzT8oja3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=3xo.fr; spf=pass smtp.mailfrom=3xo.fr; dkim=pass (2048-bit key) header.d=3xo.fr header.i=@3xo.fr header.b=aADmR4cE; arc=none smtp.client-ip=212.129.21.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=3xo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=3xo.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="S98mxF6+"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ac2963dc379so1036352266b.2
-        for <netfs@lists.linux.dev>; Wed, 07 May 2025 08:48:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1746632916; x=1747237716; darn=lists.linux.dev;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RmNN38IOqGOxQw3vAObUst92tVyWxds+Q/EvUHM6Nys=;
-        b=S98mxF6+4Cbt8Km8TniH/mfT4C8oNv3TIOCSugRu3olNOdPJ6WzuK4ZaqzgE8o5/1I
-         1v1A1k9j6vPdlKvtklI3yF9A+RvODejuBG/81TUtoa8otNz/Jfj7Lgn3GI8p/5uR2epm
-         KFYkJA4G+0nQHfZl0bd43uoDqUrZjzOBDbtCiQ6Snk/4dE7gYTsbFU5eqi3qvxBiPqV6
-         tEc2rJDOBs/XKsTR3PxxP0xCgvhg094fzwe8ATXfpyC9CGTsVZhMcmWoZWNmrQYuSlYD
-         or+P7MWROXHqJAARQzjvEP5xJHGeiIOfYqmgNNIWvueu0DOS4QbT6fzxHus+4KvbX2aK
-         xwrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746632916; x=1747237716;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RmNN38IOqGOxQw3vAObUst92tVyWxds+Q/EvUHM6Nys=;
-        b=WW/ZPBB4tNVnOdLr/RZIvBS7uP4XCyHy813pcoXypiLbA0gp5MKBFVXLZmtrRwaE8B
-         a3knzKh3eAo0Dxa0Vi7YcVm2AJjbP9syEVRr9SwdjEprnyjr3lZGmvEPgV9TbphomCcm
-         mFXdvRH1F6MBPYnqpN1TsDNO3jMnYxGZgwrEBwDxLWsKIigyYj+tVT/KHhgFr0HeMa2Q
-         Bs1wfE84pDIBfTyPGHCq61J3X9OMQOc20lRKl8SQ/pk927rk4G2KIJCFhz6C44t5VWMZ
-         uG81at1MKW5o+9zkjtDyvEMU6v+vB/eSondOmbvL5xjjWsBQuG8FzGkfJQDdAVifQckM
-         mxpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUmYazFc02mcehJ6tfgo+6vUMDaHZao/i5lHdfosKDwC/9wVR9pDCiCuHa81keuI8aoTGIPWw==@lists.linux.dev
-X-Gm-Message-State: AOJu0YyASBRgXwB1HQcq4M1dnbe17J6k/dQCRaF0MeiNiwF5J5nrC25y
-	u7iUfZirc+R9jWEkK7bvmhWpqj0YmxNiyQMDUg60dpj+Gaig7T5QAAb0CQCzqtpZy/x0Fe5o80Z
-	AQjFNoXS9MeZfehHA5ojq7APUKwhGvP3gqGw/Yg==
-X-Gm-Gg: ASbGncthH7DUtwJtuerkpIijd+6Jt8oIWbzzSF5L9ZLHqxtloroifuF9dhjMIRf+YBU
-	p8r42vYgvEMstr8skBtzE5Lgd/oAoUfhUeSgWQix26G39XmpGTF9SLoGQbYraGaNmrscX2Yiskr
-	LPHj+wrKEW9ftyQISHfh8I5YRKkt0m9rrQjE8w8LZyD2s3GXKPnHEMHzm/0AsCyA==
-X-Google-Smtp-Source: AGHT+IEAltjxdalh/5XKuPwAg0pv1b4lg33oCEm/9+0ThGBN1Qpg5xKiNbvqIrHXaTlQhgG7QhMV/i8ffK6cBVRnyqw=
-X-Received: by 2002:a17:907:874e:b0:ace:cb59:6c4d with SMTP id
- a640c23a62f3a-ad1e8d545eemr366290466b.43.1746632916020; Wed, 07 May 2025
- 08:48:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=3xo.fr header.i=@3xo.fr header.b="aADmR4cE"
+Received: from localhost (mail.3xo.fr [212.129.21.66])
+	by mail.3xo.fr (Postfix) with ESMTP id 97959CB;
+	Wed,  7 May 2025 17:59:01 +0200 (CEST)
+X-Virus-Scanned: Debian amavis at nxo2.3xo.fr
+Received: from mail.3xo.fr ([212.129.21.66])
+ by localhost (mail.3xo.fr [212.129.21.66]) (amavis, port 10024) with ESMTP
+ id s-y2X6RhqgSo; Wed,  7 May 2025 17:58:59 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.3xo.fr 0A4A08D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=3xo.fr; s=3xo;
+	t=1746633539; bh=z9CikFXAeKFWOimfQF9yvtUss98FljLb1RvOvIhBgOU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=aADmR4cEDRykDletGNFs1jjnJfrJw+6GnyYprK83CZrRd3tyEy6ub0QVpmzlbeazj
+	 psoK4uZwGo8lE4eCpyFy/sZzTGN+nqdCvbzMi75ZUqlOvTf4pBaSMDrWN4NHYbjKm7
+	 bDptnwVG7o9vy6zED37DnAlYY6ZHaF/WnwuvHkNIY2K3D/YXWknc0fgwlHDZkyBevA
+	 YIiT1HMgOfDgIBn+r6hwNmQKcENMYMqfLC0KaK/eeMUW4APFAGaH0E+WiMg5BaW5GF
+	 O4GOukJMPKZQVl0NsKxysVgRQGaoanjfVpx8FBoaw1l9RLMUk+rB9RDnMoKxykF+PW
+	 Usb6564G5QQWw==
+Received: from mail.3xo.fr (mail.3xo.fr [212.129.21.66])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by mail.3xo.fr (Postfix) with ESMTPSA id 0A4A08D;
+	Wed,  7 May 2025 17:58:59 +0200 (CEST)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250428154859.3228933-1-max.kellermann@ionos.com> <202505071602.yJrZsTiu-lkp@intel.com>
-In-Reply-To: <202505071602.yJrZsTiu-lkp@intel.com>
-From: Max Kellermann <max.kellermann@ionos.com>
-Date: Wed, 7 May 2025 17:48:24 +0200
-X-Gm-Features: ATxdqUHZtrIZ4qATIqCPYmFI3WbE7fVjUqBiwmJIjt8Br1WsR1D-K7F_EFAuSc0
-Message-ID: <CAKPOu+-y6vng-hc7HN=+0U0cuEZCWm-BuYC3GOGGTwJHrJMDjw@mail.gmail.com>
-Subject: Re: [PATCH 1/4] fs/netfs: convert `netfs_io_request.error` to a `short
-To: dhowells@redhat.com, netfs@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Date: Wed, 07 May 2025 17:58:58 +0200
+From: Nicolas Baranger <nicolas.baranger@3xo.fr>
+To: Paulo Alcantara <pc@manguebit.com>
+Cc: Christoph Hellwig <hch@infradead.org>, hch@lst.de, David Howells
+ <dhowells@redhat.com>, netfs@lists.linux.dev, linux-cifs@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, Steve French
+ <smfrench@gmail.com>, Jeff Layton <jlayton@kernel.org>, Christian Brauner
+ <brauner@kernel.org>
+Subject: Re: [netfs/cifs - Linux 6.14] loop on file cat + file copy when files
+ are on CIFS share
+In-Reply-To: <df978e3da9bec1a5e040448f6341b646@manguebit.com>
+References: <10bec2430ed4df68bde10ed95295d093@3xo.fr>
+ <35940e6c0ed86fd94468e175061faeac@3xo.fr> <Z-Z95ePf3KQZ2MnB@infradead.org>
+ <48685a06c2608b182df3b7a767520c1d@3xo.fr>
+ <F89FD4A3-FE54-4DB2-BA08-3BCC8843C60E@manguebit.com>
+ <5087f9cb3dc1487423de34725352f57c@3xo.fr>
+ <f12973bcf533a40ca7d7ed78846a0a10@manguebit.com>
+ <e63e7c7ec32e3014eb758fd6f8679f93@3xo.fr>
+ <53697288e2891aea51061c54a2e42595@manguebit.com>
+ <bb5f1ed84df1686aebdba5d60ab0e162@3xo.fr>
+ <af401afc7e32d9c0eeb6b36da70d2488@3xo.fr>
+ <a25811b8d4f245173f672bdfa8f81506@3xo.fr>
+ <e0b7f4902af6c758b5cdb7c2b7892b43@manguebit.com>
+ <df978e3da9bec1a5e040448f6341b646@manguebit.com>
+Message-ID: <4367e54becaf348ac6c18e0b298dcd7e@3xo.fr>
+X-Sender: nicolas.baranger@3xo.fr
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, May 7, 2025 at 11:01=E2=80=AFAM kernel test robot <lkp@intel.com> w=
-rote:
+Hi Paulo
 
-> All errors (new ones prefixed by >>, old ones prefixed by <<):
->
-> >> ERROR: modpost: "__cmpxchg_called_with_bad_pointer" [fs/netfs/netfs.ko=
-] undefined!
+I'm testing this branch and going back with results
 
-Okay, not all architectures support cmpxchg() with a short. I can drop
-this patch, but I'm curious why netfs_read_to_pagecache() uses
-cmpxchg() when everybody else simply assigns the value. Maybe, if
-cmpxchg() turns out to be unnecessary, we can keep this patch? David,
-can you explain? You added it in commit ee4cdf7ba857a ("netfs: Speed
-up buffered reading").
+Thanks again !
+Nicolas
 
-Max
+Le 2025-05-07 00:53, Paulo Alcantara a écrit :
+
+> Hi Nicolas,
+> 
+> Could you try my cifs.dio branch [1] which contains the following fixes
+> 
+> afea8b581c75 ("netfs: Fix wait/wake to be consistent about the 
+> waitqueue used")
+> ae9f3deaa17a ("netfs: Fix the request's work item to not require a 
+> ref")
+> b2a47dc3ead6 ("netfs: Fix setting of transferred bytes with short DIO 
+> reads")
+> c59f7c9661b9 ("smb: client: ensure aligned IO sizes")
+> 
+> Let me know if you find any issues with it.  Thanks.
+> 
+> [1] https://git.manguebit.com/linux.git
