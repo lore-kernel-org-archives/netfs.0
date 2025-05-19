@@ -1,73 +1,125 @@
-Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547A421E097
-	for <netfs@lists.linux.dev>; Fri, 16 May 2025 22:58:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3140E26C39F
+	for <netfs@lists.linux.dev>; Mon, 19 May 2025 09:07:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747436285; cv=none; b=B8/bSDSm7RZWxF6p6H2QmsjEm6XsaNk2VhBXZnAqhJI4mymxlJOQUZo8ywj6rr1CGhrKx38TEoqOO87kHRQLeAj8ExIKY7TTyi41IL5+MGQjAcnrSp9TfduAQOGIPxN63jTCFqFrXeQ8ESE4sRpFHCEJxr2ktISdriZ/Pl7vmAQ=
+	t=1747645645; cv=none; b=Sj9YgCcmp8K4NtcuJW6WThbvSAlXAbYWBiDA1oay8ITFquM3C1RXC3UI9PiBksLaI9RTXYttY9E+EmuSbg8vSq3wZp5zetkWPKRttsPJOdcLSZSFpTRJj5t1DR0TXDxoJtYc7OmbkgTI2NB2cKYA3xCmCehW0mQvQ0Zf4M0UYvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747436285; c=relaxed/simple;
-	bh=crlD6hcYkgqUk2VnsMTk6TwuNBRLpWcxydDqwkXANwg=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=Sk8IIimwrRmZwL5fyNQhNXQenzjUlyb8nHDg2ny7zQslJLWJtfCqVXbiSFmZs1fDVU2AlzQCajISqG428d/Hd8ufi2onsOyj71Ruw9SYxYf8a1cGuTGydYJLxuMuRdXOBaSYbl1pX9NBW0sytROrd9jcCe1oel8DWTJyrmRyKZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3da6fe2a552so43180445ab.1
-        for <netfs@lists.linux.dev>; Fri, 16 May 2025 15:58:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747436282; x=1748041082;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dkCZy4oAbX25iBvlsArzBe31f3vDYggxaZVFFGZRboo=;
-        b=k7Nxx+6ErbJNkwkLAU6z0s48CU/29GYWdI2bhshzBPKbm6hOIETVsSZRt8ltB9m6J4
-         YCs1L/D2/EjE+hWPFbiVj/zBBWaJftzqyS6gNWSYPPG7UWxnddAe5YET2vX+EWpCFr0S
-         CcAI2jRg4+2gIoyR4Cw+Vye715GqOB4jgtkGma2NtO5PC0uLH6FEqbwPiCzqLolL4Nfs
-         xZ0dhdWqAswpwVdfSRdt7z6qCTWGL4oJjV7JWaaLqOWQMrc+OoNrI5L3vpwOlHw9Rvwd
-         Qb4FHRlP4sYVsEwj1SnLId3G+3I94Xt5qse48PPUlz/orneioh/V2Q9bZ6mgNbK0CrMh
-         B7ow==
-X-Forwarded-Encrypted: i=1; AJvYcCUwYKH5zbyaoQkyhldezx7q6HH0AuoGel7aOfbx8u4979abrjw7XRDRaIiZk7hqb2CI/9VI5g==@lists.linux.dev
-X-Gm-Message-State: AOJu0YzvEl8Y0/psFbUsjNvlQDuLGMAx4WcbyU7qlO6J45cfrOSD8uGd
-	Ddf0xtLu7P/TPjr4UIxxATcSdY6xHYyKajJJHp6UJfT038smdTBJaFstFL0S2W8WncoDjbPSgSx
-	3LKVNNkpBBHOmJkinc/or8HBvnk2CHGJVpnCqbC7Acb+eF3C9hHZIXENoxeU=
-X-Google-Smtp-Source: AGHT+IGV5LT0uR5Nz7086K5O0wYaH1Zid4vNGxPgFcsJzGd4vSmYuvN7DSZEaJBn3/LkPva3IQ+yfOoGMSc7h1yuY3/yKzxpCgmy
+	s=arc-20240116; t=1747645645; c=relaxed/simple;
+	bh=4rBX6YspVYCIDPNLZKRc2wJwrp2OYC47FhKHqNl0FwQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XE1Q4IRD4kailjqOq+XtM3ho9ibxrdADi4YSr2VctAMCXw3RAMZtVp++9XblBnyQ//dhPPZwnmg6I+bFAzK1DW2SBedzsHBybdWlNhPRR50vejER0uU3QfxzAanDkGdssk6auymdoNx+egWbMyRUdqOa8C5nLOgILTw0ksjrpWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=axUJtfXP; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="axUJtfXP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1747645643;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=DkN9GuwbtueXsDOI2wUEzNlSJ5jf3RNLBFIQXl+y3I0=;
+	b=axUJtfXPkihIGITPHpJYk9NiP4RXDA5rSiWeUR4tEt6lnXc4Q0AEh+lzswvuYUECJNefXT
+	iTpGjtlTo3cxKOhvJgRYDSY001ZS3xaf231aoKFRiPwN3CVoh4EXDwb0uA7X8kzSk8dzAA
+	/NlvxFA90lNxyBNpsmBILN8n+q+1Oc4=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-607-1IDUbA_mOAWUFZRkcSDKlg-1; Mon,
+ 19 May 2025 05:07:19 -0400
+X-MC-Unique: 1IDUbA_mOAWUFZRkcSDKlg-1
+X-Mimecast-MFC-AGG-ID: 1IDUbA_mOAWUFZRkcSDKlg_1747645638
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 80BD41800447;
+	Mon, 19 May 2025 09:07:17 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.42.28.188])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CEBE9195608D;
+	Mon, 19 May 2025 09:07:13 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>
+Cc: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/4] netfs: Miscellaneous fixes
+Date: Mon, 19 May 2025 10:07:00 +0100
+Message-ID: <20250519090707.2848510-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1f87:b0:3d1:a75e:65f6 with SMTP id
- e9e14a558f8ab-3db84324635mr82117385ab.18.1747436282520; Fri, 16 May 2025
- 15:58:02 -0700 (PDT)
-Date: Fri, 16 May 2025 15:58:02 -0700
-In-Reply-To: <2705414.1747435079@warthog.procyon.org.uk>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6827c2fa.a70a0220.38f255.000a.GAE@google.com>
-Subject: Re: [syzbot] [netfs?] KASAN: slab-out-of-bounds Read in iov_iter_revert
-From: syzbot <syzbot+25b83a6f2c702075fcbc@syzkaller.appspotmail.com>
-To: dhowells@redhat.com, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netfs@lists.linux.dev, pc@manguebit.com, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Hello,
+Hi Christian,
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+Here are some miscellaneous fixes and changes for netfslib, if you could
+pull them:
 
-Reported-by: syzbot+25b83a6f2c702075fcbc@syzkaller.appspotmail.com
-Tested-by: syzbot+25b83a6f2c702075fcbc@syzkaller.appspotmail.com
+ (1) Fix an oops in write-retry due to mis-resetting the I/O iterator.
 
-Tested on:
+ (2) Fix the recording of transferred bytes for short DIO reads.
 
-commit:         82f2b0b9 Linux 6.15-rc6
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git v6.15-rc6
-console output: https://syzkaller.appspot.com/x/log.txt?x=11960ef4580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=753a0ce88f56915c
-dashboard link: https://syzkaller.appspot.com/bug?extid=25b83a6f2c702075fcbc
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=174022d4580000
+ (3) Fix a request's work item to not require a reference, thereby avoiding
+     the need to get rid of it in BH/IRQ context.
 
-Note: testing is done by a robot and is best-effort only.
+ (4) Fix waiting and waking to be consistent about the waitqueue used.
+
+The patches can also be found here:
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-fixes
+
+Thanks,
+David
+
+David Howells (3):
+  netfs: Fix oops in write-retry from mis-resetting the subreq iterator
+  netfs: Fix the request's work item to not require a ref
+  netfs: Fix wait/wake to be consistent about the waitqueue used
+
+Paulo Alcantara (1):
+  netfs: Fix setting of transferred bytes with short DIO reads
+
+ fs/9p/vfs_addr.c             |   2 +-
+ fs/afs/write.c               |   8 +-
+ fs/cachefiles/io.c           |  16 +--
+ fs/ceph/addr.c               |   2 +-
+ fs/erofs/fscache.c           |   6 +-
+ fs/netfs/buffered_read.c     |  32 +++--
+ fs/netfs/buffered_write.c    |   2 +-
+ fs/netfs/direct_read.c       |  10 +-
+ fs/netfs/direct_write.c      |  12 +-
+ fs/netfs/fscache_io.c        |  10 +-
+ fs/netfs/internal.h          |  42 +++++--
+ fs/netfs/misc.c              | 218 +++++++++++++++++++++++++++++++++++
+ fs/netfs/objects.c           |  47 ++++----
+ fs/netfs/read_collect.c      | 178 ++++------------------------
+ fs/netfs/read_pgpriv2.c      |   4 +-
+ fs/netfs/read_retry.c        |  26 +----
+ fs/netfs/read_single.c       |   6 +-
+ fs/netfs/write_collect.c     |  81 +++++--------
+ fs/netfs/write_issue.c       |  38 +++---
+ fs/netfs/write_retry.c       |  19 ++-
+ fs/smb/client/cifsproto.h    |   3 +-
+ fs/smb/client/cifssmb.c      |   4 +-
+ fs/smb/client/file.c         |   7 +-
+ fs/smb/client/smb2pdu.c      |   4 +-
+ include/linux/fscache.h      |   2 +-
+ include/linux/netfs.h        |  14 +--
+ include/trace/events/netfs.h |   7 +-
+ net/9p/client.c              |   6 +-
+ 28 files changed, 427 insertions(+), 379 deletions(-)
+
