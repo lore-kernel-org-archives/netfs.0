@@ -1,110 +1,317 @@
-Received: from mx.manguebit.com (mx.manguebit.com [167.235.159.17])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D6019DF4C
-	for <netfs@lists.linux.dev>; Wed, 21 May 2025 18:15:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.235.159.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4AE2882C6
+	for <netfs@lists.linux.dev>; Fri, 23 May 2025 07:58:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747851357; cv=none; b=g+lhL8SHNelocFyjZH7aEf51dRsw34gpR3zz3q87gzqZUc6iIZnEoZEIDfiTL1yKMztOJhfMsJXLSfyt3mde7M9mnoWjtHC5hXlS85NInfdrYM4qc/rRhWFtpPdUhVYBrVKzzAhZBkQ10hF4tQxeCt37o81E2M/IWhnkCcO0Lwg=
+	t=1747987086; cv=none; b=lhOQClunYbJLviuvlZUp/NRXARODMdG3GgdXWG3u6/uZFQS0SuCnWGfWQ4yBpEceYl3Xyz0f1Cyq0PIuvr3oky3JBYoaoNxKN/PoGqr8r2njMGKNHJdEY0OZUHQS61V7+9GH6/tMSgtvCG2CxyGQqzmuA0hH/HjkOIYbPtLGtU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747851357; c=relaxed/simple;
-	bh=anm5RzVUWKKqKHNMajALfMxUCyyODeOtqUpS8uXBphg=;
-	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Date:
-	 MIME-Version:Content-Type; b=lulHfzma62L3IOhvHbB+lwhdydhD0wtlGkPDi4GFK2chnAVSDfo/I2ZOMeArZ2wW029DgIjR2/D4vdbjmXVqId5c9t24L6USsrTAWendaUmhM2BrW+5EOcfTnEEHwcoy6g6VPjVPe/lr1GnUaB2x47FxmbuduRJwHzPdO78ADAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.com; spf=pass smtp.mailfrom=manguebit.com; dkim=pass (2048-bit key) header.d=manguebit.com header.i=@manguebit.com header.b=invypp1B; arc=none smtp.client-ip=167.235.159.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.com
+	s=arc-20240116; t=1747987086; c=relaxed/simple;
+	bh=5b4iIJLicDG44C6e4DHl+bizqMDLZTKbRDPmcgw3Q6o=;
+	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=mW3gIDZsaL7pYAEzCxzOu85XiXub0+OIuJ8ltnKovkFhT9NZpeJJZ2MYNfTBmcbU2Rl14P110htYxKzxE9SAI/nLO43QPwe8UcSrUPcPon1E/smzSaN5wxtF9Vf4xuv4Q9XfyLMR0m++QVpm566wTWIovko0nOiJKSUbprsGvig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XQvdtYsA; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manguebit.com header.i=@manguebit.com header.b="invypp1B"
-Message-ID: <b5a2d0da7fd3f86766f3e9f0faeec7e6@manguebit.com>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
-	s=dkim; t=1747851347;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XQvdtYsA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1747987083;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Yvm1O4MMjG2/xnCn+CSfYn8BizNqOwxcONvz01rZbvk=;
-	b=invypp1B+Lod560onybBbnud8RnxMe9PguAaUJQzqbKguc+rqX1bd58++jpfGkplxjI+OO
-	561Mcv5JR2Exo6XqWvNeWnjQgzcVdEFuLiuJPHrsc4owyqi+OQBqZKgrQTKccVEA6eBZk/
-	NwshElVtg8A+rtyPLkZszNhkqJnCcWn0Gn7wSwB/PKEZtDfEVwi893Vdfdp+xMo7ueHCrx
-	qeb09jMXsotSSWEFRip/JgOu8fMIDofU/uD9RIon/TpNpWKjpkUkn825GbHWrQKKeIxdk8
-	2eyd1jNFxY//iUc6B8mQCI/LJLJMvsLGFDIe6m/gwUo/BSORvuH6NyIughwOdw==
-From: Paulo Alcantara <pc@manguebit.com>
-To: Johannes Berg <johannes@sipsolutions.net>, linux-cifs@vger.kernel.org
-Cc: netfs@lists.linux.dev, David Howells <dhowells@redhat.com>
-Subject: Re: 6.14.6: copy from cifs mount never finishes
-In-Reply-To: <e5d03b84a3631ace93bb36c5cd6ba5202c11e14f.camel@sipsolutions.net>
-References: <50815dea489f26cf2c8d34162d8be5f0a7d3465e.camel@sipsolutions.net>
- <e5d03b84a3631ace93bb36c5cd6ba5202c11e14f.camel@sipsolutions.net>
-Date: Wed, 21 May 2025 15:15:41 -0300
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=tiNxf9tQwpwE2TWVu8VUS+sRn12irkIFL/qqEmpQB1g=;
+	b=XQvdtYsAkUQlVtfME2u+5u8DKOB0cP9xVzlNIju9uc4bnWO1Nfk7iUCx9J1cCaLv7GDG/B
+	mswBQUsBHdLt9PEqw+JDdlM9d/iV6epEP77h5SG3RfqiabHfB6EvFDnJpL6Epc+0OpzvzO
+	IZB8Coy/4190MYnxr9VMT2D0JPigS4A=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-175-wSrVJLLkPtC-v1SIaj6bAA-1; Fri,
+ 23 May 2025 03:57:59 -0400
+X-MC-Unique: wSrVJLLkPtC-v1SIaj6bAA-1
+X-Mimecast-MFC-AGG-ID: wSrVJLLkPtC-v1SIaj6bAA_1747987077
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 16578195608E;
+	Fri, 23 May 2025 07:57:57 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.188])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4B809195608F;
+	Fri, 23 May 2025 07:57:53 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <brauner@kernel.org>
+cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.com>,
+    Steve French <sfrench@samba.org>,
+    Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>, netfs@lists.linux.dev,
+    v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
+    linux-cifs@vger.kernel.org, ceph-devel@vger.kernel.org,
+    linux-nfs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: [PATCH] netfs: Fix undifferentiation of DIO reads from unbuffered reads
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <3444960.1747987072.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 23 May 2025 08:57:52 +0100
+Message-ID: <3444961.1747987072@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Johannes Berg <johannes@sipsolutions.net> writes:
+On cifs, "DIO reads" (specified by O_DIRECT) need to be differentiated fro=
+m
+"unbuffered reads" (specified by cache=3Dnone in the mount parameters).  T=
+he
+difference is flagged in the protocol and the server may behave
+differently: Windows Server will, for example, mandate that DIO reads are
+block aligned.
 
-> So I'm on 6.14.6 on Fedora, trying to copy a few relatively small files.
-> I went to lunch and when I came back it still wasn't finished, and the
-> first file was just growing and growing in size ...
->
-> The filesystem was mounted with just
->
-> # mount.cifs -ouser=<user>,dom=<dom> '\\server\share\some\deep\path' /mnt
->
-> The server is some Windows server, I think, our IT runs it. Probably not
-> Azure since it's an internal IP address.
->
-> I also have a pcap now, but I'm not going to post it to the list.
->
->
-> Reproducing it, I see:
->
-> $ ls -l /mnt/dmesg_log.txt
-> -rwxr-xr-x. 1 root root 271261 May 13 13:00 /mnt/dmesg_log.txt
-> $ strace cp /mnt/dmesg_log.txt /tmp/
-> execve("/usr/bin/cp", ["cp", "/mnt/dmesg_log.txt", "/tmp/"], 0x7ffcae506680 /* 85 vars */) = 0
-> ...
-> openat(AT_FDCWD, "/tmp/", O_RDONLY|O_PATH|O_DIRECTORY) = 3
-> newfstatat(AT_FDCWD, "/mnt/dmesg_log.txt", {st_mode=S_IFREG|0755, st_size=271261, ...}, 0) = 0
-> newfstatat(3, "dmesg_log.txt", 0x7ffdcacac290, 0) = -1 ENOENT (No such file or directory)
-> openat(AT_FDCWD, "/mnt/dmesg_log.txt", O_RDONLY) = 4
-> fstat(4, {st_mode=S_IFREG|0755, st_size=271261, ...}) = 0
-> openat(3, "dmesg_log.txt", O_WRONLY|O_CREAT|O_EXCL, 0755) = 5
-> ioctl(5, BTRFS_IOC_CLONE or FICLONE, 4) = -1 EXDEV (Invalid cross-device link)
-> fstat(5, {st_mode=S_IFREG|0755, st_size=0, ...}) = 0
-> fadvise64(4, 0, 0, POSIX_FADV_SEQUENTIAL) = 0
-> uname({sysname="Linux", nodename="jberg1-mobl2.ger.corp.intel.com", ...}) = 0
-> copy_file_range(4, NULL, 5, NULL, 9223372035781033984, 0) = -1 EXDEV (Invalid cross-device link)
-> mmap(NULL, 1056768, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f1d2a6fe000
-> read(4, "[ 3410.434280] iwlwifi 0000:3d:0"..., 1048576) = 983040
->
-> now that's already wrong, the file is only 271261 bytes! That should
-> have returned 271261, not 983040.
->
-> Next that data is written out, nothing special, except when I look at
-> the data, after offset 271261 it's filled up with zeroes.
->
-> write(5, "[ 3410.434280] iwlwifi 0000:3d:0"..., 983040) = 983040
->
->
-> It gets worse from here though, because now even the next read doesn't
-> return 0 for EOF:
->
-> read(4, "[ 3410.434280] iwlwifi 0000:3d:0"..., 1048576) = 983040
-> write(5, "[ 3410.434280] iwlwifi 0000:3d:0"..., 983040) = 983040
->
->
-> And that just repeats forever.
+Fix this by adding a NETFS_UNBUFFERED_READ to differentiate this from
+NETFS_DIO_READ, parallelling the write differentiation that already exists=
+.
+cifs will then do the right thing.
 
-As we've talked, this should be fixed by
+Fixes: 016dc8516aec ("netfs: Implement unbuffered/DIO read support")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+cc: Steve French <sfrench@samba.org>
+cc: netfs@lists.linux.dev
+cc: v9fs@lists.linux.dev
+cc: linux-afs@lists.infradead.org
+cc: linux-cifs@vger.kernel.org
+cc: ceph-devel@vger.kernel.org
+cc: linux-nfs@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
+---
+ fs/9p/vfs_addr.c             |    3 ++-
+ fs/afs/write.c               |    1 +
+ fs/ceph/addr.c               |    4 +++-
+ fs/netfs/direct_read.c       |    3 ++-
+ fs/netfs/main.c              |    1 +
+ fs/netfs/misc.c              |    1 +
+ fs/netfs/objects.c           |    1 +
+ fs/netfs/read_collect.c      |    7 +++++--
+ fs/nfs/fscache.c             |    1 +
+ fs/smb/client/file.c         |    3 ++-
+ include/linux/netfs.h        |    1 +
+ include/trace/events/netfs.h |    1 +
+ 12 files changed, 21 insertions(+), 6 deletions(-)
 
-        34eb98c6598c ("netfs: Fix setting of transferred bytes with short DIO reads") [1]
 
-I'll make sure to get it through -stable once released.
+diff --git a/fs/9p/vfs_addr.c b/fs/9p/vfs_addr.c
+index b5a4a28e0fe7..e4420591cf35 100644
+--- a/fs/9p/vfs_addr.c
++++ b/fs/9p/vfs_addr.c
+@@ -77,7 +77,8 @@ static void v9fs_issue_read(struct netfs_io_subrequest *=
+subreq)
+ =
 
-Thanks.
+ 	/* if we just extended the file size, any portion not in
+ 	 * cache won't be on server and is zeroes */
+-	if (subreq->rreq->origin !=3D NETFS_DIO_READ)
++	if (subreq->rreq->origin !=3D NETFS_UNBUFFERED_READ &&
++	    subreq->rreq->origin !=3D NETFS_DIO_READ)
+ 		__set_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags);
+ 	if (pos + total >=3D i_size_read(rreq->inode))
+ 		__set_bit(NETFS_SREQ_HIT_EOF, &subreq->flags);
+diff --git a/fs/afs/write.c b/fs/afs/write.c
+index 7df7b2f5e7b2..2e7526ea883a 100644
+--- a/fs/afs/write.c
++++ b/fs/afs/write.c
+@@ -202,6 +202,7 @@ void afs_retry_request(struct netfs_io_request *wreq, =
+struct netfs_io_stream *st
+ 	case NETFS_READ_GAPS:
+ 	case NETFS_READ_SINGLE:
+ 	case NETFS_READ_FOR_WRITE:
++	case NETFS_UNBUFFERED_READ:
+ 	case NETFS_DIO_READ:
+ 		return;
+ 	default:
+diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+index 557c326561fd..b95c4cb21c13 100644
+--- a/fs/ceph/addr.c
++++ b/fs/ceph/addr.c
+@@ -238,6 +238,7 @@ static void finish_netfs_read(struct ceph_osd_request =
+*req)
+ 		if (sparse && err > 0)
+ 			err =3D ceph_sparse_ext_map_end(op);
+ 		if (err < subreq->len &&
++		    subreq->rreq->origin !=3D NETFS_UNBUFFERED_READ &&
+ 		    subreq->rreq->origin !=3D NETFS_DIO_READ)
+ 			__set_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags);
+ 		if (IS_ENCRYPTED(inode) && err > 0) {
+@@ -281,7 +282,8 @@ static bool ceph_netfs_issue_op_inline(struct netfs_io=
+_subrequest *subreq)
+ 	size_t len;
+ 	int mode;
+ =
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git #vfs-6.16.netfs
+-	if (rreq->origin !=3D NETFS_DIO_READ)
++	if (rreq->origin !=3D NETFS_UNBUFFERED_READ &&
++	    rreq->origin !=3D NETFS_DIO_READ)
+ 		__set_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags);
+ 	__clear_bit(NETFS_SREQ_COPY_TO_CACHE, &subreq->flags);
+ =
+
+diff --git a/fs/netfs/direct_read.c b/fs/netfs/direct_read.c
+index a24e63d2c818..9902766195d7 100644
+--- a/fs/netfs/direct_read.c
++++ b/fs/netfs/direct_read.c
+@@ -188,7 +188,8 @@ ssize_t netfs_unbuffered_read_iter_locked(struct kiocb=
+ *iocb, struct iov_iter *i
+ =
+
+ 	rreq =3D netfs_alloc_request(iocb->ki_filp->f_mapping, iocb->ki_filp,
+ 				   iocb->ki_pos, orig_count,
+-				   NETFS_DIO_READ);
++				   iocb->ki_flags & IOCB_DIRECT ?
++				   NETFS_DIO_READ : NETFS_UNBUFFERED_READ);
+ 	if (IS_ERR(rreq))
+ 		return PTR_ERR(rreq);
+ =
+
+diff --git a/fs/netfs/main.c b/fs/netfs/main.c
+index 70ecc8f5f210..3db401d269e7 100644
+--- a/fs/netfs/main.c
++++ b/fs/netfs/main.c
+@@ -39,6 +39,7 @@ static const char *netfs_origins[nr__netfs_io_origin] =3D=
+ {
+ 	[NETFS_READ_GAPS]		=3D "RG",
+ 	[NETFS_READ_SINGLE]		=3D "R1",
+ 	[NETFS_READ_FOR_WRITE]		=3D "RW",
++	[NETFS_UNBUFFERED_READ]		=3D "UR",
+ 	[NETFS_DIO_READ]		=3D "DR",
+ 	[NETFS_WRITEBACK]		=3D "WB",
+ 	[NETFS_WRITEBACK_SINGLE]	=3D "W1",
+diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
+index 77e7f7c79d27..43b67a28a8fa 100644
+--- a/fs/netfs/misc.c
++++ b/fs/netfs/misc.c
+@@ -461,6 +461,7 @@ static ssize_t netfs_wait_for_request(struct netfs_io_=
+request *rreq,
+ 		case NETFS_DIO_READ:
+ 		case NETFS_DIO_WRITE:
+ 		case NETFS_READ_SINGLE:
++		case NETFS_UNBUFFERED_READ:
+ 		case NETFS_UNBUFFERED_WRITE:
+ 			break;
+ 		default:
+diff --git a/fs/netfs/objects.c b/fs/netfs/objects.c
+index d3eb9ba3013a..31fa0c81e2a4 100644
+--- a/fs/netfs/objects.c
++++ b/fs/netfs/objects.c
+@@ -59,6 +59,7 @@ struct netfs_io_request *netfs_alloc_request(struct addr=
+ess_space *mapping,
+ 	    origin =3D=3D NETFS_READ_GAPS ||
+ 	    origin =3D=3D NETFS_READ_SINGLE ||
+ 	    origin =3D=3D NETFS_READ_FOR_WRITE ||
++	    origin =3D=3D NETFS_UNBUFFERED_READ ||
+ 	    origin =3D=3D NETFS_DIO_READ) {
+ 		INIT_WORK(&rreq->work, netfs_read_collection_worker);
+ 		rreq->io_streams[0].avail =3D true;
+diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
+index 900dd51c3b94..bad677e58a42 100644
+--- a/fs/netfs/read_collect.c
++++ b/fs/netfs/read_collect.c
+@@ -342,7 +342,8 @@ static void netfs_rreq_assess_dio(struct netfs_io_requ=
+est *rreq)
+ {
+ 	unsigned int i;
+ =
+
+-	if (rreq->origin =3D=3D NETFS_DIO_READ) {
++	if (rreq->origin =3D=3D NETFS_UNBUFFERED_READ ||
++	    rreq->origin =3D=3D NETFS_DIO_READ) {
+ 		for (i =3D 0; i < rreq->direct_bv_count; i++) {
+ 			flush_dcache_page(rreq->direct_bv[i].bv_page);
+ 			// TODO: cifs marks pages in the destination buffer
+@@ -360,7 +361,8 @@ static void netfs_rreq_assess_dio(struct netfs_io_requ=
+est *rreq)
+ 	}
+ 	if (rreq->netfs_ops->done)
+ 		rreq->netfs_ops->done(rreq);
+-	if (rreq->origin =3D=3D NETFS_DIO_READ)
++	if (rreq->origin =3D=3D NETFS_UNBUFFERED_READ ||
++	    rreq->origin =3D=3D NETFS_DIO_READ)
+ 		inode_dio_end(rreq->inode);
+ }
+ =
+
+@@ -416,6 +418,7 @@ bool netfs_read_collection(struct netfs_io_request *rr=
+eq)
+ 	//netfs_rreq_is_still_valid(rreq);
+ =
+
+ 	switch (rreq->origin) {
++	case NETFS_UNBUFFERED_READ:
+ 	case NETFS_DIO_READ:
+ 	case NETFS_READ_GAPS:
+ 		netfs_rreq_assess_dio(rreq);
+diff --git a/fs/nfs/fscache.c b/fs/nfs/fscache.c
+index e278a1ad1ca3..8b0785178731 100644
+--- a/fs/nfs/fscache.c
++++ b/fs/nfs/fscache.c
+@@ -367,6 +367,7 @@ void nfs_netfs_read_completion(struct nfs_pgio_header =
+*hdr)
+ =
+
+ 	sreq =3D netfs->sreq;
+ 	if (test_bit(NFS_IOHDR_EOF, &hdr->flags) &&
++	    sreq->rreq->origin !=3D NETFS_UNBUFFERED_READ &&
+ 	    sreq->rreq->origin !=3D NETFS_DIO_READ)
+ 		__set_bit(NETFS_SREQ_CLEAR_TAIL, &sreq->flags);
+ =
+
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index 3000c8a9d3ea..d2df10b8e6fd 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -219,7 +219,8 @@ static void cifs_issue_read(struct netfs_io_subrequest=
+ *subreq)
+ 			goto failed;
+ 	}
+ =
+
+-	if (subreq->rreq->origin !=3D NETFS_DIO_READ)
++	if (subreq->rreq->origin !=3D NETFS_UNBUFFERED_READ &&
++	    subreq->rreq->origin !=3D NETFS_DIO_READ)
+ 		__set_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags);
+ =
+
+ 	trace_netfs_sreq(subreq, netfs_sreq_trace_submit);
+diff --git a/include/linux/netfs.h b/include/linux/netfs.h
+index c3f230732f51..1464b3a10498 100644
+--- a/include/linux/netfs.h
++++ b/include/linux/netfs.h
+@@ -206,6 +206,7 @@ enum netfs_io_origin {
+ 	NETFS_READ_GAPS,		/* This read is a synchronous read to fill gaps */
+ 	NETFS_READ_SINGLE,		/* This read should be treated as a single object */
+ 	NETFS_READ_FOR_WRITE,		/* This read is to prepare a write */
++	NETFS_UNBUFFERED_READ,		/* This is an unbuffered read */
+ 	NETFS_DIO_READ,			/* This is a direct I/O read */
+ 	NETFS_WRITEBACK,		/* This write was triggered by writepages */
+ 	NETFS_WRITEBACK_SINGLE,		/* This monolithic write was triggered by write=
+pages */
+diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
+index 402c5e82e7b8..4175eec40048 100644
+--- a/include/trace/events/netfs.h
++++ b/include/trace/events/netfs.h
+@@ -39,6 +39,7 @@
+ 	EM(NETFS_READ_GAPS,			"RG")		\
+ 	EM(NETFS_READ_SINGLE,			"R1")		\
+ 	EM(NETFS_READ_FOR_WRITE,		"RW")		\
++	EM(NETFS_UNBUFFERED_READ,		"UR")		\
+ 	EM(NETFS_DIO_READ,			"DR")		\
+ 	EM(NETFS_WRITEBACK,			"WB")		\
+ 	EM(NETFS_WRITEBACK_SINGLE,		"W1")		\
+
