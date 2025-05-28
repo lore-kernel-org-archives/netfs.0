@@ -1,89 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88592143748;
-	Fri, 23 May 2025 08:35:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB4B24678F
+	for <netfs@lists.linux.dev>; Wed, 28 May 2025 08:13:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747989330; cv=none; b=ECG2GLzMGIYgI/0R4y4ASJo0c46ZY/d7NvsYRcQMVG8CjXlwG9vGqPWQKtQ7cPEVQe6q3zQ4nftoTyIa98jQuqOy5uiNlm6GtuiizoKmqpzDNaEOGOYdoiDp/t+yOJR1hld7UGsx65KOHPXEcTvM46DPhC+HZ+/MYJqTYNHfAB4=
+	t=1748419987; cv=none; b=U+oVqU4q9Tjp14vahInxNTGOvdtxE4SwkMxMWNP3fHDzy+m6SzvwlBEbqElU+T2sSmn9HAFtYN6F+SJR1rhe5W5bWpVSpQeEFHDHqlG5dGtRN1tVjQhn70w+X3ELOvlDBpjODRfceNBRV+e1v5xwTI1qu9tZFlJdPaEmBjvv2xA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747989330; c=relaxed/simple;
-	bh=aaYZ1roJQALwLOCDStlA1iSIFgYsVkGtdj7Sg7WhRg0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LNGbd0sJe6Jxm+7jeyQKc9YFcrztnYLp6BSPsAa3SQoAoVahZMdVJxPYlovXfs19iB8PrlkAsTT+LARL93sAV1k7Slr9s7J6d/3TnmL+SXup25Ssaz1SwB3ZJ8E6b99cKcfVi+WuuT7J8HTLmevBpEji4lbquH480xzPCBjIJsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XcRl5Kfk; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XcRl5Kfk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2820AC4CEE9;
-	Fri, 23 May 2025 08:35:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747989330;
-	bh=aaYZ1roJQALwLOCDStlA1iSIFgYsVkGtdj7Sg7WhRg0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XcRl5Kfk0LErS6d8DWAJDv0260N7QeO09U2nEFy+/POSGuCKNcjXuTRL0y6iQAms+
-	 gufkd6wsGs2pwGAfTTTeqykAQJSG3C9QMqDlczk12XUK8b+gnUv39dzAs+z+h0L9KU
-	 dFmNH9hN4SUxUnrSmfRCxsKQPdLr6cCcoy656aBC1W/wE/N9u+bAtp071aSh5VFXrz
-	 WJtXbFOeZWq0QZdlLbFa8iWq98vVMUNbRD5mf5u12jUsRXe1g45rdOeEwXKTllwLpA
-	 3PSQLEBw3ZwbknFRHyf2d/jwQlcLoLv/+KHFE3+7KsGGW2+zCXKKLsn6xXRMvWEl13
-	 YalaMnrvpCNlg==
-From: Christian Brauner <brauner@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Steve French <sfrench@samba.org>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	netfs@lists.linux.dev,
-	v9fs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
+	s=arc-20240116; t=1748419987; c=relaxed/simple;
+	bh=Ojd7iMoppI0Vmr8htaS6S4vgrqwMyDhGX+qRFtVJFaI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Hk4/59gwX9iuuYktixdiXqRhrb7ZyHYYDmlMfE3G6+OE81yranK3VTh+lrDOT8I3xwHQZJi9onD1lqUKreLfayDzziVrtEf9J4F4x2rCZf0IO98ElynWqhQJvv88LR0lAcXInrH5ZNtI2AQWBd4te89mQIbpqormvaiL8YE5bLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4b6j0p11CTz4f3jt8
+	for <netfs@lists.linux.dev>; Wed, 28 May 2025 16:12:42 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id 4B4021A0E99
+	for <netfs@lists.linux.dev>; Wed, 28 May 2025 16:13:02 +0800 (CST)
+Received: from huaweicloud.com (unknown [10.175.104.67])
+	by APP4 (Coremail) with SMTP id gCh0CgAHa1+MxTZozegGNw--.47012S4;
+	Wed, 28 May 2025 16:13:02 +0800 (CST)
+From: Zizhi Wo <wozizhi@huaweicloud.com>
+To: netfs@lists.linux.dev,
+	dhowells@redhat.com,
+	jlayton@kernel.org,
+	brauner@kernel.org
+Cc: hsiangkao@linux.alibaba.com,
+	jefflexu@linux.alibaba.com,
+	zhujia.zj@bytedance.com,
+	linux-erofs@lists.ozlabs.org,
 	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] netfs: Fix undifferentiation of DIO reads from unbuffered reads
-Date: Fri, 23 May 2025 10:35:21 +0200
-Message-ID: <20250523-audienz-brotkrumen-039bac60ea9c@brauner>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <3444961.1747987072@warthog.procyon.org.uk>
-References: <3444961.1747987072@warthog.procyon.org.uk>
+	linux-kernel@vger.kernel.org,
+	wozizhi@huawei.com,
+	libaokun1@huawei.com,
+	yangerkun@huawei.com,
+	houtao1@huawei.com,
+	yukuai3@huawei.com
+Subject: [QUESTION] cachefiles: Recovery concerns with on-demand loading after unexpected power loss
+Date: Wed, 28 May 2025 16:07:59 +0800
+Message-Id: <20250528080759.105178-1-wozizhi@huaweicloud.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1377; i=brauner@kernel.org; h=from:subject:message-id; bh=aaYZ1roJQALwLOCDStlA1iSIFgYsVkGtdj7Sg7WhRg0=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQYGHu/SDHY357Z8Vnt0kvnnd5Pl3f7Mby3s230lQmyW iYw5/2CjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIks38vwT0H9fHuqkaemTEaT jfn5xW8rPt7zu6F+QEBTKqFnj+vLKQz/C9Xiw1OmmKf0fDXx/Lpto3rrw5Pspt38p9YeZml/+/0 cNwA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:gCh0CgAHa1+MxTZozegGNw--.47012S4
+X-Coremail-Antispam: 1UD129KBjvJXoWxJr47CF1DWr4fCw15XF13Arb_yoW8JFy5pF
+	ZI9w1UK34kXFZ7K3s7AF48uryfZ3s5AF4DXrWSqrWktrn0kF1Iqryaqr1UJFWUurZrG3y2
+	qw1jyr9rAwnFvrJanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0E
+	n4kS14v26rWY6Fy7MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I
+	0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWU
+	tVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcV
+	CY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAF
+	wI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa
+	7IUnUDG7UUUUU==
+X-CM-SenderInfo: pzr2x6tkl6x35dzhxuhorxvhhfrp/
 
-On Fri, 23 May 2025 08:57:52 +0100, David Howells wrote:
-> On cifs, "DIO reads" (specified by O_DIRECT) need to be differentiated from
-> "unbuffered reads" (specified by cache=none in the mount parameters).  The
-> difference is flagged in the protocol and the server may behave
-> differently: Windows Server will, for example, mandate that DIO reads are
-> block aligned.
-> 
-> Fix this by adding a NETFS_UNBUFFERED_READ to differentiate this from
-> NETFS_DIO_READ, parallelling the write differentiation that already exists.
-> cifs will then do the right thing.
-> 
-> [...]
+Currently, in on-demand loading mode, cachefiles first calls
+cachefiles_create_tmpfile() to generate a tmpfile, and only during the exit
+process does it call cachefiles_commit_object->cachefiles_commit_tmpfile to
+create the actual dentry and making it visible to users.
 
-Applied to the vfs-6.16.netfs branch of the vfs/vfs.git tree.
-Patches in the vfs-6.16.netfs branch should appear in linux-next soon.
+If the cache write is interrupted unexpectedly (e.g., by system crash or
+power loss), during the next startup process, cachefiles_look_up_object()
+will determine that no corresponding dentry has been generated and will
+recreate the tmpfile and pull the complete data again!
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+The current implementation mechanism appears to provide per-file atomicity.
+For scenarios involving large image files (where significant amount of
+cache data needs to be written), this re-pulling process after an
+interruption seems considerable overhead?
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+In previous kernel versions, cache dentry were generated during the
+LOOK_UP_OBJECT process of the object state machine. Even if power was lost
+midway, the next startup process could continue pulling data based on the
+previously downloaded cache data on disk.
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+What would be the recommended way to handle this situation? Or am I
+thinking about this incorrectly? Would appreciate any feedback and guidance
+from the community.
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs-6.16.netfs
+Thanks,
+Zizhi Wo
 
-[1/1] netfs: Fix undifferentiation of DIO reads from unbuffered reads
-      https://git.kernel.org/vfs/vfs/c/db26d62d79e4
