@@ -1,79 +1,65 @@
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B41528F3
-	for <netfs@lists.linux.dev>; Sat, 31 May 2025 23:20:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDBF2184E;
+	Sun,  1 Jun 2025 00:26:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748733605; cv=none; b=tj9YAJaWfwL8bFRrR6izm7m9NhaX3SGIoT33EXEydyZ2UAMY5ciliSrgnDhWKbDhQDiUiN1M9N6j5CC4CqJmIKcFDBK89G1pK0QbeCaBGpxsS3a1swdM8qcTfUIQ1EFB2kmlFjkNVgiRiGIQtReJqPk4WmKNf+SPU49/YpAhniQ=
+	t=1748737584; cv=none; b=exF+f9RhDZGNqKAQec3vnWpYYvIRtIOqwCoDlcvE1Sj34mEP+0IdBl3+hSVhXZMcdwA6SvcmDXyDhXQNdp5v6qXfQ8n2E9hQn8BTI0989jRe2SoIszYpNAirMiH1DEQLFo5923MMeod0U2TIeXgp4+YKnZJNa/SIWw99GCgPnns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748733605; c=relaxed/simple;
-	bh=KDGKspSNKQHNNPjKszU2Jv76s0xm+qLt2JhjIGoqvvA=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=rek6xPXtE0+7oz52PEH2M/BnKIaKtvnn/V2jeA4oYqFjgkLtq7S10ozM/J3byFx0BExYuc9o/DjxfPyQgepP73M/iWl+5C5S/57xQwHMCVll68wltNryqyYFW0h42shwdzqxs4TYyGTfFDOGKmmiC1qP1nNXY1ckb41U6hoNUbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-3dd770a7424so31113435ab.1
-        for <netfs@lists.linux.dev>; Sat, 31 May 2025 16:20:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748733602; x=1749338402;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yZhhLbnZ0PG4eSSt9FnuW1K8TROo5OM3uq9fTUJ0/Ws=;
-        b=F0pOawiN7IfoigjSaQ8hv3RhT/64uiFWsFCj/MyURRHfqievqYgw2wsjO2lIx9Dqx3
-         xGR6ZFncyF0yps78h+w1lwoDR+x8U/JRh8Ij2kcOakaRF3AuVIcJB7Syq9b6zMf7HxhC
-         Lg0V4l1CzunT2v42ZvR7/Vu58EkTGqWDNdRUZHBg8tnO8tSBK6tURrpnLPVFf8iJ5ESo
-         EEMnrZrqtfNx+0BmhC2Cbxhlx6CmtnQ0oV+zqz9g0Jtm4yXeREGjsub+KA5kEeuAo7gt
-         QkyysimPOJ4zxo0KbF6LEpCnOBoPDKXuyVHwf8qBOa242Lmm+HpEyUNMksXw9bRzvTS/
-         0G9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUbExUYhNQmmqT874gfGdSJ7JkFXybTL8IkQ1rVotUhakL7olyiSp42aXX0LQFgHlui6qusnQ==@lists.linux.dev
-X-Gm-Message-State: AOJu0YyR2XKPaKh70QoAyuh7YFUHx+delF1gwM/oXV0zPnrFYUbJFgc6
-	FaATM+Oy2I0C7JrxpNPg2QC3By9Ct6JxJb15JEnzQYUXGlZF/ceK3gozLHmkggjWqDYxEHSgJC4
-	bf8+lrDt4FJXYzNaWqh2v0Q+C3qR8HKQ1dwuu/d6oCFw+2mHUEsuyTFNMqr0=
-X-Google-Smtp-Source: AGHT+IGCxD3oAG4WtemqwxCGWKeXMSIRReB1CBwta6mTh7ppTS3JkVTjOWgbuFnoIN0s/mgfSawICbO9dqqQBziJHDaLHyOxRUdu
+	s=arc-20240116; t=1748737584; c=relaxed/simple;
+	bh=wnjlPLdQigk8QgUrIHw5yk6jJrpMJY8IJU4pMMPHFAo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i26LlqxtT0Tah+IlIFtIWUrN2l59c4D+DTf399S0S+NfsswwVXKYeVLXFqjRNgFwOdgwffCOvNtkofkVDlj4k4X+/kp96IEMnOgFlKPvaeTyO7gu6ZGv43dU53nmrPc4hIo+D/pMBOTD1upbCFYy4TiwV5Xx9RMZrOD85FO4WSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Exm/mE4p; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Exm/mE4p"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=5rMEOV3KLFf+UgtAPaHUd4YMhA+OdnA8tVR26hQhvHY=; b=Exm/mE4p4ROy2CB3jVoyT30S5s
+	CZwAD3td2DHQhuXhoNsMlrGr6/4Fu+gZ5ZMxz3isum/jvx6wHBpY/HqfHzfV8O8mVca0YnPZdt0Ii
+	TJUAhCQVf3ONs1apHQXVDwdA6Ki+CaSqyYrYQBREpHRyNGbOWuLG3w0EmHYmCd45IDdeLz7JWpHAB
+	FLns5ip5T1x8h6GjA/YCEPKY0ADhUW2iKpDn/DXGLgnfRH6o/41Dh6L6PMlJ4l2kNcdWNaeQnWMlm
+	4PTfCEflJTI5RzsbFZWtiB1H08ys0qYjSRqA+4DSIuhNZmLy2gJ9Qm1HjVY9ggkhrfUOA9LJA16NN
+	Ds2tp2tg==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uLWWa-0000000HB4K-15Hx;
+	Sun, 01 Jun 2025 00:26:04 +0000
+Date: Sun, 1 Jun 2025 01:26:04 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: syzbot <syzbot+c0dc46208750f063d0e0@syzkaller.appspotmail.com>
+Cc: asmadeus@codewreck.org, chao@kernel.org, dhowells@redhat.com,
+	hch@lst.de, hdanton@sina.com, jaegeuk@kernel.org,
+	jlayton@kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netfs@lists.linux.dev, syzkaller-bugs@googlegroups.com,
+	v9fs@lists.linux.dev
+Subject: Re: [syzbot] [netfs?] kernel BUG in folio_unlock (3)
+Message-ID: <aDueHCMDLPs2UtY2@casper.infradead.org>
+References: <67b75198.050a0220.14d86d.02e2.GAE@google.com>
+ <683b8ea2.a00a0220.d8eae.0020.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:2287:b0:3dc:8a53:c9c4 with SMTP id
- e9e14a558f8ab-3dda3342b6cmr26765825ab.6.1748733602686; Sat, 31 May 2025
- 16:20:02 -0700 (PDT)
-Date: Sat, 31 May 2025 16:20:02 -0700
-In-Reply-To: <67b75198.050a0220.14d86d.02e2.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <683b8ea2.a00a0220.d8eae.0020.GAE@google.com>
-Subject: Re: [syzbot] [netfs?] kernel BUG in folio_unlock (3)
-From: syzbot <syzbot+c0dc46208750f063d0e0@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, chao@kernel.org, dhowells@redhat.com, hch@lst.de, 
-	hdanton@sina.com, jaegeuk@kernel.org, jlayton@kernel.org, 
-	linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netfs@lists.linux.dev, 
-	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev, willy@infradead.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <683b8ea2.a00a0220.d8eae.0020.GAE@google.com>
 
-syzbot has bisected this issue to:
+On Sat, May 31, 2025 at 04:20:02PM -0700, syzbot wrote:
+> syzbot has bisected this issue to:
+> 
+> commit 80f31d2a7e5f4efa7150c951268236c670bcb068
+> Author: Christoph Hellwig <hch@lst.de>
+> Date:   Thu May 8 05:14:32 2025 +0000
 
-commit 80f31d2a7e5f4efa7150c951268236c670bcb068
-Author: Christoph Hellwig <hch@lst.de>
-Date:   Thu May 8 05:14:32 2025 +0000
+That's not possible; this commit is after the original report.
 
-    f2fs: return bool from __write_node_folio
-
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=1129d00c580000
-start commit:   0f70f5b08a47 Merge tag 'pull-automount' of git://git.kerne..
-git tree:       upstream
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=1329d00c580000
-console output: https://syzkaller.appspot.com/x/log.txt?x=1529d00c580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=22765942f2e2ebcf
-dashboard link: https://syzkaller.appspot.com/bug?extid=c0dc46208750f063d0e0
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15bfe970580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=13bfe970580000
-
-Reported-by: syzbot+c0dc46208750f063d0e0@syzkaller.appspotmail.com
-Fixes: 80f31d2a7e5f ("f2fs: return bool from __write_node_folio")
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+That said, there _is_ a double folio_unlock() in this patch, which
+I'm about to send a fix for.  It's just not fixing the original report.
