@@ -1,65 +1,106 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from neil.brown.name (neil.brown.name [103.29.64.221])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDBF2184E;
-	Sun,  1 Jun 2025 00:26:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014042AE6D;
+	Sun,  8 Jun 2025 23:10:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.29.64.221
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748737584; cv=none; b=exF+f9RhDZGNqKAQec3vnWpYYvIRtIOqwCoDlcvE1Sj34mEP+0IdBl3+hSVhXZMcdwA6SvcmDXyDhXQNdp5v6qXfQ8n2E9hQn8BTI0989jRe2SoIszYpNAirMiH1DEQLFo5923MMeod0U2TIeXgp4+YKnZJNa/SIWw99GCgPnns=
+	t=1749424212; cv=none; b=KMl2p8ka/CniLNHbaygEdQw76t5PC9+wiL1ZjyBMHb9UJd3E18sRK3VCZWhD6DVK7zxQMYGmeTY+RoWQZU/9GradBQ36Tg3UpkpaKMGocFt10h9PEuNgthylWErbSl0xBLgcYXvBbBSjyVjFxaEA8kJzKXJcTQNuDjRuZhWypFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748737584; c=relaxed/simple;
-	bh=wnjlPLdQigk8QgUrIHw5yk6jJrpMJY8IJU4pMMPHFAo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i26LlqxtT0Tah+IlIFtIWUrN2l59c4D+DTf399S0S+NfsswwVXKYeVLXFqjRNgFwOdgwffCOvNtkofkVDlj4k4X+/kp96IEMnOgFlKPvaeTyO7gu6ZGv43dU53nmrPc4hIo+D/pMBOTD1upbCFYy4TiwV5Xx9RMZrOD85FO4WSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Exm/mE4p; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Exm/mE4p"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=5rMEOV3KLFf+UgtAPaHUd4YMhA+OdnA8tVR26hQhvHY=; b=Exm/mE4p4ROy2CB3jVoyT30S5s
-	CZwAD3td2DHQhuXhoNsMlrGr6/4Fu+gZ5ZMxz3isum/jvx6wHBpY/HqfHzfV8O8mVca0YnPZdt0Ii
-	TJUAhCQVf3ONs1apHQXVDwdA6Ki+CaSqyYrYQBREpHRyNGbOWuLG3w0EmHYmCd45IDdeLz7JWpHAB
-	FLns5ip5T1x8h6GjA/YCEPKY0ADhUW2iKpDn/DXGLgnfRH6o/41Dh6L6PMlJ4l2kNcdWNaeQnWMlm
-	4PTfCEflJTI5RzsbFZWtiB1H08ys0qYjSRqA+4DSIuhNZmLy2gJ9Qm1HjVY9ggkhrfUOA9LJA16NN
-	Ds2tp2tg==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uLWWa-0000000HB4K-15Hx;
-	Sun, 01 Jun 2025 00:26:04 +0000
-Date: Sun, 1 Jun 2025 01:26:04 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: syzbot <syzbot+c0dc46208750f063d0e0@syzkaller.appspotmail.com>
-Cc: asmadeus@codewreck.org, chao@kernel.org, dhowells@redhat.com,
-	hch@lst.de, hdanton@sina.com, jaegeuk@kernel.org,
-	jlayton@kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netfs@lists.linux.dev, syzkaller-bugs@googlegroups.com,
-	v9fs@lists.linux.dev
-Subject: Re: [syzbot] [netfs?] kernel BUG in folio_unlock (3)
-Message-ID: <aDueHCMDLPs2UtY2@casper.infradead.org>
-References: <67b75198.050a0220.14d86d.02e2.GAE@google.com>
- <683b8ea2.a00a0220.d8eae.0020.GAE@google.com>
+	s=arc-20240116; t=1749424212; c=relaxed/simple;
+	bh=Afuue44CwgF//wFbdoNXEChynbl6KEZWKopL/hySyt8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AUJjZ9/nJDEJ44n8oD6sL2naHAZtI+oowQZyNLZrxPnlmdiuCx81uF5i3UfV9+Zuj2dIp3bJ/m45hEfWuQcXboaJNwkT3hDMA88Wg4s/Iv5N8qj2MMGYsbc1esGBLgUbu89LDoFjhm8XePVoWHi4zvqbaCT8j6jGOsYV5Qfi9QY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brown.name; spf=pass smtp.mailfrom=neil.brown.name; arc=none smtp.client-ip=103.29.64.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brown.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=neil.brown.name
+Received: from 196.186.233.220.static.exetel.com.au ([220.233.186.196] helo=home.neil.brown.name)
+	by neil.brown.name with esmtp (Exim 4.95)
+	(envelope-from <mr@neil.brown.name>)
+	id 1uOP9O-005veo-5K;
+	Sun, 08 Jun 2025 23:10:02 +0000
+From: NeilBrown <neil@brown.name>
+To: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Jan Harkes <jaharkes@cs.cmu.edu>,
+	David Howells <dhowells@redhat.com>,
+	Tyler Hicks <code@tyhicks.com>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Carlos Maiolino <cem@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org,
+	coda@cs.cmu.edu,
+	codalist@coda.cs.cmu.edu,
+	linux-nfs@vger.kernel.org,
+	netfs@lists.linux.dev,
+	ecryptfs@vger.kernel.org,
+	linux-unionfs@vger.kernel.org,
+	linux-xfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/5] Minor cleanup preparation for some dir-locking API changes
+Date: Mon,  9 Jun 2025 09:09:32 +1000
+Message-ID: <20250608230952.20539-1-neil@brown.name>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <683b8ea2.a00a0220.d8eae.0020.GAE@google.com>
+Content-Transfer-Encoding: 8bit
 
-On Sat, May 31, 2025 at 04:20:02PM -0700, syzbot wrote:
-> syzbot has bisected this issue to:
-> 
-> commit 80f31d2a7e5f4efa7150c951268236c670bcb068
-> Author: Christoph Hellwig <hch@lst.de>
-> Date:   Thu May 8 05:14:32 2025 +0000
+The following 5 patches provide further cleanup that serves as
+preparation for some dir-locking API changes that I want to make.  The
+most interesting is the last which makes another change to vfs_mkdir().
+As well as returning the dentry or consuming it on failure (a recent
+change) it now also unlocks on failure.  This will be needed when we
+transition to locking just the dentry, not the whole directory.
 
-That's not possible; this commit is after the original report.
+This leaves some rather clumsy code in overlayfs.  Overlayfs sometimes
+takes a rename lock (two directories) and then possibly does a
+vfs_mkdir() in one of those directories.  When that fails we now need to
+unlock only the other directory.
 
-That said, there _is_ a double folio_unlock() in this patch, which
-I'm about to send a fix for.  It's just not fixing the original report.
+I hope to go through overlayfs to narrow the directory locking so each
+lock only covers a single operation (possibly including a lookup first).
+That should remove the clumsiness and will also be needed for the
+proposed API change.
+
+As well as the cleanups here I have a few for smb/server.  I will send
+those separately as they deserve careful review by the smb team and I
+don't want them to be buried in this patch set.
+
+After these, and the mentioned overlayfs changes, I have a series which
+adds a collection of APIs with names like "lookup_and_lock()" which
+combine the locking and the lookup, and then a set which changes all
+code which currently locks a directory for name-based operations to
+instead use the new look_and_lock() interfaces.  This will mean that the
+changes to directory locking can be done in one central place.
+
+After that there are a few more cleanups to stop filesystems from usng
+d_drop() in the middle of name operations (at the end is OK, but not in
+the middle) and then the core patches for this work which introduce an
+alternate way to provide all the locking that the VFS needs for name
+operations without taking i_rw_sem.  Filesystems can then opt into using
+only this locking and to not depend on i_rw_sem.  This allows create and
+remove of different names is the same directory to continue concurrently
+with each other and with renames.  Renames are also concurrent though
+cross-directory renames block some other cross-directory renames in the
+same part of the tree.
+
+Note that i_rw_sem will still be used for the target of rmdir, and will
+still be held as a shared lock by readdir() so that we never try reading
+in a directory being removed.  It might still be used (shared) for
+lookups for the same reason, though I haven't completely settled my
+design there yet.
+
+Thanks,
+NeilBrown
+
+ [PATCH 1/5] VFS: merge lookup_one_qstr_excl_raw() back into
+ [PATCH 2/5] VFS: Minor fixes for porting.rst
+ [PATCH 3/5] coda: use iterate_dir() in coda_readdir()
+ [PATCH 4/5] exportfs: use lookup_one_unlocked()
+ [PATCH 5/5] Change vfs_mkdir() to unlock on failure.
