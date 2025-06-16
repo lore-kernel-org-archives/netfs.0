@@ -1,68 +1,135 @@
-Received: from neil.brown.name (neil.brown.name [103.29.64.221])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759271632DD;
-	Fri, 13 Jun 2025 07:08:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.29.64.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B54C261570
+	for <netfs@lists.linux.dev>; Mon, 16 Jun 2025 11:36:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749798509; cv=none; b=bpKNFuGdpm4txVDCharWdQOMjLuzfjdq5VlJ+t69PnMM/HAv9h6v3cw1PeFpxdEkitAOn1Y36K+xL+SZuzq+0O+aJsC+JmMfcfQmlfP1mMZWfMzyz6cZlbBNcflcLvG3qlmUgBbf6t4oL84pV9jTFLnXv5ZE4wmHXD4uXua0WFo=
+	t=1750073767; cv=none; b=ZQ4Whei60u5BiuOATCRqyg6pPMhuR5aecHuVbOJjDvGbk65SkbUNz54pmjjE0F7cavVdKaPB1j+sVMgPXU9C49beicLuuDrITP3c7CFnmxqIsfdCHeCECQwMJWCLZbIGdE+JJLbYIOYtf8V8InfrJjeKsT/tsx8UQEd3b9RsTeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749798509; c=relaxed/simple;
-	bh=D0lbE0R+FUdn+WoBoKcNI9HgS1w92fraWDayJ3fxKs0=;
-	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
-	 References:Date:Message-id; b=F4hxhdbRZUjY0Xu4292DTRJumzs2r81UEzVzJIA0U/9n+GUfAF1N/44T9Ricrxu1yFnQ6qKrPpcNRAymO+OIUGWyyw6Z5YTjrRK1dYSic8GDD5H1c8AVzfpzmn3IJ2mEGO3arAORrdYJYlxu+nBT5M/egmt7MJ7A6zXRHe7mBYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brown.name; spf=pass smtp.mailfrom=neil.brown.name; arc=none smtp.client-ip=103.29.64.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brown.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=neil.brown.name
-Received: from 196.186.233.220.static.exetel.com.au ([220.233.186.196] helo=home.neil.brown.name)
-	by neil.brown.name with esmtp (Exim 4.95)
-	(envelope-from <mr@neil.brown.name>)
-	id 1uPyWN-00A9fw-3B;
-	Fri, 13 Jun 2025 07:08:15 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=arc-20240116; t=1750073767; c=relaxed/simple;
+	bh=cH1mdebi7kDJEeg0Wb5HT6Owhw8PFAmNDyCQqE/rqOc=;
+	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=jdm6pKrvxmX6wNtJKkffucniRsBFNevbsRQ936Dk8QD76Xc3RtMRFrs8pen5/+YwvV33g0NqhIN4T5locmLI/WE/hofr872ZuO5nn6rONk9XbL8UvkNahEJaicGWqNulApIQ/JFE96GRYigo0bS2lsZHwA6L2AJ/+9D7nXxxZWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=K+Q06WUp; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="K+Q06WUp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750073765;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=nf0+ogMmdaKGYBzbk4mOB841JGfIQ7imOaaevAHK9Zk=;
+	b=K+Q06WUp3SUJukPnTRbhCNLhgj7Edn2xKpWRwmI/kaSJ5iaD5TDYSdbfWuEAVqnyibwauc
+	9LR+2VLWu26Bg93wqeiqVZzZbDBe+tI+oQZk7jvPGfDCr3Kq0yE/bO5lJnxYdSN0u0t9Tv
+	32gcxTSTRDe5fbRJWmDzchvDlzUy58k=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-619-CcDyKh_qNOe3bhhPj8MzuQ-1; Mon,
+ 16 Jun 2025 07:36:02 -0400
+X-MC-Unique: CcDyKh_qNOe3bhhPj8MzuQ-1
+X-Mimecast-MFC-AGG-ID: CcDyKh_qNOe3bhhPj8MzuQ_1750073761
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B02DF1800368;
+	Mon, 16 Jun 2025 11:36:00 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.18])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B9B91195608F;
+	Mon, 16 Jun 2025 11:35:58 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: Steve French <sfrench@samba.org>
+cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.org>,
+    linux-cifs@vger.kernel.org, netfs@lists.linux.dev,
+    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] netfs: Fix hang due to missing case in final DIO read result collection
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "NeilBrown" <neil@brown.name>
-To: "Miklos Szeredi" <miklos@szeredi.hu>
-Cc: "Al Viro" <viro@zeniv.linux.org.uk>,
- "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>,
- "David Howells" <dhowells@redhat.com>, "Tyler Hicks" <code@tyhicks.com>,
- "Chuck Lever" <chuck.lever@oracle.com>, "Jeff Layton" <jlayton@kernel.org>,
- "Amir Goldstein" <amir73il@gmail.com>, "Kees Cook" <kees@kernel.org>,
- "Joel Granados" <joel.granados@kernel.org>,
- "Namjae Jeon" <linkinjeon@kernel.org>, "Steve French" <smfrench@gmail.com>,
- "Sergey Senozhatsky" <senozhatsky@chromium.org>, netfs@lists.linux.dev,
- linux-kernel@vger.kernel.org, ecryptfs@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-nfs@vger.kernel.org,
- linux-unionfs@vger.kernel.org, linux-cifs@vger.kernel.org
-Subject: Re: [PATCH 1/2] VFS: change old_dir and new_dir in struct renamedata
- to dentrys
-In-reply-to:
- <CAJfpeguiOZJ4dZU-mc0V8bwvWoJ-Q0JubYvYPpmr-f8uguF2LQ@mail.gmail.com>
-References:
- <>, <CAJfpeguiOZJ4dZU-mc0V8bwvWoJ-Q0JubYvYPpmr-f8uguF2LQ@mail.gmail.com>
-Date: Fri, 13 Jun 2025 17:08:13 +1000
-Message-id: <174979849395.608730.16231142843321576358@noble.neil.brown.name>
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <583791.1750073757.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 16 Jun 2025 12:35:57 +0100
+Message-ID: <583792.1750073757@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Thu, 12 Jun 2025, Miklos Szeredi wrote:
-> On Thu, 12 Jun 2025 at 01:38, Al Viro <viro@zeniv.linux.org.uk> wrote:
-> 
-> > Umm...  No objections, as long as overlayfs part is correct; it seems
-> > to be, but I hadn't checked every chunk there...
-> 
-> Overlayfs parts looks okay too.
-> 
-> A followup would be nice (e.g. make ovl_cleanup() take a dentry for
-> the directory as well, etc) so that there's no need to have local
-> variables for both the inode and dentry of the directory.
+When doing a DIO read, if the subrequests we issue fail and cause the
+request PAUSE flag to be set to put a pause on subrequest generation, we
+may complete collection of the subrequests (possibly discarding them) prio=
+r
+to the ALL_QUEUED flags being set.
 
-I am planning some followups and will include that in them.
-I'll also be sure to test with fs-tests after consulting README.overlay
-as you suggest elsewhere - thanks.
+In such a case, netfs_read_collection() doesn't see ALL_QUEUED being set
+after netfs_collect_read_results() returns and will just return to the app
+(the collector can be seen unpausing the generator in the trace log).
 
-NeilBrown
+The subrequest generator can then set ALL_QUEUED and the app thread reache=
+s
+netfs_wait_for_request().  This causes netfs_collect_in_app() to be called
+to see if we're done yet, but there's missing case here.
+
+netfs_collect_in_app() will see that a thread is active and set inactive t=
+o
+false, but won't see any subrequests in the read stream, and so won't set
+need_collect to true.  The function will then just return 0, indicating
+that the caller should just sleep until further activity (which won't be
+forthcoming) occurs.
+
+Fix this by making netfs_collect_in_app() check to see if an active thread
+is complete - i.e. that ALL_QUEUED is set and the subrequests list is empt=
+y
+- and to skip the sleep return path.  The collector will then be called
+which will clear the request IN_PROGRESS flag, allowing the app to
+progress.
+
+Fixes: 2b1424cd131c ("netfs: Fix wait/wake to be consistent about the wait=
+queue used")
+Reported-by: Steve French <sfrench@samba.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+---
+diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
+index 43b67a28a8fa..1966dfba285e 100644
+--- a/fs/netfs/misc.c
++++ b/fs/netfs/misc.c
+@@ -381,7 +381,7 @@ void netfs_wait_for_in_progress_stream(struct netfs_io=
+_request *rreq,
+ static int netfs_collect_in_app(struct netfs_io_request *rreq,
+ 				bool (*collector)(struct netfs_io_request *rreq))
+ {
+-	bool need_collect =3D false, inactive =3D true;
++	bool need_collect =3D false, inactive =3D true, done =3D true;
+ =
+
+ 	for (int i =3D 0; i < NR_IO_STREAMS; i++) {
+ 		struct netfs_io_subrequest *subreq;
+@@ -400,9 +400,11 @@ static int netfs_collect_in_app(struct netfs_io_reque=
+st *rreq,
+ 			need_collect =3D true;
+ 			break;
+ 		}
++		if (subreq || test_bit(NETFS_RREQ_ALL_QUEUED, &rreq->flags))
++			done =3D false;
+ 	}
+ =
+
+-	if (!need_collect && !inactive)
++	if (!need_collect && !inactive && !done)
+ 		return 0; /* Sleep */
+ =
+
+ 	__set_current_state(TASK_RUNNING);
+
