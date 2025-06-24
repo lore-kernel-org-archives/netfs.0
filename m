@@ -1,171 +1,121 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from hr2.samba.org (hr2.samba.org [144.76.82.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D054527D77B
-	for <netfs@lists.linux.dev>; Tue, 24 Jun 2025 15:19:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D2326CE13
+	for <netfs@lists.linux.dev>; Tue, 24 Jun 2025 16:05:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.82.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750778388; cv=none; b=UHxe/rkDh9wmk2vTNPIxUs40dSDiPlWUEXLKelKWwBbbpu67JgwxDfBAfFNo+K4r0T9n6owf1uZDPl6g7OOakEr7Hnqn14MSJJkGYXJRO0vTRDLQj14RTrfL1jzRXLT+ik5sGjrIZb+o2f1W8nV6eCb7DHtXxVbAVJKU/+VMADw=
+	t=1750781162; cv=none; b=sqb/ll2R9AMhIkz9/OoL5Eolrhkqa6TIWA5viU4/KlE9RfKC7HHJEgFK+7tMlhuFTyuzuSaZsH2TjyMsfYO+tOcg1tdeBxWudtBJrJWM/0t6Z0wilCdAJA0mIRKRvWxx47CNDas1EhGTgi+RZSqEv1jdpsuMA5Y42qZI6GJDKTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750778388; c=relaxed/simple;
-	bh=ujmUW4TpX4BPTQx8jMF9izuhuYiV8aAka42RsWenZYA=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
-	 Message-ID:Content-Type; b=jxPqZdR6ai+NwWl6sSdJ19R5g7xsC/PijKytDS5jpDp4CUyGui801ri3i7Uu8PHWieCkg1ss46rVpHAyX+s3laGyWPca8+E3FQODilcNVnXjyeIlTk54F5u9+XMdC6/8hXqRuqUuK0RuABonURMAqP7ZuO1jrjG/H4NrCS+BtaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=B914zs9j; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1750781162; c=relaxed/simple;
+	bh=bF5g9fm7RdA0Rke6tEu8cQUmmrjjnJgKtwfhpKG/Pwg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UECbBUXohSmkWUdKlf8X/0TraLsa5jDh7XCqDyBdXpzmcwlsSDde9okDTyUauSyWqgE5MO9FvAIMH/7fCJi7qOt9Q6l2q5NITohR+FNV8cEvortuRfdCjHbu6CvGONHigFBMdKoRR8ljgAvRhsGOqp/9yRERnNY2fa9+eo3WMOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org; spf=pass smtp.mailfrom=samba.org; dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b=zGIPsK6e; arc=none smtp.client-ip=144.76.82.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samba.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="B914zs9j"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1750778385;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ASKoaAYO8KO37B94uQoggiUNWPKZVvmpeFQF3C5jCcY=;
-	b=B914zs9jLY9hOqso4yF14uVDAx+Nuq3Ok9GMxawQ4DnkH79PaI74srznFHRat8opdTsOqB
-	FfyP24Wvic0cHDTpWFP9CN976Z38ibQqh+zvAjzRCZfw7MFpw8IglE4o7J2KierwGtBK0m
-	QrzAz5hLdgQ2nnGOpDdMOODHgF3VxU4=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-595-AZIavt47PEOHKsgbBg-wpQ-1; Tue,
- 24 Jun 2025 11:19:44 -0400
-X-MC-Unique: AZIavt47PEOHKsgbBg-wpQ-1
-X-Mimecast-MFC-AGG-ID: AZIavt47PEOHKsgbBg-wpQ_1750778383
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C94CC180123A;
-	Tue, 24 Jun 2025 15:19:31 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.81])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id ACD1419560A3;
-	Tue, 24 Jun 2025 15:19:30 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <619bca7a-d89c-4262-8c05-1ac536db0a6e@cern.ch>
-References: <619bca7a-d89c-4262-8c05-1ac536db0a6e@cern.ch> <31cd8f34-1b37-4062-925a-baedec8f2f79@cern.ch> <963373.1750426130@warthog.procyon.org.uk>
-To: Benjamin Fischer <benjamin.fischer@cern.ch>
-Cc: dhowells@redhat.com, netfs@lists.linux.dev
-Subject: Re: Cachefiles slowdown caused by SEEK_HOLE
+	dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b="zGIPsK6e"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=samba.org;
+	s=42; h=From:Cc:To:Date:Message-ID;
+	bh=qeKHSJSc7h9EilvDhUbXYddD2Qf+Xlbu+2oqu4eNTNs=; b=zGIPsK6e6nSmCXhYJgocjO1+lp
+	u+7N6jdOH2B3KA9cRLfFpD79Qv1A5y84fH+0W2sqHV3rLjH0zF4bc4ElwrRr+2XVt0emqGY4R6wHA
+	TguONeqHn9YA0L77eZevW2FOTK885lo/1x1MKvyhZGobDJQhzon6GeZG//x/d7DnemJOgHC0pOYNt
+	FMMcHYipPnxYCouMonCFcsfQ5/c4COCLRWVIKxl9egx6+JqVrkvJkWDmJXiQ8SScdW3bYL+jHEocD
+	89TIUzd2Bmp5qCh64y+levRIMzp0JVu/BgpVYlvb6oTOBPczrZxRheXmEEkNiovbqgBomNsYmSKIY
+	dkaiiB3JkPMXqF2GRQhDBpJbw/kI/pJIEDUPswi7b3Rk4g1Qwe2VJN8UQJh4plN5DEOkztNIS0m9C
+	rm1T9P+vudczLEb0/U0H8mdK2n1eorVovh/0pBcMjLPHou/zCnWTdgmRmNrQVhM8a4gQ5QXUjEJzp
+	bUZYjuFGY9rdUDwQyZT0AEV1;
+Received: from [127.0.0.2] (localhost [127.0.0.1])
+	by hr2.samba.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__CHACHA20_POLY1305:256)
+	(Exim)
+	id 1uU69f-00CHYM-36;
+	Tue, 24 Jun 2025 16:05:52 +0000
+Message-ID: <1758512f-5783-4b9a-9692-d2f1a09eef4a@samba.org>
+Date: Tue, 24 Jun 2025 18:05:51 +0200
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Tue, 24 Jun 2025 16:19:29 +0100
-Message-ID: <1157517.1750778369@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: fWXifFRPQeXd7vWpuEGwH-WiTiulhMctPJAtFOPxIaQ_1750778383
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1157516.1750778369.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] cifs: Collapse smbd_recv_*() into smbd_recv() and just
+ use copy_to_iter()
+To: David Howells <dhowells@redhat.com>
+Cc: "linux-cifs@vger.kernel.org" <linux-cifs@vger.kernel.org>,
+ netfs@lists.linux.dev, linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+ Steve French <stfrench@microsoft.com>
+References: <f448a729-ca2e-40a8-be67-3334f47a3916@samba.org>
+ <1107690.1750683895@warthog.procyon.org.uk>
+ <1156127.1750774971@warthog.procyon.org.uk>
+Content-Language: en-US
+From: Stefan Metzmacher <metze@samba.org>
+In-Reply-To: <1156127.1750774971@warthog.procyon.org.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Benjamin Fischer <benjamin.fischer@cern.ch> wrote:
+Hi David,
 
-> >   (4) Setting xattrs is slow as each one is a synchronous journalled
-> >       metadata operation.
-> This could be resolved by avoiding xattrs altogether and instead using th=
-e
-> (already) required support for sparse files: One could store the file
-> contents of the file at a (fixed) offset into the file (e.g. 1GiB) and us=
-e
-> the space before this to store the bitmap (or whatever other information =
-is
-> needed for the cache). Even with a block size of 4KiB and offset of 1GiB
-> would still accommodate a bitmap for file up to 32TiB which likely covers
-> the vast majority of use cases. Would this be feasible? Or maybe has this
-> approach been already rejected?
+>>>    read_rfc1002_done:
+>>> +		/* SMBDirect will read it all or nothing */
+>>> +		msg->msg_iter.count = 0;
+>>
+>> And this iov_iter_truncate(0);
+> 
+> Actually, it should probably have been iov_iter_advance().
+> 
+>> While I'm wondering why we had this at all.
+>>
+>> It seems all callers of cifs_read_iter_from_socket()
+>> don't care and the code path via sock_recvmsg() doesn't
+>> truncate it just calls copy_to_iter() via this chain:
+>> ->inet_recvmsg->tcp_recvmsg->skb_copy_datagram_msg->skb_copy_datagram_iter
+>> ->simple_copy_to_iter->copy_to_iter()
+>>
+>> I think the old code should have called
+>> iov_iter_advance(rc) instead of msg->msg_iter.count = 0.
+>>
+>> But the new code doesn't need it as copy_to_iter()
+>> calls iterate_and_advance().
+> 
+> Yeah, it should.  I seem to remember that there were situations in which it
+> didn't, but it's possible I managed to get rid of them.
+> 
+>>> -	default:
+>>> -		/* It's a bug in upper layer to get there */
+>>> -		cifs_dbg(VFS, "Invalid msg type %d\n",
+>>> -			 iov_iter_type(&msg->msg_iter));
+>>> -		rc = -EINVAL;
+>>> -	}
+>>
+>> I guess this is actually a real fix as I just saw
+>> CIFS: VFS: Invalid msg type 4
+>> in logs while running the cifs/001 test.
+>> And 4 is ITER_FOLIOQ.
+> 
+> Ah... Were you using "-o seal"?  The encrypted data is held in a buffer formed
+> from a folioq with a series of folios in it.
 
-Not completely rejected.  It's just that there's a bunch of different desig=
-n
-compromises one can make.  One of the original design decisions I made was
-that I didn't want to restrict the amount of filespace one could cache; wit=
-h
-your suggestion, you lose the last 32TiB of the 8EiB you can access.  I don=
-'t
-know if this is a problem.
 
-Also, at the time I first did this, you couldn't do DIO to/from kernel spac=
-e.
+In local.config I have this:
 
-That said, probably the single most effective change would be to dispense w=
-ith
-mapping the contents of a file if I know I have all of it in the cache.  By
-far and away, the most common write pattern is { open(O_TRUNC); write();
-write(); write(); close(); }.  Noting this with a flag in the main xattr on=
- a
-file would allow all the seeking to be skipped.
+[smb3-1-rdma]
+FSTYP=cifs
+TEST_DEV=//172.31.9.1/TEST
+TEST_DIR=/mnt/test
+TEST_FS_MOUNT_OPTS='-ousername=administrator,password=...,rdma,noperm,vers=3.0,mfsymlinks,actimeo=0'
+export MOUNT_OPTIONS='-ousername=administrator,password=...,rdma,noperm,mfsymlinks,actimeo=0'
+export SCRATCH_DEV=//172.31.9.1/SCRATCH
+export SCRATCH_MNT=/mnt/scratch
 
-> >   (5) We have metadata integrity issues if we want to evict an bitmap f=
-or
-> >       memory reclaim.  We need to flush (and maybe sync) data from a
-> >       separate filesystem before writing the xattr.  This might not be =
-so
-> >       bad as the main metadata xattr on a cachefile has a flag in it th=
-at
-> >       says the object is under modification, so we only need to flush,
-> >       sync and write back all the bitmaps before altering that flag - a=
-nd
-> >       this can be done in the background.
+And called:
 
-> I don't quite understand the intricacies of the race conditions you refer=
- to
-> here, but I imagine this might also be simplified by storing the
-> bitmap/metadata within the file itself.
+./check -s smb3-1-rdma -E tests/cifs/exclude.incompatible-smb3.txt -E tests/cifs/exclude.very-slow.txt cifs/001
 
-The problem is that when we reconnect a network fs file with a cache object=
-,
-we have to know that the cache object is in a good state.  Imagine a scenar=
-iou
-in which the machine crashes while I/O is in progress to the netfs and the
-cache.  We could just blow the cache away entirely; but situations have bee=
-n
-encountered where that really sucks.
+So I don't think it used seal, I'm also not seeing encrypted stuff in the capture,
+so maybe the folioq iter comes from a higher layer (via cifs_readv_receive()) instead
+of receive_encrypted_read().
 
-What I currently do is use an xattr to mark a cache object as being "dirty"=
-.
-When that object is opened, the dirty flag is set before we do any other
-modifications to it.  When the object is closed, I have to flush all
-outstanding changes and metadata changes to it before I can remove the dirt=
-y
-mark.
-
-If I don't do that, and the system crashes, say, between the dirty mark bei=
-ng
-set and the changes hitting the disk, we can end up with an unknowingly
-corrupt cache object.
-
-The xattr with the dirty mark also holds coherency info that needs updating=
-.
-For AFS, that's the data version number; for NFS, that's the ctime, mtime a=
-nd
-change attribute.
-
-Storing the bitmap in the file does simplify things in a couple of ways: I =
-can
-trivially read/write parts of it (with DIO, even) and fdatasync() will flus=
-h
-the bitmap content in addition to the data.
-
-> > An alternative method that may prove fruitful is to explore the way
-> > OpenAFS does caching: by having a bunch of, say, 256KiB cache files and=
- an
-> > index that says which part of what network file is stored in what cache
-> > file.
->
-> Such a implementation would probably be useful, but just like using an ex=
-tend
-> list/tree instead of a bitmap, it is far from straight forward and as suc=
-h
-> prone to implementation & tuning difficulties.
-
-Yeah... there's no single right answer.
+metze
 
