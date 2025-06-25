@@ -1,38 +1,38 @@
 Received: from hr2.samba.org (hr2.samba.org [144.76.82.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D2326CE13
-	for <netfs@lists.linux.dev>; Tue, 24 Jun 2025 16:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE1822083
+	for <netfs@lists.linux.dev>; Wed, 25 Jun 2025 08:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.82.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750781162; cv=none; b=sqb/ll2R9AMhIkz9/OoL5Eolrhkqa6TIWA5viU4/KlE9RfKC7HHJEgFK+7tMlhuFTyuzuSaZsH2TjyMsfYO+tOcg1tdeBxWudtBJrJWM/0t6Z0wilCdAJA0mIRKRvWxx47CNDas1EhGTgi+RZSqEv1jdpsuMA5Y42qZI6GJDKTc=
+	t=1750838874; cv=none; b=edVnQ4uzlJG4UQwpkPc30j8v5LeMmurhFPy9cH5vbbRB8+cAcCgS4PkzOL6ou29+jI2LvRSYMUPE/yqU8RJqEIkKtZn1H/2vCLyyya4igmn01kik+N+bC2odV7G65Rr5ezjW7u6oweY6+O42kBFdyq8JeRussXD4k3dc+KnM82s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750781162; c=relaxed/simple;
-	bh=bF5g9fm7RdA0Rke6tEu8cQUmmrjjnJgKtwfhpKG/Pwg=;
+	s=arc-20240116; t=1750838874; c=relaxed/simple;
+	bh=EfJw/0g7QhhPRLnaK8wP/mqnD4vTdaY9bWr2ETHstnA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UECbBUXohSmkWUdKlf8X/0TraLsa5jDh7XCqDyBdXpzmcwlsSDde9okDTyUauSyWqgE5MO9FvAIMH/7fCJi7qOt9Q6l2q5NITohR+FNV8cEvortuRfdCjHbu6CvGONHigFBMdKoRR8ljgAvRhsGOqp/9yRERnNY2fa9+eo3WMOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org; spf=pass smtp.mailfrom=samba.org; dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b=zGIPsK6e; arc=none smtp.client-ip=144.76.82.148
+	 In-Reply-To:Content-Type; b=e5gFEmBPVF4mqXQQSyGbMvtGxlkE+RG/dW5B1ZqdnQ9yVY2Bcod+ARYXgx+ZNKeAp+mi6aopA8/NFMG6JgysEtGTi2ciQzAZpeAs7awHkyIv1OcZ4BNBi3Shr9T8n9SNItFw7RFFbk9yUbYI9AMBMFWlHeACYVn+aQGk1tF4CWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org; spf=pass smtp.mailfrom=samba.org; dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b=144/JYRv; arc=none smtp.client-ip=144.76.82.148
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samba.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b="zGIPsK6e"
+	dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b="144/JYRv"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=samba.org;
 	s=42; h=From:Cc:To:Date:Message-ID;
-	bh=qeKHSJSc7h9EilvDhUbXYddD2Qf+Xlbu+2oqu4eNTNs=; b=zGIPsK6e6nSmCXhYJgocjO1+lp
-	u+7N6jdOH2B3KA9cRLfFpD79Qv1A5y84fH+0W2sqHV3rLjH0zF4bc4ElwrRr+2XVt0emqGY4R6wHA
-	TguONeqHn9YA0L77eZevW2FOTK885lo/1x1MKvyhZGobDJQhzon6GeZG//x/d7DnemJOgHC0pOYNt
-	FMMcHYipPnxYCouMonCFcsfQ5/c4COCLRWVIKxl9egx6+JqVrkvJkWDmJXiQ8SScdW3bYL+jHEocD
-	89TIUzd2Bmp5qCh64y+levRIMzp0JVu/BgpVYlvb6oTOBPczrZxRheXmEEkNiovbqgBomNsYmSKIY
-	dkaiiB3JkPMXqF2GRQhDBpJbw/kI/pJIEDUPswi7b3Rk4g1Qwe2VJN8UQJh4plN5DEOkztNIS0m9C
-	rm1T9P+vudczLEb0/U0H8mdK2n1eorVovh/0pBcMjLPHou/zCnWTdgmRmNrQVhM8a4gQ5QXUjEJzp
-	bUZYjuFGY9rdUDwQyZT0AEV1;
+	bh=6mTaUT290cejXLzLDU1oPyVqQYKUXhul1tUXuPZsHEI=; b=144/JYRvtfcZXKlMWQr59Sge6/
+	3t66dx++Z6MTi/H6Bil2IhOAPmhXKkslW38YrpIAdPTXS5RP8g+mPPm3g4MmHcVdV3kieV8dQ/hWa
+	e++heScsYLOH4KKNI41MdFUGTc5RROTvsbws/Ec4Nr2kM4k2E+0KD5KzPMdhHoVCuElI/Jf7VBnmE
+	NHVUxIqU9gbTTcImewsdVzs3wkOLUX86HNYHAGOqxauVYG6W4kOu35LDAryLs3h42oafumFTI8nc3
+	v+9LQYgh5FiRPifwOeSX58a6r9TAZHXNgj+Pn4ssr1A6JgvIoU9k2g5dCVhjxmGldYn73pSBfw6BU
+	RdWW4eIyBvAoeZdVjGIgqAzXCyNOCIgPsKnyMYSOefh0NWn7s8iVwt513h3KWUxwsgdSooLn8lzJs
+	gTgrUenWd3MphmorskkgJW2uM9xpiG9F4diaX9PGWySn6aZFBj+iqWHyW70OhDQUfH6ic/cM+c7au
+	8e4bQJsaNEIOLiWX6dLIRtcN;
 Received: from [127.0.0.2] (localhost [127.0.0.1])
 	by hr2.samba.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__CHACHA20_POLY1305:256)
 	(Exim)
-	id 1uU69f-00CHYM-36;
-	Tue, 24 Jun 2025 16:05:52 +0000
-Message-ID: <1758512f-5783-4b9a-9692-d2f1a09eef4a@samba.org>
-Date: Tue, 24 Jun 2025 18:05:51 +0200
+	id 1uULAb-00CNtO-15;
+	Wed, 25 Jun 2025 08:07:49 +0000
+Message-ID: <acb7f612-df26-4e2a-a35d-7cd040f513e1@samba.org>
+Date: Wed, 25 Jun 2025 10:07:48 +0200
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -55,8 +55,9 @@ In-Reply-To: <1156127.1750774971@warthog.procyon.org.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Hi David,
-
+Am 24.06.25 um 16:22 schrieb David Howells:
+> Stefan Metzmacher <metze@samba.org> wrote:
+> 
 >>>    read_rfc1002_done:
 >>> +		/* SMBDirect will read it all or nothing */
 >>> +		msg->msg_iter.count = 0;
@@ -97,25 +98,90 @@ Hi David,
 > Ah... Were you using "-o seal"?  The encrypted data is held in a buffer formed
 > from a folioq with a series of folios in it.
 
+I know tested it standalone in this tree:
+https://git.samba.org/?p=metze/linux/wip.git;a=shortlog;h=46a31189b8b059b3595a9586714761e6e76ba7c4
 
-In local.config I have this:
+Doing following mount:
 
-[smb3-1-rdma]
-FSTYP=cifs
-TEST_DEV=//172.31.9.1/TEST
-TEST_DIR=/mnt/test
-TEST_FS_MOUNT_OPTS='-ousername=administrator,password=...,rdma,noperm,vers=3.0,mfsymlinks,actimeo=0'
-export MOUNT_OPTIONS='-ousername=administrator,password=...,rdma,noperm,mfsymlinks,actimeo=0'
-export SCRATCH_DEV=//172.31.9.1/SCRATCH
-export SCRATCH_MNT=/mnt/scratch
+mount -t cifs -ousername=administrator,password=...,rdma,noperm,vers=3.0,mfsymlinks,actimeo=0 //172.31.9.1/test /mnt/test/
 
-And called:
+It's using the siw driver (with modifications to work against the chelsio t404-bt card on windows) from
+here:
+https://git.samba.org/?p=metze/linux/wip.git;a=shortlog;h=5b89ff89f440ec36cf2c5ed2212be0d8523a4c9b
 
-./check -s smb3-1-rdma -E tests/cifs/exclude.incompatible-smb3.txt -E tests/cifs/exclude.very-slow.txt cifs/001
+But the siw difference should not really matter.
 
-So I don't think it used seal, I'm also not seeing encrypted stuff in the capture,
-so maybe the folioq iter comes from a higher layer (via cifs_readv_receive()) instead
-of receive_encrypted_read().
+This realiable generates this:
+
+[  922.048997] [   T6639] CIFS: Attempting to mount //172.31.9.1/test
+[  922.188445] [   T6639] CIFS: VFS: RDMA transport established
+[  922.217974] [   T6642] usercopy: Kernel memory exposure attempt detected from SLUB object 'smbd_response_0000000091e24ea1' (offset 81, size 63)!
+[  922.218221] [   T6642] ------------[ cut here ]------------
+[  922.218230] [   T6642] kernel BUG at mm/usercopy.c:102!
+[  922.218299] [   T6642] Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
+[  922.218439] [   T6642] CPU: 1 UID: 0 PID: 6642 Comm: cifsd Kdump: loaded Tainted: G           OE       6.16.0-rc3-metze.01+ #1 PREEMPT(voluntary)
+[  922.218585] [   T6642] Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+[  922.218635] [   T6642] Hardware name: innotek GmbH VirtualBox/VirtualBox, BIOS VirtualBox 12/01/2006
+[  922.218704] [   T6642] RIP: 0010:usercopy_abort+0x6c/0x80
+[  922.218783] [   T6642] Code: fa 91 51 48 c7 c2 c0 d4 fa 91 41 52 48 c7 c7 40 d5 fa 91 48 0f 45 d6 48 c7 c6 00 d5 fa 91 48 89 c1 49 0f 45 f3 e8 84 aa 6b ff <0f> 0b 49 c7 
+c1 c0 d3 fa 91 4d 89 ca 4d 89 c8 eb a8 0f 1f 00 90 90
+[  922.218925] [   T6642] RSP: 0018:ffffc90001887820 EFLAGS: 00010246
+[  922.218983] [   T6642] RAX: 0000000000000079 RBX: 0000000000000051 RCX: 0000000000000000
+[  922.219046] [   T6642] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+[  922.219108] [   T6642] RBP: ffffc90001887838 R08: 0000000000000000 R09: 0000000000000000
+[  922.219201] [   T6642] R10: 0000000000000000 R11: 0000000000000000 R12: 000000000000003f
+[  922.219261] [   T6642] R13: ffff88801f579280 R14: 0000000000000001 R15: ffffea0000163340
+[  922.219323] [   T6642] FS:  0000000000000000(0000) GS:ffff8881466e8000(0000) knlGS:0000000000000000
+[  922.219415] [   T6642] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  922.219469] [   T6642] CR2: 000075a216d19bb8 CR3: 000000000f5f6004 CR4: 00000000000726f0
+[  922.219560] [   T6642] Call Trace:
+[  922.219591] [   T6642]  <TASK>
+[  922.219624] [   T6642]  __check_heap_object+0xe3/0x120
+[  922.221090] [   T6642]  __check_object_size+0x4dc/0x6d0
+[  922.222547] [   T6642]  smbd_recv+0x77f/0xfe0 [cifs]
+[  922.224416] [   T6642]  ? __pfx_smbd_recv+0x10/0x10 [cifs]
+[  922.226195] [   T6642]  ? __kasan_check_write+0x14/0x30
+[  922.227722] [   T6642]  ? _raw_spin_lock+0x81/0xf0
+[  922.229190] [   T6642]  ? __pfx__raw_spin_lock+0x10/0x10
+[  922.230699] [   T6642]  ? sched_clock_noinstr+0x9/0x10
+[  922.232248] [   T6642]  cifs_readv_from_socket+0x276/0x8f0 [cifs]
+[  922.234149] [   T6642]  ? __pfx_cifs_readv_from_socket+0x10/0x10 [cifs]
+[  922.236222] [   T6642]  ? mempool_alloc_slab+0x15/0x20
+[  922.237705] [   T6642]  cifs_read_from_socket+0xcd/0x120 [cifs]
+[  922.239559] [   T6642]  ? __pfx_cifs_read_from_socket+0x10/0x10 [cifs]
+[  922.241403] [   T6642]  ? __pfx_mempool_alloc_noprof+0x10/0x10
+[  922.242827] [   T6642]  ? __kasan_check_write+0x14/0x30
+[  922.244141] [   T6642]  ? cifs_small_buf_get+0x62/0x90 [cifs]
+[  922.245500] [   T6642]  ? allocate_buffers+0x216/0x390 [cifs]
+[  922.246810] [   T6642]  cifs_demultiplex_thread+0x7e9/0x2d50 [cifs]
+[  922.248150] [   T6642]  ? _raw_spin_lock_irqsave+0x95/0x100
+[  922.249143] [   T6642]  ? __pfx_cifs_demultiplex_thread+0x10/0x10 [cifs]
+[  922.250163] [   T6642]  ? __pfx___schedule+0x10/0x10
+[  922.250977] [   T6642]  ? _raw_spin_lock_irqsave+0x95/0x100
+[  922.251715] [   T6642]  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+[  922.252415] [   T6642]  ? __pfx_try_to_wake_up+0x10/0x10
+[  922.253094] [   T6642]  ? __kasan_check_read+0x11/0x20
+[  922.253766] [   T6642]  ? __kthread_parkme+0xa0/0x190
+[  922.254344] [   T6642]  ? __pfx_cifs_demultiplex_thread+0x10/0x10 [cifs]
+[  922.255073] [   T6642]  kthread+0x396/0x830
+[  922.255584] [   T6642]  ? __pfx__raw_spin_lock_irq+0x10/0x10
+[  922.256070] [   T6642]  ? __pfx_kthread+0x10/0x10
+[  922.256568] [   T6642]  ? __kasan_check_write+0x14/0x30
+[  922.257047] [   T6642]  ? recalc_sigpending+0x180/0x210
+[  922.257535] [   T6642]  ? _raw_spin_unlock_irq+0xe/0x50
+[  922.258015] [   T6642]  ? calculate_sigpending+0x84/0xb0
+[  922.258509] [   T6642]  ? __pfx_kthread+0x10/0x10
+[  922.258976] [   T6642]  ret_from_fork+0x2b8/0x3b0
+[  922.259377] [   T6642]  ? __pfx_kthread+0x10/0x10
+[  922.259757] [   T6642]  ret_from_fork_asm+0x1a/0x30
+[  922.260133] [   T6642]  </TASK>
+[  922.260514] [   T6642] Modules linked in: cifs(OE) ccm cmac nls_utf8 cifs_arc4 nls_ucs2_utils rdma_cm iw_cm ib_cm cifs_md4 netfs siw(OE) ib_uverbs ib_core softdog vboxsf 
+vboxguest intel_rapl_msr intel_rapl_common intel_uncore_frequency_common intel_pmc_core pmt_telemetry pmt_class intel_pmc_ssram_telemetry intel_vsec polyval_clmulni 
+ghash_clmulni_intel sha1_ssse3 aesni_intel rapl i2c_piix4 i2c_smbus input_leds joydev mac_hid sunrpc binfmt_misc kvm_intel kvm irqbypass sch_fq_codel efi_pstore nfnetlink 
+vsock_loopback vmw_vsock_virtio_transport_common vmw_vsock_vmci_transport vsock vmw_vmci dmi_sysfs ip_tables x_tables autofs4 hid_generic vboxvideo drm_vram_helper usbhid 
+drm_ttm_helper vga16fb hid vgastate ahci ttm libahci video pata_acpi psmouse serio_raw wmi [last unloaded: cifs(OE)]
+
+
+Reverting it fixes it again.
 
 metze
-
