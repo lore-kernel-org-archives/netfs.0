@@ -1,194 +1,184 @@
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DE826A1AA
-	for <netfs@lists.linux.dev>; Wed, 25 Jun 2025 16:21:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B0472D8785
+	for <netfs@lists.linux.dev>; Wed, 25 Jun 2025 16:42:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750868474; cv=none; b=f0fzQ35d2+XeaB3ytZt33UTNBA8ST5CGAd4eLe7uDU93ujwmXASz7iTA1l/4oV7ZiSJPFMeaGlQHAamqmZvW/omPpp4x+H/vKEq3i9z4E4TMyW5b6RU4K68DH2s2JSE821eOWMq7uUC091Pw0VjSPlzqBsOHbS1pKzN+RV65pUk=
+	t=1750869749; cv=none; b=fjnm83jvs4UisiV3vUK7fNg6Z2ZBI3gT+Yi72AU7BfPHwyYDfcu7utrBelp+8paeGXXWhM/Kpz4UJqa1ajiOQEFSmwt4iRDkhnSKt4to9QJanzkgA1LKC7tOZTkRxdigKkWmktSfVr2sar2Rl/h63XwOLEWw8UuMrZvl3i7WUyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750868474; c=relaxed/simple;
-	bh=XMP6ERBXfxV519EBoe1Y/mZ/m+8At/oi36qL9USyJ5s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rYbtnXwd9Mesur4GlxAhhbXIFuUtsbCvxb4yneJDE1xv4KCD7qG1jKPzWms5ePlq0HLGC/FHXxC7HZt09+HGFMNAgdjSFk8Z+Xgr33uWeC1mI1W5t9ychwG7qaZqBH76agzyEknW8agz0IvsmHeCwfzeAshgtb6/6tI/5GKPrLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V78f8+Jc; arc=none smtp.client-ip=209.85.219.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750869749; c=relaxed/simple;
+	bh=1h2IM9rfU7dvpEu1fgUOn9lieNNTQNiaLaz/a1Vr1+s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XH8bruFL5FfYbX9gBODPbe4CIqG9UKmrK1S/2do/VQt/uolV+ODlw+FH8le4GB1xDgp/Ca78aj7i5L+xkmDm9LlPv6Xhj8qVkp00oP29ZOKA4GMvQTMzKaD+0ixautpa/b04ybaoMjR/pcQpOaISV4uuBraL6Q0a60CLjVvtK6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WsTG2zuT; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V78f8+Jc"
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-6fac1c60e19so11351606d6.1
-        for <netfs@lists.linux.dev>; Wed, 25 Jun 2025 09:21:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750868472; x=1751473272; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9NVslBr1xkJaej9KYSvp2pb98xkmIaEpx8AR8MBWA3Y=;
-        b=V78f8+Jc1HfqyOyHwfPkqiPiqvHwCir+kYk4aQCKtwbG3iqLs7CCrPbNavLRboG72F
-         3dK0Qx20QVAokEjIbsgEkuHpq3q/hOX+xAeKpte9QlQWgTeq8Wgod8Hrli7WFjfZE2im
-         PMKXrySo/9PIRyMiA9bi+2rtsjEkJpQic5bak7hWFb/Utn+mtyVxV6gUJ8KazNrNpGfM
-         3Ft9NYAEK80Y0XnAejOiRAl/2iDNtVulxL5MVwV14F9MVQnIperXYmeFOqLXczoUuzQG
-         R/LQy+i2UL7W7Dq1exliLjW5n9HQm8pZT0Wc+R21zpn8b65MOqZbmwYW2vCZgV4/Jmeh
-         CZCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750868472; x=1751473272;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9NVslBr1xkJaej9KYSvp2pb98xkmIaEpx8AR8MBWA3Y=;
-        b=NBSEN6cBvmjlKX2IlEBZUOWYqjVGfI1Rxjp2nToFY38hDIa7HL5/XNxq5+1usnfTzf
-         INs0zdgqZD48OHQDLKR7vvU3vSJfc8+jI4rrqM3pBD3bTV5mefm/1d5eafRJE8K7QNa7
-         EfCY5psLEV4w9uEhGH+5yienj7AAmlSVul7aZnRq9ZT8S3hb/ysr0oI7EL8GU1CTokiL
-         s726b+7PvHNt1rodACdtyX0j5OOo12zD2Mobd1y+wcwMlHtnxShmu7iDfMeJzYuZi27i
-         M2AMQu2Co6x0f9aGa8hcKLKmiKpJPm/t5Xzz+nOZauW44VD136/iVyd75J+8CQASat3T
-         opBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXYD2KM3ggTo+cRSFMF0ilpitLUS3ALFKXpMDsGXeA0pd3gkH8W88HXYfbPG7iIV4t1yxoIfg==@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw/yk24bIfvGJREL6knT6FPpJdBkZsxb3iWiBRZK4aRJCMBre5X
-	nNt4ra+RlzQKLUjSUxFeZuPxhxkfw0z6qI++dJxqvkvZFyEG+aFzcW6jBhpfo9MY7F0D4ilPN3A
-	L/mHApLnWKjfizK7jOGWBCdf3Ul7cfq5ZvQ==
-X-Gm-Gg: ASbGncsviaYRjMK1IsrHY/ANr9Ip5NWfAeO/le/derzVNkpJ8clJEz9B4Q0YsfOprtb
-	zVYv1bVSreuXtrSJtBWsA8wKr81zbQoqoqU4G2Nt6eQE+VAZmoZoLqsGg+YczbwWRnqjI5KVElW
-	8bqtvhmBqjN9zdsMeAWhBnyL0F4z5B2sV6Rtrn8vKhlpxDlkCc8nxa/7pMF5nQsKYIU9CMFgm3r
-	aAN
-X-Google-Smtp-Source: AGHT+IF0E2ADWqAWPU392h4IO+FZ/wRsjmuf7c03br6vhyt8kFz6PcUB5E7QjpVnFsCxdOzBZ17XM3vfqbwilSgcRb4=
-X-Received: by 2002:a05:6214:419e:b0:6fa:ad2a:7998 with SMTP id
- 6a1803df08f44-6fd753a870emr3103946d6.18.1750868472164; Wed, 25 Jun 2025
- 09:21:12 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WsTG2zuT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750869745;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=TYMGHHl3ppzcVUfwHEmmDbKl7IV4fnbm0RDh4dzbFFI=;
+	b=WsTG2zuTLyw4CDjeD7Ruex8NDBbjbQ2dytw7Q+Os29iPVs4+ZHygFZfp9M7n+3PnnBkunL
+	wy4UZTLxulemnecy1gQ8CFOG/ItXYokIBtLoaFLFX/8QQhQPIYHUnqYixXkL0jSUrkou7T
+	sk4SHqbz+ub9L0fneCKIwrU+/G/LdVg=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-73-xVNaSQOgOPKGfSHWMS6BXw-1; Wed,
+ 25 Jun 2025 12:42:24 -0400
+X-MC-Unique: xVNaSQOgOPKGfSHWMS6BXw-1
+X-Mimecast-MFC-AGG-ID: xVNaSQOgOPKGfSHWMS6BXw_1750869742
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 19E181956095;
+	Wed, 25 Jun 2025 16:42:22 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.42.28.81])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 65AC3195608D;
+	Wed, 25 Jun 2025 16:42:16 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>,
+	Steve French <sfrench@samba.org>
+Cc: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 00/16] netfs, cifs: Fixes to retry-related code and RDMA support
+Date: Wed, 25 Jun 2025 17:41:55 +0100
+Message-ID: <20250625164213.1408754-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <1372501.1750858644@warthog.procyon.org.uk> <1382992.1750862802@warthog.procyon.org.uk>
- <011ec23b-d151-4ef8-bbe7-ba79e3678ae7@samba.org>
-In-Reply-To: <011ec23b-d151-4ef8-bbe7-ba79e3678ae7@samba.org>
-From: Steve French <smfrench@gmail.com>
-Date: Wed, 25 Jun 2025 11:21:00 -0500
-X-Gm-Features: Ac12FXwJI9fijUzybZTm6c-W7y-I5jTYEiHnpSWQL96V5yQo6-_Q8OXO622L3v8
-Message-ID: <CAH2r5mtzPKaiOmwQsaSTRWy1YdWygvVBdOPrhLLGbEfNAWXvEQ@mail.gmail.com>
-Subject: Re: [PATCH v2] cifs: Fix the smbd_request and smbd_reponse slabs to
- allow usercopy
-To: Stefan Metzmacher <metze@samba.org>
-Cc: David Howells <dhowells@redhat.com>, Steve French <stfrench@microsoft.com>, 
-	Paulo Alcantara <pc@manguebit.com>, linux-cifs@vger.kernel.org, netfs@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-added to cifs-2.6.git for-next and added RB and tested-by
+Hi Christian, Steve,
 
-On Wed, Jun 25, 2025 at 10:55=E2=80=AFAM Stefan Metzmacher <metze@samba.org=
-> wrote:
->
-> reviewed-by and tested-by: Stefan Metzmacher <metze@samba.org>
->
-> Am 25.06.25 um 16:46 schrieb David Howells:
-> >
-> > The handling of received data in the smbdirect client code involves usi=
-ng
-> > copy_to_iter() to copy data from the smbd_reponse struct's packet trail=
-er
-> > to a folioq buffer provided by netfslib that encapsulates a chunk of
-> > pagecache.
-> >
-> > If, however, CONFIG_HARDENED_USERCOPY=3Dy, this will result in the chec=
-ks
-> > then performed in copy_to_iter() oopsing with something like the follow=
-ing:
-> >
-> >   CIFS: Attempting to mount //172.31.9.1/test
-> >   CIFS: VFS: RDMA transport established
-> >   usercopy: Kernel memory exposure attempt detected from SLUB object 's=
-mbd_response_0000000091e24ea1' (offset 81, size 63)!
-> >   ------------[ cut here ]------------
-> >   kernel BUG at mm/usercopy.c:102!
-> >   ...
-> >   RIP: 0010:usercopy_abort+0x6c/0x80
-> >   ...
-> >   Call Trace:
-> >    <TASK>
-> >    __check_heap_object+0xe3/0x120
-> >    __check_object_size+0x4dc/0x6d0
-> >    smbd_recv+0x77f/0xfe0 [cifs]
-> >    cifs_readv_from_socket+0x276/0x8f0 [cifs]
-> >    cifs_read_from_socket+0xcd/0x120 [cifs]
-> >    cifs_demultiplex_thread+0x7e9/0x2d50 [cifs]
-> >    kthread+0x396/0x830
-> >    ret_from_fork+0x2b8/0x3b0
-> >    ret_from_fork_asm+0x1a/0x30
-> >
-> > The problem is that the smbd_response slab's packet field isn't marked =
-as
-> > being permitted for usercopy.
-> >
-> > Fix this by passing parameters to kmem_slab_create() to indicate that
-> > copy_to_iter() is permitted from the packet region of the smbd_response
-> > slab objects, less the header space.
-> >
-> > Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-> > Reported-by: Stefan Metzmacher <metze@samba.org>
-> > Link: https://lore.kernel.org/r/acb7f612-df26-4e2a-a35d-7cd040f513e1@sa=
-mba.org/
-> > Signed-off-by: David Howells <dhowells@redhat.com>
-> > cc: Steve French <stfrench@microsoft.com>
-> > cc: Paulo Alcantara <pc@manguebit.com>
-> > cc: linux-cifs@vger.kernel.org
-> > cc: netfs@lists.linux.dev
-> > cc: linux-fsdevel@vger.kernel.org
-> > ---
-> >   fs/smb/client/smbdirect.c |   18 +++++++++++++-----
-> >   1 file changed, 13 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
-> > index ef6bf8d6808d..f9773cc0d562 100644
-> > --- a/fs/smb/client/smbdirect.c
-> > +++ b/fs/smb/client/smbdirect.c
-> > @@ -1475,6 +1475,9 @@ static int allocate_caches_and_workqueue(struct s=
-mbd_connection *info)
-> >       char name[MAX_NAME_LEN];
-> >       int rc;
-> >
-> > +     if (WARN_ON_ONCE(sp->max_recv_size < sizeof(struct smbdirect_data=
-_transfer)))
-> > +             return -ENOMEM;
-> > +
-> >       scnprintf(name, MAX_NAME_LEN, "smbd_request_%p", info);
-> >       info->request_cache =3D
-> >               kmem_cache_create(
-> > @@ -1492,12 +1495,17 @@ static int allocate_caches_and_workqueue(struct=
- smbd_connection *info)
-> >               goto out1;
-> >
-> >       scnprintf(name, MAX_NAME_LEN, "smbd_response_%p", info);
-> > +
-> > +     struct kmem_cache_args response_args =3D {
-> > +             .align          =3D __alignof__(struct smbd_response),
-> > +             .useroffset     =3D (offsetof(struct smbd_response, packe=
-t) +
-> > +                                sizeof(struct smbdirect_data_transfer)=
-),
-> > +             .usersize       =3D sp->max_recv_size - sizeof(struct smb=
-direct_data_transfer),
-> > +     };
-> >       info->response_cache =3D
-> > -             kmem_cache_create(
-> > -                     name,
-> > -                     sizeof(struct smbd_response) +
-> > -                             sp->max_recv_size,
-> > -                     0, SLAB_HWCACHE_ALIGN, NULL);
-> > +             kmem_cache_create(name,
-> > +                               sizeof(struct smbd_response) + sp->max_=
-recv_size,
-> > +                               &response_args, SLAB_HWCACHE_ALIGN);
-> >       if (!info->response_cache)
-> >               goto out2;
-> >
->
->
+Here are some miscellaneous fixes and changes for netfslib and cifs, if you
+could consider pulling them.  All the bugs fixed were observed in cifs, so
+they should probably go through the cifs tree unless Christian would much
+prefer for them to go through the VFS tree.
 
+Many of these were found because a bug in Samba was causing smbd to crash
+and restart after about 1-2s and this was vigorously and abruptly
+exercising the netfslib retry paths.
 
---=20
+Subsequent testing of the cifs RDMA support showed up some more bugs, for
+which fixes are also included here.
+
+First, there are some netfs fixes:
+
+ (1) Fix a hang due to missing case in final DIO read result collection
+     not breaking out of a loop if the request finished, but there were no
+     subrequests being processed and NETFS_RREQ_ALL_QUEUED wasn't yet set.
+
+ (2) Fix a double put of the netfs_io_request struct if completion happened
+     in the pause loop.
+
+ (3) Provide some helpers to abstract out NETFS_RREQ_IN_PROGRESS flag
+     wrangling.
+
+ (4) Fix infinite looping in netfs_wait_for_pause/request() which wa caused
+     by a loop waiting for NETFS_RREQ_ALL_QUEUED to get set - but which
+     wouldn't get set until the looping function returned.  This uses patch
+     (3) above.
+
+ (5) Fix a ref leak on an extra subrequest inserted into a request's list
+     of subreqs because more subreq records were needed for retrying than
+     were needed for the original request (say, for instance, that the
+     amount of cifs credit available was reduced and, subsequently, the ops
+     had to be smaller).
+
+Then a bunch of cifs fixes, some of which are from other people:
+
+ (6-8) cifs: Fix various RPC callbacks to set NETFS_SREQ_NEED_RETRY if a
+     subrequest fails retriably.
+
+ (9) Fix a regression with SMB symlinks.
+
+(10) Fix a warning in the workqueue code when reconnecting a channel.
+
+(11) Fix smbd_post_send_iter() to correctly respect the max_send_size and
+     to transmit all the data.
+
+(12) Fix reading into an ITER_FOLIOQ from the smbdirect code.
+
+(13) Fix the smbd_response slab to allow copy_to_iter() to be used on it
+     without incurring a bug from the usercopy hardening code.
+
+(14) Fix a potential deadlock during channel reconnection.
+
+And finally a couple of patches to improve tracing output, but that should
+otherwise not affect functionality:
+
+(15) Renumber the NETFS_RREQ_* flags to make the hex values easier to
+     interpret by eye, including moving the main status flags down to the
+     lowest bits, with IN_PROGRESS in bit 0.
+
+(16) Update the tracepoints in a number of ways, including adding more
+     tracepoints into the cifs read/write RPC callback so that differend
+     MID_RESPONSE_* values can be differentiated.
+
+Those last two could wait for the next merge window.
+
+The patches can also be found here:
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-fixes
+
 Thanks,
+David
 
-Steve
+David Howells (9):
+  netfs: Fix hang due to missing case in final DIO read result
+    collection
+  netfs: Put double put of request
+  netfs: Provide helpers to perform NETFS_RREQ_IN_PROGRESS flag wangling
+  netfs: Fix looping in wait functions
+  netfs: Fix ref leak on inserted extra subreq in write retry
+  cifs: Fix reading into an ITER_FOLIOQ from the smbdirect code
+  cifs: Fix the smbd_reponse slab to allow usercopy
+  netfs: Renumber the NETFS_RREQ_* flags to make traces easier to read
+  netfs: Update tracepoints in a number of ways
+
+Paulo Alcantara (6):
+  smb: client: set missing retry flag in smb2_writev_callback()
+  smb: client: set missing retry flag in cifs_readv_callback()
+  smb: client: set missing retry flag in cifs_writev_callback()
+  smb: client: fix regression with native SMB symlinks
+  smb: client: fix warning when reconnecting channel
+  smb: client: fix potential deadlock when reconnecting channels
+
+Stefan Metzmacher (1):
+  smb: client: let smbd_post_send_iter() respect the peers max_send_size
+    and transmit all data
+
+ fs/netfs/direct_write.c      |   1 -
+ fs/netfs/internal.h          |  20 ++++-
+ fs/netfs/main.c              |   6 +-
+ fs/netfs/misc.c              |  50 +++++++----
+ fs/netfs/read_collect.c      |  16 ++--
+ fs/netfs/write_collect.c     |   8 +-
+ fs/netfs/write_retry.c       |   3 +-
+ fs/smb/client/cifsglob.h     |   2 +
+ fs/smb/client/cifssmb.c      |  22 +++++
+ fs/smb/client/connect.c      |  53 +++++++-----
+ fs/smb/client/reparse.c      |  20 +----
+ fs/smb/client/smb2pdu.c      |  37 +++++---
+ fs/smb/client/smbdirect.c    | 163 +++++++++++++----------------------
+ include/linux/netfs.h        |  20 ++---
+ include/trace/events/netfs.h |  29 +++++--
+ 15 files changed, 245 insertions(+), 205 deletions(-)
+
