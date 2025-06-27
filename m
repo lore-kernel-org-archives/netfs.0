@@ -1,121 +1,207 @@
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.flyingcircus.io (mail.flyingcircus.io [212.122.41.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C50D2E7193
-	for <netfs@lists.linux.dev>; Thu, 26 Jun 2025 14:08:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390FC19CC3E;
+	Fri, 27 Jun 2025 05:52:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.122.41.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750946883; cv=none; b=HI9uXM0OH0Opir8K1X6QH+ArQRmF/8L6oip9yX3BSjysrBc2YPI5tlmL+cHFdHCK87IpI1i2THCigVnY6VB0lNvxEVvhhba+BK2xqmH6xRXl04C/9KXG4v1O1+HjaHtZ2iC12WiVrVmMzqm6gIXMxAc1BIAtY0XUSre0X5ktB2o=
+	t=1751003553; cv=none; b=lFioWj4WjEWai8Tvgn5oAhNQhA+jgUtHoQbzfZ0v+IK8laeNkp8wMFxGx65eb1RyXC0LRgNIFmE1FFYSeed8NnZa1sua/AK3Hh1u8+9995us9+Z6IkODXXaGDU32gILxUQayHdmTekcady1meGePqF121hfPBUvXuWQjfSXmTaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750946883; c=relaxed/simple;
-	bh=W9tHbxHnKeRQE5geeibzijql5KBQit7N4QCOc9dhrsg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gtA+rsiQCVoGFQSA2sh//KEpVr587oQBrGglAIUhglMhkUda67Ah6fj0R/Kz5kTrDZt8JehWSsyl1wiq57W5y/KpigR7mKuPt2Jfpo4DZ7m85hCO3fXye5zcBJYiVWzbY8wSjA/lGIPlFky4wYenRzDM3q7RiQITrvlC2N/UHqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BE9p65Jr; arc=none smtp.client-ip=209.85.219.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1751003553; c=relaxed/simple;
+	bh=I+cyzXXEFsVaAY+O6/we7LXtcWZMrSXWgPA81FRNw4c=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=FKpgUhV7IX/GjsI2QlLJgGiKTVXuf9vKs7ls4tJIEnZCkOUWpctfb1u7pTcpnke6F/8X4vAk8EiiyhkXktnOEO9ob1uJ+Dn4xaB+e6Mux13bLiuR1diqTFKl5R8/+2MjhnzOVkyKRpyjRA/TxE6/5blJlBN/sB18QIrTpqrXey0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=flyingcircus.io; spf=pass smtp.mailfrom=flyingcircus.io; dkim=pass (1024-bit key) header.d=flyingcircus.io header.i=@flyingcircus.io header.b=NUg3Q+FS; arc=none smtp.client-ip=212.122.41.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=flyingcircus.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flyingcircus.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BE9p65Jr"
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-6fadd3ad18eso11199626d6.2
-        for <netfs@lists.linux.dev>; Thu, 26 Jun 2025 07:08:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750946881; x=1751551681; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2AFJAJWMJoLX2aT06uj/U15KdrwYtiZtVOwqSV/4SzY=;
-        b=BE9p65Jrxq5a/cTMiKoRXPgJbonuOJCbNKmsicnd7500TG0O0uoUOlWQavhDHu9syb
-         NXsgc9SrjsAvnxUUh8NklM0FSlIT9SnlBFxZ9ZLmCqjQP7cgcatCD2MpNK7cu31w2pOj
-         Ybla0x6qEcOkSzX7SRW0/EXqp7OzMVNvHG2KCFqJm2k0LY1a67UX/i5FYnX7zHzbwz4F
-         OoPpsQgkZ2V3gfFraBmTNBqrjGGYJEVjRH/FtHtdg7sy8AWGhic41g/PGQZ3hVOtPTnQ
-         k2rDqLsOB5wEmTb3YPYDgmi7f0HpKRcKFVL6keQf1nDv+hUdE0RCGFszuUB25VzfEOeo
-         R3oA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750946881; x=1751551681;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2AFJAJWMJoLX2aT06uj/U15KdrwYtiZtVOwqSV/4SzY=;
-        b=cH1jtioBNjGk2yhpshB/bfnwvNa2aR7Px+sYlgj/pR+md2c9Iv2Uz6l0w5ZGqeI9tt
-         Js7ju8beh6uQEW/15LdyUT6y/yvYSnVYwjgQT1hEMTN6kMSof36j8PeCgs2UVYLjM+iR
-         WRa+Gs4uBL5Mq1RbkGG1VM4NMt9v9S9UrAxgV0B8zF2znjZRIhzD16pj576JqRc8Q7wM
-         i+yLw82X7Jd8gUMATvaglYUlj2NA0M6IXuNU/iDGEZTb/7BNdoc7wUZ4d894dgL4d2V3
-         lv2k2C3Z+5lODy4Qjxlt3YcBSH/+r4gqEd5jxmT0KUO1C7unF1L4rktHOE+DZxdO5ScS
-         qExw==
-X-Forwarded-Encrypted: i=1; AJvYcCWJtRWli31lFozq+Udw4b7ToGID/w5TgTmX/gVX6OU4kEsDjAn30UkgzE0pdOVL5UGPJ6sZJw==@lists.linux.dev
-X-Gm-Message-State: AOJu0YwuHpbepmb1q+zfS5s8hmiPnMQVwucYGH7NgBmZeP8j2EubvHNY
-	CuxmS4e8h71nZLn7/xrL1rdybM2OsxvOJ+FoMyDM27xBon0xPCAQocp2UvJ11j02eJw96UIiwsy
-	JOLKm2zGpn06DdhNNgkyac0DTF+0nY8U=
-X-Gm-Gg: ASbGnct/tzPWmkx+SZ1BNCTXMF3Irzm/fsgXjt5qNZvy2fiBMn95PK99tRq/vpWgPfT
-	SbhYQ/TKWMPQJUaxVDmo/5S3MB9lqdmpHStSh0xzBBLGe5ywAm6AjWf1qcy1zlk+QiVG9ysZ1Kg
-	NMw3lsNvnF13mkabTemiX/eqU75QGdXcImApfIbHGuJWHnp2Wi5D66E5+jUojkjUAtcxJTCU+xS
-	eDFtA==
-X-Google-Smtp-Source: AGHT+IFuTBd/k6VUgHv/Tqnp8nePZb+/XSJ00N/ywtLL9ZMOQqvkiEoIBt16EJ8iSVWekrkdSUFODlbllPETtxHu3oE=
-X-Received: by 2002:a05:6214:5bc2:b0:6f8:f1a5:e6a4 with SMTP id
- 6a1803df08f44-6fd5efac2c6mr119139766d6.22.1750946881068; Thu, 26 Jun 2025
- 07:08:01 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=flyingcircus.io header.i=@flyingcircus.io header.b="NUg3Q+FS"
+Content-Type: text/plain;
+	charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flyingcircus.io;
+	s=mail; t=1751003086;
+	bh=UyV35LOM07P/PALS6LcEMleCj1no3wxnvAIeYWaEtMU=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To;
+	b=NUg3Q+FSo4ZvGRStNFZRcyBK2LQb6PdQnA/gJ9PlV5t7nFWQSPNUt3RjFyklTZ+HC
+	 iXPD48xk53aOi7RlCQXLB0Orsic0/wjL9ImhlnrVhMz0XcN68kVY4/fHrIjaliksWB
+	 ojxzRZjZeTqF6MG9YpIg6T86PnpEhMf8g2ubuyd8=
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <1576470.1750941177@warthog.procyon.org.uk> <dd1b01babe2b5023e9e26c56a2f2b458@manguebit.org>
-In-Reply-To: <dd1b01babe2b5023e9e26c56a2f2b458@manguebit.org>
-From: Steve French <smfrench@gmail.com>
-Date: Thu, 26 Jun 2025 09:07:49 -0500
-X-Gm-Features: Ac12FXyyhbfNlNMpQYe9aZUeZ4JpjPV4v5OkXG2uBhjAE4kIr6iaVInUeAOolnI
-Message-ID: <CAH2r5mus-f5y+p16hkaYZWA=fCAiMGT1vpMawbVCZ2EC0K5Pxg@mail.gmail.com>
-Subject: Re: [PATCH] netfs: Fix i_size updating
-To: Paulo Alcantara <pc@manguebit.org>
-Cc: David Howells <dhowells@redhat.com>, Christian Brauner <brauner@kernel.org>, 
-	Steve French <sfrench@samba.org>, linux-cifs@vger.kernel.org, netfs@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [REGRESSION] 9pfs issues on 6.12-rc1
+From: Christian Theune <ct@flyingcircus.io>
+In-Reply-To: <w5ap2zcsatkx4dmakrkjmaexwh3mnmgc5vhavb2miaj6grrzat@7kzr5vlsrmh5>
+Date: Fri, 27 Jun 2025 07:44:31 +0200
+Cc: Antony Antony <antony.antony@secunet.com>,
+ David Howells <dhowells@redhat.com>,
+ Antony Antony <antony@phenome.org>,
+ Christian Brauner <brauner@kernel.org>,
+ Eric Van Hensbergen <ericvh@kernel.org>,
+ Latchesar Ionkov <lucho@ionkov.net>,
+ Dominique Martinet <asmadeus@codewreck.org>,
+ Christian Schoenebeck <linux_oss@crudebyte.com>,
+ Sedat Dilek <sedat.dilek@gmail.com>,
+ Maximilian Bosch <maximilian@mbosch.me>,
+ regressions@lists.linux.dev,
+ v9fs@lists.linux.dev,
+ netfs@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <C7DAFD20-65D2-4B61-A612-A25FCC0C9573@flyingcircus.io>
+References: <ZxFQw4OI9rrc7UYc@Antony2201.local>
+ <D4LHHUNLG79Y.12PI0X6BEHRHW@mbosch.me>
+ <c3eff232-7db4-4e89-af2c-f992f00cd043@leemhuis.info>
+ <D4LNG4ZHZM5X.1STBTSTM9LN6E@mbosch.me>
+ <CA+icZUVkVcKw+wN1p10zLHpO5gqkpzDU6nH46Nna4qaws_Q5iA@mail.gmail.com>
+ <3327438.1729678025@warthog.procyon.org.uk>
+ <ZxlQv5OXjJUbkLah@moon.secunet.de>
+ <w5ap2zcsatkx4dmakrkjmaexwh3mnmgc5vhavb2miaj6grrzat@7kzr5vlsrmh5>
+To: Ryan Lahfa <ryan@lahfa.xyz>
 
-added to for-next pending testing
+Hi,
 
-On Thu, Jun 26, 2025 at 8:39=E2=80=AFAM Paulo Alcantara <pc@manguebit.org> =
-wrote:
->
-> David Howells <dhowells@redhat.com> writes:
->
-> > Fix the updating of i_size, particularly in regard to the completion of=
- DIO
-> > writes and especially async DIO writes by using a lock.
-> >
-> > The bug is triggered occasionally by the generic/207 xfstest as it chuc=
-ks a
-> > bunch of AIO DIO writes at the filesystem and then checks that fstat()
-> > returns a reasonable st_size as each completes.
-> >
-> > The problem is that netfs is trying to do "if new_size > inode->i_size,
-> > update inode->i_size" sort of thing but without a lock around it.
-> >
-> > This can be seen with cifs, but shouldn't be seen with kafs because kaf=
-s
-> > serialises modification ops on the client whereas cifs sends the reques=
-ts
-> > to the server as they're generated and lets the server order them.
-> >
-> > Fixes: 153a9961b551 ("netfs: Implement unbuffered/DIO write support")
-> > Signed-off-by: David Howells <dhowells@redhat.com>
-> > cc: Steve French <sfrench@samba.org>
-> > cc: Paulo Alcantara <pc@manguebit.org>
-> > cc: linux-cifs@vger.kernel.org
-> > cc: netfs@lists.linux.dev
-> > cc: linux-fsdevel@vger.kernel.org
-> > ---
-> >  fs/netfs/buffered_write.c |    2 ++
-> >  fs/netfs/direct_write.c   |    8 ++++++--
-> >  2 files changed, 8 insertions(+), 2 deletions(-)
->
-> Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
->
+we=E2=80=99re experiencing the same issue with a number of NixOS tests =
+that are heavy in operations copying from the v9fs mounted nix store.
 
+> On 13. Jun 2025, at 00:24, Ryan Lahfa <ryan@lahfa.xyz> wrote:
+>=20
+> Hi everyone,
+>=20
+> Le Wed, Oct 23, 2024 at 09:38:39PM +0200, Antony Antony a =C3=A9crit :
+>> On Wed, Oct 23, 2024 at 11:07:05 +0100, David Howells wrote:
+>>> Hi Antony,
+>>>=20
+>>> I think the attached should fix it properly rather than working =
+around it as
+>>> the previous patch did.  If you could give it a whirl?
+>>=20
+>> Yes this also fix the crash.
+>>=20
+>> Tested-by: Antony Antony <antony.antony@secunet.com>
+>=20
+> I cannot confirm this fixes the crash for me. My reproducer is =
+slightly
+> more complicated than Max's original one, albeit, still on NixOS and
+> probably uses 9p more intensively than the automated NixOS testings
+> workload.
+>=20
+> Here is how to reproduce it:
+>=20
+> $ git clone https://gerrit.lix.systems/lix
+> $ cd lix
+> $ git fetch https://gerrit.lix.systems/lix refs/changes/29/3329/8 && =
+git checkout FETCH_HEAD
+> $ nix-build -A hydraJobs.tests.local-releng
+>=20
+> I suspect the reason for why Antony considers the crash to be fixed is
+> that the workload used to test it requires a significant amount of
+> chance and retries to trigger the bug.
+>=20
+> On my end, you can see our CI showing the symptoms:
+> =
+https://buildkite.com/organizations/lix-project/pipelines/lix/builds/2357/=
+jobs/019761e7-784e-4790-8c1b-f609270d9d19/log.
+>=20
+> We retried probably hundreds of times and saw different corruption
+> patterns, Python getting confused, ld.so getting confused, systemd
+> sometimes too. Python had a much higher chance of crashing in many of
+> our tests. We reproduced it over aarch64-linux (Ampere Altra Q80-30) =
+but
+> also Intel and AMD CPUs (~5 different systems).
+
+Yeah. We=E2=80=99re on AMD CPUs and it wasn=E2=80=99t hardware-bound.=20
+
+The errors we saw where:=20
+
+- malloc(): unaligned tcache chunk detected
+- segfaulting java processes
+- misbehaving filesystems (errors about internal structures in ext4, =
+incorrect file content in xfs)
+- crashing kernels when dealing with the outfall of those errors
+
+> As soon as we reverted to Linux 6.6 series, the bug went away.
+
+Same here, the otherway around: we came from 6.6.94 and updated to =
+6.12.34 and immediately saw a number of tests failing, all of which were =
+heavy in copying data from v9fs to the root filesystem in the VM.
+
+> We bisected but we started to have weirder problems, this is because =
+we
+> encountered the original regression mentioned in October 2024 and for =
+a
+> certain range of commits, we were unable to bisect anything further.
+
+I had already found the issue from last October when started bisecting, =
+I later got in touch with Ryan who recognized that we were chasing the =
+same issue. I stopped bisecting at that point - the bisect was already =
+homing in around the time of the changes in last October.
+
+> So I switched my bisection strategy to understand when the bug was
+> fixed, this lead me on the commit
+> e65a0dc1cabe71b91ef5603e5814359451b74ca7 which is the proper fix
+> mentioned here and on this discussion.
+>=20
+> Reverting this on the top of 6.12 cause indeed a massive amount of
+> traces, see this gist [1] for examples.
+
+Yeah. During bisect I noticed it flapping around with the original =
+October issues crashing immediately during boot.
+
+> Applying the "workaround patch" aka "[PATCH] 9p: Don't revert the I/O
+> iterator after reading" after reverting e65a0dc1cabe makes the problem
+> go away after 5 tries (5 tries were sufficient to trigger with the
+> proper fix).
+
+Yup, I applied the revert and workaround patch on top of 6.12.34 and the =
+reliably broken test became reliably green again.
+
+Our test can be reproduced, too:
+
+$ git clone https://github.com/flyingcircusio/fc-nixos.git
+$ cd fc-nixos
+$ eval $(./dev-setup)
+$ nix-build tests/matomo.nix
+
+The test will fail with ext4 complaining something like this:
+
+machine # [ 42.596728] =
+vn2haz1283lxz6iy0rai850a7jlgxbja-matomo-setup-update-pre[1233]: Copied =
+files, updating package link in /var/lib/matomo/current-package.
+machine # [ 42.788956] EXT4-fs error (device vda): =
+htree_dirblock_to_tree:1109: inode #13138: block 5883: comm setfacl: bad =
+entry in directory: rec_len % 4 !=3D 0 - offset=3D0, inode=3D606087968, =
+rec_len=3D31074, size=3D4096 fake=3D0
+machine # [ 42.958590] EXT4-fs error (device vda): =
+htree_dirblock_to_tree:1109: inode #13138: block 5883: comm chown: bad =
+entry in directory: rec_len % 4 !=3D 0 - offset=3D0, inode=3D606087968, =
+rec_len=3D31074, size=3D4096 fake=3D0
+machine # [ 43.068003] EXT4-fs error (device vda): =
+htree_dirblock_to_tree:1109: inode #13138: block 5883: comm chmod: bad =
+entry in directory: rec_len % 4 !=3D 0 - offset=3D0, inode=3D606087968, =
+rec_len=3D31074, size=3D4096 fake=3D0
+machine # [ 43.004098] =
+vn2haz1283lxz6iy0rai850a7jlgxbja-matomo-setup-update-pre[1233]: Giving =
+matomo read+write access to /var/lib/matomo/share/matomo.js, =
+/var/lib/matomo/share/piwik.js, /var/lib/matomo/share/config, =
+/var/lib/matomo/share/misc/user, /var/lib/matomo/share/js, =
+/var/lib/matomo/share/tmp, /var/lib/matomo/share/misc
+machine # [ 43.201319] EXT4-fs error (device vda): =
+htree_dirblock_to_tree:1109: inode #13138: block 5883: comm setfacl: bad =
+entry in directory: rec_len % 4 !=3D 0 - offset=3D0, inode=3D606087968, =
+rec_len=3D31074, size=3D4096 fake=3D0
+
+I=E2=80=99m also available for testing and further diagnosis.
+
+Christian
 
 --=20
-Thanks,
+Christian Theune =C2=B7 ct@flyingcircus.io =C2=B7 +49 345 219401 0
+Flying Circus Internet Operations GmbH =C2=B7 https://flyingcircus.io
+Leipziger Str. 70/71 =C2=B7 06108 Halle (Saale) =C2=B7 Deutschland
+HR Stendal HRB 21169 =C2=B7 Gesch=C3=A4ftsf=C3=BChrer: Christian Theune, =
+Christian Zagrodnick
 
-Steve
