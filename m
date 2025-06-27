@@ -1,53 +1,57 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 438B8215783;
-	Fri, 27 Jun 2025 06:44:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from mail.flyingcircus.io (mail.flyingcircus.io [212.122.41.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ADBF17741;
+	Fri, 27 Jun 2025 08:19:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.122.41.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751006685; cv=none; b=QfYwpuXrg3kS+LVx5mdMqKBwELsqjublsLdPfC9B82BL6irLKKYBOCBSWSALwMOJPbhTiuxFAZ5VnuQc9StJxChDXAcwYST6Re/GHYkyxPgQroO70+TSYGXaP50pzdC4Jz8BZyQcjpianBVWZUyj8fSOt87Iy3O8yGiERbaAuVw=
+	t=1751012394; cv=none; b=uRru/oqSXoQYLX+nXimq1BwfvHUuum0IfhafOgHv3+vA/V/j4pje4PDK3VyCSGX7/oA3kP4JluFfj1BPmJWbDQ5xUPAxdUN0XLca8jcIytoP3e9crqjuw81OqJYjV0yGaI/OCqM+gOLQgMEgqkDR/Ex1SxrXx7UrUqZ437JHmMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751006685; c=relaxed/simple;
-	bh=7pIhx5HjCLpkDF6aJv/SDyMoxejq+POAMhsEB0cNBaY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FAvNve2aoyeZv0SHjdTNClFqeC0ENfbyhBbFIcZFEVDQyKnVFTvCVGYJl8eNEQqKuAlpH2H1QDG2CkzyzJjGrMQOjsBnMPCktv6C6tOmmxnqiERMmUJ5j0b9M/tyGA5xX2K2r3QMfPN69kNefeEjXvgzu3tp84XufmQDJPuqjTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=Hza5wT2j; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1751012394; c=relaxed/simple;
+	bh=4beAEC+PdvGn8CoJoq0DioHaeqHFZ4gvl3Dqyq4zRWE=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=nG7cY4MuBZBcCfzSUmO0M0yIsUQ/BOVq+Mk3boPTTBnEnxbtsymA2g6x6Ca3AVIt/oTP4nVYEdl3QhQ7xGFoJ/hjgB4KijZi8ZZzawT3d5y3PXA+sRgcT+55ekiDcSZSHt4rIhpIKy/bOZa7giUJ6QlsTCUmotHH+Duv90+kJqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=flyingcircus.io; spf=pass smtp.mailfrom=flyingcircus.io; dkim=pass (1024-bit key) header.d=flyingcircus.io header.i=@flyingcircus.io header.b=Ucl8wNjh; arc=none smtp.client-ip=212.122.41.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=flyingcircus.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flyingcircus.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="Hza5wT2j"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 8F2E914C2D3;
-	Fri, 27 Jun 2025 08:44:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1751006675;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vr7nGqbEftdaKrLXOahP98xg8w9JsBZcMEz9gbvFuyE=;
-	b=Hza5wT2jlB55T5f/vRSYtc9WmE5SuWQcZFn+1MTGA3vI4w5WzwmW4IVxK4e8VCOR3rnJLX
-	YHDpaWGkAKF5j+fdfZhxTWD4DD4URlAil58Uic+UVKBp71onWEmlQLvRYYODmMz7mcPjMe
-	fCIPcT47djy0fiyB7HBO4hUXdqyXzYpvp4LMHjue/E1IQ5+9OcokuvB/4gmHSQIUzq4ne6
-	EClR8vp6X3jpzRquGQ1PINV8+UMgAIhP/9NYmEw6unkc7fYSIJ9ZT5KMSnzvhtMr5I8Ukd
-	a5TmH9vQGMcZnALdHkHB22qXo8KtsdrqVL9HXekK7RvDGgSHkcg7mryyxm1HEw==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 4c2e422b;
-	Fri, 27 Jun 2025 06:44:29 +0000 (UTC)
-Date: Fri, 27 Jun 2025 15:44:14 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Christian Theune <ct@flyingcircus.io>,
-	David Howells <dhowells@redhat.com>
-Cc: Ryan Lahfa <ryan@lahfa.xyz>, Antony Antony <antony.antony@secunet.com>,
-	Antony Antony <antony@phenome.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Sedat Dilek <sedat.dilek@gmail.com>,
-	Maximilian Bosch <maximilian@mbosch.me>,
-	regressions@lists.linux.dev, v9fs@lists.linux.dev,
-	netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=flyingcircus.io header.i=@flyingcircus.io header.b="Ucl8wNjh"
+Content-Type: text/plain;
+	charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flyingcircus.io;
+	s=mail; t=1751012388;
+	bh=4beAEC+PdvGn8CoJoq0DioHaeqHFZ4gvl3Dqyq4zRWE=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To;
+	b=Ucl8wNjhmiXld55MdSlJ/V2tB2hQ5iHUjmZeaHIl7zTcVoMJpq+1wyPpvmemnZKNg
+	 iBvv3HcKwEdkMbJC8pFYj5Y51vSErP7Qg6ugLW1VyZunLExxOpVY+DyYYfIgmqPsV9
+	 hqgQJIl/J/7YseEWzCUx/RletOZVOgSLM8MJoCwI=
+Precedence: bulk
+X-Mailing-List: netfs@lists.linux.dev
+List-Id: <netfs.lists.linux.dev>
+List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
+List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
 Subject: Re: [REGRESSION] 9pfs issues on 6.12-rc1
-Message-ID: <aF49vp50BkfjJOTG@codewreck.org>
+From: Christian Theune <ct@flyingcircus.io>
+In-Reply-To: <aF49vp50BkfjJOTG@codewreck.org>
+Date: Fri, 27 Jun 2025 10:19:34 +0200
+Cc: David Howells <dhowells@redhat.com>,
+ Ryan Lahfa <ryan@lahfa.xyz>,
+ Antony Antony <antony.antony@secunet.com>,
+ Antony Antony <antony@phenome.org>,
+ Christian Brauner <brauner@kernel.org>,
+ Eric Van Hensbergen <ericvh@kernel.org>,
+ Latchesar Ionkov <lucho@ionkov.net>,
+ Christian Schoenebeck <linux_oss@crudebyte.com>,
+ Sedat Dilek <sedat.dilek@gmail.com>,
+ Maximilian Bosch <maximilian@mbosch.me>,
+ regressions@lists.linux.dev,
+ v9fs@lists.linux.dev,
+ netfs@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <F6CB6E77-082D-442A-A3C9-F2D955E1D285@flyingcircus.io>
 References: <ZxFQw4OI9rrc7UYc@Antony2201.local>
  <D4LHHUNLG79Y.12PI0X6BEHRHW@mbosch.me>
  <c3eff232-7db4-4e89-af2c-f992f00cd043@leemhuis.info>
@@ -57,49 +61,69 @@ References: <ZxFQw4OI9rrc7UYc@Antony2201.local>
  <ZxlQv5OXjJUbkLah@moon.secunet.de>
  <w5ap2zcsatkx4dmakrkjmaexwh3mnmgc5vhavb2miaj6grrzat@7kzr5vlsrmh5>
  <C7DAFD20-65D2-4B61-A612-A25FCC0C9573@flyingcircus.io>
-Precedence: bulk
-X-Mailing-List: netfs@lists.linux.dev
-List-Id: <netfs.lists.linux.dev>
-List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
-List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <C7DAFD20-65D2-4B61-A612-A25FCC0C9573@flyingcircus.io>
+ <aF49vp50BkfjJOTG@codewreck.org>
+To: Dominique Martinet <asmadeus@codewreck.org>
 
-Hi all,
+Hi,
 
-sorry for the slow reply; I wasn't in Cc of most of the mails back in
-October so this is a pain to navigate... Let me recap a bit:
-- stuff started failing in 6.12-rc1
-- David first posted "9p: Don't revert the I/O iterator after
-reading"[1], which fixed the bug, but then found a "better" fix as
-"iov_iter: Fix iov_iter_get_pages*() for folio_queue" [2] which was
-merged instead (so the first patch was not merged)
+> On 27. Jun 2025, at 08:44, Dominique Martinet <asmadeus@codewreck.org> =
+wrote:
+>=20
+> Hi all,
+>=20
+> sorry for the slow reply; I wasn't in Cc of most of the mails back in
+> October so this is a pain to navigate... Let me recap a bit:
+> - stuff started failing in 6.12-rc1
 
-But it turns out the second patch is not enough (or causes another
-issue?), and the reverting it + applying first one works, is that
-correct?
-What happens if you keep [2] and just apply [1], does that still bug?
+yes, to my knowledge and interpretation of this thread.
 
-(I've tried reading through the thread now and I don't even see what was
-the "bad" patch in the first place, although I assume it's ee4cdf7ba857
-("netfs: Speed up buffered reading") -- was that confirmed?)
+> - David first posted "9p: Don't revert the I/O iterator after
+> reading"[1], which fixed the bug, but then found a "better" fix as
+> "iov_iter: Fix iov_iter_get_pages*() for folio_queue" [2] which was
+> merged instead (so the first patch was not merged)
+>=20
+> But it turns out the second patch is not enough (or causes another
+> issue?), and the reverting it + applying first one works, is that
+> correct?
+> What happens if you keep [2] and just apply [1], does that still bug?
 
+I tried that and the test that so far under all the variations reliably
+crashed (or not) is not crashing in this case.
 
-David, as you worked on this at the time it'd be great if you could have
-another look, I have no idea what made you try [1] in the first place
-but unless you think 9p is doing something wrong like double-reverting
-on error or something like that I'd like to understand a bit more what
-happens... Although given 6.12 is getting used more now it could make
-sense to just apply [1] first until we understand, and have a proper fix
-come second -- if someone can confirm we don't need to revert [2].
+> (I've tried reading through the thread now and I don't even see what =
+was
+> the "bad" patch in the first place, although I assume it's =
+ee4cdf7ba857
+> ("netfs: Speed up buffered reading") -- was that confirmed?)
 
+I was late to the party, to, so I=E2=80=99ll defer to the others.
 
-[1] https://lore.kernel.org/all/3327438.1729678025@warthog.procyon.org.uk/T/#mc97a248b0f673dff6dc8613b508ca4fd45c4fefe
-[2] https://lore.kernel.org/all/3327438.1729678025@warthog.procyon.org.uk/T/#m89597a1144806db4ae89992953031cdffa0b0bf9
+> David, as you worked on this at the time it'd be great if you could =
+have
+> another look, I have no idea what made you try [1] in the first place
+> but unless you think 9p is doing something wrong like double-reverting
+> on error or something like that I'd like to understand a bit more what
+> happens... Although given 6.12 is getting used more now it could make
+> sense to just apply [1] first until we understand, and have a proper =
+fix
+> come second -- if someone can confirm we don't need to revert [2].
 
+I guess I confirmed this. However, I=E2=80=99m just barely better than a =
+monkey
+here so I can=E2=80=99t tell whether this makes sense from the internal =
+logic of
+things.
 
-Thanks,
--- 
-Dominique
+To repeat, for safety: my test case worked with the situation you =
+described and suggested:
+[1] applied on top of 6.12.34 and *not* having [2] reverted.
+
+Christian
+
+--=20
+Christian Theune =C2=B7 ct@flyingcircus.io =C2=B7 +49 345 219401 0
+Flying Circus Internet Operations GmbH =C2=B7 https://flyingcircus.io
+Leipziger Str. 70/71 =C2=B7 06108 Halle (Saale) =C2=B7 Deutschland
+HR Stendal HRB 21169 =C2=B7 Gesch=C3=A4ftsf=C3=BChrer: Christian Theune, =
+Christian Zagrodnick
+
