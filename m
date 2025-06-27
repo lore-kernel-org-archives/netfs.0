@@ -1,129 +1,101 @@
-Received: from mail.flyingcircus.io (mail.flyingcircus.io [212.122.41.197])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ADBF17741;
-	Fri, 27 Jun 2025 08:19:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.122.41.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49956283FE5
+	for <netfs@lists.linux.dev>; Fri, 27 Jun 2025 10:00:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751012394; cv=none; b=uRru/oqSXoQYLX+nXimq1BwfvHUuum0IfhafOgHv3+vA/V/j4pje4PDK3VyCSGX7/oA3kP4JluFfj1BPmJWbDQ5xUPAxdUN0XLca8jcIytoP3e9crqjuw81OqJYjV0yGaI/OCqM+gOLQgMEgqkDR/Ex1SxrXx7UrUqZ437JHmMY=
+	t=1751018432; cv=none; b=RZMZ5HvUANc8cnCdNQyLB6kClHIch5wkn6Mz1t5Nsyea0LRCYH+VHdpitNrnE0d6TfoP+Vo8R0ijFF44gfBPofRTCLy3LkcrinG34gA9OFZB6vW6hLhLtaFcZmgQnU/37TI7aH1QgPM8T9mJR3PTo2tfJAIG7VO5r7zSgQYWD+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751012394; c=relaxed/simple;
-	bh=4beAEC+PdvGn8CoJoq0DioHaeqHFZ4gvl3Dqyq4zRWE=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=nG7cY4MuBZBcCfzSUmO0M0yIsUQ/BOVq+Mk3boPTTBnEnxbtsymA2g6x6Ca3AVIt/oTP4nVYEdl3QhQ7xGFoJ/hjgB4KijZi8ZZzawT3d5y3PXA+sRgcT+55ekiDcSZSHt4rIhpIKy/bOZa7giUJ6QlsTCUmotHH+Duv90+kJqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=flyingcircus.io; spf=pass smtp.mailfrom=flyingcircus.io; dkim=pass (1024-bit key) header.d=flyingcircus.io header.i=@flyingcircus.io header.b=Ucl8wNjh; arc=none smtp.client-ip=212.122.41.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=flyingcircus.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flyingcircus.io
+	s=arc-20240116; t=1751018432; c=relaxed/simple;
+	bh=ycgp8smJ6qdGyb5KS618NZdgUuBZ+K4vqVR3TSDiRQc=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=Fewvser9vh6XQGIsym336JQS7P97MewUuroS5ILqXIoFCIBOissQhhUbb2Uh56q2A9qeYXpuTr5vOJt4bo6RlQ+I/6X7WfUlB8K+11V3zgjJStpSV4NUZLXIlqYqWsx2P/uWe8KcTEa/kNH/jJhQuPB6N7a2Ft0tvLbPF9XrBS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PSQZ9OaS; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=flyingcircus.io header.i=@flyingcircus.io header.b="Ucl8wNjh"
-Content-Type: text/plain;
-	charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flyingcircus.io;
-	s=mail; t=1751012388;
-	bh=4beAEC+PdvGn8CoJoq0DioHaeqHFZ4gvl3Dqyq4zRWE=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To;
-	b=Ucl8wNjhmiXld55MdSlJ/V2tB2hQ5iHUjmZeaHIl7zTcVoMJpq+1wyPpvmemnZKNg
-	 iBvv3HcKwEdkMbJC8pFYj5Y51vSErP7Qg6ugLW1VyZunLExxOpVY+DyYYfIgmqPsV9
-	 hqgQJIl/J/7YseEWzCUx/RletOZVOgSLM8MJoCwI=
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PSQZ9OaS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1751018429;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QJARBrsQDqMKecVsW7RxG7g2Bw7hM8qYS7pvleV7J9M=;
+	b=PSQZ9OaS64kl2wkjhvylthAD1ZzoymgucRDM+iCU96QkBNKBsa23jwDpNuhy9JjpPKOkGi
+	gUZVw2JJL/G1T3ZfJcQROrlQ+H6H9eqstsyXy+MdREIdcQbHAgnFTR4HnAnhFkrMi5cUhu
+	P4C+1feu+2Sx3rOc0FwmZT/2Dc2giJQ=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-367-RMGKsNt1P7uKfPssuN3BUA-1; Fri,
+ 27 Jun 2025 06:00:19 -0400
+X-MC-Unique: RMGKsNt1P7uKfPssuN3BUA-1
+X-Mimecast-MFC-AGG-ID: RMGKsNt1P7uKfPssuN3BUA_1751018416
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 43E5E1801222;
+	Fri, 27 Jun 2025 10:00:15 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.81])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 97DA21944CE7;
+	Fri, 27 Jun 2025 10:00:08 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <w5ap2zcsatkx4dmakrkjmaexwh3mnmgc5vhavb2miaj6grrzat@7kzr5vlsrmh5>
+References: <w5ap2zcsatkx4dmakrkjmaexwh3mnmgc5vhavb2miaj6grrzat@7kzr5vlsrmh5> <ZxFQw4OI9rrc7UYc@Antony2201.local> <D4LHHUNLG79Y.12PI0X6BEHRHW@mbosch.me> <c3eff232-7db4-4e89-af2c-f992f00cd043@leemhuis.info> <D4LNG4ZHZM5X.1STBTSTM9LN6E@mbosch.me> <CA+icZUVkVcKw+wN1p10zLHpO5gqkpzDU6nH46Nna4qaws_Q5iA@mail.gmail.com> <3327438.1729678025@warthog.procyon.org.uk> <ZxlQv5OXjJUbkLah@moon.secunet.de>
+To: Ryan Lahfa <ryan@lahfa.xyz>
+Cc: dhowells@redhat.com, Antony Antony <antony.antony@secunet.com>,
+    Antony Antony <antony@phenome.org>,
+    Christian Brauner <brauner@kernel.org>,
+    Eric Van Hensbergen <ericvh@kernel.org>,
+    Latchesar Ionkov <lucho@ionkov.net>,
+    Dominique Martinet <asmadeus@codewreck.org>,
+    Christian Schoenebeck <linux_oss@crudebyte.com>,
+    Sedat Dilek <sedat.dilek@gmail.com>,
+    Maximilian Bosch <maximilian@mbosch.me>, regressions@lists.linux.dev,
+    v9fs@lists.linux.dev, netfs@lists.linux.dev,
+    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [REGRESSION] 9pfs issues on 6.12-rc1
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [REGRESSION] 9pfs issues on 6.12-rc1
-From: Christian Theune <ct@flyingcircus.io>
-In-Reply-To: <aF49vp50BkfjJOTG@codewreck.org>
-Date: Fri, 27 Jun 2025 10:19:34 +0200
-Cc: David Howells <dhowells@redhat.com>,
- Ryan Lahfa <ryan@lahfa.xyz>,
- Antony Antony <antony.antony@secunet.com>,
- Antony Antony <antony@phenome.org>,
- Christian Brauner <brauner@kernel.org>,
- Eric Van Hensbergen <ericvh@kernel.org>,
- Latchesar Ionkov <lucho@ionkov.net>,
- Christian Schoenebeck <linux_oss@crudebyte.com>,
- Sedat Dilek <sedat.dilek@gmail.com>,
- Maximilian Bosch <maximilian@mbosch.me>,
- regressions@lists.linux.dev,
- v9fs@lists.linux.dev,
- netfs@lists.linux.dev,
- linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1641292.1751018406.1@warthog.procyon.org.uk>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <F6CB6E77-082D-442A-A3C9-F2D955E1D285@flyingcircus.io>
-References: <ZxFQw4OI9rrc7UYc@Antony2201.local>
- <D4LHHUNLG79Y.12PI0X6BEHRHW@mbosch.me>
- <c3eff232-7db4-4e89-af2c-f992f00cd043@leemhuis.info>
- <D4LNG4ZHZM5X.1STBTSTM9LN6E@mbosch.me>
- <CA+icZUVkVcKw+wN1p10zLHpO5gqkpzDU6nH46Nna4qaws_Q5iA@mail.gmail.com>
- <3327438.1729678025@warthog.procyon.org.uk>
- <ZxlQv5OXjJUbkLah@moon.secunet.de>
- <w5ap2zcsatkx4dmakrkjmaexwh3mnmgc5vhavb2miaj6grrzat@7kzr5vlsrmh5>
- <C7DAFD20-65D2-4B61-A612-A25FCC0C9573@flyingcircus.io>
- <aF49vp50BkfjJOTG@codewreck.org>
-To: Dominique Martinet <asmadeus@codewreck.org>
+Date: Fri, 27 Jun 2025 11:00:06 +0100
+Message-ID: <1641293.1751018406@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-Hi,
+Ryan Lahfa <ryan@lahfa.xyz> wrote:
 
-> On 27. Jun 2025, at 08:44, Dominique Martinet <asmadeus@codewreck.org> =
-wrote:
->=20
-> Hi all,
->=20
-> sorry for the slow reply; I wasn't in Cc of most of the mails back in
-> October so this is a pain to navigate... Let me recap a bit:
-> - stuff started failing in 6.12-rc1
+> Here is how to reproduce it:
+> =
 
-yes, to my knowledge and interpretation of this thread.
+> $ git clone https://gerrit.lix.systems/lix
+> $ cd lix
+> $ git fetch https://gerrit.lix.systems/lix refs/changes/29/3329/8 && git=
+ checkout FETCH_HEAD
+> $ nix-build -A hydraJobs.tests.local-releng
 
-> - David first posted "9p: Don't revert the I/O iterator after
-> reading"[1], which fixed the bug, but then found a "better" fix as
-> "iov_iter: Fix iov_iter_get_pages*() for folio_queue" [2] which was
-> merged instead (so the first patch was not merged)
->=20
-> But it turns out the second patch is not enough (or causes another
-> issue?), and the reverting it + applying first one works, is that
-> correct?
-> What happens if you keep [2] and just apply [1], does that still bug?
+How do I build and run this on Fedora is the problem :-/
 
-I tried that and the test that so far under all the variations reliably
-crashed (or not) is not crashing in this case.
+> [1]: https://gist.dgnum.eu/raito/3d1fa61ebaf642218342ffe644fb6efd
 
-> (I've tried reading through the thread now and I don't even see what =
-was
-> the "bad" patch in the first place, although I assume it's =
-ee4cdf7ba857
-> ("netfs: Speed up buffered reading") -- was that confirmed?)
+Looking at this, it looks very much like a page may have been double-freed=
+.
 
-I was late to the party, to, so I=E2=80=99ll defer to the others.
+Just to check, what are you using 9p for?  Containers?  And which transpor=
+t is
+being used, the virtio one?
 
-> David, as you worked on this at the time it'd be great if you could =
-have
-> another look, I have no idea what made you try [1] in the first place
-> but unless you think 9p is doing something wrong like double-reverting
-> on error or something like that I'd like to understand a bit more what
-> happens... Although given 6.12 is getting used more now it could make
-> sense to just apply [1] first until we understand, and have a proper =
-fix
-> come second -- if someone can confirm we don't need to revert [2].
-
-I guess I confirmed this. However, I=E2=80=99m just barely better than a =
-monkey
-here so I can=E2=80=99t tell whether this makes sense from the internal =
-logic of
-things.
-
-To repeat, for safety: my test case worked with the situation you =
-described and suggested:
-[1] applied on top of 6.12.34 and *not* having [2] reverted.
-
-Christian
-
---=20
-Christian Theune =C2=B7 ct@flyingcircus.io =C2=B7 +49 345 219401 0
-Flying Circus Internet Operations GmbH =C2=B7 https://flyingcircus.io
-Leipziger Str. 70/71 =C2=B7 06108 Halle (Saale) =C2=B7 Deutschland
-HR Stendal HRB 21169 =C2=B7 Gesch=C3=A4ftsf=C3=BChrer: Christian Theune, =
-Christian Zagrodnick
+David
 
