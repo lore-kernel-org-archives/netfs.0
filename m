@@ -1,108 +1,169 @@
-Received: from kurisu.lahfa.xyz (kurisu.lahfa.xyz [163.172.69.160])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7F48265621;
-	Fri, 27 Jun 2025 10:41:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=163.172.69.160
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C876C1A23B5;
+	Sat, 28 Jun 2025 05:16:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751020909; cv=none; b=CIrk4oeoZ1ZehykYUGLK1aL9xePuEYAg/exvn112TBoB/xrOaGuAZdLQ8ZaYKi2CRLoh8UjIM3K/l2YqIDlIgvOSIKI8dXkHTxpgzs54jxiDpnC8Ewz6aD3tR6F7wqQdo/fozmXbPekjde3xxTVVRQh2xhRveVhFBghIMvwW6Mc=
+	t=1751087778; cv=none; b=iKqdiSvLELCLZLnMDgypKudhlZC0tGR2LNT5lFfqP8vj4GY5Gy+Ruhfqc1m6bQhJ3E9y6AIqyw/ZYe46olJkvQIJiInKF9yLg48AH2F9eVjBZjOPsZA3dC/oRLfGZGQpFZ1uOvsL9BL/arOMKdtd/x8j7AUXiW6WeBysrQWOzQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751020909; c=relaxed/simple;
-	bh=yhF0gvpQ2LingrBx1HYPfc8w3xJ+F33erqmQmXW9kPg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Cxp6Sa86smWRidCSbD/YxrKZbVj3MBMTAwjSRr0o2FtU8ccEfMbBHhxmpufbalLfla+kHI8hm41A0tw/WfbkCMD07qufkyo3rBv7fx7P2NbtQg1HMX9GZnVUHPzB5ZKZT1fLOlBtQ0p7f2Tgo9UFcpu8yfpGFwNiATzRUmxMprs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lahfa.xyz; spf=pass smtp.mailfrom=lahfa.xyz; dkim=pass (1024-bit key) header.d=lahfa.xyz header.i=@lahfa.xyz header.b=KIX31bsi; arc=none smtp.client-ip=163.172.69.160
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lahfa.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lahfa.xyz
+	s=arc-20240116; t=1751087778; c=relaxed/simple;
+	bh=kmUNxobeB0njNMzwF7LrNaylmg8DHAlPL5J+TyxuS5U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jfkQcVjzgoKTWFq+coIyGqJaoMgG43VlRvarmjGRo/eOkDjNY3/+BJw56TM76kZbgI44VET5VNfNdMILEXtiV/eGxPOzvu96nBMYJed7jl8wQ8NLdXWKDvB+w6H3GZFIJKfnM9CV8q0HfDxayVxenUG63hyWrobV1+jkKEbPBTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hQ5k01Ph; arc=none smtp.client-ip=209.85.219.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lahfa.xyz header.i=@lahfa.xyz header.b="KIX31bsi"
-Date: Fri, 27 Jun 2025 12:33:18 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lahfa.xyz; s=kurisu;
-	t=1751020405;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XKbXq1dbdhV8xumU0aZAN+tBsL+injlXBseZI72UWGQ=;
-	b=KIX31bsiJiF4FTf1m/nQ2lEmj9X0nb+B1EjYYq+QrDCcZ8lrVU5vVNzzvuJnhN1083vDrI
-	NrnzfKSvauvRKKJSrXC7hlw/ZqkztctbMnQDGxytK3R7L/TPLtZ5KOt58YJy+MEoSadumY
-	TtjeSwIdF4YwE8q9BJsTmXDGDK+5fto=
-From: Ryan Lahfa <ryan@lahfa.xyz>
-To: David Howells <dhowells@redhat.com>
-Cc: Antony Antony <antony.antony@secunet.com>, 
-	Antony Antony <antony@phenome.org>, Christian Brauner <brauner@kernel.org>, 
-	Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, 
-	Dominique Martinet <asmadeus@codewreck.org>, Christian Schoenebeck <linux_oss@crudebyte.com>, 
-	Sedat Dilek <sedat.dilek@gmail.com>, Maximilian Bosch <maximilian@mbosch.me>, 
-	regressions@lists.linux.dev, v9fs@lists.linux.dev, netfs@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [REGRESSION] 9pfs issues on 6.12-rc1
-Message-ID: <gnji275b4iqotq3x3sa3igwa3vczk6tqtfcxpbv6k47hinrj2j@3wrm3id43qgj>
-References: <w5ap2zcsatkx4dmakrkjmaexwh3mnmgc5vhavb2miaj6grrzat@7kzr5vlsrmh5>
- <ZxFQw4OI9rrc7UYc@Antony2201.local>
- <D4LHHUNLG79Y.12PI0X6BEHRHW@mbosch.me>
- <c3eff232-7db4-4e89-af2c-f992f00cd043@leemhuis.info>
- <D4LNG4ZHZM5X.1STBTSTM9LN6E@mbosch.me>
- <CA+icZUVkVcKw+wN1p10zLHpO5gqkpzDU6nH46Nna4qaws_Q5iA@mail.gmail.com>
- <3327438.1729678025@warthog.procyon.org.uk>
- <ZxlQv5OXjJUbkLah@moon.secunet.de>
- <1641293.1751018406@warthog.procyon.org.uk>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hQ5k01Ph"
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-6ff16e97d1eso21453236d6.1;
+        Fri, 27 Jun 2025 22:16:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751087776; x=1751692576; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DZzuLz3ZdZm/BXeBE3Uu6Q075nf+/ZJsx7az6Vf24W8=;
+        b=hQ5k01PhWmnUBp/W7h2TICR7cJx0l9ZQBz/8QTQ0neutHwfHgNrgEITkGW43KEKPmn
+         sAnZTy2+D0qvTzCyMbbIVlsHPgn682Pn1nloLFrvfUy2Iw1q5f+8ZQKhgEcqgZBxFAOL
+         sjX/2k6R1lTzcn9LyZ2RQ5LqVI3DfU8007PeT/DOZtCkgNaqbjD77bN1xqEfg2XjIGX4
+         zXafhVjRs87oO6D8chcx7pNYSKsvQa/ZWJ40HOsKxNHBRkVHQJLxoQdQjiVHhqOcQB38
+         RkegkxjboLL1AO9Y3aKk9BMWF7iFzEr08ODKMyxbxxRXCyjzlovXaM92L3Gr6PNyaYUM
+         aZtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751087776; x=1751692576;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DZzuLz3ZdZm/BXeBE3Uu6Q075nf+/ZJsx7az6Vf24W8=;
+        b=wXDXtjVfAZWujfBFCgrcHGQ0MD32zr1uaDqPA5BlMx5usH7ybqJrtOzyNW0ZBxD8iR
+         jw7Tt1wUD/aNNcVptxhmkwSFqaQtdxyr/xSSfhVqtkkuVamfLWhrPfg4J5OCfC15W4Ko
+         g4twuI6k6bGsjJLh3ii/lA7AVZxwdRz5LzUeXFNz0NqqK0/OaCUkHfkrG/2Q8tqHdXk+
+         4IeRZUAOnG/bLnxQm8kznPFILE3X/oUd4W8t6rVnV9x+OBK/oXBq5ah0CiXwmZXDM1Xk
+         WKTU/bO+w1D7uKinwit8JdGhI49R1gb/Ey8R701/SPMtwLuCMW1xriXNyjP1ChAf8osN
+         C3sg==
+X-Forwarded-Encrypted: i=1; AJvYcCX4BvX55p1N2953aJ3LFBCBjgw9SLcGv8gRDHNP3/8uap+ZBjuR/dBpVceqM1nc4vYzEyZMOQ==@lists.linux.dev, AJvYcCXPfe7ymM1oeT5+yigMvZmniytuq6hWJ9YPMeJA1DEWIU5t1IRFPpD86ZWlNmH5UgBL8HTaMw==@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw0QBrGwKkWstn0zu5th69vPYEN7ZJUaSp2cDKfpF4k5EUVxXjI
+	8VXxz9aRHtoDYXAnMKwWJhYt5sCYIhcpHOdMg4FzEgVGr+cfQynVUaEMgO84L2aT9sTisRAZrQ0
+	JVh/4l8hSXHwjzRHiBabvW14zaCXhpgU=
+X-Gm-Gg: ASbGncs1bXiCfMZ9+IdHqrTKJy6CpDoCx7hAOAPo4l6RQEizv1/89xh8LeamZMtLfT7
+	R+AvA5lSlyg45MhyrDpl7sbze/urMdE0ApF5vZ/Tlm72BDaAM79Pprvhih5vhMHfiKdHU8mcWJg
+	KHXKJ4r/AmqOuOUjsmZVKmBcNZSqjv9KMfUWFyeGHTJzrfDksKeYnJr8yWdI+r9O+7R5O7jQn/C
+	jFF
+X-Google-Smtp-Source: AGHT+IE3pV2VIZ8GVDu8D3pAn+xP9KrFnsfkAKfJDtc+HIgTfF3yrwoj4qZhhy4gTbGbHZchNndWk9tFbBpQfYxX40s=
+X-Received: by 2002:a05:6214:c26:b0:6fb:265:a2c3 with SMTP id
+ 6a1803df08f44-7009ec17fcbmr75209046d6.17.1751087775584; Fri, 27 Jun 2025
+ 22:16:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1641293.1751018406@warthog.procyon.org.uk>
+References: <20250625164213.1408754-1-dhowells@redhat.com> <20250625164213.1408754-2-dhowells@redhat.com>
+In-Reply-To: <20250625164213.1408754-2-dhowells@redhat.com>
+From: Steve French <smfrench@gmail.com>
+Date: Sat, 28 Jun 2025 00:16:04 -0500
+X-Gm-Features: Ac12FXwcDHZq4ogM0eCqt7A4iCsu0Kuzvz-14NRnkkfT6DFtusqJyok4ECDYnws
+Message-ID: <CAH2r5mv2m3z+PHC_t1AaFAoV0+tU3fHU+HvX1HeK5S11u_KspA@mail.gmail.com>
+Subject: Re: [PATCH v2 01/16] netfs: Fix hang due to missing case in final DIO
+ read result collection
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <christian@brauner.io>, Paulo Alcantara <pc@manguebit.com>, netfs@lists.linux.dev, 
+	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org, 
+	linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, v9fs@lists.linux.dev, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Paulo Alcantara <pc@manguebit.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi David,
+You can add my tested by to the first 11 in the series.  I have
+verified that they fix the netfs regression (e.g. hangs in xfstest
+generic/013 etc.).  The series appears important to make sure gets in
+6.16
 
-Le Fri, Jun 27, 2025 at 11:00:06AM +0100, David Howells a écrit :
-> Ryan Lahfa <ryan@lahfa.xyz> wrote:
-> 
-> > Here is how to reproduce it:
-> > 
-> > $ git clone https://gerrit.lix.systems/lix
-> > $ cd lix
-> > $ git fetch https://gerrit.lix.systems/lix refs/changes/29/3329/8 && git checkout FETCH_HEAD
-> > $ nix-build -A hydraJobs.tests.local-releng
-> 
-> How do I build and run this on Fedora is the problem :-/
+On Wed, Jun 25, 2025 at 11:44=E2=80=AFAM David Howells <dhowells@redhat.com=
+> wrote:
+>
+> When doing a DIO read, if the subrequests we issue fail and cause the
+> request PAUSE flag to be set to put a pause on subrequest generation, we
+> may complete collection of the subrequests (possibly discarding them) pri=
+or
+> to the ALL_QUEUED flags being set.
+>
+> In such a case, netfs_read_collection() doesn't see ALL_QUEUED being set
+> after netfs_collect_read_results() returns and will just return to the ap=
+p
+> (the collector can be seen unpausing the generator in the trace log).
+>
+> The subrequest generator can then set ALL_QUEUED and the app thread reach=
+es
+> netfs_wait_for_request().  This causes netfs_collect_in_app() to be calle=
+d
+> to see if we're done yet, but there's missing case here.
+>
+> netfs_collect_in_app() will see that a thread is active and set inactive =
+to
+> false, but won't see any subrequests in the read stream, and so won't set
+> need_collect to true.  The function will then just return 0, indicating
+> that the caller should just sleep until further activity (which won't be
+> forthcoming) occurs.
+>
+> Fix this by making netfs_collect_in_app() check to see if an active threa=
+d
+> is complete - i.e. that ALL_QUEUED is set and the subrequests list is emp=
+ty
+> - and to skip the sleep return path.  The collector will then be called
+> which will clear the request IN_PROGRESS flag, allowing the app to
+> progress.
+>
+> Fixes: 2b1424cd131c ("netfs: Fix wait/wake to be consistent about the wai=
+tqueue used")
+> Reported-by: Steve French <sfrench@samba.org>
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> Reviewed-by: Paulo Alcantara <pc@manguebit.org>
+> cc: linux-cifs@vger.kernel.org
+> cc: netfs@lists.linux.dev
+> cc: linux-fsdevel@vger.kernel.org
+> ---
+>  fs/netfs/misc.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
+> index 43b67a28a8fa..0a54b1203486 100644
+> --- a/fs/netfs/misc.c
+> +++ b/fs/netfs/misc.c
+> @@ -381,7 +381,7 @@ void netfs_wait_for_in_progress_stream(struct netfs_i=
+o_request *rreq,
+>  static int netfs_collect_in_app(struct netfs_io_request *rreq,
+>                                 bool (*collector)(struct netfs_io_request=
+ *rreq))
+>  {
+> -       bool need_collect =3D false, inactive =3D true;
+> +       bool need_collect =3D false, inactive =3D true, done =3D true;
+>
+>         for (int i =3D 0; i < NR_IO_STREAMS; i++) {
+>                 struct netfs_io_subrequest *subreq;
+> @@ -400,9 +400,11 @@ static int netfs_collect_in_app(struct netfs_io_requ=
+est *rreq,
+>                         need_collect =3D true;
+>                         break;
+>                 }
+> +               if (subreq || !test_bit(NETFS_RREQ_ALL_QUEUED, &rreq->fla=
+gs))
+> +                       done =3D false;
+>         }
+>
+> -       if (!need_collect && !inactive)
+> +       if (!need_collect && !inactive && !done)
+>                 return 0; /* Sleep */
+>
+>         __set_current_state(TASK_RUNNING);
+>
+>
 
-This may introduce another layer but you could use a Docker container
-(Lix has http://ghcr.io/lix-project/lix) and run these instructions
-inside that context.
 
-Alternatives are the following:
+--=20
+Thanks,
 
-- static binary for Nix, I can build one for you and make it available.
-- the Lix installer, https://lix.systems/install/ (curl | sh but it does
-  prompt you for any step and tell you what it does, it should also be
-  very easy to uninstall!).
-- Debian has Nix packaged: https://packages.debian.org/sid/nix-bin (not
-  Lix, but doesn't matter for this reproducer).
-- Can install a remote VM for you with Fedora with one of the previous
-  option and give you root@ over there.
-
-Let me know how I can help.
-
-> > [1]: https://gist.dgnum.eu/raito/3d1fa61ebaf642218342ffe644fb6efd
-> 
-> Looking at this, it looks very much like a page may have been double-freed.
-> 
-> Just to check, what are you using 9p for?  Containers?  And which transport is
-> being used, the virtio one?
-
-9p is used in QEMU in this context.
-NixOS has a framework of end to end testing à la OpenQA from OpenSUSE
-that makes use of 9pfs to mount the host Nix store inside the guest VM
-to avoid copying back'n'forth things that are not under test.
-
-Yep, transport is virtio.
-
-Kind regards,
--- 
-Ryan Lahfa
+Steve
