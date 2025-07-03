@@ -1,133 +1,155 @@
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C581E520D
-	for <netfs@lists.linux.dev>; Thu,  3 Jul 2025 03:02:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A44F2EF669;
+	Thu,  3 Jul 2025 14:52:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751511773; cv=none; b=CPfapsgiiZjUl0waIhilzClHRgr1WQzperkjMGQCU8+rc+slA3knSjO2LVJX2ob5znaicXKfyzTk9JRIbBfWGI7WU2ZAH603u1u494ulN29YbD0roE0hueCvsO3Z958Zs+8b/lx1osgWAJfBNFbdBMJW+LyJXL29olvx2kAmp3Y=
+	t=1751554330; cv=none; b=c70NpIH7qRGsg4RJ50N6AilBH3GvgSs3tvUXj7591eWdcsUSIC/fQPljU++kYgHG7zdk6ZThGyPvkkPdrIQyINgmzWCbalIBOwvU5oInGJlJVLOeH2OVB1EGn3fKC5JrwHxWkn2HZ4eZjlyxE1mxHVbtHjelbSNyflYaoIyKrFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751511773; c=relaxed/simple;
-	bh=k8m3AqAlVUtVHY4lTl+sebWiccKErEjIqTjotdNZIlE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ip4KN6vergj7jXmUDJDMi/x7gYl2qJfLTXhqJKKT8GW19xbAwlabDXVK9tniLHBWEWc1PZFOgKZ2hGGvdhg7aPdfpaleddgNSQngKWa/RwM4eWJ5W0myb1QQka/jFYb5cv7RkNSSCX4j0gY+HJnMoZl6aM5aAOjgQ+NJ2Du7ISA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4bXhQd4CNPzKHMW5
-	for <netfs@lists.linux.dev>; Thu,  3 Jul 2025 11:02:49 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.252])
-	by mail.maildlp.com (Postfix) with ESMTP id 04D331A0F62
-	for <netfs@lists.linux.dev>; Thu,  3 Jul 2025 11:02:48 +0800 (CST)
-Received: from [10.174.176.88] (unknown [10.174.176.88])
-	by APP3 (Coremail) with SMTP id _Ch0CgB32SbW8mVoyJbvAQ--.245S3;
-	Thu, 03 Jul 2025 11:02:47 +0800 (CST)
-Message-ID: <66b2f540-228f-40e9-9ac5-529e3101e973@huaweicloud.com>
-Date: Thu, 3 Jul 2025 11:02:46 +0800
+	s=arc-20240116; t=1751554330; c=relaxed/simple;
+	bh=LIUyBTlrf3lGa3rz2x62J3hDLj2o6rK0+wuPyx4xY44=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=C4sKkG0XL1s5ZFsQrktQquSAtaQAl7cvBlGwi97oMdh8l2r1PjkT7S2i3y+tLN6dWerfztzJ8r2ZFX4XvjA5fOz+2+ucfxUTvmHBKieiPJoVetbZzP5o581qVUqGDPFykULvCcMh4rRJm3CaHv6F+Wcjwy9Qx3tZo6FIMzn8ta0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQgiUa/m; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQgiUa/m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F9B0C4CEE3;
+	Thu,  3 Jul 2025 14:52:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1751554330;
+	bh=LIUyBTlrf3lGa3rz2x62J3hDLj2o6rK0+wuPyx4xY44=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=xQgiUa/mZQm6KT4iY3dzcmyj4Ss7khw+XIEEqGNbmdITaI0nbqJApoTZWkhF/4+yM
+	 HXpc2BExObCKzSSw0ktJ3nmnosruiySWmiZkRmLlLI9mDu2nsznIpoCSlRgEX9MPoN
+	 dn9abe2grSdJI+u+rSivMSFqj9jpV6lheP5taUPA=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Stefan Metzmacher <metze@samba.org>,
+	David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	linux-cifs@vger.kernel.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 125/218] cifs: Fix the smbd_response slab to allow usercopy
+Date: Thu,  3 Jul 2025 16:41:13 +0200
+Message-ID: <20250703144001.109811899@linuxfoundation.org>
+X-Mailer: git-send-email 2.50.0
+In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
+References: <20250703143955.956569535@linuxfoundation.org>
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] cachefiles: Fix the incorrect return value in
- __cachefiles_write()
-To: Zizhi Wo <wozizhi@huaweicloud.com>, netfs@lists.linux.dev,
- dhowells@redhat.com, jlayton@kernel.org, brauner@kernel.org
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- libaokun1@huawei.com, yangerkun@huawei.com, houtao1@huawei.com,
- yukuai3@huawei.com
-References: <20250703024418.2809353-1-wozizhi@huaweicloud.com>
-From: Zizhi Wo <wozizhi@huaweicloud.com>
-In-Reply-To: <20250703024418.2809353-1-wozizhi@huaweicloud.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_Ch0CgB32SbW8mVoyJbvAQ--.245S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxJrW8Gr1xKryrGF1UuF13XFb_yoW8KF1DpF
-	Waya4UKryxur48Crn7AFs5WFyrA3ykJFnFg345Ww1kZrnxXrsY9F4jqr1YqF18ArZrJr4x
-	tw4j9a47Jw1qyrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvE14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
-	0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7
-	v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF
-	1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIx
-	AIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI
-	42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWI
-	evJa73UjIFyTuYvjfUonmRUUUUU
-X-CM-SenderInfo: pzr2x6tkl6x35dzhxuhorxvhhfrp/
+
+6.12-stable review patch.  If anyone has any objections, please let me know.
+
+------------------
+
+From: David Howells <dhowells@redhat.com>
+
+[ Upstream commit 43e7e284fc77b710d899569360ea46fa3374ae22 ]
+
+The handling of received data in the smbdirect client code involves using
+copy_to_iter() to copy data from the smbd_reponse struct's packet trailer
+to a folioq buffer provided by netfslib that encapsulates a chunk of
+pagecache.
+
+If, however, CONFIG_HARDENED_USERCOPY=y, this will result in the checks
+then performed in copy_to_iter() oopsing with something like the following:
+
+ CIFS: Attempting to mount //172.31.9.1/test
+ CIFS: VFS: RDMA transport established
+ usercopy: Kernel memory exposure attempt detected from SLUB object 'smbd_response_0000000091e24ea1' (offset 81, size 63)!
+ ------------[ cut here ]------------
+ kernel BUG at mm/usercopy.c:102!
+ ...
+ RIP: 0010:usercopy_abort+0x6c/0x80
+ ...
+ Call Trace:
+  <TASK>
+  __check_heap_object+0xe3/0x120
+  __check_object_size+0x4dc/0x6d0
+  smbd_recv+0x77f/0xfe0 [cifs]
+  cifs_readv_from_socket+0x276/0x8f0 [cifs]
+  cifs_read_from_socket+0xcd/0x120 [cifs]
+  cifs_demultiplex_thread+0x7e9/0x2d50 [cifs]
+  kthread+0x396/0x830
+  ret_from_fork+0x2b8/0x3b0
+  ret_from_fork_asm+0x1a/0x30
+
+The problem is that the smbd_response slab's packet field isn't marked as
+being permitted for usercopy.
+
+Fix this by passing parameters to kmem_slab_create() to indicate that
+copy_to_iter() is permitted from the packet region of the smbd_response
+slab objects, less the header space.
+
+Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
+Reported-by: Stefan Metzmacher <metze@samba.org>
+Link: https://lore.kernel.org/r/acb7f612-df26-4e2a-a35d-7cd040f513e1@samba.org/
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Stefan Metzmacher <metze@samba.org>
+Tested-by: Stefan Metzmacher <metze@samba.org>
+cc: Paulo Alcantara <pc@manguebit.com>
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/smb/client/smbdirect.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
+
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index cbc85bca006f7..b7932f63b4650 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -1452,6 +1452,9 @@ static int allocate_caches_and_workqueue(struct smbd_connection *info)
+ 	char name[MAX_NAME_LEN];
+ 	int rc;
+ 
++	if (WARN_ON_ONCE(sp->max_recv_size < sizeof(struct smbdirect_data_transfer)))
++		return -ENOMEM;
++
+ 	scnprintf(name, MAX_NAME_LEN, "smbd_request_%p", info);
+ 	info->request_cache =
+ 		kmem_cache_create(
+@@ -1469,12 +1472,17 @@ static int allocate_caches_and_workqueue(struct smbd_connection *info)
+ 		goto out1;
+ 
+ 	scnprintf(name, MAX_NAME_LEN, "smbd_response_%p", info);
++
++	struct kmem_cache_args response_args = {
++		.align		= __alignof__(struct smbd_response),
++		.useroffset	= (offsetof(struct smbd_response, packet) +
++				   sizeof(struct smbdirect_data_transfer)),
++		.usersize	= sp->max_recv_size - sizeof(struct smbdirect_data_transfer),
++	};
+ 	info->response_cache =
+-		kmem_cache_create(
+-			name,
+-			sizeof(struct smbd_response) +
+-				sp->max_recv_size,
+-			0, SLAB_HWCACHE_ALIGN, NULL);
++		kmem_cache_create(name,
++				  sizeof(struct smbd_response) + sp->max_recv_size,
++				  &response_args, SLAB_HWCACHE_ALIGN);
+ 	if (!info->response_cache)
+ 		goto out2;
+ 
+-- 
+2.39.5
 
 
-
-在 2025/7/3 10:44, Zizhi Wo 写道:
-> From: Zizhi Wo <wozizhi@huawei.com>
-> 
-> In __cachefiles_write(), if the return value of the write operation > 0, it
-> is set to 0. This makes it impossible to distinguish scenarios where a
-> partial write has occurred, and will affect the outer calling functions:
-> 
->   1) cachefiles_write_complete() will call "term_func" such as
-> netfs_write_subrequest_terminated(). When "ret" in __cachefiles_write()
-> is used as the "transferred_or_error" of this function, it can not
-> distinguish the amount of data written, makes the WARN meaningless.
-> 
-
-Sorry, I was negligent. The first error actually doesn't exist because
-ret=0 was set after cachefiles_write_complete(), but the second error
-still exists.
-
-Thanks,
-Zizhi Wo
-
->   2) cachefiles_ondemand_fd_write_iter() can only assume all writes were
-> successful by default when "ret" is 0, and unconditionally return the full
-> length specified by user space.
-> 
-> Fix it by modifying "ret" to reflect the actual number of bytes written.
-> Furthermore, returning a value greater than 0 from __cachefiles_write()
-> does not affect other call paths, such as cachefiles_issue_write() and
-> fscache_write().
-> 
-> Fixes: 047487c947e8 ("cachefiles: Implement the I/O routines")
-> Signed-off-by: Zizhi Wo <wozizhi@huawei.com>
-> ---
->   fs/cachefiles/io.c       | 2 --
->   fs/cachefiles/ondemand.c | 4 +---
->   2 files changed, 1 insertion(+), 5 deletions(-)
-> 
-> diff --git a/fs/cachefiles/io.c b/fs/cachefiles/io.c
-> index c08e4a66ac07..3e0576d9db1d 100644
-> --- a/fs/cachefiles/io.c
-> +++ b/fs/cachefiles/io.c
-> @@ -347,8 +347,6 @@ int __cachefiles_write(struct cachefiles_object *object,
->   	default:
->   		ki->was_async = false;
->   		cachefiles_write_complete(&ki->iocb, ret);
-> -		if (ret > 0)
-> -			ret = 0;
->   		break;
->   	}
->   
-> diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-> index d9bc67176128..a7ed86fa98bb 100644
-> --- a/fs/cachefiles/ondemand.c
-> +++ b/fs/cachefiles/ondemand.c
-> @@ -83,10 +83,8 @@ static ssize_t cachefiles_ondemand_fd_write_iter(struct kiocb *kiocb,
->   
->   	trace_cachefiles_ondemand_fd_write(object, file_inode(file), pos, len);
->   	ret = __cachefiles_write(object, file, pos, iter, NULL, NULL);
-> -	if (!ret) {
-> -		ret = len;
-> +	if (ret > 0)
->   		kiocb->ki_pos += ret;
-> -	}
->   
->   out:
->   	fput(file);
 
