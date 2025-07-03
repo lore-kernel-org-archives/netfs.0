@@ -1,223 +1,125 @@
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8AA226AD9;
-	Tue,  1 Jul 2025 17:07:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7226919ABDE
+	for <netfs@lists.linux.dev>; Thu,  3 Jul 2025 02:58:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751389644; cv=none; b=neq/sHljN5aCiRtz3nHaV2xdkXLBuy+e142RWO2sp7UJBYp/15JJTR6lxt5MFY3QpMX+y7jCsFHdQ/esX15mIRpJ6uiWMwk2B2USzVL6A639U4X7Zhd7cDZjHAiOHEgI4oJ7WMkSe2RUU/ktHbF58FsOFeoCWmucQ3PTSclKs6c=
+	t=1751511529; cv=none; b=RtOdWJHxLoy+lFukBdG16lr4FsxQ6pAIPV7ll5+dswbuIbRWJPaksUvRqrB6TPM02wFUSsZPj+AEWsX9mmURInR+gdwfnCJ2Gv+yS6Ak2vXtWa5p/c1NJATHEc4JDWdpcAsUaX4b/a8+lhE9bIfBa47oT7yWsgiLhXmZDnp7x4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751389644; c=relaxed/simple;
-	bh=rkq3DGRe/lPxR2ofGTATmveYcwg0fwOyu3wyKRPEeec=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=O/qlzSmpiCo/gyMimiBkxCXoS9cmsif+sI437kqLTtIWmjLemc9GwbAetxHmBLY1riL5Yd9tyTIpskS540uLj+H7I0PF6pfMAeFnDgH7In4pZo0A0uyeHOJzfA58gHceuaOV40bm2wLvwLbwukK5hldYb3bmEqqkWqaxm3kKB6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T7H18GmY; arc=none smtp.client-ip=209.85.219.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T7H18GmY"
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-70109af5f70so15041676d6.0;
-        Tue, 01 Jul 2025 10:07:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751389642; x=1751994442; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QTazUoyxInDAJ2NwZxhqJI5YRJsIYXcAsvJl7/gp0ws=;
-        b=T7H18GmYeHZvRQHbr+4TEGMA0+NpjLyZSOvCDRiaL36Q6aJ5GlgElBA8Zc4yX8wcqS
-         UJ5ECshlXwyK3DtOgf0NFGghNmJbwTNASL/XM5guqjrR8xHOubpy7943IArK4K6A4F36
-         BFU/LfLpqcVqvPy1D03FuaJGdeunn6sNLNyJm0JQ/TnQuuwygcCzycLdugZyVyMQ0/yr
-         Oz+WKdmu8X5uCnFYbOMshttT0RxonpQjdjA4p1YWujyjrQcDmLWHDAUGC/WtbRIu0m5+
-         g+vnl9TFZZQ4ioYfTYwTv/I/scj1uEGOgZwZ3ke/FalYpt7qZ3B3S5Elir+Jy9SPiO6P
-         u1dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751389642; x=1751994442;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QTazUoyxInDAJ2NwZxhqJI5YRJsIYXcAsvJl7/gp0ws=;
-        b=XZ5StGdw/EUr2hOgo8HLFjWMmeKbF4Q6Wfui9QXn+Smi8ZvyQGsYAtWF/IfeTOu/PJ
-         RXZJ7Rgy1O/FLhliyMzdB+VfGpYasz/AiiUYGhzvjVwWNcVmHUcaYFUtNZM6MtHX9ekl
-         gva11ala3PHWGQ0Sf2DUi4wbKRL3vZSGnk4Rmv/ucpb5gw1WoeORxTDqym5xAo5CTsTo
-         5xUvG1LeW+jN2zqAkwGDG9qIm6V3kNT3Jkyr52rmbZY6PHCASHqyUM4k55MPBlSF6UlY
-         8gYuoHkYKhZQ79Rghm15/1t9XmRClvhVZvN/BZFVgeyJQKApPHjG2n4K4v7M5bqACPtf
-         wu7A==
-X-Forwarded-Encrypted: i=1; AJvYcCVG58VPtb6WwV7MNGLVwA1zJ58bRm9Ebmv8aRpd8ksmGxO1DYrlso7nIOsjcoVNxlelW6TULw==@lists.linux.dev, AJvYcCVosy7VzhtWxTPhrzGGkGJXXrvfEn+oFXrWJh4+kgzO8MiQAFenMDWS78H5VOh4k0HIXmiFmg==@lists.linux.dev
-X-Gm-Message-State: AOJu0YyjI8MNChAdOgqdfj9iX8iPmF+6HlZ7HC+0F60Mx0STheKv2Rb9
-	Us7l/EPBlBVF4Npnp43OnAmLt8/1G7aX7zkI8H/heaf3heqJUihQ5NhcL4YRD9QsXX1dE/JHvmz
-	DpXzku4pNdVdQwvHGlJX8mFvwR3IDEC4=
-X-Gm-Gg: ASbGncsEWtKkZwZ9/02suEts6/bFl7S8ZgsDdJKtd5Xj+/ILFVIS4kqjemq9z41kFIW
-	OoutkisDTRZujeHSaE10ONEOOcKx85tCS3a9lpD1QWDXDRsbjepzoACGWndAUUbTIJVT9R0+SUb
-	ldXgoMTPVZ5VcfD/xqGn1Dogj/9NdYnMG8kb1q0wBDyw==
-X-Google-Smtp-Source: AGHT+IHOCEIHYgm8k1vptLe8LL1tAI0jytjNx1TpB7ZG4wg2ZutjYESoQ25ENjDT+uRfDdRVBd1/zvyP4q+gP4bjeCU=
-X-Received: by 2002:a05:6214:4309:b0:6fa:d956:243b with SMTP id
- 6a1803df08f44-70003c8e7ffmr346050926d6.37.1751389641585; Tue, 01 Jul 2025
- 10:07:21 -0700 (PDT)
+	s=arc-20240116; t=1751511529; c=relaxed/simple;
+	bh=jwUjFEWxHBZ9rdXV6wi51a49hj7ascJE8+tOw68DL+w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gPnbAg0RY2FBoR/OEmjcd2mSodA+31kDcE6nmlHDnWb+W7Xn8Rlu2iXI+95N0r9rfB3ZyEpAmIn0dCLOtfULIaE7YEaRmecJ28XcyJ6OvxNQlq17ozvwF8uENVQxNXE9+sGTkkomVseJom4B1IRo1e5YxBROMbTZYDfpdTGgFOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4bXhKw31PQzKHMkB
+	for <netfs@lists.linux.dev>; Thu,  3 Jul 2025 10:58:44 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.252])
+	by mail.maildlp.com (Postfix) with ESMTP id D0D881A1C4B
+	for <netfs@lists.linux.dev>; Thu,  3 Jul 2025 10:58:42 +0800 (CST)
+Received: from huaweicloud.com (unknown [10.175.112.188])
+	by APP3 (Coremail) with SMTP id _Ch0CgDnSCbb8WVoZkTvAQ--.1132S4;
+	Thu, 03 Jul 2025 10:58:42 +0800 (CST)
+From: Zizhi Wo <wozizhi@huaweicloud.com>
+To: netfs@lists.linux.dev,
+	dhowells@redhat.com,
+	jlayton@kernel.org,
+	brauner@kernel.org
+Cc: linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	wozizhi@huawei.com,
+	libaokun1@huawei.com,
+	yangerkun@huawei.com,
+	houtao1@huawei.com,
+	yukuai3@huawei.com
+Subject: [PATCH] cachefiles: Fix the incorrect return value in __cachefiles_write()
+Date: Thu,  3 Jul 2025 10:44:18 +0800
+Message-ID: <20250703024418.2809353-1-wozizhi@huaweicloud.com>
+X-Mailer: git-send-email 2.46.1
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250701163852.2171681-1-dhowells@redhat.com> <20250701163852.2171681-10-dhowells@redhat.com>
-In-Reply-To: <20250701163852.2171681-10-dhowells@redhat.com>
-From: Steve French <smfrench@gmail.com>
-Date: Tue, 1 Jul 2025 12:07:08 -0500
-X-Gm-Features: Ac12FXwp3sKlhUbj28TBsCjjpDbuA__SF55TZQEDUJu-EBlXwc0hooXFiXTAO58
-Message-ID: <CAH2r5msN59rNqDxJaBTPZQ_smsYOiMbyy4V+cMdWeuGbe9GR1Q@mail.gmail.com>
-Subject: Re: [PATCH 09/13] smb: client: fix warning when reconnecting channel
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <christian@brauner.io>, Paulo Alcantara <pc@manguebit.com>, netfs@lists.linux.dev, 
-	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org, 
-	linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, v9fs@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Paulo Alcantara <pc@manguebit.org>, samba-technical <samba-technical@lists.samba.org>, 
-	Shyam Prasad <nspmangalore@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_Ch0CgDnSCbb8WVoZkTvAQ--.1132S4
+X-Coremail-Antispam: 1UD129KBjvJXoW7ZrWxtF17tw4rXF4rXF1UWrg_yoW8ury5pF
+	WayFyUKryxuF48Cr1kAFn5W34fJ3ykJFnFg34UWwn8Zwn8Xr4YgFWjqr1YqF1UArW7Jr43
+	tw4jka43Jw1q9rJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0E
+	n4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I
+	0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWU
+	tVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcV
+	CY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAF
+	wI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa
+	7IUbmii3UUUUU==
+X-CM-SenderInfo: pzr2x6tkl6x35dzhxuhorxvhhfrp/
 
-I already have this patch in my for-next branch (which also includes
-the  Reviewed-by from Shyam)
+From: Zizhi Wo <wozizhi@huawei.com>
 
-On Tue, Jul 1, 2025 at 11:44=E2=80=AFAM David Howells <dhowells@redhat.com>=
- wrote:
->
-> From: Paulo Alcantara <pc@manguebit.org>
->
-> When reconnecting a channel in smb2_reconnect_server(), a dummy tcon
-> is passed down to smb2_reconnect() with ->query_interface
-> uninitialized, so we can't call queue_delayed_work() on it.
->
-> Fix the following warning by ensuring that we're queueing the delayed
-> worker from correct tcon.
->
-> WARNING: CPU: 4 PID: 1126 at kernel/workqueue.c:2498 __queue_delayed_work=
-+0x1d2/0x200
-> Modules linked in: cifs cifs_arc4 nls_ucs2_utils cifs_md4 [last unloaded:=
- cifs]
-> CPU: 4 UID: 0 PID: 1126 Comm: kworker/4:0 Not tainted 6.16.0-rc3 #5 PREEM=
-PT(voluntary)
-> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-4.fc42 04=
-/01/2014
-> Workqueue: cifsiod smb2_reconnect_server [cifs]
-> RIP: 0010:__queue_delayed_work+0x1d2/0x200
-> Code: 41 5e 41 5f e9 7f ee ff ff 90 0f 0b 90 e9 5d ff ff ff bf 02 00
-> 00 00 e8 6c f3 07 00 89 c3 eb bd 90 0f 0b 90 e9 57 f> 0b 90 e9 65 fe
-> ff ff 90 0f 0b 90 e9 72 fe ff ff 90 0f 0b 90 e9
-> RSP: 0018:ffffc900014afad8 EFLAGS: 00010003
-> RAX: 0000000000000000 RBX: ffff888124d99988 RCX: ffffffff81399cc1
-> RDX: dffffc0000000000 RSI: ffff888114326e00 RDI: ffff888124d999f0
-> RBP: 000000000000ea60 R08: 0000000000000001 R09: ffffed10249b3331
-> R10: ffff888124d9998f R11: 0000000000000004 R12: 0000000000000040
-> R13: ffff888114326e00 R14: ffff888124d999d8 R15: ffff888114939020
-> FS:  0000000000000000(0000) GS:ffff88829f7fe000(0000) knlGS:0000000000000=
-000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 00007ffe7a2b4038 CR3: 0000000120a6f000 CR4: 0000000000750ef0
-> PKRU: 55555554
-> Call Trace:
->  <TASK>
->  queue_delayed_work_on+0xb4/0xc0
->  smb2_reconnect+0xb22/0xf50 [cifs]
->  smb2_reconnect_server+0x413/0xd40 [cifs]
->  ? __pfx_smb2_reconnect_server+0x10/0x10 [cifs]
->  ? local_clock_noinstr+0xd/0xd0
->  ? local_clock+0x15/0x30
->  ? lock_release+0x29b/0x390
->  process_one_work+0x4c5/0xa10
->  ? __pfx_process_one_work+0x10/0x10
->  ? __list_add_valid_or_report+0x37/0x120
->  worker_thread+0x2f1/0x5a0
->  ? __kthread_parkme+0xde/0x100
->  ? __pfx_worker_thread+0x10/0x10
->  kthread+0x1fe/0x380
->  ? kthread+0x10f/0x380
->  ? __pfx_kthread+0x10/0x10
->  ? local_clock_noinstr+0xd/0xd0
->  ? ret_from_fork+0x1b/0x1f0
->  ? local_clock+0x15/0x30
->  ? lock_release+0x29b/0x390
->  ? rcu_is_watching+0x20/0x50
->  ? __pfx_kthread+0x10/0x10
->  ret_from_fork+0x15b/0x1f0
->  ? __pfx_kthread+0x10/0x10
->  ret_from_fork_asm+0x1a/0x30
->  </TASK>
-> irq event stamp: 1116206
-> hardirqs last  enabled at (1116205): [<ffffffff8143af42>] __up_console_se=
-m+0x52/0x60
-> hardirqs last disabled at (1116206): [<ffffffff81399f0e>] queue_delayed_w=
-ork_on+0x6e/0xc0
-> softirqs last  enabled at (1116138): [<ffffffffc04562fd>] __smb_send_rqst=
-+0x42d/0x950 [cifs]
-> softirqs last disabled at (1116136): [<ffffffff823d35e1>] release_sock+0x=
-21/0xf0
->
-> Cc: linux-cifs@vger.kernel.org
-> Reported-by: David Howells <dhowells@redhat.com>
-> Fixes: 42ca547b13a2 ("cifs: do not disable interface polling on failure")
-> Reviewed-by: David Howells <dhowells@redhat.com>
-> Tested-by: David Howells <dhowells@redhat.com>
-> Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> Tested-by: Steve French <sfrench@samba.org>
-> ---
->  fs/smb/client/cifsglob.h |  1 +
->  fs/smb/client/smb2pdu.c  | 10 ++++------
->  2 files changed, 5 insertions(+), 6 deletions(-)
->
-> diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-> index 318a8405d475..fdd95e5100cd 100644
-> --- a/fs/smb/client/cifsglob.h
-> +++ b/fs/smb/client/cifsglob.h
-> @@ -1303,6 +1303,7 @@ struct cifs_tcon {
->         bool use_persistent:1; /* use persistent instead of durable handl=
-es */
->         bool no_lease:1;    /* Do not request leases on files or director=
-ies */
->         bool use_witness:1; /* use witness protocol */
-> +       bool dummy:1; /* dummy tcon used for reconnecting channels */
->         __le32 capabilities;
->         __u32 share_flags;
->         __u32 maximal_access;
-> diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-> index 084ee66e73fd..572cfc42dda8 100644
-> --- a/fs/smb/client/smb2pdu.c
-> +++ b/fs/smb/client/smb2pdu.c
-> @@ -424,9 +424,9 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon =
-*tcon,
->                 free_xid(xid);
->                 ses->flags &=3D ~CIFS_SES_FLAGS_PENDING_QUERY_INTERFACES;
->
-> -               /* regardless of rc value, setup polling */
-> -               queue_delayed_work(cifsiod_wq, &tcon->query_interfaces,
-> -                                  (SMB_INTERFACE_POLL_INTERVAL * HZ));
-> +               if (!tcon->ipc && !tcon->dummy)
-> +                       queue_delayed_work(cifsiod_wq, &tcon->query_inter=
-faces,
-> +                                          (SMB_INTERFACE_POLL_INTERVAL *=
- HZ));
->
->                 mutex_unlock(&ses->session_mutex);
->
-> @@ -4229,10 +4229,8 @@ void smb2_reconnect_server(struct work_struct *wor=
-k)
->                 }
->                 goto done;
->         }
-> -
->         tcon->status =3D TID_GOOD;
-> -       tcon->retry =3D false;
-> -       tcon->need_reconnect =3D false;
-> +       tcon->dummy =3D true;
->
->         /* now reconnect sessions for necessary channels */
->         list_for_each_entry_safe(ses, ses2, &tmp_ses_list, rlist) {
->
->
+In __cachefiles_write(), if the return value of the write operation > 0, it
+is set to 0. This makes it impossible to distinguish scenarios where a
+partial write has occurred, and will affect the outer calling functions:
 
+ 1) cachefiles_write_complete() will call "term_func" such as
+netfs_write_subrequest_terminated(). When "ret" in __cachefiles_write()
+is used as the "transferred_or_error" of this function, it can not
+distinguish the amount of data written, makes the WARN meaningless.
 
---=20
-Thanks,
+ 2) cachefiles_ondemand_fd_write_iter() can only assume all writes were
+successful by default when "ret" is 0, and unconditionally return the full
+length specified by user space.
 
-Steve
+Fix it by modifying "ret" to reflect the actual number of bytes written.
+Furthermore, returning a value greater than 0 from __cachefiles_write()
+does not affect other call paths, such as cachefiles_issue_write() and
+fscache_write().
+
+Fixes: 047487c947e8 ("cachefiles: Implement the I/O routines")
+Signed-off-by: Zizhi Wo <wozizhi@huawei.com>
+---
+ fs/cachefiles/io.c       | 2 --
+ fs/cachefiles/ondemand.c | 4 +---
+ 2 files changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/fs/cachefiles/io.c b/fs/cachefiles/io.c
+index c08e4a66ac07..3e0576d9db1d 100644
+--- a/fs/cachefiles/io.c
++++ b/fs/cachefiles/io.c
+@@ -347,8 +347,6 @@ int __cachefiles_write(struct cachefiles_object *object,
+ 	default:
+ 		ki->was_async = false;
+ 		cachefiles_write_complete(&ki->iocb, ret);
+-		if (ret > 0)
+-			ret = 0;
+ 		break;
+ 	}
+ 
+diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
+index d9bc67176128..a7ed86fa98bb 100644
+--- a/fs/cachefiles/ondemand.c
++++ b/fs/cachefiles/ondemand.c
+@@ -83,10 +83,8 @@ static ssize_t cachefiles_ondemand_fd_write_iter(struct kiocb *kiocb,
+ 
+ 	trace_cachefiles_ondemand_fd_write(object, file_inode(file), pos, len);
+ 	ret = __cachefiles_write(object, file, pos, iter, NULL, NULL);
+-	if (!ret) {
+-		ret = len;
++	if (ret > 0)
+ 		kiocb->ki_pos += ret;
+-	}
+ 
+ out:
+ 	fput(file);
+-- 
+2.46.1
+
