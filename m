@@ -1,259 +1,163 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DFF32EF9B3;
-	Thu,  3 Jul 2025 14:52:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from hrbeu.edu.cn (mx1.hrbeu.edu.cn [202.118.176.6])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3038628D840
+	for <netfs@lists.linux.dev>; Fri,  4 Jul 2025 09:49:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.118.176.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751554346; cv=none; b=IqV6aYY3AzxlLoieAPRZLQlg9RyS59gFrMrTno50rO8T/13AaIGhOquW9GiLIHPPtT7cIiARdno5Lc3r/wTPshvwujUDtPFyWRz5yawO4gu2Q+cHt4rsgA8tPDAhEFdkC0rqDCYEwR3nw0H0akbrnzoGfuKewc6f3kIIwNdePEk=
+	t=1751622556; cv=none; b=TZRbiDUFjZpntYUDXuGDc0CABf4Ukbes9o9BNKlCw4PdDcahTAhZhs/jAjzj+vmhLLyr/F4ApnyvJeBvf7p8o8rScoSNGOWTMW5awkUYvmN0Z45/N2qweq+3npb9AxsDR73QpovSArg1Jtpy/ut1m/7ipitgwYsRRB++BSxeB1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751554346; c=relaxed/simple;
-	bh=eRgT+2Gph9S7743DvzrG0+LQa+QYTUPzMjRICc6+qns=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ku/GGh89/FRehi8zLcKS1pljRPcm9s1YddvK5m5k6WwvwAdgZM8fqRcrBI21DeBu+RQbIjoD3zdCuaPoox5UnaEXg/6nou2z/23bK8zIT72O/wiUISFVTfA+vkafIsdUzpILit3upz88xxK3+EX0ok0USRvX7y7Z3sTuBNzfH+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eJHfbN2v; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eJHfbN2v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59886C4CEE3;
-	Thu,  3 Jul 2025 14:52:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751554345;
-	bh=eRgT+2Gph9S7743DvzrG0+LQa+QYTUPzMjRICc6+qns=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eJHfbN2vVpoQ9v/GzP9DpWLYONyCS+ELxH+fBoFgk2KrqhJxj3UF+Jn6ecusxMDR3
-	 wxnVoqNyyaoZoXyYGD/80HW5tvMbdgvh6lk5CJPx+Qg3kOiWJ0MGGxxacbOVLmmWFt
-	 aBmyZnkTOXFI3mzo/j2L2+7/srGb/0kRoz0JatFo=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Stefan Metzmacher <metze@samba.org>,
-	David Howells <dhowells@redhat.com>,
-	Tom Talpey <tom@talpey.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	linux-cifs@vger.kernel.org,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 126/218] cifs: Fix reading into an ITER_FOLIOQ from the smbdirect code
-Date: Thu,  3 Jul 2025 16:41:14 +0200
-Message-ID: <20250703144001.150104592@linuxfoundation.org>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143955.956569535@linuxfoundation.org>
-References: <20250703143955.956569535@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1751622556; c=relaxed/simple;
+	bh=F5FZ83oCDp21lR0lpF6KRRK7nLad4KjiGIhDrhnjYXo=;
+	h=Date:From:To:Cc:Subject:Content-Type:MIME-Version:Message-ID; b=QjPmjvbkKiYrI1nHDLji3K+L+ntYPKrCKW5RF9OQJij2LdhPFIqf1l/gxR+XuI9jV8YFfOxx3Cx7ld9/0Vd9GE+H9bNoURsevvNVoWkoK64DgB5xOnZe12+p175gaY35BjGrAPhJ67B6oFbHPlSzWZoyYW0azXCs4zS79h+rOhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hrbeu.edu.cn; spf=pass smtp.mailfrom=hrbeu.edu.cn; arc=none smtp.client-ip=202.118.176.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hrbeu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hrbeu.edu.cn
+Received: from baishuoran$hrbeu.edu.cn ( [118.74.253.71] ) by
+ ajax-webmail-Front (Coremail) ; Fri, 4 Jul 2025 17:49:03 +0800 (GMT+08:00)
+Date: Fri, 4 Jul 2025 17:49:03 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From: =?UTF-8?B?55m954OB5YaJ?= <baishuoran@hrbeu.edu.cn>
+To: "David Howells" <dhowells@redhat.com>
+Cc: "Jeff Layton" <jlayton@kernel.org>, netfs@lists.linux.dev,
+	"Kun Hu" <huk23@m.fudan.edu.cn>,
+	"Jiaji Qin" <jjtan24@m.fudan.edu.cn>, syzkaller@googlegroups.com,
+	linux-kernel@vger.kernel.org
+Subject: INFO: task hung in netfs_writepages
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2024.2-cmXT5 build
+ 20241202(ebbd5d74) Copyright (c) 2002-2025 www.mailtech.cn hrbeu.edu.cn
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <30015186.126dc.197d4d6e8dd.Coremail.baishuoran@hrbeu.edu.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:CbB2ygD38WiPo2do8PsIAA--.1625W
+X-CM-SenderInfo: pedl2xpxrut0w6kuuvvxohv3gofq/1tbiAQINCmhmVOUbwgAAsi
+X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VW3Jw
+	CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
+	daVFxhVjvjDU=
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
-
-------------------
-
-From: David Howells <dhowells@redhat.com>
-
-[ Upstream commit 263debecb4aa7cec0a86487e6f409814f6194a21 ]
-
-When performing a file read from RDMA, smbd_recv() prints an "Invalid msg
-type 4" error and fails the I/O.  This is due to the switch-statement there
-not handling the ITER_FOLIOQ handed down from netfslib.
-
-Fix this by collapsing smbd_recv_buf() and smbd_recv_page() into
-smbd_recv() and just using copy_to_iter() instead of memcpy().  This
-future-proofs the function too, in case more ITER_* types are added.
-
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-Reported-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Tom Talpey <tom@talpey.com>
-cc: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/smb/client/smbdirect.c | 112 ++++++--------------------------------
- 1 file changed, 17 insertions(+), 95 deletions(-)
-
-diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
-index b7932f63b4650..ac06f2617f346 100644
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -1755,35 +1755,39 @@ struct smbd_connection *smbd_get_connection(
- }
- 
- /*
-- * Receive data from receive reassembly queue
-+ * Receive data from the transport's receive reassembly queue
-  * All the incoming data packets are placed in reassembly queue
-- * buf: the buffer to read data into
-+ * iter: the buffer to read data into
-  * size: the length of data to read
-  * return value: actual data read
-- * Note: this implementation copies the data from reassebmly queue to receive
-+ *
-+ * Note: this implementation copies the data from reassembly queue to receive
-  * buffers used by upper layer. This is not the optimal code path. A better way
-  * to do it is to not have upper layer allocate its receive buffers but rather
-  * borrow the buffer from reassembly queue, and return it after data is
-  * consumed. But this will require more changes to upper layer code, and also
-  * need to consider packet boundaries while they still being reassembled.
-  */
--static int smbd_recv_buf(struct smbd_connection *info, char *buf,
--		unsigned int size)
-+int smbd_recv(struct smbd_connection *info, struct msghdr *msg)
- {
- 	struct smbdirect_socket *sc = &info->socket;
- 	struct smbd_response *response;
- 	struct smbdirect_data_transfer *data_transfer;
-+	size_t size = iov_iter_count(&msg->msg_iter);
- 	int to_copy, to_read, data_read, offset;
- 	u32 data_length, remaining_data_length, data_offset;
- 	int rc;
- 
-+	if (WARN_ON_ONCE(iov_iter_rw(&msg->msg_iter) == WRITE))
-+		return -EINVAL; /* It's a bug in upper layer to get there */
-+
- again:
- 	/*
- 	 * No need to hold the reassembly queue lock all the time as we are
- 	 * the only one reading from the front of the queue. The transport
- 	 * may add more entries to the back of the queue at the same time
- 	 */
--	log_read(INFO, "size=%d info->reassembly_data_length=%d\n", size,
-+	log_read(INFO, "size=%zd info->reassembly_data_length=%d\n", size,
- 		info->reassembly_data_length);
- 	if (info->reassembly_data_length >= size) {
- 		int queue_length;
-@@ -1821,7 +1825,10 @@ static int smbd_recv_buf(struct smbd_connection *info, char *buf,
- 			if (response->first_segment && size == 4) {
- 				unsigned int rfc1002_len =
- 					data_length + remaining_data_length;
--				*((__be32 *)buf) = cpu_to_be32(rfc1002_len);
-+				__be32 rfc1002_hdr = cpu_to_be32(rfc1002_len);
-+				if (copy_to_iter(&rfc1002_hdr, sizeof(rfc1002_hdr),
-+						 &msg->msg_iter) != sizeof(rfc1002_hdr))
-+					return -EFAULT;
- 				data_read = 4;
- 				response->first_segment = false;
- 				log_read(INFO, "returning rfc1002 length %d\n",
-@@ -1830,10 +1837,9 @@ static int smbd_recv_buf(struct smbd_connection *info, char *buf,
- 			}
- 
- 			to_copy = min_t(int, data_length - offset, to_read);
--			memcpy(
--				buf + data_read,
--				(char *)data_transfer + data_offset + offset,
--				to_copy);
-+			if (copy_to_iter((char *)data_transfer + data_offset + offset,
-+					 to_copy, &msg->msg_iter) != to_copy)
-+				return -EFAULT;
- 
- 			/* move on to the next buffer? */
- 			if (to_copy == data_length - offset) {
-@@ -1898,90 +1904,6 @@ static int smbd_recv_buf(struct smbd_connection *info, char *buf,
- 	goto again;
- }
- 
--/*
-- * Receive a page from receive reassembly queue
-- * page: the page to read data into
-- * to_read: the length of data to read
-- * return value: actual data read
-- */
--static int smbd_recv_page(struct smbd_connection *info,
--		struct page *page, unsigned int page_offset,
--		unsigned int to_read)
--{
--	struct smbdirect_socket *sc = &info->socket;
--	int ret;
--	char *to_address;
--	void *page_address;
--
--	/* make sure we have the page ready for read */
--	ret = wait_event_interruptible(
--		info->wait_reassembly_queue,
--		info->reassembly_data_length >= to_read ||
--			sc->status != SMBDIRECT_SOCKET_CONNECTED);
--	if (ret)
--		return ret;
--
--	/* now we can read from reassembly queue and not sleep */
--	page_address = kmap_atomic(page);
--	to_address = (char *) page_address + page_offset;
--
--	log_read(INFO, "reading from page=%p address=%p to_read=%d\n",
--		page, to_address, to_read);
--
--	ret = smbd_recv_buf(info, to_address, to_read);
--	kunmap_atomic(page_address);
--
--	return ret;
--}
--
--/*
-- * Receive data from transport
-- * msg: a msghdr point to the buffer, can be ITER_KVEC or ITER_BVEC
-- * return: total bytes read, or 0. SMB Direct will not do partial read.
-- */
--int smbd_recv(struct smbd_connection *info, struct msghdr *msg)
--{
--	char *buf;
--	struct page *page;
--	unsigned int to_read, page_offset;
--	int rc;
--
--	if (iov_iter_rw(&msg->msg_iter) == WRITE) {
--		/* It's a bug in upper layer to get there */
--		cifs_dbg(VFS, "Invalid msg iter dir %u\n",
--			 iov_iter_rw(&msg->msg_iter));
--		rc = -EINVAL;
--		goto out;
--	}
--
--	switch (iov_iter_type(&msg->msg_iter)) {
--	case ITER_KVEC:
--		buf = msg->msg_iter.kvec->iov_base;
--		to_read = msg->msg_iter.kvec->iov_len;
--		rc = smbd_recv_buf(info, buf, to_read);
--		break;
--
--	case ITER_BVEC:
--		page = msg->msg_iter.bvec->bv_page;
--		page_offset = msg->msg_iter.bvec->bv_offset;
--		to_read = msg->msg_iter.bvec->bv_len;
--		rc = smbd_recv_page(info, page, page_offset, to_read);
--		break;
--
--	default:
--		/* It's a bug in upper layer to get there */
--		cifs_dbg(VFS, "Invalid msg type %d\n",
--			 iov_iter_type(&msg->msg_iter));
--		rc = -EINVAL;
--	}
--
--out:
--	/* SMBDirect will read it all or nothing */
--	if (rc > 0)
--		msg->msg_iter.count = 0;
--	return rc;
--}
--
- /*
-  * Send data to transport
-  * Each rqst is transported as a SMBDirect payload
--- 
-2.39.5
-
-
-
+RGVhciBNYWludGFpbmVycywKCldoZW4gdXNpbmcgb3VyIGN1c3RvbWl6ZWQgU3l6a2FsbGVyIHRv
+IGZ1enogdGhlIGxhdGVzdCBMaW51eCBrZXJuZWwsIHRoZSBmb2xsb3dpbmcgY3Jhc2ggKDExNXRo
+KXdhcyB0cmlnZ2VyZWQuCgoKSEVBRCBjb21taXQ6IDY1MzdjZmIzOTVmMzUyNzgyOTE4ZDhlZTdi
+N2YxMGJhMmNjM2NiZjIKZ2l0IHRyZWU6IHVwc3RyZWFtCk91dHB1dDpodHRwczovL2dpdGh1Yi5j
+b20vcGdoazEzL0tlcm5lbC1CdWcvYmxvYi9tYWluLzA3MDJfNi4xNC9JTkZPJTNBJTIwdGFzayUy
+MGh1bmclMjBpbiUyMG5ldGZzX3dyaXRlcGFnZXMvMTE1cmVwb3J0LnR4dApLZXJuZWwgY29uZmln
+Omh0dHBzOi8vZ2l0aHViLmNvbS9wZ2hrMTMvS2VybmVsLUJ1Zy9ibG9iL21haW4vMDcwMl82LjE0
+L2NvbmZpZy50eHQgCkMgcmVwcm9kdWNlcjpodHRwczovL2dpdGh1Yi5jb20vcGdoazEzL0tlcm5l
+bC1CdWcvYmxvYi9tYWluLzA3MDJfNi4xNC9JTkZPJTNBJTIwdGFzayUyMGh1bmclMjBpbiUyMG5l
+dGZzX3dyaXRlcGFnZXMvMTE1cmVwcm8uYwpzeXNsYW5nIHJlcHJvZHVjZXI6aHR0cHM6Ly9naXRo
+dWIuY29tL3BnaGsxMy9LZXJuZWwtQnVnL2Jsb2IvbWFpbi8wNzAyXzYuMTQvSU5GTyUzQSUyMHRh
+c2slMjBodW5nJTIwaW4lMjBuZXRmc193cml0ZXBhZ2VzLzExNXJlcHJvLnR4dAoKT3VyIHJlcHJv
+ZHVjZXIgdXNlcyBtb3VudHMgYSBjb25zdHJ1Y3RlZCBmaWxlc3lzdGVtIGltYWdlLgogCiAKVGhl
+IGVycm9yIG1pZ2h0IG9jY3VycmVkIG5lYXIgbGluZSA1MjkgYW5kIGxpbmUgNTM0IG9mIHRoZSBu
+ZXRmc193cml0ZXBhZ2VzIGZ1bmN0aW9uLiBJbiAhbXV0ZXhfdHJ5bG9jaygmaWN0eC0+d2JfbG9j
+ayksIHRoZSBwcm9jZXNzIGFscmVhZHkgaG9sZHMgd2JfbG9jaywgYnV0IHdoaWxlIHByb2Nlc3Np
+bmcgdGhlIHdyaXRlYmFjaywgaXQgbWF5IGF0dGVtcHQgdG8gYWNxdWlyZSB0aGUgc2FtZSBsb2Nr
+IGFnYWluIHRocm91Z2ggc29tZSBjYWxsIHBhdGgsIGxlYWRpbmcgdG8gYSBkZWFkbG9jay4KV2Ug
+aGF2ZSByZXByb2R1Y2VkIHRoaXMgaXNzdWUgc2V2ZXJhbCB0aW1lcyBvbiA2LjE0IGFnYWluLgoK
+CgpJZiB5b3UgZml4IHRoaXMgaXNzdWUsIHBsZWFzZSBhZGQgdGhlIGZvbGxvd2luZyB0YWcgdG8g
+dGhlIGNvbW1pdDoKUmVwb3J0ZWQtYnk6IEt1biBIdSA8aHVrMjNAbS5mdWRhbi5lZHUuY24+LCBK
+aWFqaSBRaW4gPGpqdGFuMjRAbS5mdWRhbi5lZHUuY24+LCBTaHVvcmFuIEJhaSA8YmFpc2h1b3Jh
+bkBocmJldS5lZHUuY24+CgoKCgo9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT0KCk5NSSBiYWNrdHJhY2UgZm9yIGNwdSAxCkNQVTogMSBVSUQ6IDAgUElEOiA0NyBD
+b21tOiBraHVuZ3Rhc2tkIE5vdCB0YWludGVkIDYuMTQuMCAjMQpIYXJkd2FyZSBuYW1lOiBRRU1V
+IFN0YW5kYXJkIFBDIChpNDQwRlggKyBQSUlYLCAxOTk2KSwgQklPUyAxLjEzLjAtMXVidW50dTEu
+MSAwNC8wMS8yMDE0CkNhbGwgVHJhY2U6CiA8VEFTSz4KIGR1bXBfc3RhY2tfbHZsKzB4MTE2LzB4
+MWIwCiBubWlfY3B1X2JhY2t0cmFjZSsweDJhMC8weDM1MAogbm1pX3RyaWdnZXJfY3B1bWFza19i
+YWNrdHJhY2UrMHgyOWIvMHgzMDAKIHdhdGNoZG9nKzB4ZjRjLzB4MTIxMAoga3RocmVhZCsweDQy
+YS8weDg4MAogcmV0X2Zyb21fZm9yaysweDQ4LzB4ODAKIHJldF9mcm9tX2ZvcmtfYXNtKzB4MWEv
+MHgzMAogPC9UQVNLPgpTZW5kaW5nIE5NSSBmcm9tIENQVSAxIHRvIENQVXMgMCwyLTM6Ck5NSSBi
+YWNrdHJhY2UgZm9yIGNwdSAyCkNQVTogMiBVSUQ6IDAgUElEOiAyNTQyNSBDb21tOiBzeXouNC4y
+MjY5IE5vdCB0YWludGVkIDYuMTQuMCAjMQpIYXJkd2FyZSBuYW1lOiBRRU1VIFN0YW5kYXJkIFBD
+IChpNDQwRlggKyBQSUlYLCAxOTk2KSwgQklPUyAxLjEzLjAtMXVidW50dTEuMSAwNC8wMS8yMDE0
+ClJJUDogMDAxMDpjb25zdF9mb2xpb19mbGFncy5jb25zdHByb3AuMCsweDAvMHg3MApDb2RlOiBl
+MCBlOCA3YiA4YiA0YyA4OSBlNyBlOCBhZSBhYyBlYyBmZiA5MCAwZiAwYiBlOCAyNiAzZCAwOSAw
+MCBlYiBiYiAwZiAxZiA0MCAwMCA5MCA5MCA5MCA5MCA5MCA5MCA5MCA5MCA5MCA5MCA5MCA5MCA5
+MCA5MCA5MCA5MCA8NDE+IDU0IDQ5IDg5IGZjIDUzIGU4IGU1IDQzIGE1IGZmIDQ5IDhkIDdjIDI0
+IDA4IDQ4IGI4IDAwIDAwIDAwIDAwClJTUDogMDAxODpmZmZmYzkwMDA3NWQ3MzE4IEVGTEFHUzog
+MDAwMDAyNDYKUkFYOiAwMDAwMDAwMDAwMDAwMDAwIFJCWDogZGZmZmZjMDAwMDAwMDAwMCBSQ1g6
+IGZmZmZmZmZmODIxNTA1OTYKUkRYOiAwMDAwMDAwMDAwMDAwMDAwIFJTSTogZmZmZjg4ODA0M2U5
+YTQ4MCBSREk6IGZmZmZlYTAwMDE4ZjI0ODAKUkJQOiBmZmZmZWEwMDAxOGYyNDgwIFIwODogMDAw
+MDAwMDAwMDAwMDAwMCBSMDk6IGZmZmZmOTQwMDAzMWU0ODkKUjEwOiBmZmZmZjk0MDAwMzFlNDg4
+IFIxMTogZmZmZmVhMDAwMThmMjQ0NyBSMTI6IGZmZmY4ODgwN2MwNzIyNDAKUjEzOiBmZmZmZWEw
+MDAxOGYyNDgwIFIxNDogMDAwMDAwMDAwMDAwMDA0NiBSMTU6IDAwMDAwMDAwMDAwMDAwMDAKRlM6
+ICAwMDAwMDAwMDAwMDAwMDAwKDAwMDApIEdTOmZmZmY4ODgwMmI5MDAwMDAoMDAwMCkga25sR1M6
+MDAwMDAwMDAwMDAwMDAwMApDUzogIDAwMTAgRFM6IDAwMDAgRVM6IDAwMDAgQ1IwOiAwMDAwMDAw
+MDgwMDUwMDMzCkNSMjogMDAwMDAwMDAyMDQwNDAzMCBDUjM6IDAwMDAwMDAwMTMwYTIwMDAgQ1I0
+OiAwMDAwMDAwMDAwNzUwZWYwCkRSMDogMDAwMDAwMDAwMDAwMDAwMCBEUjE6IDAwMDAwMDAwMDAw
+MDAwMDAgRFIyOiAwMDAwMDAwMDAwMDAwMDAwCkRSMzogMDAwMDAwMDAwMDAwMDAwZSBEUjY6IDAw
+MDAwMDAwZmZmZjBmZjAgRFI3OiAwMDAwMDAwMDAwMDAwNDAwClBLUlU6IDgwMDAwMDAwCkNhbGwg
+VHJhY2U6CiA8Tk1JPgogPC9OTUk+CiA8VEFTSz4KIGZyZWVfc3dhcF9jYWNoZSsweDE4LzB4MmQw
+CiBmcmVlX3BhZ2VzX2FuZF9zd2FwX2NhY2hlKzB4MTU2LzB4NDYwCiB0bGJfZmx1c2hfbW11KzB4
+MTY4LzB4NzUwCiB1bm1hcF9wYWdlX3JhbmdlKzB4ZmE5LzB4NGFmMAogdW5tYXBfc2luZ2xlX3Zt
+YSsweDE5YS8weDJiMAogdW5tYXBfdm1hcysweDFmZS8weDQ1MAogZXhpdF9tbWFwKzB4MWI0LzB4
+YmYwCiBtbXB1dCsweDE3OC8weDQ1MAogZG9fZXhpdCsweDk0Yi8weDMwYzAKIGRvX2dyb3VwX2V4
+aXQrMHhkMy8weDJhMAogZ2V0X3NpZ25hbCsweDI2MWYvMHgyNzkwCiBhcmNoX2RvX3NpZ25hbF9v
+cl9yZXN0YXJ0KzB4ODEvMHg4YjAKIHN5c2NhbGxfZXhpdF90b191c2VyX21vZGUrMHgyMjgvMHgy
+YTAKIGRvX3N5c2NhbGxfNjQrMHhkYy8weDI1MAogZW50cnlfU1lTQ0FMTF82NF9hZnRlcl9od2Zy
+YW1lKzB4NzcvMHg3ZgpSSVA6IDAwMzM6MHg3ZjlhNTRiYWNhZGQKQ29kZTogVW5hYmxlIHRvIGFj
+Y2VzcyBvcGNvZGUgYnl0ZXMgYXQgMHg3ZjlhNTRiYWNhYjMuClJTUDogMDAyYjowMDAwN2Y5YTU1
+YWFkYmE4IEVGTEFHUzogMDAwMDAyNDYgT1JJR19SQVg6IDAwMDAwMDAwMDAwMDAxMmIKUkFYOiAw
+MDAwMDAwMDAwMDEwMTA2IFJCWDogMDAwMDdmOWE1NGRhNjA4MCBSQ1g6IDAwMDA3ZjlhNTRiYWNh
+ZGQKUkRYOiAwMDAwMDAwMDAwMDEwMTA2IFJTSTogMDAwMDAwMDAyMDAwMDBjMCBSREk6IDAwMDAw
+MDAwMDAwMDAwMDMKUkJQOiAwMDAwN2Y5YTU0YzJhYjhmIFIwODogMDAwMDAwMDAwMDAwMDAwMCBS
+MDk6IDAwMDAwMDAwMDAwMDAwMDAKUjEwOiAwMDAwMDAwMDAwMDAwMDAyIFIxMTogMDAwMDAwMDAw
+MDAwMDI0NiBSMTI6IDAwMDAwMDAwMDAwMDAwMDAKUjEzOiAwMDAwN2Y5YTU0ZGE2MDhjIFIxNDog
+MDAwMDdmOWE1NGRhNjExOCBSMTU6IDAwMDA3ZjlhNTVhYWRkNDAKIDwvVEFTSz4KTk1JIGJhY2t0
+cmFjZSBmb3IgY3B1IDMKQ1BVOiAzIFVJRDogMCBQSUQ6IDk0NTQgQ29tbTogc3l6LWV4ZWN1dG9y
+IE5vdCB0YWludGVkIDYuMTQuMCAjMQpIYXJkd2FyZSBuYW1lOiBRRU1VIFN0YW5kYXJkIFBDIChp
+NDQwRlggKyBQSUlYLCAxOTk2KSwgQklPUyAxLjEzLjAtMXVidW50dTEuMSAwNC8wMS8yMDE0ClJJ
+UDogMDAxMDppb3JlYWQ4KzB4NDgvMHhhMApDb2RlOiBmZiBmZiAwMyAwMCA3NyA2MCBlOCBhNyAx
+MiBlOCBmYyA0YyA4OSBlNiBiZiAwMCAwMCAwMSAwMCBlOCBkYSAxNCBlOCBmYyA0OSA4MSBmYyAw
+MCAwMCAwMSAwMCA3NiAxYyBlOCA4YyAxMiBlOCBmYyA0NCA4OSBlMiBlYyA8NDQ+IDBmIGI2IGUw
+IGU4IDdmIDEyIGU4IGZjIDQ0IDg5IGUwIDQxIDVjIGU5IDcwIDMyIDNlIGZjIGU4IDcwIDEyClJT
+UDogMDAxODpmZmZmYzkwMDAwNWMwZDI4IEVGTEFHUzogMDAwMDAwNDYKUkFYOiAwMDAwMDAwMDAw
+MDAwMDA0IFJCWDogZmZmZjg4ODAyMzY3MDAwMCBSQ1g6IGZmZmZmZmZmODRkMjBlNzYKUkRYOiAw
+MDAwMDAwMDAwMDFjMDYyIFJTSTogZmZmZjg4ODAxYjI5YzkwMCBSREk6IDAwMDAwMDAwMDAwMDAw
+MDIKUkJQOiAwMDAwMDAwMDAwMDFjMDYyIFIwODogMDAwMDAwMDAwMDAwMDAwMCBSMDk6IGZmZmZm
+YmZmZjIwYzJmYTMKUjEwOiBmZmZmZmJmZmYyMGMyZmEyIFIxMTogZmZmZmZmZmY5MDYxN2QxNyBS
+MTI6IDAwMDAwMDAwMDAwMWMwNjIKUjEzOiBmZmZmODg4MDIzNjcwMTgwIFIxNDogZmZmZmZmZmY4
+NjQ3YTRiMCBSMTU6IGZmZmY4ODgwMjM2NzQ0ZDAKRlM6ICAwMDAwNTU1NTgxNjllOWMwKDAwMDAp
+IEdTOmZmZmY4ODgwN2VmMDAwMDAoMDAwMCkga25sR1M6MDAwMDAwMDAwMDAwMDAwMApDUzogIDAw
+MTAgRFM6IDAwMDAgRVM6IDAwMDAgQ1IwOiAwMDAwMDAwMDgwMDUwMDMzCkNSMjogMDAwMDdmYzAx
+Mjc2OTEzOCBDUjM6IDAwMDAwMDAwMjE5ODIwMDAgQ1I0OiAwMDAwMDAwMDAwNzUwZWYwClBLUlU6
+IDAwMDAwMDAwCkNhbGwgVHJhY2U6CiA8Tk1JPgogPC9OTUk+CiA8SVJRPgogYXRhX2JtZG1hX2ly
+cV9jbGVhcisweDQ5LzB4NzAKIF9fYXRhX3NmZl9wb3J0X2ludHIrMHgyOGMvMHg2NjAKIGF0YV9i
+bWRtYV9wb3J0X2ludHIrMHhjMC8weDgxMAogYXRhX2JtZG1hX2ludGVycnVwdCsweDI3Zi8weDZh
+MAogX19oYW5kbGVfaXJxX2V2ZW50X3BlcmNwdSsweDIzNy8weDdhMAogaGFuZGxlX2lycV9ldmVu
+dF9wZXJjcHUrMHgxOC8weGUwCiBoYW5kbGVfaXJxX2V2ZW50KzB4YTUvMHgxNDAKIGhhbmRsZV9l
+ZGdlX2lycSsweDI1NC8weDhjMAogX19jb21tb25faW50ZXJydXB0KzB4ZTMvMHgyNTAKIGNvbW1v
+bl9pbnRlcnJ1cHQrMHhmMi8weDExMAogPC9JUlE+CiA8VEFTSz4KIGFzbV9jb21tb25faW50ZXJy
+dXB0KzB4MjYvMHg0MApSSVA6IDAwMTA6cmVsZWFzZV9zb2NrKzB4MWFhLzB4MjIwCkNvZGU6IDQ4
+IDM5IGM1IDc0IDFkIGU4IGY2IDFkIDk2IGY4IDQ4IDhkIGJiIDA4IDAyIDAwIDAwIDMxIGM5IGJh
+IDAxIDAwIDAwIDAwIGJlIDAzIDAwIDAwIDAwIGU4IDhlIGJiIDZlIGY4IGU4IGQ5IDFkIDk2IGY4
+IDRjIDg5IGU3IDw1Yj4gNWQgNDEgNWMgNDEgNWQgZTkgZmIgYmEgMzggMDIgZTggYzYgMWQgOTYg
+ZjggOTAgMGYgMGIgOTAgZTkgNTMKUlNQOiAwMDE4OmZmZmZjOTAwMDI2OTdhMTggRUZMQUdTOiAw
+MDAwMDI0NgpSQVg6IDAwMDAwMDAwMDAwMDAwMDAgUkJYOiBmZmZmODg4MDQ1ZDA4MDAwIFJDWDog
+MWZmZmZmZmZmMzUyNmYxNApSRFg6IDFmZmZmMTEwMDhiYTEwNDkgUlNJOiBmZmZmODg4MDFiMjlj
+OTAwIFJESTogZmZmZjg4ODA0NWQwODFjMApSQlA6IGZmZmY4ODgwNDVkMDgyNDggUjA4OiAwMDAw
+MDAwMDAwMDAwMDAwIFIwOTogZmZmZmZiZmZmMmRlNzliNQpSMTA6IGZmZmZmYmZmZjJkZTc5YjQg
+UjExOiBmZmZmZmZmZjk2ZjNjZGE3IFIxMjogZmZmZjg4ODA0NWQwODFjMApSMTM6IDAwMDAwMDAw
+MDAwMDAwMDEgUjE0OiAwMDAwMDAwMDAwMDAwMDA0IFIxNTogZmZmZmM5MDAwMjY5N2E4MAogdGNw
+X3JlY3Ztc2crMHgxMjIvMHg2MjAKIGluZXRfcmVjdm1zZysweDEyYi8weDZlMAogc29ja19yZWN2
+bXNnKzB4MWI3LzB4MjkwCiBzb2NrX3JlYWRfaXRlcisweDJjOC8weDNjMAogdmZzX3JlYWQrMHhh
+NDgvMHhiZjAKIGtzeXNfcmVhZCsweDFmZS8weDI0MAogZG9fc3lzY2FsbF82NCsweGNmLzB4MjUw
+CiBlbnRyeV9TWVNDQUxMXzY0X2FmdGVyX2h3ZnJhbWUrMHg3Ny8weDdmClJJUDogMDAzMzoweDdm
+MmFjZDMxZWIxMgpDb2RlOiBmZiBmZiBmZiBmNyBkOCA2NCA4OSAwMiA0OCBjNyBjMCBmZiBmZiBm
+ZiBmZiBlYiBiZSAwZiAxZiA4MCAwMCAwMCAwMCAwMCBmMyAwZiAxZSBmYSA2NCA4YiAwNCAyNSAx
+OCAwMCAwMCAwMCA4NSBjMCA3NSAxMCAwZiAwNSA8NDg+IDNkIDAwIGYwIGZmIGZmIDc3IDU2IGMz
+IDBmIDFmIDQ0IDAwIDAwIDQ4IDgzIGVjIDI4IDQ4IDg5IDU0IDI0ClJTUDogMDAyYjowMDAwN2Zm
+ZmVkY2Y2MDQ4IEVGTEFHUzogMDAwMDAyNDYgT1JJR19SQVg6IDAwMDAwMDAwMDAwMDAwMDAKUkFY
+OiBmZmZmZmZmZmZmZmZmZmRhIFJCWDogMDAwMDAwMDAwMDAwMDAwMCBSQ1g6IDAwMDA3ZjJhY2Qz
+MWViMTIKUkRYOiAwMDAwMDAwMDAwMDAwMDA0IFJTSTogMDAwMDdmZmZlZGNmNjEyMCBSREk6IDAw
+MDAwMDAwMDAwMDAwMDMKUkJQOiAwMDAwMDAwMDAwMDAwMDAwIFIwODogMDAwMDAwMDAwMDAwMDAw
+MCBSMDk6IDAwMDAwMDAwMDAwMGYwNWMKUjEwOiAwMDAwMDAwMDAwMDAwMDAwIFIxMTogMDAwMDAw
+MDAwMDAwMDI0NiBSMTI6IDAwMDAwMDAwMDAwMDAwMDQKUjEzOiAwMDAwN2ZmZmVkY2Y2NGMwIFIx
+NDogMDAwMDdmZmZlZGNmNjEyMCBSMTU6IDAwMDA3ZmZmZWRjZjY0YzAKIDwvVEFTSz4KTk1JIGJh
+Y2t0cmFjZSBmb3IgY3B1IDAgc2tpcHBlZDogaWRsaW5nIGF0IGRlZmF1bHRfaWRsZSsweDFlLzB4
+MzAKCgoKCnRoYW5rcywKS3VuIEh1Cg==
