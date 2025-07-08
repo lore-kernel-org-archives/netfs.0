@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D7D8F5E;
-	Tue,  8 Jul 2025 16:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B636225414;
+	Tue,  8 Jul 2025 16:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993544; cv=none; b=p54pmB4IJQ34lLvmdF0hPejmx+dIwP04Lt0CSeBJ9jFaiWC2OeU+phVfERjJ6KoklL9q+M4YDFtXu9WvEpyy0RHnHoQ+4wDnBHc+Aw0eJNan2rq01NKrL9Jen7a2UtzQ3Rvz/4VnQGw8RjOuNnqwCFbbzA1Z6+BhiRWopnZuNIo=
+	t=1751993567; cv=none; b=DguCt4aRrNbQT/WesVa/MkPQb7Btxkb7Q5DBdnZhvxi4L17UiZdVEFlS+7HH/ZlM2Y1jVx7/BZA5n+GxaX4wZkwGoPHyYpraKc4FkScaB85rSK5rq/JwEL6JOQ93mr1c8N4rd8H2ENiCuN++E1ZsSZe9bTyMl+4Y9jrcPyR2OCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993544; c=relaxed/simple;
-	bh=CdQn3rLS/2BH1r264x+HlF7H+yzkqyetW7VG+0adQSc=;
+	s=arc-20240116; t=1751993567; c=relaxed/simple;
+	bh=LmsVsq75sclLyI+ct6JiksOp5LbW3JLhM7RsiP0+GaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Id7CRZ4wNqeIQh5xvP6YpcVLPLMIfGtgQYxX+/XyLWnGODRzZPVobNm7HKf9Pbv0vj8oEpPMtpG5dwrdVYJlcUj7QKaaDAQRSRCnbzUlCC2qC2UKbtXMJthki+3r4Rv+CFByHv5ZIXW1DH3xkDCzgG8s3dVxz2bkWQhrjaph4lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OxbG2lOb; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=P7x1vOzqm+1xa+3/lBH3JQZ7C19r4Dhma6DoDx5A5dLjMhI02xQBbru8wcNPMEUFojuO7bEGajtNkv5OXVDw+jNwRNi5vHOLBilSoepAoTiAYTU79pDDNnLcyB9SraTmkp3gT/UjVJM8knIoaP3CslmCNW1uwjV879MZ+FyLiNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wfx05wIr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OxbG2lOb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2E0EC4CEED;
-	Tue,  8 Jul 2025 16:52:23 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wfx05wIr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FD24C4CEED;
+	Tue,  8 Jul 2025 16:52:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993544;
-	bh=CdQn3rLS/2BH1r264x+HlF7H+yzkqyetW7VG+0adQSc=;
+	s=korg; t=1751993567;
+	bh=LmsVsq75sclLyI+ct6JiksOp5LbW3JLhM7RsiP0+GaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OxbG2lOb/31cMYv7vUfXiHR3pIVeT8+2uXA0D1avm8jYIF0tQPutHoWOITW7vZid4
-	 co+v/4ZZsqTOA/Zs57sVPPSGLyhgVQQ67K12NacUJDNMr4O9aTON8MawD3s3F8BTc2
-	 72TfLmlwvjEjbJwS+SxZL/oxbIPUKhrC+Qyp1qsU=
+	b=wfx05wIr41ENhyQX/Myk3Eo+7nIyLcyTzQhBUkOPiC9ngdZtD81XSexGLWse/+XnR
+	 GHprA+pJA5FxL7O1zhc4tejE3dAxLwBItfKUR3X88ElTjUD4hdx73QAGzXLil7s/W6
+	 ZJD9XETwGkk87ITBz3ehS2AqMjsJLxvziyCqdio8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	David Howells <dhowells@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
 	Steve French <sfrench@samba.org>,
-	linux-cifs@vger.kernel.org,
+	Paulo Alcantara <pc@manguebit.org>,
 	netfs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
+	linux-cifs@vger.kernel.org,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 103/178] netfs: Fix i_size updating
-Date: Tue,  8 Jul 2025 18:22:20 +0200
-Message-ID: <20250708162239.336132436@linuxfoundation.org>
+Subject: [PATCH 6.15 119/178] netfs: Fix double put of request
+Date: Tue,  8 Jul 2025 18:22:36 +0200
+Message-ID: <20250708162239.713614529@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250708162236.549307806@linuxfoundation.org>
 References: <20250708162236.549307806@linuxfoundation.org>
@@ -58,82 +58,82 @@ Content-Transfer-Encoding: 8bit
 
 From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 2e0658940d90a3dc130bb3b7f75bae9f4100e01f ]
+[ Upstream commit 9df7b5ebead649b00bf9a53a798e4bf83a1318fd ]
 
-Fix the updating of i_size, particularly in regard to the completion of DIO
-writes and especially async DIO writes by using a lock.
+If a netfs request finishes during the pause loop, it will have the ref
+that belongs to the IN_PROGRESS flag removed at that point - however, if it
+then goes to the final wait loop, that will *also* put the ref because it
+sees that the IN_PROGRESS flag is clear and incorrectly assumes that this
+happened when it called the collector.
 
-The bug is triggered occasionally by the generic/207 xfstest as it chucks a
-bunch of AIO DIO writes at the filesystem and then checks that fstat()
-returns a reasonable st_size as each completes.
+In fact, since IN_PROGRESS is clear, we shouldn't call the collector again
+since it's done all the cleanup, such as calling ->ki_complete().
 
-The problem is that netfs is trying to do "if new_size > inode->i_size,
-update inode->i_size" sort of thing but without a lock around it.
+Fix this by making netfs_collect_in_app() just return, indicating that
+we're done if IN_PROGRESS is removed.
 
-This can be seen with cifs, but shouldn't be seen with kafs because kafs
-serialises modification ops on the client whereas cifs sends the requests
-to the server as they're generated and lets the server order them.
-
-Fixes: 153a9961b551 ("netfs: Implement unbuffered/DIO write support")
+Fixes: 2b1424cd131c ("netfs: Fix wait/wake to be consistent about the waitqueue used")
 Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/20250701163852.2171681-11-dhowells@redhat.com
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Link: https://lore.kernel.org/20250701163852.2171681-3-dhowells@redhat.com
+Tested-by: Steve French <sfrench@samba.org>
+Reviewed-by: Paulo Alcantara <pc@manguebit.org>
 cc: Steve French <sfrench@samba.org>
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: linux-cifs@vger.kernel.org
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
+cc: linux-cifs@vger.kernel.org
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/buffered_write.c | 2 ++
- fs/netfs/direct_write.c   | 8 ++++++--
+ fs/netfs/misc.c              | 9 +++++++--
+ include/trace/events/netfs.h | 1 +
  2 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
-index dbb544e183d13..9f22ff890a8cd 100644
---- a/fs/netfs/buffered_write.c
-+++ b/fs/netfs/buffered_write.c
-@@ -64,6 +64,7 @@ static void netfs_update_i_size(struct netfs_inode *ctx, struct inode *inode,
- 		return;
- 	}
+diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
+index d8b1a279dbda9..8b1c11ef32aa5 100644
+--- a/fs/netfs/misc.c
++++ b/fs/netfs/misc.c
+@@ -383,6 +383,11 @@ static int netfs_collect_in_app(struct netfs_io_request *rreq,
+ {
+ 	bool need_collect = false, inactive = true, done = true;
  
-+	spin_lock(&inode->i_lock);
- 	i_size_write(inode, pos);
- #if IS_ENABLED(CONFIG_FSCACHE)
- 	fscache_update_cookie(ctx->cache, NULL, &pos);
-@@ -77,6 +78,7 @@ static void netfs_update_i_size(struct netfs_inode *ctx, struct inode *inode,
- 					DIV_ROUND_UP(pos, SECTOR_SIZE),
- 					inode->i_blocks + add);
- 	}
-+	spin_unlock(&inode->i_lock);
- }
- 
- /**
-diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
-index fa9a5bf3c6d51..3efa5894b2c07 100644
---- a/fs/netfs/direct_write.c
-+++ b/fs/netfs/direct_write.c
-@@ -14,13 +14,17 @@ static void netfs_cleanup_dio_write(struct netfs_io_request *wreq)
- 	struct inode *inode = wreq->inode;
- 	unsigned long long end = wreq->start + wreq->transferred;
- 
--	if (!wreq->error &&
--	    i_size_read(inode) < end) {
-+	if (wreq->error || end <= i_size_read(inode))
-+		return;
++	if (!test_bit(NETFS_RREQ_IN_PROGRESS, &rreq->flags)) {
++		trace_netfs_rreq(rreq, netfs_rreq_trace_recollect);
++		return 1; /* Done */
++	}
 +
-+	spin_lock(&inode->i_lock);
-+	if (end > i_size_read(inode)) {
- 		if (wreq->netfs_ops->update_i_size)
- 			wreq->netfs_ops->update_i_size(inode, end);
- 		else
- 			i_size_write(inode, end);
- 	}
-+	spin_unlock(&inode->i_lock);
- }
- 
- /*
+ 	for (int i = 0; i < NR_IO_STREAMS; i++) {
+ 		struct netfs_io_subrequest *subreq;
+ 		struct netfs_io_stream *stream = &rreq->io_streams[i];
+@@ -442,7 +447,7 @@ static ssize_t netfs_wait_for_in_progress(struct netfs_io_request *rreq,
+ 			case 1:
+ 				goto all_collected;
+ 			case 2:
+-				if (!netfs_check_rreq_in_progress(rreq))
++				if (!test_bit(NETFS_RREQ_IN_PROGRESS, &rreq->flags))
+ 					break;
+ 				cond_resched();
+ 				continue;
+@@ -512,7 +517,7 @@ static void netfs_wait_for_pause(struct netfs_io_request *rreq,
+ 			case 1:
+ 				goto all_collected;
+ 			case 2:
+-				if (!netfs_check_rreq_in_progress(rreq) ||
++				if (!test_bit(NETFS_RREQ_IN_PROGRESS, &rreq->flags) ||
+ 				    !test_bit(NETFS_RREQ_PAUSE, &rreq->flags))
+ 					break;
+ 				cond_resched();
+diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
+index 4175eec40048a..ecc1b852661e3 100644
+--- a/include/trace/events/netfs.h
++++ b/include/trace/events/netfs.h
+@@ -56,6 +56,7 @@
+ 	EM(netfs_rreq_trace_dirty,		"DIRTY  ")	\
+ 	EM(netfs_rreq_trace_done,		"DONE   ")	\
+ 	EM(netfs_rreq_trace_free,		"FREE   ")	\
++	EM(netfs_rreq_trace_recollect,		"RECLLCT")	\
+ 	EM(netfs_rreq_trace_redirty,		"REDIRTY")	\
+ 	EM(netfs_rreq_trace_resubmit,		"RESUBMT")	\
+ 	EM(netfs_rreq_trace_set_abandon,	"S-ABNDN")	\
 -- 
 2.39.5
 
