@@ -1,163 +1,94 @@
-Received: from hrbeu.edu.cn (mx1.hrbeu.edu.cn [202.118.176.6])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3038628D840
-	for <netfs@lists.linux.dev>; Fri,  4 Jul 2025 09:49:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.118.176.6
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DACCFF9E8;
+	Tue,  8 Jul 2025 16:39:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751622556; cv=none; b=TZRbiDUFjZpntYUDXuGDc0CABf4Ukbes9o9BNKlCw4PdDcahTAhZhs/jAjzj+vmhLLyr/F4ApnyvJeBvf7p8o8rScoSNGOWTMW5awkUYvmN0Z45/N2qweq+3npb9AxsDR73QpovSArg1Jtpy/ut1m/7ipitgwYsRRB++BSxeB1M=
+	t=1751992788; cv=none; b=TA9Vs9lvKv37Q3Fr82iTUlgp8tmnGnrTlzWC/YIO1zvS78VcUEd40cdAJKLk7iVG+bv9NOtnUbLBtuT8u0uWdDIQxLHHuAi6/wYeRRGE9Lr+i3RAVNX8cy8/EVWE90/sGmbAS/hyij9xgiltwGbN9tfEarEGzBVfg+zRkqutKNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751622556; c=relaxed/simple;
-	bh=F5FZ83oCDp21lR0lpF6KRRK7nLad4KjiGIhDrhnjYXo=;
-	h=Date:From:To:Cc:Subject:Content-Type:MIME-Version:Message-ID; b=QjPmjvbkKiYrI1nHDLji3K+L+ntYPKrCKW5RF9OQJij2LdhPFIqf1l/gxR+XuI9jV8YFfOxx3Cx7ld9/0Vd9GE+H9bNoURsevvNVoWkoK64DgB5xOnZe12+p175gaY35BjGrAPhJ67B6oFbHPlSzWZoyYW0azXCs4zS79h+rOhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hrbeu.edu.cn; spf=pass smtp.mailfrom=hrbeu.edu.cn; arc=none smtp.client-ip=202.118.176.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hrbeu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hrbeu.edu.cn
-Received: from baishuoran$hrbeu.edu.cn ( [118.74.253.71] ) by
- ajax-webmail-Front (Coremail) ; Fri, 4 Jul 2025 17:49:03 +0800 (GMT+08:00)
-Date: Fri, 4 Jul 2025 17:49:03 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: =?UTF-8?B?55m954OB5YaJ?= <baishuoran@hrbeu.edu.cn>
-To: "David Howells" <dhowells@redhat.com>
-Cc: "Jeff Layton" <jlayton@kernel.org>, netfs@lists.linux.dev,
-	"Kun Hu" <huk23@m.fudan.edu.cn>,
-	"Jiaji Qin" <jjtan24@m.fudan.edu.cn>, syzkaller@googlegroups.com,
-	linux-kernel@vger.kernel.org
-Subject: INFO: task hung in netfs_writepages
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2024.2-cmXT5 build
- 20241202(ebbd5d74) Copyright (c) 2002-2025 www.mailtech.cn hrbeu.edu.cn
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+	s=arc-20240116; t=1751992788; c=relaxed/simple;
+	bh=mc1527awR/yCeE2gxr/wRZEOb1D2fRNoLwSaQ35//y8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=aBqYkrbRfwm22SQ4/pLUvivimQwPpkFH6w6NC1t6dgec4xUbjsZ8EpGI3CmY3XGcoGlmdTVoPE4FO90IbEXSqzU40n3WlrfMGNTnmlNeGMQSMlUtcPkAciQd9IuZgLRl/IZPEHzFlhV4yt79lLSpVWUOxNGYOVwt5s0X/wLYyPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RDTEsd6z; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RDTEsd6z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6112FC4CEED;
+	Tue,  8 Jul 2025 16:39:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1751992787;
+	bh=mc1527awR/yCeE2gxr/wRZEOb1D2fRNoLwSaQ35//y8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=RDTEsd6zQJQrxl3uwB2gOIU8m6wZXMqneIE7AVXVQPHbr0u7PAjiEfAvcreey4Ywp
+	 +J9UEUMKIU+EW+1Bfw4zMCN+LGjNqSqkRd6U7qqszmvAcqp0Ab9j4ZXxpI7xBP/7WJ
+	 SzwfIr4DGNzrtGjHU2hqUCeNyId7Ct3oGoF04eTU=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	David Howells <dhowells@redhat.com>,
+	Steve French <sfrench@samba.org>,
+	linux-cifs@vger.kernel.org,
+	netfs@lists.linux.dev,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 081/232] smb: client: set missing retry flag in smb2_writev_callback()
+Date: Tue,  8 Jul 2025 18:21:17 +0200
+Message-ID: <20250708162243.571907644@linuxfoundation.org>
+X-Mailer: git-send-email 2.50.0
+In-Reply-To: <20250708162241.426806072@linuxfoundation.org>
+References: <20250708162241.426806072@linuxfoundation.org>
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Message-ID: <30015186.126dc.197d4d6e8dd.Coremail.baishuoran@hrbeu.edu.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:CbB2ygD38WiPo2do8PsIAA--.1625W
-X-CM-SenderInfo: pedl2xpxrut0w6kuuvvxohv3gofq/1tbiAQINCmhmVOUbwgAAsi
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VW3Jw
-	CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
-	daVFxhVjvjDU=
+Content-Transfer-Encoding: 8bit
 
-RGVhciBNYWludGFpbmVycywKCldoZW4gdXNpbmcgb3VyIGN1c3RvbWl6ZWQgU3l6a2FsbGVyIHRv
-IGZ1enogdGhlIGxhdGVzdCBMaW51eCBrZXJuZWwsIHRoZSBmb2xsb3dpbmcgY3Jhc2ggKDExNXRo
-KXdhcyB0cmlnZ2VyZWQuCgoKSEVBRCBjb21taXQ6IDY1MzdjZmIzOTVmMzUyNzgyOTE4ZDhlZTdi
-N2YxMGJhMmNjM2NiZjIKZ2l0IHRyZWU6IHVwc3RyZWFtCk91dHB1dDpodHRwczovL2dpdGh1Yi5j
-b20vcGdoazEzL0tlcm5lbC1CdWcvYmxvYi9tYWluLzA3MDJfNi4xNC9JTkZPJTNBJTIwdGFzayUy
-MGh1bmclMjBpbiUyMG5ldGZzX3dyaXRlcGFnZXMvMTE1cmVwb3J0LnR4dApLZXJuZWwgY29uZmln
-Omh0dHBzOi8vZ2l0aHViLmNvbS9wZ2hrMTMvS2VybmVsLUJ1Zy9ibG9iL21haW4vMDcwMl82LjE0
-L2NvbmZpZy50eHQgCkMgcmVwcm9kdWNlcjpodHRwczovL2dpdGh1Yi5jb20vcGdoazEzL0tlcm5l
-bC1CdWcvYmxvYi9tYWluLzA3MDJfNi4xNC9JTkZPJTNBJTIwdGFzayUyMGh1bmclMjBpbiUyMG5l
-dGZzX3dyaXRlcGFnZXMvMTE1cmVwcm8uYwpzeXNsYW5nIHJlcHJvZHVjZXI6aHR0cHM6Ly9naXRo
-dWIuY29tL3BnaGsxMy9LZXJuZWwtQnVnL2Jsb2IvbWFpbi8wNzAyXzYuMTQvSU5GTyUzQSUyMHRh
-c2slMjBodW5nJTIwaW4lMjBuZXRmc193cml0ZXBhZ2VzLzExNXJlcHJvLnR4dAoKT3VyIHJlcHJv
-ZHVjZXIgdXNlcyBtb3VudHMgYSBjb25zdHJ1Y3RlZCBmaWxlc3lzdGVtIGltYWdlLgogCiAKVGhl
-IGVycm9yIG1pZ2h0IG9jY3VycmVkIG5lYXIgbGluZSA1MjkgYW5kIGxpbmUgNTM0IG9mIHRoZSBu
-ZXRmc193cml0ZXBhZ2VzIGZ1bmN0aW9uLiBJbiAhbXV0ZXhfdHJ5bG9jaygmaWN0eC0+d2JfbG9j
-ayksIHRoZSBwcm9jZXNzIGFscmVhZHkgaG9sZHMgd2JfbG9jaywgYnV0IHdoaWxlIHByb2Nlc3Np
-bmcgdGhlIHdyaXRlYmFjaywgaXQgbWF5IGF0dGVtcHQgdG8gYWNxdWlyZSB0aGUgc2FtZSBsb2Nr
-IGFnYWluIHRocm91Z2ggc29tZSBjYWxsIHBhdGgsIGxlYWRpbmcgdG8gYSBkZWFkbG9jay4KV2Ug
-aGF2ZSByZXByb2R1Y2VkIHRoaXMgaXNzdWUgc2V2ZXJhbCB0aW1lcyBvbiA2LjE0IGFnYWluLgoK
-CgpJZiB5b3UgZml4IHRoaXMgaXNzdWUsIHBsZWFzZSBhZGQgdGhlIGZvbGxvd2luZyB0YWcgdG8g
-dGhlIGNvbW1pdDoKUmVwb3J0ZWQtYnk6IEt1biBIdSA8aHVrMjNAbS5mdWRhbi5lZHUuY24+LCBK
-aWFqaSBRaW4gPGpqdGFuMjRAbS5mdWRhbi5lZHUuY24+LCBTaHVvcmFuIEJhaSA8YmFpc2h1b3Jh
-bkBocmJldS5lZHUuY24+CgoKCgo9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT0KCk5NSSBiYWNrdHJhY2UgZm9yIGNwdSAxCkNQVTogMSBVSUQ6IDAgUElEOiA0NyBD
-b21tOiBraHVuZ3Rhc2tkIE5vdCB0YWludGVkIDYuMTQuMCAjMQpIYXJkd2FyZSBuYW1lOiBRRU1V
-IFN0YW5kYXJkIFBDIChpNDQwRlggKyBQSUlYLCAxOTk2KSwgQklPUyAxLjEzLjAtMXVidW50dTEu
-MSAwNC8wMS8yMDE0CkNhbGwgVHJhY2U6CiA8VEFTSz4KIGR1bXBfc3RhY2tfbHZsKzB4MTE2LzB4
-MWIwCiBubWlfY3B1X2JhY2t0cmFjZSsweDJhMC8weDM1MAogbm1pX3RyaWdnZXJfY3B1bWFza19i
-YWNrdHJhY2UrMHgyOWIvMHgzMDAKIHdhdGNoZG9nKzB4ZjRjLzB4MTIxMAoga3RocmVhZCsweDQy
-YS8weDg4MAogcmV0X2Zyb21fZm9yaysweDQ4LzB4ODAKIHJldF9mcm9tX2ZvcmtfYXNtKzB4MWEv
-MHgzMAogPC9UQVNLPgpTZW5kaW5nIE5NSSBmcm9tIENQVSAxIHRvIENQVXMgMCwyLTM6Ck5NSSBi
-YWNrdHJhY2UgZm9yIGNwdSAyCkNQVTogMiBVSUQ6IDAgUElEOiAyNTQyNSBDb21tOiBzeXouNC4y
-MjY5IE5vdCB0YWludGVkIDYuMTQuMCAjMQpIYXJkd2FyZSBuYW1lOiBRRU1VIFN0YW5kYXJkIFBD
-IChpNDQwRlggKyBQSUlYLCAxOTk2KSwgQklPUyAxLjEzLjAtMXVidW50dTEuMSAwNC8wMS8yMDE0
-ClJJUDogMDAxMDpjb25zdF9mb2xpb19mbGFncy5jb25zdHByb3AuMCsweDAvMHg3MApDb2RlOiBl
-MCBlOCA3YiA4YiA0YyA4OSBlNyBlOCBhZSBhYyBlYyBmZiA5MCAwZiAwYiBlOCAyNiAzZCAwOSAw
-MCBlYiBiYiAwZiAxZiA0MCAwMCA5MCA5MCA5MCA5MCA5MCA5MCA5MCA5MCA5MCA5MCA5MCA5MCA5
-MCA5MCA5MCA5MCA8NDE+IDU0IDQ5IDg5IGZjIDUzIGU4IGU1IDQzIGE1IGZmIDQ5IDhkIDdjIDI0
-IDA4IDQ4IGI4IDAwIDAwIDAwIDAwClJTUDogMDAxODpmZmZmYzkwMDA3NWQ3MzE4IEVGTEFHUzog
-MDAwMDAyNDYKUkFYOiAwMDAwMDAwMDAwMDAwMDAwIFJCWDogZGZmZmZjMDAwMDAwMDAwMCBSQ1g6
-IGZmZmZmZmZmODIxNTA1OTYKUkRYOiAwMDAwMDAwMDAwMDAwMDAwIFJTSTogZmZmZjg4ODA0M2U5
-YTQ4MCBSREk6IGZmZmZlYTAwMDE4ZjI0ODAKUkJQOiBmZmZmZWEwMDAxOGYyNDgwIFIwODogMDAw
-MDAwMDAwMDAwMDAwMCBSMDk6IGZmZmZmOTQwMDAzMWU0ODkKUjEwOiBmZmZmZjk0MDAwMzFlNDg4
-IFIxMTogZmZmZmVhMDAwMThmMjQ0NyBSMTI6IGZmZmY4ODgwN2MwNzIyNDAKUjEzOiBmZmZmZWEw
-MDAxOGYyNDgwIFIxNDogMDAwMDAwMDAwMDAwMDA0NiBSMTU6IDAwMDAwMDAwMDAwMDAwMDAKRlM6
-ICAwMDAwMDAwMDAwMDAwMDAwKDAwMDApIEdTOmZmZmY4ODgwMmI5MDAwMDAoMDAwMCkga25sR1M6
-MDAwMDAwMDAwMDAwMDAwMApDUzogIDAwMTAgRFM6IDAwMDAgRVM6IDAwMDAgQ1IwOiAwMDAwMDAw
-MDgwMDUwMDMzCkNSMjogMDAwMDAwMDAyMDQwNDAzMCBDUjM6IDAwMDAwMDAwMTMwYTIwMDAgQ1I0
-OiAwMDAwMDAwMDAwNzUwZWYwCkRSMDogMDAwMDAwMDAwMDAwMDAwMCBEUjE6IDAwMDAwMDAwMDAw
-MDAwMDAgRFIyOiAwMDAwMDAwMDAwMDAwMDAwCkRSMzogMDAwMDAwMDAwMDAwMDAwZSBEUjY6IDAw
-MDAwMDAwZmZmZjBmZjAgRFI3OiAwMDAwMDAwMDAwMDAwNDAwClBLUlU6IDgwMDAwMDAwCkNhbGwg
-VHJhY2U6CiA8Tk1JPgogPC9OTUk+CiA8VEFTSz4KIGZyZWVfc3dhcF9jYWNoZSsweDE4LzB4MmQw
-CiBmcmVlX3BhZ2VzX2FuZF9zd2FwX2NhY2hlKzB4MTU2LzB4NDYwCiB0bGJfZmx1c2hfbW11KzB4
-MTY4LzB4NzUwCiB1bm1hcF9wYWdlX3JhbmdlKzB4ZmE5LzB4NGFmMAogdW5tYXBfc2luZ2xlX3Zt
-YSsweDE5YS8weDJiMAogdW5tYXBfdm1hcysweDFmZS8weDQ1MAogZXhpdF9tbWFwKzB4MWI0LzB4
-YmYwCiBtbXB1dCsweDE3OC8weDQ1MAogZG9fZXhpdCsweDk0Yi8weDMwYzAKIGRvX2dyb3VwX2V4
-aXQrMHhkMy8weDJhMAogZ2V0X3NpZ25hbCsweDI2MWYvMHgyNzkwCiBhcmNoX2RvX3NpZ25hbF9v
-cl9yZXN0YXJ0KzB4ODEvMHg4YjAKIHN5c2NhbGxfZXhpdF90b191c2VyX21vZGUrMHgyMjgvMHgy
-YTAKIGRvX3N5c2NhbGxfNjQrMHhkYy8weDI1MAogZW50cnlfU1lTQ0FMTF82NF9hZnRlcl9od2Zy
-YW1lKzB4NzcvMHg3ZgpSSVA6IDAwMzM6MHg3ZjlhNTRiYWNhZGQKQ29kZTogVW5hYmxlIHRvIGFj
-Y2VzcyBvcGNvZGUgYnl0ZXMgYXQgMHg3ZjlhNTRiYWNhYjMuClJTUDogMDAyYjowMDAwN2Y5YTU1
-YWFkYmE4IEVGTEFHUzogMDAwMDAyNDYgT1JJR19SQVg6IDAwMDAwMDAwMDAwMDAxMmIKUkFYOiAw
-MDAwMDAwMDAwMDEwMTA2IFJCWDogMDAwMDdmOWE1NGRhNjA4MCBSQ1g6IDAwMDA3ZjlhNTRiYWNh
-ZGQKUkRYOiAwMDAwMDAwMDAwMDEwMTA2IFJTSTogMDAwMDAwMDAyMDAwMDBjMCBSREk6IDAwMDAw
-MDAwMDAwMDAwMDMKUkJQOiAwMDAwN2Y5YTU0YzJhYjhmIFIwODogMDAwMDAwMDAwMDAwMDAwMCBS
-MDk6IDAwMDAwMDAwMDAwMDAwMDAKUjEwOiAwMDAwMDAwMDAwMDAwMDAyIFIxMTogMDAwMDAwMDAw
-MDAwMDI0NiBSMTI6IDAwMDAwMDAwMDAwMDAwMDAKUjEzOiAwMDAwN2Y5YTU0ZGE2MDhjIFIxNDog
-MDAwMDdmOWE1NGRhNjExOCBSMTU6IDAwMDA3ZjlhNTVhYWRkNDAKIDwvVEFTSz4KTk1JIGJhY2t0
-cmFjZSBmb3IgY3B1IDMKQ1BVOiAzIFVJRDogMCBQSUQ6IDk0NTQgQ29tbTogc3l6LWV4ZWN1dG9y
-IE5vdCB0YWludGVkIDYuMTQuMCAjMQpIYXJkd2FyZSBuYW1lOiBRRU1VIFN0YW5kYXJkIFBDIChp
-NDQwRlggKyBQSUlYLCAxOTk2KSwgQklPUyAxLjEzLjAtMXVidW50dTEuMSAwNC8wMS8yMDE0ClJJ
-UDogMDAxMDppb3JlYWQ4KzB4NDgvMHhhMApDb2RlOiBmZiBmZiAwMyAwMCA3NyA2MCBlOCBhNyAx
-MiBlOCBmYyA0YyA4OSBlNiBiZiAwMCAwMCAwMSAwMCBlOCBkYSAxNCBlOCBmYyA0OSA4MSBmYyAw
-MCAwMCAwMSAwMCA3NiAxYyBlOCA4YyAxMiBlOCBmYyA0NCA4OSBlMiBlYyA8NDQ+IDBmIGI2IGUw
-IGU4IDdmIDEyIGU4IGZjIDQ0IDg5IGUwIDQxIDVjIGU5IDcwIDMyIDNlIGZjIGU4IDcwIDEyClJT
-UDogMDAxODpmZmZmYzkwMDAwNWMwZDI4IEVGTEFHUzogMDAwMDAwNDYKUkFYOiAwMDAwMDAwMDAw
-MDAwMDA0IFJCWDogZmZmZjg4ODAyMzY3MDAwMCBSQ1g6IGZmZmZmZmZmODRkMjBlNzYKUkRYOiAw
-MDAwMDAwMDAwMDFjMDYyIFJTSTogZmZmZjg4ODAxYjI5YzkwMCBSREk6IDAwMDAwMDAwMDAwMDAw
-MDIKUkJQOiAwMDAwMDAwMDAwMDFjMDYyIFIwODogMDAwMDAwMDAwMDAwMDAwMCBSMDk6IGZmZmZm
-YmZmZjIwYzJmYTMKUjEwOiBmZmZmZmJmZmYyMGMyZmEyIFIxMTogZmZmZmZmZmY5MDYxN2QxNyBS
-MTI6IDAwMDAwMDAwMDAwMWMwNjIKUjEzOiBmZmZmODg4MDIzNjcwMTgwIFIxNDogZmZmZmZmZmY4
-NjQ3YTRiMCBSMTU6IGZmZmY4ODgwMjM2NzQ0ZDAKRlM6ICAwMDAwNTU1NTgxNjllOWMwKDAwMDAp
-IEdTOmZmZmY4ODgwN2VmMDAwMDAoMDAwMCkga25sR1M6MDAwMDAwMDAwMDAwMDAwMApDUzogIDAw
-MTAgRFM6IDAwMDAgRVM6IDAwMDAgQ1IwOiAwMDAwMDAwMDgwMDUwMDMzCkNSMjogMDAwMDdmYzAx
-Mjc2OTEzOCBDUjM6IDAwMDAwMDAwMjE5ODIwMDAgQ1I0OiAwMDAwMDAwMDAwNzUwZWYwClBLUlU6
-IDAwMDAwMDAwCkNhbGwgVHJhY2U6CiA8Tk1JPgogPC9OTUk+CiA8SVJRPgogYXRhX2JtZG1hX2ly
-cV9jbGVhcisweDQ5LzB4NzAKIF9fYXRhX3NmZl9wb3J0X2ludHIrMHgyOGMvMHg2NjAKIGF0YV9i
-bWRtYV9wb3J0X2ludHIrMHhjMC8weDgxMAogYXRhX2JtZG1hX2ludGVycnVwdCsweDI3Zi8weDZh
-MAogX19oYW5kbGVfaXJxX2V2ZW50X3BlcmNwdSsweDIzNy8weDdhMAogaGFuZGxlX2lycV9ldmVu
-dF9wZXJjcHUrMHgxOC8weGUwCiBoYW5kbGVfaXJxX2V2ZW50KzB4YTUvMHgxNDAKIGhhbmRsZV9l
-ZGdlX2lycSsweDI1NC8weDhjMAogX19jb21tb25faW50ZXJydXB0KzB4ZTMvMHgyNTAKIGNvbW1v
-bl9pbnRlcnJ1cHQrMHhmMi8weDExMAogPC9JUlE+CiA8VEFTSz4KIGFzbV9jb21tb25faW50ZXJy
-dXB0KzB4MjYvMHg0MApSSVA6IDAwMTA6cmVsZWFzZV9zb2NrKzB4MWFhLzB4MjIwCkNvZGU6IDQ4
-IDM5IGM1IDc0IDFkIGU4IGY2IDFkIDk2IGY4IDQ4IDhkIGJiIDA4IDAyIDAwIDAwIDMxIGM5IGJh
-IDAxIDAwIDAwIDAwIGJlIDAzIDAwIDAwIDAwIGU4IDhlIGJiIDZlIGY4IGU4IGQ5IDFkIDk2IGY4
-IDRjIDg5IGU3IDw1Yj4gNWQgNDEgNWMgNDEgNWQgZTkgZmIgYmEgMzggMDIgZTggYzYgMWQgOTYg
-ZjggOTAgMGYgMGIgOTAgZTkgNTMKUlNQOiAwMDE4OmZmZmZjOTAwMDI2OTdhMTggRUZMQUdTOiAw
-MDAwMDI0NgpSQVg6IDAwMDAwMDAwMDAwMDAwMDAgUkJYOiBmZmZmODg4MDQ1ZDA4MDAwIFJDWDog
-MWZmZmZmZmZmMzUyNmYxNApSRFg6IDFmZmZmMTEwMDhiYTEwNDkgUlNJOiBmZmZmODg4MDFiMjlj
-OTAwIFJESTogZmZmZjg4ODA0NWQwODFjMApSQlA6IGZmZmY4ODgwNDVkMDgyNDggUjA4OiAwMDAw
-MDAwMDAwMDAwMDAwIFIwOTogZmZmZmZiZmZmMmRlNzliNQpSMTA6IGZmZmZmYmZmZjJkZTc5YjQg
-UjExOiBmZmZmZmZmZjk2ZjNjZGE3IFIxMjogZmZmZjg4ODA0NWQwODFjMApSMTM6IDAwMDAwMDAw
-MDAwMDAwMDEgUjE0OiAwMDAwMDAwMDAwMDAwMDA0IFIxNTogZmZmZmM5MDAwMjY5N2E4MAogdGNw
-X3JlY3Ztc2crMHgxMjIvMHg2MjAKIGluZXRfcmVjdm1zZysweDEyYi8weDZlMAogc29ja19yZWN2
-bXNnKzB4MWI3LzB4MjkwCiBzb2NrX3JlYWRfaXRlcisweDJjOC8weDNjMAogdmZzX3JlYWQrMHhh
-NDgvMHhiZjAKIGtzeXNfcmVhZCsweDFmZS8weDI0MAogZG9fc3lzY2FsbF82NCsweGNmLzB4MjUw
-CiBlbnRyeV9TWVNDQUxMXzY0X2FmdGVyX2h3ZnJhbWUrMHg3Ny8weDdmClJJUDogMDAzMzoweDdm
-MmFjZDMxZWIxMgpDb2RlOiBmZiBmZiBmZiBmNyBkOCA2NCA4OSAwMiA0OCBjNyBjMCBmZiBmZiBm
-ZiBmZiBlYiBiZSAwZiAxZiA4MCAwMCAwMCAwMCAwMCBmMyAwZiAxZSBmYSA2NCA4YiAwNCAyNSAx
-OCAwMCAwMCAwMCA4NSBjMCA3NSAxMCAwZiAwNSA8NDg+IDNkIDAwIGYwIGZmIGZmIDc3IDU2IGMz
-IDBmIDFmIDQ0IDAwIDAwIDQ4IDgzIGVjIDI4IDQ4IDg5IDU0IDI0ClJTUDogMDAyYjowMDAwN2Zm
-ZmVkY2Y2MDQ4IEVGTEFHUzogMDAwMDAyNDYgT1JJR19SQVg6IDAwMDAwMDAwMDAwMDAwMDAKUkFY
-OiBmZmZmZmZmZmZmZmZmZmRhIFJCWDogMDAwMDAwMDAwMDAwMDAwMCBSQ1g6IDAwMDA3ZjJhY2Qz
-MWViMTIKUkRYOiAwMDAwMDAwMDAwMDAwMDA0IFJTSTogMDAwMDdmZmZlZGNmNjEyMCBSREk6IDAw
-MDAwMDAwMDAwMDAwMDMKUkJQOiAwMDAwMDAwMDAwMDAwMDAwIFIwODogMDAwMDAwMDAwMDAwMDAw
-MCBSMDk6IDAwMDAwMDAwMDAwMGYwNWMKUjEwOiAwMDAwMDAwMDAwMDAwMDAwIFIxMTogMDAwMDAw
-MDAwMDAwMDI0NiBSMTI6IDAwMDAwMDAwMDAwMDAwMDQKUjEzOiAwMDAwN2ZmZmVkY2Y2NGMwIFIx
-NDogMDAwMDdmZmZlZGNmNjEyMCBSMTU6IDAwMDA3ZmZmZWRjZjY0YzAKIDwvVEFTSz4KTk1JIGJh
-Y2t0cmFjZSBmb3IgY3B1IDAgc2tpcHBlZDogaWRsaW5nIGF0IGRlZmF1bHRfaWRsZSsweDFlLzB4
-MzAKCgoKCnRoYW5rcywKS3VuIEh1Cg==
+6.12-stable review patch.  If anyone has any objections, please let me know.
+
+------------------
+
+From: Paulo Alcantara <pc@manguebit.org>
+
+[ Upstream commit e67e75edeb88022c04f8e0a173e1ff6dc688f155 ]
+
+Set NETFS_SREQ_NEED_RETRY flag to tell netfslib that the subreq needs
+to be retried.
+
+Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/20250701163852.2171681-7-dhowells@redhat.com
+Tested-by: Steve French <sfrench@samba.org>
+Cc: linux-cifs@vger.kernel.org
+Cc: netfs@lists.linux.dev
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/smb/client/smb2pdu.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index 3e501da62880c..d514f95deb7e7 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -4869,6 +4869,7 @@ smb2_writev_callback(struct mid_q_entry *mid)
+ 		break;
+ 	case MID_REQUEST_SUBMITTED:
+ 	case MID_RETRY_NEEDED:
++		__set_bit(NETFS_SREQ_NEED_RETRY, &wdata->subreq.flags);
+ 		result = -EAGAIN;
+ 		break;
+ 	case MID_RESPONSE_MALFORMED:
+-- 
+2.39.5
+
+
+
