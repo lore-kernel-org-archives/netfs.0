@@ -1,87 +1,93 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB8AE242D70
-	for <netfs@lists.linux.dev>; Wed,  9 Jul 2025 20:22:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D9023FC41
+	for <netfs@lists.linux.dev>; Wed,  9 Jul 2025 21:44:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752092566; cv=none; b=MuY8huxkfz1Isu1nagS4UMRc93lNJ9kXLnMGvRwKb2H6S2Ah9CVAfwIRzlQdbIPQkh4nr0Fy+aIR3xKeR+HsWd3s8FU/Pcrxj960oOo068p5Okinr+QFLd8Jse32E1z+EVQfJlKDvH2NMAsXikx7qwU+gFYrkqzhVU7VOLWmbps=
+	t=1752097457; cv=none; b=nmCZUOF27O/y7aJyCwn5yTA5VlO98JBgjgxpHQdgbZuhF9wWrcofL/jkra80emHkb6xXbBC2IlWpkYff1qEnBG06JPySEHk3OnhH425fxy4KOpDsRwupDQo+J35wA2rCV26uwBqwm5tGt6YKOH4LxU+fTcei8ECpfJDiGcTsvwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752092566; c=relaxed/simple;
-	bh=/9Kns4ZXz/Qn4PrGGI5OGogJEIPcnnOmSvL0JleJ6ik=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=kU1Cd2S9Dn4TalMiCDxMiAF+TZgoSRc5ZMpsal4bqNjS0Nwq6gbYqX8PkrS8t75l7ybRq33TfVZAUELBBbrTQI7x6JckPnfJpOyW5TUjEZal4Jhon/Vkd8CFGWclNRfmEnM8YfC24wOMJcv6ZRQ5Vi30BvCX9kdfFyCD8LajudA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HcqVFIA8; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1752097457; c=relaxed/simple;
+	bh=QM3ZwKzZ3tmooQKRsyzdW8dMI+e0bgrGReSxQbsBbz4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Nhxf74pud0eo8E+W1LTwvAqhKAf+NVi3iKyR9aUidPGr5o2V6nnbRqS9DVvWLxoGhBYTY/zA21OUSfoLHlfT2rpSUymHJCQgF7O3zTht5bjD98gS3MsQwVsh/k9PmXlaBUXEClD4QeTUnm2l+FopTYgg1ytRrZTXK/tjG3sHSPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=ILyDl3dz; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HcqVFIA8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1752092563;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kDiGMlKKETCealBEfy16p098aY14pQYAB7sWpWAIJfI=;
-	b=HcqVFIA8VWkBi1CFM24kVvXEFcmZ+sdPvl9/DJKh5D4P1G4IJpDVRZ77g6zzguJfilrPfu
-	UJasySGgFtIH16XRR4drdVaFZqCp+/pN6FFlFkBTfONBAOAAgq7qVi4/IfyNFJaZn1fVnK
-	BqQENbNGRmIzl9lIJlZrmXZOr0kh9n0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-lFtj-QW-N8iv7MzdbQf7tA-1; Wed,
- 09 Jul 2025 16:22:40 -0400
-X-MC-Unique: lFtj-QW-N8iv7MzdbQf7tA-1
-X-Mimecast-MFC-AGG-ID: lFtj-QW-N8iv7MzdbQf7tA_1752092558
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BF21B180028D;
-	Wed,  9 Jul 2025 20:22:37 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.81])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 989511955E85;
-	Wed,  9 Jul 2025 20:22:33 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <CAKPOu+_ZXJqftqFj6fZ=hErPMOuEEtjhnQ3pxMr9OAtu+sw=KQ@mail.gmail.com>
-References: <CAKPOu+_ZXJqftqFj6fZ=hErPMOuEEtjhnQ3pxMr9OAtu+sw=KQ@mail.gmail.com> <20250701163852.2171681-1-dhowells@redhat.com> <CAKPOu+8z_ijTLHdiCYGU_Uk7yYD=shxyGLwfe-L7AV3DhebS3w@mail.gmail.com> <2724318.1752066097@warthog.procyon.org.uk>
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
-    Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.com>,
-    netfs@lists.linux.dev, linux-afs@lists.infradead.org,
-    linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
-    ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
-    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-    stable@vger.kernel.org
-Subject: Re: [PATCH 00/13] netfs, cifs: Fixes to retry-related code
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="ILyDl3dz"
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-ae35f36da9dso55666966b.0
+        for <netfs@lists.linux.dev>; Wed, 09 Jul 2025 14:44:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1752097453; x=1752702253; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=J2oOfilMeJ3fSH+1jR5dPS+6bpms3vDBaMx9PS7L2n8=;
+        b=ILyDl3dzPMOqlzdIkgxt/dxBsMDLiIAoCPM/9FKnh2S5HZoNarauB0OMPJ2PGCxB3H
+         DBSFidcZxNyNGY8u0RpfdXOi4mN10qdolntJ+ROL4B8KcUNQRqp6QtIHq3SSWx1QcHev
+         5XZv1+kUpwUJ1YM950gZTXq7Tne6MAWtELlevAeeT/w3tBePdk6IdrJuzIFxf2P9/apt
+         lz/Fbu5/7gxE43rQMZgmlIGxrzLYRad6vhQ7DecLidiXLKGKlnDhDTLtRgavB6x8B6Hw
+         hkRghWqcZ8cw1zdz5oooiYgppeGnYguyGc2lg/9k7FXlnTHtfPJ9MzwofZKSyVVXc1CS
+         14Xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752097453; x=1752702253;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=J2oOfilMeJ3fSH+1jR5dPS+6bpms3vDBaMx9PS7L2n8=;
+        b=OHEmXazUfdGcLsF3AW4c06IbKlpR6vqXIfu4m9/3eFmNVPhQRSBqH0SXIzp0TaEu85
+         HhhSI3eL9W3sQ4swhYP9eOGdPeEQeoW+DHwCAj8nJECsVIED4f4eXoNQhIEfy0Ndp1Hz
+         xgmEygCu5tgetEeAyuvQJdDyjg6Gth5UGPLjF94RI7/YAsdSsCGAj+w1CPPU1LSxCghI
+         y7G1NmWhuF1O9titQpQPwiFs+SHgdkf68rWbtdEHv/fQdYjZzAALqUQE9cWqFEvkCeL/
+         lgsBqbA77IQDi4HUEt/iwsc5jXpMKmIxl47dFDyodtulV7JtHq/ZSBv3sY7KZVYQ4hYN
+         IN7A==
+X-Forwarded-Encrypted: i=1; AJvYcCVKjqla3T9YvZIKBMt16TKMabwJwvImD2M8hfKCF1P8myd7T9aRgnWuff1PdPHTNMKU2UOfaw==@lists.linux.dev
+X-Gm-Message-State: AOJu0YxZyxmhV2yQ8Yy91GkqEl9LbazMlR4NDgY959PIUYEY/YeuRrbN
+	O6g2FlP4byjuqstXIzrg9164BxD2D//DeBUil1gp+EZ8r9oOPio4JNMQ7Evy8wPFiM5fxTSQzt7
+	/oj7jLyWlZPTC1GcDuq3i+LLU6XOiR6QnVdvblijxR2ssm5rcXzB2
+X-Gm-Gg: ASbGncu2ikkQbQ5L/vvtvF4+t4KARKwwLDq38chlLxEU92oe8bpxuONgJ97YRrmRJiw
+	MoNzABcmYyYfGvPVj2vGIZa2bSX+dcJAR6nBZoKYE7ewfz3qhQGGFOHi6eWRWMGIXQYrkiJio3F
+	DWRGweAMrpNgGzVCXXT/7bpnR6qb/5k1OgBdF+3GUKYZBH4GeH2AYT30LbzUIh/szeX7h27pA=
+X-Google-Smtp-Source: AGHT+IHRfBgI+JpvIFW5bdEhu8EMbBsinsmaICn0S2xVCrLK7zPglEC6AbVpvLywHBFg/8fSMjerPI4gbWHSZhnMN/4=
+X-Received: by 2002:a17:906:46d9:b0:ae3:d1fe:f953 with SMTP id
+ a640c23a62f3a-ae6e7099e16mr25848366b.43.1752097453229; Wed, 09 Jul 2025
+ 14:44:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2738561.1752092552.1@warthog.procyon.org.uk>
-Date: Wed, 09 Jul 2025 21:22:32 +0100
-Message-ID: <2738562.1752092552@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+References: <20250701163852.2171681-1-dhowells@redhat.com> <CAKPOu+8z_ijTLHdiCYGU_Uk7yYD=shxyGLwfe-L7AV3DhebS3w@mail.gmail.com>
+ <2724318.1752066097@warthog.procyon.org.uk> <CAKPOu+_ZXJqftqFj6fZ=hErPMOuEEtjhnQ3pxMr9OAtu+sw=KQ@mail.gmail.com>
+ <2738562.1752092552@warthog.procyon.org.uk>
+In-Reply-To: <2738562.1752092552@warthog.procyon.org.uk>
+From: Max Kellermann <max.kellermann@ionos.com>
+Date: Wed, 9 Jul 2025 23:44:02 +0200
+X-Gm-Features: Ac12FXwGyOaYIBhD6kJLi5Rdp0KMSI4jWTqWW8bY_UVcRj5P-WQCdanG6BjA4Q0
+Message-ID: <CAKPOu+-qYtC0iFWv856JZinO-0E=SEoQ6pOLvc0bZfsbSakR8w@mail.gmail.com>
+Subject: Re: [PATCH 00/13] netfs, cifs: Fixes to retry-related code
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <christian@brauner.io>, Steve French <sfrench@samba.org>, 
+	Paulo Alcantara <pc@manguebit.com>, netfs@lists.linux.dev, linux-afs@lists.infradead.org, 
+	linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org, 
+	ceph-devel@vger.kernel.org, v9fs@lists.linux.dev, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Max Kellermann <max.kellermann@ionos.com> wrote:
-
->      kworker/8:1-437     [008] ...1.   107.149531: netfs_rreq:
-> R=00000065 2C WAKE-Q  f=80002020
+On Wed, Jul 9, 2025 at 10:22=E2=80=AFPM David Howells <dhowells@redhat.com>=
+ wrote:
+> > (The above was 6.15.5 plus all patches in this PR.)
 >
-> ...
-> (The above was 6.15.5 plus all patches in this PR.)
+> Can you check that, please?  If you have patch 12 applied, then the flags
+> should be renumbered and there shouldn't be a NETFS_RREQ_ flag with 13, b=
+ut
+> f=3D80002020 would seem to have 0x2000 (ie. bit 13) set in it.
 
-Can you check that, please?  If you have patch 12 applied, then the flags
-should be renumbered and there shouldn't be a NETFS_RREQ_ flag with 13, but
-f=80002020 would seem to have 0x2000 (ie. bit 13) set in it.
-
-If you do have it applied, then this might be an indicator of the issue.
-
-David
-
+Oh, I was slightly wrong, I merged only 12 patches, omitting the
+renumbering patch because it had conflicts with my branch, and it was
+only a cosmetic change, not relevant for the bug. Sorry for the
+confusion!
