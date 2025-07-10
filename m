@@ -1,87 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C51D289807;
-	Thu, 10 Jul 2025 07:40:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AE92E091B
+	for <netfs@lists.linux.dev>; Thu, 10 Jul 2025 10:47:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752133246; cv=none; b=rjtcUcMxQ0xb3P1FvEHy9eeIk//3Tj+dtbyZWQwffaFwNsPry+ayauKt6Oj6qFUAu9+GhlIx9kmoWLixWXc91Q8m8pO/R/j+WnyGgqmnFvKnnJK0AZg7GZaxwfc04/r0QN5xvNlascAW5hPnx6nguN7Q/eigDGMCh8mIYpdZvSM=
+	t=1752144441; cv=none; b=b+ASgfabdfOf+AlFoe9shapvj5VOQzdr/JQA5HROo/zanoFYo1Cp/AvYJd4UsgNOgfDLN0xvc8dI2VnvdncYEAf5hQO799QG3DCQztF1Sh5YIq4mS9Ox8KTp0BVf6jU6vsB1B1Cao0b03Kjd5vGFm979BDIzexlA4i7NwSyJ3Tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752133246; c=relaxed/simple;
-	bh=NtjDzTU3HU8YKafAou6KA5eBqrJWEmyyffbga8G3JEc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cPZ5zIbpM1fvlb2QfMEvEiLQ+HxCjzf/rpGgbQtUkbwjcURbXtEMEak/H4FR42GV8jENmBNILS3akJUBDIcYzblfoYbHnBMpQWPV93ViASxJGVhGTqQ3ryfd0IlbaBzlgl1ZKPVUANfjsd1hNhNNFGbxb3ohqZM0n739HYZZTBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ubnVVTO8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752144441; c=relaxed/simple;
+	bh=SOep39LCruQJ5eUJmcxYU0zPt7Rxb5VZwOl88D+y7tQ=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=grochlNozvh/56U3aCb4yOwr5yVpKViGzB8vYGwmsTEB3Y2O9WbdJ+MWJjJmRaPhqeq5pDkCiYTdwCjH3MM9M+L3TJoap8W+QEFJvdpHRNKlIQiwTADm0Eo9DqLbdifwxUbDYiHOt0YLDsENPDDBNn0uBflqiNQisfXFu1Hm5Ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dbWGgJbr; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ubnVVTO8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BDD5C4CEE3;
-	Thu, 10 Jul 2025 07:40:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752133245;
-	bh=NtjDzTU3HU8YKafAou6KA5eBqrJWEmyyffbga8G3JEc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ubnVVTO8m27Thia8b0lueBUSi6VVBSeAk/oKeye3H9pQpqx1bIMhYTD117/soBAdi
-	 5qLCLbE2x1FkKjM2GItvwGBMLUFXIJkIxzQ0h5ZZDvFlA8iVTGLE0vnfEXyExxLFrI
-	 NWyORZSw/tLMOCHDO3PZPXvfzsyZbUa1AQ+vEk5GEJZ5qy5RJ+LIOt7vf+nZrSDW/Z
-	 KZh5ykduRjj8/LuXwQjjHBX0lyNI+2+KEuAaIXKysoy2virLxYdGgyp3/1QVjHkIL5
-	 H5TSmeHj/V+fK38Hyl8OSSakLCZpDihgm8DtlAi4WUSxMi8v5093QYkt19vT2EdCRS
-	 gexFnroQjZ5Xg==
-From: Christian Brauner <brauner@kernel.org>
-To: Zizhi Wo <wozizhi@huaweicloud.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	wozizhi@huawei.com,
-	libaokun1@huawei.com,
-	yangerkun@huawei.com,
-	houtao1@huawei.com,
-	yukuai3@huawei.com,
-	netfs@lists.linux.dev,
-	dhowells@redhat.com,
-	jlayton@kernel.org
-Subject: Re: [PATCH] cachefiles: Fix the incorrect return value in __cachefiles_write()
-Date: Thu, 10 Jul 2025 09:40:34 +0200
-Message-ID: <20250710-nichtig-rennen-83a1033aee50@brauner>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250703024418.2809353-1-wozizhi@huaweicloud.com>
-References: <20250703024418.2809353-1-wozizhi@huaweicloud.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dbWGgJbr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1752144437;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=q0u3HIoTZyqgg631O8XZeTrysi+dlK3ZJXgoQ/uYQ84=;
+	b=dbWGgJbrbzHq3oVxEpw8JfE1q7QoutrgUZLvp7blRDKpSo7Ikn4JjGYSsJhhGgQydDs/8s
+	kDxKXI7253UlxVeQluY/ojfnSATbURoyNNC8b4em2ZjSJPpBRK07aJjcqn7igmcuSp3G0+
+	aRNrgxYWPvYn5IXMi6fsMTvetKouWnQ=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-408-Qs5apeF0MfKwPreNiR2KRQ-1; Thu,
+ 10 Jul 2025 06:47:16 -0400
+X-MC-Unique: Qs5apeF0MfKwPreNiR2KRQ-1
+X-Mimecast-MFC-AGG-ID: Qs5apeF0MfKwPreNiR2KRQ_1752144434
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D985519560B0;
+	Thu, 10 Jul 2025 10:47:13 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.81])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 488C719373D8;
+	Thu, 10 Jul 2025 10:47:09 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <CAKPOu+-qYtC0iFWv856JZinO-0E=SEoQ6pOLvc0bZfsbSakR8w@mail.gmail.com>
+References: <CAKPOu+-qYtC0iFWv856JZinO-0E=SEoQ6pOLvc0bZfsbSakR8w@mail.gmail.com> <20250701163852.2171681-1-dhowells@redhat.com> <CAKPOu+8z_ijTLHdiCYGU_Uk7yYD=shxyGLwfe-L7AV3DhebS3w@mail.gmail.com> <2724318.1752066097@warthog.procyon.org.uk> <CAKPOu+_ZXJqftqFj6fZ=hErPMOuEEtjhnQ3pxMr9OAtu+sw=KQ@mail.gmail.com> <2738562.1752092552@warthog.procyon.org.uk>
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
+    Viacheslav Dubeyko <slava@dubeyko.com>,
+    Alex Markuze <amarkuze@redhat.com>, Steve French <sfrench@samba.org>,
+    Paulo Alcantara <pc@manguebit.com>, netfs@lists.linux.dev,
+    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+    v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 00/13] netfs, cifs: Fixes to retry-related code
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1361; i=brauner@kernel.org; h=from:subject:message-id; bh=NtjDzTU3HU8YKafAou6KA5eBqrJWEmyyffbga8G3JEc=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTk55ULCB/abrr0nOb61XGcJ7eyMS53Z+k5//eb++98m fWvDoUc6ihlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZhI9j9GhkkLvWw/7Vy2Y8eu toZ3Us3zzi5QM7/9a3r/xj3TLposOGXA8D/POIvlVMQ02eIrS+TyWNj3NKc/yLa4vvvIBiHziI2 Lf7IAAA==
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2807749.1752144428.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 10 Jul 2025 11:47:08 +0100
+Message-ID: <2807750.1752144428@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Thu, 03 Jul 2025 10:44:18 +0800, Zizhi Wo wrote:
-> In __cachefiles_write(), if the return value of the write operation > 0, it
-> is set to 0. This makes it impossible to distinguish scenarios where a
-> partial write has occurred, and will affect the outer calling functions:
-> 
->  1) cachefiles_write_complete() will call "term_func" such as
-> netfs_write_subrequest_terminated(). When "ret" in __cachefiles_write()
-> is used as the "transferred_or_error" of this function, it can not
-> distinguish the amount of data written, makes the WARN meaningless.
-> 
-> [...]
+Hi Max,
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
+I managed to reproduce it on my test machine with ceph + fscache.
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+Does this fix the problem for you?
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+David
+---
+netfs: Fix copy-to-cache so that it performs collection with ceph+fscache
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+The netfs copy-to-cache that is used by Ceph with local caching sets up a
+new request to write data just read to the cache.  The request is started
+and then left to look after itself whilst the app continues.  The request
+gets notified by the backing fs upon completion of the async DIO write, bu=
+t
+then tries to wake up the app because NETFS_RREQ_OFFLOAD_COLLECTION isn't
+set - but the app isn't waiting there, and so the request just hangs.
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
+Fix this by setting NETFS_RREQ_OFFLOAD_COLLECTION which causes the
+notification from the backing filesystem to put the collection onto a work
+queue instead.
 
-[1/1] cachefiles: Fix the incorrect return value in __cachefiles_write()
-      https://git.kernel.org/vfs/vfs/c/6b89819b06d8
+Fixes: e2d46f2ec332 ("netfs: Change the read result collector to only use =
+one work item")
+Reported-by: Max Kellermann <max.kellermann@ionos.com>
+Link: https://lore.kernel.org/r/CAKPOu+8z_ijTLHdiCYGU_Uk7yYD=3DshxyGLwfe-L=
+7AV3DhebS3w@mail.gmail.com/
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: Viacheslav Dubeyko <slava@dubeyko.com>
+cc: Alex Markuze <amarkuze@redhat.com>
+cc: Ilya Dryomov <idryomov@gmail.com>
+cc: netfs@lists.linux.dev
+cc: ceph-devel@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
+cc: stable@vger.kernel.org
+---
+ fs/netfs/read_pgpriv2.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/fs/netfs/read_pgpriv2.c b/fs/netfs/read_pgpriv2.c
+index 5bbe906a551d..080d2a6a51d9 100644
+--- a/fs/netfs/read_pgpriv2.c
++++ b/fs/netfs/read_pgpriv2.c
+@@ -110,6 +110,7 @@ static struct netfs_io_request *netfs_pgpriv2_begin_co=
+py_to_cache(
+ 	if (!creq->io_streams[1].avail)
+ 		goto cancel_put;
+ =
+
++	__set_bit(NETFS_RREQ_OFFLOAD_COLLECTION, &creq->flags);
+ 	trace_netfs_write(creq, netfs_write_trace_copy_to_cache);
+ 	netfs_stat(&netfs_n_wh_copy_to_cache);
+ 	rreq->copy_to_cache =3D creq;
+
