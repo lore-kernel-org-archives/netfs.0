@@ -1,240 +1,100 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335A32F0038
-	for <netfs@lists.linux.dev>; Thu, 10 Jul 2025 16:31:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A3C2EA472
+	for <netfs@lists.linux.dev>; Fri, 11 Jul 2025 15:10:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752165113; cv=none; b=acd2G85x4NuADDhEjL7eQWNWumm7LW8Qenh3xoA6Umz0LGPe4ak4RwIUgkesmVg4RT9DhgdcaZLhmVduOTL5HBBUQ/GCkr7QdxAnU4KrSkx1arqTidQAJBnAqlxYdijSxbH7fTuokOjeTQ7/tSeRzt7WGUuKownkj/53DvTLSKc=
+	t=1752246622; cv=none; b=qOX2nT0syY1lw+WYONJdbaTc+kVt2gH3t0kWSqo1ZO24yNHtTKoEehV/uSl0uyIqPW+xfElIMsKtDWLt0nqoRgq8vnF4U2Hvpu6yiCqcWS+CEe2t1Ns8hwm3FLsVX9ElJ5mZAG8MdQjxuu2ELXzS8nbUkcWt9O6xjioqKq5voKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752165113; c=relaxed/simple;
-	bh=0/7e0fhDD+nhfhomUm5QCNroWeBizuBJN14rsfB0VjY=;
-	h=From:In-Reply-To:References:Cc:Subject:MIME-Version:Content-Type:
-	 Date:Message-ID; b=oRAt2CSLXKXTFUrQTC/K3gxfLcYU/lALFbHxatCo8n4f8DkrJb59zjNg9JLGsgxJoh5BQzAbC/oMni1AFL/5mcVjFAnqDW0z9CdAsvULoKUxue1RXxbwyWP3BBJxOZC5PEmigOdrrczLSJ/jnoMGXQCs9oD+6+3dFCAVcnCL+OE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ul3tr9jH; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1752246622; c=relaxed/simple;
+	bh=vl5/+yZjr/5bLFxQsllWnUlwlQ8txEkCdIKXTXUNMmQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ykbpfw8MspLn45Ry5fW5hcb69zbZi4v98p1pySFicNXalMDroUa/4kE8Vlnpwmlc58c3uqhLkUHW6MCgHdE2RAplkQe8LHtBW6XRsV86Z2TmZFrhPtUp7WItMHl5XV3HRgduZDqxmkHo7FbNLd50lh63s1FHvQu+68391RCxWOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bB9F6cPW; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ul3tr9jH"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bB9F6cPW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1752165110;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XbVgBYU1j7RlLF0+RFun00uhaSaH2KoCdahv4lEZ8ho=;
-	b=Ul3tr9jH4D5VabAtI3RCfCzix6HEwzrXKsoJ6iAruGTQorGG0QgiRZofyhZg58ODXHn2KY
-	EMReKpbaF0F50EWYyCGEt6TianBlqbgCOUYHA5MG2QIuyRRrqKka1tNMPPc4rdNyW/uEsD
-	Y6VjEuGIvpFrvLqsNzF/bk9pQDR+AZI=
+	s=mimecast20190719; t=1752246619;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=1Wi1ac6epZO5NoWEvSel2tFSY9RY1xohxrC8k+pRSGw=;
+	b=bB9F6cPW7sh+ZPPBvnHmCsCpLIuWVMXbkuqa0+2OOlsYmQfNoY/FK+z2cnAMIPqLvcaqhA
+	RO9FuoDy2xHOkbF15c0KShz/wcFPY7XC4unfoyg1jWTyaAk/EXAKol7/TYkc2PBGJLPZ9w
+	wx2ab4Td7KqNCpz71nwLtNGCQiOckAA=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-416-77Io-M4CMMG3K5g-BpBdDw-1; Thu,
- 10 Jul 2025 12:31:46 -0400
-X-MC-Unique: 77Io-M4CMMG3K5g-BpBdDw-1
-X-Mimecast-MFC-AGG-ID: 77Io-M4CMMG3K5g-BpBdDw_1752165099
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-13-8CWVbDW_MRW249P7RwTGIw-1; Fri,
+ 11 Jul 2025 11:10:15 -0400
+X-MC-Unique: 8CWVbDW_MRW249P7RwTGIw-1
+X-Mimecast-MFC-AGG-ID: 8CWVbDW_MRW249P7RwTGIw_1752246612
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4F8AF18001D1;
-	Thu, 10 Jul 2025 16:31:39 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.81])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6CC423000221;
-	Thu, 10 Jul 2025 16:31:35 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DFC2D18011EE;
+	Fri, 11 Jul 2025 15:10:11 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.42.28.2])
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7CAB71956094;
+	Fri, 11 Jul 2025 15:10:08 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
-In-Reply-To: <2904424.1752161530@warthog.procyon.org.uk>
-References: <2904424.1752161530@warthog.procyon.org.uk> <CAKPOu+9TN4hza48+uT_9W5wEYhZGLc2F57xxKDiyhy=pay5XAw@mail.gmail.com> <20250701163852.2171681-1-dhowells@redhat.com> <CAKPOu+8z_ijTLHdiCYGU_Uk7yYD=shxyGLwfe-L7AV3DhebS3w@mail.gmail.com> <2724318.1752066097@warthog.procyon.org.uk> <CAKPOu+_ZXJqftqFj6fZ=hErPMOuEEtjhnQ3pxMr9OAtu+sw=KQ@mail.gmail.com> <2738562.1752092552@warthog.procyon.org.uk> <CAKPOu+-qYtC0iFWv856JZinO-0E=SEoQ6pOLvc0bZfsbSakR8w@mail.gmail.com> <2807750.1752144428@warthog.procyon.org.uk>
-Cc: dhowells@redhat.com, Max Kellermann <max.kellermann@ionos.com>,
-    Christian Brauner <christian@brauner.io>,
-    Viacheslav Dubeyko <slava@dubeyko.com>,
-    Alex Markuze <amarkuze@redhat.com>, Steve French <sfrench@samba.org>,
-    Paulo Alcantara <pc@manguebit.com>, netfs@lists.linux.dev,
-    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-    v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 00/13] netfs, cifs: Fixes to retry-related code
+To: Christian Brauner <christian@brauner.io>
+Cc: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Max Kellermann <max.kellermann@ionos.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Alex Markuze <amarkuze@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	netfs@lists.linux.dev,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] netfs: Fix use of fscache with ceph
+Date: Fri, 11 Jul 2025 16:09:59 +0100
+Message-ID: <20250711151005.2956810-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2919958.1752165094.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 10 Jul 2025 17:31:34 +0100
-Message-ID: <2919959.1752165094@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
-David Howells <dhowells@redhat.com> wrote:
+Hi Christian,
 
-> Depending on what you're doing on ceph, you might need the attached patc=
-h as
-> well.  I managed to reproduce it by doing a git clone and kernel build o=
-n a
-> ceph mount with cachefiles active.
+Here are a couple of patches that fix the use of fscaching with ceph:
 
-Here's a version of the patch that conditionally does the needed wakeup.  =
-I
-don't want to force processing if there's no need.
+ (1) Fix the read collector to mark the write request that it creates to copy
+     data to the cache with NETFS_RREQ_OFFLOAD_COLLECTION so that it will run
+     the write collector on a workqueue as it's meant to run in the background
+     and the app isn't going to wait for it.
 
+ (2) Fix the read collector to wake up the copy-to-cache write request after
+     it sets NETFS_RREQ_ALL_QUEUED if the write request doesn't have any
+     subrequests left on it.  ALL_QUEUED indicates that there won't be any
+     more subreqs coming and the collector should clean up - except that an
+     event is needed to trigger that, but it only gets events from subreq
+     termination and so the last event can beat us to setting ALL_QUEUED.
+
+The patches can also be found here:
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-fixes
+
+Thanks,
 David
----
-commit 1fe42a9a7f0b2f51107574f0b8e151d13dc766cc
-Author: David Howells <dhowells@redhat.com>
-Date:   Thu Jul 10 15:02:57 2025 +0100
 
-    netfs: Fix race between cache write completion and ALL_QUEUED being se=
-t
-    =
+David Howells (2):
+  netfs: Fix copy-to-cache so that it performs collection with
+    ceph+fscache
+  netfs: Fix race between cache write completion and ALL_QUEUED being
+    set
 
-    When netfslib is issuing subrequests, the subrequests start processing
-    immediately and may complete before we reach the end of the issuing
-    function.  At the end of the issuing function we set NETFS_RREQ_ALL_QU=
-EUED
-    to indicate to the collector that we aren't going to issue any more su=
-breqs
-    and that it can do the final notifications and cleanup.
-    =
-
-    Now, this isn't a problem if the request is synchronous
-    (NETFS_RREQ_OFFLOAD_COLLECTION is unset) as the result collection will=
- be
-    done in-thread and we're guaranteed an opportunity to run the collecto=
-r.
-    =
-
-    However, if the request is asynchronous, collection is primarily trigg=
-ered
-    by the termination of subrequests queuing it on a workqueue.  Now, a r=
-ace
-    can occur here if the app thread sets ALL_QUEUED after the last subreq=
-uest
-    terminates.
-    =
-
-    This can happen most easily with the copy2cache code (as used by Ceph)
-    where, in the collection routine of a read request, an asynchronous wr=
-ite
-    request is spawned to copy data to the cache.  Folios are added to the
-    write request as they're unlocked, but there may be a delay before
-    ALL_QUEUED is set as the write subrequests may complete before we get
-    there.
-    =
-
-    If all the write subreqs have finished by the ALL_QUEUED point, no fur=
-ther
-    events happen and the collection never happens, leaving the request
-    hanging.
-    =
-
-    Fix this by queuing the collector after setting ALL_QUEUED.  This is a=
- bit
-    heavy-handed and it may be sufficient to do it only if there are no ex=
-tant
-    subreqs.
-    =
-
-    Also add a tracepoint to cross-reference both requests in a copy-to-re=
-quest
-    operation and add a trace to the netfs_rreq tracepoint to indicate the
-    setting of ALL_QUEUED.
-    =
-
-    Fixes: e2d46f2ec332 ("netfs: Change the read result collector to only =
-use one work item")
-    Reported-by: Max Kellermann <max.kellermann@ionos.com>
-    Link: https://lore.kernel.org/r/CAKPOu+8z_ijTLHdiCYGU_Uk7yYD=3DshxyGLw=
-fe-L7AV3DhebS3w@mail.gmail.com/
-    Signed-off-by: David Howells <dhowells@redhat.com>
-    cc: Paulo Alcantara <pc@manguebit.org>
-    cc: Viacheslav Dubeyko <slava@dubeyko.com>
-    cc: Alex Markuze <amarkuze@redhat.com>
-    cc: Ilya Dryomov <idryomov@gmail.com>
-    cc: netfs@lists.linux.dev
-    cc: ceph-devel@vger.kernel.org
-    cc: linux-fsdevel@vger.kernel.org
-    cc: stable@vger.kernel.org
-
-diff --git a/fs/netfs/read_pgpriv2.c b/fs/netfs/read_pgpriv2.c
-index 080d2a6a51d9..8097bc069c1d 100644
---- a/fs/netfs/read_pgpriv2.c
-+++ b/fs/netfs/read_pgpriv2.c
-@@ -111,6 +111,7 @@ static struct netfs_io_request *netfs_pgpriv2_begin_co=
-py_to_cache(
- 		goto cancel_put;
- =
-
- 	__set_bit(NETFS_RREQ_OFFLOAD_COLLECTION, &creq->flags);
-+	trace_netfs_copy2cache(rreq, creq);
- 	trace_netfs_write(creq, netfs_write_trace_copy_to_cache);
- 	netfs_stat(&netfs_n_wh_copy_to_cache);
- 	rreq->copy_to_cache =3D creq;
-@@ -155,6 +156,9 @@ void netfs_pgpriv2_end_copy_to_cache(struct netfs_io_r=
-equest *rreq)
- 	netfs_issue_write(creq, &creq->io_streams[1]);
- 	smp_wmb(); /* Write lists before ALL_QUEUED. */
- 	set_bit(NETFS_RREQ_ALL_QUEUED, &creq->flags);
-+	trace_netfs_rreq(rreq, netfs_rreq_trace_end_copy_to_cache);
-+	if (list_empty_careful(&creq->io_streams[1].subrequests))
-+		netfs_wake_collector(creq);
- =
-
- 	netfs_put_request(creq, netfs_rreq_trace_put_return);
- 	creq->copy_to_cache =3D NULL;
-diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
-index 73e96ccbe830..64a382fbc31a 100644
---- a/include/trace/events/netfs.h
-+++ b/include/trace/events/netfs.h
-@@ -55,6 +55,7 @@
- 	EM(netfs_rreq_trace_copy,		"COPY   ")	\
- 	EM(netfs_rreq_trace_dirty,		"DIRTY  ")	\
- 	EM(netfs_rreq_trace_done,		"DONE   ")	\
-+	EM(netfs_rreq_trace_end_copy_to_cache,	"END-C2C")	\
- 	EM(netfs_rreq_trace_free,		"FREE   ")	\
- 	EM(netfs_rreq_trace_ki_complete,	"KI-CMPL")	\
- 	EM(netfs_rreq_trace_recollect,		"RECLLCT")	\
-@@ -559,6 +560,35 @@ TRACE_EVENT(netfs_write,
- 		      __entry->start, __entry->start + __entry->len - 1)
- 	    );
- =
-
-+TRACE_EVENT(netfs_copy2cache,
-+	    TP_PROTO(const struct netfs_io_request *rreq,
-+		     const struct netfs_io_request *creq),
-+
-+	    TP_ARGS(rreq, creq),
-+
-+	    TP_STRUCT__entry(
-+		    __field(unsigned int,		rreq)
-+		    __field(unsigned int,		creq)
-+		    __field(unsigned int,		cookie)
-+		    __field(unsigned int,		ino)
-+			     ),
-+
-+	    TP_fast_assign(
-+		    struct netfs_inode *__ctx =3D netfs_inode(rreq->inode);
-+		    struct fscache_cookie *__cookie =3D netfs_i_cookie(__ctx);
-+		    __entry->rreq	=3D rreq->debug_id;
-+		    __entry->creq	=3D creq->debug_id;
-+		    __entry->cookie	=3D __cookie ? __cookie->debug_id : 0;
-+		    __entry->ino	=3D rreq->inode->i_ino;
-+			   ),
-+
-+	    TP_printk("R=3D%08x CR=3D%08x c=3D%08x i=3D%x ",
-+		      __entry->rreq,
-+		      __entry->creq,
-+		      __entry->cookie,
-+		      __entry->ino)
-+	    );
-+
- TRACE_EVENT(netfs_collect,
- 	    TP_PROTO(const struct netfs_io_request *wreq),
- =
+ fs/netfs/read_pgpriv2.c      |  5 +++++
+ include/trace/events/netfs.h | 30 ++++++++++++++++++++++++++++++
+ 2 files changed, 35 insertions(+)
 
