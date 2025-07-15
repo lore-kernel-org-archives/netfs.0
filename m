@@ -1,103 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0DF02E2EEE;
-	Tue, 15 Jul 2025 13:20:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F4E19ABC3;
+	Tue, 15 Jul 2025 20:40:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752585614; cv=none; b=NRolAejtI9k/5aMLxhvr7fXmH9WKidIZ32ljRamRE18tQvAsc5bfntCQlIiq0vJqVoKPsjQANCz6Hj9zAjTyUZgUaMPdWGacNzNQxCPfodwg0oqdwBswpclt2yoE7ZkxFFMq4W/YlxRsllv7KRFBVst5WX9ZI8Bc8pq0imYqhKY=
+	t=1752612057; cv=none; b=oys7k8LKnehpDxUSbVpSK+KE7jvu/juWrJzEtpUvAdW7ikbGQolO4jF6lYbFlbTkoCDaT3+DxSPonw9NeVWtEiaZw4q//eewP5HczK88dTjuLBbgehH0J8Fwd3U+qflArKSmw+WPiep/wsBEZvIHWmTrOODH2UrgEAtb/x64FZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752585614; c=relaxed/simple;
-	bh=GttpmwWLPpfA92yt7p/T9TwPaMcvB84SRYcfzZnep+Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bEp/kmY4rBrWb503iD8XBGRrIgeL0n7e0MH5tCiSJz4f6gfEyFfwfI/mZbGZgP/XJ418rSfXxNn2SKVOhbwHIh2yAUuIMoFR4IoToRHAqzDvQ4KhDgZR4RxMBBpRKVf4VGULzdRmJQfVy/EBOT35wTwlA+tTta8UKySzgD4+rv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KtufEJ6N; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752612057; c=relaxed/simple;
+	bh=bjgYAM2QLmUopNUDY1m+jMaK0QwGYud5GRBrIM2R+Hc=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=lurG8QA/4vbRPS22aJa6b7hJEGnROOp3htwmsfdMZzj8dFOEv2Zy3eqLJwCnDq9qGX1jSHOD2k2VGmXX0yNd7B3E09U+kff47XiRZhG0wLd08GfN6DS+F9URAZjiq3VisG02eYPOHtNeP/jFksSLnTou5n08ulHE1TYw9GZ/MWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=rkI+4BNO; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KtufEJ6N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C872C4CEE3;
-	Tue, 15 Jul 2025 13:20:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752585614;
-	bh=GttpmwWLPpfA92yt7p/T9TwPaMcvB84SRYcfzZnep+Q=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KtufEJ6N/vpWkBvRT3ANTGQmUudH6HV1Orx+34Ose86XPyavHoR520C+qhFxRrhXo
-	 T70CQL/R9aJXqMblfI7LmmLiJN0LoQJBm6gu15vEqPtY5l6Qlvl2E5nrUHNdT1s4UR
-	 V4+4i2ir1xBB4FsDHjyIdjaXIGCcdlKlVuZWR79E=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.org>,
-	netfs@lists.linux.dev,
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="rkI+4BNO"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:Message-ID:
+	Subject:To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=SYy7+JhvSNYS+NgaNxt53BfDsD6DTcsBMQgVgtXAnMw=; b=rkI+4BNOMXmHOlYzssTyZGMoyL
+	aI4+mtJLryNxKiCc4W+ld08C0+bphxREcY/dxe5wfC8vq1Jm/gkORw00fkrVN1wN9ZebXvUZdsASi
+	zm/TWcijb+f/QGxCr7JAj8hN/eD1ZF8y8US+BmVKcsXKcioWHpvbobjpz6cJAgAK7CUS1qNhk4uFL
+	tjWrM8+Ywd756Z75jpjjjhA98m3aZFKJrVLHToG44C24SvMEzbGkUiMb11sHEeqIF4vneMyjl5vwU
+	TzrTkImLRsy3P+dQk+EBbDZjxoBwbifTvRQpCJk58iDMe6EFuJx0uQ/0H2pK8Hk2W4Z21ZbGxiHf4
+	6wuu3xaA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1ubmSA-0000000DkmQ-22ck;
+	Tue, 15 Jul 2025 20:40:42 +0000
+Date: Tue, 15 Jul 2025 21:40:42 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org,
+	Nicolas Pitre <nico@fluxnic.net>, Gao Xiang <xiang@kernel.org>,
+	Chao Yu <chao@kernel.org>, linux-erofs@lists.ozlabs.org,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	linux-f2fs-devel@lists.sourceforge.net, Jan Kara <jack@suse.cz>,
 	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 106/163] netfs: Fix ref leak on inserted extra subreq in write retry
-Date: Tue, 15 Jul 2025 15:12:54 +0200
-Message-ID: <20250715130813.111931582@linuxfoundation.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715130808.777350091@linuxfoundation.org>
-References: <20250715130808.777350091@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
+	David Woodhouse <dwmw2@infradead.org>,
+	Richard Weinberger <richard@nod.at>, linux-mtd@lists.infradead.org,
+	David Howells <dhowells@redhat.com>, netfs@lists.linux.dev,
+	Paulo Alcantara <pc@manguebit.org>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	ntfs3@lists.linux.dev, Steve French <sfrench@samba.org>,
+	linux-cifs@vger.kernel.org,
+	Phillip Lougher <phillip@squashfs.org.uk>
+Subject: Compressed files & the page cache
+Message-ID: <aHa8ylTh0DGEQklt@casper.infradead.org>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+I've started looking at how the page cache can help filesystems handle
+compressed data better.  Feedback would be appreciated!  I'll probably
+say a few things which are obvious to anyone who knows how compressed
+files work, but I'm trying to be explicit about my assumptions.
 
-------------------
+First, I believe that all filesystems work by compressing fixed-size
+plaintext into variable-sized compressed blocks.  This would be a good
+point to stop reading and tell me about counterexamples.
 
-From: David Howells <dhowells@redhat.com>
+From what I've been reading in all your filesystems is that you want to
+allocate extra pages in the page cache in order to store the excess data
+retrieved along with the page that you're actually trying to read.  That's
+because compressing in larger chunks leads to better compression.
 
-[ Upstream commit 97d8e8e52cb8ab3d7675880a92626d9a4332f7a6 ]
+There's some discrepancy between filesystems whether you need scratch
+space for decompression.  Some filesystems read the compressed data into
+the pagecache and decompress in-place, while other filesystems read the
+compressed data into scratch pages and decompress into the page cache.
 
-The write-retry algorithm will insert extra subrequests into the list if it
-can't get sufficient capacity to split the range that needs to be retried
-into the sequence of subrequests it currently has (for instance, if the
-cifs credit pool has fewer credits available than it did when the range was
-originally divided).
+There also seems to be some discrepancy between filesystems whether the
+decompression involves vmap() of all the memory allocated or whether the
+decompression routines can handle doing kmap_local() on individual pages.
 
-However, the allocator furnishes each new subreq with 2 refs and then
-another is added for resubmission, causing one to be leaked.
-
-Fix this by replacing the ref-getting line with a neutral trace line.
-
-Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/20250701163852.2171681-6-dhowells@redhat.com
-Tested-by: Steve French <sfrench@samba.org>
-Reviewed-by: Paulo Alcantara <pc@manguebit.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/netfs/write_collect.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
-index 7cb21da40a0a4..a968688a73234 100644
---- a/fs/netfs/write_collect.c
-+++ b/fs/netfs/write_collect.c
-@@ -285,7 +285,7 @@ static void netfs_retry_write_stream(struct netfs_io_request *wreq,
- 			trace_netfs_sreq_ref(wreq->debug_id, subreq->debug_index,
- 					     refcount_read(&subreq->ref),
- 					     netfs_sreq_trace_new);
--			netfs_get_subrequest(subreq, netfs_sreq_trace_get_resubmit);
-+			trace_netfs_sreq(subreq, netfs_sreq_trace_split);
- 
- 			list_add(&subreq->rreq_link, &to->rreq_link);
- 			to = list_next_entry(to, rreq_link);
--- 
-2.39.5
-
-
+So, my proposal is that filesystems tell the page cache that their minimum
+folio size is the compression block size.  That seems to be around 64k,
+so not an unreasonable minimum allocation size.  That removes all the
+extra code in filesystems to allocate extra memory in the page cache.
+It means we don't attempt to track dirtiness at a sub-folio granularity
+(there's no point, we have to write back the entire compressed bock
+at once).  We also get a single virtually contiguous block ... if you're
+willing to ditch HIGHMEM support.  Or there's a proposal to introduce a
+vmap_file() which would give us a virtually contiguous chunk of memory
+(and could be trivially turned into a noop for the case of trying to
+vmap a single large folio).
 
