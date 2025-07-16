@@ -1,31 +1,28 @@
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+Received: from sxb1plsmtpa01-04.prod.sxb1.secureserver.net (sxb1plsmtpa01-04.prod.sxb1.secureserver.net [188.121.53.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E68F48CFC;
-	Wed, 16 Jul 2025 05:40:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0725221FA4
+	for <netfs@lists.linux.dev>; Wed, 16 Jul 2025 22:45:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.121.53.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752644417; cv=none; b=nlqVuv5dLIjVBnkd4v6ujhVHazMopa7o/X2lSmHPVxVXZklc64WhBx6TZDp2G6nC6B7Z/6OY5GL6/GuO6SZvsBCSpNavUmUGUXxWB02AbTb3HtCuKJ8PTnC0eukQeMPN86T2Ac7VM4wfAyIwco3c2M4e6O/UrauPPiAdXDQBAkI=
+	t=1752705953; cv=none; b=OvJgg+4cFvmjnF1cdRQQk2AfF8es2Dc35ii5H0fbNYfNfhWgSrICKDlzBZUdwuQSRH3+RgU+5cLYamnfygxM4AZ7Gt6MMKtzTnAhCTmaEYD4UhxGqo0dhqTSNxVBVfAR0YDzGeqRp0Y5sIJUltNd03DtwUtuWKLvtfUH5fFzcBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752644417; c=relaxed/simple;
-	bh=rZBG7DQM33GlZMGKj4mp03qZwHVbPzsqeifBB1LM3js=;
+	s=arc-20240116; t=1752705953; c=relaxed/simple;
+	bh=NMP9084JD75v2eU5pfqTbg/2XaSNjwAG/rAMydJ3TiA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=ALr95TgKs8M6q+3fIRVJuuvP4UrROHAZDWDznckcDhJAsS4Xgr6qLDFY8Bl0t0TCe5qPIVo/7hHB3L8I+6CtjNDdG3cYiNp+cWkVtNwgTyQhBK9ml2via3RO3hPH5/nWUUjp5+WFDmxrJ6C/e74rgxG8X+Ojtz3S68rfJ13DzBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=oeT1Nyqj; arc=none smtp.client-ip=115.124.30.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="oeT1Nyqj"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1752644406; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=/qADFoeOXBnAEHP6o81g96cI4IF1HJRJHWKwBGouJpA=;
-	b=oeT1NyqjfjzJ2YmhyWz+Hq0lkl9JUfQCtaQFx8hH6YXWYCgfH64BMXKh8sJpQGi7JInaf2W6P8tWyemCvsUmbktNUNpPOSD3n6jok1RgbrHkKsZ2LA/TR9xnJfl9YduELmT8pgwEOO0pEYWw+VT/gXQJwNw/XyDLIlKYYzYw3Hs=
-Received: from 30.221.131.131(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0Wj2mLXU_1752644403 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 16 Jul 2025 13:40:04 +0800
-Message-ID: <e143f730-6ae7-491e-985e-cc021411edd8@linux.alibaba.com>
-Date: Wed, 16 Jul 2025 13:40:02 +0800
+	 In-Reply-To:Content-Type; b=lcWysXy0QmflpKBunP30DSNuwlU2xF9rldPMyivX2UNGYaDunaUDIc2HXIVVseZt30HolDRSnpACm9X95h0saFz5Utt4CYgPo5qeW9ttbeiDIQRRu1KaXpgf+ElcRktaAOaZoFvzsG9Ge0iZlaZumQ152c7/GeOgmLFdY9wnaFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squashfs.org.uk; spf=pass smtp.mailfrom=squashfs.org.uk; arc=none smtp.client-ip=188.121.53.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squashfs.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=squashfs.org.uk
+Received: from [192.168.178.95] ([82.69.79.175])
+	by :SMTPAUTH: with ESMTPSA
+	id cAlKuoVr96J4FcAlNu4Dmt; Wed, 16 Jul 2025 15:38:10 -0700
+X-CMAE-Analysis: v=2.4 cv=TYmWtQQh c=1 sm=1 tr=0 ts=687829d2
+ a=84ok6UeoqCVsigPHarzEiQ==:117 a=84ok6UeoqCVsigPHarzEiQ==:17
+ a=IkcTkHD0fZMA:10 a=Z9je9KOXq8erZ9ix0VAA:9 a=QEXdDO2ut3YA:10
+X-SECURESERVER-ACCT: phillip@squashfs.org.uk
+Message-ID: <f4b9faf9-8efd-4396-b080-e712025825ab@squashfs.org.uk>
+Date: Wed, 16 Jul 2025 23:37:28 +0100
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -34,115 +31,97 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: Compressed files & the page cache
-To: Qu Wenruo <wqu@suse.com>, Matthew Wilcox <willy@infradead.org>,
- Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
- David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org,
- Nicolas Pitre <nico@fluxnic.net>, Gao Xiang <xiang@kernel.org>,
- Chao Yu <chao@kernel.org>, linux-erofs@lists.ozlabs.org,
- Jaegeuk Kim <jaegeuk@kernel.org>, linux-f2fs-devel@lists.sourceforge.net,
- Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org,
- David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>,
- linux-mtd@lists.infradead.org, David Howells <dhowells@redhat.com>,
- netfs@lists.linux.dev, Paulo Alcantara <pc@manguebit.org>,
+To: Matthew Wilcox <willy@infradead.org>, Chris Mason <clm@fb.com>,
+ Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
+ linux-btrfs@vger.kernel.org, Nicolas Pitre <nico@fluxnic.net>,
+ Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
+ linux-erofs@lists.ozlabs.org, Jaegeuk Kim <jaegeuk@kernel.org>,
+ linux-f2fs-devel@lists.sourceforge.net, Jan Kara <jack@suse.cz>,
+ linux-fsdevel@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
+ Richard Weinberger <richard@nod.at>, linux-mtd@lists.infradead.org,
+ David Howells <dhowells@redhat.com>, netfs@lists.linux.dev,
+ Paulo Alcantara <pc@manguebit.org>,
  Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
  ntfs3@lists.linux.dev, Steve French <sfrench@samba.org>,
- linux-cifs@vger.kernel.org, Phillip Lougher <phillip@squashfs.org.uk>
+ linux-cifs@vger.kernel.org
 References: <aHa8ylTh0DGEQklt@casper.infradead.org>
- <2806a1f3-3861-49df-afd4-f7ac0beae43c@suse.com>
- <eeee0704-9e76-4152-bb8e-b5a0e096ec18@linux.alibaba.com>
- <b43fe06d-204b-4f47-a7ff-0c405365bc48@suse.com>
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
-In-Reply-To: <b43fe06d-204b-4f47-a7ff-0c405365bc48@suse.com>
+Content-Language: en-US
+From: Phillip Lougher <phillip@squashfs.org.uk>
+In-Reply-To: <aHa8ylTh0DGEQklt@casper.infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-CMAE-Envelope: MS4xfF7PhqfDTvf0GLbE+ZqPgfM1AhwOJlHSpsMzx6XOcDZuT9YqsTaq8QVlGaLYbZSCACkmupuX6+moDnsLw8z6oXo/oW+NBiLgU6y5TBJWXg6tV88e5Euj
+ 1giZ2fZsoopVdzm/v4Tlp3z0KvSwDUxO6m0SnvjOtH9zvReYNZLA2FNMM+DrFEJFaiIkCvRrmoBmbv4h3OnUHX5sclo1/Wezm+BEj6dLaDXAyuKVHku8Kvy6
+ 3A9SkS3ZtrCtIQcuDoAamTotabkyq8u+NbETcu+wgZcHz79D2Cqa4hBUqSAxUGPLdjqjvKdz0Y+w0IVDS3aE1LUKcnIDytVIxDas6bwTbJD2/Yz7PsjwtKtl
+ JoRL1DOXscuVOLxBvw+0xQnpDotzu0Vo1GrTRn1rfHJKD4Exmb3wOCyCD+h2AYMKaGBCjBVgXvf5G6DK3/s3MVbkLRjH09uolqpyyQAsKggrC2Moa3qwKWia
+ tBwCIdLZWPpQOFc2HOlLjv7vmcMVwr97TODyoKXcYSBdRG5Aj19H80t7Vc1kPbVELOFd5EDHNfQ8ATDugkZBq2J/V21dERsOluc2pak7RNmbJyOzrPcIwalB
+ Nf6fEekDRHicDoV2q2tew6sPotWewTjdjMw9iwbRhZpamiZqsp/XI9f5XhZcOQoUdsCy/ey/U995vHBeMMo6H0yRk9BNVCMpINAVKCtQmjIv7xNp+Ioo2Sxs
+ gPnTBcUD++qhM8KfplNiTcJXoQ96eTIssdBe+BMWUXv1qhpWQ9GKojXGcX8mKMvEG7sKSgFMNrc3J5Xm28GieZWCzy/+ZDv2I7VwecP2j5T1w/WLBfHEUgk5
+ gufg4AqEMh/tWtnL4rvSfpFcA6zbEUbuBjvPEzIYLlyjogb7n+266BU1vQZO72XCtgIJOh/KDHsuteA4LS7mxuWjWepHBR+R1mjV5Mwu
 
 
 
-On 2025/7/16 12:54, Qu Wenruo wrote:
+On 15/07/2025 21:40, Matthew Wilcox wrote:
+> I've started looking at how the page cache can help filesystems handle
+> compressed data better.  Feedback would be appreciated!  I'll probably
+> say a few things which are obvious to anyone who knows how compressed
+> files work, but I'm trying to be explicit about my assumptions.
 > 
-> 
-> 在 2025/7/16 10:46, Gao Xiang 写道:
->> ...
->>
->>>
->>>>
->>>> There's some discrepancy between filesystems whether you need scratch
->>>> space for decompression.  Some filesystems read the compressed data into
->>>> the pagecache and decompress in-place, while other filesystems read the
->>>> compressed data into scratch pages and decompress into the page cache.
->>>
->>> Btrfs goes the scratch pages way. Decompression in-place looks a little tricky to me. E.g. what if there is only one compressed page, and it decompressed to 4 pages.
->>
->> Decompression in-place mainly optimizes full decompression (so that CPU
->> cache line won't be polluted by temporary buffers either), in fact,
->> EROFS supports the hybird way.
->>
->>>
->>> Won't the plaintext over-write the compressed data halfway?
->>
->> Personally I'm very familiar with LZ4, LZMA, and DEFLATE
->> algorithm internals, and I also have experience to build LZMA,
->> DEFLATE compressors.
->>
->> It's totally workable for LZ4, in short it will read the compressed
->> data at the end of the decompressed buffers, and the proper margin
->> can make this almost always succeed.
-> 
-> I guess that's why btrfs can not go that way.
-> 
-> Due to data COW, we're totally possible to hit a case that we only want to read out one single plaintext block from a compressed data extent (the compressed size can even be larger than one block).
-> 
-> In that case such in-place decompression will definitely not work.
+> First, I believe that all filesystems work by compressing fixed-size
+> plaintext into variable-sized compressed blocks.  This would be a good
+> point to stop reading and tell me about counterexamples.
 
-Ok, I think it's mainly due to btrfs compression design.  Another point
-is that decompression inplace can also be used for multi-shot interfaces
-(as you said, "swapping input/ output buffer when one of them is full")
-like deflate, lzma and zstd. Because you can know when the decompressed
-buffers and compressed buffers are overlapped since APIs are multi-shot,
-and only copy the overlapped compressed data to some additional temprary
-buffers (and they can be shared among multiple compressed extents).
-
-It has less overhead than allocating temporary buffers to keep compressed
-data during the whole I/O process (again, because it just uses very small
-number buffers during decompression process), especially for slow (even
-network) storage devices.
-
-I do understand Btrfs may not consider this because of different target
-users, but one of EROFS main use cases is low overhead decompression
-under the memory pressure (maybe + cheap storage), LZ4 + inplace
-decompression is useful.
-
-Anyway, I'm not advocating inplace decompression in any case.  I think
-unlike plain text, encoded data has various approaches to organize
-on disk and utilize page cache.  Due to different on-disk design and
-target users, there will be different usage mode.
-
-As for EROFS, we already natively supports compressed large folios
-since 6.11, and order-0 folio is always our use cases, so I don't
-think this will give extra benefits to users.
+For Squashfs Yes.
 
 > 
-> [...]
+>>From what I've been reading in all your filesystems is that you want to
+> allocate extra pages in the page cache in order to store the excess data
+> retrieved along with the page that you're actually trying to read.  That's
+> because compressing in larger chunks leads to better compression.
 > 
->>> All the decompression/compression routines all support swapping input/ output buffer when one of them is full.
->>> So kmap_local() is completely feasible.
->>
->> I think one of the btrfs supported algorithm LZO is not,
-> 
-> It is, the tricky part is btrfs is implementing its own TLV structure for LZO compression.
-> 
-> And btrfs does extra padding to ensure no TLV (compressed data + header) structure will cross block boundary.
-> 
-> So btrfs LZO compression is still able to swap out input/output halfway, mostly due to the btrfs' specific design.
 
-Ok, it seems much like a btrfs-specific design, because it's much
-like per-block compression for LZO instead, and it will increase
-the compressed size, I know btrfs may not care, but it's not the
-EROFS case anyway.
+Yes.
 
-Thanks,
-Gao Xiang
-
+> There's some discrepancy between filesystems whether you need scratch
+> space for decompression.  Some filesystems read the compressed data into
+> the pagecache and decompress in-place, while other filesystems read the
+> compressed data into scratch pages and decompress into the page cache.
 > 
-> Thanks,
-> Qu
+
+Squashfs uses scratch pages.
+
+> There also seems to be some discrepancy between filesystems whether the
+> decompression involves vmap() of all the memory allocated or whether the
+> decompression routines can handle doing kmap_local() on individual pages.
+> 
+
+Squashfs does both, and this depends on whether the decompression
+algorithm implementation in the kernel is multi-shot or single-shot.
+
+The zlib/xz/zstd decompressors are multi-shot, in that you can call them
+multiply, giving them an extra input or output buffer when it runs out.
+This means you can get them to output into a 4K page at a time, without
+requiring the pages to be contiguous.  kmap_local() can be called on each
+page before passing it to the decompressor.
+
+The lzo/lz4 decompressors are single-shot, they expect to be called once,
+with a single contiguous input buffer containing the data to be
+decompressed, and a single contiguous output buffer large enough to hold
+all the uncompressed data.
+
+> So, my proposal is that filesystems tell the page cache that their minimum
+> folio size is the compression block size.  That seems to be around 64k,
+> so not an unreasonable minimum allocation size.  That removes all the
+> extra code in filesystems to allocate extra memory in the page cache.
+> It means we don't attempt to track dirtiness at a sub-folio granularity
+> (there's no point, we have to write back the entire compressed bock
+> at once).  We also get a single virtually contiguous block ... if you're
+> willing to ditch HIGHMEM support.  Or there's a proposal to introduce a
+> vmap_file() which would give us a virtually contiguous chunk of memory
+> (and could be trivially turned into a noop for the case of trying to
+> vmap a single large folio).
+> 
+
+The compression block size in Squashfs can be 4K to 1M in size.
+
+Phillip
