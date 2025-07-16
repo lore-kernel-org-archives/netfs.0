@@ -1,66 +1,31 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723732701DC
-	for <netfs@lists.linux.dev>; Wed, 16 Jul 2025 04:55:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E68F48CFC;
+	Wed, 16 Jul 2025 05:40:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752641713; cv=none; b=cAT0AV1IDtGGvRImt/qHXnoEigKTIDF2aOoDKcWF056IM03Pg4JFOpEavxSZS+uDmqekfkaespMsqHKcQeLfWNk8G8UbfHnBd7RgL0lGigH7Aq6RUm7T3oL9/Vmqvoml+43+P6+yIZI/jSa04VZHO/bbAuFM/5ml9TtqTfqJi3U=
+	t=1752644417; cv=none; b=nlqVuv5dLIjVBnkd4v6ujhVHazMopa7o/X2lSmHPVxVXZklc64WhBx6TZDp2G6nC6B7Z/6OY5GL6/GuO6SZvsBCSpNavUmUGUXxWB02AbTb3HtCuKJ8PTnC0eukQeMPN86T2Ac7VM4wfAyIwco3c2M4e6O/UrauPPiAdXDQBAkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752641713; c=relaxed/simple;
-	bh=45NxbtcOjwFhJ4qOXbqzqQkutCIkkby9chlQhSzNg/U=;
+	s=arc-20240116; t=1752644417; c=relaxed/simple;
+	bh=rZBG7DQM33GlZMGKj4mp03qZwHVbPzsqeifBB1LM3js=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=S5JqTMGJFKlJk+RUTZA/GqIaa5SqwTxYbb8JvHU9dn4/mc/NwsXEhcx6HPAKo4/g0ZXV2sAMxfe1F1ClKagcuHtUCsLJaUz1tAlI7ajhgSCLmQWYhAg9U4nAuXFdFG8oe/ZnJ1mNfFp37t+OrvJgvZsgJUjnptgVTrF8d1zxwmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=DMW3boGk; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	 In-Reply-To:Content-Type; b=ALr95TgKs8M6q+3fIRVJuuvP4UrROHAZDWDznckcDhJAsS4Xgr6qLDFY8Bl0t0TCe5qPIVo/7hHB3L8I+6CtjNDdG3cYiNp+cWkVtNwgTyQhBK9ml2via3RO3hPH5/nWUUjp5+WFDmxrJ6C/e74rgxG8X+Ojtz3S68rfJ13DzBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=oeT1Nyqj; arc=none smtp.client-ip=115.124.30.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="DMW3boGk"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-451d54214adso41119765e9.3
-        for <netfs@lists.linux.dev>; Tue, 15 Jul 2025 21:55:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1752641710; x=1753246510; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=KUlf376OMv1XrkJW2oCmSZAdKifpL8InJUYTeCpUwoM=;
-        b=DMW3boGkINeWe831xPau9+3mzTgStOtZVjkjyRB4DFAky9SHzTMfYZ93mPwMEyvds3
-         r42v2eZaaImlg2IT9TKm/tlS3wqjR+Qt4tWvIl23Q7F1052NjqWiD0vki5kpp3ZBa6qi
-         82/vXZvoy4037vC1zcs3cFxVNat5TmFIE2ioEZe74n8f9aoYwhMUTH8kJwiWlLSSka21
-         k+9zHX4HYrP6LSOzraJpTE1tNZ/LWyrkoDVM70ZjOc8RpST5KonKbuPofXEins8l1Mza
-         S0ulKmyG59bX38RCyqntrg7K/VdHlZDOqAE1eKIcmeEeMpCoQOIhqo/qrzQ0+L9ZCYFL
-         ZRrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752641710; x=1753246510;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KUlf376OMv1XrkJW2oCmSZAdKifpL8InJUYTeCpUwoM=;
-        b=oI6q1LFvOuOyA7EDti9VOoNRhQpiFQc1z+kvrUWjZmI0iC3ocgENPoTf+7CQRr/FL3
-         pfPauk9lno1cdGZ+X0fi1GE//i9yc6LK+NO5ArAI97sn7sbFO1Ckqt5Z/gNhdf32bbXp
-         Jlphar+JC2itZGUeHqzL5X3mli87ow3b3BHvm9arIadp3ko5YxlPfnfsxOapJlK6080H
-         TPds9Ioc0CDUqG6PzjsqcXMEIDQFum6ziVHlDwWoBlSoLAX9mtB7LsuY+cDF3EHk5JyA
-         xuXpIq7RrRGwqyH1ZW/ocIHMH2e6kj5QBAh92WIRWYcmWGevDvXvOxFYiNPeMfC33Sqr
-         LbBA==
-X-Forwarded-Encrypted: i=1; AJvYcCXTAouYBpnITLII91zYKW7iF1nZp71u8Yw9zcouUUsZzwsTujknd+2lKb7jdxgYM1kkXFgvuA==@lists.linux.dev
-X-Gm-Message-State: AOJu0YyLh2qpkB80JmtR5T7mFzE96IKU3FEhDvcELViznKEoKC86r4Pu
-	VMXTsFEAD0NFyECqRmPFLk+H9rvV4B1MgFoKfHhRtQsNVss90crZLQCY/EIuWkMzp5o=
-X-Gm-Gg: ASbGncvjqp9PqX26V17MsRFzS6lVQXSilTVIECrHIuRnTQguRDIUD1RbyLrHSTnqidJ
-	4h7rxd9cpZrwDBg2+cDQjmtPnMAq6aplww1QFDIRYJ+dB4W3aTpLALqcyLGpgZGHUYcJdeGqras
-	zmeiXC0lFnpZc56JluAfUxwwP0CQk0ZRXLp0Yhyk0UPiQ0Jv6tqt5omC6QRG5BQI1n8OCFC8GDu
-	9tvzUlayb8b0wIdU/t5mpFSBBXlFN3xEm2/J46U4Ivd5UCUR0L5QXi1jhQuVX9jPV4MZqA9FARm
-	z3sYfD4h63hBUvdcNPJDMAAkhaqPGPaa2dLRj1YZMNv0EyCTcEBmN9f7s5JKCQM37sYkx9NYXXL
-	o2n6uI24SXqg93HKWoQDJ1hxffBu2NsRZkOe6WUkFJs7qE2qocQ==
-X-Google-Smtp-Source: AGHT+IGQoacjNokIlv9kK4wCibwhRBT2cyuhZxnrQDEDj6ZSWUyIJyb34LpzcuPXzslTfEZGpbv7Yw==
-X-Received: by 2002:a5d:5f50:0:b0:3a4:d53d:be20 with SMTP id ffacd0b85a97d-3b60dd54803mr1041332f8f.18.1752641709469;
-        Tue, 15 Jul 2025 21:55:09 -0700 (PDT)
-Received: from ?IPV6:2403:580d:fda1::299? (2403-580d-fda1--299.ip6.aussiebb.net. [2403:580d:fda1::299])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74ec6b4cda5sm11051963b3a.108.2025.07.15.21.55.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Jul 2025 21:55:08 -0700 (PDT)
-Message-ID: <b43fe06d-204b-4f47-a7ff-0c405365bc48@suse.com>
-Date: Wed, 16 Jul 2025 14:24:58 +0930
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="oeT1Nyqj"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1752644406; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=/qADFoeOXBnAEHP6o81g96cI4IF1HJRJHWKwBGouJpA=;
+	b=oeT1NyqjfjzJ2YmhyWz+Hq0lkl9JUfQCtaQFx8hH6YXWYCgfH64BMXKh8sJpQGi7JInaf2W6P8tWyemCvsUmbktNUNpPOSD3n6jok1RgbrHkKsZ2LA/TR9xnJfl9YduELmT8pgwEOO0pEYWw+VT/gXQJwNw/XyDLIlKYYzYw3Hs=
+Received: from 30.221.131.131(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0Wj2mLXU_1752644403 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 16 Jul 2025 13:40:04 +0800
+Message-ID: <e143f730-6ae7-491e-985e-cc021411edd8@linux.alibaba.com>
+Date: Wed, 16 Jul 2025 13:40:02 +0800
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -69,142 +34,115 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: Compressed files & the page cache
-To: Gao Xiang <hsiangkao@linux.alibaba.com>,
- Matthew Wilcox <willy@infradead.org>, Chris Mason <clm@fb.com>,
- Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
- linux-btrfs@vger.kernel.org, Nicolas Pitre <nico@fluxnic.net>,
- Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
- linux-erofs@lists.ozlabs.org, Jaegeuk Kim <jaegeuk@kernel.org>,
- linux-f2fs-devel@lists.sourceforge.net, Jan Kara <jack@suse.cz>,
- linux-fsdevel@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
- Richard Weinberger <richard@nod.at>, linux-mtd@lists.infradead.org,
- David Howells <dhowells@redhat.com>, netfs@lists.linux.dev,
- Paulo Alcantara <pc@manguebit.org>,
+To: Qu Wenruo <wqu@suse.com>, Matthew Wilcox <willy@infradead.org>,
+ Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
+ David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org,
+ Nicolas Pitre <nico@fluxnic.net>, Gao Xiang <xiang@kernel.org>,
+ Chao Yu <chao@kernel.org>, linux-erofs@lists.ozlabs.org,
+ Jaegeuk Kim <jaegeuk@kernel.org>, linux-f2fs-devel@lists.sourceforge.net,
+ Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org,
+ David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>,
+ linux-mtd@lists.infradead.org, David Howells <dhowells@redhat.com>,
+ netfs@lists.linux.dev, Paulo Alcantara <pc@manguebit.org>,
  Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
  ntfs3@lists.linux.dev, Steve French <sfrench@samba.org>,
  linux-cifs@vger.kernel.org, Phillip Lougher <phillip@squashfs.org.uk>
 References: <aHa8ylTh0DGEQklt@casper.infradead.org>
  <2806a1f3-3861-49df-afd4-f7ac0beae43c@suse.com>
  <eeee0704-9e76-4152-bb8e-b5a0e096ec18@linux.alibaba.com>
-Content-Language: en-US
-From: Qu Wenruo <wqu@suse.com>
-Autocrypt: addr=wqu@suse.com; keydata=
- xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
- 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
- 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
- 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
- gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
- AAHNGFF1IFdlbnJ1byA8d3F1QHN1c2UuY29tPsLAlAQTAQgAPgIbAwULCQgHAgYVCAkKCwIE
- FgIDAQIeAQIXgBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXVgBQkQ/lqxAAoJEMI9kfOh
- Jf6o+jIH/2KhFmyOw4XWAYbnnijuYqb/obGae8HhcJO2KIGcxbsinK+KQFTSZnkFxnbsQ+VY
- fvtWBHGt8WfHcNmfjdejmy9si2jyy8smQV2jiB60a8iqQXGmsrkuR+AM2V360oEbMF3gVvim
- 2VSX2IiW9KERuhifjseNV1HLk0SHw5NnXiWh1THTqtvFFY+CwnLN2GqiMaSLF6gATW05/sEd
- V17MdI1z4+WSk7D57FlLjp50F3ow2WJtXwG8yG8d6S40dytZpH9iFuk12Sbg7lrtQxPPOIEU
- rpmZLfCNJJoZj603613w/M8EiZw6MohzikTWcFc55RLYJPBWQ+9puZtx1DopW2jOwE0EWdWB
- rwEIAKpT62HgSzL9zwGe+WIUCMB+nOEjXAfvoUPUwk+YCEDcOdfkkM5FyBoJs8TCEuPXGXBO
- Cl5P5B8OYYnkHkGWutAVlUTV8KESOIm/KJIA7jJA+Ss9VhMjtePfgWexw+P8itFRSRrrwyUf
- E+0WcAevblUi45LjWWZgpg3A80tHP0iToOZ5MbdYk7YFBE29cDSleskfV80ZKxFv6koQocq0
- vXzTfHvXNDELAuH7Ms/WJcdUzmPyBf3Oq6mKBBH8J6XZc9LjjNZwNbyvsHSrV5bgmu/THX2n
- g/3be+iqf6OggCiy3I1NSMJ5KtR0q2H2Nx2Vqb1fYPOID8McMV9Ll6rh8S8AEQEAAcLAfAQY
- AQgAJgIbDBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXWBBQkQ/lrSAAoJEMI9kfOhJf6o
- cakH+QHwDszsoYvmrNq36MFGgvAHRjdlrHRBa4A1V1kzd4kOUokongcrOOgHY9yfglcvZqlJ
- qfa4l+1oxs1BvCi29psteQTtw+memmcGruKi+YHD7793zNCMtAtYidDmQ2pWaLfqSaryjlzR
- /3tBWMyvIeWZKURnZbBzWRREB7iWxEbZ014B3gICqZPDRwwitHpH8Om3eZr7ygZck6bBa4MU
- o1XgbZcspyCGqu1xF/bMAY2iCDcq6ULKQceuKkbeQ8qxvt9hVxJC2W3lHq8dlK1pkHPDg9wO
- JoAXek8MF37R8gpLoGWl41FIUb3hFiu3zhDDvslYM4BmzI18QgQTQnotJH8=
-In-Reply-To: <eeee0704-9e76-4152-bb8e-b5a0e096ec18@linux.alibaba.com>
+ <b43fe06d-204b-4f47-a7ff-0c405365bc48@suse.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
+In-Reply-To: <b43fe06d-204b-4f47-a7ff-0c405365bc48@suse.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 
 
-在 2025/7/16 10:46, Gao Xiang 写道:
-> ...
+On 2025/7/16 12:54, Qu Wenruo wrote:
 > 
+> 
+> 在 2025/7/16 10:46, Gao Xiang 写道:
+>> ...
 >>
 >>>
->>> There's some discrepancy between filesystems whether you need scratch
->>> space for decompression.  Some filesystems read the compressed data into
->>> the pagecache and decompress in-place, while other filesystems read the
->>> compressed data into scratch pages and decompress into the page cache.
+>>>>
+>>>> There's some discrepancy between filesystems whether you need scratch
+>>>> space for decompression.  Some filesystems read the compressed data into
+>>>> the pagecache and decompress in-place, while other filesystems read the
+>>>> compressed data into scratch pages and decompress into the page cache.
+>>>
+>>> Btrfs goes the scratch pages way. Decompression in-place looks a little tricky to me. E.g. what if there is only one compressed page, and it decompressed to 4 pages.
 >>
->> Btrfs goes the scratch pages way. Decompression in-place looks a 
->> little tricky to me. E.g. what if there is only one compressed page, 
->> and it decompressed to 4 pages.
-> 
-> Decompression in-place mainly optimizes full decompression (so that CPU
-> cache line won't be polluted by temporary buffers either), in fact,
-> EROFS supports the hybird way.
-> 
+>> Decompression in-place mainly optimizes full decompression (so that CPU
+>> cache line won't be polluted by temporary buffers either), in fact,
+>> EROFS supports the hybird way.
 >>
->> Won't the plaintext over-write the compressed data halfway?
+>>>
+>>> Won't the plaintext over-write the compressed data halfway?
+>>
+>> Personally I'm very familiar with LZ4, LZMA, and DEFLATE
+>> algorithm internals, and I also have experience to build LZMA,
+>> DEFLATE compressors.
+>>
+>> It's totally workable for LZ4, in short it will read the compressed
+>> data at the end of the decompressed buffers, and the proper margin
+>> can make this almost always succeed.
 > 
-> Personally I'm very familiar with LZ4, LZMA, and DEFLATE
-> algorithm internals, and I also have experience to build LZMA,
-> DEFLATE compressors.
+> I guess that's why btrfs can not go that way.
 > 
-> It's totally workable for LZ4, in short it will read the compressed
-> data at the end of the decompressed buffers, and the proper margin
-> can make this almost always succeed.
-
-I guess that's why btrfs can not go that way.
-
-Due to data COW, we're totally possible to hit a case that we only want 
-to read out one single plaintext block from a compressed data extent 
-(the compressed size can even be larger than one block).
-
-In that case such in-place decompression will definitely not work.
-
-[...]
-
->> All the decompression/compression routines all support swapping input/ 
->> output buffer when one of them is full.
->> So kmap_local() is completely feasible.
+> Due to data COW, we're totally possible to hit a case that we only want to read out one single plaintext block from a compressed data extent (the compressed size can even be larger than one block).
 > 
-> I think one of the btrfs supported algorithm LZO is not,
+> In that case such in-place decompression will definitely not work.
 
-It is, the tricky part is btrfs is implementing its own TLV structure 
-for LZO compression.
+Ok, I think it's mainly due to btrfs compression design.  Another point
+is that decompression inplace can also be used for multi-shot interfaces
+(as you said, "swapping input/ output buffer when one of them is full")
+like deflate, lzma and zstd. Because you can know when the decompressed
+buffers and compressed buffers are overlapped since APIs are multi-shot,
+and only copy the overlapped compressed data to some additional temprary
+buffers (and they can be shared among multiple compressed extents).
 
-And btrfs does extra padding to ensure no TLV (compressed data + header) 
-structure will cross block boundary.
+It has less overhead than allocating temporary buffers to keep compressed
+data during the whole I/O process (again, because it just uses very small
+number buffers during decompression process), especially for slow (even
+network) storage devices.
 
-So btrfs LZO compression is still able to swap out input/output halfway, 
-mostly due to the btrfs' specific design.
+I do understand Btrfs may not consider this because of different target
+users, but one of EROFS main use cases is low overhead decompression
+under the memory pressure (maybe + cheap storage), LZ4 + inplace
+decompression is useful.
+
+Anyway, I'm not advocating inplace decompression in any case.  I think
+unlike plain text, encoded data has various approaches to organize
+on disk and utilize page cache.  Due to different on-disk design and
+target users, there will be different usage mode.
+
+As for EROFS, we already natively supports compressed large folios
+since 6.11, and order-0 folio is always our use cases, so I don't
+think this will give extra benefits to users.
+
+> 
+> [...]
+> 
+>>> All the decompression/compression routines all support swapping input/ output buffer when one of them is full.
+>>> So kmap_local() is completely feasible.
+>>
+>> I think one of the btrfs supported algorithm LZO is not,
+> 
+> It is, the tricky part is btrfs is implementing its own TLV structure for LZO compression.
+> 
+> And btrfs does extra padding to ensure no TLV (compressed data + header) structure will cross block boundary.
+> 
+> So btrfs LZO compression is still able to swap out input/output halfway, mostly due to the btrfs' specific design.
+
+Ok, it seems much like a btrfs-specific design, because it's much
+like per-block compression for LZO instead, and it will increase
+the compressed size, I know btrfs may not care, but it's not the
+EROFS case anyway.
 
 Thanks,
-Qu
+Gao Xiang
 
-> because the
-> fastest LZ77-family algorithms like LZ4, LZO just operates on virtual
-> consecutive buffers and treat the decompressed buffer as LZ77 sliding
-> window.
-> 
-> So that either you need to allocate another temporary consecutive
-> buffer (I believe that is what btrfs does) or use vmap() approach,
-> EROFS is interested in the vmap() one.
 > 
 > Thanks,
-> Gao Xiang
-> 
->>
->> Thanks,
->> Qu
->>
->>>
->>> So, my proposal is that filesystems tell the page cache that their 
->>> minimum
->>> folio size is the compression block size.  That seems to be around 64k,
->>> so not an unreasonable minimum allocation size.  That removes all the
->>> extra code in filesystems to allocate extra memory in the page cache.
->>> It means we don't attempt to track dirtiness at a sub-folio granularity
->>> (there's no point, we have to write back the entire compressed bock
->>> at once).  We also get a single virtually contiguous block ... if you're
->>> willing to ditch HIGHMEM support.  Or there's a proposal to introduce a
->>> vmap_file() which would give us a virtually contiguous chunk of memory
->>> (and could be trivially turned into a noop for the case of trying to
->>> vmap a single large folio).
->>>
->>>
-> 
-
+> Qu
