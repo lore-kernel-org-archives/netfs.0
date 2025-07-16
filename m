@@ -1,31 +1,31 @@
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DFE923E320;
-	Tue, 15 Jul 2025 23:32:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981AB2E36F4;
+	Wed, 16 Jul 2025 00:28:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752622345; cv=none; b=VdiCi9LsSHdkyDxKKN1XaSdvkYEdsbpGiBaChXPpP2T+g+u7lU5Plb3tnVbyIsdmXU6SN8FwhO2H3iQ6zaNGhR8gNLWOyx9OgFuOsRakpMyRi010R8WvJbNWkmLoSJfOQoouAeEjObyg0Ucqpq8vFC469fLMpZRKAIwYfHK/IUk=
+	t=1752625703; cv=none; b=cH25sMLlzaU1NIh56QOStIIdtPEXQq0gc2HnReLekQldsMODjdhViDa8boPh7PA0bLwTdvZnsoj1ViGEqZtetI9npIlOaufH3zNL1vaMsKLCyzSaLfkexZ6424ZTQKCag8Iuob8vynoyuI0CKwSH3mKjfRM0QxQ42y3+tNiKcaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752622345; c=relaxed/simple;
-	bh=XiWC8Sf5y4F6iv4CG0GS88ZI3bnXxVegBbJcvsyC144=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=El4nT+DvwTaTFW+8Xx0m7zcgOpg576JGrNuq4ku42+1SiOMcqhn5YtXICXtXF4t/ctV/64p7VkfORo5K+VttYOygv3UiUtNEABzsaug/ayuDnu2GpoRDEhgvgSTV/91StCktdnCxcjcP3raPcfOoShd/csRre3PYqLqNXB79ZcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=LqO6mcdL; arc=none smtp.client-ip=115.124.30.112
+	s=arc-20240116; t=1752625703; c=relaxed/simple;
+	bh=9ARb6EXj/Zkf3wG6jmItTKfTpPPPlWBHIVXQb2ehvko=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
+	 In-Reply-To:Content-Type; b=U3KNJRdBXQKF5JT23Y1+BMUfNICIbfROvkZJl56KG7TCqAjJHtx6O4yf47SReqgd3JyqdvOJ9cjAU+SVVj4mWd+4hVgSdr7TjPQy5dIyoFau1R0ObbCE4PMrxnBvyVkXp2lRV35uEwI/TH9wJXfw3OnSWMLyn/iJTJDu5DA1J6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=eQ1kEwpr; arc=none smtp.client-ip=115.124.30.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="LqO6mcdL"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="eQ1kEwpr"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1752622333; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=nUy4PEMS4CazYHiywIu/1adtHnlC3QRDbiuwxgypLnQ=;
-	b=LqO6mcdLu59T8vWZGIkqwOQzO+gXNZzL0H/hSb/Y+N6WZGAiknoj/Zj+bJ0GQ8vu6Tbhbddcw+BFd50ltqq85OaJ5SvSD9hmA/PnhMLjXopCg+jX5NPzNmURhiJ8FFb874pEzhNEXSBH3zCO2ynA0BjKbyp8wlQOFnqASywP7Vc=
-Received: from 30.170.233.0(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0Wj1gQiN_1752622331 cluster:ay36)
+	t=1752625697; h=Message-ID:Date:MIME-Version:Subject:From:To:Content-Type;
+	bh=LbjcxXFKh7BwDlSh88rF8t3KBJnwLKqPh8QSBj+K9Y8=;
+	b=eQ1kEwprrDtrFtG+FqSs3cywjqM3vi6kxQexx9z1ZmJ5IxPhvL99cvRggryWEPrq1H/Xj2fjZkjKNpcVhVIoJr7dG84dvIfzabPQG8gjkLoyPE8cVb3bk2aA05oY9AjhwAk4m8ytNA1cyVCmklJZxGqG/Kdc0TQC6MgkaCYPyV4=
+Received: from 30.170.233.0(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0Wj1msOW_1752625684 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Wed, 16 Jul 2025 07:32:12 +0800
-Message-ID: <e5165052-ead3-47f4-88f6-84eb23dc34df@linux.alibaba.com>
-Date: Wed, 16 Jul 2025 07:32:10 +0800
+          Wed, 16 Jul 2025 08:28:15 +0800
+Message-ID: <b61c4b7f-4bb1-4551-91ba-a0e0ffd19e75@linux.alibaba.com>
+Date: Wed, 16 Jul 2025 08:28:04 +0800
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -34,6 +34,7 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: Compressed files & the page cache
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 To: Matthew Wilcox <willy@infradead.org>, Chris Mason <clm@fb.com>,
  Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
  linux-btrfs@vger.kernel.org, Nicolas Pitre <nico@fluxnic.net>,
@@ -47,77 +48,113 @@ To: Matthew Wilcox <willy@infradead.org>, Chris Mason <clm@fb.com>,
  Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
  ntfs3@lists.linux.dev, Steve French <sfrench@samba.org>,
  linux-cifs@vger.kernel.org, Phillip Lougher <phillip@squashfs.org.uk>,
- Hailong Liu <hailong.liu@oppo.com>, Barry Song <21cnbao@gmail.com>
+ Hailong Liu <hailong.liu@oppo.com>, Barry Song <21cnbao@gmail.com>,
+ Qu Wenruo <quwenruo.btrfs@gmx.com>
 References: <aHa8ylTh0DGEQklt@casper.infradead.org>
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
-In-Reply-To: <aHa8ylTh0DGEQklt@casper.infradead.org>
+ <e5165052-ead3-47f4-88f6-84eb23dc34df@linux.alibaba.com>
+In-Reply-To: <e5165052-ead3-47f4-88f6-84eb23dc34df@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Matthew,
 
-On 2025/7/16 04:40, Matthew Wilcox wrote:
-> I've started looking at how the page cache can help filesystems handle
-> compressed data better.  Feedback would be appreciated!  I'll probably
-> say a few things which are obvious to anyone who knows how compressed
-> files work, but I'm trying to be explicit about my assumptions.
+
+On 2025/7/16 07:32, Gao Xiang wrote:
+> Hi Matthew,
 > 
-> First, I believe that all filesystems work by compressing fixed-size
-> plaintext into variable-sized compressed blocks.  This would be a good
-> point to stop reading and tell me about counterexamples.
-
-At least the typical EROFS compresses variable-sized plaintext (at least
-one block, e.g. 4k, but also 4k+1, 4k+2, ...) into fixed-sized compressed
-blocks for efficient I/Os, which is really useful for small compression
-granularity (e.g. 4KiB, 8KiB) because use cases like Android are usually
-under memory pressure so large compression granularity is almost
-unacceptable in the low memory scenarios, see:
-https://erofs.docs.kernel.org/en/latest/design.html
-
-Currently EROFS works pretty well on these devices and has been
-successfully deployed in billions of real devices.
-
+> On 2025/7/16 04:40, Matthew Wilcox wrote:
+>> I've started looking at how the page cache can help filesystems handle
+>> compressed data better.  Feedback would be appreciated!  I'll probably
+>> say a few things which are obvious to anyone who knows how compressed
+>> files work, but I'm trying to be explicit about my assumptions.
+>>
+>> First, I believe that all filesystems work by compressing fixed-size
+>> plaintext into variable-sized compressed blocks.  This would be a good
+>> point to stop reading and tell me about counterexamples.
 > 
->  From what I've been reading in all your filesystems is that you want to
-> allocate extra pages in the page cache in order to store the excess data
-> retrieved along with the page that you're actually trying to read.  That's
-> because compressing in larger chunks leads to better compression.
+> At least the typical EROFS compresses variable-sized plaintext (at least
+> one block, e.g. 4k, but also 4k+1, 4k+2, ...) into fixed-sized compressed
+> blocks for efficient I/Os, which is really useful for small compression
+> granularity (e.g. 4KiB, 8KiB) because use cases like Android are usually
+> under memory pressure so large compression granularity is almost
+> unacceptable in the low memory scenarios, see:
+> https://erofs.docs.kernel.org/en/latest/design.html
 > 
-> There's some discrepancy between filesystems whether you need scratch
-> space for decompression.  Some filesystems read the compressed data into
-> the pagecache and decompress in-place, while other filesystems read the
-> compressed data into scratch pages and decompress into the page cache.
+> Currently EROFS works pretty well on these devices and has been
+> successfully deployed in billions of real devices.
 > 
-> There also seems to be some discrepancy between filesystems whether the
-> decompression involves vmap() of all the memory allocated or whether the
-> decompression routines can handle doing kmap_local() on individual pages.
+>>
+>>  From what I've been reading in all your filesystems is that you want to
+>> allocate extra pages in the page cache in order to store the excess data
+>> retrieved along with the page that you're actually trying to read.  That's
+>> because compressing in larger chunks leads to better compression.
+>>
+>> There's some discrepancy between filesystems whether you need scratch
+>> space for decompression.  Some filesystems read the compressed data into
+>> the pagecache and decompress in-place, while other filesystems read the
+>> compressed data into scratch pages and decompress into the page cache.
+>>
+>> There also seems to be some discrepancy between filesystems whether the
+>> decompression involves vmap() of all the memory allocated or whether the
+>> decompression routines can handle doing kmap_local() on individual pages.
+>>
+>> So, my proposal is that filesystems tell the page cache that their minimum
+>> folio size is the compression block size.  That seems to be around 64k,
+>> so not an unreasonable minimum allocation size.  That removes all the
+>> extra code in filesystems to allocate extra memory in the page cache.> It means we don't attempt to track dirtiness at a sub-folio granularity
+>> (there's no point, we have to write back the entire compressed bock
+>> at once).  We also get a single virtually contiguous block ... if you're
+>> willing to ditch HIGHMEM support.  Or there's a proposal to introduce a
+>> vmap_file() which would give us a virtually contiguous chunk of memory
+>> (and could be trivially turned into a noop for the case of trying to
+>> vmap a single large folio).
 > 
-> So, my proposal is that filesystems tell the page cache that their minimum
-> folio size is the compression block size.  That seems to be around 64k,
-> so not an unreasonable minimum allocation size.  That removes all the
-> extra code in filesystems to allocate extra memory in the page cache.> It means we don't attempt to track dirtiness at a sub-folio granularity
-> (there's no point, we have to write back the entire compressed bock
-> at once).  We also get a single virtually contiguous block ... if you're
-> willing to ditch HIGHMEM support.  Or there's a proposal to introduce a
-> vmap_file() which would give us a virtually contiguous chunk of memory
-> (and could be trivially turned into a noop for the case of trying to
-> vmap a single large folio).
+> I don't see this will work for EROFS because EROFS always supports
+> variable uncompressed extent lengths and that will break typical
+> EROFS use cases and on-disk formats.
+> 
+> Other thing is that large order folios (physical consecutive) will
+> caused "increase the latency on UX task with filemap_fault()"
+> because of high-order direct reclaims, see:
+> https://android-review.googlesource.com/c/kernel/common/+/3692333
+> so EROFS will not set min-order and always support order-0 folios.
+> 
+> I think EROFS will not use this new approach, vmap() interface is
+> always the case for us.
 
-I don't see this will work for EROFS because EROFS always supports
-variable uncompressed extent lengths and that will break typical
-EROFS use cases and on-disk formats.
+... high-order folios can cause side effects on embedded devices
+like routers and IoT devices, which still have MiBs of memory (and I
+believe this won't change due to their use cases) but they also use
+Linux kernel for quite long time.  In short, I don't think enabling
+large folios for those devices is very useful, let alone limiting
+the minimum folio order for them (It would make the filesystem not
+suitable any more for those users.  At least that is what I never
+want to do).  And I believe this is different from the current LBS
+support to match hardware characteristics or LBS atomic write
+requirement.
 
-Other thing is that large order folios (physical consecutive) will
-caused "increase the latency on UX task with filemap_fault()"
-because of high-order direct reclaims, see:
-https://android-review.googlesource.com/c/kernel/common/+/3692333
-so EROFS will not set min-order and always support order-0 folios.
+BTW, AFAIK, there are also compression optimization tricks related
+to COW (like what Btrfs currently does) or write optimizations,
+which would also break this.
 
-I think EROFS will not use this new approach, vmap() interface is
-always the case for us.
+For example, recompressing an entire compressed extent when a user
+updates just one specific file block (consider random data updates)
+is inefficient. Filesystems may write the block as uncompressed data
+initially (since recompressing the whole extent would be CPU-intensive
+and cause write amplification) and then consider recompressing it
+during background garbage collection or when there are enough blocks
+have been written to justify recompression of the original extent.
+
+The Btrfs COW case was also pointed out by Wenruo in the previous
+thread:
+https://lore.kernel.org/r/62f5f68d-7e3f-9238-5417-c64d8dcf2214@gmx.com
 
 Thanks,
 Gao Xiang
 
+> 
+> Thanks,
+> Gao Xiang
+> 
+>>
 > 
 
