@@ -1,185 +1,193 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5527B19DF62
-	for <netfs@lists.linux.dev>; Mon, 21 Jul 2025 10:25:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C60293B55;
+	Mon, 21 Jul 2025 11:08:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753093559; cv=none; b=TCNMFjnaS8/Wcc498yyzMSHJj7VlObRSRg3VZDA2IXeilihbSS0OB14Qsd5RZkojVda82LrNMEgioIucL5RczIOjOYbECfz1ZzP0xoiU8JWNImybWzZQ5ki4XR1ipbnW53kS845aiOJBCmF4nxM3qGlGRrwaQPADdWyogJxEK+I=
+	t=1753096124; cv=none; b=COIbzbmPg5iOxS+Qh2k4KEs7h0XxCxokbdrrnL0vcR7mKuCuy2GSB4Ek1xxk/wk83rT7u/mk5VymYl+tUa709hBjQYirLTgZqmiAbddMaMbQ+0UpKbsctKF9LAknv4y5jqNBbW1wc3tXpAPK/bi9ourkEblahroOqbBFg3UyIKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753093559; c=relaxed/simple;
-	bh=Z/K6Ye2yVremOud0OLYhMdZovDfpcmMfzOvsRX4VC50=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KqSJ34e2Yjx9jAsf7nCHgo0MLOvb3eDh9DRHS1eSiC+pFkeubCMYhZurbK4+5yGDBFvZBrUR55D6skdxEtSzbVCsZ23mrZyYkCfl+LE2mxvpxUPn+eX9S9X56BWkWgrIkiytRouzvS4hZaalg2wMzwn7mTWbEeVrdOHI5i5u0f0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=GGCpmZZg; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=TiuaNzkK; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=GGCpmZZg; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=TiuaNzkK; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	s=arc-20240116; t=1753096124; c=relaxed/simple;
+	bh=AOTL1Z8mCYXOoQetePWeptu8THkeYccOLDjAQAEQkMs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bt12/16qyy5kGcqBaLt00n5c2S/OhcG9oQu4rL4ZJ0QQGxUQZcXAbOkiewOyVQEHi1yibEOe8YyaNCdHqVd8ZKMSG8IoEH63sNU2zlL6Clyeclb2QT4tRLx064/Z9TT/KcYP2aELYe+LWElWkXoF9UWwposKgV7mp6Kb8U4D5cU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IBz4MSHR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="GGCpmZZg";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="TiuaNzkK";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="GGCpmZZg";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="TiuaNzkK"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 51A1E1F397;
-	Mon, 21 Jul 2025 10:25:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1753093555; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=baH6ow82NzmU1jGwAd7SMMrxH3jdioo5q/Xo9G5hG+4=;
-	b=GGCpmZZgbAB5XlOhPaT/l0zeSwhiqSn6JbNbcSAdSIrsIWr7T0Mc7Nurq9TLL5MlDIKSzb
-	G3mxxnF5X/WFL2F9PDn8NfEprPokB+uugrjkHFG+jVRlyIUBsFn+89vrEh51dQKAspuIIa
-	bOQxVSvP+dassyYss7hQFywZfgAWP9Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1753093555;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=baH6ow82NzmU1jGwAd7SMMrxH3jdioo5q/Xo9G5hG+4=;
-	b=TiuaNzkKooiGvnBZgx/DGGdlv5vk/tkXPxkZgwh1y7czyZp1RZa8jl8Z3vpXSlkZ0+KbS8
-	LZDo/WglGtJ31cBg==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=GGCpmZZg;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=TiuaNzkK
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1753093555; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=baH6ow82NzmU1jGwAd7SMMrxH3jdioo5q/Xo9G5hG+4=;
-	b=GGCpmZZgbAB5XlOhPaT/l0zeSwhiqSn6JbNbcSAdSIrsIWr7T0Mc7Nurq9TLL5MlDIKSzb
-	G3mxxnF5X/WFL2F9PDn8NfEprPokB+uugrjkHFG+jVRlyIUBsFn+89vrEh51dQKAspuIIa
-	bOQxVSvP+dassyYss7hQFywZfgAWP9Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1753093555;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=baH6ow82NzmU1jGwAd7SMMrxH3jdioo5q/Xo9G5hG+4=;
-	b=TiuaNzkKooiGvnBZgx/DGGdlv5vk/tkXPxkZgwh1y7czyZp1RZa8jl8Z3vpXSlkZ0+KbS8
-	LZDo/WglGtJ31cBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3453C13A88;
-	Mon, 21 Jul 2025 10:25:55 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Lyt7DLMVfmi/GgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 21 Jul 2025 10:25:55 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 5D047A0884; Mon, 21 Jul 2025 12:25:54 +0200 (CEST)
-Date: Mon, 21 Jul 2025 12:25:54 +0200
-From: Jan Kara <jack@suse.cz>
-To: Gao Xiang <hsiangkao@linux.alibaba.com>
-Cc: Barry Song <21cnbao@gmail.com>, Matthew Wilcox <willy@infradead.org>, 
-	Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>, 
-	David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org, Nicolas Pitre <nico@fluxnic.net>, 
-	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, linux-erofs@lists.ozlabs.org, 
-	Jaegeuk Kim <jaegeuk@kernel.org>, linux-f2fs-devel@lists.sourceforge.net, Jan Kara <jack@suse.cz>, 
-	linux-fsdevel@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>, 
-	Richard Weinberger <richard@nod.at>, linux-mtd@lists.infradead.org, 
-	David Howells <dhowells@redhat.com>, netfs@lists.linux.dev, Paulo Alcantara <pc@manguebit.org>, 
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, ntfs3@lists.linux.dev, Steve French <sfrench@samba.org>, 
-	linux-cifs@vger.kernel.org, Phillip Lougher <phillip@squashfs.org.uk>, 
-	Hailong Liu <hailong.liu@oppo.com>, Qu Wenruo <quwenruo.btrfs@gmx.com>
-Subject: Re: Compressed files & the page cache
-Message-ID: <z2ule3ilnnpoevo5mvt3intvjtuyud7vg3pbfauon47fhr4owa@giaehpbie4a5>
-References: <aHa8ylTh0DGEQklt@casper.infradead.org>
- <e5165052-ead3-47f4-88f6-84eb23dc34df@linux.alibaba.com>
- <b61c4b7f-4bb1-4551-91ba-a0e0ffd19e75@linux.alibaba.com>
- <CAGsJ_4xJjwsvMpeBV-QZFoSznqhiNSFtJu9k6da_T-T-a6VwNw@mail.gmail.com>
- <7ea73f49-df4b-4f88-8b23-c917b4a9bd8a@linux.alibaba.com>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IBz4MSHR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98CFEC4CEF1;
+	Mon, 21 Jul 2025 11:08:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1753096124;
+	bh=AOTL1Z8mCYXOoQetePWeptu8THkeYccOLDjAQAEQkMs=;
+	h=Subject:To:Cc:From:Date:From;
+	b=IBz4MSHRsSDjp3zu7zPq9JjjBmj1MBXWzMzuqfNDNP/PjOM9WzjDyYCu+Ve78K4cU
+	 nw0IBentn4pWdrLmB78Dg3BIH8Bns0HMChoJ9k8tuk1iF7Yxo+9PAsEjuP7nV1dgdC
+	 Fff+noaz00tCmFJL0fUbRAAKzNhbkNmQ+jHyolLo=
+Subject: Patch "netfs: Fix race between cache write completion and ALL_QUEUED being set" has been added to the 6.15-stable tree
+To: amarkuze@redhat.com,brauner@kernel.org,dhowells@redhat.com,gregkh@linuxfoundation.org,idryomov@gmail.com,max.kellermann@ionos.com,netfs@lists.linux.dev,pc@manguebit.org,slava@dubeyko.com
+Cc: <stable-commits@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 21 Jul 2025 13:06:46 +0200
+Message-ID: <2025072146-outspoken-delicacy-3eed@gregkh>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <7ea73f49-df4b-4f88-8b23-c917b4a9bd8a@linux.alibaba.com>
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Rspamd-Queue-Id: 51A1E1F397
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[28];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.com];
-	TO_DN_SOME(0.00)[];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RL76kpr34nasjgd69zbi7paxtw)];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,infradead.org,fb.com,toxicpanda.com,suse.com,vger.kernel.org,fluxnic.net,kernel.org,lists.ozlabs.org,lists.sourceforge.net,suse.cz,nod.at,lists.infradead.org,redhat.com,lists.linux.dev,manguebit.org,paragon-software.com,samba.org,squashfs.org.uk,oppo.com,gmx.com];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.com:email]
-X-Spam-Score: -4.01
+X-stable: commit
+X-Patchwork-Hint: ignore 
 
-On Mon 21-07-25 11:14:02, Gao Xiang wrote:
-> Hi Barry,
-> 
-> On 2025/7/21 09:02, Barry Song wrote:
-> > On Wed, Jul 16, 2025 at 8:28 AM Gao Xiang <hsiangkao@linux.alibaba.com> wrote:
-> > > 
-> 
-> ...
-> 
-> > > 
-> > > ... high-order folios can cause side effects on embedded devices
-> > > like routers and IoT devices, which still have MiBs of memory (and I
-> > > believe this won't change due to their use cases) but they also use
-> > > Linux kernel for quite long time.  In short, I don't think enabling
-> > > large folios for those devices is very useful, let alone limiting
-> > > the minimum folio order for them (It would make the filesystem not
-> > > suitable any more for those users.  At least that is what I never
-> > > want to do).  And I believe this is different from the current LBS
-> > > support to match hardware characteristics or LBS atomic write
-> > > requirement.
-> > 
-> > Given the difficulty of allocating large folios, it's always a good
-> > idea to have order-0 as a fallback. While I agree with your point,
-> > I have a slightly different perspective — enabling large folios for
-> > those devices might be beneficial, but the maximum order should
-> > remain small. I'm referring to "small" large folios.
-> 
-> Yeah, agreed. Having a way to limit the maximum order for those small
-> devices (rather than disabling it completely) would be helpful.  At
-> least "small" large folios could still provide benefits when memory
-> pressure is light.
 
-Well, in the page cache you can tune not only the minimum but also the
-maximum order of a folio being allocated for each inode. Btrfs and ext4
-already use this functionality. So in principle the functionality is there,
-it is "just" a question of proper user interfaces or automatic logic to
-tune this limit.
+This is a note to let you know that I've just added the patch titled
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+    netfs: Fix race between cache write completion and ALL_QUEUED being set
+
+to the 6.15-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+
+The filename of the patch is:
+     netfs-fix-race-between-cache-write-completion-and-all_queued-being-set.patch
+and it can be found in the queue-6.15 subdirectory.
+
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.
+
+
+From 89635eae076cd8eaa5cb752f66538c9dc6c9fdc3 Mon Sep 17 00:00:00 2001
+From: David Howells <dhowells@redhat.com>
+Date: Fri, 11 Jul 2025 16:10:01 +0100
+Subject: netfs: Fix race between cache write completion and ALL_QUEUED being set
+
+From: David Howells <dhowells@redhat.com>
+
+commit 89635eae076cd8eaa5cb752f66538c9dc6c9fdc3 upstream.
+
+When netfslib is issuing subrequests, the subrequests start processing
+immediately and may complete before we reach the end of the issuing
+function.  At the end of the issuing function we set NETFS_RREQ_ALL_QUEUED
+to indicate to the collector that we aren't going to issue any more subreqs
+and that it can do the final notifications and cleanup.
+
+Now, this isn't a problem if the request is synchronous
+(NETFS_RREQ_OFFLOAD_COLLECTION is unset) as the result collection will be
+done in-thread and we're guaranteed an opportunity to run the collector.
+
+However, if the request is asynchronous, collection is primarily triggered
+by the termination of subrequests queuing it on a workqueue.  Now, a race
+can occur here if the app thread sets ALL_QUEUED after the last subrequest
+terminates.
+
+This can happen most easily with the copy2cache code (as used by Ceph)
+where, in the collection routine of a read request, an asynchronous write
+request is spawned to copy data to the cache.  Folios are added to the
+write request as they're unlocked, but there may be a delay before
+ALL_QUEUED is set as the write subrequests may complete before we get
+there.
+
+If all the write subreqs have finished by the ALL_QUEUED point, no further
+events happen and the collection never happens, leaving the request
+hanging.
+
+Fix this by queuing the collector after setting ALL_QUEUED.  This is a bit
+heavy-handed and it may be sufficient to do it only if there are no extant
+subreqs.
+
+Also add a tracepoint to cross-reference both requests in a copy-to-request
+operation and add a trace to the netfs_rreq tracepoint to indicate the
+setting of ALL_QUEUED.
+
+Fixes: e2d46f2ec332 ("netfs: Change the read result collector to only use one work item")
+Reported-by: Max Kellermann <max.kellermann@ionos.com>
+Link: https://lore.kernel.org/r/CAKPOu+8z_ijTLHdiCYGU_Uk7yYD=shxyGLwfe-L7AV3DhebS3w@mail.gmail.com/
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/20250711151005.2956810-3-dhowells@redhat.com
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: Viacheslav Dubeyko <slava@dubeyko.com>
+cc: Alex Markuze <amarkuze@redhat.com>
+cc: Ilya Dryomov <idryomov@gmail.com>
+cc: netfs@lists.linux.dev
+cc: ceph-devel@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
+cc: stable@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ fs/netfs/read_pgpriv2.c      |    4 ++++
+ include/trace/events/netfs.h |   30 ++++++++++++++++++++++++++++++
+ 2 files changed, 34 insertions(+)
+
+--- a/fs/netfs/read_pgpriv2.c
++++ b/fs/netfs/read_pgpriv2.c
+@@ -111,6 +111,7 @@ static struct netfs_io_request *netfs_pg
+ 		goto cancel_put;
+ 
+ 	__set_bit(NETFS_RREQ_OFFLOAD_COLLECTION, &creq->flags);
++	trace_netfs_copy2cache(rreq, creq);
+ 	trace_netfs_write(creq, netfs_write_trace_copy_to_cache);
+ 	netfs_stat(&netfs_n_wh_copy_to_cache);
+ 	rreq->copy_to_cache = creq;
+@@ -155,6 +156,9 @@ void netfs_pgpriv2_end_copy_to_cache(str
+ 	netfs_issue_write(creq, &creq->io_streams[1]);
+ 	smp_wmb(); /* Write lists before ALL_QUEUED. */
+ 	set_bit(NETFS_RREQ_ALL_QUEUED, &creq->flags);
++	trace_netfs_rreq(rreq, netfs_rreq_trace_end_copy_to_cache);
++	if (list_empty_careful(&creq->io_streams[1].subrequests))
++		netfs_wake_collector(creq);
+ 
+ 	netfs_put_request(creq, netfs_rreq_trace_put_return);
+ 	creq->copy_to_cache = NULL;
+--- a/include/trace/events/netfs.h
++++ b/include/trace/events/netfs.h
+@@ -55,6 +55,7 @@
+ 	EM(netfs_rreq_trace_complete,		"COMPLET")	\
+ 	EM(netfs_rreq_trace_dirty,		"DIRTY  ")	\
+ 	EM(netfs_rreq_trace_done,		"DONE   ")	\
++	EM(netfs_rreq_trace_end_copy_to_cache,	"END-C2C")	\
+ 	EM(netfs_rreq_trace_free,		"FREE   ")	\
+ 	EM(netfs_rreq_trace_recollect,		"RECLLCT")	\
+ 	EM(netfs_rreq_trace_redirty,		"REDIRTY")	\
+@@ -550,6 +551,35 @@ TRACE_EVENT(netfs_write,
+ 		      __entry->start, __entry->start + __entry->len - 1)
+ 	    );
+ 
++TRACE_EVENT(netfs_copy2cache,
++	    TP_PROTO(const struct netfs_io_request *rreq,
++		     const struct netfs_io_request *creq),
++
++	    TP_ARGS(rreq, creq),
++
++	    TP_STRUCT__entry(
++		    __field(unsigned int,		rreq)
++		    __field(unsigned int,		creq)
++		    __field(unsigned int,		cookie)
++		    __field(unsigned int,		ino)
++			     ),
++
++	    TP_fast_assign(
++		    struct netfs_inode *__ctx = netfs_inode(rreq->inode);
++		    struct fscache_cookie *__cookie = netfs_i_cookie(__ctx);
++		    __entry->rreq	= rreq->debug_id;
++		    __entry->creq	= creq->debug_id;
++		    __entry->cookie	= __cookie ? __cookie->debug_id : 0;
++		    __entry->ino	= rreq->inode->i_ino;
++			   ),
++
++	    TP_printk("R=%08x CR=%08x c=%08x i=%x ",
++		      __entry->rreq,
++		      __entry->creq,
++		      __entry->cookie,
++		      __entry->ino)
++	    );
++
+ TRACE_EVENT(netfs_collect,
+ 	    TP_PROTO(const struct netfs_io_request *wreq),
+ 
+
+
+Patches currently in stable-queue which might be from dhowells@redhat.com are
+
+queue-6.15/netfs-fix-copy-to-cache-so-that-it-performs-collection-with-ceph-fscache.patch
+queue-6.15/netfs-fix-race-between-cache-write-completion-and-all_queued-being-set.patch
