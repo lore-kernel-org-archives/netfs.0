@@ -1,31 +1,31 @@
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DADE2BE63E;
-	Mon, 21 Jul 2025 11:40:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C576AA7;
+	Mon, 21 Jul 2025 11:52:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753098028; cv=none; b=IK0BCEn7hM2WeZmutCuMGVviOK+lrpEdKHA6ZqJbikztLLR4jLRzr84fKMy5HCSxdTBKJE6smanr7qAtHDy3TPZC1u/mpm0gu39cWE7m4ZB3zx6AGIsvjwWXqpR5ql2p9wOVZEPnOCGFqDTcpTOOZVw7BJri49bAVrcrcQOfQAg=
+	t=1753098771; cv=none; b=EtYLjlBf0U9iKAbwkGYfEJwyPmZaQjvq28Fb3NrNa4btJs1Xa5rFlMmBl99ifU+HeMpP4p4w2zSlOXgnNyz1PBtv/83xgO1XUggIIu3MBCPFnJJxKy7dT76RUVVBzG6p9TD/YmJOc/kGToSxN0u51fIHsqRMXEmtid+ThjuK+f4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753098028; c=relaxed/simple;
-	bh=P27JgD4W7aeNDmUhVxQx19p6ani2xRr7SVoxgJhV6vY=;
+	s=arc-20240116; t=1753098771; c=relaxed/simple;
+	bh=ZeBBuHgBp4hEsDwcktk9JG73t4T3D8iVzH6QmW+hg+Q=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R/LXgAGYjp78WN5r7D/4b7b0KYdVner3lJhnEvWHFokw701gFaRKZGphWdFmzKnjzEfAXz2z4gkC60lGmdOQ6JclLl9Z4KZd5ZbEOpR8udPYA/gE0mMKtClFg6hRkSv8fWGdSOqTW+wrTp2nxGNOgPUa+F7h1Vg8SSJTYgKfRD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=UW6nLlqV; arc=none smtp.client-ip=115.124.30.98
+	 In-Reply-To:Content-Type; b=Qx7l/CCtcNmUs7+KSrmfuRJ3XPsBsld3qNRlDH321k8FbhqYrIHdAXMv77I9aRZhwT2zYgVhB9RK23cpRfjvaEeNGtksXus4/0v5A64EFoWP16yGJYrxP+or2ZJpc0neCUe2aLgQ0MX8DkdkVSHqQGxI4/L95hNKjDS+zkTUmvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=WMGVyk/x; arc=none smtp.client-ip=115.124.30.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="UW6nLlqV"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="WMGVyk/x"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1753098016; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=8/0MxmZXQFEgx1v9g0Zx0cK6D0Dzk/CVwttHZ2ijYQw=;
-	b=UW6nLlqVHa8LDN2+8eLCUe+hBKGpMvUdeoPMG6KcLGsokvP0xmZh4ZbBNeJqgVPAxLJveu4QWBiQpkaECeRiJNvfR/3rlNgYzjyTply+2XYUee92l1s3/eai1NsdqkOOcDybkDWydoxE8yAoZ65Yj2SJXo9M+si+4LNTW9Fd6dg=
-Received: from 30.170.233.0(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0WjOEKZd_1753098012 cluster:ay36)
+	t=1753098760; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=xn+hlC0ADjp0KbawmAyVX05nJJetj+qoWgSmW+bOOXA=;
+	b=WMGVyk/xcCcg6Ec3F9+oQwGpc9wOd0nRWGaZiX5z8g1kBNdIkZ40FQ9aitUDLj+f/8vz9+Zl4xNtk1XV5adZ6fsyOM+osAJC4r0C9hNDn29RQ9/EmwbdaKNLznuf2iYsR7TCUlHx+ZXmAC1O5z10Mifbvrcp8GMMcz63EzX3xko=
+Received: from 30.170.233.0(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0WjOEOJD_1753098756 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Mon, 21 Jul 2025 19:40:15 +0800
-Message-ID: <de793a0d-b65e-4b36-ad7f-3202515ba9c9@linux.alibaba.com>
-Date: Mon, 21 Jul 2025 19:40:11 +0800
+          Mon, 21 Jul 2025 19:52:39 +0800
+Message-ID: <5b01d35c-b73b-4c04-906d-6abc0c9e37ce@linux.alibaba.com>
+Date: Mon, 21 Jul 2025 19:52:35 +0800
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -34,7 +34,7 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: Compressed files & the page cache
-To: Jan Kara <jack@suse.cz>
+To: Qu Wenruo <quwenruo.btrfs@gmx.com>, Jan Kara <jack@suse.cz>
 Cc: Barry Song <21cnbao@gmail.com>, Matthew Wilcox <willy@infradead.org>,
  Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
  David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org,
@@ -48,72 +48,72 @@ Cc: Barry Song <21cnbao@gmail.com>, Matthew Wilcox <willy@infradead.org>,
  Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
  ntfs3@lists.linux.dev, Steve French <sfrench@samba.org>,
  linux-cifs@vger.kernel.org, Phillip Lougher <phillip@squashfs.org.uk>,
- Hailong Liu <hailong.liu@oppo.com>, Qu Wenruo <quwenruo.btrfs@gmx.com>
+ Hailong Liu <hailong.liu@oppo.com>
 References: <aHa8ylTh0DGEQklt@casper.infradead.org>
  <e5165052-ead3-47f4-88f6-84eb23dc34df@linux.alibaba.com>
  <b61c4b7f-4bb1-4551-91ba-a0e0ffd19e75@linux.alibaba.com>
  <CAGsJ_4xJjwsvMpeBV-QZFoSznqhiNSFtJu9k6da_T-T-a6VwNw@mail.gmail.com>
  <7ea73f49-df4b-4f88-8b23-c917b4a9bd8a@linux.alibaba.com>
  <z2ule3ilnnpoevo5mvt3intvjtuyud7vg3pbfauon47fhr4owa@giaehpbie4a5>
+ <85946346-8bfd-4164-a49d-594b4a158588@gmx.com>
 From: Gao Xiang <hsiangkao@linux.alibaba.com>
-In-Reply-To: <z2ule3ilnnpoevo5mvt3intvjtuyud7vg3pbfauon47fhr4owa@giaehpbie4a5>
+In-Reply-To: <85946346-8bfd-4164-a49d-594b4a158588@gmx.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Hi Jan,
 
-On 2025/7/21 18:25, Jan Kara wrote:
-> On Mon 21-07-25 11:14:02, Gao Xiang wrote:
->> Hi Barry,
->>
->> On 2025/7/21 09:02, Barry Song wrote:
->>> On Wed, Jul 16, 2025 at 8:28 AM Gao Xiang <hsiangkao@linux.alibaba.com> wrote:
->>>>
->>
->> ...
->>
->>>>
->>>> ... high-order folios can cause side effects on embedded devices
->>>> like routers and IoT devices, which still have MiBs of memory (and I
->>>> believe this won't change due to their use cases) but they also use
->>>> Linux kernel for quite long time.  In short, I don't think enabling
->>>> large folios for those devices is very useful, let alone limiting
->>>> the minimum folio order for them (It would make the filesystem not
->>>> suitable any more for those users.  At least that is what I never
->>>> want to do).  And I believe this is different from the current LBS
->>>> support to match hardware characteristics or LBS atomic write
->>>> requirement.
->>>
->>> Given the difficulty of allocating large folios, it's always a good
->>> idea to have order-0 as a fallback. While I agree with your point,
->>> I have a slightly different perspective — enabling large folios for
->>> those devices might be beneficial, but the maximum order should
->>> remain small. I'm referring to "small" large folios.
->>
->> Yeah, agreed. Having a way to limit the maximum order for those small
->> devices (rather than disabling it completely) would be helpful.  At
->> least "small" large folios could still provide benefits when memory
->> pressure is light.
+
+On 2025/7/21 19:36, Qu Wenruo wrote:
 > 
-> Well, in the page cache you can tune not only the minimum but also the
-> maximum order of a folio being allocated for each inode. Btrfs and ext4
-> already use this functionality. So in principle the functionality is there,
-> it is "just" a question of proper user interfaces or automatic logic to
-> tune this limit.
+> 
+> 在 2025/7/21 19:55, Jan Kara 写道:
+>> On Mon 21-07-25 11:14:02, Gao Xiang wrote:
+>>> Hi Barry,
+>>>
+>>> On 2025/7/21 09:02, Barry Song wrote:
+>>>> On Wed, Jul 16, 2025 at 8:28 AM Gao Xiang <hsiangkao@linux.alibaba.com> wrote:
+> [...]
+>>>> Given the difficulty of allocating large folios, it's always a good
+>>>> idea to have order-0 as a fallback. While I agree with your point,
+>>>> I have a slightly different perspective — enabling large folios for
+>>>> those devices might be beneficial, but the maximum order should
+>>>> remain small. I'm referring to "small" large folios.
+>>>
+>>> Yeah, agreed. Having a way to limit the maximum order for those small
+>>> devices (rather than disabling it completely) would be helpful.  At
+>>> least "small" large folios could still provide benefits when memory
+>>> pressure is light.
+>>
+>> Well, in the page cache you can tune not only the minimum but also the
+>> maximum order of a folio being allocated for each inode. Btrfs and ext4
+>> already use this functionality. So in principle the functionality is there,
+>> it is "just" a question of proper user interfaces or automatic logic to
+>> tune this limit.
+>>
+>>                                 Honza
+> 
+> And enabling large folios doesn't mean all fs operations will grab an unnecessarily large folio.
+> 
+> For buffered write, all those filesystem will only try to get folios as large as necessary, not overly large.
+> 
+> This means if the user space program is always doing buffered IO in a power-of-two unit (and aligned offset of course), the folio size will match the buffer size perfectly (if we have enough memory).
+> 
+> So for properly aligned buffered writes, large folios won't really cause  unnecessarily large folios, meanwhile brings all the benefits.
 
-Yes, I took a quick glance of the current ext4 and btrfs cases
-weeks ago which use this to fulfill the journal reservation
-for example.
+That really depends on the user behavior & I/O pattern and
+could cause unexpected spike.
 
-but considering that specific memory overhead use cases (to
-limit maximum large folio order for small devices), it sounds
-more like a generic page cache user interface for all
-filesystems instead, and in the effective maximum order should
-combine these two maximum numbers.
+Anyway, IMHO, how to limit the maximum order may be useful
+for small devices if large folios is enabled.  When direct
+reclaim is the common case, it might be too late.
 
 Thanks,
 Gao Xiang
 
 > 
-> 								Honza
+> 
+> Although I'm not familiar enough with filemap to comment on folio read and readahead...
+> 
+> Thanks,
+> Qu
 
