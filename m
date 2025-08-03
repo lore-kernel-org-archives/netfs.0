@@ -1,67 +1,80 @@
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D12527EFFA
-	for <netfs@lists.linux.dev>; Wed, 23 Jul 2025 12:01:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104DB1DE3C8
+	for <netfs@lists.linux.dev>; Sun,  3 Aug 2025 12:09:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753272122; cv=none; b=ceQ/nILHfJQBtWi9TGWU1ZqTuJzywwfESPPG3ZmWw7STwsn+NjqpBKcWsuznmK+CGcd+Rw/eNmHo4CGjSV2diNunIOMZwVD3vxtjjBmOFTR+6ve+cubqS8ZSIiTuYTMq9wQYd3Y8yzRtpK9+RF7HUx8+ptBP8/Kuv26BVh5tyVo=
+	t=1754222944; cv=none; b=LoAZFBcFBkUgqGMb9+tZT1ZxMdqcz57ugrMjPuHOHlROCojv9sXUFNetWQzRR2Kggon7hpJhKSmS4s4wOvR4py0rz/2hosGj5Bt1aR0+HgKidu7g1ysQb+N4A7j9ZAa3WrI4dmlWQO/SU+Au1Sak/UATsLRIdErco/iSvRVK1Us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753272122; c=relaxed/simple;
-	bh=PjryDDK5qPTp8dCMfOz6hzHAQURUAXKfBOOjhQl8K+Q=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PEq/GU14ftpEri1zw4r9/1JE184ejOByJD9/Cwzp72Y41QBwt4N40hIRLdzVrHUogVz4DkmPy9C2CiGXcNpHjuj/ReUWH+d9xbnRMxGce6eT1pv+3FADUVjcJYHK7LZ6/bNuCPEKkWAtYvV3r20KSlp2BTD7wH0tAGEmeUdNj5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4bnCQF4vJHztScj;
-	Wed, 23 Jul 2025 20:00:53 +0800 (CST)
-Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id AA1DD1401F3;
-	Wed, 23 Jul 2025 20:01:57 +0800 (CST)
-Received: from huawei.com (10.175.124.27) by dggpemf500002.china.huawei.com
- (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 23 Jul
- 2025 20:01:56 +0800
-From: Yue Haibing <yuehaibing@huawei.com>
-To: <dhowells@redhat.com>, <pc@manguebit.org>, <brauner@kernel.org>
-CC: <netfs@lists.linux.dev>, <linux-fsdevel@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <yuehaibing@huawei.com>
-Subject: [PATCH -next] netfs: Remove unused declaration netfs_queue_write_request()
-Date: Wed, 23 Jul 2025 20:23:29 +0800
-Message-ID: <20250723122329.923223-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1754222944; c=relaxed/simple;
+	bh=+BxCQVXtTe+xoz4eJ9sHAveL3+qt5++cybtEn1AaG/w=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=l0UJweqXPXCuFM/k4G2gkuyOWVXchBElNuGT5JCm4FjiiQAmBoWa+08sRv3X8OB1aMMtUn2/NyWFkaF92Yy7PW/NzSSkN5j+L9SGGD7MvAiP8Bm6tugsZO7bLj+Lic0wFwvsBc058g1MxzqcTv02pNTrwy0pCuGkp8M/RgtmBuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-3e3fcdbeb23so70022805ab.3
+        for <netfs@lists.linux.dev>; Sun, 03 Aug 2025 05:09:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754222942; x=1754827742;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=v5+xCIY68eQod8HShjZie1OqXUWvIMyxZ5G/valhey4=;
+        b=NVgl79LVYqo84t8COzYFtLVrynEV2CwqGn7VsmcoCxOEGV6MVCzzpiHmTo3uHjAOmR
+         qCsYi8KUMWe88Jiu2eZ8W+aUeKAlrt/0kZTUA6n82IRwlpzb9BQb3U1X5m74GojXUcP/
+         GQOi48H5ro7hMKXubVQbdIGmU2jgT458t41D2nkoBGCeXvxa1pKOeIfIrTb0VWNQZw+M
+         iXfl191VLBW8n3EnBOSywZ/9yhks0yCMyRk5RLF2FUeE8PUVgbzC3mZksKUgoATzSQOf
+         GBt6triHJ7w9OFIyTXev+D5bLXHdE+LcYGUlNU1ESsSUjrL1U49ZfdOiL57ftIrlLiHF
+         DZVA==
+X-Forwarded-Encrypted: i=1; AJvYcCVOUIuv32zAnFaQQCLoVpTc+rtLnmVz4DpUstWTWa3VsOPyvFuAEFnkcQpx6wCX7CCzPNMU6w==@lists.linux.dev
+X-Gm-Message-State: AOJu0YztsdP4JW8eHMEoickEjTdgAaGx9mq7XZDFKK6+BK5Izvz7AT31
+	GaxnyNCTgAoO193sKLA7N7pfP/nZVvmuP94M/L3MDBjb+3qaAw7/QMmLfXCiZRYFEw/mruPX+xw
+	KqgAcpjbYfceX36YJdLjO5C12Eaaqv0umqFdBP3+YSzhD5+9+RWDMRDyZGfk=
+X-Google-Smtp-Source: AGHT+IEI73yOX7LuYSonRTZStd7VDhDxkqzJkzexmNHlJCJ1YhLhqOvcqAg6Qh64hhfeEztD7/M6cYE5zqbG4QmcfI8nTwAfsPR1
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- dggpemf500002.china.huawei.com (7.185.36.57)
+X-Received: by 2002:a05:6e02:3303:b0:3e2:81d9:cbbc with SMTP id
+ e9e14a558f8ab-3e41611a082mr111370915ab.2.1754222942254; Sun, 03 Aug 2025
+ 05:09:02 -0700 (PDT)
+Date: Sun, 03 Aug 2025 05:09:02 -0700
+In-Reply-To: <67dedd2f.050a0220.31a16b.003f.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <688f515e.050a0220.13f73d.0000.GAE@google.com>
+Subject: Re: [syzbot] [netfs?] INFO: task hung in netfs_unbuffered_write_iter
+From: syzbot <syzbot+62262fdc0e01d99573fc@syzkaller.appspotmail.com>
+To: asmadeus@codewreck.org, brauner@kernel.org, dhowells@redhat.com, 
+	eadavis@qq.com, ericvh@kernel.org, hdanton@sina.com, jack@suse.cz, 
+	jlayton@kernel.org, kprateek.nayak@amd.com, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux_oss@crudebyte.com, lucho@ionkov.net, 
+	mjguzik@gmail.com, netfs@lists.linux.dev, oleg@redhat.com, pc@manguebit.org, 
+	sfrench@samba.org, swapnil.sapkal@amd.com, syzkaller-bugs@googlegroups.com, 
+	v9fs@lists.linux.dev, viro@zeniv.linux.org.uk
+Content-Type: text/plain; charset="UTF-8"
 
-Commit c245868524cc ("netfs: Remove the old writeback code") removed
-the implementation but leave declaration.
+syzbot suspects this issue was fixed by commit:
 
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
----
- include/linux/netfs.h | 1 -
- 1 file changed, 1 deletion(-)
+commit da8cf4bd458722d090a788c6e581eeb72695c62f
+Author: David Howells <dhowells@redhat.com>
+Date:   Tue Jul 1 16:38:36 2025 +0000
 
-diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-index f43f075852c0..185bd8196503 100644
---- a/include/linux/netfs.h
-+++ b/include/linux/netfs.h
-@@ -442,7 +442,6 @@ size_t netfs_limit_iter(const struct iov_iter *iter, size_t start_offset,
- 			size_t max_size, size_t max_segs);
- void netfs_prepare_write_failed(struct netfs_io_subrequest *subreq);
- void netfs_write_subrequest_terminated(void *_op, ssize_t transferred_or_error);
--void netfs_queue_write_request(struct netfs_io_subrequest *subreq);
- 
- int netfs_start_io_read(struct inode *inode);
- void netfs_end_io_read(struct inode *inode);
--- 
-2.34.1
+    netfs: Fix hang due to missing case in final DIO read result collection
 
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=14cfbcf0580000
+start commit:   66701750d556 Merge tag 'io_uring-6.16-20250630' of git://g..
+git tree:       upstream
+kernel config:  https://syzkaller.appspot.com/x/.config?x=e29b8115bf337f53
+dashboard link: https://syzkaller.appspot.com/bug?extid=62262fdc0e01d99573fc
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1400348c580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17b2048c580000
+
+If the result looks correct, please mark the issue as fixed by replying with:
+
+#syz fix: netfs: Fix hang due to missing case in final DIO read result collection
+
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
