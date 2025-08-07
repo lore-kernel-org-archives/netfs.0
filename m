@@ -1,46 +1,46 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6771230BF6
-	for <netfs@lists.linux.dev>; Thu,  7 Aug 2025 10:13:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E8A1B3937
+	for <netfs@lists.linux.dev>; Thu,  7 Aug 2025 10:14:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754561590; cv=none; b=d6EO81kpxd7Y9cQL/gSc2fOE061SvhtBPuNCRxZ7h6CaYRFMvXaREySSMk2yk3JzNY2gWoQ3DSoppeORrJskF7g/bMN+LadT5GRrkUNYg8YIyxtfLDeOjbB6If0HMKe8hL4AoJKsiUeYeCgIeYfHhYEyGI5SAJqtvamrz2zQOUI=
+	t=1754561669; cv=none; b=YHamPsL1Kz5aTZjv1k0puMOHW/eSb7C2qBj00m3KVaG86n8qj4ZdTh3NdgBEwfShWwgCi/ZJ4CyUAIGR92pNhtgoF/aPn59jkBh0uiEko4SAXIoi1PzHVtuDGpXQL3ugC+AGJdy+QdVGY/OH8JY9TfENZGUPw3sOrpZCvDpvlEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754561590; c=relaxed/simple;
-	bh=CPopPMj8LioWRHIyzGaFGr8Mw1L+UeJSVDEyIKNC7HI=;
+	s=arc-20240116; t=1754561669; c=relaxed/simple;
+	bh=qqgetxXoB79LbqPMFDraeWtm6ShkuPtCd6FJzkqn344=;
 	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=LkNPPE0zIoxFj9cDRoPtZGHQ2Cyl0Kg+/lEjqOKHaFyaSrBWeXvHzeeVUxllQBmIwn6Ws6idhmmZf2yw9j9505ND7sGvQJz2YuO6etGFzbCuOTTITjO/0uYH+RSFHxQLHpCAW29VNHXfOufRy60v+AYFvXK3FVMlgq6IWLHA6TI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SmtBxUV7; arc=none smtp.client-ip=170.10.129.124
+	 Content-Type:Date:Message-ID; b=fMFQeRT7+w7ad6pOLJktidn2BjwQzbdkjYfpjmSTkgKCJr65TgQfEHWeo6P4ZSd3DJgTuvz9DveXSQjUQWzGFOr2KMan1BwgY2nSlfL6njQqA7cY9QnZq3w3lSbY1HeZthtNfFwphUkqs+C0pvZXQl4HGxHZRA2AX7nYbvvkT5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AGlN3aiS; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SmtBxUV7"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AGlN3aiS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754561587;
+	s=mimecast20190719; t=1754561667;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6s2qakK1H83v7JhO0KIXmutVDDo4HtQJtj7wpDCCMpc=;
-	b=SmtBxUV7yePzCqEDq8yYgcfvBFoN7eXyy75iRqWUGQAVh8yliQTFGjWJqw48Xq7Z81bp1F
-	aeOfRius3ixYnuJehPLyC5Lreaf8p4AVNTzX15+duEiJDGe1rkYZSjU6NCinZTAdQbJQJO
-	+d8jD1XfyzUONZ0AvMbv9FM7BpmeRRY=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+	bh=qqgetxXoB79LbqPMFDraeWtm6ShkuPtCd6FJzkqn344=;
+	b=AGlN3aiSscOoMq0oYfNnWvXo6Th1Vmw0z5OTiSaOiD1G5SFfGeNymXi4TwGdKoZj74zzfw
+	UKUwXCETAGIOXhOtg7kGf8G1tdU6xurJJLHBMLrmvfNUb9mUYABCWXnSGimDKiyaWl/oK0
+	plyX9Ysl4QK8c7lpm61HWz7whIDOQ9M=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-1-zWALXjYdMTmhEIpmzFinXw-1; Thu,
- 07 Aug 2025 06:13:02 -0400
-X-MC-Unique: zWALXjYdMTmhEIpmzFinXw-1
-X-Mimecast-MFC-AGG-ID: zWALXjYdMTmhEIpmzFinXw_1754561580
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-124-ZtUGMtRfPeaSw6lW-81MFA-1; Thu,
+ 07 Aug 2025 06:14:22 -0400
+X-MC-Unique: ZtUGMtRfPeaSw6lW-81MFA-1
+X-Mimecast-MFC-AGG-ID: ZtUGMtRfPeaSw6lW-81MFA_1754561661
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ED5D319560AD;
-	Thu,  7 Aug 2025 10:12:59 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 934D11956050;
+	Thu,  7 Aug 2025 10:14:20 +0000 (UTC)
 Received: from warthog.procyon.org.uk (unknown [10.42.28.17])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1A8A93001477;
-	Thu,  7 Aug 2025 10:12:55 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3BCF2180035C;
+	Thu,  7 Aug 2025 10:14:17 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
 	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
 	Kingdom.
@@ -64,29 +64,16 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2577279.1754561571.1@warthog.procyon.org.uk>
-Date: Thu, 07 Aug 2025 11:12:51 +0100
-Message-ID: <2577280.1754561571@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-ID: <2577379.1754561655.1@warthog.procyon.org.uk>
+Date: Thu, 07 Aug 2025 11:14:15 +0100
+Message-ID: <2577380.1754561655@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
 Stefan Metzmacher <metze@samba.org> wrote:
 
-> > + if (server->noblocksnd)
 > > + smb_msg->msg_flags = MSG_DONTWAIT + MSG_NOSIGNAL;
-> > + else
-> > + smb_msg->msg_flags = MSG_NOSIGNAL;
-> > + smb_msg->msg_flags = MSG_SPLICE_PAGES;
-> > +
-> 
-> I guess you want '|=' instead of '=' in all 3 lines?
 
-Well on the third line.  msg_flags is 0 on entry to the function.
-
-> I also think msghdr should be setup in the caller completely
-> or it should be a local variable in smb_sendmsg() and the caller
-> only passes struct iov_iter.
-
-Yeah, makes sense.
+And whilst I'm sure addition works, I would much rather that be bit-OR.
 
 David
 
