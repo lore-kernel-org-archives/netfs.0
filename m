@@ -1,197 +1,173 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB99B27FD5D
-	for <netfs@lists.linux.dev>; Fri,  8 Aug 2025 14:44:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52CFA27FB10
+	for <netfs@lists.linux.dev>; Fri,  8 Aug 2025 15:10:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754664282; cv=none; b=AApIrYWExvfxnIuTyWNg+onP4XGMNTvB+S5Ijvc4UPZnboADCi3fpOGEDACLgMR7tFyYgdKeAUXeVOfROnDCj0O312VLloikn3T0dTK8ZoBGci1b5Po23bi79oW8EYZvT8FJRMIgeDTxJ2Yg5lmH2eoYSp4UG2xjSVLRx7wzGKU=
+	t=1754665825; cv=none; b=ojfgOE94mGHlvwOd5FKqFPz4VQb4y/eb9bHpMGkAnBmkWOGTSPtIZYfnoHesNzKLTsxPBWAoMSFeW4Uw77dXzbPkOZ9DP8oRMGQdHdRZnVu5bVh2K4SZ+opnakYP8KMXLJ6we0FUWA3JrztaIx5vKAxw4qGFoZnahXUas/wo/u0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754664282; c=relaxed/simple;
-	bh=gjrGNANIykDfpf7Wf3pIFM8t1nwf+Duna9YIV3lGNBY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m9qtOiKiJO78q5VRKnLARFmrain3g6p8pt3chVxjuDWHoMv7nE+Xs4zrw/Mv3slJekUt4s5tqmkQq4NXY/EfQPJEclNCeLJKZ4/cqaf0qAzyvBaeU0rpZqKyFDMnUfu/t9i/n6e7H8vyPWe1oVCZt7vxQ3pM24jafbIfTyz+nWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jijpBWK9; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=EUKWkl4C; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jijpBWK9; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=EUKWkl4C; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1754665825; c=relaxed/simple;
+	bh=umcvyVklicbzq/kBy0WmrsbaWF0kIcR+4L2lO8UDxYY=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=Hd5l2A8gojdACquyS90mZ/06HCl63OnkC7VeA+grihjgmUFbJ48sGLzPp5NG22F4miCxntM2f2muaQ5zsa/SCkSw/HpMfuSR36XT8SGIvNi9HJXs+q1N9mc80Ht3OTLdjSTJfpalj9ToHmkwHz3CIvQlC+h3+7sLXTojnDsF/IY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NY2n6gWx; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jijpBWK9";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="EUKWkl4C";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jijpBWK9";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="EUKWkl4C"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NY2n6gWx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1754665823;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sb1xY4mkvRwciVCfa3SBcbz2VY+53NejsonXd/nwxL4=;
+	b=NY2n6gWxzaVD375eEunpqnxyY0jebQr8IKLeFeTVYYLiVlfmLV5OgZPRDAeneic7kGzOvo
+	Xq7hnESroGaP2/jc/Lju5S6qzWfu39cBdLZ2gR1tZV+DqSFNlQ0ef3di/tVQ32DD0Xmn7w
+	S57ztnHECteTp5SClnav5mjyEV336xE=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-347-0hywt-IUNPy6Fruejruu2w-1; Fri,
+ 08 Aug 2025 11:10:18 -0400
+X-MC-Unique: 0hywt-IUNPy6Fruejruu2w-1
+X-Mimecast-MFC-AGG-ID: 0hywt-IUNPy6Fruejruu2w_1754665816
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 020EE5BE4D;
-	Fri,  8 Aug 2025 14:44:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1754664279; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=weYf+fL75c7lg2yK6WWI7BLtwoQlL2mdPNNPz/8x2L0=;
-	b=jijpBWK9QZaQ4JmLM8UecWrbSSTWtPe9+TuGDC+7Fgb45zLKmam6BL0INKhxXCKG5W1d+x
-	NsqXfsWVHhvPioHhAkmtH4MKJxdp0G/xi0iykW9x9UsCXHpbe0mqURLnZNaw5ayOR1hNZ7
-	oMlqxHSGkulZtkYTCScjayUE7YpAW4k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1754664279;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=weYf+fL75c7lg2yK6WWI7BLtwoQlL2mdPNNPz/8x2L0=;
-	b=EUKWkl4C1Qip0HfrlkSPnCCtMy9hpzN1TXaymzoFlJV4i+aUPwVbDU8NuNzQw42nJe5CcH
-	4MEjAmWkWWCov0AQ==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=jijpBWK9;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=EUKWkl4C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1754664279; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=weYf+fL75c7lg2yK6WWI7BLtwoQlL2mdPNNPz/8x2L0=;
-	b=jijpBWK9QZaQ4JmLM8UecWrbSSTWtPe9+TuGDC+7Fgb45zLKmam6BL0INKhxXCKG5W1d+x
-	NsqXfsWVHhvPioHhAkmtH4MKJxdp0G/xi0iykW9x9UsCXHpbe0mqURLnZNaw5ayOR1hNZ7
-	oMlqxHSGkulZtkYTCScjayUE7YpAW4k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1754664279;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=weYf+fL75c7lg2yK6WWI7BLtwoQlL2mdPNNPz/8x2L0=;
-	b=EUKWkl4C1Qip0HfrlkSPnCCtMy9hpzN1TXaymzoFlJV4i+aUPwVbDU8NuNzQw42nJe5CcH
-	4MEjAmWkWWCov0AQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7815713A7E;
-	Fri,  8 Aug 2025 14:44:38 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id B2v2D1YNlmidOAAAD6G6ig
-	(envelope-from <ematsumiya@suse.de>); Fri, 08 Aug 2025 14:44:38 +0000
-Date: Fri, 8 Aug 2025 11:44:36 -0300
-From: Enzo Matsumiya <ematsumiya@suse.de>
-To: David Howells <dhowells@redhat.com>
-Cc: Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>, 
-	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>, 
-	Wang Zhaolong <wangzhaolong@huaweicloud.com>, Stefan Metzmacher <metze@samba.org>, 
-	Mina Almasry <almasrymina@google.com>, linux-cifs@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9FE8F18003FD;
+	Fri,  8 Aug 2025 15:10:15 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.17])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 28773180029B;
+	Fri,  8 Aug 2025 15:10:11 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <zt6f2jl6y5wpiuchryc2vdsmtkiia7s5mligm7helffkanxe3o@2f2ksngn5ekk>
+References: <zt6f2jl6y5wpiuchryc2vdsmtkiia7s5mligm7helffkanxe3o@2f2ksngn5ekk> <20250806203705.2560493-1-dhowells@redhat.com> <20250806203705.2560493-25-dhowells@redhat.com>
+To: Enzo Matsumiya <ematsumiya@suse.de>
+Cc: dhowells@redhat.com, Steve French <sfrench@samba.org>,
+    Paulo Alcantara <pc@manguebit.org>,
+    Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+    Wang Zhaolong <wangzhaolong@huaweicloud.com>,
+    Stefan Metzmacher <metze@samba.org>,
+    Mina Almasry <almasrymina@google.com>, linux-cifs@vger.kernel.org,
+    linux-kernel@vger.kernel.org, netfs@lists.linux.dev,
+    linux-fsdevel@vger.kernel.org
 Subject: Re: [RFC PATCH 24/31] cifs: Convert SMB2 Negotiate Protocol request
-Message-ID: <zt6f2jl6y5wpiuchryc2vdsmtkiia7s5mligm7helffkanxe3o@2f2ksngn5ekk>
-References: <20250806203705.2560493-1-dhowells@redhat.com>
- <20250806203705.2560493-25-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20250806203705.2560493-25-dhowells@redhat.com>
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Rspamd-Queue-Id: 020EE5BE4D
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.01 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Spam-Score: -4.01
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2926139.1754665810.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 08 Aug 2025 16:10:10 +0100
+Message-ID: <2926140.1754665810@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On 08/06, David Howells wrote:
-> ...
-> 
->-static unsigned int
->-build_netname_ctxt(struct smb2_netname_neg_context *pneg_ctxt, char *hostname)
->+static size_t smb2_size_netname_ctxt(struct TCP_Server_Info *server)
-> {
->+	size_t data_len;
->+
->+#if 0
-> 	struct nls_table *cp = load_nls_default();
->+	const char *hostname;
->
->-	pneg_ctxt->ContextType = SMB2_NETNAME_NEGOTIATE_CONTEXT_ID;
->+	/* Only include up to first 100 bytes of server name in the NetName
->+	 * field.
->+	 */
->+	cifs_server_lock(pserver);
->+	hostname = pserver->hostname;
->+	if (hostname && hostname[0])
->+		data_len = cifs_size_strtoUTF16(hostname, 100, cp);
->+	cifs_server_unlock(pserver);
->+#else
->+	/* Now, we can't just measure the length of hostname as, unless we hold
->+	 * the lock, it may change under us, so allow maximum space for it.
->+	 */
->+	data_len = 400;
->+#endif
->+	return ALIGN8(sizeof(struct smb2_neg_context) + data_len);
->+}
+Enzo Matsumiya <ematsumiya@suse.de> wrote:
 
-Why was this commented out?  Your comment implies that you can't hold
-the lock anymore there, but I couldn't find out why (with your patches
-applied).
+> On 08/06, David Howells wrote:
+> > ...
+> > -static unsigned int
+> >-build_netname_ctxt(struct smb2_netname_neg_context *pneg_ctxt, char *h=
+ostname)
+> >+static size_t smb2_size_netname_ctxt(struct TCP_Server_Info *server)
+> > {
+> >+	size_t data_len;
+> >+
+> >+#if 0
+> > 	struct nls_table *cp =3D load_nls_default();
+> >+	const char *hostname;
+> >
+> >-	pneg_ctxt->ContextType =3D SMB2_NETNAME_NEGOTIATE_CONTEXT_ID;
+> >+	/* Only include up to first 100 bytes of server name in the NetName
+> >+	 * field.
+> >+	 */
+> >+	cifs_server_lock(pserver);
+> >+	hostname =3D pserver->hostname;
+> >+	if (hostname && hostname[0])
+> >+		data_len =3D cifs_size_strtoUTF16(hostname, 100, cp);
+> >+	cifs_server_unlock(pserver);
+> >+#else
+> >+	/* Now, we can't just measure the length of hostname as, unless we ho=
+ld
+> >+	 * the lock, it may change under us, so allow maximum space for it.
+> >+	 */
+> >+	data_len =3D 400;
+> >+#endif
+> >+	return ALIGN8(sizeof(struct smb2_neg_context) + data_len);
+> >+}
+> =
 
->-static void
->-assemble_neg_contexts(struct smb2_negotiate_req *req,
->-		      struct TCP_Server_Info *server, unsigned int *total_len)
->+static size_t smb2_size_neg_contexts(struct TCP_Server_Info *server,
->+				     size_t offset)
-> {
->-	unsigned int ctxt_len, neg_context_count;
-> 	struct TCP_Server_Info *pserver;
->-	char *pneg_ctxt;
->-	char *hostname;
->-
->-	if (*total_len > 200) {
->-		/* In case length corrupted don't want to overrun smb buffer */
->-		cifs_server_dbg(VFS, "Bad frame length assembling neg contexts\n");
->-		return;
->-	}
->
-> 	/*
-> 	 * round up total_len of fixed part of SMB3 negotiate request to 8
-> 	 * byte boundary before adding negotiate contexts
-> 	 */
->-	*total_len = ALIGN8(*total_len);
->+	offset = ALIGN8(offset);
->+	offset += ALIGN8(sizeof(struct smb2_preauth_neg_context));
->+	offset += ALIGN8(sizeof(struct smb2_encryption_neg_context));
->
->-	pneg_ctxt = (*total_len) + (char *)req;
->-	req->NegotiateContextOffset = cpu_to_le32(*total_len);
->+	/*
->+	 * secondary channels don't have the hostname field populated
->+	 * use the hostname field in the primary channel instead
->+	 */
->+	pserver = SERVER_IS_CHAN(server) ? server->primary_server : server;
->+	offset += smb2_size_netname_ctxt(pserver);
+> Why was this commented out?  Your comment implies that you can't hold
+> the lock anymore there, but I couldn't find out why (with your patches
+> applied).
 
-If you're keeping data_len=400 above, you could just drop
-smb2_size_netname_ctxt() altogether and use
-"ALIGN8(sizeof(struct smb2_neg_context) + 400)" directly here.
+The problem is that the hostname may change - and there's a spinlock to
+protect it.  However, now that I'm working out the message size before the
+allocation, I need to find the size of the host name, do the alloc and the=
+n
+copy the hostname in - but I can't hold the spinlock across the alloc, so =
+the
+hostname may change whilst the lock is dropped.
+
+The obvious solution is to just allocate the maximum size for it.  It's no=
+t
+that big and this command isn't used all that often.
+
+Remember that this is a work in progress, so you may find bits like this w=
+here
+I may need to reconsider what I've chosen.
+
+> >-static void
+> >-assemble_neg_contexts(struct smb2_negotiate_req *req,
+> >-		      struct TCP_Server_Info *server, unsigned int *total_len)
+> >+static size_t smb2_size_neg_contexts(struct TCP_Server_Info *server,
+> >+				     size_t offset)
+> > {
+> >-	unsigned int ctxt_len, neg_context_count;
+> > 	struct TCP_Server_Info *pserver;
+> >-	char *pneg_ctxt;
+> >-	char *hostname;
+> >-
+> >-	if (*total_len > 200) {
+> >-		/* In case length corrupted don't want to overrun smb buffer */
+> >-		cifs_server_dbg(VFS, "Bad frame length assembling neg contexts\n");
+> >-		return;
+> >-	}
+> >
+> > 	/*
+> > 	 * round up total_len of fixed part of SMB3 negotiate request to 8
+> > 	 * byte boundary before adding negotiate contexts
+> > 	 */
+> >-	*total_len =3D ALIGN8(*total_len);
+> >+	offset =3D ALIGN8(offset);
+> >+	offset +=3D ALIGN8(sizeof(struct smb2_preauth_neg_context));
+> >+	offset +=3D ALIGN8(sizeof(struct smb2_encryption_neg_context));
+> >
+> >-	pneg_ctxt =3D (*total_len) + (char *)req;
+> >-	req->NegotiateContextOffset =3D cpu_to_le32(*total_len);
+> >+	/*
+> >+	 * secondary channels don't have the hostname field populated
+> >+	 * use the hostname field in the primary channel instead
+> >+	 */
+> >+	pserver =3D SERVER_IS_CHAN(server) ? server->primary_server : server;
+> >+	offset +=3D smb2_size_netname_ctxt(pserver);
+> =
+
+> If you're keeping data_len=3D400 above, you could just drop
+> smb2_size_netname_ctxt() altogether and use
+> "ALIGN8(sizeof(struct smb2_neg_context) + 400)" directly here.
+
+Yeah.  Probably would make sense to do that with a comment saying why 400.
+
+David
+
