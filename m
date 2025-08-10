@@ -1,155 +1,162 @@
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8244628B7F9
-	for <netfs@lists.linux.dev>; Fri,  8 Aug 2025 23:28:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C74B267B02;
+	Sun, 10 Aug 2025 17:57:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754695720; cv=none; b=GHbjfjgLLteFslHuevfT3NI1bOGCTORrY4EdHimpS5sL89In99sIedTQripgG01FLd33SXD/Srd5IM/FIWVyB7N037njxFa+MmK0uEpktwdzUH6mQkMzv5TLPGiDWQhaNMs13ipi+YTNlYN2ZhIXClsfyDE0y1q4Znaff05F5VQ=
+	t=1754848643; cv=none; b=duRNqDp0Vg12LObLWBhvtqW8UzbxklvcY0UOFBe6LjM9F9Ru7G4WCOS+EchuKnfQitRx74x15qSNEDIJC1XfJ4fpmQBC3cwljJGI8YIm5m/YdCy7xmwDyL8zmdkOnrcVQmFYVRWMOZFdacxpxxpTtd1Vo1dUEOc3+1q2RsQrtMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754695720; c=relaxed/simple;
-	bh=vUytq915rflhnGC0E7wPq7cgARuQAeoXoFWbIqg4MQ8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SX6TOofganjbZU5iYVREKrBs7IbITdsLVm5C2380Ic7E4+zHkaHRYJjwico0rZhKX2KSKlZX8jBCivfMc+W/sJ2ntUO5CcjTSIwkzaNteGXECgRvrJKTOZrju9oohmr6KCw21PMoignwj2NXH/VEWy+X8QgxrGaunymezd5mzb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WHTuVnx5; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1754848643; c=relaxed/simple;
+	bh=fSO2pKtQJLGHg+uw3sLgbIV1Rv915LeTxSDp+iPlEGY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QQmoIdb0y4B7p8qXmOkI38+xFqUpuK6WP4v2kUzyABY693/wiIiqirviGSHrv9b9LsjHXzHhelI8P4DeeRUUA8T9peCfbr0stnmB7ATS3NsWD6MHtYA9kpxaaZWqQgzbT39Wmvs+XF55RKz3Yd/YBeBIXgZzLYngRTt8wakdAmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bzzt.net; spf=pass smtp.mailfrom=bzzt.net; dkim=pass (2048-bit key) header.d=bzzt.net header.i=@bzzt.net header.b=Qka6HBPB; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ibFpBTjG; arc=none smtp.client-ip=202.12.124.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bzzt.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bzzt.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WHTuVnx5"
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-55cc866f01dso1386e87.1
-        for <netfs@lists.linux.dev>; Fri, 08 Aug 2025 16:28:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754695717; x=1755300517; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=z+d20oXyWLn5bjTnK6D4tXgCVrsEi/H5G9og2EbOp+8=;
-        b=WHTuVnx55upU48+4kk1BN94kST8Jm4KtMOecvkHxxRfZ/BxCo7/mLX8XAjk8i1YS2+
-         J4on26K/XjAbei6jkXECdiGJFhKNZ3WrGdpMSprTbFn5IVLgY2YjdOfesaW/JFEie7oX
-         Y23xWwb5/LlJ2Ymr+gZrE+yzCwaN8dQJJli5AuG8YmVeg+jpyxnGAFdZ06KleRP4FE7W
-         +aA1FjwhaNAGDCutgk+xYAzdI1NFks+MC5qkbTJu4tKjvfVe9vXeGzXg6a2TEYbDCwWL
-         Qo6X/Aq2pTF7Ny83KCkrpXHDj4IE2yKetts2deG7ou8SeNbYf+f3T9M64iV3UdzTfoBA
-         m/NA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754695717; x=1755300517;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=z+d20oXyWLn5bjTnK6D4tXgCVrsEi/H5G9og2EbOp+8=;
-        b=pHeW+x/OK+tEatMr1GgJdwKciQI1DGZUl1Nv2wB685Nnl5E20GQFvOooZs3Eu8SkKK
-         JC3LXik61GLBP6rgBZcnpkzTwtHqCiHxvWyyK0PyenqIIXR/bPsVDNcimhEfm66vxc/5
-         JpZDQpNtuNUgKaepLF82ZoCkeojbWbKF6ClSm2l3/hWp02eYx1SwX2hp1pC2DEJHno/a
-         LsNY1g8PHtczcDtNM1r7UUzBfm/R4goflcms2cecN3zNM/clsG3hDyVg79tAnyeNLZYQ
-         E7K0Wp0A5oHmQLPZjR/eSKBRhBqy+dcnCuoiqLSbWiB0Km43GCIchBbJucDtfdPVgaeq
-         am+w==
-X-Forwarded-Encrypted: i=1; AJvYcCVJ1wibNSZmUJt5JGDiqfuqTAYjG2kA8kC1F4QDY9nb58Dgj4H8TV0aAMZXXdqVbIH3O74H6Q==@lists.linux.dev
-X-Gm-Message-State: AOJu0YzLPN6a1qAbkv3UonpUpruyjJeGPvtG5fJp3Uwq/vt1ZHD7LM8j
-	6Hwz6oxDSbKXV9YI4VIL4BqlB3uyjFfihaKhF5pKz0h5tiDy3Zq4Sneb6J3q98S7ztnjTEb2nkT
-	herKyCrNibkhTQVKpMfK0khL6egzUy5h3P4BxXH1b
-X-Gm-Gg: ASbGncvzCU0GXTB26x0rv8P0V8QRoAWfOupeolecMY3UQ6vnjsf61tOAVBwl96RWj2e
-	0dB2ahL5CrcnVI2sL5+THX4TLV+NSKGZwTKpqLimjAV1GdmpE6URF1k3RfZRc9GZloN0GnhX/Ld
-	Yngi6ogqONtkEqycMkS0eJ804ZNcKnv8d74Wyuux51VPzwCCJmJuISXq4hfYAHR2MsyYt6PhIIp
-	QQEu/bQrol2syycdVUK+r4Q2WMLty9lOo67dEUP5+3y78SD
-X-Google-Smtp-Source: AGHT+IEdv1w7QaR/0N5fORVsH+DJ9deVF62A3/i1e5So5KwiAuzIy0EDfzma97+kI6RU9BDDGv1QEy9xGRRRodJA/0Y=
-X-Received: by 2002:a05:6512:1145:b0:55b:af38:41db with SMTP id
- 2adb3069b0e04-55cc89c7bbcmr60515e87.7.1754695716156; Fri, 08 Aug 2025
- 16:28:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bzzt.net header.i=@bzzt.net header.b="Qka6HBPB";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ibFpBTjG"
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id EC79F7A005D;
+	Sun, 10 Aug 2025 13:57:18 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-10.internal (MEProxy); Sun, 10 Aug 2025 13:57:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bzzt.net; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1754848638;
+	 x=1754935038; bh=CKJHwhQNQy+ROAE4lhfUgG6FBAvwCYWmzuMLynqXNDE=; b=
+	Qka6HBPBqe5fFkfsB1QsgZOj02B+CQ+76ZlodrPFL+Ch8r3VIJk5Snqf0cKnkhA1
+	IZ3dLri3iITKx1o65wRVm6bwyEv1gnfpvsizzGHfJQrSNDTtgJxk8tmLcbajYzBA
+	OJA1ASn2woSDuMTnZr4Ip/0AwaHMRNa98/nC6iWh1B5iENqmoouEGNm5WcpZQtAi
+	3eluXgNwlrPBwTw9kDqn0ksDwa2GPbUxCZO+gWzQ886tKa+gz9FXgWJBSmW+dDEB
+	wxY8aO4Pz2r3IrvHVOHlEK44BOh2Jp0DHEK/s82OTf3/++9Qa7jBG9mLDr3NYnoY
+	7V5Jv8FAirX6vjKFezargA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1754848638; x=
+	1754935038; bh=CKJHwhQNQy+ROAE4lhfUgG6FBAvwCYWmzuMLynqXNDE=; b=i
+	bFpBTjGb9fCWYdq3sYwnc0SHSZGr0WTjAbLnYO7IqS1tpAd7njgM7Xu0qFrtpP3m
+	gFdnLnit6gx9yjF8AkfMVilRyZ1VEeSQEaVcTMol2DHkYYs6M4myxRUvV0l0UUE4
+	0Yd46zL8595Ndxs7cyMZEsrAPz75trPsXwlTkt8C+1UyeOlpLnMmUUylTDh9ZCg3
+	IDuKdeRW4lihW8dScWLFA+LVWbakEISc7Y/7z+0dhDL6lPF4ybEluUcOv1fo1Xr/
+	pqrbaQaDx8aTZnBXTqKbWFMHmmflnsoFrHpLvg4uPqQ2suyvsYTyk4qAXVeMn2w3
+	m5njHCjRRezeCmXN3lVhA==
+X-ME-Sender: <xms:fd2YaGODLmsaYYqHgAYhzfD8D87YLk_dlT3sie7l16O5O1btDznLhA>
+    <xme:fd2YaAIhHDYjSjkzmFk6sVZ7Vk20nHv22OSrP0A-ZI4a6rgL_TS84h99OUilz2wmY
+    pFC546vITfipt39nL8>
+X-ME-Received: <xmr:fd2YaBFYsrXgcgPT6m4SvNx4z8pIzvPRMxWG3mU1b_S4PmJD2dQi87L16oZ9gYjtET2T2uHTdnhE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddufedtvdefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucenucfjughrpefhvfevufffkffojghfgggtgfesthekre
+    dtredtjeenucfhrhhomheptehrnhhouhhtucfgnhhgvghlvghnuceorghrnhhouhhtsegs
+    iiiithdrnhgvtheqnecuggftrfgrthhtvghrnheptefhueeugeduueffudfgveeuveetje
+    ehgeetvdevjefghfeltdethfeugeegvedvnecuffhomhgrihhnpehkvghrnhgvlhdrohhr
+    ghdptghouggvsggvrhhgrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomheprghrnhhouhhtsegsiiiithdrnhgvthdpnhgspghrtghpthht
+    ohepudeipdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehrhigrnheslhgrhhhfrg
+    drgiihiidprhgtphhtthhopegrnhhtohhnhidrrghnthhonhihsehsvggtuhhnvghtrdgt
+    ohhmpdhrtghpthhtoheprghnthhonhihsehphhgvnhhomhgvrdhorhhgpdhrtghpthhtoh
+    eprghsmhgruggvuhhssegtohguvgifrhgvtghkrdhorhhgpdhrtghpthhtohepsghrrghu
+    nhgvrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepughhohifvghllhhssehrvgguhh
+    grthdrtghomhdprhgtphhtthhopegvrhhitghvhheskhgvrhhnvghlrdhorhhgpdhrtghp
+    thhtoheplhhinhhugidqfhhsuggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprh
+    gtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:fd2YaBDLZ2R5Ln6k6Z1XOkXZIwdLI8Dme8LY1SElmURnfN5lISEafQ>
+    <xmx:fd2YaL2f48BRL_vkrRKQx4L17yDv_SdYFwZYMSr7yM46T9u56chk6w>
+    <xmx:fd2YaONzoIRKTHhOqJEQbN7sZHuf_qqizhRCoUY8kQIr2KL5U5Jd7A>
+    <xmx:fd2YaI4I-JiomzH8_jKrJt8RHA-cepX4Twx3FtxE2KZwlgxVVC2aRQ>
+    <xmx:ft2YaFb6tPdtSsGjfunltI3H_MMOjEBfiMTpr3yLLBS_syheoxzx2VRh>
+Feedback-ID: i8a1146c4:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 10 Aug 2025 13:57:13 -0400 (EDT)
+From: Arnout Engelen <arnout@bzzt.net>
+To: ryan@lahfa.xyz
+Cc: antony.antony@secunet.com,
+	antony@phenome.org,
+	asmadeus@codewreck.org,
+	brauner@kernel.org,
+	dhowells@redhat.com,
+	ericvh@kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux_oss@crudebyte.com,
+	lucho@ionkov.net,
+	maximilian@mbosch.me,
+	netfs@lists.linux.dev,
+	regressions@lists.linux.dev,
+	sedat.dilek@gmail.com,
+	v9fs@lists.linux.dev
+Subject: Re: [REGRESSION] 9pfs issues on 6.12-rc1
+Date: Sun, 10 Aug 2025 19:57:11 +0200
+Message-ID: <20250810175712.3588005-1-arnout@bzzt.net>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <w5ap2zcsatkx4dmakrkjmaexwh3mnmgc5vhavb2miaj6grrzat@7kzr5vlsrmh5>
+References: <w5ap2zcsatkx4dmakrkjmaexwh3mnmgc5vhavb2miaj6grrzat@7kzr5vlsrmh5>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <2869548.1754658999@warthog.procyon.org.uk> <CAHS8izN89j9deyODUjxQroKrLoiAq1kF+RVowuvVecmg4tNAUg@mail.gmail.com>
- <2941083.1754684186@warthog.procyon.org.uk>
-In-Reply-To: <2941083.1754684186@warthog.procyon.org.uk>
-From: Mina Almasry <almasrymina@google.com>
-Date: Fri, 8 Aug 2025 16:28:23 -0700
-X-Gm-Features: Ac12FXyPh-Jfeqe4_Ia59zNE4ggMPY6p0Hb0AzjzpPYfgU0oYp45vqpTmqQE3_w
-Message-ID: <CAHS8izOj3OCD6+6GD9foc53J7u9o6-VK+YS-1RUWU4NR6d-9bQ@mail.gmail.com>
-Subject: Re: Network filesystems and netmem
-To: David Howells <dhowells@redhat.com>
-Cc: Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, willy@infradead.org, 
-	hch@infradead.org, Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, 
-	Byungchul Park <byungchul@sk.com>, netfs@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 8, 2025 at 1:16=E2=80=AFPM David Howells <dhowells@redhat.com> =
-wrote:
->
-> Mina Almasry <almasrymina@google.com> wrote:
->
-> > >  (1) The socket.  We might want to group allocations relating to the =
-same
-> > >      socket or destined to route through the same NIC together.
-> > >
-> > >  (2) The destination address.  Again, we might need to group by NIC. =
- For TCP
-> > >      sockets, this likely doesn't matter as a connected TCP socket al=
-ready
-> > >      knows this, but for a UDP socket, you can set that in sendmsg() =
-(and
-> > >      indeed AF_RXRPC does just that).
-> > >
-> >
-> > the page_pool model groups memory by NIC (struct netdev), not socket
-> > or destination address. It may be feasible to extend it to be
-> > per-socket, but I don't immediately understand what that entails
-> > exactly. The page_pool uses the netdev for dma-mapping, i'm not sure
-> > what it would use the socket or destination address for (unless it's
-> > to grab the netdev :P).
->
-> Yeah - but the network filesystem doesn't necessarily know anything about=
- what
-> NIC would be used... but a connected TCP socket surely does.  Likewise, a=
- UDP
-> socket has to perform an address lookup to find the destination/route and=
- thus
-> the NIC.
->
-> So, basically all three, the socket, the address and the flag would be hi=
-nts,
-> possibly unused for now.
->
-> > Today the page_pool doesn't really care how long you hold onto the mem
-> > allocated from it.
->
-> It's not so much whether the page pool cares how long we hold on to the m=
-em,
-> but for a fragment allocator we want to group things together of similar
-> lifetime as we don't get to reuse the page until all the things in it hav=
-e
-> been released.
->
-> And if we're doing bulk DMA/IOMMU mapping, we also potentially have a sec=
-ond
-> constraint: an IOMMU TLB entry may be keyed for a particular device.
->
-> > Honestly the subject of whether to extend the page_pool or implement a
-> > new allocator kinda comes up every once in a while.
->
-> Do we actually use the netmem page pools only for receiving?  If that's t=
-he
-> case, then do I need to be managing this myself?  Providing my own fragme=
-nt
-> allocator that handles bulk DMA mapping, that is.  I'd prefer to use an
-> existing one if I can.
->
+On Fri, 13 Jun 2025 00:24:13 +0200, Ryan Lahfa wrote:
+> Le Wed, Oct 23, 2024 at 09:38:39PM +0200, Antony Antony a écrit :
+> > On Wed, Oct 23, 2024 at 11:07:05 +0100, David Howells wrote:
+> > > Hi Antony,
+> > > 
+> > > I think the attached should fix it properly rather than working around it as
+> > > the previous patch did.  If you could give it a whirl?
+> > 
+> > Yes this also fix the crash.
+> > 
+> > Tested-by: Antony Antony <antony.antony@secunet.com>
+> 
+> I cannot confirm this fixes the crash for me. My reproducer is slightly
+> more complicated than Max's original one, albeit, still on NixOS and
+> probably uses 9p more intensively than the automated NixOS testings
+> workload.
 
-Yes we only use page_pools for receiving at the moment. Some
-discussion around using the page_pool for normal TX networking
-happened in the past, but I can't find the thread.
+I'm seeing a problem in the same area - the symptom is slightly different,
+but the location seems very similar. I'm also running a NixOS image.
+Mounting a 9p filesystem in qemu with `cache=readahead`, reading a
+12943-byte file, in the guest I do see a 12943-byte file, but only
+the first 12288 bytes are populated: the rest are zero. This also
+reproduces (most but not all of the time) on 6.16-rc7, but not on all host
+machines I've tried.
 
-I'm unsure what it would take to make it some-tx-path compatible off
-the top of my head. At the very least, the page_pool at the moment has
-some dependency/logic on napi-id that it may get from the driver, that
-may need to be factored out. See all the places we touch pool->p.napi
-in page_pool.c and other files. Or, like you said, you may want your
-own fragment allocator, if wrestling the page_pool to do what you want
-is too cumbersome.
+After applying a simplified version of [1] (i.e. [2]), the problem does not
+reproduce anymore. It seems something in `p9_client_read_once` somehow
+leaves the iov_iter in an unhealthy state. It would be good to understand
+exactly what, but I haven't been able to figure that out yet.
 
---=20
-Thanks,
-Mina
+I have a smallish nix-based reproducer at [3], and a more involved setup
+with a lot of logging enabled and a convenient way to attach gdb at [4].
+You start the VM and then 'cat /repro/default.json' manually, and see if
+it looks 'truncated'.
+
+Interestingly, the file is read in two p9 read calls: one of 12288 bytes and
+one of 655 bytes. The first read is a zero-copy one, the second is not
+zero-copy (because it is smaller than 1024). I've also tried with a slightly
+larger version of the file, that is read as 2 zero-copy reads, and I have not
+been able to reproduce the problem with that. From my (admittedly limited)
+understanding the non-zerocopy code path looks fine, though.
+
+I hope this is helpful - I'd be happy to keep looking into this further,
+but any help pointing me in the right direction would be much appreciated :)
+
+
+Kind regards,
+
+Arnout
+
+[1] https://lore.kernel.org/all/3327438.1729678025@warthog.procyon.org.uk/T/#mc97a248b0f673dff6dc8613b508ca4fd45c4fefe
+[2] https://codeberg.org/raboof/nextcloud-onlyoffice-test-vm/src/branch/reproducer-with-debugging/kernel-use-copied-iov_iter.patch
+[3] https://codeberg.org/raboof/nextcloud-onlyoffice-test-vm/src/branch/small-reproducer
+[4] https://codeberg.org/raboof/nextcloud-onlyoffice-test-vm/src/branch/reproducer-with-debugging
