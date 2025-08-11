@@ -1,83 +1,137 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A313AD23;
-	Mon, 11 Aug 2025 07:43:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C8E220F4F;
+	Mon, 11 Aug 2025 12:43:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754898206; cv=none; b=U5kzM2AGeo9r2GzN9fp+5d74zwQRrE1xdWdnjEx+APAm87KMXZoLd5g3qa4sj+mUui8k4/txsksddqQoIdKdxglZqPEjIKlrQfVY9qCftDJQXwWXha7tXng8clCtVeWDtf5eBJpeBbpM69TSXiuk7JskFEbKYM8e18dUSUPcTOE=
+	t=1754916238; cv=none; b=Au90HPoMxO14WMapvlfcpEmHAODG3mspTMz3idvQyMOtSIYgWyTF1/2c6DJ14mf3w1pU+9q9zQA0S4YqKfF5GUwx4cm1zGLWdMxzgtJdY+z1+GFMOpbCzuTBMq+SSkLBBfEkkcjE+Rm9vIXG9+wzDWJo2H5ZGD73bk6zU6T4Lzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754898206; c=relaxed/simple;
-	bh=sr14k7YJFFXWl/2wn7YOnt+vqu6jKV7QyaK6o7oXevc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nLBMO0cPgGRsvRpg7k+afTMkLApAeUbnd5tv9UJAzqUxkJEHTpjEbReFoT8/bgUUm/UNHpLh6akKkRWgZ7fQ0M+L5Yybqo+mNW+7kjiUHB7ojksA/XcSpHfeOVCeDwerjkCXjD3TRVl23bYH1ChjC9tcY/ch4PLK/C2b7rhWbY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=qTgp3xon; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1754916238; c=relaxed/simple;
+	bh=q9CYpkq6EBQT1zx02Btohpgz+ceFDDYnuRg4/W3LVks=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=JtUIQCssZ9oabwVPGqN/9thS5UUfrgvUvUl6JNyDd4E2+IegvTHy/XBMn6OSEIYPrKL4aIUI6OT/sRQP4HfRToP1CrOkE3HOCznSGUBTx3rakup8mCv7u3LsHf5J7wpNK/H//XcPiu6OQDHJvzCj419d3GNi/vx6O6wTkbsG1/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bzzt.net; spf=pass smtp.mailfrom=bzzt.net; dkim=pass (2048-bit key) header.d=bzzt.net header.i=@bzzt.net header.b=OelWDBRP; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Gtfip+fv; arc=none smtp.client-ip=202.12.124.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bzzt.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bzzt.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="qTgp3xon"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 77AF514C2D3;
-	Mon, 11 Aug 2025 09:43:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1754898203;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YzERkUETDBBGA2ETmuUH0JhyJyLgXNeY+djGZol+o1I=;
-	b=qTgp3xontPexWALYl/mFt7pAjsHlucQTloBc0zv+6VQBjdAvAhUljOagTAYAJrgFJ+cLtc
-	kusS7twLzcDBUvDBj+tHf5Kr6ePHjmCcqzGBIAAaTI84ml4Nl59oYUOuNCDZQQ9baclyJT
-	aNgdgptvIK8ftpg5WA3Fdun4ohXQQg63Q28jDY1fUb0t3DhXN7MUuNueHmEut0fVHfi5tI
-	cIbU+rnG4yeHhII26HTRn28TUwF9E2xQiLs2EPmzXlt3VA+Bdm51FDm03R43LU/rsceyRM
-	aXrcnG7Ks0d5xdHrohrPs3+n0/w3rvZXf9rh67LKww9CECpqIKvIcLZOtrj4xw==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id dd3250c2;
-	Mon, 11 Aug 2025 07:43:16 +0000 (UTC)
-Date: Mon, 11 Aug 2025 16:43:01 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Arnout Engelen <arnout@bzzt.net>
-Cc: ryan@lahfa.xyz, antony.antony@secunet.com, antony@phenome.org,
-	brauner@kernel.org, ericvh@kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux_oss@crudebyte.com, lucho@ionkov.net, maximilian@mbosch.me,
-	netfs@lists.linux.dev, regressions@lists.linux.dev,
-	sedat.dilek@gmail.com, v9fs@lists.linux.dev,
-	Matthew Wilcox <willy@infradead.org>, dhowells@redhat.com
-Subject: Re: [REGRESSION] 9pfs issues on 6.12-rc1
-Message-ID: <aJmfBTflGvAI6sBs@codewreck.org>
-References: <w5ap2zcsatkx4dmakrkjmaexwh3mnmgc5vhavb2miaj6grrzat@7kzr5vlsrmh5>
- <20250810175712.3588005-1-arnout@bzzt.net>
- <aJlAD0nPcR2kvAtS@codewreck.org>
+	dkim=pass (2048-bit key) header.d=bzzt.net header.i=@bzzt.net header.b="OelWDBRP";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Gtfip+fv"
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id BAA2E7A006B;
+	Mon, 11 Aug 2025 08:43:55 -0400 (EDT)
+Received: from phl-imap-01 ([10.202.2.91])
+  by phl-compute-12.internal (MEProxy); Mon, 11 Aug 2025 08:43:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bzzt.net; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1754916235;
+	 x=1755002635; bh=YkBFMLQbtD0UKNRwkM7bGtf9VKzKcYkWlxvxgGNKmDc=; b=
+	OelWDBRPmo+LJMFYtneBfj6svlM9BUi/QkkBUFz7IpbQviRNpmcx6R8d5nh8p8Lx
+	7Pi7Ealdt7YQ91o6qWh29pjnTxoKTrMs0eBVPaBOTQg7hPUMOKYWcDf/PXbxGAYf
+	T0voxONXvC4GaoNH5c6j9V8n6exWRF1rUNh3hDaTRxENuUE9d5cMhhuyBWAKXik+
+	UDt2odiVbQArbI1Lyv/lgQFTFxMMyk/m+xCWqey/tGtAkbBZ7Fh9tBxo8hVftII6
+	S+IYVO4Iwowk1k78hNLW6YpeaxIvE9NZCsxUiZ6sgr4JbTDHhjxg1Xj0chEQDTDR
+	KmnI/v6D92m6iZwcymDTdw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1754916235; x=
+	1755002635; bh=YkBFMLQbtD0UKNRwkM7bGtf9VKzKcYkWlxvxgGNKmDc=; b=G
+	tfip+fvgnVkmQH3fjBkg9vM3/fx3jdoI8boecjOzTrQgMY/xXce31iHP/XPyBPuv
+	u9HPLahY7riKN8DiwLnpCmyFSH87GLIHcZpFTF6iRrAI+lvoWw+zZIiEchFJQmow
+	Ocw2RWGpVaoETE7nFsaewNkpoM/7MOSb6BHoRL8v5PXf22qcuztQumFxUYEF772g
+	QkTCKiM/riQwPRjccxpuygqP7/+UNC2JcfvGK7YWrFhLwStapSdwELix17tSK1Jr
+	NqTdPzagumPwFIceN/dxcL3byjD5sHb+vPjsKZqVbyMKGztKK56qhC1Gktxc6hRR
+	1ProkTAPvZSItv9yH9FUA==
+X-ME-Sender: <xms:iuWZaMnRFA1kliU9fUEJdoDsNFaYq-ZACIoYcivDBjoxb89HjvI79A>
+    <xme:iuWZaL0EmkEf1v0avhologb0zUvM6G6vmt9x9dEewTGzK_eeFRRkb9v7w2975fulr
+    LynyUybrJ8jJhvKEps>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddufedvgeekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucenucfjughrpefoggffhffvvefkjghfufgtgfesthejre
+    dtredttdenucfhrhhomhepfdetrhhnohhuthcugfhnghgvlhgvnhdfuceorghrnhhouhht
+    segsiiiithdrnhgvtheqnecuggftrfgrthhtvghrnhepgeffleeigedvgfdtkeehvdektd
+    fgtdejhfffleejjefgiefggfetffevkeehudejnecuffhomhgrihhnpehkvghrnhgvlhdr
+    ohhrghdpvghnghgvlhgvnhdrvghunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomheprghrnhhouhhtsegsiiiithdrnhgvthdpnhgspghrtghpthht
+    ohepudejpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrshhmrgguvghushestg
+    houggvfihrvggtkhdrohhrghdprhgtphhtthhopehlihhnuhigpghoshhssegtrhhuuggv
+    sgihthgvrdgtohhmpdhrtghpthhtohepshgvuggrthdrughilhgvkhesghhmrghilhdrtg
+    homhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdhorhhgpdhrtghpthht
+    oheplhhutghhohesihhonhhkohhvrdhnvghtpdhrtghpthhtohepsghrrghunhgvrheskh
+    gvrhhnvghlrdhorhhgpdhrtghpthhtohepvghrihgtvhhhsehkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopehrhigrnheslhgrhhhfrgdrgiihiidprhgtphhtthhopehnvghtfhhsse
+    hlihhsthhsrdhlihhnuhigrdguvghv
+X-ME-Proxy: <xmx:iuWZaEUb246Zggj5KdtXg-fipRp0Z2p9OtJsHVNSnP-_Zq6DB_-jyQ>
+    <xmx:iuWZaC1NJrQtpRUcNoc_Cy7idwRjoo983rXmKN3-SrglbLrYRSNflQ>
+    <xmx:iuWZaN3lSeb_b0-MMrtrh5ge-g8Cnq5M0wETtB8hVOT1d5XT522bGw>
+    <xmx:iuWZaJmMVkoKDd4K07Tm4qYMgOs9VUQfbL1BoY5z5b_c0T55Ja_2Aw>
+    <xmx:i-WZaG5VJR7GXEf6kibh-z4FktAYp_11bAldArILSOO_BLTV0sE84zMf>
+Feedback-ID: i8a1146c4:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 7548618C0066; Mon, 11 Aug 2025 08:43:54 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aJlAD0nPcR2kvAtS@codewreck.org>
+X-ThreadId: AtAeKOSr4ONc
+Date: Mon, 11 Aug 2025 14:43:21 +0200
+From: "Arnout Engelen" <arnout@bzzt.net>
+To: "Dominique Martinet" <asmadeus@codewreck.org>
+Cc: ryan@lahfa.xyz, antony.antony@secunet.com, antony@phenome.org,
+ brauner@kernel.org, ericvh@kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux_oss@crudebyte.com, lucho@ionkov.net,
+ maximilian@mbosch.me, netfs@lists.linux.dev, regressions@lists.linux.dev,
+ sedat.dilek@gmail.com, v9fs@lists.linux.dev,
+ "Matthew Wilcox" <willy@infradead.org>, dhowells@redhat.com
+Message-Id: <9294e7ac-4a3f-4a48-8e3e-0659955bf165@app.fastmail.com>
+In-Reply-To: <aJmfBTflGvAI6sBs@codewreck.org>
+References: <w5ap2zcsatkx4dmakrkjmaexwh3mnmgc5vhavb2miaj6grrzat@7kzr5vlsrmh5>
+ <20250810175712.3588005-1-arnout@bzzt.net> <aJlAD0nPcR2kvAtS@codewreck.org>
+ <aJmfBTflGvAI6sBs@codewreck.org>
+Subject: Re: [REGRESSION] 9pfs issues on 6.12-rc1
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-asmadeus@codewreck.org wrote on Mon, Aug 11, 2025 at 09:57:51AM +0900:
-> Also I haven't been able to reproduce it with a kernel I built myself/my
-> environment, but it reproduces reliably 99% of the times in the nixos
-> VM, so we're missing a last piece for a "simple" (non-nix) reproducer,
-> but I think it's good enough for me to dig into this;
+On Mon, Aug 11, 2025, at 02:57, asmadeus@codewreck.org wrote:
+> Arnout Engelen wrote on Sun, Aug 10, 2025 at 07:57:11PM +0200:
+> > I have a smallish nix-based reproducer at [3], and a more involved setup
+> > with a lot of logging enabled and a convenient way to attach gdb at [4].
+> > You start the VM and then 'cat /repro/default.json' manually, and see if
+> > it looks 'truncated'.
+> 
+> Thank you!!! I was able to reproduce with this!
+>
+> Anyway this is a huge leap forward (hopeful it's the same problem and we
+> don't have two similar issues lurking here...), we can't thank you
+> enough.
 
-(okay, I got this to work wedging my kernel into the nixos initrd; this
-requires the iov to be built off non-contiguous pages and so having
-systemd thrash around was apparently a required step...)
+Great - that means a lot ;)
 
-So that wasn't a 9p bug, I'm not sure if I should be happy or not?
+On Mon, Aug 11, 2025, at 09:43, Dominique Martinet wrote:
+> So that wasn't a 9p bug, I'm not sure if I should be happy or not?
 
-I've sent "proper-ish" patches at [1] which most concerned people should
-be in Cc; I'm fairly confident this will make the bug go away but any
-testing is appreciated, please reply to the patches with a Tested-by if
-you have time.
+:D
 
-[1] https://lkml.kernel.org/r/20250811-iot_iter_folio-v1-0-d9c223adf93c@codewreck.org
+> I've sent "proper-ish" patches at [1] which most concerned people should
+> be in Cc; I'm fairly confident this will make the bug go away but any
+> testing is appreciated, please reply to the patches with a Tested-by if
+> you have time.
+> 
+> [1] https://lkml.kernel.org/r/20250811-iot_iter_folio-v1-0-d9c223adf93c@codewreck.org
+
+Awesome!
 
 
-Thank you all again, and sorry I haven't had the time to look further
-into this without a clean reproducer, this really shouldn't have taken
-that long...
+Kind regards,
+
 -- 
-Dominique Martinet | Asmadeus
+Arnout Engelen
+Engelen Open Source
+https://engelen.eu
