@@ -1,87 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx1.manguebit.org (mx1.manguebit.org [143.255.12.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0724D319876;
-	Fri, 15 Aug 2025 13:57:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA432FCBFC;
+	Fri, 15 Aug 2025 16:09:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=143.255.12.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755266246; cv=none; b=PwH8Vp9Itw8hSQ6wiISmGPqJchOpdCgiLZ1Yn8jrErIT/bukR9ul8WtPlpOXf8tI3mmom9c3VExji08p7lD8UXAViLbFFNoK2vYZefaAN1sYCkKkCH8V/yPLHDduV/o9lhd5WVXJ+uRoZLsJZAsHPC+A4gEwZtYK4Tr4cow3fc4=
+	t=1755274195; cv=none; b=Qk0XDvxGlu+QY4EJVG14B7tRCbVNJyhE6dL3Cb/bJZQaqeJlzU9RqTNr3Iq0CHGfR2AVfDo0ugdzwUmczQ2QNQFBqGApOrce0RkTsw02a0E2/rcIeIj1zAagnWKZ+PS74o9Vbke98r19Kjlqw8JMIPpMzxV8VWfLbTxTqkVUEqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755266246; c=relaxed/simple;
-	bh=4qznQcuodMDR8UxP8t1F4Kt5zqkLltVV1eg/6EKCeTk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aZApRVRzp3XBPfLnSiJWaezQD7RTvfMVz+3HoXq9QRAzLPyeOLy3/KJvq/1ZSVSU0M5QOKxAovkjvrLJnfNmizl1bQh/0ISajzNZDPUnxbz4vYjF3BknnkZuKoIgfUcFLWPteYD2O93FD8WTnGEg3eqsrKU+UuTcydWZvZzGOss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qWhnDZk3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755274195; c=relaxed/simple;
+	bh=xWRha5g+4qCtv7pPT3fMcHVlknNoOr8+sOOJTQ4fHsk=;
+	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Date:
+	 MIME-Version:Content-Type; b=bNcclvy0Mx22b2w3Iqiv7hj8U6u0bFqWocqr6XSEOvYUu2ItiDjljpr7s6nENY2/16vHEPeogvHuAaE04YhD8ouPGn1/31IveBh3VqLuX0yVTyzeDAgkN8OmR9JMaA3AJm5aYSCjNBqThmH6LDeNNki8KvpXL7fQ5iY3zOUeFFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org; spf=pass smtp.mailfrom=manguebit.org; dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b=Tfw4aE2F; arc=none smtp.client-ip=143.255.12.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qWhnDZk3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30412C4CEEB;
-	Fri, 15 Aug 2025 13:57:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755266245;
-	bh=4qznQcuodMDR8UxP8t1F4Kt5zqkLltVV1eg/6EKCeTk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qWhnDZk3tXS0Wbgw4bHyEbWlgmHi1yObAJr36OoyruYaEIAlf4mMD3Iik+aBOd8FZ
-	 VNj+iUBlJxQ67YlHq3Fi9CjKLHMGuYz1evn9vTSi23NWbwKNOOBlrob4AAStgoMkEJ
-	 vwpFJIgrTljeo/zUXU8znUXywT8c2SRZ3FeS5QvRLH68qdH7S8oIoLe83PzuF4qeQ9
-	 EYXMrWzxGz7LFbZip0yJlX9gWifE4ci9TObT8lq2/TC1BgUEmlGWuT3njIx+7NRfY8
-	 PYXHr4ROb0HtbGb7p4hjj5ypTiHJupa/jvw7NgFFmEVk95AfozbUQ9HEqUpSP6JXij
-	 Bh5aDvDLcvVIA==
-From: Christian Brauner <brauner@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Xiaoli Feng <fengxiaoli0714@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	netfs@lists.linux.dev,
-	linux-cifs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Paulo Alcantara <pc@manguebit.org>,
-	Steve French <sfrench@samba.org>
+	dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b="Tfw4aE2F"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=manguebit.org; s=dkim; h=Content-Type:MIME-Version:Date:References:
+	In-Reply-To:Subject:Cc:To:From:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=P+mIahC1TK4UaHtb99symdtf78QWaiS/LIx941Zy32I=; b=Tfw4aE2F9YThy7BzyD2Ek00ZgV
+	8cA/qo7vVJUgL52YDDd6Q0Nlk2bIaFEY39VMk3qrPwC+3h82lFdnbhVPDHPM5o/DlYh+6LYxtWx0P
+	cD7ON5M0XMnd7z5Ngb4T3Cf4am5qAF/NGB3qnEu7vY+s58tCjzUnk0LljBTKA8twvKPPepgkixNjl
+	cL57a4Kq/5fXuGVL19kkSqaZA08jJ3DwTajin0txHZUGRU7vfsPaSnDvggeKF/zaJm767vO7rAFC2
+	UnN38olzQSN4rhqgLLWFN7xz1UOiYvqWqsYUPx8vBFVlc4WZHyNgZWxX1fs6B91gNAk28Mfzk/N3q
+	zNkMCI3w==;
+Received: from pc by mx1.manguebit.org with local (Exim 4.98.2)
+	id 1umwzu-00000000HtL-3wjB;
+	Fri, 15 Aug 2025 13:09:42 -0300
+Message-ID: <6ae175d2126c31b023ef1bc6d61a0a39@manguebit.org>
+From: Paulo Alcantara <pc@manguebit.org>
+To: David Howells <dhowells@redhat.com>, Christian Brauner
+ <brauner@kernel.org>, Steve French <sfrench@samba.org>
+Cc: dhowells@redhat.com, Xiaoli Feng <fengxiaoli0714@gmail.com>, Shyam
+ Prasad N <sprasad@microsoft.com>, netfs@lists.linux.dev,
+ linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ stable@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] netfs: Fix unbuffered write error handling
-Date: Fri, 15 Aug 2025 15:57:06 +0200
-Message-ID: <20250815-erhoben-gesurft-4de96f87d6d5@brauner>
-X-Mailer: git-send-email 2.47.2
 In-Reply-To: <915443.1755207950@warthog.procyon.org.uk>
 References: <915443.1755207950@warthog.procyon.org.uk>
+Date: Fri, 15 Aug 2025 13:09:35 -0300
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1415; i=brauner@kernel.org; h=from:subject:message-id; bh=4qznQcuodMDR8UxP8t1F4Kt5zqkLltVV1eg/6EKCeTk=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTMt9n/6/mnd1uVbxz6WeK3Lybf/4vWpakZ61+6fGlX8 rT8lj/xWEcpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBEjtgyMiz45p0jufTG/aAn 3c797/fX5UyaZ1tpKntQX2rh1xLOxdUM/yw2Lb3dzJ3x/590TueepYn+fCLVj5K2syj7J01vTA/ exgYA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Thu, 14 Aug 2025 22:45:50 +0100, David Howells wrote:
+David Howells <dhowells@redhat.com> writes:
+
 > If all the subrequests in an unbuffered write stream fail, the subrequest
 > collector doesn't update the stream->transferred value and it retains its
 > initial LONG_MAX value.  Unfortunately, if all active streams fail, then we
 > take the smallest value of { LONG_MAX, LONG_MAX, ... } as the value to set
 > in wreq->transferred - which is then returned from ->write_iter().
-> 
+>
 > LONG_MAX was chosen as the initial value so that all the streams can be
 > quickly assessed by taking the smallest value of all stream->transferred -
 > but this only works if we've set any of them.
-> 
-> [...]
+>
+> Fix this by adding a flag to indicate whether the value in
+> stream->transferred is valid and checking that when we integrate the
+> values.  stream->transferred can then be initialised to zero.
+>
+> This was found by running the generic/750 xfstest against cifs with
+> cache=none.  It splices data to the target file.  Once (if) it has used up
+> all the available scratch space, the writes start failing with ENOSPC.
+> This causes ->write_iter() to fail.  However, it was returning
+> wreq->transferred, i.e. LONG_MAX, rather than an error (because it thought
+> the amount transferred was non-zero) and iter_file_splice_write() would
+> then try to clean up that amount of pipe bufferage - leading to an oops
+> when it overran.  The kernel log showed:
+>
+>     CIFS: VFS: Send error in write = -28
+>
+> followed by:
+>
+>     BUG: kernel NULL pointer dereference, address: 0000000000000008
+>
+> with:
+>
+>     RIP: 0010:iter_file_splice_write+0x3a4/0x520
+>     do_splice+0x197/0x4e0
+>
+> or:
+>
+>     RIP: 0010:pipe_buf_release (include/linux/pipe_fs_i.h:282)
+>     iter_file_splice_write (fs/splice.c:755)
+>
+> Also put a warning check into splice to announce if ->write_iter() returned
+> that it had written more than it was asked to.
+>
+> Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
+> Reported-by: Xiaoli Feng <fengxiaoli0714@gmail.com>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220445
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> cc: Paulo Alcantara <pc@manguebit.org>
+> cc: Steve French <sfrench@samba.org>
+> cc: Shyam Prasad N <sprasad@microsoft.com>
+> cc: netfs@lists.linux.dev
+> cc: linux-cifs@vger.kernel.org
+> cc: linux-fsdevel@vger.kernel.org
+> cc: stable@vger.kernel.org
+> ---
+>  fs/netfs/read_collect.c  |    4 +++-
+>  fs/netfs/write_collect.c |   10 ++++++++--
+>  fs/netfs/write_issue.c   |    4 ++--
+>  fs/splice.c              |    3 +++
+>  include/linux/netfs.h    |    1 +
+>  5 files changed, 17 insertions(+), 5 deletions(-)
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
-
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
-
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
-
-[1/1] netfs: Fix unbuffered write error handling
-      https://git.kernel.org/vfs/vfs/c/a3de58b12ce0
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
