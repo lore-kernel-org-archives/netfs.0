@@ -1,200 +1,163 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BB91DFF7;
-	Mon, 18 Aug 2025 12:31:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84CD31B120
+	for <netfs@lists.linux.dev>; Mon, 18 Aug 2025 12:39:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755520304; cv=none; b=KuoElmUfutZScS/oZIHfAsj0bNolKItifviG/fgC5uyFsjMMiPttuf65Y6wKH2MCuAQIgVF/AJuJssja9yn5km+9uJcNnAGlZr7KlZeUZsDlG/G/9jUrCE8U+VVOnDFJ+RvobVDg5eY0yt0qbB075Y/+i5IVGM9wDf5MWncpRlk=
+	t=1755520776; cv=none; b=Re+QiItNC86Z13evtyVOWFytXQIeCGnq3DW9CpP8Pkcac66T8uVer2Zfv26sS4CJ+MB0E8C7tSoJ/vWJJeMcDS+7DmCZ+cPUo7AAnCzifqKlOnR70YEu0pm0MidZ2S+FN2NTK2eZS+w4aNmy+PhTRHqXWdxG6/gWM/GTlBEaLSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755520304; c=relaxed/simple;
-	bh=o13YTczrOR8+PBcBv6OfOSSvbKTPt/hylGNbx51WD8U=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=X14AopBL8Oh4LYVSIUD3HyiQ1yg+sLFIxlsRPGl4ZNC2MHhgk/RRZKBfAsuSvo/DuYaPbcEO7DSnS0nz9PTYUesasX5MrO/0vsSesGKlrZk1q0Z+6fYYOhjrxXoPPJWj/YMDBndtNCMOPd94YLU/5M+MbI/l52Vp8XJuYS0o4ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=edC7iv6m; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+	s=arc-20240116; t=1755520776; c=relaxed/simple;
+	bh=iRiQFMBV+DKdPhtateZaMw71WRCGXS+1o0qcYMlsaNw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BA/AuoVy7T1bDJcoXnCcE0sq46g/D68UrXpWiFGoFLeLKPR1hz4YxV5egp7PtAvV/pJrMGSrCuH1WnkzCg0fGnlvTTdGnL3Yt5kl/SGyyK0izEQvAe3BtwXrrdAkL4pZvpMSfkTIGeaF3se3zmzpNJQT7Xwd8cQ/BYd3CxgLodk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nY+CfWDp; arc=none smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="edC7iv6m"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Content-Transfer-Encoding:Content-Type
-	:MIME-Version:Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=+Qb6wR2wmBjm5bconVb2dcUjFmH9llOBrz6gr+Hrnqc=; b=edC7iv6m4s6mGqr8AxIKFTY9eD
-	sSVbF9zeRIsDE3Es2v/4HVcZukJVbVfeE0sQ0k1D2ZjLkE40tlSNAv/r3k2FEjqdqw3YTL0q4SQQy
-	MHQFWke79M/t36LOldmhP2bLsnhTsKm+79K2IIg3tfdJKnHCWmtNCe3yn9FcSIgIGdCy1eDw7tRq8
-	wKjezO8Tm3En8hQtXr76qfb+5Vkm2NYzcTDEsUo/TWDLsYcorH0x1A3WPM1/xuFapPN9IQPkMWTmG
-	mlObonBKPZE342GR6KuazT+O3oSgkNc1jQJqAKMke1/sMi2J/2orat2EYblCkAJWWm4wfV4+Mo0jh
-	d/am+J7g==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <carnil@debian.org>)
-	id 1unz1P-007D2K-PY; Mon, 18 Aug 2025 12:31:31 +0000
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id CA126BE2DE0; Mon, 18 Aug 2025 14:31:30 +0200 (CEST)
-Date: Mon, 18 Aug 2025 14:31:30 +0200
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Max Kellermann <max.kellermann@ionos.com>,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>, netfs@lists.linux.dev
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Benoit Panizzon <bp@imp.ch>, 1111455@bugs.debian.org,
-	stable@vger.kernel.org, regressions@lists.linux.dev
-Subject: [bp@imp.ch: Bug#1111455: linux-image-6.12.41+deb13-amd64: kernel BUG
- at fs/netfs/read_collect.c:316 netfs: Can't donate prior to front]
-Message-ID: <aKMdIgkSWw9koCPC@eldamar.lan>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nY+CfWDp"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6188b5ad681so5713375a12.0
+        for <netfs@lists.linux.dev>; Mon, 18 Aug 2025 05:39:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755520773; x=1756125573; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ubbjo8h4cvXI+kpbxgHKGsgNRSO5oS6kJQNOdicLg+U=;
+        b=nY+CfWDpLILdGT/w0qWgmj6VJ2PqGmuP2ij4FMuRQTkUIW3bj297hqBjW7luJvA0od
+         K7+mioblLS32zJA4ya6yds8QJ2Btr042Ovu1nSrqY1rIpJiTLj6vvzl26Ch26Ec0Rdgl
+         KWMDRRLRsisp4JZQtN60OzalaOIwlDJ452Thc2N63J2DwUTgN1mwQxEE52N5+dOFQtTe
+         4eGqKqnglG9n06Nw7RPGxlMAb6UIw5YRvveGj+9paMKjI40vwetMi7TUbIanmQlam8JK
+         8L3mmMDQGlH6KRkrc+fQJNAgACyNXl6YZQRK05jtighxjwYktWVqd8R7R0E6tpow3Wim
+         i/gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755520773; x=1756125573;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ubbjo8h4cvXI+kpbxgHKGsgNRSO5oS6kJQNOdicLg+U=;
+        b=IKjRVdeTJPYPecaS9aX6RkGFee07yoAEf/dlQUrSyMJAk/wZqd/dwZNarMPSIqr0rw
+         kD2qZB2i0FfS+FYcFeocp37zjWw4OTpUZX7yiCCGnl2lYqwMsU6xmxsgD9HZFb1ipv3t
+         j1kGDvwne8Ddi01sSWGVIhxX7F1VfOZuGhgYX0qEsgbwy+XHSssxcofp953ZpCIos3Rz
+         mO5CJ2hPwsxDcND7qGVauaA58Ka/092gFT3Vu1/jWlRZ+cghqRXl066q2B+/n2XNHNhI
+         gxJGbELwy2WVZ9fdpAsV7nme6GoeuFw1lDk5asgwRg2I0Hlh4TVobee0JeLaztmiawb2
+         tOiw==
+X-Forwarded-Encrypted: i=1; AJvYcCVQZ6GmDh5mKE3mzX1lMvy2Bif0ZA2+QiEpLYynzdfrWF3fHU3QjfR9ZLTO2i2/NCo5BuXt/Q==@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxwm37eb1G9G63MIvcCtnPj/0o5PJPb4mxS9uCYtGriiWxYXefE
+	+UgY56Tl3AgcNUzKbY/HZ+NtT/c3sNLyg96sgvsXcZ9PlO880PaivtHDCRzaIJtTr/jbVN2yBQd
+	Lxd7oPRomLs4ZLK9fARrENlymPVZ8EvE=
+X-Gm-Gg: ASbGncs8du1kguO15UmP1oCLb0u/as8GVtSv9IW78Dq1gAhsh2Ljsm9YOo+ULWBPCb4
+	vWfgg9j+puYyIjxyhUQS3h7AIpegv62BxOd5TUaos2FGQ879O8ZsTSkTwroy0fh+ol+ZAbITHsb
+	k79KXE4h5ZvUUCr0bBwXHi5q6Oy3mBOT128eeqZoYu1/9UoZDFQc9qZAg2XkdZfC2fOUXDQ/bst
+	V4p4NQ=
+X-Google-Smtp-Source: AGHT+IHreI+It7iS6Rfr+brWbz70Us6HtoYs+C56L+JOM9s0ucMSXKqtnWOloo9akQbTFfs/x14TcE577HD2A1hPXyo=
+X-Received: by 2002:a05:6402:278f:b0:612:d3cf:d1e4 with SMTP id
+ 4fb4d7f45d1cf-619b707c2a0mr6715378a12.8.1755520772728; Mon, 18 Aug 2025
+ 05:39:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20250812235228.3072318-1-neil@brown.name> <20250812235228.3072318-5-neil@brown.name>
+In-Reply-To: <20250812235228.3072318-5-neil@brown.name>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Mon, 18 Aug 2025 14:39:21 +0200
+X-Gm-Features: Ac12FXwaOAmOjlUtH5bpB7wOuhOZPTQBUdVvt2kp3aUZBDH4-UANLHNzz7IOKqs
+Message-ID: <CAOQ4uxjFPOZe004Cv+tT=NyQg2JOY6MOYQniSjaefVcg+3s-Kg@mail.gmail.com>
+Subject: Re: [PATCH 04/11] VFS: introduce dentry_lookup_continue()
+To: NeilBrown <neil@brown.name>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>, 
+	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>, Tyler Hicks <code@tyhicks.com>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Richard Weinberger <richard@nod.at>, 
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+	Chuck Lever <chuck.lever@oracle.com>, Jeff Layton <jlayton@kernel.org>, 
+	Steve French <sfrench@samba.org>, Namjae Jeon <linkinjeon@kernel.org>, 
+	Carlos Maiolino <cem@kernel.org>, linux-fsdevel@vger.kernel.org, 
+	linux-afs@lists.infradead.org, netfs@lists.linux.dev, 
+	ceph-devel@vger.kernel.org, ecryptfs@vger.kernel.org, 
+	linux-um@lists.infradead.org, linux-nfs@vger.kernel.org, 
+	linux-unionfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
+	linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Debian-User: carnil
 
-Hi,
+On Wed, Aug 13, 2025 at 1:53=E2=80=AFAM NeilBrown <neil@brown.name> wrote:
+>
+> A few callers operate on a dentry which they already have - unlike the
+> normal case where a lookup proceeds an operation.
+>
+> For these callers dentry_lookup_continue() is provided where other
+> callers would use dentry_lookup().  The call will fail if, after the
+> lock was gained, the child is no longer a child of the given parent.
+>
+> There are a couple of callers that want to lock a dentry in whatever
+> its current parent is.  For these a NULL parent can be passed, in which
+> case ->d_parent is used.  In this case the call cannot fail.
+>
+> The idea behind the name is that the actual lookup occurred some time
+> ago, and now we are continuing with an operation on the dentry.
+>
+> When the operation completes done_dentry_lookup() must be called.  An
+> extra reference is taken when the dentry_lookup_continue() call succeeds
+> and will be dropped by done_dentry_lookup().
+>
+> This will be used in smb/server, ecryptfs, and overlayfs, each of which
+> have their own lock_parent() or parent_lock() or similar; and a few
+> other places which lock the parent but don't check if the parent is
+> still correct (often because rename isn't supported so parent cannot be
+> incorrect).
+>
+> Signed-off-by: NeilBrown <neil@brown.name>
+> ---
+>  fs/namei.c            | 39 +++++++++++++++++++++++++++++++++++++++
+>  include/linux/namei.h |  2 ++
+>  2 files changed, 41 insertions(+)
+>
+> diff --git a/fs/namei.c b/fs/namei.c
+> index 7af9b464886a..df21b6fa5a0e 100644
+> --- a/fs/namei.c
+> +++ b/fs/namei.c
+> @@ -1874,6 +1874,45 @@ struct dentry *dentry_lookup_killable(struct mnt_i=
+dmap *idmap,
+>  }
+>  EXPORT_SYMBOL(dentry_lookup_killable);
+>
+> +/**
+> + * dentry_lookup_continue: lock a dentry if it is still in the given par=
+ent, prior to dir ops
+> + * @child: the dentry to lock
+> + * @parent: the dentry of the assumed parent
+> + *
+> + * The child is locked - currently by taking i_rwsem on the parent - to
+> + * prepare for create/remove operations.  If the given parent is not
+> + * %NULL and is no longer the parent of the dentry after the lock is
+> + * gained, the lock is released and the call fails (returns
+> + * ERR_PTR(-EINVAL).
+> + *
+> + * On success a reference to the child is taken and returned.  The lock
+> + * and reference must both be dropped by done_dentry_lookup() after the
+> + * operation completes.
+> + */
+> +struct dentry *dentry_lookup_continue(struct dentry *child,
+> +                                     struct dentry *parent)
+> +{
+> +       struct dentry *p =3D parent;
+> +
+> +again:
+> +       if (!parent)
+> +               p =3D dget_parent(child);
+> +       inode_lock_nested(d_inode(p), I_MUTEX_PARENT);
+> +       if (child->d_parent !=3D p) {
 
-A user in Debian reported the following kernel oops when running on
-6.12.41 (but apparently as well on older versions, though there were
-several netfs related similar issues, so including Max Kellermann as
-well in the recipients)
+|| d_unhashed(child))
 
-The report from Benoit Panizzon is as follows:
+;)
 
-> From: Benoit Panizzon <bp@imp.ch>
-> Resent-From: Benoit Panizzon <bp@imp.ch>
-> Reply-To: Benoit Panizzon <bp@imp.ch>, 1111455@bugs.debian.org
-> X-Mailer: reportbug 13.2.0
-> Date: Mon, 18 Aug 2025 10:24:32 +0200
-> To: Debian Bug Tracking System <submit@bugs.debian.org>
-> Subject: Bug#1111455: linux-image-6.12.41+deb13-amd64: kernel BUG at fs/n=
-etfs/read_collect.c:316 netfs: Can't donate
-> 	prior to front
-> Delivered-To: lists-debian-kernel@bendel.debian.org
-> Delivered-To: submit@bugs.debian.org
-> Message-ID: <175550547264.3745.5845128440223069497.reportbug@go.imp.ch>
->=20
-> Package: src:linux
-> Version: 6.12.41-1
-> Severity: grave
-> Justification: renders package unusable
-> X-Debbugs-Cc: debian-amd64@lists.debian.org
-> User: debian-amd64@lists.debian.org
-> Usertags: amd64
->=20
-> Dear Maintainer,
->=20
-> Updated my workstation from Bookworm to Trixie. /home on NFS
->=20
-> Applications accessing data on NFS shares become unresponsive one after t=
-he other after a couple of minutes.
->=20
-> Especially affected:
-> * Claws-Mail
-> * Chromium
->=20
-> Suspected cachefsd being the culpit and disabled - issue persists.
->=20
-> It looks like an invalid opcode is being used. Fairly recent CPU in use:
->=20
-> vendor_id	: AuthenticAMD
-> cpu family	: 25
-> model		: 80
-> model name	: AMD Ryzen 7 PRO 5750GE with Radeon Graphics
-> stepping	: 0
-> microcode	: 0xa500011
->=20
-> Google found reports of others affected with similar kernel versions most=
-ly when accessing SMB shares.
->=20
-> [Mo Aug 18 10:11:19 2025] netfs: Can't donate prior to front
-> [Mo Aug 18 10:11:19 2025] R=3D00001e07[4] s=3D6000-7fff 0/2000/2000
-> [Mo Aug 18 10:11:19 2025] folio: 4000-7fff
-> [Mo Aug 18 10:11:19 2025] donated: prev=3D0 next=3D0
-> [Mo Aug 18 10:11:19 2025] s=3D6000 av=3D2000 part=3D2000
-> [Mo Aug 18 10:11:19 2025] ------------[ cut here ]------------
-> [Mo Aug 18 10:11:19 2025] kernel BUG at fs/netfs/read_collect.c:316!
-> [Mo Aug 18 10:11:19 2025] Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOP=
-TI
-> [Mo Aug 18 10:11:19 2025] CPU: 5 UID: 0 PID: 115 Comm: kworker/u64:1 Not =
-tainted 6.12.41+deb13-amd64 #1  Debian 6.12.41-1
-> [Mo Aug 18 10:11:19 2025] Hardware name: LENOVO 11JN000JGE/32E4, BIOS M47=
-KT26A 11/23/2022
-> [Mo Aug 18 10:11:19 2025] Workqueue: nfsiod rpc_async_release [sunrpc]
-> [Mo Aug 18 10:11:19 2025] RIP: 0010:netfs_consume_read_data.isra.0+0xb79/=
-0xb80 [netfs]
-> [Mo Aug 18 10:11:19 2025] Code: 48 89 ea 31 f6 48 c7 c7 96 95 6f c2 e8 d0=
- 8d a2 e1 48 8b 4c 24 10 4c 89 fe 48 8b 54 24 20 48 c7 c7 b2 95 6f c2 e8 b7=
- 8d a2 e1 <0f> 0b 90 0f 1f 40 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 =
-90
-> [Mo Aug 18 10:11:19 2025] RSP: 0018:ffffb4234057bd58 EFLAGS: 00010246
-> [Mo Aug 18 10:11:19 2025] RAX: 0000000000000018 RBX: ffff9aed62651ec0 RCX=
-: 0000000000000027
-> [Mo Aug 18 10:11:19 2025] RDX: 0000000000000000 RSI: 0000000000000001 RDI=
-: ffff9af04e4a1740
-> [Mo Aug 18 10:11:19 2025] RBP: 0000000000000000 R08: 0000000000000000 R09=
-: ffffb4234057bbe8
-> [Mo Aug 18 10:11:19 2025] R10: ffffffffa50b43a8 R11: 0000000000000003 R12=
-: ffff9aed6c9081e8
-> [Mo Aug 18 10:11:19 2025] R13: 0000000000004000 R14: ffff9aed6c9081e8 R15=
-: 0000000000006000
-> [Mo Aug 18 10:11:19 2025] FS:  0000000000000000(0000) GS:ffff9af04e480000=
-(0000) knlGS:0000000000000000
-> [Mo Aug 18 10:11:19 2025] CS:  0010 DS: 0000 ES: 0000 CR0: 00000000800500=
-33
-> [Mo Aug 18 10:11:19 2025] CR2: 00003d3407849020 CR3: 00000002f1822000 CR4=
-: 0000000000f50ef0
-> [Mo Aug 18 10:11:19 2025] PKRU: 55555554
-> [Mo Aug 18 10:11:19 2025] Call Trace:
-> [Mo Aug 18 10:11:19 2025]  <TASK>
-> [Mo Aug 18 10:11:19 2025]  netfs_read_subreq_terminated+0x2ab/0x3e0 [netf=
-s]
-> [Mo Aug 18 10:11:19 2025]  nfs_netfs_read_completion+0x9c/0xc0 [nfs]
-> [Mo Aug 18 10:11:19 2025]  nfs_read_completion+0xf6/0x130 [nfs]
-> [Mo Aug 18 10:11:19 2025]  rpc_free_task+0x39/0x60 [sunrpc]
-> [Mo Aug 18 10:11:19 2025]  rpc_async_release+0x2f/0x40 [sunrpc]
-> [Mo Aug 18 10:11:19 2025]  process_one_work+0x177/0x330
-> [Mo Aug 18 10:11:19 2025]  worker_thread+0x251/0x390
-> [Mo Aug 18 10:11:19 2025]  ? __pfx_worker_thread+0x10/0x10
-> [Mo Aug 18 10:11:19 2025]  kthread+0xd2/0x100
-> [Mo Aug 18 10:11:19 2025]  ? __pfx_kthread+0x10/0x10
-> [Mo Aug 18 10:11:19 2025]  ret_from_fork+0x34/0x50
-> [Mo Aug 18 10:11:19 2025]  ? __pfx_kthread+0x10/0x10
-> [Mo Aug 18 10:11:19 2025]  ret_from_fork_asm+0x1a/0x30
-> [Mo Aug 18 10:11:19 2025]  </TASK>
-> [Mo Aug 18 10:11:19 2025] Modules linked in: nfsv3 rpcsec_gss_krb5 nfsv4 =
-dns_resolver nfs netfs nft_chain_nat xt_MASQUERADE nf_nat nf_conntrack nf_d=
-efrag_ipv6 nf_defrag_ipv4 nft_compat nf_tables libcrc32c wireguard libchach=
-a20poly1305 chacha_x86_64 poly1305_x86_64 curve25519_x86_64 libcurve25519_g=
-eneric libchacha vxlan ip6_udp_tunnel udp_tunnel bridge stp llc btusb btrtl=
- btintel btbcm btmtk bluetooth joydev qrtr nfsd auth_rpcgss binfmt_misc nfs=
-_acl lockd grace nls_ascii nls_cp437 sunrpc vfat fat amd_atl intel_rapl_msr=
- intel_rapl_common rtw88_8822ce rtw88_8822c edac_mce_amd rtw88_pci snd_sof_=
-amd_rembrandt snd_sof_amd_acp rtw88_core kvm_amd snd_sof_pci snd_sof_xtensa=
-_dsp snd_sof snd_hda_codec_realtek mac80211 kvm snd_hda_codec_generic snd_s=
-of_utils snd_hda_scodec_component snd_soc_core snd_hda_codec_hdmi snd_hda_i=
-ntel snd_compress snd_intel_dspcfg libarc4 snd_pcm_dmaengine irqbypass snd_=
-intel_sdw_acpi snd_pci_ps crct10dif_pclmul snd_hda_codec ghash_clmulni_inte=
-l snd_rpl_pci_acp6x cfg80211 snd_hda_core sha512_ssse3 snd_acp_pci
-> [Mo Aug 18 10:11:19 2025]  sha256_ssse3 snd_acp_legacy_common sha1_ssse3 =
-snd_hwdep snd_pci_acp6x aesni_intel snd_pcm gf128mul snd_pci_acp5x crypto_s=
-imd think_lmi snd_timer snd_rn_pci_acp3x cryptd firmware_attributes_class s=
-nd_acp_config wmi_bmof snd snd_soc_acpi ee1004 rapl snd_pci_acp3x pcspkr cc=
-p k10temp rfkill soundcore evdev parport_pc ppdev lp parport configfs efi_p=
-store nfnetlink efivarfs ip_tables x_tables autofs4 ext4 mbcache jbd2 crc32=
-c_generic hid_plantronics hid_generic usbhid hid amdgpu dm_mod amdxcp drm_e=
-xec gpu_sched drm_buddy i2c_algo_bit drm_suballoc_helper drm_display_helper=
- cec rc_core drm_ttm_helper xhci_pci ttm xhci_hcd drm_kms_helper drm r8169 =
-nvme usbcore realtek sp5100_tco nvme_core mdio_devres watchdog libphy crc32=
-_pclmul i2c_piix4 video crc32c_intel usb_common nvme_auth i2c_smbus crc16 w=
-mi button
-> [Mo Aug 18 10:11:19 2025] ---[ end trace 0000000000000000 ]---
+and what about silly renames? are those also d_unhashed()?
 
-Any ideas here? Benoit can you please es well test the current 6.16.1
-ideally to verify if the problem persists there as well?
-
-Regards,
-Salvatore
+Thanks,
+Amir.
