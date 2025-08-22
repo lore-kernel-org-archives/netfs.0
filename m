@@ -1,68 +1,60 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48AC131CA6E;
-	Thu, 21 Aug 2025 12:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28BD92652B4;
+	Fri, 22 Aug 2025 03:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755780769; cv=none; b=KBO7aV3KJTPTdDK0sdpo0hGzcGuVf4iXxHZHkuB1Nc8Wwf4svqrpuwvbHxfmI7ovuYbGCxt2TbdmWBMmXoJstNuqFOS3lA3Yjo1eSiSZzEBRLuLWQzRq6WSYy8FQzzb2zYKXzUByxpFsAufaHoQ0iddrrKWkrs5sHCuRb99Xwgo=
+	t=1755832084; cv=none; b=erxwrKxigNrMCX/7tYXeO0K1diU7JsUWvZwA/PHT1PfRUlYDbXVQlmZLWhkVe7eS6MYmpHFCYxvdzOsSU1SjfQpUzk3NKh7SzEX2Hqr4emB2wK+uVRxNf4BlcrzJs8oeova21l5rThgdO71/NerImhmxVF4qIviT5q4OGjTaUMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755780769; c=relaxed/simple;
-	bh=VUdq9kxgH5EdBPdiXDUFgk3xyBD4ESffuBhxIhRahrM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=JkgUTLJUCwQDb75VKW7KusuGe3QNQJ1kX4M1/duwkN8njHh/LSMzj0evjUrMIAR5h6RXNj1Ftf0IIBuEnSbzgXML6c9bnUOdysbf7vmOnT1K+Rc3ShJJHc0w3dEcMTpkksAFX4WjA+EwbDBigB1qOo2NZV20kb/KKv7u32TJsAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BFhSA9Ah; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1755832084; c=relaxed/simple;
+	bh=SCWJsd9vjE1VJ9L3wefl1VGRbBT52yKi9plp6KLTV/M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pemkkggPRbPeP8RGGkaO9Pgfy+KK3/FagthQ0cXR9uA28eOkU79IEJJKmDwyeD1QZl8ca2m/A0guWEihPUfnjA0YQogsFtzMLMrRQXJxjF1/H/C8hxSaxZ2siNlc/SIBjO+pXFt2xqSFcpd/JzJp6Fg69UKGFKgZC4e3PTbzohI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pq826WrM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BFhSA9Ah"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C161EC113D0;
-	Thu, 21 Aug 2025 12:52:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755780769;
-	bh=VUdq9kxgH5EdBPdiXDUFgk3xyBD4ESffuBhxIhRahrM=;
-	h=Subject:To:Cc:From:Date:From;
-	b=BFhSA9AhUhi93+7BHkMdaYnd2Tnk/FQKsq2xn9SDS9XnUFkqGusy1dzx3n/L9Evlq
-	 mX+BD+HMEMt5O2QvJxSrykdjvNpyyUBikOhXLydxCAmFKGonja2r9PahFswdPObQz5
-	 MnkGoApAIjcJWphw6ME83wy60QR8JwHWaIXkG9hA=
-Subject: Patch "netfs: Fix unbuffered write error handling" has been added to the 6.16-stable tree
-To: brauner@kernel.org,dhowells@redhat.com,fengxiaoli0714@gmail.com,gregkh@linuxfoundation.org,netfs@lists.linux.dev,pc@manguebit.org,sfrench@samba.org,sprasad@microsoft.com
-Cc: <stable-commits@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 21 Aug 2025 14:50:13 +0200
-Message-ID: <2025082113-passenger-steed-0d63@gregkh>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pq826WrM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1398C4CEEB;
+	Fri, 22 Aug 2025 03:08:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755832084;
+	bh=SCWJsd9vjE1VJ9L3wefl1VGRbBT52yKi9plp6KLTV/M=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=pq826WrMct/ELjpuRCD360hXL5d6eRZjJlhvi1ZvcFso6C915lRq4I8Y/MQvxFvuk
+	 c61/R4JqIAiKBru31s6kf8r+L9NUyoUKZCg6JNEZe0OcRQuHHIMqM/76MFRuT22g53
+	 EvSqtDBdC+41GoPOdTB132X/U0RD6+K8MlKPfINpB+ZXjeAXb553Z4Sm5j5PG3Gy3X
+	 lC1UGWW/biRSQpqlW/VV98IVGwveT907OhGljIOMQ0ZFb9OvETPWO4iIzZwUjETta/
+	 neRSqnMgpnVKPZyGmhuL1i4ab5jXoogzvcbjqSkVXHBUNsTIryEqKRjwSDMQcl9deU
+	 FAFNC8olFBgiQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: David Howells <dhowells@redhat.com>,
+	Xiaoli Feng <fengxiaoli0714@gmail.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Steve French <sfrench@samba.org>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	netfs@lists.linux.dev,
+	linux-cifs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y] netfs: Fix unbuffered write error handling
+Date: Thu, 21 Aug 2025 23:08:00 -0400
+Message-ID: <20250822030800.1054685-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <2025082157-dedicator-hurled-4d65@gregkh>
+References: <2025082157-dedicator-hurled-4d65@gregkh>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-stable: commit
-X-Patchwork-Hint: ignore 
-
-
-This is a note to let you know that I've just added the patch titled
-
-    netfs: Fix unbuffered write error handling
-
-to the 6.16-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-
-The filename of the patch is:
-     netfs-fix-unbuffered-write-error-handling.patch
-and it can be found in the queue-6.16 subdirectory.
-
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
-
-
-From a3de58b12ce074ec05b8741fa28d62ccb1070468 Mon Sep 17 00:00:00 2001
-From: David Howells <dhowells@redhat.com>
-Date: Thu, 14 Aug 2025 22:45:50 +0100
-Subject: netfs: Fix unbuffered write error handling
 
 From: David Howells <dhowells@redhat.com>
 
-commit a3de58b12ce074ec05b8741fa28d62ccb1070468 upstream.
+[ Upstream commit a3de58b12ce074ec05b8741fa28d62ccb1070468 ]
 
 If all the subrequests in an unbuffered write stream fail, the subrequest
 collector doesn't update the stream->transferred value and it retains its
@@ -119,32 +111,20 @@ cc: linux-cifs@vger.kernel.org
 cc: linux-fsdevel@vger.kernel.org
 cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ Dropped read_collect.c hunk ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/read_collect.c  |    4 +++-
- fs/netfs/write_collect.c |   10 ++++++++--
- fs/netfs/write_issue.c   |    4 ++--
- fs/splice.c              |    3 +++
- include/linux/netfs.h    |    1 +
- 5 files changed, 17 insertions(+), 5 deletions(-)
+ fs/netfs/write_collect.c | 10 ++++++++--
+ fs/netfs/write_issue.c   |  4 ++--
+ fs/splice.c              |  3 +++
+ include/linux/netfs.h    |  1 +
+ 4 files changed, 14 insertions(+), 4 deletions(-)
 
---- a/fs/netfs/read_collect.c
-+++ b/fs/netfs/read_collect.c
-@@ -281,8 +281,10 @@ reassess:
- 		} else if (test_bit(NETFS_RREQ_SHORT_TRANSFER, &rreq->flags)) {
- 			notes |= MADE_PROGRESS;
- 		} else {
--			if (!stream->failed)
-+			if (!stream->failed) {
- 				stream->transferred += transferred;
-+				stream->transferred_valid = true;
-+			}
- 			if (front->transferred < front->len)
- 				set_bit(NETFS_RREQ_SHORT_TRANSFER, &rreq->flags);
- 			notes |= MADE_PROGRESS;
+diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
+index a968688a7323..c349867d74c3 100644
 --- a/fs/netfs/write_collect.c
 +++ b/fs/netfs/write_collect.c
-@@ -254,6 +254,7 @@ reassess_streams:
+@@ -433,6 +433,7 @@ static void netfs_collect_write_results(struct netfs_io_request *wreq)
  			if (front->start + front->transferred > stream->collected_to) {
  				stream->collected_to = front->start + front->transferred;
  				stream->transferred = stream->collected_to - wreq->start;
@@ -152,18 +132,18 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  				notes |= MADE_PROGRESS;
  			}
  			if (test_bit(NETFS_SREQ_FAILED, &front->flags)) {
-@@ -356,6 +357,7 @@ bool netfs_write_collection(struct netfs
- {
+@@ -538,6 +539,7 @@ void netfs_write_collection_worker(struct work_struct *work)
+ 	struct netfs_io_request *wreq = container_of(work, struct netfs_io_request, work);
  	struct netfs_inode *ictx = netfs_inode(wreq->inode);
  	size_t transferred;
 +	bool transferred_valid = false;
  	int s;
  
  	_enter("R=%x", wreq->debug_id);
-@@ -376,12 +378,16 @@ bool netfs_write_collection(struct netfs
- 			continue;
- 		if (!list_empty(&stream->subrequests))
- 			return false;
+@@ -568,12 +570,16 @@ void netfs_write_collection_worker(struct work_struct *work)
+ 			netfs_put_request(wreq, false, netfs_rreq_trace_put_work);
+ 			return;
+ 		}
 -		if (stream->transferred < transferred)
 +		if (stream->transferred_valid &&
 +		    stream->transferred < transferred) {
@@ -179,9 +159,11 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	trace_netfs_rreq(wreq, netfs_rreq_trace_write_done);
  
  	if (wreq->io_streams[1].active &&
+diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
+index bf6d507578e5..b7830a15ae40 100644
 --- a/fs/netfs/write_issue.c
 +++ b/fs/netfs/write_issue.c
-@@ -118,12 +118,12 @@ struct netfs_io_request *netfs_create_wr
+@@ -115,12 +115,12 @@ struct netfs_io_request *netfs_create_write_req(struct address_space *mapping,
  	wreq->io_streams[0].prepare_write	= ictx->ops->prepare_write;
  	wreq->io_streams[0].issue_write		= ictx->ops->issue_write;
  	wreq->io_streams[0].collected_to	= start;
@@ -196,9 +178,11 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	if (fscache_resources_valid(&wreq->cache_resources)) {
  		wreq->io_streams[1].avail	= true;
  		wreq->io_streams[1].active	= true;
+diff --git a/fs/splice.c b/fs/splice.c
+index 38f8c9426731..ed8177f6d620 100644
 --- a/fs/splice.c
 +++ b/fs/splice.c
-@@ -739,6 +739,9 @@ iter_file_splice_write(struct pipe_inode
+@@ -744,6 +744,9 @@ iter_file_splice_write(struct pipe_inode_info *pipe, struct file *out,
  		sd.pos = kiocb.ki_pos;
  		if (ret <= 0)
  			break;
@@ -208,6 +192,8 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  		sd.num_spliced += ret;
  		sd.total_len -= ret;
+diff --git a/include/linux/netfs.h b/include/linux/netfs.h
+index 474481ee8b7c..83d313718cd5 100644
 --- a/include/linux/netfs.h
 +++ b/include/linux/netfs.h
 @@ -150,6 +150,7 @@ struct netfs_io_stream {
@@ -218,8 +204,6 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  };
  
  /*
+-- 
+2.50.1
 
-
-Patches currently in stable-queue which might be from dhowells@redhat.com are
-
-queue-6.16/netfs-fix-unbuffered-write-error-handling.patch
