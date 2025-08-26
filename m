@@ -1,28 +1,28 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25173346A07;
-	Tue, 26 Aug 2025 11:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71AD8283FDF;
+	Tue, 26 Aug 2025 11:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756207096; cv=none; b=baABdjtWfanX/8bkVKkIHBaOEWtBJSEtwBF330BCGZP4No0qs4jwfOqAHIesoDh3NhePSV+jxVvG+FFRe/XyFaE8Fnw9mcEKn5wOqpAeZGVcFttTxwhXuzOfdSKVQOhHf58CiD6J2H7376qpU9SET1nnAvtWi1ZZVgPWZLJgrcw=
+	t=1756208561; cv=none; b=X/gMA8IxL5zWLhONwg9c29sb/pCJR7pFfuk4RbrbcxreY9wHroluUxKS7PyJvDLxQH7A/r7rbvLLh9z9t4nr2VUkA9YvCzuI3CJ+s23qx7OOPW1ml9T2Zgw3GjhxygXMBIiXY4K7mEYZdijAqdC0gPUx0tNopmG1mR+jO69BV9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756207096; c=relaxed/simple;
-	bh=Y7AwznA5BMvQAxHYM2NsSWm1PH3p4s+aHTL24ME0qOs=;
+	s=arc-20240116; t=1756208561; c=relaxed/simple;
+	bh=O4ilg1ofWDSjuj/rNuWc7ORpM+wszMRU9S7La3OFnpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ui3ERWmM6BKL8j4KfqXFWAW97n2KmsiyJ4Q7GwUwSRkbTWUUYv7teSidLOIDzCQi62r5oTAh95Da6GsaW0978ovCuTF6KTZFz9ZLDeJ/BEHcVTSZuygTNQjHAxIeQ38oGGJw0OoYTtVC6piXZtLTaR6IGYrDsOGg5TIgzELCHjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AdFVZWzb; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=uiHtvUTx6PMp1mF1VdyNErgPrSSEUsz9BH/pSO1dy33aPXTF7FBS7FO9MXlspdp4zZqShuyiq0KVLFOiASAtvfGfWnnbvfWHjFedZW+6+nFwie4cL5b86BSyL7JIMJC2qYFkj6YP+5QEqy2LlNg72FInN7MWhCVQ0xW0n9p9G/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0IcShUiI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AdFVZWzb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B3E3C113CF;
-	Tue, 26 Aug 2025 11:18:15 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0IcShUiI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C137BC113CF;
+	Tue, 26 Aug 2025 11:42:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756207096;
-	bh=Y7AwznA5BMvQAxHYM2NsSWm1PH3p4s+aHTL24ME0qOs=;
+	s=korg; t=1756208561;
+	bh=O4ilg1ofWDSjuj/rNuWc7ORpM+wszMRU9S7La3OFnpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AdFVZWzbB3UgBrY4i6jz0ESHryU2y3rEnpCBZxXBX9EG8iAEFK4KLm3aHPmCYTQLS
-	 OKZp9MIevUY3d/bBFkHYxHCqE8mBKCwSYrtjFgIpu8TJD73lT4fzCCxNr5Y89c18Y4
-	 o29Np7H/ncqb5uy7PlbkQXcCOovuw4E2AsR3iy1Q=
+	b=0IcShUiIAk3SHPTiazIopS5Q6E30InM7jNMhlYO8I96FtIvWD522ACrrIJ9IjdaAB
+	 K9ZQ2Lq1TGM1b4902VAJ7/WFCc9NkGnzGdOn2h/qWXjMAVXObtxw8eghabtqnQD+fi
+	 u2zTR/SG/lVGyhnq39B31ZOrRoElmoAvGn3tabws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -35,13 +35,14 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	netfs@lists.linux.dev,
 	linux-cifs@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.16 019/457] netfs: Fix unbuffered write error handling
-Date: Tue, 26 Aug 2025 13:05:03 +0200
-Message-ID: <20250826110937.803379923@linuxfoundation.org>
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 158/322] netfs: Fix unbuffered write error handling
+Date: Tue, 26 Aug 2025 13:09:33 +0200
+Message-ID: <20250826110919.721484270@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-References: <20250826110937.289866482@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+References: <20250826110915.169062587@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,13 +54,13 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: David Howells <dhowells@redhat.com>
 
-commit a3de58b12ce074ec05b8741fa28d62ccb1070468 upstream.
+[ Upstream commit a3de58b12ce074ec05b8741fa28d62ccb1070468 ]
 
 If all the subrequests in an unbuffered write stream fail, the subrequest
 collector doesn't update the stream->transferred value and it retains its
@@ -116,32 +117,19 @@ cc: linux-cifs@vger.kernel.org
 cc: linux-fsdevel@vger.kernel.org
 cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner <brauner@kernel.org>
+[ Dropped read_collect.c hunk ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/netfs/read_collect.c  |    4 +++-
  fs/netfs/write_collect.c |   10 ++++++++--
  fs/netfs/write_issue.c   |    4 ++--
  fs/splice.c              |    3 +++
  include/linux/netfs.h    |    1 +
- 5 files changed, 17 insertions(+), 5 deletions(-)
+ 4 files changed, 14 insertions(+), 4 deletions(-)
 
---- a/fs/netfs/read_collect.c
-+++ b/fs/netfs/read_collect.c
-@@ -281,8 +281,10 @@ reassess:
- 		} else if (test_bit(NETFS_RREQ_SHORT_TRANSFER, &rreq->flags)) {
- 			notes |= MADE_PROGRESS;
- 		} else {
--			if (!stream->failed)
-+			if (!stream->failed) {
- 				stream->transferred += transferred;
-+				stream->transferred_valid = true;
-+			}
- 			if (front->transferred < front->len)
- 				set_bit(NETFS_RREQ_SHORT_TRANSFER, &rreq->flags);
- 			notes |= MADE_PROGRESS;
 --- a/fs/netfs/write_collect.c
 +++ b/fs/netfs/write_collect.c
-@@ -254,6 +254,7 @@ reassess_streams:
+@@ -433,6 +433,7 @@ reassess_streams:
  			if (front->start + front->transferred > stream->collected_to) {
  				stream->collected_to = front->start + front->transferred;
  				stream->transferred = stream->collected_to - wreq->start;
@@ -149,18 +137,18 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  				notes |= MADE_PROGRESS;
  			}
  			if (test_bit(NETFS_SREQ_FAILED, &front->flags)) {
-@@ -356,6 +357,7 @@ bool netfs_write_collection(struct netfs
- {
+@@ -538,6 +539,7 @@ void netfs_write_collection_worker(struc
+ 	struct netfs_io_request *wreq = container_of(work, struct netfs_io_request, work);
  	struct netfs_inode *ictx = netfs_inode(wreq->inode);
  	size_t transferred;
 +	bool transferred_valid = false;
  	int s;
  
  	_enter("R=%x", wreq->debug_id);
-@@ -376,12 +378,16 @@ bool netfs_write_collection(struct netfs
- 			continue;
- 		if (!list_empty(&stream->subrequests))
- 			return false;
+@@ -568,12 +570,16 @@ void netfs_write_collection_worker(struc
+ 			netfs_put_request(wreq, false, netfs_rreq_trace_put_work);
+ 			return;
+ 		}
 -		if (stream->transferred < transferred)
 +		if (stream->transferred_valid &&
 +		    stream->transferred < transferred) {
@@ -178,7 +166,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	if (wreq->io_streams[1].active &&
 --- a/fs/netfs/write_issue.c
 +++ b/fs/netfs/write_issue.c
-@@ -118,12 +118,12 @@ struct netfs_io_request *netfs_create_wr
+@@ -115,12 +115,12 @@ struct netfs_io_request *netfs_create_wr
  	wreq->io_streams[0].prepare_write	= ictx->ops->prepare_write;
  	wreq->io_streams[0].issue_write		= ictx->ops->issue_write;
  	wreq->io_streams[0].collected_to	= start;
@@ -195,7 +183,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		wreq->io_streams[1].active	= true;
 --- a/fs/splice.c
 +++ b/fs/splice.c
-@@ -739,6 +739,9 @@ iter_file_splice_write(struct pipe_inode
+@@ -744,6 +744,9 @@ iter_file_splice_write(struct pipe_inode
  		sd.pos = kiocb.ki_pos;
  		if (ret <= 0)
  			break;
