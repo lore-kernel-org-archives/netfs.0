@@ -1,207 +1,83 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71AD8283FDF;
-	Tue, 26 Aug 2025 11:42:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07498318144
+	for <netfs@lists.linux.dev>; Fri, 29 Aug 2025 12:52:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756208561; cv=none; b=X/gMA8IxL5zWLhONwg9c29sb/pCJR7pFfuk4RbrbcxreY9wHroluUxKS7PyJvDLxQH7A/r7rbvLLh9z9t4nr2VUkA9YvCzuI3CJ+s23qx7OOPW1ml9T2Zgw3GjhxygXMBIiXY4K7mEYZdijAqdC0gPUx0tNopmG1mR+jO69BV9Y=
+	t=1756471954; cv=none; b=bivVHeEn1E23WYhWMPBf1kosFeGrkrFbLMtJIuZpfTQHNC4d62pknqNaSz6RvhBaWSm9cgevRzuYyjhypWEbPg/4u0KqMiaMcIxwby4bvdCJRPIOei2sM/QCgTxVc/OHDV1uPOg9ZGuJW7iv5VOhIJv9e+Gh+T0ZfzpjfZZDQWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756208561; c=relaxed/simple;
-	bh=O4ilg1ofWDSjuj/rNuWc7ORpM+wszMRU9S7La3OFnpk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uiHtvUTx6PMp1mF1VdyNErgPrSSEUsz9BH/pSO1dy33aPXTF7FBS7FO9MXlspdp4zZqShuyiq0KVLFOiASAtvfGfWnnbvfWHjFedZW+6+nFwie4cL5b86BSyL7JIMJC2qYFkj6YP+5QEqy2LlNg72FInN7MWhCVQ0xW0n9p9G/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0IcShUiI; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0IcShUiI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C137BC113CF;
-	Tue, 26 Aug 2025 11:42:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756208561;
-	bh=O4ilg1ofWDSjuj/rNuWc7ORpM+wszMRU9S7La3OFnpk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0IcShUiIAk3SHPTiazIopS5Q6E30InM7jNMhlYO8I96FtIvWD522ACrrIJ9IjdaAB
-	 K9ZQ2Lq1TGM1b4902VAJ7/WFCc9NkGnzGdOn2h/qWXjMAVXObtxw8eghabtqnQD+fi
-	 u2zTR/SG/lVGyhnq39B31ZOrRoElmoAvGn3tabws=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Xiaoli Feng <fengxiaoli0714@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Steve French <sfrench@samba.org>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	netfs@lists.linux.dev,
-	linux-cifs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 158/322] netfs: Fix unbuffered write error handling
-Date: Tue, 26 Aug 2025 13:09:33 +0200
-Message-ID: <20250826110919.721484270@linuxfoundation.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
-References: <20250826110915.169062587@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1756471954; c=relaxed/simple;
+	bh=ChLDMYd8I6RvXfv4qQe6LeFgz/k1Ll9oE0U+zZLcdeI=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=PhkCZcMNEk6fX5TyX01T0C7K/OKnf6WCSLQuyufGQCi/UAXG0XABGA5Mk4ayaZv2Bc9vu36CGT6J4024SabMzZDW3kHfqd+osO1i4I5cp3ZHbu+jEiZviW8z5jbfxymHkoR971w+wiL7iUSF/gBNn6rT6rdLeb/A4yem9BosxA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-3f05a805d9bso53955595ab.2
+        for <netfs@lists.linux.dev>; Fri, 29 Aug 2025 05:52:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756471952; x=1757076752;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KfU/0K8pQvwEdT3I5rhhTpdmGSF2QbNrRcAEp+fUBHg=;
+        b=MTZ6m+DEZQ4tUkYYf8fyHCvEEfQyjyNLRlfw5VQxRuS2U6K7f9ve9fA6+pAmySSHoH
+         x/tClGSJ3EtUcdBuOpNZcw9EX6LvxVQDud6NI/ebGkry2DfLufZzMddznwmBLGTyZUGY
+         LawCPkAowB73Emd98i0BGExf6UTs0aVCzE/j9taPffI9IlHckYEQjXu43IRjflP/29lK
+         A/aUrZEoqGq00oMqEbVg9Ute+VlWnJIyVg4JFMydxJmKOi7r1/QRL5rDXVkY5gNe1Gb+
+         wOyh6F9Dse1LYe61hM6IdbzJlh6USRd4xmbsdjMD4Ita5VxQYrjkFOCuXzTHP+wAartI
+         AsQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWsplKIqupBFGVD423E2H7fiKCZV3r/FnD9dXsvlN1h6+jrprU7q7VFB/DviM2AwmkrhHZANQ==@lists.linux.dev
+X-Gm-Message-State: AOJu0YyvvM1X8FsnaxlW3zttweHLkBa5BgFuj4diizo2PJSIplBZYO8R
+	126DLPGY1RzXrMaS4iZhbykW4VyAzocH99jzcsKZOaLGyFUKz5zpfZQOWM8aJTX112tEOSR4reF
+	1ESU4bq82A6wxzf5OcqGPFJipOIvu+GDMWCNPY3p3FHrxeC4mlFJB/tK4pgs=
+X-Google-Smtp-Source: AGHT+IHkgF68Yby/4sZauw7uKfE0TzTS7E/PYU6VSI1aPexQjoNIDrFVvHKyWba1dxFU7n2HGV7bmmlJQ+V3v51a/VSmwCavkjGx
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6e02:18cb:b0:3eb:2b11:441d with SMTP id
+ e9e14a558f8ab-3eb2b1146bdmr343136795ab.15.1756471952202; Fri, 29 Aug 2025
+ 05:52:32 -0700 (PDT)
+Date: Fri, 29 Aug 2025 05:52:32 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68b1a290.a00a0220.1337b0.001a.GAE@google.com>
+Subject: [syzbot] Monthly netfs report (Aug 2025)
+From: syzbot <syzbot+listd0d99a8934bd992abc4c@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, netfs@lists.linux.dev, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+Hello netfs maintainers/developers,
 
-------------------
+This is a 31-day syzbot report for the netfs subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/netfs
 
-From: David Howells <dhowells@redhat.com>
+During the period, 1 new issues were detected and 0 were fixed.
+In total, 5 issues are still open and 5 have already been fixed.
 
-[ Upstream commit a3de58b12ce074ec05b8741fa28d62ccb1070468 ]
+Some of the still happening issues:
 
-If all the subrequests in an unbuffered write stream fail, the subrequest
-collector doesn't update the stream->transferred value and it retains its
-initial LONG_MAX value.  Unfortunately, if all active streams fail, then we
-take the smallest value of { LONG_MAX, LONG_MAX, ... } as the value to set
-in wreq->transferred - which is then returned from ->write_iter().
+Ref Crashes Repro Title
+<1> 70      Yes   INFO: task hung in netfs_retry_writes
+                  https://syzkaller.appspot.com/bug?extid=666a9cb4c41986207cdf
+<2> 13      Yes   INFO: task hung in anon_pipe_write
+                  https://syzkaller.appspot.com/bug?extid=ef2c1c404cbcbcc66453
+<3> 10      Yes   INFO: task hung in pipe_write (6)
+                  https://syzkaller.appspot.com/bug?extid=5984e31a805252b3b40a
 
-LONG_MAX was chosen as the initial value so that all the streams can be
-quickly assessed by taking the smallest value of all stream->transferred -
-but this only works if we've set any of them.
-
-Fix this by adding a flag to indicate whether the value in
-stream->transferred is valid and checking that when we integrate the
-values.  stream->transferred can then be initialised to zero.
-
-This was found by running the generic/750 xfstest against cifs with
-cache=none.  It splices data to the target file.  Once (if) it has used up
-all the available scratch space, the writes start failing with ENOSPC.
-This causes ->write_iter() to fail.  However, it was returning
-wreq->transferred, i.e. LONG_MAX, rather than an error (because it thought
-the amount transferred was non-zero) and iter_file_splice_write() would
-then try to clean up that amount of pipe bufferage - leading to an oops
-when it overran.  The kernel log showed:
-
-    CIFS: VFS: Send error in write = -28
-
-followed by:
-
-    BUG: kernel NULL pointer dereference, address: 0000000000000008
-
-with:
-
-    RIP: 0010:iter_file_splice_write+0x3a4/0x520
-    do_splice+0x197/0x4e0
-
-or:
-
-    RIP: 0010:pipe_buf_release (include/linux/pipe_fs_i.h:282)
-    iter_file_splice_write (fs/splice.c:755)
-
-Also put a warning check into splice to announce if ->write_iter() returned
-that it had written more than it was asked to.
-
-Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
-Reported-by: Xiaoli Feng <fengxiaoli0714@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220445
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/915443.1755207950@warthog.procyon.org.uk
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: Steve French <sfrench@samba.org>
-cc: Shyam Prasad N <sprasad@microsoft.com>
-cc: netfs@lists.linux.dev
-cc: linux-cifs@vger.kernel.org
-cc: linux-fsdevel@vger.kernel.org
-cc: stable@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-[ Dropped read_collect.c hunk ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/netfs/write_collect.c |   10 ++++++++--
- fs/netfs/write_issue.c   |    4 ++--
- fs/splice.c              |    3 +++
- include/linux/netfs.h    |    1 +
- 4 files changed, 14 insertions(+), 4 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
---- a/fs/netfs/write_collect.c
-+++ b/fs/netfs/write_collect.c
-@@ -433,6 +433,7 @@ reassess_streams:
- 			if (front->start + front->transferred > stream->collected_to) {
- 				stream->collected_to = front->start + front->transferred;
- 				stream->transferred = stream->collected_to - wreq->start;
-+				stream->transferred_valid = true;
- 				notes |= MADE_PROGRESS;
- 			}
- 			if (test_bit(NETFS_SREQ_FAILED, &front->flags)) {
-@@ -538,6 +539,7 @@ void netfs_write_collection_worker(struc
- 	struct netfs_io_request *wreq = container_of(work, struct netfs_io_request, work);
- 	struct netfs_inode *ictx = netfs_inode(wreq->inode);
- 	size_t transferred;
-+	bool transferred_valid = false;
- 	int s;
- 
- 	_enter("R=%x", wreq->debug_id);
-@@ -568,12 +570,16 @@ void netfs_write_collection_worker(struc
- 			netfs_put_request(wreq, false, netfs_rreq_trace_put_work);
- 			return;
- 		}
--		if (stream->transferred < transferred)
-+		if (stream->transferred_valid &&
-+		    stream->transferred < transferred) {
- 			transferred = stream->transferred;
-+			transferred_valid = true;
-+		}
- 	}
- 
- 	/* Okay, declare that all I/O is complete. */
--	wreq->transferred = transferred;
-+	if (transferred_valid)
-+		wreq->transferred = transferred;
- 	trace_netfs_rreq(wreq, netfs_rreq_trace_write_done);
- 
- 	if (wreq->io_streams[1].active &&
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -115,12 +115,12 @@ struct netfs_io_request *netfs_create_wr
- 	wreq->io_streams[0].prepare_write	= ictx->ops->prepare_write;
- 	wreq->io_streams[0].issue_write		= ictx->ops->issue_write;
- 	wreq->io_streams[0].collected_to	= start;
--	wreq->io_streams[0].transferred		= LONG_MAX;
-+	wreq->io_streams[0].transferred		= 0;
- 
- 	wreq->io_streams[1].stream_nr		= 1;
- 	wreq->io_streams[1].source		= NETFS_WRITE_TO_CACHE;
- 	wreq->io_streams[1].collected_to	= start;
--	wreq->io_streams[1].transferred		= LONG_MAX;
-+	wreq->io_streams[1].transferred		= 0;
- 	if (fscache_resources_valid(&wreq->cache_resources)) {
- 		wreq->io_streams[1].avail	= true;
- 		wreq->io_streams[1].active	= true;
---- a/fs/splice.c
-+++ b/fs/splice.c
-@@ -744,6 +744,9 @@ iter_file_splice_write(struct pipe_inode
- 		sd.pos = kiocb.ki_pos;
- 		if (ret <= 0)
- 			break;
-+		WARN_ONCE(ret > sd.total_len - left,
-+			  "Splice Exceeded! ret=%zd tot=%zu left=%zu\n",
-+			  ret, sd.total_len, left);
- 
- 		sd.num_spliced += ret;
- 		sd.total_len -= ret;
---- a/include/linux/netfs.h
-+++ b/include/linux/netfs.h
-@@ -150,6 +150,7 @@ struct netfs_io_stream {
- 	bool			active;		/* T if stream is active */
- 	bool			need_retry;	/* T if this stream needs retrying */
- 	bool			failed;		/* T if this stream failed */
-+	bool			transferred_valid; /* T is ->transferred is valid */
- };
- 
- /*
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
 
+You may send multiple commands in a single email message.
