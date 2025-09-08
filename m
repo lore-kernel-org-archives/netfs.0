@@ -1,109 +1,66 @@
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from mx1.manguebit.org (mx1.manguebit.org [143.255.12.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7361AA7A6
-	for <netfs@lists.linux.dev>; Fri,  5 Sep 2025 01:59:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77760AD51;
+	Mon,  8 Sep 2025 02:35:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=143.255.12.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757037573; cv=none; b=heNlMURcf019XpB4PHCDbK+Lk117w3nFR9bBEOFP3HhLVOGAuw6Wr8KMyQ3oBog+4NYrWEeJmZCsUB/GfW6jhGyAM0KnZE+1UZ9QtiUTxdM2MR8NdzGzjXlCujMKCkTM6i6TCoy6vkA/ZTcaCnlUKLQuwOOvyOOkZczEC9Hlyn4=
+	t=1757298905; cv=none; b=KQ/gKNYfIzdIjguPxPIJ6+9dlWR4QfFqS3ssIHKK6uPZCW2MhJEqsFjdlIjRSaBNru8HB4G/5iJnb+SHEkv5Bhm/AW8CDweelRSFLp9nq+DbZyAsGU5w9cyAGPrxuAMfgYJg5FQtmWlviAKNV2kNjGthIA8l0BFCs8KPsRNZr8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757037573; c=relaxed/simple;
-	bh=gA4Mh35DL16tO9ykLk/jxV4bapjsLQBQgQUcaxFhOSg=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sLWtgcZWPvHh4NxsrxgH10OD2dI3QBYxn2Ol1V3aLtGkjKXT1PsSAeHBkR+mXQ1nrvrOkDglNDLzCBDIk3CHsDrW25OHt0ENiRZSJbMyTf7xOrxsoQ7KVbXCsybF6jlhh6YyZ15fr8soC/66iBVDNH2PNe30EUt8ZzExv4bT71s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=hIfrmYVU; arc=none smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+	s=arc-20240116; t=1757298905; c=relaxed/simple;
+	bh=bcK8U7Mx2h8XnpNVxn4vD0wzqCMtNYj5lomMvEgQuEE=;
+	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Date:
+	 MIME-Version:Content-Type; b=Y/6ZpwU1bAk9M7nxgMoecvHGotiC72OfTdxj2MdvjjBs6+sLZErpXVWhjmkPEwQ/p1V/G0yI2kKSeW1wztg4dLDLl3eSR5/RmAX0PO834hUJP2m3UUh1Su3aPtR5YINnAtuurrpdZUH9jhrYf/sCxB/pAXQF9jIQy7hBO7iRj4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org; spf=pass smtp.mailfrom=manguebit.org; dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b=TuM+c8QN; arc=none smtp.client-ip=143.255.12.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="hIfrmYVU"
-Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5851e2AR4127040;
-	Thu, 4 Sep 2025 18:59:28 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
-	 h=cc:content-transfer-encoding:content-type:date:from
-	:in-reply-to:message-id:mime-version:references:subject:to; s=
-	PPS06212021; bh=dev7IaIeKSTxt4NEKjiqP0mEW51ewSs8JZD7A60ZlJo=; b=
-	hIfrmYVUBNVckIK1GqPkUyX8eEwftqq8R1q1clFIXQKshcyFvbY74EJCNOzqWaRU
-	NJjMBZDZEpPvxZtRcg2ptK9Uy5u/7ufo9XkRyZBv4f2UnOVnSS8tiEXvTnxgDMpb
-	JJe0c6IOA6ueaZshVVTZFU+sq9eioGLfHkGAJPQy1ISFr54sDFKox0m6NIVm/GBK
-	ZrwEA4nodUUqwD5BLoq3boB4YJBp0NoXz3qWdlWJYPDMcWSD6Lytjo0Ub1609zNz
-	CmMGjhj4NulffuzT8GN4idDFTbgQQxFLjLlJjcIr3lPL2AIf0dwHknNESbDwx544
-	bX+ig0WpGATvONhUBWDLcg==
-Received: from ala-exchng01.corp.ad.wrs.com ([128.224.246.36])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 48y7sb161s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Thu, 04 Sep 2025 18:59:28 -0700 (PDT)
-Received: from ALA-EXCHNG02.corp.ad.wrs.com (10.11.224.122) by
- ala-exchng01.corp.ad.wrs.com (10.11.224.121) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Thu, 4 Sep 2025 18:57:47 -0700
-Received: from pek-lpd-ccm6.wrs.com (10.11.232.110) by
- ALA-EXCHNG02.corp.ad.wrs.com (10.11.224.122) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Thu, 4 Sep 2025 18:57:45 -0700
-From: Lizhi Xu <lizhi.xu@windriver.com>
-To: <syzbot+b73c7d94a151e2ee1e9b@syzkaller.appspotmail.com>
-CC: <dhowells@redhat.com>, <linux-fsdevel@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <netfs@lists.linux.dev>,
-        <pc@manguebit.org>, <syzkaller-bugs@googlegroups.com>
-Subject: [PATCH] netfs: Prevent duplicate unlocking
-Date: Fri, 5 Sep 2025 09:59:25 +0800
-Message-ID: <20250905015925.2269482-1-lizhi.xu@windriver.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <68b9d0eb.050a0220.192772.000c.GAE@google.com>
+	dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b="TuM+c8QN"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=manguebit.org; s=dkim; h=Content-Type:MIME-Version:Date:References:
+	In-Reply-To:Subject:Cc:To:From:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=mQrKvmLDsFkxDPkRt0hUS8uNPuWkuhQY/mUi/U6X8tU=; b=TuM+c8QNf6kfGkCBPtyqbSxPPs
+	Q3e9cg//9CSUGyYOYofrtitjhajJQxhq9pkSHR3oAdwxDrAV2nFh5Fw1t4vIysuCP7eEHZDENfYyc
+	H/m2KKseGqnWtsJrXE5ZT7JK5JRVsDsMfQ6nucxd/aSg8PmwdcBwrtvmyM2JT5WhtYwuj7UOQIEtc
+	3+Hd7vD6HzKNx/+hLxslpp5PKW9sgnTwfSPaEdFtyXpeOaIsZOS1EwDUmsLHSjPd4jWbkske4KXzy
+	JyxzJEdk0CBrvrBqcoYstX0XyV7Rz/wUuDralT+fYEK6645eo/dvSd+bT7KmJjnoHChcubp2IVrp9
+	En+6D8WA==;
+Received: from pc by mx1.manguebit.org with local (Exim 4.98.2)
+	id 1uvRiT-00000000zn5-2v9G;
+	Sun, 07 Sep 2025 23:34:49 -0300
+Message-ID: <032c8e1184693ecc448d104bae5ea458@manguebit.org>
+From: Paulo Alcantara <pc@manguebit.org>
+To: Lizhi Xu <lizhi.xu@windriver.com>,
+ syzbot+b73c7d94a151e2ee1e9b@syzkaller.appspotmail.com
+Cc: dhowells@redhat.com, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netfs@lists.linux.dev,
+ syzkaller-bugs@googlegroups.com
+Subject: Re: [PATCH] netfs: Prevent duplicate unlocking
+In-Reply-To: <20250905015925.2269482-1-lizhi.xu@windriver.com>
 References: <68b9d0eb.050a0220.192772.000c.GAE@google.com>
+ <20250905015925.2269482-1-lizhi.xu@windriver.com>
+Date: Sun, 07 Sep 2025 23:34:49 -0300
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA1MDAxNiBTYWx0ZWRfX/Mag4kq53t23
- 6gOOtN8W0yahmgAai8TcXCIpi2/RxOhOLtKzbdqzxPVr6A9CKnjedf3N3uI26pWpQYf35pmA1MF
- /SpDGwkDVy7Ns9qEEJleMyuMuBWqBA6FMwTn0P3jZZrVOeleP/kd7ISoeNdB6BgZ3K/A+C2HDfM
- PwvCgU5TybPBk60Kgyndn1Q59bECGdP8ZbJvTspVzlBObGzkzB5H1fshSZK8Bj3efE9F7epJdz4
- c8hxEG63+Z6QyFKimTxeVfxU0X49xYiUSs3w4neQuZlId7gE5Eyu5lbCgwFZ5pugqFpZ8UsaeZS
- UpumyaC+W0bJe3WyofA7dsAoGg3FUmvZlVbPN5ay/DKqXKLRm4cBqXFUm36pwE=
-X-Proofpoint-GUID: 1WKAbH2NX1y1ujUTQaNOyUdaVB08zYtZ
-X-Authority-Analysis: v=2.4 cv=M5BNKzws c=1 sm=1 tr=0 ts=68ba4400 cx=c_pps
- a=AbJuCvi4Y3V6hpbCNWx0WA==:117 a=AbJuCvi4Y3V6hpbCNWx0WA==:17
- a=yJojWOMRYYMA:10 a=edf1wS77AAAA:8 a=hSkVLCK3AAAA:8 a=t7CeM3EgAAAA:8
- a=3yRTcMStzHrrPhRN-PwA:9 a=DcSpbTIhAlouE1Uv7lRv:22 a=cQPPKAXgyycSBL8etih5:22
- a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-ORIG-GUID: 1WKAbH2NX1y1ujUTQaNOyUdaVB08zYtZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-05_01,2025-09-04_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0 phishscore=0 clxscore=1011 adultscore=0
- spamscore=0 priorityscore=1501 impostorscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2507300000 definitions=firstrun
 
-The filio lock has been released here, so there is no need to jump to
-error_folio_unlock to release it again.
+Lizhi Xu <lizhi.xu@windriver.com> writes:
 
-Reported-by: syzbot+b73c7d94a151e2ee1e9b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b73c7d94a151e2ee1e9b
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
----
- fs/netfs/buffered_write.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> The filio lock has been released here, so there is no need to jump to
+      ^ s/filio/folio/
 
-diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
-index f27ea5099a68..09394ac2c180 100644
---- a/fs/netfs/buffered_write.c
-+++ b/fs/netfs/buffered_write.c
-@@ -347,7 +347,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 		folio_put(folio);
- 		ret = filemap_write_and_wait_range(mapping, fpos, fpos + flen - 1);
- 		if (ret < 0)
--			goto error_folio_unlock;
-+			goto out;
- 		continue;
- 
- 	copied:
--- 
-2.43.0
+> error_folio_unlock to release it again.
+>
+> Reported-by: syzbot+b73c7d94a151e2ee1e9b@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=b73c7d94a151e2ee1e9b
+> Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+> ---
+>  fs/netfs/buffered_write.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
