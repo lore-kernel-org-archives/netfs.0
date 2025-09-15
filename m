@@ -1,81 +1,78 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C78463009F1
-	for <netfs@lists.linux.dev>; Fri, 12 Sep 2025 12:29:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720132EA482;
+	Mon, 15 Sep 2025 11:58:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757680143; cv=none; b=P7PZ+uEIarZJKggycagdVQZHl6Bcx84lX93BBkDfYnx5ZZtExinRvfc5k2EJsOifa92HsRFBuODL5si3kWe3UZ5AiKgWsqsYoBma3LoNKzwik2ZzkofPSKf1buaWAfTtnzdhuGfJ+J6pMptwSTqlPnKagQzIp5uRjJSf7QF9Qds=
+	t=1757937504; cv=none; b=YPKN8DxoMp9GxCqXEADR1NCvVabgczRu2uIvFeTiq71pgSAR6gTpr80nxd5WfMku6NXGnnw1/OvEms2GpY0GcT80q2hMczKr8QEVo1hN7y/56XFj+DNn697HzPSYKehkZXHzkNfJoPCaXOnjnMFHt8UVKdmoLedHw/jYP9tHcHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757680143; c=relaxed/simple;
-	bh=mnhyYYcjQw8y1xogODaBHyRs79d38+9qOux8OQfT9ms=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=g3HI/ituifZnfLhmbAqzwW0vXLC/49HuLjgxp06TtTULqwFoqKdd863hzRYGE0JGc207kLh9eU2WM9ocIGSRLRe1AM0Dlrz12nAgQP1Apb1rbfOB6uSuNc8Z4vShKs0JYixbmQa+SdK1LNHqS7tkm2jtHdZBJktQKwhVDiEb8lQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ga37khEn; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1757937504; c=relaxed/simple;
+	bh=FgrdD+GLilk1kPbvVdmSLzkJH2OwKn6IzMprtccNcms=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VXpeR5RLgU8YgAK3QrELtvbQeS4qY3f0qY+sRyVGETOAHT4tOANFTbG5h71VeLWBYQ+MApeJwYx0fEKDfdqoibZqDRYltr9pnSzMElVbcjHF0FKN8w4DKN6jDDZnwvNUXMB2xHk8nFLKZMzaYnPmnTJnGKtFES1rUF5qAFe2dME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K7pAw7IB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ga37khEn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757680141;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7tPqOlKN7cM1OwbgJnskpqdY2T1yziMKm0eMxicStGU=;
-	b=ga37khEnr/XwN1hjGjvdK5kCXPbN2tNfQz78QmpISmIOW4ChlWT/a4RQ4nKlyzFDy0Rgh1
-	+ci6D9OAUPJbPzFswU8rDD4U5pYfiGSxGOUych64s/k3VlzrhihYutumWZS1LdYGlpdEDO
-	Lk40RXKzm+GRJKNJCljUnKgBvA2q/wk=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-377-KmIXrDQfPY2pdT635jXqSg-1; Fri,
- 12 Sep 2025 08:28:59 -0400
-X-MC-Unique: KmIXrDQfPY2pdT635jXqSg-1
-X-Mimecast-MFC-AGG-ID: KmIXrDQfPY2pdT635jXqSg_1757680138
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C59891956087;
-	Fri, 12 Sep 2025 12:28:57 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.6])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 04DA21800447;
-	Fri, 12 Sep 2025 12:28:54 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <d3712068-ec74-4adb-9e1b-0f8cd6c39ad5@samba.org>
-References: <d3712068-ec74-4adb-9e1b-0f8cd6c39ad5@samba.org> <20250904211839.1152340-1-dhowells@redhat.com> <20250904211839.1152340-3-dhowells@redhat.com>
-To: Stefan Metzmacher <metze@samba.org>
-Cc: dhowells@redhat.com, Steve French <sfrench@samba.org>,
-    Paulo Alcantara <pc@manguebit.org>, linux-cifs@vger.kernel.org,
-    Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org
-Subject: Re: [RFC PATCH 2/2] cifs: Clean up declarations
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K7pAw7IB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B4C7C4CEFD;
+	Mon, 15 Sep 2025 11:58:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757937504;
+	bh=FgrdD+GLilk1kPbvVdmSLzkJH2OwKn6IzMprtccNcms=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=K7pAw7IBPK4AsrVYGRHgGXXCY0wluvgK7D1a0x7ZtnrfzducLLCeT08GSwzG9m8BK
+	 NtA2r49Ejr8+UlS3hV+dVWbxTAMxboQ0lYQtTzoVof8ws2baySAvfzxmY8VhThDa71
+	 nU/VyMLNPmUvQUwqL3x+uLHKIHLu4f2E8R7Mv9la2f1NSdbecmHWNPs87c3iAAbiTt
+	 7V0ssIm0DUsEkHb4SOKQ0hOXB8zyE+5kt4596ckT9FwTtIKYpZM2yTfh8l+V1rM1dB
+	 B42qWkqSL+MwU3OxkLCMSjKsELNyk699JlBPEUF/ljnN+TTlAszUsuzs5Blsh8/KSK
+	 9W3FR9vnVZn8Q==
+From: Christian Brauner <brauner@kernel.org>
+To: syzbot+b73c7d94a151e2ee1e9b@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	dhowells@redhat.com,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netfs@lists.linux.dev,
+	pc@manguebit.org,
+	syzkaller-bugs@googlegroups.com
+Subject: Re: [PATCH] netfs: Prevent duplicate unlocking
+Date: Mon, 15 Sep 2025 13:58:16 +0200
+Message-ID: <20250915-mehrsprachig-koproduktion-bd81338157c0@brauner>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20250905015925.2269482-1-lizhi.xu@windriver.com>
+References: <68b9d0eb.050a0220.192772.000c.GAE@google.com> <20250905015925.2269482-1-lizhi.xu@windriver.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2168724.1757680133.1@warthog.procyon.org.uk>
-Date: Fri, 12 Sep 2025 13:28:53 +0100
-Message-ID: <2168726.1757680133@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=926; i=brauner@kernel.org; h=from:subject:message-id; bh=FgrdD+GLilk1kPbvVdmSLzkJH2OwKn6IzMprtccNcms=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQc/x95Jmz2V9873xtebTvLeDd6hYvm/WDhvW/1g/cuj Xkwt9LobkcpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBEHIUY/tmtfX2yO22e+qf7 nwyWPy4X2ume9G+djaaOzMRoCYVncj4M/4sTREW3plyYffilb9dtts4nOU9qDz18s3eV6IOry84 dXMgHAA==
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-Stefan Metzmacher <metze@samba.org> wrote:
+On Fri, 05 Sep 2025 09:59:25 +0800, Lizhi Xu wrote:
+> The filio lock has been released here, so there is no need to jump to
+> error_folio_unlock to release it again.
+> 
+> 
 
-> can you please drop the changes to smbdirect.h?
-> (This is the only part I really looked at).
-> They leave strange comments around and will likely
-> cause conflicts with my current work.
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-Sure...  Assuming Steve is willing to take these patches.  There's also an
-issue with one of the configuration combinations I didn't test - it probably
-just needs a #include adding.
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-David
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[1/1] netfs: Prevent duplicate unlocking
+      https://git.kernel.org/vfs/vfs/c/66d938e89e94
