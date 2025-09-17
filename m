@@ -1,218 +1,264 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from mail-il1-f206.google.com (mail-il1-f206.google.com [209.85.166.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0802430B500
-	for <netfs@lists.linux.dev>; Wed, 17 Sep 2025 22:51:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FCD30FF25
+	for <netfs@lists.linux.dev>; Wed, 17 Sep 2025 22:54:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758149470; cv=none; b=FjgWyio/Dpt6NBoTCbLEOQHSVlU206sGjFT0o1L0DzMURNca40gIXX7yRtKo+ZsYwnhetVLKqIUG9rJ1eOwx06xe+PCVuTJ/vx7rEWsCp0XkJEngSSW8QkZ/rH4FNs6B0IoJiOVH0Q/HT1OEam3jfu63sZUDiMUzu58qSGLmtw0=
+	t=1758149671; cv=none; b=G4BdgKdXZzWlYHXE2G3cxxQFrVrnLbmbH+lb9nxgwOldFnJHnicwVJABZOhIygUf6q9Nn/yVOggpe0ZAXK8mkSNS1BmeN9RBQkVa8UHvH75Og9SnIveX7WrBi4r+PvkevapjIU1rVMsLivRgVdqjbmjElcXBwe57OurPLrKF7Xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758149470; c=relaxed/simple;
-	bh=uXQN6FSQJnpjKMExP2GtxNzt35X+QqvTVhfhqwNmWL4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IyswBoH45v6F7vbHA81zwQkQqMI3mK3/fheTKXC5QAopEzP++d3YgOmuHFk+fQ+oFPOCrcvh5FAH5H35C/qZNabxzAZMNFw8D4XXhBcQ4KZrE4D1+VZdnFObUWFd+4SIde0kv7zIM621VdeN37xrkD/SR3QG0TwVbaiztH4o1aQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com; spf=pass smtp.mailfrom=fromorbit.com; dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b=Gt40Nchk; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fromorbit.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b="Gt40Nchk"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-77d37d71967so39833b3a.0
-        for <netfs@lists.linux.dev>; Wed, 17 Sep 2025 15:51:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1758149468; x=1758754268; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KiBmD6NJZU/wz6ZMowNVOrSIvY548tKi0Wxl6W6YNg4=;
-        b=Gt40NchkV3vwfFLbb6UJfaLsFA4bBew/5FvQSDwpmqrB2EDvx/J11QNwO1BldC7fcg
-         lodZWYZOzpPwQJMwicqUoQHn508kfuQxeOSRWF/Er53Y1+RzXHlIQ7UPek20/KRVPSuB
-         EawnNkx/tuwE0jftwd4dCPkXC8v8taJbizJ7pOiyPAwMlw3+KFXnAUazC5yy4kxiDDdo
-         iBx5DG8CeIafk8JzDvqGv/t7mNo5CrLsoM9NIWnheKkwZQNXN7neC3wOiYMtvZni52Ud
-         PZhtcIJ5IMA1RJvmQho9YRrmATyK4xURV8n8Qea1mHaXTZ2zDRb4KUayLzAxYV69CFIi
-         Iptw==
+	s=arc-20240116; t=1758149671; c=relaxed/simple;
+	bh=FOmXeHwApkhoegoAJfQQPtpy9fh1+3Sto/UA24hd9r4=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Rjtx/YzEubHj1qIrFiMD4frKyoH0CtAx7lU3YFp7Sz6jNkiPin525NMdxaWOEyD90hpdWEr1eyYMGxiBCOuCdtQ56t6kBSwDQ3V8Nsdn4fLdZS+ZHcpy2q50uRYRJqsEved2Hth8rwzf3ZSK6AXTPgBezwrdSqzA28erOmdsr2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f206.google.com with SMTP id e9e14a558f8ab-424019a3dfaso2479095ab.2
+        for <netfs@lists.linux.dev>; Wed, 17 Sep 2025 15:54:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758149468; x=1758754268;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KiBmD6NJZU/wz6ZMowNVOrSIvY548tKi0Wxl6W6YNg4=;
-        b=Xojs/XPivjA79tE2+qiu6mEdH7b2RQmWjpeFqbS7gwsJj1OrbouQBvCiEgCaPosctj
-         seezpGNhO0+1vfatx+bpVMUXmBpH7kRm2QCS+TVOZvJ1p5YxFCDfYyT126n7Fn120Q68
-         BO43UWx6WEgoyMfs2v9v+OtmmjyQ+/f+d8XUKiVQRTNRMXK7smQKiZoK4LYRzuAChavh
-         EcUtWdSm6Bcn7Pi4antIjACU/pgBDPq+BaFbQTTnNnWvFD9gi9a+QriXi9E6CvogG+0L
-         BzELIGa8tt7cXYkdUdWHB0T9eh8lz7bQSDxY5pO6lCk5TeQ0xbMvchzHAUoKp2uXpIEi
-         0Dng==
-X-Forwarded-Encrypted: i=1; AJvYcCUN/syhE/bEsHJwh6BOwKvGAjwAUhpP3ny6GpJdqnpX2szW0QLnTMiojXx+Y8aXnAZiLTSy4g==@lists.linux.dev
-X-Gm-Message-State: AOJu0YyT8O2e/0HwFpBcVmbkqArLpCoFOYkM3muzW2lT3e0bVG2tBeQv
-	XPYdb7xM7nnwDtPmsGCRZptQCytCudAVXivbWoslooiJqDsu+P6evp0sQIbGVHp+xqA=
-X-Gm-Gg: ASbGncvKVJ8mvjep9v7p30eM4wj62FGOyMzwKfbVUjMKnEsQY4o4b2llkHx1fKa6e01
-	iTd3NM6z/HQ2eaFu+PXqzRbfdJuYRRk3M6kNbyJlGqMmI1JY17XoC/TgBgjaQf5xnCOoP2W/lua
-	e9x3ockK1PEms9OiYtfPmAjgx1i7l/72HfZLEorwB1iOy9c8Nr50QS4UoknpET4bLWcZ4Lqvxi1
-	8XGMD0+05H5Z4SqpkIMJcmvipNr2IYxpFIpexjSLmtXei0lK7tMbYMYr0Kzf+PHaac0d11sSKuW
-	SgrB9EBVDD0Y+1nx0Nk0rN1mptteoinnFEY4V1SkKLLS+xeoJAZbO8o5hfHoVYo78x441iRyUwQ
-	nkimEjP9BUnGY5tJOKwaWv6RTuBTizvDqYKIlOzQP2AyWhB6BkvTm0BU1l4cZtHW4Mwv/xyIxhw
-	DZE5as1A==
-X-Google-Smtp-Source: AGHT+IFwfCQkVNjD6CXMbnqb6iNxIizQ9+fDYixTv2KRx6v3UbkFCsyowVxUeZhQg3zfx+PNmkXznA==
-X-Received: by 2002:a05:6a20:a127:b0:24d:d206:69ac with SMTP id adf61e73a8af0-284522d3d4fmr1738503637.14.1758149468140;
-        Wed, 17 Sep 2025 15:51:08 -0700 (PDT)
-Received: from dread.disaster.area (pa49-180-91-142.pa.nsw.optusnet.com.au. [49.180.91.142])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77cfc248fa0sm454091b3a.30.2025.09.17.15.51.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Sep 2025 15:51:07 -0700 (PDT)
-Received: from dave by dread.disaster.area with local (Exim 4.98.2)
-	(envelope-from <david@fromorbit.com>)
-	id 1uz0zR-00000003IYr-0zrK;
-	Thu, 18 Sep 2025 08:51:05 +1000
-Date: Thu, 18 Sep 2025 08:51:05 +1000
-From: Dave Chinner <david@fromorbit.com>
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: slava.dubeyko@ibm.com, xiubli@redhat.com, idryomov@gmail.com,
-	amarkuze@redhat.com, ceph-devel@vger.kernel.org,
-	netfs@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, Mateusz Guzik <mjguzik@gmail.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] ceph: fix deadlock bugs by making iput() calls
- asynchronous
-Message-ID: <aMs7WYubsgGrcSXB@dread.disaster.area>
-References: <20250917124404.2207918-1-max.kellermann@ionos.com>
+        d=1e100.net; s=20230601; t=1758149668; x=1758754468;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7d5kDUUYytjDj4XOWyrps0N20vZVFIrd9wU3T0Bq1Io=;
+        b=Defa1zlO7dpom8ynC1vo9gdV/5KpzvVXSqM5ydVAxEtwW9cRVkA/AlZzKfqVHM3Q9b
+         DKcEWDTBQNFvBBwYbZExPs9rtssqeJISXj3JLcD+5q4jiJwdvlCAkHJaIqrS8aEyxRzq
+         CUyzneYflvRw/7i7KO2zIiy6nFVY0I/XwRBo1ZVk1TBDS105VNQnxAbwRsFHySf7zStO
+         IcmVI2fIgZmKzCLUsFhKNRQcV1fy/SRe8DBWSBDhrwRAk9nNSBNGUwmU+JRl0h+dmyvm
+         nwdKcHwMs/HYA13V1xYXBx1rFU5BV0KmSajsHqzmJQkqo/blCpow40JnMy/1VeM0VxLO
+         Jw5A==
+X-Forwarded-Encrypted: i=1; AJvYcCVHAdGFlK8VoQ878wN+I7SwzpCD62bw//afq9PXR/UUOCMLheOwaWDBwv6atZeSfiEM2xOhuw==@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzcb5dt/5TIrflGoPKTPg01o7y90AG9iQeZxCh04wFwunBT5VIc
+	nlzaesOicGqtPMDh1ivPvaj1sDHfzeFpjdFPN8yVgLT1pwEqQTZnIlzjhhZBKijaIXAlu6QD+07
+	K0G73SLERgEhcroXMUQ9xP5c0TuQeA4BKZ2WKsj6mDID3i0ONfb0KPAtq+I4=
+X-Google-Smtp-Source: AGHT+IHY+crARHmzJnDdHjXATgboIRWGOJ7DWvKHNxZzcsJRJ0WNwWswe3JGgg+I/7tx9UoHfYckNWqo104RwwOh+rpJdPVsg40i
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250917124404.2207918-1-max.kellermann@ionos.com>
+X-Received: by 2002:a92:c245:0:b0:424:64c:5b5a with SMTP id
+ e9e14a558f8ab-4241a412e23mr46931485ab.0.1758149668681; Wed, 17 Sep 2025
+ 15:54:28 -0700 (PDT)
+Date: Wed, 17 Sep 2025 15:54:28 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68cb3c24.050a0220.50883.0028.GAE@google.com>
+Subject: [syzbot] [netfs?] INFO: task hung in vfs_utimes (3)
+From: syzbot <syzbot+3815dce0acab6c55984e@syzkaller.appspotmail.com>
+To: dhowells@redhat.com, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netfs@lists.linux.dev, pc@manguebit.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Sep 17, 2025 at 02:44:04PM +0200, Max Kellermann wrote:
-> The iput() function is a dangerous one - if the reference counter goes
-> to zero, the function may block for a long time due to:
-> 
-> - inode_wait_for_writeback() waits until writeback on this inode
->   completes
-> 
-> - the filesystem-specific "evict_inode" callback can do similar
->   things; e.g. all netfs-based filesystems will call
->   netfs_wait_for_outstanding_io() which is similar to
->   inode_wait_for_writeback()
-> 
-> Therefore, callers must carefully evaluate the context they're in and
-> check whether invoking iput() is a good idea at all.
-> 
-> Most of the time, this is not a problem because the dcache holds
-> references to all inodes, and the dcache is usually the one to release
-> the last reference.  But this assumption is fragile.  For example,
-> under (memcg) memory pressure, the dcache shrinker is more likely to
-> release inode references, moving the inode eviction to contexts where
-> that was extremely unlikely to occur.
-> 
-> Our production servers "found" at least two deadlock bugs in the Ceph
-> filesystem that were caused by this iput() behavior:
-> 
-> 1. Writeback may lead to iput() calls in Ceph (e.g. from
->    ceph_put_wrbuffer_cap_refs()) which deadlocks in
->    inode_wait_for_writeback().  Waiting for writeback completion from
->    within writeback will obviously never be able to make any progress.
->    This leads to blocked kworkers like this:
-> 
->     INFO: task kworker/u777:6:1270802 blocked for more than 122 seconds.
->           Not tainted 6.16.7-i1-es #773
->     task:kworker/u777:6  state:D stack:0 pid:1270802 tgid:1270802 ppid:2
->           task_flags:0x4208060 flags:0x00004000
->     Workqueue: writeback wb_workfn (flush-ceph-3)
->     Call Trace:
->      <TASK>
->      __schedule+0x4ea/0x17d0
->      schedule+0x1c/0xc0
->      inode_wait_for_writeback+0x71/0xb0
->      evict+0xcf/0x200
->      ceph_put_wrbuffer_cap_refs+0xdd/0x220
->      ceph_invalidate_folio+0x97/0xc0
->      ceph_writepages_start+0x127b/0x14d0
->      do_writepages+0xba/0x150
->      __writeback_single_inode+0x34/0x290
->      writeback_sb_inodes+0x203/0x470
->      __writeback_inodes_wb+0x4c/0xe0
->      wb_writeback+0x189/0x2b0
->      wb_workfn+0x30b/0x3d0
->      process_one_work+0x143/0x2b0
->      worker_thread+0x30a/0x450
-> 
-> 2. In the Ceph messenger thread (net/ceph/messenger*.c), any iput()
->    call may invoke ceph_evict_inode() which will deadlock in
->    netfs_wait_for_outstanding_io(); since this blocks the messenger
->    thread, completions from the Ceph servers will not ever be received
->    and handled.
-> 
-> It looks like these deadlock bugs have been in the Ceph filesystem
-> code since forever (therefore no "Fixes" tag in this patch).  There
-> may be various ways to solve this:
-> 
-> - make iput() asynchronous and defer the actual eviction like fput()
->   (may add overhead)
-> 
-> - make iput() only asynchronous if I_SYNC is set (doesn't solve random
->   things happening inside the "evict_inode" callback)
-> 
-> - add iput_deferred() to make this asynchronous behavior/overhead
->   optional and explicit
-> 
-> - refactor Ceph to avoid iput() calls from within writeback and
->   messenger (if that is even possible)
-> 
-> - add a Ceph-specific workaround
+Hello,
 
-- wait for Josef to finish his inode refcount rework patchset that
-  gets rid of this whole "writeback doesn't hold an inode reference"
-  problem that is the root cause of this the deadlock.
+syzbot found the following issue on:
 
-All that adding a whacky async iput work around does right now is
-make it harder for Josef to land the patchset that makes this
-problem go away entirely....
+HEAD commit:    46a51f4f5eda Merge tag 'for-v6.17-rc' of git://git.kernel...
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=144cce42580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=8f01d8629880e620
+dashboard link: https://syzkaller.appspot.com/bug?extid=3815dce0acab6c55984e
+compiler:       gcc (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17692f62580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1361f47c580000
 
-> diff --git a/fs/ceph/inode.c b/fs/ceph/inode.c
-> index f67025465de0..385d5261632d 100644
-> --- a/fs/ceph/inode.c
-> +++ b/fs/ceph/inode.c
-> @@ -2191,6 +2191,48 @@ void ceph_queue_inode_work(struct inode *inode, int work_bit)
->  	}
->  }
->  
-> +/**
-> + * Queue an asynchronous iput() call in a worker thread.  Use this
-> + * instead of iput() in contexts where evicting the inode is unsafe.
-> + * For example, inode eviction may cause deadlocks in
-> + * inode_wait_for_writeback() (when called from within writeback) or
-> + * in netfs_wait_for_outstanding_io() (when called from within the
-> + * Ceph messenger).
-> + *
-> + * @n: how many references to put
-> + */
-> +void ceph_iput_n_async(struct inode *inode, int n)
-> +{
-> +	if (unlikely(!inode))
-> +		return;
-> +
-> +	if (likely(atomic_sub_return(n, &inode->i_count) > 0))
-> +		/* somebody else is holding another reference -
-> +		 * nothing left to do for us
-> +		 */
-> +		return;
-> +
-> +	doutc(ceph_inode_to_fs_client(inode)->client, "%p %llx.%llx\n", inode, ceph_vinop(inode));
-> +
-> +	/* the reference counter is now 0, i.e. nobody else is holding
-> +	 * a reference to this inode; restore it to 1 and donate it to
-> +	 * ceph_inode_work() which will call iput() at the end
-> +	 */
-> +	atomic_set(&inode->i_count, 1);
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/c4f63dbf3edb/disk-46a51f4f.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/b110f6d26eda/vmlinux-46a51f4f.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/a0b5f2118cec/bzImage-46a51f4f.xz
 
-If you must do this, please have a look at how
-btrfs_add_delayed_iput() handles detecting the last inode reference
-and punting it to an async queue without needing to drop the last
-reference at all.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+3815dce0acab6c55984e@syzkaller.appspotmail.com
 
--Dave.
--- 
-Dave Chinner
-david@fromorbit.com
+INFO: task syz.0.17:6022 blocked for more than 143 seconds.
+      Not tainted syzkaller #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:syz.0.17        state:D stack:28976 pid:6022  tgid:6020  ppid:5973   task_flags:0x400040 flags:0x00004004
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5357 [inline]
+ __schedule+0x1190/0x5de0 kernel/sched/core.c:6961
+ __schedule_loop kernel/sched/core.c:7043 [inline]
+ schedule+0xe7/0x3a0 kernel/sched/core.c:7058
+ schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7115
+ rwsem_down_write_slowpath+0x524/0x1310 kernel/locking/rwsem.c:1185
+ __down_write_common kernel/locking/rwsem.c:1317 [inline]
+ __down_write kernel/locking/rwsem.c:1326 [inline]
+ down_write+0x1d6/0x200 kernel/locking/rwsem.c:1591
+ inode_lock include/linux/fs.h:870 [inline]
+ vfs_utimes+0x3b7/0x820 fs/utimes.c:65
+ do_utimes_path fs/utimes.c:99 [inline]
+ do_utimes fs/utimes.c:140 [inline]
+ __do_sys_utime fs/utimes.c:221 [inline]
+ __se_sys_utime fs/utimes.c:210 [inline]
+ __x64_sys_utime+0x1e2/0x2c0 fs/utimes.c:210
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0x4e0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fabd158eba9
+RSP: 002b:00007fabd0bdd038 EFLAGS: 00000246 ORIG_RAX: 0000000000000084
+RAX: ffffffffffffffda RBX: 00007fabd17d6090 RCX: 00007fabd158eba9
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 00002000000000c0
+RBP: 00007fabd1611e19 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fabd17d6128 R14: 00007fabd17d6090 R15: 00007ffd32e714b8
+ </TASK>
+
+Showing all locks held in the system:
+1 lock held by khungtaskd/31:
+ #0: ffffffff8e5c15a0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:331 [inline]
+ #0: ffffffff8e5c15a0 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:841 [inline]
+ #0: ffffffff8e5c15a0 (rcu_read_lock){....}-{1:3}, at: debug_show_all_locks+0x36/0x1c0 kernel/locking/lockdep.c:6775
+2 locks held by getty/5612:
+ #0: ffff88814d96d0a0 (&tty->ldisc_sem){++++}-{0:0}, at: tty_ldisc_ref_wait+0x24/0x80 drivers/tty/tty_ldisc.c:243
+ #1: ffffc9000332b2f0 (&ldata->atomic_read_lock){+.+.}-{4:4}, at: n_tty_read+0x41b/0x14f0 drivers/tty/n_tty.c:2222
+2 locks held by syz.0.17/6021:
+ #0: ffff8880787b6428 (sb_writers#13){.+.+}-{0:0}, at: do_pwritev+0x1a6/0x270 fs/read_write.c:1153
+ #1: ffff88805bdb8148 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: netfs_start_io_direct+0x116/0x260 fs/netfs/locking.c:188
+2 locks held by syz.0.17/6022:
+ #0: ffff8880787b6428 (sb_writers#13){.+.+}-{0:0}, at: vfs_utimes+0x69b/0x820 fs/utimes.c:36
+ #1: ffff88805bdb8148 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: inode_lock include/linux/fs.h:870 [inline]
+ #1: ffff88805bdb8148 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: vfs_utimes+0x3b7/0x820 fs/utimes.c:65
+2 locks held by syz.1.18/6047:
+ #0: ffff888074228428 (sb_writers#13){.+.+}-{0:0}, at: do_pwritev+0x1a6/0x270 fs/read_write.c:1153
+ #1: ffff88805bdb87b8 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: netfs_start_io_direct+0x116/0x260 fs/netfs/locking.c:188
+2 locks held by syz.1.18/6049:
+ #0: ffff888074228428 (sb_writers#13){.+.+}-{0:0}, at: vfs_utimes+0x69b/0x820 fs/utimes.c:36
+ #1: ffff88805bdb87b8 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: inode_lock include/linux/fs.h:870 [inline]
+ #1: ffff88805bdb87b8 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: vfs_utimes+0x3b7/0x820 fs/utimes.c:65
+2 locks held by syz.2.20/6077:
+ #0: ffff888032842428 (sb_writers#13){.+.+}-{0:0}, at: do_pwritev+0x1a6/0x270 fs/read_write.c:1153
+ #1: ffff88805f8c07b8 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: netfs_start_io_direct+0x116/0x260 fs/netfs/locking.c:188
+2 locks held by syz.2.20/6079:
+ #0: ffff888032842428 (sb_writers#13){.+.+}-{0:0}, at: vfs_utimes+0x69b/0x820 fs/utimes.c:36
+ #1: ffff88805f8c07b8 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: inode_lock include/linux/fs.h:870 [inline]
+ #1: ffff88805f8c07b8 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: vfs_utimes+0x3b7/0x820 fs/utimes.c:65
+2 locks held by syz.3.21/6103:
+ #0: ffff888078172428 (sb_writers#13){.+.+}-{0:0}, at: do_pwritev+0x1a6/0x270 fs/read_write.c:1153
+ #1: ffff88805bdb8e28 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: netfs_start_io_direct+0x116/0x260 fs/netfs/locking.c:188
+2 locks held by syz.3.21/6104:
+ #0: ffff888078172428 (sb_writers#13){.+.+}-{0:0}, at: vfs_utimes+0x69b/0x820 fs/utimes.c:36
+ #1: ffff88805bdb8e28 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: inode_lock include/linux/fs.h:870 [inline]
+ #1: ffff88805bdb8e28 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: vfs_utimes+0x3b7/0x820 fs/utimes.c:65
+2 locks held by syz.4.22/6133:
+ #0: ffff888076a00428 (sb_writers#13){.+.+}-{0:0}, at: do_pwritev+0x1a6/0x270 fs/read_write.c:1153
+ #1: ffff88805bdb9498 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: netfs_start_io_direct+0x116/0x260 fs/netfs/locking.c:188
+2 locks held by syz.4.22/6134:
+ #0: ffff888076a00428 (sb_writers#13){.+.+}-{0:0}, at: vfs_utimes+0x69b/0x820 fs/utimes.c:36
+ #1: ffff88805bdb9498 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: inode_lock include/linux/fs.h:870 [inline]
+ #1: ffff88805bdb9498 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: vfs_utimes+0x3b7/0x820 fs/utimes.c:65
+2 locks held by syz.5.23/6168:
+ #0: ffff88806b6da428 (sb_writers#13){.+.+}-{0:0}, at: do_pwritev+0x1a6/0x270 fs/read_write.c:1153
+ #1: ffff88805bdb9b08 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: netfs_start_io_direct+0x116/0x260 fs/netfs/locking.c:188
+2 locks held by syz.5.23/6169:
+ #0: ffff88806b6da428 (sb_writers#13){.+.+}-{0:0}, at: vfs_utimes+0x69b/0x820 fs/utimes.c:36
+ #1: ffff88805bdb9b08 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: inode_lock include/linux/fs.h:870 [inline]
+ #1: ffff88805bdb9b08 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: vfs_utimes+0x3b7/0x820 fs/utimes.c:65
+2 locks held by syz.6.26/6203:
+ #0: ffff888059288428 (sb_writers#13){.+.+}-{0:0}, at: do_pwritev+0x1a6/0x270 fs/read_write.c:1153
+ #1: ffff88805bdba178 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: netfs_start_io_direct+0x116/0x260 fs/netfs/locking.c:188
+2 locks held by syz.6.26/6204:
+ #0: ffff888059288428 (sb_writers#13){.+.+}-{0:0}, at: vfs_utimes+0x69b/0x820 fs/utimes.c:36
+ #1: ffff88805bdba178 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: inode_lock include/linux/fs.h:870 [inline]
+ #1: ffff88805bdba178 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: vfs_utimes+0x3b7/0x820 fs/utimes.c:65
+2 locks held by syz.7.27/6232:
+ #0: ffff88805cc2a428 (sb_writers#13){.+.+}-{0:0}, at: do_pwritev+0x1a6/0x270 fs/read_write.c:1153
+ #1: ffff88805f8c1b08 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: netfs_start_io_direct+0x116/0x260 fs/netfs/locking.c:188
+2 locks held by syz.7.27/6234:
+ #0: ffff88805cc2a428 (sb_writers#13){.+.+}-{0:0}, at: vfs_utimes+0x69b/0x820 fs/utimes.c:36
+ #1: ffff88805f8c1b08 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: inode_lock include/linux/fs.h:870 [inline]
+ #1: ffff88805f8c1b08 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: vfs_utimes+0x3b7/0x820 fs/utimes.c:65
+2 locks held by syz.8.28/6264:
+ #0: ffff88807b296428 (sb_writers#13){.+.+}-{0:0}, at: do_pwritev+0x1a6/0x270 fs/read_write.c:1153
+ #1: ffff88805bdba7e8 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: netfs_start_io_direct+0x116/0x260 fs/netfs/locking.c:188
+2 locks held by syz.8.28/6265:
+ #0: ffff88807b296428 (sb_writers#13){.+.+}-{0:0}, at: vfs_utimes+0x69b/0x820 fs/utimes.c:36
+ #1: ffff88805bdba7e8 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: inode_lock include/linux/fs.h:870 [inline]
+ #1: ffff88805bdba7e8 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: vfs_utimes+0x3b7/0x820 fs/utimes.c:65
+2 locks held by syz.9.29/6301:
+ #0: ffff88805912a428 (sb_writers#13){.+.+}-{0:0}, at: do_pwritev+0x1a6/0x270 fs/read_write.c:1153
+ #1: ffff88805f8c1498 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: netfs_start_io_direct+0x116/0x260 fs/netfs/locking.c:188
+2 locks held by syz.9.29/6302:
+ #0: ffff88805912a428 (sb_writers#13){.+.+}-{0:0}, at: vfs_utimes+0x69b/0x820 fs/utimes.c:36
+ #1: ffff88805f8c1498 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: inode_lock include/linux/fs.h:870 [inline]
+ #1: ffff88805f8c1498 (&sb->s_type->i_mutex_key#20){++++}-{4:4}, at: vfs_utimes+0x3b7/0x820 fs/utimes.c:65
+
+=============================================
+
+NMI backtrace for cpu 0
+CPU: 0 UID: 0 PID: 31 Comm: khungtaskd Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/18/2025
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+ nmi_cpu_backtrace+0x27b/0x390 lib/nmi_backtrace.c:113
+ nmi_trigger_cpumask_backtrace+0x29c/0x300 lib/nmi_backtrace.c:62
+ trigger_all_cpu_backtrace include/linux/nmi.h:160 [inline]
+ check_hung_uninterruptible_tasks kernel/hung_task.c:328 [inline]
+ watchdog+0xf0e/0x1260 kernel/hung_task.c:491
+ kthread+0x3c2/0x780 kernel/kthread.c:463
+ ret_from_fork+0x56a/0x730 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+Sending NMI from CPU 0 to CPUs 1:
+NMI backtrace for cpu 1
+CPU: 1 UID: 0 PID: 49 Comm: kworker/u8:3 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/18/2025
+Workqueue: bat_events batadv_nc_worker
+RIP: 0010:iterate_chain_key kernel/locking/lockdep.c:451 [inline]
+RIP: 0010:__lock_acquire+0x642/0x1ce0 kernel/locking/lockdep.c:5225
+Code: 08 45 85 d2 0f 85 6f 04 00 00 4c 89 e7 89 4c 24 08 e8 92 ac ff ff 8b 4c 24 08 48 83 78 40 00 0f 84 c2 0a 00 00 0f b7 44 24 10 <8b> 7c 24 28 44 8b 74 24 20 c1 e0 0d 66 0b 04 24 98 29 f8 8b 7c 24
+RSP: 0018:ffffc90000b97958 EFLAGS: 00000086
+RAX: 0000000000000700 RBX: ffff888022ae2f30 RCX: 00000000748bd351
+RDX: 0000000000000000 RSI: ffff888022ae2f80 RDI: ffff888022ae2f80
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000001
+R10: 0000000000000002 R11: 0000000000000000 R12: ffff888022ae2f80
+R13: ffff888022ae2440 R14: 0000000000000002 R15: 0000000000000003
+FS:  0000000000000000(0000) GS:ffff8881247b2000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000055fb93cf9be0 CR3: 000000000e380000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ lock_acquire kernel/locking/lockdep.c:5868 [inline]
+ lock_acquire+0x179/0x350 kernel/locking/lockdep.c:5825
+ __raw_spin_lock_bh include/linux/spinlock_api_smp.h:126 [inline]
+ _raw_spin_lock_bh+0x33/0x40 kernel/locking/spinlock.c:178
+ spin_lock_bh include/linux/spinlock.h:356 [inline]
+ batadv_nc_purge_paths+0xd9/0x3a0 net/batman-adv/network-coding.c:442
+ batadv_nc_worker+0x958/0x1030 net/batman-adv/network-coding.c:722
+ process_one_work+0x9cc/0x1b70 kernel/workqueue.c:3236
+ process_scheduled_works kernel/workqueue.c:3319 [inline]
+ worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
+ kthread+0x3c2/0x780 kernel/kthread.c:463
+ ret_from_fork+0x56a/0x730 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
