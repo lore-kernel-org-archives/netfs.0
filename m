@@ -1,87 +1,95 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B00A31
-	for <netfs@lists.linux.dev>; Thu, 18 Sep 2025 00:05:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4AD1EF39E
+	for <netfs@lists.linux.dev>; Thu, 18 Sep 2025 01:07:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758153908; cv=none; b=BK8052rKuBrJRwc6UqKLEiJ7GyTutBH1dxMsjaX+IZ8kpw3hCM/dET2tIZV7czzPbgT0fpHpSUb0y9dEmVAeAr0wbMeXr4Qz1f4J1vGVCr2q20+TDfmmWrrAqfnipEk//ZH7WA3/wpHrLeI5VWUGM82lU/ujaaat1kpF8UPdqv4=
+	t=1758157640; cv=none; b=eBdrcUowQ0zpghNWkCNZkhvP5SRJMXZ1EWQDQfxwHNWlOjzd3eUPKk9O+AvU/gljL0rvvXDRIS1PmGPzIDjlUdlB1MuERcB/DEDtY3VtZGvHuuSMNb9m8CgnJUewD29NfLQQVPtdNC86Qjm64pv4DyAmeeEREv+v579dtVtHaEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758153908; c=relaxed/simple;
-	bh=/60HjsF5kDxVQb13pIAAZhD9mjEiPULAqqfFawaT56Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eDlEpdVXcwtgISgN1oLNowpdC7aJ++iNgvck6TEFtACkBsFdM7KD5rZe23BbjPlKLyH8l757J0TkTkYTQqJuQZFQ1At9V2ssMaOZRP9geOdGL5y9qCjFk+AGgULiWlhKdSoToYTiEqpHJOwN9jTcazFU68kVhkdV9PwulLzEc4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aBXzOkVL; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1758157640; c=relaxed/simple;
+	bh=Jyh/T1VQujpBIetRlEwQ9WKQ0pDM9Occu70Vj9kJ3PA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=emf6aNKVy4ZBi3kwbwEUb3yeTytTAq/7GgM8bpPTS7l81L0niMaVU19+Gtlpcj0ilb7uHB+SYmCJu8HANSSfKL1xev8XsyOyiR+IGWz66/vN/5+6Xb11jKqkoAPUBub2hMKYMwbZry5HZZjF1kcILYj+K+x+mRRV7BHRccxM7a4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com; spf=pass smtp.mailfrom=fromorbit.com; dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b=eD75w7j7; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fromorbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aBXzOkVL"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-61a8c134533so499021a12.3
-        for <netfs@lists.linux.dev>; Wed, 17 Sep 2025 17:05:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b="eD75w7j7"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-77287fb79d3so454211b3a.1
+        for <netfs@lists.linux.dev>; Wed, 17 Sep 2025 18:07:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758153905; x=1758758705; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=J7rBzal2frbQpnRlW30Mxkh3elZt0aXaSIdElcYyVLY=;
-        b=aBXzOkVLpAGoxZXEUAv3Rxlf7uCBc+gTGlwvjwrxHArS+AhsUTp0m55zXz3nRI9OUn
-         SSzyOSCn6AemmB0IhOZ+0jCwYIDCEWUT4K1FsZG3kpIiaF04YMoYDvlyWiznhyldzicM
-         s5a4QZbk5hvJrxGCyysAMv+pLPzBUuDifgqWDI7u3l9ZSl6FZ52GGMv0wQnlegikO1PL
-         BbSZzjJVwyJTP7CZlvCfvU0IHP7yWrUeVeuh1UYNLwKc9hXqVCRoalU44jY6j/sfgjz5
-         AaartFE6AGFWlc/Agq9lB6ZtsHc8QRGdUZp8aq6yBkUIl6rsWR91cdydm1Jbo3LfyVpp
-         xztA==
+        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1758157638; x=1758762438; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=p3n6Uf5fmho3K1YmaoGj4njt8YRbuIHtLi1zAXG6OwM=;
+        b=eD75w7j7E4Q2qhXhqY4qef97bNY5l1QbHF4uFc7A8zm2UGpMC3nlfmZw2/yZTOWgyg
+         kRjdJ1qqD4dO2nJeotKbeQ1L83gS/1OduSJRcrB7xq31fAevsnAuYq8z+IHpDC9EYDzo
+         c3s+xcYBpBCPmG051Qh2lcZNr0+cqUPk5PCRdjRXeI3IR2XPC3qvtYVe389BUg8cyAgT
+         zR8VZMm/4DsQtfWU7pVjyqowrS1a09o5JK6ihG0dbvaiQRU8tYuyFPocpS1oBedO9MTi
+         zPPRG3RE8ny/y+T87IdiFmjFZmpnzuOSYKW3FF3pG3PZsXNFQBQUdgLTZ4zxLpBur/JP
+         HJFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758153905; x=1758758705;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=J7rBzal2frbQpnRlW30Mxkh3elZt0aXaSIdElcYyVLY=;
-        b=wlvYvayToV7P/WR7zfpo3+JRAWZMmH52c7VQzF+x1a4HAYLhbOIYPHEj/hXD7osLm3
-         E4SWSKyciTcg7alquZ3+CpGR94NS8hJS7gseaAfXttDBC0orDalk5yIQev805wRbK/mR
-         n93tW9KPXr//v4jwVYDWgZ+dpM6abUtNOwSoNv38w0Nn99HHAXlW8AVTZ70tKP0EPG+L
-         iu9hxdwuWnbWXZVszomxq2ql7v6kponjMcFVpgwZpzlk5hDaKT8wgpcgiu4a716cBkdv
-         xPxQxvsX1/8J7W+yA5uDHDkj1rE9xqiPXNQJWaxpnKPa55xI9LtVIevrVY3r8urnTy3c
-         xHfA==
-X-Forwarded-Encrypted: i=1; AJvYcCU0dKSYaUfUTT/XUKe5llOJdFBwl8CkiVlM0mxFGGGW6TW3859aBQS/t+LntbHBClb8aVcvGw==@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz8MJNqxa6ngXSADuljEwYaBxKqdGfb3CUmr9dkQ7iIyAu6artP
-	ixjunKYH7k02q53dJojtKpljC0H8dv379+8O7efmZDTIkn399YmwBvIIt0bXDLyFwf+PKAgnYsZ
-	ync4CJpQxJVFuROs57D/OVSNjmxyngGM=
-X-Gm-Gg: ASbGncuSN+sIHroRS5Dqfhf9aIkLBPC7bzSVsS753TrNQulGwK3WE7X/YinZkFBr0EY
-	CJvehAHE94o93RX898nVcSBEnHcgD/NbzQa34KMzFf0t402GquEDT3RnsYohrq3YK4JC9ENBnNk
-	NRyCuRD3sV59yYb9uk+YLZm8ZldVOycEtWUl+nHFv0oTfUpsEjAUzzT7QXw4kNeiKDO/bK7cUj0
-	E0ZS1vYq5+AsB6ckxeqbs9/ADULRtIpfgi8LuLszeesytyffebLXSOiLA==
-X-Google-Smtp-Source: AGHT+IEG0rY/6zoPQ0V4J9TEMxL5qWtyUtLwQjBHHbE0kU7UOpID9Vbuyc6wLRhaE+GAd8+JbDeWJnkobCY95bQb0m8=
-X-Received: by 2002:a17:906:eec3:b0:afe:e9ee:4ae0 with SMTP id
- a640c23a62f3a-b1bbb7425fdmr420216666b.59.1758153905204; Wed, 17 Sep 2025
- 17:05:05 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1758157638; x=1758762438;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=p3n6Uf5fmho3K1YmaoGj4njt8YRbuIHtLi1zAXG6OwM=;
+        b=tO1hoTHWCUP7oRfNrk3NJ3W9WpfDN+0H084EutohPfBeAw83Ci1xUrC6LSXcvwYaWL
+         469uAs9rAxn+EOOHij0YjekIYHYLAQkoqWWcINzVLP8UmXIiFNsJcE49NrKhV6aOF10e
+         jW0qjVx4tuckBsHLRuNTkAwCSHiFHm4dRtX8VzStrGIihPci8QXg0Q5irYw2T1xhsSES
+         xTLcmdGwi3egfcTEfKwx6Tou7pyLOG3dQqmSlG95s7gk0SGx6/i2iOKWzdjnv4rMISIk
+         bVz7F7iVsjWU8nhFOtFLKihIaF+9kqBotBvPxmJ7/ui8nuBXemEQq4YFXianXXIZfBwu
+         TK1g==
+X-Forwarded-Encrypted: i=1; AJvYcCVv+EtGGXEgeenOXwFqx2X/MPdZJ8TDAon0sfEhPDcuugR1Mkz52jTU1LvrRTexAud4zSnbuQ==@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw2BZhxaAw4csmVK5EfVEpktoFIyiF6mLRAO3oZSE1VK3ND0iRh
+	KtlGe3yQL066581QOEdJ/4V72jWjNuQuuPDoo4BOZGrS48gKDEYnQFyiiOcdiGwtLL0=
+X-Gm-Gg: ASbGnct3FfZjsPNHEW0XZ+/3bt/ZdVtJoJ6UNLPyJeeTDnjz/+d9NdW6UBzKjtfWyag
+	mM0DF85T4uqVYNd/+XqSO0ymbXimnO36DtqyvTtNslFBYedToazH+j5upM6V/ig0KEUYLhVSDX5
+	XREdxDXGnivVaCkz0KRVBb4Puwr4nUp/x0rr7U64g8Kw2FIY68gUMd19GbvZRzGgAEb2FbZ8u7Q
+	YhQi7geGMJz6NBD1jQXDbVbZh3cnF72X7h/0Y0Pgti5HF08OnGQdXeQVrjuE6o0pVL9Ee2NvVNl
+	nZgq9aergOK6b6KMUiP6HP+4+FWtjO53R6XWNroLq9MiOxHuU5MAO30/U1Js4p2uEASHMziTTHk
+	8jsPqR4wJ0nRZ4jNG8udSt5B6M/xntdWIkoDEa5DetSF7znNk8EzbnxLYv7n/+MYdArfGJ8of2p
+	Dh9zIcnQ==
+X-Google-Smtp-Source: AGHT+IGuCJoEhQgAv+Omg49c7c/B2Tcr3E0BGIChrElfWl6Pxd6ZK4K1F7fPmkeQRRASiKleSW/EoQ==
+X-Received: by 2002:a05:6a00:2350:b0:776:1834:c8c7 with SMTP id d2e1a72fcca58-77bf9664586mr4517640b3a.26.1758157638566;
+        Wed, 17 Sep 2025 18:07:18 -0700 (PDT)
+Received: from dread.disaster.area (pa49-180-91-142.pa.nsw.optusnet.com.au. [49.180.91.142])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77cfec40185sm605187b3a.77.2025.09.17.18.07.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Sep 2025 18:07:17 -0700 (PDT)
+Received: from dave by dread.disaster.area with local (Exim 4.98.2)
+	(envelope-from <david@fromorbit.com>)
+	id 1uz37D-00000003LBO-2MNV;
+	Thu, 18 Sep 2025 11:07:15 +1000
+Date: Thu, 18 Sep 2025 11:07:15 +1000
+From: Dave Chinner <david@fromorbit.com>
+To: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Max Kellermann <max.kellermann@ionos.com>, slava.dubeyko@ibm.com,
+	xiubli@redhat.com, idryomov@gmail.com, amarkuze@redhat.com,
+	ceph-devel@vger.kernel.org, netfs@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] ceph: fix deadlock bugs by making iput() calls
+ asynchronous
+Message-ID: <aMtbQzb-aFPtjttc@dread.disaster.area>
+References: <20250917124404.2207918-1-max.kellermann@ionos.com>
+ <aMs7WYubsgGrcSXB@dread.disaster.area>
+ <CAGudoHHb38eeqPdwjBpkweEwsa6_DTvdrXr2jYmcJ7h2EpMyQg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250917124404.2207918-1-max.kellermann@ionos.com>
- <aMs7WYubsgGrcSXB@dread.disaster.area> <CAGudoHHb38eeqPdwjBpkweEwsa6_DTvdrXr2jYmcJ7h2EpMyQg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <CAGudoHHb38eeqPdwjBpkweEwsa6_DTvdrXr2jYmcJ7h2EpMyQg@mail.gmail.com>
-From: Mateusz Guzik <mjguzik@gmail.com>
-Date: Thu, 18 Sep 2025 02:04:52 +0200
-X-Gm-Features: AS18NWA8wIEg-rpkslqLzmFrp09CSxzRRbJVlRWEvQeLl_2xapCCNgyg1L-JlpY
-Message-ID: <CAGudoHEpd++aMp8zcquh6SwAAT+2uKOhHcWRcBEyC6DRS73osA@mail.gmail.com>
-Subject: Re: [PATCH] ceph: fix deadlock bugs by making iput() calls asynchronous
-To: Dave Chinner <david@fromorbit.com>, Al Viro <viro@zeniv.linux.org.uk>
-Cc: Max Kellermann <max.kellermann@ionos.com>, slava.dubeyko@ibm.com, xiubli@redhat.com, 
-	idryomov@gmail.com, amarkuze@redhat.com, ceph-devel@vger.kernel.org, 
-	netfs@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org, 
-	Josef Bacik <josef@toxicpanda.com>, Christian Brauner <brauner@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 18, 2025 at 1:08=E2=80=AFAM Mateusz Guzik <mjguzik@gmail.com> w=
-rote:
->
-> On Thu, Sep 18, 2025 at 12:51=E2=80=AFAM Dave Chinner <david@fromorbit.co=
-m> wrote:
+On Thu, Sep 18, 2025 at 01:08:29AM +0200, Mateusz Guzik wrote:
+> On Thu, Sep 18, 2025 at 12:51 AM Dave Chinner <david@fromorbit.com> wrote:
 > > - wait for Josef to finish his inode refcount rework patchset that
 > >   gets rid of this whole "writeback doesn't hold an inode reference"
 > >   problem that is the root cause of this the deadlock.
@@ -90,52 +98,62 @@ m> wrote:
 > > make it harder for Josef to land the patchset that makes this
 > > problem go away entirely....
 > >
->
+> 
 > Per Max this is a problem present on older kernels as well, something
 > of this sort is needed to cover it regardless of what happens in
 > mainline.
->
+> 
 > As for mainline, I don't believe Josef's patchset addresses the problem.
->
+> 
 > The newly added refcount now taken by writeback et al only gates the
 > inode getting freed, it does not gate almost any of iput/evict
 > processing. As in with the patchset writeback does not hold a real
 > reference.
->
+
+Hmmmm. That patchset holds a real active reference when it is on the
+LRU list.
+
+I thought the new pinned inode list also did the same, but you are
+right in that it only holds an object reference.  i.e. whilst the
+inode is pinned, iput_final won't move such inodes to the LRU and so
+they don't get a new active reference whilst they are waiting for
+writeback/page cache reclaim.
+
+That in itself is probably OK, but it means that writeback really
+needs to take an active reference to the inode itself while it is
+flushing (i.e. whilst it has I_SYNC is set). This prevents the fs
+writeback code from dropping the last active reference and trying to
+evict the inode whilst writeback is active on the inode...
+
+Indeed, comments in the patchset imply writeback takes an active
+reference and so on completion will put inodes back on the correct
+list, but that does not appear to be the behaviour that has been
+implemented:
+
+	"When we call inode_add_lru(), if the inode falls into one of these
+	categories, we will add it to the cached inode list and hold an
+	i_obj_count reference.  If the inode does not fall into one of these
+	categories it will be moved to the normal LRU, which is already holds an
+	i_obj_count reference.
+
+	The dirty case we will delete it from the LRU if it is on one, and then
+	the iput after the writeout will make sure it's placed onto the correct
+	list at that point."
+
+It's the "iput after the writeout" that implies writeback should be
+holding an active reference, as is done with the LRU a couple of
+patches later in the series.
+
 > So ceph can still iput from writeback and find itself waiting in
 > inode_wait_for_writeback, unless the filesystem can be converted to
 > use the weaker refcounts and iobj_put instead (but that's not
 > something I would be betting on).
 
-To further elaborate, an extra count which only gates the struct being
-freed has limited usefulness. Notably it does not help filesystems
-which need the inode to be valid for use the entire time as evict() is
-only stalled *after* ->evict_inode(), which might have destroyed the
-vital parts.
+See above; I think the ref counting needs to be the other way
+around: writeback needs to take an active ref to prevent eviction
+from a nested iput() call from the filesystem...
 
-Or to put it differently, the patchset tries to fit btrfs's needs
-which don't necessarily line up with other filesystems. For example it
-may be ceph needs the full reference in writeback, then the new ref is
-of no use here. But for the sake of argument let's say ceph will get
-away with the ligher ref instead. Even then this is on the clock for a
-different filesystem to show up which can't do it and needs an async
-iput and then its developers are looking at "whacky work arounds".
 
-The actual generic async iput is the actual async iput, not an
-arbitrary chunk of it after the inode is partway through processing.
-But then any form of extra refcounting is of no significance.
-
-To that end a non-whacky mechanism to defer iput would be most
-welcome, presumably provided by the vfs layer itself. Per remarks by
-Al elsewhere, care needs to be taken to make sure all inodes are
-sorted out before the super block gets destroyed.
-
-This suggests expanding the super_block to track all of the deferred
-iputs and drain them early in sb destruction. The current struct inode
-on LP64 has 2 * 4 byte holes and llist linkage is only 8 bytes, so
-this can be added without growing the struct above stock kernel.
-
-I would argue it would be good if the work could be deffered to
-task_work if possible (fput-style). Waiting for these should be easy
-enough, but arguably the thread which is supposed to get to them can
-be stalled elsewhere indefinitely, so perhaps this bit is a no-go.
+-- 
+Dave Chinner
+david@fromorbit.com
