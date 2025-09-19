@@ -1,81 +1,73 @@
-Received: from smtp153-170.sina.com.cn (smtp153-170.sina.com.cn [61.135.153.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C333101DE
-	for <netfs@lists.linux.dev>; Fri, 19 Sep 2025 12:23:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.135.153.170
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A1DA30ACFC
+	for <netfs@lists.linux.dev>; Fri, 19 Sep 2025 13:26:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758284599; cv=none; b=h52Nj7dJD6kiyCu7bNZaG36c9rrmCX/ayeZezNlYS7qDS1B1Aq3gN599kIjPp+6adeJE0MrFokzDstG6C4FgEdhPIQ6CTdlS+pRfAekmtHMDg2JWwjDe2TO9dB9q3Sl1SDtM2z5PXTDGfxIzAcKojFvms9B6GGpT0PVbAnsBtZ4=
+	t=1758288377; cv=none; b=TF5T3QZnY9jfvRO0CyEb0ztwyqPywZxxNeNgiRZfwLR2YX93ypXVLp49nbAU+miVg7lFw5QqbAqLsIgp0xseHnnk39vU1NTdjxN/y1dluUCzFvie18W7R/lIfSzejwdZw16xiOVJvcHpFzCss6HMUV7hitDEbpkTOLFiYqR77EA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758284599; c=relaxed/simple;
-	bh=KIJ8hSpUPj5yJOYsOOvoMAboQbBE3gvNf+eNVgk4gUY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ozkbLl0Z740qAQpglacLEPdx3KBl+zkzbYF1CsZxLFe7FQGzNSXLLuOeAAs0CNcjCp+Y1R80KiCtUBvVy4ms2Oc03BhSbN4maAGWeAgQOmKmIr4+P9eFteiE8VZHhXRpRMr3lwqY2ZiLJCHgzpb4tbJpLsWCRtLYN+2hyqfdgys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=qQi4P/Js; arc=none smtp.client-ip=61.135.153.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
+	s=arc-20240116; t=1758288377; c=relaxed/simple;
+	bh=lm2A3dPZDzf/mZppxbNchDX8Rb8Py4sLl8ierryTQww=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AY+4gN1n9QnaMyT2hgZ04RmzHTy7oe4xyMSGNDxusCGYwHHOnaU4lshXaz5nvUfQbCCdUK73NZpJN7CeoXRLxktP5qak2Ug4ZayG22dsX/SiuXkhGSaUxjOlBbxJ0iU2m4mYBFoJZlBRktBHglNUu4cFYn+SBmVVR5GOn0zxNsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=kWuC4YKR; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="qQi4P/Js"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1758284591;
-	bh=MwuO3s4MxolpqYas14pKeShCxVq/OriEAKTj9BTUoq0=;
-	h=From:Subject:Date:Message-ID;
-	b=qQi4P/Js91JGq1SYRXjn/7bTflYhpI91UtzTtDPBHIDEK8Ws/+WjncpSV/d9XFw1C
-	 /JkZLcGly1+BJtyrLt1mMbcPjHDo6KVZ59C1VM4qAlMNvog8TuAs0Vv6pqag3z95bw
-	 j5P8wQWrCLLDiKhdQgTDJO1K2PPiX8mmWK9pU0Bs=
-X-SMAIL-HELO: localhost.localdomain
-Received: from unknown (HELO localhost.localdomain)([114.249.58.236])
-	by sina.com (10.54.253.34) with ESMTP
-	id 68CD4B24000036A3; Fri, 19 Sep 2025 20:23:02 +0800 (CST)
-X-Sender: hdanton@sina.com
-X-Auth-ID: hdanton@sina.com
-Authentication-Results: sina.com;
-	 spf=none smtp.mailfrom=hdanton@sina.com;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=hdanton@sina.com
-X-SMAIL-MID: 6774046291924
-X-SMAIL-UIID: 1808608B694D4BA88487F3520188493C-20250919-202302-1
-From: Hillf Danton <hdanton@sina.com>
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="kWuC4YKR"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 5F58B14C2D3;
+	Fri, 19 Sep 2025 15:26:10 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1758288372;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UsnDrdqazOH6edpUSjZq4v3ZhoHiO3iWfgFf3R4oWZ0=;
+	b=kWuC4YKRZS+O+U1gF7JwqeWT/piI/+hq55mWhU5xYblj/zKP6A4UEA1JtXfBeSiwa/E3e7
+	RoColewv2xsbKx5nwfbTRV25uCGi2Fg5m61JYg9hB61lGRMlupN7Pwn9Usx4NLJJqONfVF
+	6iKAmaQNznLW9PTv3dgz/BC3WP8h8Em0zOdWFkzO0YqkoWTIqvmFv/JyWbikXJ+/9iCShS
+	fIfXUOyBgMBzLbgp+IWZjfMVMBy62T8O/FoJn0IK7UeDvFB31oeALTy62cKCntKW/Ia5zw
+	hLCBW8bW169dlnbhm8VP8+1tUPvBY7Y2Wg+p5ICYi3nwLAfguXOx88Emeaxm8A==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 25a0b8d7;
+	Fri, 19 Sep 2025 13:26:08 +0000 (UTC)
+Date: Fri, 19 Sep 2025 22:25:53 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
 To: Oleg Nesterov <oleg@redhat.com>
 Cc: syzbot <syzbot+3815dce0acab6c55984e@syzkaller.appspotmail.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	dhowells@redhat.com,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netfs@lists.linux.dev,
-	pc@manguebit.org,
+	Hillf Danton <hdanton@sina.com>, dhowells@redhat.com,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netfs@lists.linux.dev, pc@manguebit.org,
 	syzkaller-bugs@googlegroups.com
 Subject: Re: [syzbot] [netfs?] INFO: task hung in vfs_utimes (3)
-Date: Fri, 19 Sep 2025 20:22:52 +0800
-Message-ID: <20250919122253.7178-1-hdanton@sina.com>
-In-Reply-To: <20250919064800.GA20476@redhat.com>
-References: 
+Message-ID: <aM1Z4aLfJZs4XydW@codewreck.org>
+References: <68cb3c24.050a0220.50883.0028.GAE@google.com>
+ <20250919064800.GA20476@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250919064800.GA20476@redhat.com>
 
-On Fri, 19 Sep 2025 08:48:00 +0200 Oleg Nesterov wrote:
-> Dominique,
-> 
-> according to
-> 
-> 	https://lore.kernel.org/all/20250919021852.7157-1-hdanton@sina.com/
-> 	https://lore.kernel.org/all/68ccc372.050a0220.28a605.0016.GAE@google.com/
-> 
+Hi Oleg,
+
+Oleg Nesterov wrote on Fri, Sep 19, 2025 at 08:48:00AM +0200:
 > this is yet another issue seems to be fixed by
 > 
 > 	[PATCH] 9p/trans_fd: p9_fd_request: kick rx thread if EPOLLIN
 > 	https://lore.kernel.org/all/20250819161013.GB11345@redhat.com/
 > 
 > are you going to apply it?
-> 
-> Hillf, thanks a lot!
-> 
-Happy to test your fix.
 
-Hillf Danton
+Sorry for the lack of reply, I had meant to deal with it earlier but
+other patches came in and it fell into the cracks.
 
-> Oleg.
+I've just pushed your patch to my -next branch, I'll submit it to Linus
+during the merge window in a couple of weeks
+
+-- 
+Dominique Martinet | Asmadeus
