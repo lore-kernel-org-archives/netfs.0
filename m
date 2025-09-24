@@ -1,122 +1,368 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4123E19CCF5
-	for <netfs@lists.linux.dev>; Wed, 24 Sep 2025 18:52:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D1F157A5A
+	for <netfs@lists.linux.dev>; Wed, 24 Sep 2025 18:56:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758739965; cv=none; b=LTbdDHQ/VLU55h9eM+AO0od6SHAuamUX9MskRM46rvjvj1NkXzpBZD8RCy41j2IYC9sm36nilsvNbIJF0Dw5vM35DDjJQtCTh0r3d79Dbs80LcNZ88vl1e1OCkqqTnCqX3HCocPbFJ1/RU80bEHf0WP9v5k9hGCZ+FX1nEBzpew=
+	t=1758740191; cv=none; b=CWkywIRUItOg3vkLUNb08e2+BI4H//TCgRKd9sAnpgZiM5SsxjbZbCJVRI2wVy8Wl88m2kiy7yyuIKQi4oJLcRAkoomUt2BRx9GIVDcrOL0M4MbR3g2rIhbIN/y/UHC0fAAA9qk8Uqn3FxDkxOzZnMJ+D6fHvN5YzVnkiksaFSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758739965; c=relaxed/simple;
-	bh=TrnfCbO733+lCXZrSFS09BJmX3fVRMEKZIVSt3/d0Dk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Wpz3qKCio+uOb316YbjsY37HbHLa9uhxXHWDQRHkBOVFvVPD+0SkWJD/FXdTIW8heq2m0N782CEIV/UkNtIhLe5ftxkUlrgzaNVkWs+uN1lMDYODU7cro7oahFUVWCGjBxEnp+k//7SUSh71vuxJU7uy32bYg5C5WaApXjaaA6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=MTFO0Lhl; arc=none smtp.client-ip=209.85.218.51
+	s=arc-20240116; t=1758740191; c=relaxed/simple;
+	bh=wOcAqZl1JI68IzNngstGphMuEGO5U8h+VuAv9zHSQ+w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Cuh3xo/bXQGSDmP+pEXasxZVnx6xr+230Lz/y9RXtizTohWd7U2AVXPJjET+z8VCDHzoSEAQ58D8dDD8veoWI/FS1hnfIC5OJJQrJ2215xpuzEkb62gfmZLZTOaAH6GfM0xj1PuFuQBm/A3mkWhZePiOtkP6y9+A8kYiwmxfqKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=Du81Jvob; arc=none smtp.client-ip=209.85.218.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="MTFO0Lhl"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b2bddecc51aso27023066b.2
-        for <netfs@lists.linux.dev>; Wed, 24 Sep 2025 11:52:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="Du81Jvob"
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-afcb78ead12so29743266b.1
+        for <netfs@lists.linux.dev>; Wed, 24 Sep 2025 11:56:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1758739962; x=1759344762; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GxaSlzLAtScN1zJhK9/qnO+REZ+0VCMj1JhA1WOFJSg=;
-        b=MTFO0LhlvufX4MK7Jokm6Ei0cGw1THV8qu9AqBM9l3vkbE9LDO8yROIywrBHXmSJ+W
-         RaNPuJTepDdLpPKZtdEky5wcD4RSbs34SaAS1zZuYa6EzXIlHuRnEuP5L17jjpIc4EFW
-         At4ttBoQPIrgEi6q52EgYQi+PlfAPt5MDjSKlxZQItRA+xD0bfoV/sARxhPliRsQx2JO
-         MSSq3p2WoBPcqhJ4kPC55Vu9tozeVD1npJLGhSHW2fN9ww746fG2HINDnplyGjTATipv
-         5zdyKhUGCQMAdia4P0VXOPgkvCYKlOB8+qU26Sr0rEgVEXkDpYdfSw32MDnZXWFD2DKj
-         CTFg==
+        d=ionos.com; s=google; t=1758740187; x=1759344987; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9lhfP2OZ52ysQ5LfjO7ep695Hkv0EfLGngVu/eUSBaE=;
+        b=Du81JvobAzj6BztOFQXRqIIpD9ssc0E+JgplB7EoxBkuGOpz+fl55ik2XgaxHaECCY
+         YiZ4/KhsfB7Dn5YnDSIcj+/qlhrBzegSAJVtSjJACS0J1SL5rC5iAMGSAzIIwgJQHF69
+         JjUFrra1QJZ9Io/9lZVcnVbm3lqtU38dqfEwrkikNNMxRynbmAm6/7O2gatUuiyyhInE
+         eGcBvG9PSbuQvKPltXgoNlGMoEs/oqtrhQkeuslf5s6JWx0ewbfF6+aHgdddXWFgbNfW
+         2gdBZPp07d0OT0Mk2wA9Dhhn8qvRq41yb6FP2n12VVabPRNU+hbINA0zWcQ2YQ+flvWP
+         wyXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758739962; x=1759344762;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GxaSlzLAtScN1zJhK9/qnO+REZ+0VCMj1JhA1WOFJSg=;
-        b=ITzAhDsePWOm/5A82pRCDpV8jAe/MC975lCj/u7C64re/85gFBYcZzUE8Qifh4krdg
-         nWq4A3zeyiTFIS7awifVnZVObUy1jJ7Z4JZuWvpLDl0QA0pQlmCRAnPwWimi4laGOWqb
-         N4kn4ZxsYMfnuPuzOpYKs+JKMD/TLB89LXOmRZprDZGX83Iot4Axeiot1fHDk+G9g0mn
-         TCf1bUWzV8RE/XrdlKzwBhVhMvM36Zz4Vbz8beD71lpjARDz+loqRxVODDGkujLr0dwl
-         S0mcGUMN3CkCi9zJ7uPGx8DHTiqXwAW21gxdEt05sSpdkau4w0XEc1Ku5IJAGbCvtnXI
-         /ZgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUK9Yk7RYEHBObncrTk//OdG9pW9BoP7C/lDlWFjn7zU1UZWVtFRJQHZRHOKg+j/Pwgj322cQ==@lists.linux.dev
-X-Gm-Message-State: AOJu0YyqsT6cb7ApwQCxlJ8vSUgJUN2Tm21c1UDlrgEoNjMxjda0ri3j
-	KQFTX2YKh6nuopEn0mlPYcNjCqMKLlJg7Zj815lYsh2pV3/i3WjGjX7u8uXnAhEd+NDpuyQ7yq0
-	tT57xPum8mlms3ElDJVy4Pz6tV28EmB5NQVYkqPrtew==
-X-Gm-Gg: ASbGnctBbpffdIuSjktQ+uT9d1Bn0+I2Mti38Z5YITFC6n0FFakG5aOVni4o8SV2cL8
-	v6kaj+NvII1sW10NDWLkDLgCXrjx+hA1NbPhLN1nmVJXehvVsuc3B5AyjbxmqpYzw+82C7+HI3d
-	LE6kgDbHxVZvOol/f1LxlU77Vl9RUyVK9whSTUqEbJN59QiBnPiC6LaHX8n/TkPLLuiOY2gAaVp
-	GfUiYHzjqoa4a1gtg50qU+hePVBptf0bn4=
-X-Google-Smtp-Source: AGHT+IEfLas0BqTe4LbLvHMPVeWuRAoGKff3BYuwff4/8Ek1I05jBqtCoUMSm2S1LlFiIk3FPlHI234+b1Girt9Hnx0=
-X-Received: by 2002:a17:907:7e88:b0:b0c:6cae:51f5 with SMTP id
- a640c23a62f3a-b34bb8f1a7amr87587566b.43.1758739961642; Wed, 24 Sep 2025
- 11:52:41 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1758740187; x=1759344987;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9lhfP2OZ52ysQ5LfjO7ep695Hkv0EfLGngVu/eUSBaE=;
+        b=KXrPtfxqDTzeG8+e3UfUFDwtrMHm1HPWB2Ls62oLuDyeLPRkHMTpHn6nwL7SkmwMLi
+         UAvg33MlnmNP0jThrg5b8OoakxE5W1t0EtikDijEOC4WDgVC1rZTuHdi0Fw8/CC+BKm0
+         3T3OKP6wSoQRyOQz7d8Mf9PFqvajfdec8VxXmuUqK7pK0gPFVApUCJsnE55tgjjwghef
+         VElm/YYyjICcQOO8r1KNegwIgSDJpwC5QBr5DO6n0r7+Vnz29tgVU3UBmHfyNww3BbEu
+         NypCsMC/wcrDLLDnbRMTuft/ae4DxCMLWQtrWamaxLu7EWLyKOS2QoCC3IsexKwxpuGn
+         B3nA==
+X-Forwarded-Encrypted: i=1; AJvYcCXrAiZ0fgESXGN1EqRcVRCai8nfJL9UMYE31y2qwgyDvnusXDeknfw2IEsWCDrPh+eOB5MYUQ==@lists.linux.dev
+X-Gm-Message-State: AOJu0YzOGh2GCKKJnG2SOYqT+mgXIH5nf9PnclIYbwYGRRBYw5kwvvNi
+	WQmdRcjHkjmr8hevXSEsvOyQBMbwToMOyt4CNL2UqEbtvl0a8KzUMKMpEYoLrlb5ZZE=
+X-Gm-Gg: ASbGncvCRKa0cXyVL06NSrO0MIuBCXxR0YeubTT5j6jbz++ESCJXLwgCv6U5cNse8F3
+	NEnZ7MCsCsqTqN5gJBU2TyOpSI2KGs/mKOD1SsQ6fRJXFwdt+y7VGz7jdZ7VJU9Fx8hlE+WPNMz
+	G7ZFvmtu8Hc13DTFpISIMLPwaJUKywgVsxu4nY2Ho8IpS4AJJYIOMcn7MIsXEQOqQVIibKeINyv
+	mjw+Mbi1xqC4aAn0yzS2Fjj14lk/0DZZ5w+YrvyAjBhEplSeLhhoa6a6+6hFUE/sNbDjpZT3zWX
+	NdQ0ExcFuikGDFyVX6FWCYngnIayf2qS22MvY0yhHrbam0T8c6Z3dHOuUkXbZLQrhJ8L2fBJz3P
+	ioSl6xGEx+8JBbR2YgtAiuMe97OO2WL83gQuPf0Bae3sW76/WcvXMG9BbSCVZ8bJZhQodUSCh0u
+	7z7h3KjJ0LsIsxPInILvfQVA==
+X-Google-Smtp-Source: AGHT+IFR342wd3phGnjhQe0vWt6Gm99yDbsvhyzRLEinRfJmOZ355Wfish6N1jEsDgQcgz3cbsb8EA==
+X-Received: by 2002:a17:907:6e90:b0:b04:2a50:3c1b with SMTP id a640c23a62f3a-b34bc9720fcmr91166766b.53.1758740186383;
+        Wed, 24 Sep 2025 11:56:26 -0700 (PDT)
+Received: from raven.intern.cm-ag (p200300dc6f090200023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f09:200:230:64ff:fe74:809])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b286fa30a7bsm1058104666b.29.2025.09.24.11.56.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Sep 2025 11:56:26 -0700 (PDT)
+From: Max Kellermann <max.kellermann@ionos.com>
+To: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Christian Brauner <brauner@kernel.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Max Kellermann <max.kellermann@ionos.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] fs/netfs: fix reference leak
+Date: Wed, 24 Sep 2025 20:55:56 +0200
+Message-ID: <20250924185558.3395930-1-max.kellermann@ionos.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20250911222501.1417765-1-max.kellermann@ionos.com>
- <745741.1758727499@warthog.procyon.org.uk> <755695.1758728366@warthog.procyon.org.uk>
-In-Reply-To: <755695.1758728366@warthog.procyon.org.uk>
-From: Max Kellermann <max.kellermann@ionos.com>
-Date: Wed, 24 Sep 2025 20:52:30 +0200
-X-Gm-Features: AS18NWBX90PDeUbc5D76CTwvxhtp7GglnV1Nwwby_YGspEvXUsJA3vS2rse6AAs
-Message-ID: <CAKPOu+9Ym+dRHQiMvjvdisnb5jwca4_2ECbzOMLYso=xNvxeQQ@mail.gmail.com>
-Subject: Re: [PATCH] fs/netfs: fix reference leak
-To: David Howells <dhowells@redhat.com>
-Cc: Paulo Alcantara <pc@manguebit.org>, Christian Brauner <brauner@kernel.org>, netfs@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 24, 2025 at 5:39=E2=80=AFPM David Howells <dhowells@redhat.com>=
- wrote:
-> > > ... and frees the allocation (without the "call_rcu" indirection).
-> >
-> > Unfortunately, this isn't good.  The request has already been added to =
-the
-> > proc list and is removed in netfs_deinit_request() by netfs_proc_del_rr=
-eq() -
-> > but that means that someone reading /proc/fs/netfs/requests can be look=
-ing at
-> > it as you free it.
+Commit 20d72b00ca81 ("netfs: Fix the request's work item to not
+require a ref") modified netfs_alloc_request() to initialize the
+reference counter to 2 instead of 1.  The rationale was that the
+requet's "work" would release the second reference after completion
+(via netfs_{read,write}_collection_worker()).  That works most of the
+time if all goes well.
 
-Oh, right. I saw the linked list operations were protected by a
-spinlock, but I missed that this lock is not taken for traversal while
-reading proc. I'll send v2 with your suggested fix.
+However, it leaks this additional reference if the request is released
+before the I/O operation has been submitted: the error code path only
+decrements the reference counter once and the work item will never be
+queued because there will never be a completion.
 
-> >
-> > You still need the call_rcu() - or you have to call synchronize_rcu().
-> >
-> > I can change netfs_put_failed_request() to do the call_rcu() rather tha=
-n
-> > mempool_free()/netfs_stat_d().
->
-> How about:
->
-> /*
->  * Free a request (synchronously) that was just allocated but has failed =
-before
->  * it could be submitted.
->  */
-> void netfs_put_failed_request(struct netfs_io_request *rreq)
-> {
->         int r;
->
->         /* New requests have two references (see netfs_alloc_request(), a=
-nd
->          * this function is only allowed on new request objects
->          */
->         if (!__refcount_sub_and_test(2, &rreq->ref, &r))
->                 WARN_ON_ONCE(1);
+This has caused outages of our whole server cluster today because
+tasks were blocked in netfs_wait_for_outstanding_io(), leading to
+deadlocks in Ceph (another bug that I will address soon in another
+patch).  This was caused by a netfs_pgpriv2_begin_copy_to_cache() call
+which failed in fscache_begin_write_operation().  The leaked
+netfs_io_request was never completed, leaving `netfs_inode.io_count`
+with a positive value forever.
 
-You changed the refcount_read() check to an atomic decrement, but at
-this point, nobody cares for the reference counter anymore (and my
-check was just for bug-catching purposes).
-Why bother doing the decrement?
+All of this is super-fragile code.  Finding out which code paths will
+lead to an eventual completion and which do not is hard to see:
+
+- Some functions like netfs_create_write_req() allocate a request, but
+  will never submit any I/O.
+
+- netfs_unbuffered_read_iter_locked() calls netfs_unbuffered_read()
+  and then netfs_put_request(); however, netfs_unbuffered_read() can
+  also fail early before submitting the I/O request, therefore another
+  netfs_put_request() call must be added there.
+
+A rule of thumb is that functions that return a `netfs_io_request` do
+not submit I/O, and all of their callers must be checked.
+
+For my taste, the whole netfs code needs an overhaul to make reference
+counting easier to understand and less fragile & obscure.  But to fix
+this bug here and now and produce a patch that is adequate for a
+stable backport, I tried a minimal approach that quickly frees the
+request object upon early failure.
+
+I decided against adding a second netfs_put_request() each time
+because that would cause code duplication which obscures the code
+further.  Instead, I added the function netfs_put_failed_request()
+which frees such a failed request synchronously under the assumption
+that the reference count is exactly 2 (as initially set by
+netfs_alloc_request() and never touched), verified by a
+WARN_ON_ONCE().  It then deinitializes the request object (without
+going through the "cleanup_work" indirection) and frees the allocation
+(with RCU protection to protect against concurrent access by
+netfs_requests_seq_start()).
+
+All code paths that fail early have been changed to call
+netfs_put_failed_request() instead of netfs_put_request().
+Additionally, I have added a netfs_put_request() call to
+netfs_unbuffered_read() as explained above because the
+netfs_put_failed_request() approach does not work there.
+
+Fixes: 20d72b00ca81 ("netfs: Fix the request's work item to not require a ref")
+Cc: stable@vger.kernel.org
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+---
+v1->v2: free the request with call_rcu() because a proc reader might
+  be accessing it (suggested by David Howells)
+---
+ fs/netfs/buffered_read.c | 10 +++++-----
+ fs/netfs/direct_read.c   |  7 ++++++-
+ fs/netfs/direct_write.c  |  6 +++++-
+ fs/netfs/internal.h      |  1 +
+ fs/netfs/objects.c       | 28 +++++++++++++++++++++++++---
+ fs/netfs/read_pgpriv2.c  |  2 +-
+ fs/netfs/read_single.c   |  2 +-
+ fs/netfs/write_issue.c   |  3 +--
+ 8 files changed, 45 insertions(+), 14 deletions(-)
+
+diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
+index 18b3dc74c70e..37ab6f28b5ad 100644
+--- a/fs/netfs/buffered_read.c
++++ b/fs/netfs/buffered_read.c
+@@ -369,7 +369,7 @@ void netfs_readahead(struct readahead_control *ractl)
+ 	return netfs_put_request(rreq, netfs_rreq_trace_put_return);
+ 
+ cleanup_free:
+-	return netfs_put_request(rreq, netfs_rreq_trace_put_failed);
++	return netfs_put_failed_request(rreq);
+ }
+ EXPORT_SYMBOL(netfs_readahead);
+ 
+@@ -472,7 +472,7 @@ static int netfs_read_gaps(struct file *file, struct folio *folio)
+ 	return ret < 0 ? ret : 0;
+ 
+ discard:
+-	netfs_put_request(rreq, netfs_rreq_trace_put_discard);
++	netfs_put_failed_request(rreq);
+ alloc_error:
+ 	folio_unlock(folio);
+ 	return ret;
+@@ -532,7 +532,7 @@ int netfs_read_folio(struct file *file, struct folio *folio)
+ 	return ret < 0 ? ret : 0;
+ 
+ discard:
+-	netfs_put_request(rreq, netfs_rreq_trace_put_discard);
++	netfs_put_failed_request(rreq);
+ alloc_error:
+ 	folio_unlock(folio);
+ 	return ret;
+@@ -699,7 +699,7 @@ int netfs_write_begin(struct netfs_inode *ctx,
+ 	return 0;
+ 
+ error_put:
+-	netfs_put_request(rreq, netfs_rreq_trace_put_failed);
++	netfs_put_failed_request(rreq);
+ error:
+ 	if (folio) {
+ 		folio_unlock(folio);
+@@ -754,7 +754,7 @@ int netfs_prefetch_for_write(struct file *file, struct folio *folio,
+ 	return ret < 0 ? ret : 0;
+ 
+ error_put:
+-	netfs_put_request(rreq, netfs_rreq_trace_put_discard);
++	netfs_put_failed_request(rreq);
+ error:
+ 	_leave(" = %d", ret);
+ 	return ret;
+diff --git a/fs/netfs/direct_read.c b/fs/netfs/direct_read.c
+index a05e13472baf..a498ee8d6674 100644
+--- a/fs/netfs/direct_read.c
++++ b/fs/netfs/direct_read.c
+@@ -131,6 +131,7 @@ static ssize_t netfs_unbuffered_read(struct netfs_io_request *rreq, bool sync)
+ 
+ 	if (rreq->len == 0) {
+ 		pr_err("Zero-sized read [R=%x]\n", rreq->debug_id);
++		netfs_put_request(rreq, netfs_rreq_trace_put_discard);
+ 		return -EIO;
+ 	}
+ 
+@@ -205,7 +206,7 @@ ssize_t netfs_unbuffered_read_iter_locked(struct kiocb *iocb, struct iov_iter *i
+ 	if (user_backed_iter(iter)) {
+ 		ret = netfs_extract_user_iter(iter, rreq->len, &rreq->buffer.iter, 0);
+ 		if (ret < 0)
+-			goto out;
++			goto error_put;
+ 		rreq->direct_bv = (struct bio_vec *)rreq->buffer.iter.bvec;
+ 		rreq->direct_bv_count = ret;
+ 		rreq->direct_bv_unpin = iov_iter_extract_will_pin(iter);
+@@ -238,6 +239,10 @@ ssize_t netfs_unbuffered_read_iter_locked(struct kiocb *iocb, struct iov_iter *i
+ 	if (ret > 0)
+ 		orig_count -= ret;
+ 	return ret;
++
++error_put:
++	netfs_put_failed_request(rreq);
++	return ret;
+ }
+ EXPORT_SYMBOL(netfs_unbuffered_read_iter_locked);
+ 
+diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
+index a16660ab7f83..a9d1c3b2c084 100644
+--- a/fs/netfs/direct_write.c
++++ b/fs/netfs/direct_write.c
+@@ -57,7 +57,7 @@ ssize_t netfs_unbuffered_write_iter_locked(struct kiocb *iocb, struct iov_iter *
+ 			n = netfs_extract_user_iter(iter, len, &wreq->buffer.iter, 0);
+ 			if (n < 0) {
+ 				ret = n;
+-				goto out;
++				goto error_put;
+ 			}
+ 			wreq->direct_bv = (struct bio_vec *)wreq->buffer.iter.bvec;
+ 			wreq->direct_bv_count = n;
+@@ -101,6 +101,10 @@ ssize_t netfs_unbuffered_write_iter_locked(struct kiocb *iocb, struct iov_iter *
+ out:
+ 	netfs_put_request(wreq, netfs_rreq_trace_put_return);
+ 	return ret;
++
++error_put:
++	netfs_put_failed_request(wreq);
++	return ret;
+ }
+ EXPORT_SYMBOL(netfs_unbuffered_write_iter_locked);
+ 
+diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
+index d4f16fefd965..4319611f5354 100644
+--- a/fs/netfs/internal.h
++++ b/fs/netfs/internal.h
+@@ -87,6 +87,7 @@ struct netfs_io_request *netfs_alloc_request(struct address_space *mapping,
+ void netfs_get_request(struct netfs_io_request *rreq, enum netfs_rreq_ref_trace what);
+ void netfs_clear_subrequests(struct netfs_io_request *rreq);
+ void netfs_put_request(struct netfs_io_request *rreq, enum netfs_rreq_ref_trace what);
++void netfs_put_failed_request(struct netfs_io_request *rreq);
+ struct netfs_io_subrequest *netfs_alloc_subrequest(struct netfs_io_request *rreq);
+ 
+ static inline void netfs_see_request(struct netfs_io_request *rreq,
+diff --git a/fs/netfs/objects.c b/fs/netfs/objects.c
+index e8c99738b5bb..39d5e13f7248 100644
+--- a/fs/netfs/objects.c
++++ b/fs/netfs/objects.c
+@@ -116,10 +116,8 @@ static void netfs_free_request_rcu(struct rcu_head *rcu)
+ 	netfs_stat_d(&netfs_n_rh_rreq);
+ }
+ 
+-static void netfs_free_request(struct work_struct *work)
++static void netfs_deinit_request(struct netfs_io_request *rreq)
+ {
+-	struct netfs_io_request *rreq =
+-		container_of(work, struct netfs_io_request, cleanup_work);
+ 	struct netfs_inode *ictx = netfs_inode(rreq->inode);
+ 	unsigned int i;
+ 
+@@ -149,6 +147,14 @@ static void netfs_free_request(struct work_struct *work)
+ 
+ 	if (atomic_dec_and_test(&ictx->io_count))
+ 		wake_up_var(&ictx->io_count);
++}
++
++static void netfs_free_request(struct work_struct *work)
++{
++	struct netfs_io_request *rreq =
++		container_of(work, struct netfs_io_request, cleanup_work);
++
++	netfs_deinit_request(rreq);
+ 	call_rcu(&rreq->rcu, netfs_free_request_rcu);
+ }
+ 
+@@ -167,6 +173,22 @@ void netfs_put_request(struct netfs_io_request *rreq, enum netfs_rreq_ref_trace
+ 	}
+ }
+ 
++/*
++ * Free a request (synchronously) that was just allocated but has
++ * failed before it could be submitted.
++ */
++void netfs_put_failed_request(struct netfs_io_request *rreq)
++{
++	/* new requests have two references (see
++	 * netfs_alloc_request(), and this function is only allowed on
++	 * new request objects
++	 */
++	WARN_ON_ONCE(refcount_read(&rreq->ref) != 2);
++
++	trace_netfs_rreq_ref(rreq->debug_id, 0, netfs_rreq_trace_put_failed);
++	netfs_free_request(&rreq->cleanup_work);
++}
++
+ /*
+  * Allocate and partially initialise an I/O request structure.
+  */
+diff --git a/fs/netfs/read_pgpriv2.c b/fs/netfs/read_pgpriv2.c
+index 8097bc069c1d..a1489aa29f78 100644
+--- a/fs/netfs/read_pgpriv2.c
++++ b/fs/netfs/read_pgpriv2.c
+@@ -118,7 +118,7 @@ static struct netfs_io_request *netfs_pgpriv2_begin_copy_to_cache(
+ 	return creq;
+ 
+ cancel_put:
+-	netfs_put_request(creq, netfs_rreq_trace_put_return);
++	netfs_put_failed_request(creq);
+ cancel:
+ 	rreq->copy_to_cache = ERR_PTR(-ENOBUFS);
+ 	clear_bit(NETFS_RREQ_FOLIO_COPY_TO_CACHE, &rreq->flags);
+diff --git a/fs/netfs/read_single.c b/fs/netfs/read_single.c
+index fa622a6cd56d..5c0dc4efc792 100644
+--- a/fs/netfs/read_single.c
++++ b/fs/netfs/read_single.c
+@@ -189,7 +189,7 @@ ssize_t netfs_read_single(struct inode *inode, struct file *file, struct iov_ite
+ 	return ret;
+ 
+ cleanup_free:
+-	netfs_put_request(rreq, netfs_rreq_trace_put_failed);
++	netfs_put_failed_request(rreq);
+ 	return ret;
+ }
+ EXPORT_SYMBOL(netfs_read_single);
+diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
+index 0584cba1a043..dd8743bc8d7f 100644
+--- a/fs/netfs/write_issue.c
++++ b/fs/netfs/write_issue.c
+@@ -133,8 +133,7 @@ struct netfs_io_request *netfs_create_write_req(struct address_space *mapping,
+ 
+ 	return wreq;
+ nomem:
+-	wreq->error = -ENOMEM;
+-	netfs_put_request(wreq, netfs_rreq_trace_put_failed);
++	netfs_put_failed_request(wreq);
+ 	return ERR_PTR(-ENOMEM);
+ }
+ 
+-- 
+2.47.3
+
