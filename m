@@ -1,81 +1,107 @@
-Received: from mail-il1-f199.google.com (mail-il1-f199.google.com [209.85.166.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B26D3019B9
-	for <netfs@lists.linux.dev>; Tue, 23 Sep 2025 19:59:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C243128B8
+	for <netfs@lists.linux.dev>; Wed, 24 Sep 2025 15:25:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758657545; cv=none; b=HsGjf5rzlSbCOogowZRRcXDWShqqXiwlOlv7hx5pxqUcpDfqXUg8juQVMIBf4zIOSC6FOr9tg+y8SPZIPI4Ix1cNRPI5148iCqktq69RxDu5auxATuHvmFt9VErP8Y5fve+TyNvF2Whb+BDGkhIkeMaJEXdKI5KfgFygMC9Lww0=
+	t=1758727510; cv=none; b=Sa/njRSATvQpF1FqiyMfzvnXuVZMEqfkV711qKOoLgd7m6oxUr8s2I8ZRxjwLLQbnMWBo9URG1pPTGXNTrHbBuA2FJltJ7bpfultptPncvCsK9mcFvfDeyZvdf2+bkzjXkUKrZqbQj2Sze8GCEnr8TFmWx3e7nSUIQuiUhMQxNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758657545; c=relaxed/simple;
-	bh=WbRxxvPu2PII9+tVZPTYHIku5xjnJJfqpOzcsOGOcTg=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=pn1lX/XpQjdE4u+m4wG/oJpcDp91E5ntvoW5PjW4/5vpHBlm4bwmQUWPJHFY1o8wFIs27KfpO217mnBdn3poe4yBgYFt73pA4ux7RPCe4FB4TryxhhpalaO5tN1TgmGZPbZ4Hk/rccWy9i02oT3rXsPo6OpZ/RYNI8ynsfR6F40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-42486f6da6fso62901685ab.2
-        for <netfs@lists.linux.dev>; Tue, 23 Sep 2025 12:59:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758657542; x=1759262342;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bcaaZPCV5Qrgwa3vKDEUNa/ct40/p9wKCLJtyWA+kyQ=;
-        b=c7rNkyWnjWMiEehXUjW3MpSS96yQ1QxhZx9A4JFUAu7vnKNi/rWZaq7mAwD8mpVr+4
-         MOWlfPmiCmcQvCilqM/zdfRSm5JyHmvHe2hiWKJXZZxDDCc0BBhPtM0GtVDqaLEtQo/E
-         XXP8p4iOaZ4YdVhqvPc9Jff/e5C49bbzYoURY0v3DF84xOYMQ5tQWSikiBNZch4Lmcz8
-         i/mMqv0SwR8SRyvlaERU58xo5qW8eZJDIJPkZwaIs3AdnP5y3czvqiRDr945i8O821aJ
-         /gPEa8qkz31qelNkKVjKnU8dYRr8zpv6E9uKlwGl698lqsEeplVqMhLDbRO+imIvV5Ls
-         rAPA==
-X-Forwarded-Encrypted: i=1; AJvYcCVSRcZeUni7sUYythSzJAeaKlUjEvDdnLjdDRR+EQnRez8c3MiCJTK0KfCkVgwT8ZqUePJvww==@lists.linux.dev
-X-Gm-Message-State: AOJu0YycLH6CKAMF17jCvC89htctQ4WLWoSXPjKEaoVrbAu7jqha9b6Z
-	h+PavCAy/sccLLQ3F34nZGZEgWEAaCdPAvUsN45E7ziRpj/VI17ZT0oZF+WtFPCcmKXgjjF/w0s
-	eByiFeqp/tRq9x0dXLevu3XMMSfa1p49lsbZGOpOYX8KZKx6amGiM5USgAE0=
-X-Google-Smtp-Source: AGHT+IH4ryecd7+jD4K6kYGAIwNEyzeiCtIWaDcMQ3DqckIrtsaX5FHyU9Wx/aV8dwEqItA12eZFVdFCQBiegXhWf5yf0gEyZVTH
+	s=arc-20240116; t=1758727510; c=relaxed/simple;
+	bh=U0SdXOUahWvhCvNN2IiXkoLSJW4W+TO1RjB82fo7u/E=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=PmNepMzK2esa2M3OCM6mu/eBHqQUAzlPWkHdZPvTUFcPJfMbTkTbhOzWIGd9pPHZ4Rn6Z88o3v9OYD/8WzVSWPiyF9kHeT8Ax07Z93Yc4DkSOKNxBIz4GOuHO83QkekDFF/5olqRu2lGTpQaDvFnqp0e1kjbTIN1OdDewWlEwe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SF0wGCGn; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SF0wGCGn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758727507;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=g839bYXXnXzsEzs4lSTasjKmFEmWp6qANvpUvXmul2w=;
+	b=SF0wGCGnUi3JIJWCWoX8JPRVh2SDGavo68Gc8I4jci+4y27inloDGNbMVFgr7j3UFeYbVh
+	/wkJ0L8S5/+YKhhgRM4t80A1HVbqk+WndF4HyAWgYMFATGDxRwaPqlXRM43ObX72/QdC4h
+	5HSjPp9N6Xm+ezJgLF0Ak67Kr86K2m8=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-463-U7tKr2YSOna7enw23176AA-1; Wed,
+ 24 Sep 2025 11:25:04 -0400
+X-MC-Unique: U7tKr2YSOna7enw23176AA-1
+X-Mimecast-MFC-AGG-ID: U7tKr2YSOna7enw23176AA_1758727503
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BF799180034C;
+	Wed, 24 Sep 2025 15:25:02 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.155])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9A5ED1955F19;
+	Wed, 24 Sep 2025 15:25:00 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20250911222501.1417765-1-max.kellermann@ionos.com>
+References: <20250911222501.1417765-1-max.kellermann@ionos.com>
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.org>,
+    Christian Brauner <brauner@kernel.org>, netfs@lists.linux.dev,
+    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+    linux-stable@vger.kernel.org
+Subject: Re: [PATCH] fs/netfs: fix reference leak
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:160f:b0:423:fcd6:5487 with SMTP id
- e9e14a558f8ab-42581e28b8emr65860075ab.14.1758657542574; Tue, 23 Sep 2025
- 12:59:02 -0700 (PDT)
-Date: Tue, 23 Sep 2025 12:59:02 -0700
-In-Reply-To: <0000000000002fd2de0618de2e65@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68d2fc06.a70a0220.4f78.000d.GAE@google.com>
-Subject: Re: [syzbot] [fs?] general protection fault in iter_file_splice_write
-From: syzbot <syzbot+d2125fcb6aa8c4276fd2@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, brauner@kernel.org, danielyangkang@gmail.com, 
-	dhowells@redhat.com, eadavis@qq.com, ericvh@kernel.org, jack@suse.cz, 
-	jlayton@kernel.org, linux-afs@lists.infradead.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux_oss@crudebyte.com, lizhi.xu@windriver.com, lucho@ionkov.net, 
-	marc.dionne@auristor.com, netfs@lists.linux.dev, pc@manguebit.org, 
-	syzkaller-bugs@googlegroups.com, v9fs@lists.linux.dev, 
-	viro@zeniv.linux.org.uk
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <745740.1758727499.1@warthog.procyon.org.uk>
+Date: Wed, 24 Sep 2025 16:24:59 +0100
+Message-ID: <745741.1758727499@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-syzbot suspects this issue was fixed by commit:
+Max Kellermann <max.kellermann@ionos.com> wrote:
 
-commit a3de58b12ce074ec05b8741fa28d62ccb1070468
-Author: David Howells <dhowells@redhat.com>
-Date:   Thu Aug 14 21:45:50 2025 +0000
+> For my taste, the whole netfs code needs an overhaul to make reference
+> counting easier to understand and less fragile & obscure.  But to fix
+> this bug here and now and produce a patch that is adequate for a
+> stable backport, I tried a minimal approach that quickly frees the
+> request object upon early failure.
 
-    netfs: Fix unbuffered write error handling
+I'm not entirely satisfied with the refcounting either, as it's tricky with
+the asynchronicity requirements.
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=162dc142580000
-start commit:   5189dafa4cf9 Merge tag 'nfsd-6.11-1' of git://git.kernel.o..
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e8a2eef9745ade09
-dashboard link: https://syzkaller.appspot.com/bug?extid=d2125fcb6aa8c4276fd2
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16828c5d980000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=103c7805980000
+> I decided against adding a second netfs_put_request() each time because that
+> would cause code duplication which obscures the code further.  Instead, I
+> added the function netfs_put_failed_request() which frees such a failed
+> request synchronously under the assumption that the reference count is
+> exactly 2 (as initially set by netfs_alloc_request() and never touched),
+> verified by a WARN_ON_ONCE().
 
-If the result looks correct, please mark the issue as fixed by replying with:
+I like this.
 
-#syz fix: netfs: Fix unbuffered write error handling
+> ... and frees the allocation (without the "call_rcu" indirection).
 
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+Unfortunately, this isn't good.  The request has already been added to the
+proc list and is removed in netfs_deinit_request() by netfs_proc_del_rreq() -
+but that means that someone reading /proc/fs/netfs/requests can be looking at
+it as you free it.
+
+You still need the call_rcu() - or you have to call synchronize_rcu().
+
+I can change netfs_put_failed_request() to do the call_rcu() rather than
+mempool_free()/netfs_stat_d().
+
+Another possibility could be to defer the addition to the proc list to right
+before we start adding subrequests.  Deleting from the proc list would be a
+no-op if the thing isn't queued.
+
+Thanks,
+David
+
