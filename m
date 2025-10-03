@@ -1,85 +1,83 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF511373;
-	Wed,  1 Oct 2025 16:53:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27C813AD05;
+	Fri,  3 Oct 2025 15:52:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759337629; cv=none; b=L76d/ARHyVolESwcKeof5MVSwtsQO6+sPwjiOHLgcT+Wm0x0AWO9DyrA+81Psa+Ys7yWjSJmkw01UVnOi0ECA/UFWHS+/x3QPCGS+8WanDrOsFRwSkAk1QutnRZ4M1YfAzOAKPdPftYepYt5dVFCIW6ed4WVof5F6ysnAfD/4ng=
+	t=1759506729; cv=none; b=M9cNa80t9J0/vE+V7M+HXgR0yeiRP0dA9ZNRYdCctNgb3tVIMba2+86FCGEGzaKjR3EIeoOxQm09dq/A+M5iiuNWP37GEcg1M6X5aGwUDwlD1M8zBr33bPcCazTrWT7kibX+jKM+gmHctLwBZ1hx/EFuFH8TUOkR6zryaTybLLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759337629; c=relaxed/simple;
-	bh=P32gxchqra0nGyRnN6ybBTNOyNQvXQZ4xfdZWywRGCA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UU6Yigz7qxaRQ8TDCagCZtmTBj+9DTPUy71YchlhvE3q8l8bdrYgfitoxLudln/kAs9uHkmE47bOyOKsBSXoL23NI0SAz2fKinaEOUtimyI+GuA4v8XS0zf7dex06Lm/tMPOlOyMXymyB9IL1mwLqb3Ps0us1oyWf4HL/pSXpD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=e1gkShnm; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1759506729; c=relaxed/simple;
+	bh=3W/B7yr0TP3RVj4O6JgUMcihRtNr2fM0e+nfFmSLnXk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YQZ35FqAc0f+SHqEL9xr7Fm1NGWcLyX+7LfK1y0yWEdKLbEedbEOVFy/HVRVHzC7BIToh05e5FqkRtXvurFfQ1qm/4TP2qyXiVPk1TvpJ0RJbe98spifZFiCRyF9DOUxjpajdeKZ53aopqKL0jjzG4LEgZ1N2ibFmpYz1uMVJMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qYnpt0QV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="e1gkShnm"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=ibzNKx/gRXGnc4tiiG6OxYzIZRUZZP1ZY3ujHEfJkWU=; b=e1gkShnmJaB0Supwo7SgLY7Eqd
-	Zvgl2nXKG4JUnkaZJc//qyDKXaWuJoCn05Aezxnvig+xiDZ+kfYoBw6DrShItI4vAskZJxu3/4Bne
-	5GiDJzqBotIt9VSbsMZ0MtLDzCqWyjxAh8Pu3L1sbUrXBPbeE091wMJzDGT80NWOhpls0BhJHb1Ot
-	px5/Pphug1qdZU7BZikFatZc/WXlq3ySBl4TiYGDvsTdTsnhAgauS92IcIz+drWFQqN4hv7i4C/nv
-	xGfDTAUtzLnhIHxN27C2zNDAASIM9dPcLwk4bfLbX8wbZgkr3u58oreBHdvuSNFdVziyV8IN0jWO4
-	ZFeetP0g==;
-Received: from [50.53.25.54] (helo=[192.168.254.17])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1v405F-00000008aUQ-1ba1;
-	Wed, 01 Oct 2025 16:53:41 +0000
-Message-ID: <81c03cb3-5c97-4a6d-bf20-53c5afde2b42@infradead.org>
-Date: Wed, 1 Oct 2025 09:53:40 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qYnpt0QV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46554C4CEF5;
+	Fri,  3 Oct 2025 15:52:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759506729;
+	bh=3W/B7yr0TP3RVj4O6JgUMcihRtNr2fM0e+nfFmSLnXk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qYnpt0QV5dqgLdyy9PKpBnNSjoro13pjU+CPLy07ZjCKa3R8O/jTQRHcaIiYBSBVH
+	 jD+vAmjrrSJHDPvCJbhWx+XG4yS83yJBkdsdTFgei9gjhk5LRo+UlOp8CumBhxqaWC
+	 uQUugl61rwN9rRZewNfSfpTan81MgLGlTVlEUN1g3rgPVm+8zIY2ApNOvm9xkmdyql
+	 /UPcVqcoaG6Vs1GKV5rzz0fCMiXyi076gtR6C72ocwe+PnQ802jREblO1zvHFWcQLg
+	 oIN9jxxGqCNZv0wecr9ZkqvcYVDuKY7QbVzRHl+ZHpOq4Xl5T57PQYCLkMP4kRnVbf
+	 o820Zofzfigtg==
+Date: Fri, 3 Oct 2025 17:52:01 +0200
+From: Carlos Maiolino <cem@kernel.org>
+To: Bhanu Seshu Kumar Valluri <bhanuseshukumar@gmail.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>, 
+	Jonathan Corbet <corbet@lwn.net>, David Howells <dhowells@redhat.com>, 
+	Paulo Alcantara <pc@manguebit.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, linux-bcachefs@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, 
+	netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+	linux-kernel-mentees@lists.linuxfoundation.org, skhan@linuxfoundation.org, david.hunter.linux@gmail.com
+Subject: Re: [PATCH] fs: doc: Fix typos
+Message-ID: <6t4scagcatuba7hjy4aib5hqfgyhc4wofegr2jrl34wwa7fsyq@5uwpzmpixm7o>
+References: <DrG_H24-pk-ha8vkOEHoZYVXyMFA60c_g4l7cZX4Z7lnKQIM4FjdI_qS-UIpFxa-t7T_JDAOSqKjew7M0wmYYw==@protonmail.internalid>
+ <20251001083931.44528-1-bhanuseshukumar@gmail.com>
+ <kp4tzf7hvtorldoktxelrvway6w4v4idmu5q3egeaacs7eg2tz@dovkk323ir3b>
+ <yms8llJZQiWYVxnbeWEQJ0B_S6JRxR0LQKB1FwVe0Tw66ezuA-H1qZVCyuCUDtsw7s7h4jHTwTh98XivLW3vvw==@protonmail.internalid>
+ <425ef7bd-011c-4b05-99fe-2b0e3313c3ce@gmail.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fs: doc: Fix typos
-To: Bhanu Seshu Kumar Valluri <bhanuseshukumar@gmail.com>,
- Kent Overstreet <kent.overstreet@linux.dev>, Jonathan Corbet
- <corbet@lwn.net>, Carlos Maiolino <cem@kernel.org>,
- David Howells <dhowells@redhat.com>, Paulo Alcantara <pc@manguebit.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- linux-bcachefs@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
- netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org
-Cc: linux-kernel-mentees@lists.linuxfoundation.org,
- skhan@linuxfoundation.org, david.hunter.linux@gmail.com
-References: <20251001083931.44528-1-bhanuseshukumar@gmail.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20251001083931.44528-1-bhanuseshukumar@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <425ef7bd-011c-4b05-99fe-2b0e3313c3ce@gmail.com>
 
-
-
-On 10/1/25 1:39 AM, Bhanu Seshu Kumar Valluri wrote:
-> Fix typos in doc comments
+On Wed, Oct 01, 2025 at 07:19:13PM +0530, Bhanu Seshu Kumar Valluri wrote:
+> On 01/10/25 17:32, Carlos Maiolino wrote:
+> > On Wed, Oct 01, 2025 at 02:09:31PM +0530, Bhanu Seshu Kumar Valluri wrote:
+> >> Fix typos in doc comments
+> >>
+> >> Signed-off-by: Bhanu Seshu Kumar Valluri <bhanuseshukumar@gmail.com>
+> >
+> > Perhaps would be better to split this into subsystem-specific patches?
+> >
+> > This probably needs to be re-sent anyway as bcachefs was removed from
+> > mainline.
+> >
+> I just did a google search and understood about frozen state of bcachefs
+> in linux kernel since 6.17 release onward. It is going to be maintained
+> externally.
 > 
-> Signed-off-by: Bhanu Seshu Kumar Valluri <bhanuseshukumar@gmail.com>
+> Thanks for your comment. I will resend the patch excluding bcachefs.
 
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+It's not only bcachefs. But most of subsystems and documents you touch
+have different maintainers, so beyond removing bcachefs bits, I'd
+suggest looking at MAINTAINERS file and send specific patches targeting
+each subsystem. It makes maintainer's lives easier, at least for me.
 
 
-Thanks.
-
-> ---
->  Note: No change in functionality intended.
 > 
->  Documentation/filesystems/bcachefs/future/idle_work.rst  | 6 +++---
->  Documentation/filesystems/xfs/xfs-online-fsck-design.rst | 2 +-
->  fs/netfs/buffered_read.c                                 | 2 +-
->  fs/xfs/xfs_linux.h                                       | 2 +-
->  include/linux/fs.h                                       | 4 ++--
->  5 files changed, 8 insertions(+), 8 deletions(-)
-
--- 
-~Randy
-
+> Thanks.
+> 
+> 
