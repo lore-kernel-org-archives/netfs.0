@@ -1,139 +1,129 @@
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BFB248898
-	for <netfs@lists.linux.dev>; Wed,  8 Oct 2025 17:55:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D4C11CAF;
+	Sat, 11 Oct 2025 14:35:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759946109; cv=none; b=rNhBiky9QHSxVekLkYBJdXhnCfC9sgENA5+7vdtcjGeYyUVoD7JGoSUcQGSdWVzV2OLkQ+xv9QeEm0nFE8UrlcUV6HjvC/19jncYd74ycY4oFFiU2UvYe8wL8C723Rh3F4TfhbFYxDWFdEYDnCumbTPmIqlT98Q4oZUixvvxvBo=
+	t=1760193306; cv=none; b=D8w0slDaJoYPMAKT6h6vwpQlRos47a5n6aZsEww7Jkhdc4ciWGH4R4J9IrxTSWzPmHpCIH81u+4aOV7Xc5A6nmbB80Eo7Dcbx1rtTiQzBfApLfjcIF/BYXAyA/YPzDvi4d/NhQm37ttDVYDx/BKlK6ioppU8mzLUUJGB9rGIwpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759946109; c=relaxed/simple;
-	bh=u2DpBaXRZ7mJGKPOLy4KCBidsT0cH9E/K3CtFwps7PY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=YtO7ARX/qumVV6UUHARyFxjFNugtwlis7epWr/m7ODz5+us+EfteJ7VtUMkPYapL0DrUYGX8cSOG779JT6Cvmdo0uNrUI/9KSXtQSxUfRAWOvLwI3IwUgP4cJ/b5MUfZWcaiWdBQ3SCyo0nHrGlZlyYZZgU0JSdmmhuuvRmhCtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vGFFB0PK; arc=none smtp.client-ip=91.218.175.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1760193306; c=relaxed/simple;
+	bh=fMeAIRkGA1ZD2jkYoaDRyMgY8CpugXxqQ7KPxYpofEw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aM6D2glg4uFMLWaSvjfL0376U9xkOC5yu8BvV0ta8lP+LIAQAsbmUHWLAowZLJ2r0is6it/42VLSli4e/XfXWvjcfJ/VWpdeNs5jAAGnSMolFT5rg/gXS95lO2tBP7m0K73XAbVw/ue9Lkm3BlpvEiB73DOG1tQm8B/4lePEgsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=maowtm.org; spf=pass smtp.mailfrom=maowtm.org; dkim=pass (2048-bit key) header.d=maowtm.org header.i=@maowtm.org header.b=T64Y5qW8; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=TqeMkf8Y; arc=none smtp.client-ip=103.168.172.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=maowtm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=maowtm.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vGFFB0PK"
-Date: Wed, 8 Oct 2025 13:54:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759946090;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=8qejHQWaI1fXqm3UnNSaY0lJza2hZ2urX7Ww1ERGZSs=;
-	b=vGFFB0PKV1J9K7MEq/jCj2J0UL5M8a9+avSZ2Efag3dp+uJpYDjd0p7h5wBJeZ6hi6vlBl
-	BMC5m3Z/kDpkZaWp4GQLwjSkz2JQiogiTZL94rT06wXh42Aecdqjw7kDypGcmLzxQpxPD8
-	/j5oooQ/GbNQblraNYCvuzorG+kZYsQ=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: v9fs@lists.linux.dev, netfs@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>, 
-	Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, 
-	Dominique Martinet <asmadeus@codewreck.org>
-Subject: -ENODATA from read syscall on 9p
-Message-ID: <hexeb4tmfqsugdy442mkkomevnhjzpuwtsslypeo3lnbbtmpmk@ibrapupausp7>
+	dkim=pass (2048-bit key) header.d=maowtm.org header.i=@maowtm.org header.b="T64Y5qW8";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="TqeMkf8Y"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.phl.internal (Postfix) with ESMTP id 5CC20EC01B1;
+	Sat, 11 Oct 2025 10:35:03 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Sat, 11 Oct 2025 10:35:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maowtm.org; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1760193303;
+	 x=1760279703; bh=fqA3IJpa71URjLPGjVHLpjDH6wmJesXXN2GBdp+T95k=; b=
+	T64Y5qW8Yu0m4OiONYTmA1Iz52B17GfLQ5BwPvczgF4OfgDL25L+lqz/tZk2i5S9
+	yx0zkpP1BkOMSDEQ1uTIPiC2L0ynr97XN5jAzELSQnjy/qmvH+wajqb+mKZMtEci
+	X6WkS4NFKG4q4nA3kiWdiGs15+gsTw5KDqNh6WGyvoHrgOZB1KwJlq7KV4ygZ/MU
+	V3w3pmdleq4IESnTMdZVldbVynUTn8RdRYKKnFeNoiKIRHDQ7ilXz8edECTkKFta
+	OOIDu1YAF60h21WbJc8uVItF8N8itks4RuLQGFyx7egTYzSjN5Thde7fZNRh+iON
+	DTAsfu17EoYfC/k5BtzATg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1760193303; x=
+	1760279703; bh=fqA3IJpa71URjLPGjVHLpjDH6wmJesXXN2GBdp+T95k=; b=T
+	qeMkf8Y43QCIMcdG1fqyylHwQO3UQ79B3ecWNNMVy0KSA9hJ+fPvnvtTFTuISzyY
+	pQfpS5M+rIR+omfTlOnxIbSkJOH2aSHDKGm8k29BGIYBlUIYeTvCd7uyHZWFpvNn
+	deJ/kPxEOTuF1setfoPEhywsvVCGf1Sm2HUYxz4Ys0vtQWoVErIBLUCj2U/62dis
+	QCfzKbopQNf0gqDZVKepHD+dErZg9nmIDIRzxmh5RwCOO6o2ZR8KYJAD2JzZyj0s
+	1C9y85Poj15mrLxMuAk+FKjTPiIRviDdiM+jfd/pXsdtXyWYFWoa3IXOYKZxuoqi
+	yr5pvEGbm9JSNWL859Fmg==
+X-ME-Sender: <xms:FmvqaAC7EVdAAWYDKFIYbh9ZQ2ZYXzUGNQVejeZNw0rZn6_Jxi3w8Q>
+    <xme:FmvqaOicRkVxHhdOoXVsmjGSe-Jr3-1hzmkWHlrHp9ljjZmZSms5Ei4G5YNoUgJEF
+    2TgiIS1_Hw18BBuUZnQHq-WuFDkuBBhH-qE14OzFCjAQrJReX_RVBg>
+X-ME-Received: <xmr:FmvqaFyPrEgGiH9xXkXjIaaTBTwnEgJVuQvYXV4a27dR7x2Gpuw2VzMCigb1L5MIbk4_lGaM4nEJMQkgqrQN0Uau>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduuddvudegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpefvihhnghhm
+    rghoucghrghnghcuoehmsehmrghofihtmhdrohhrgheqnecuggftrfgrthhtvghrnhepff
+    ffveffieethfdviedthfdvjefhueeiffffheffvdegheeggedvudfggeehgedunecuffho
+    mhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
+    grmhepmhgrihhlfhhrohhmpehmsehmrghofihtmhdrohhrghdpnhgspghrtghpthhtohep
+    kedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepkhgvnhhtrdhovhgvrhhsthhrvg
+    gvtheslhhinhhugidruggvvhdprhgtphhtthhopegrshhmrgguvghushestghouggvfihr
+    vggtkhdrohhrghdprhgtphhtthhopehvlehfsheslhhishhtshdrlhhinhhugidruggvvh
+    dprhgtphhtthhopehnvghtfhhssehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthht
+    oheplhhinhhugidqfhhsuggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtph
+    htthhopeguhhhofigvlhhlshesrhgvughhrghtrdgtohhmpdhrtghpthhtohepvghrihgt
+    vhhhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehluhgthhhosehiohhnkhhovhdrnh
+    gvth
+X-ME-Proxy: <xmx:FmvqaH2SyR1g648Gw9ufR1YmyOMBVkHCNx0r9cJXp4Ql6FKm9HiKng>
+    <xmx:FmvqaC-CycAiy9anI9hEolqiJ3RXk8OO-OTJsodG7-g0wjonNZRdTg>
+    <xmx:FmvqaHpdo_NvHCOtuQawZYQ69B0sfygMZJfRNIIkEhi5fioYc_O69Q>
+    <xmx:FmvqaMSYgvy9g3fvF2Wzszdf63jjiuUpcXwo9GG_nA7sfyzGu7z8xg>
+    <xmx:F2vqaCyLOaPIPp40VY3Wp6xNZbha2XeIWwOTg4-dMZh9jnpdaDyDM3dA>
+Feedback-ID: i580e4893:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 11 Oct 2025 10:35:01 -0400 (EDT)
+Message-ID: <da9b0573-506a-4ce3-88f3-b1714b32db5f@maowtm.org>
+Date: Sat, 11 Oct 2025 15:35:00 +0100
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: -ENODATA from read syscall on 9p
+To: Kent Overstreet <kent.overstreet@linux.dev>,
+ Dominique Martinet <asmadeus@codewreck.org>
+Cc: v9fs@lists.linux.dev, netfs@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org, David Howells <dhowells@redhat.com>,
+ Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>
+References: <hexeb4tmfqsugdy442mkkomevnhjzpuwtsslypeo3lnbbtmpmk@ibrapupausp7>
+Content-Language: en-US
+From: Tingmao Wang <m@maowtm.org>
+In-Reply-To: <hexeb4tmfqsugdy442mkkomevnhjzpuwtsslypeo3lnbbtmpmk@ibrapupausp7>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-So I recently rebased my xfstests branch and started seeing quite the
-strange test failures:
+On 10/8/25 18:54, Kent Overstreet wrote:
+> So I recently rebased my xfstests branch and started seeing quite the
+> strange test failures:
+> 
+> 00891     +cat: /ktest-out/xfstests/generic/036.dmesg: No data available
+> 
+> No idea why a userspace update would expose this, it's a kernel bug - in
+> the main netfs/9p read path, no less. Upon further investigation, cat is
+> indeed receiving -ENODATA from a read syscall.
+> [...]
 
-00891     +cat: /ktest-out/xfstests/generic/036.dmesg: No data available
+Hi Kent,
 
-No idea why a userspace update would expose this, it's a kernel bug - in
-the main netfs/9p read path, no less. Upon further investigation, cat is
-indeed receiving -ENODATA from a read syscall.
+Not a 9pfs maintainer here, but I think I have encountered this in the
+past but I didn't think too much of it.  Which kernel version are you
+testing on?  A while ago I sent a patch to fix some stale metadata
+issue on uncached 9pfs, and one of the symptom was -ENODATA from a read:
+https://lore.kernel.org/all/cover.1743956147.git.m@maowtm.org/
 
-No, read(2) is not allowed to return -ENODATA...
+Basically, if some other process has a 9pfs file open, and the file
+shrinks on the server side, the inode's i_size is not updated when another
+process tries to read it, and the result is -ENODATA (instead of reporting
+a normal EOF).
 
-Upon further investigation, the error is generated in
-netfs_read_subreq_terminated():
+Does this sound like it could be happening in your situation?  This patch
+series should land in 6.18, so if this was not reproduced on -next it
+might be worth a try?
 
-netfs_wait_for_in_progress (rreq=rreq@entry=0xffff8881032f3980, collector=0xffffffff81542240 <netfs_read_collection>) at /home/kent/linux/fs/netfs/misc.c:468
-468             BUG_ON(ret == -ENODATA);
-(gdb) bt
-#0  netfs_wait_for_in_progress (rreq=rreq@entry=0xffff8881032f3980, collector=0xffffffff81542240 <netfs_read_collection>) at /home/kent/linux/fs/netfs/misc.c:468
-#1  0xffffffff815412f5 in netfs_wait_for_read (rreq=rreq@entry=0xffff8881032f3980) at /home/kent/linux/fs/netfs/misc.c:492
-#2  0xffffffff8153ca41 in netfs_unbuffered_read (rreq=0xffff8881032f3980, sync=<optimized out>) at /home/kent/linux/fs/netfs/direct_read.c:153
-#3  netfs_unbuffered_read_iter_locked (iocb=iocb@entry=0xffffc90003a17e98, iter=iter@entry=0xffffc90003a17e70) at /home/kent/linux/fs/netfs/direct_read.c:234
-#4  0xffffffff8153cb25 in netfs_unbuffered_read_iter (iocb=0xffffc90003a17e98, iter=0xffffc90003a17e70) at /home/kent/linux/fs/netfs/direct_read.c:272
-#5  0xffffffff81498fb0 in new_sync_read (filp=0xffff88811234c180, buf=0x0, len=2147479552, ppos=0xffffc90003a17f00) at /home/kent/linux/fs/read_write.c:491
-#6  vfs_read (file=file@entry=0xffff88811234c180, buf=buf@entry=0x7f0ab1767000 <error: Cannot access memory at address 0x7f0ab1767000>, count=count@entry=262144, pos=pos@entry=0xffffc90003a17f00) at /home/kent/linux/fs/read_write.c:572
-#7  0xffffffff81499a2a in ksys_read (fd=<optimized out>, buf=0x7f0ab1767000 <error: Cannot access memory at address 0x7f0ab1767000>, count=262144) at /home/kent/linux/fs/read_write.c:717
-#8  0xffffffff81bce8cc in do_syscall_x64 (regs=0xffffc90003a17f58, nr=<optimized out>) at /home/kent/linux/arch/x86/entry/syscall_64.c:63
-#9  do_syscall_64 (regs=0xffffc90003a17f58, nr=<optimized out>) at /home/kent/linux/arch/x86/entry/syscall_64.c:94
-#10 0xffffffff810000b0 in entry_SYSCALL_64 () at /home/kent/linux/arch/x86/entry/entry_64.S:121
+I hope this information is helpful :)
 
-void netfs_read_subreq_terminated(struct netfs_io_subrequest *subreq)
-{
-	struct netfs_io_request *rreq = subreq->rreq;
-
-	switch (subreq->source) {
-	case NETFS_READ_FROM_CACHE:
-		netfs_stat(&netfs_n_rh_read_done);
-		break;
-	case NETFS_DOWNLOAD_FROM_SERVER:
-		netfs_stat(&netfs_n_rh_download_done);
-		break;
-	default:
-		break;
-	}
-
-	/* Deal with retry requests, short reads and errors.  If we retry
-	 * but don't make progress, we abandon the attempt.
-	 */
-	if (!subreq->error && subreq->transferred < subreq->len) {
-		if (test_bit(NETFS_SREQ_HIT_EOF, &subreq->flags)) {
-			trace_netfs_sreq(subreq, netfs_sreq_trace_hit_eof);
-		} else if (test_bit(NETFS_SREQ_CLEAR_TAIL, &subreq->flags)) {
-			trace_netfs_sreq(subreq, netfs_sreq_trace_need_clear);
-		} else if (test_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags)) {
-			trace_netfs_sreq(subreq, netfs_sreq_trace_need_retry);
-		} else if (test_bit(NETFS_SREQ_MADE_PROGRESS, &subreq->flags)) {
-			__set_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags);
-			trace_netfs_sreq(subreq, netfs_sreq_trace_partial_read);
-		} else {
-			BUG();								<- ???
-			__set_bit(NETFS_SREQ_FAILED, &subreq->flags);
-			subreq->error = -ENODATA;
-			trace_netfs_sreq(subreq, netfs_sreq_trace_short);
-		}
-	}
-
-	if (unlikely(subreq->error < 0)) {
-		trace_netfs_failure(rreq, subreq, subreq->error, netfs_fail_read);
-		if (subreq->source == NETFS_READ_FROM_CACHE) {
-			netfs_stat(&netfs_n_rh_read_failed);
-			__set_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags);
-		} else {
-			netfs_stat(&netfs_n_rh_download_failed);
-			__set_bit(NETFS_SREQ_FAILED, &subreq->flags);
-		}
-		trace_netfs_rreq(rreq, netfs_rreq_trace_set_pause);
-		set_bit(NETFS_RREQ_PAUSE, &rreq->flags);
-	}
-
-	trace_netfs_sreq(subreq, netfs_sreq_trace_terminated);
-	netfs_subreq_clear_in_progress(subreq);
-	netfs_put_subrequest(subreq, netfs_sreq_trace_put_terminated);
-}
-
-So, the underlying transport doesn't appear to be making forward
-progress - IOW, this would appear to be a 9p bug - and then netfs
-instead of a WARN() or doing anything to let people know that there's a
-bug and where to look for it, returns a nonstandard error code to
-userspace - fun.
-
-Of course, this being a read, short reads are expected; another thought
-is to wonder why netfs has decided that it should decide this particular
-short read is unexpected instead of leaving the i_size checks to the
-underlying filesystem.
+Tingmao
