@@ -1,212 +1,94 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C8F30F54C
-	for <netfs@lists.linux.dev>; Wed, 22 Oct 2025 09:03:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E8331B823;
+	Fri, 24 Oct 2025 17:08:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761123820; cv=none; b=rinAdaLpAo79ppslBW+3vKaMye9OSRTJbWGCxXiU3H6MppXCYimah+RqaIujY2Ckx+Cb9tZTbX2wE6SEUvMTMmZ90QkjfuuglBlSaK/ExRo5DUtYPB8bzc0wap5yMw6QDxecyANFVmsYGDMfYCcvmJ/MVqW2JVhBjqdfDIp7SlY=
+	t=1761325709; cv=none; b=LegOV5qGpGfQ1oGPxssKqHAyfET1KCAAqOkkUBD5G0UWkVTlaIlaSwjbou+odBVn3+KLFSvM0KE0aFlCrLQSIkBmlgGoGUjsF3FJHbdiAU++OK9f/hEwvzwbAca4l1KOGIqfoyxjeBsKzKAGynWJv9FE4kGUt8Id7eJI6vjouFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761123820; c=relaxed/simple;
-	bh=BbjKdKJOIN11/N/Av8tRJFdvvl/rcEy0y/T/ykyBLDs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qhRkY1f01Lwzb86Jo6Zt63kwW/HjwFuqp9B/D66nFKBtfRURvyg+4gLvVykfIQHV+bBUvIq2sv3sjbVVSrB3xn6MJmBa+R98v6lKk5CqnJaTRxk3dVfV9BD/FDl+vyuhZwBWVRmrachdATXbOfSuYuiruCoKVunvlxn2pL54KEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=G9J5KCh6; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=14G+ZRO8; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=cw4Kd4WO; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=Q0/1LwQh; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	s=arc-20240116; t=1761325709; c=relaxed/simple;
+	bh=I7OjZrLdjidz41pmeu7Dm9TTl+FjpxbES6Ucq9SnT7s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XL5Y2zU4oejri5kVN9ywvc7wP/LrWipd9gto9YkM4Wmp2txmZy+mhCD/gFo4rmmdmZEuH7reFy9ndjsmIIGxwWBrN9nQ9IJhegzUex0jsOUMy5llORp0ohsOVymbFcUMM/JgR3wi0moPLmxOZQAv1vUjb0ogHlFDfd56++oSJT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=kTA1Aece; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="G9J5KCh6";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="14G+ZRO8";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="cw4Kd4WO";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="Q0/1LwQh"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E6A691F788;
-	Wed, 22 Oct 2025 09:03:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761123812; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zWrRoINCj3OqAfg5PTgsjqvXeRUN3tNurbDF1UsQ+SU=;
-	b=G9J5KCh6W+1WPd/qBI48zIgYJLRNiHsHnfkiRiTP0Xzyyzdb1KHb8GuQVeUVLuJl/a8YVn
-	XNPsdB1Jx8K9KlwbDI2YFXtHvg8ZaxNxPfv17V5TwZu2vztFabLuSstPusCcqDnwgOi+8S
-	PB8Nd5XOFFeoYmMoNO6xMj8qKJiMLrA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761123812;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zWrRoINCj3OqAfg5PTgsjqvXeRUN3tNurbDF1UsQ+SU=;
-	b=14G+ZRO8KRuFHfqfYaKfca3Mg4mTGnDXIsGqDkPmz4hI/RMvdcY4XYQ1xk1lfbQytLf/uk
-	WbYvieYu0JpZciBg==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cw4Kd4WO;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="Q0/1LwQh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761123808; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zWrRoINCj3OqAfg5PTgsjqvXeRUN3tNurbDF1UsQ+SU=;
-	b=cw4Kd4WOzTalNHRC5kCf/r86pEI4ruZ6cuuR60Cib43IhlIP4H7IfPypaa8eJQIZ8mkj7s
-	pCoATgsHVMVqio6AfMa02cN26SSVNk33Ez6Vdo6DGluRbOzllUTn07g2yyZI/8u2q6Pq+5
-	vcb55DncI+TB00+jX03tL2ElOHnubaE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761123808;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zWrRoINCj3OqAfg5PTgsjqvXeRUN3tNurbDF1UsQ+SU=;
-	b=Q0/1LwQhf1vXYMN24ZHHUpKVytdg28nYw9hc6n1N6ay6PKGXvIm/kT09I7fQl0fNvl4n4k
-	OmJeQTUwvheKYoDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DA47013A29;
-	Wed, 22 Oct 2025 09:03:27 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id XmdINd+d+GisbAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 22 Oct 2025 09:03:27 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 43473A0990; Wed, 22 Oct 2025 11:03:19 +0200 (CEST)
-Date: Wed, 22 Oct 2025 11:03:19 +0200
-From: Jan Kara <jack@suse.cz>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Miklos Szeredi <miklos@szeredi.hu>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Chuck Lever <chuck.lever@oracle.com>, Alexander Aring <alex.aring@gmail.com>, 
-	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
-	Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>, 
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>, Shyam Prasad N <sprasad@microsoft.com>, 
-	Tom Talpey <tom@talpey.com>, Bharath SM <bharathsm@microsoft.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, David Howells <dhowells@redhat.com>, 
-	Tyler Hicks <code@tyhicks.com>, NeilBrown <neil@brown.name>, 
-	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
-	Amir Goldstein <amir73il@gmail.com>, Namjae Jeon <linkinjeon@kernel.org>, 
-	Steve French <smfrench@gmail.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Carlos Maiolino <cem@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
-	linux-cifs@vger.kernel.org, samba-technical@lists.samba.org, netfs@lists.linux.dev, 
-	ecryptfs@vger.kernel.org, linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org, 
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v3 09/13] filelock: lift the ban on directory leases in
- generic_setlease
-Message-ID: <g7r2bffekbosexqbatj5mb7ljc5rn5rw3dwfehipsxdb6hewyp@heriwuhgh3zo>
-References: <20251021-dir-deleg-ro-v3-0-a08b1cde9f4c@kernel.org>
- <20251021-dir-deleg-ro-v3-9-a08b1cde9f4c@kernel.org>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="kTA1Aece"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=gQbEbtMk4xvLDHo+EQ/7L08bZxRCeN5TdFAqCaiobLc=; b=kTA1Aecet/k8QLMAeVRfeooriL
+	CsP1JsoAW4AvUxBG9n71lSRpultlv4tVmLre/sI7nZt69o+pRvvmmsEcSEzS3meLMWx+Ly/pP3HDa
+	kZYJy4ng3L05g8Ip2G9XSsxgOOeiB/9V0l4DecgUKYsV58hsQtURCGq6A5qxeDiyseb0dmIBle3N5
+	bLjA6ICgujOfUrZAuJW7r/xinSYPRNCoCVq9i91+jsoB5udSMi9IvHYpYGqs2logsk+311wyGFogR
+	F1g93+7bxJlbbnoG7jWOlbtpqh96T+7ONRzLCyNsuXqJGYl17qoB0N++rqaoxylj1G7+V0+L+1JVw
+	KHUe0nyw==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vCLH7-00000005zLr-1h1F;
+	Fri, 24 Oct 2025 17:08:25 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	netfs@lists.linux.dev
+Subject: [PATCH 08/10] netfs: Use folio_next_pos()
+Date: Fri, 24 Oct 2025 18:08:16 +0100
+Message-ID: <20251024170822.1427218-9-willy@infradead.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251024170822.1427218-1-willy@infradead.org>
+References: <20251024170822.1427218-1-willy@infradead.org>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251021-dir-deleg-ro-v3-9-a08b1cde9f4c@kernel.org>
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Rspamd-Queue-Id: E6A691F788
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-2.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_COUNT_THREE(0.00)[3];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[44];
-	ARC_NA(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[szeredi.hu,zeniv.linux.org.uk,kernel.org,suse.cz,oracle.com,gmail.com,samba.org,manguebit.org,microsoft.com,talpey.com,linuxfoundation.org,redhat.com,tyhicks.com,brown.name,chromium.org,google.com,davemloft.net,vger.kernel.org,lists.samba.org,lists.linux.dev];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	R_RATELIMIT(0.00)[to_ip_from(RLpnapcpkwxdkc5mopt1ezhhna)];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[brown.name:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.cz:dkim,suse.cz:email,suse.com:email]
-X-Spam-Score: -2.51
+Content-Transfer-Encoding: 8bit
 
-On Tue 21-10-25 11:25:44, Jeff Layton wrote:
-> With the addition of the try_break_lease calls in directory changing
-> operations, allow generic_setlease to hand them out. Write leases on
-> directories are never allowed however, so continue to reject them.
-> 
-> For now, there is no API for requesting delegations from userland, so
-> ensure that userland is prevented from acquiring a lease on a directory.
-> 
-> Reviewed-by: NeilBrown <neil@brown.name>
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
+This is one instruction more efficient than open-coding folio_pos() +
+folio_size().  It's the equivalent of (x + y) << z rather than
+x << z + y << z.
 
-Looks good. Feel free to add:
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Paulo Alcantara <pc@manguebit.org>
+Cc: netfs@lists.linux.dev
+---
+ fs/netfs/buffered_write.c | 2 +-
+ fs/netfs/misc.c           | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
-> ---
->  fs/locks.c | 12 ++++++++++--
->  1 file changed, 10 insertions(+), 2 deletions(-)
-> 
-> diff --git a/fs/locks.c b/fs/locks.c
-> index 0b16921fb52e602ea2e0c3de39d9d772af98ba7d..b47552106769ec5a189babfe12518e34aa59c759 100644
-> --- a/fs/locks.c
-> +++ b/fs/locks.c
-> @@ -1929,14 +1929,19 @@ static int generic_delete_lease(struct file *filp, void *owner)
->  int generic_setlease(struct file *filp, int arg, struct file_lease **flp,
->  			void **priv)
->  {
-> -	if (!S_ISREG(file_inode(filp)->i_mode))
-> +	struct inode *inode = file_inode(filp);
-> +
-> +	if (!S_ISREG(inode->i_mode) && !S_ISDIR(inode->i_mode))
->  		return -EINVAL;
->  
->  	switch (arg) {
->  	case F_UNLCK:
->  		return generic_delete_lease(filp, *priv);
-> -	case F_RDLCK:
->  	case F_WRLCK:
-> +		if (S_ISDIR(inode->i_mode))
-> +			return -EINVAL;
-> +		fallthrough;
-> +	case F_RDLCK:
->  		if (!(*flp)->fl_lmops->lm_break) {
->  			WARN_ON_ONCE(1);
->  			return -ENOLCK;
-> @@ -2065,6 +2070,9 @@ static int do_fcntl_add_lease(unsigned int fd, struct file *filp, int arg)
->   */
->  int fcntl_setlease(unsigned int fd, struct file *filp, int arg)
->  {
-> +	if (S_ISDIR(file_inode(filp)->i_mode))
-> +		return -EINVAL;
-> +
->  	if (arg == F_UNLCK)
->  		return vfs_setlease(filp, F_UNLCK, NULL, (void **)&filp);
->  	return do_fcntl_add_lease(fd, filp, arg);
-> 
-> -- 
-> 2.51.0
-> 
+diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
+index 09394ac2c180..f9d62abef2ac 100644
+--- a/fs/netfs/buffered_write.c
++++ b/fs/netfs/buffered_write.c
+@@ -535,7 +535,7 @@ vm_fault_t netfs_page_mkwrite(struct vm_fault *vmf, struct netfs_group *netfs_gr
+ 		folio_unlock(folio);
+ 		err = filemap_fdatawrite_range(mapping,
+ 					       folio_pos(folio),
+-					       folio_pos(folio) + folio_size(folio));
++					       folio_next_pos(folio));
+ 		switch (err) {
+ 		case 0:
+ 			ret = VM_FAULT_RETRY;
+diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
+index 486166460e17..82342c6d22cb 100644
+--- a/fs/netfs/misc.c
++++ b/fs/netfs/misc.c
+@@ -298,7 +298,7 @@ bool netfs_release_folio(struct folio *folio, gfp_t gfp)
+ 	if (folio_test_dirty(folio))
+ 		return false;
+ 
+-	end = umin(folio_pos(folio) + folio_size(folio), i_size_read(&ctx->inode));
++	end = umin(folio_next_pos(folio), i_size_read(&ctx->inode));
+ 	if (end > ctx->zero_point)
+ 		ctx->zero_point = end;
+ 
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.47.2
+
