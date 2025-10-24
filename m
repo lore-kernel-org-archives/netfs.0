@@ -1,94 +1,62 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from mx1.manguebit.org (mx1.manguebit.org [143.255.12.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E8331B823;
-	Fri, 24 Oct 2025 17:08:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD11D515;
+	Fri, 24 Oct 2025 17:36:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=143.255.12.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761325709; cv=none; b=LegOV5qGpGfQ1oGPxssKqHAyfET1KCAAqOkkUBD5G0UWkVTlaIlaSwjbou+odBVn3+KLFSvM0KE0aFlCrLQSIkBmlgGoGUjsF3FJHbdiAU++OK9f/hEwvzwbAca4l1KOGIqfoyxjeBsKzKAGynWJv9FE4kGUt8Id7eJI6vjouFc=
+	t=1761327370; cv=none; b=ZFq26R8KLyKadxZZcF4ZcrZaliG5C4PzvgTgjfxtJUXysm8aAZeabHMYZwygHQIdehPtXkxDPJSDpCfJSHqtY2FlfvtVfyAAunl0EQMwNVIS5I+QflI1p+S/jL2EVtIBjSrEoAyyA0xt9NW5ME4DYMnafR6TYXNAmxMND9f1BPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761325709; c=relaxed/simple;
-	bh=I7OjZrLdjidz41pmeu7Dm9TTl+FjpxbES6Ucq9SnT7s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XL5Y2zU4oejri5kVN9ywvc7wP/LrWipd9gto9YkM4Wmp2txmZy+mhCD/gFo4rmmdmZEuH7reFy9ndjsmIIGxwWBrN9nQ9IJhegzUex0jsOUMy5llORp0ohsOVymbFcUMM/JgR3wi0moPLmxOZQAv1vUjb0ogHlFDfd56++oSJT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=kTA1Aece; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1761327370; c=relaxed/simple;
+	bh=h7ssBD9jsiigCaBkESGzjzM8Uz4G6ar06c1cpCnGPJ0=;
+	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Date:
+	 MIME-Version:Content-Type; b=flIBzUx6yJA4dVq9/CQ26/kPOE/wj0G1x4KmHXgeNiOZ8vHoYVLZxoF3h+Ye/fMzw6OiFQTjuQbYuEImoXEFppVXUm07caBjDVwYFgG09nPtrAkbcWt+xl1mX9h9V1lNSVkxW4LCh3YA5itUBkHOpKqKOVkS1oRB63H2QiSdX60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org; spf=pass smtp.mailfrom=manguebit.org; dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b=SRfYErt3; arc=none smtp.client-ip=143.255.12.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="kTA1Aece"
+	dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b="SRfYErt3"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=gQbEbtMk4xvLDHo+EQ/7L08bZxRCeN5TdFAqCaiobLc=; b=kTA1Aecet/k8QLMAeVRfeooriL
-	CsP1JsoAW4AvUxBG9n71lSRpultlv4tVmLre/sI7nZt69o+pRvvmmsEcSEzS3meLMWx+Ly/pP3HDa
-	kZYJy4ng3L05g8Ip2G9XSsxgOOeiB/9V0l4DecgUKYsV58hsQtURCGq6A5qxeDiyseb0dmIBle3N5
-	bLjA6ICgujOfUrZAuJW7r/xinSYPRNCoCVq9i91+jsoB5udSMi9IvHYpYGqs2logsk+311wyGFogR
-	F1g93+7bxJlbbnoG7jWOlbtpqh96T+7ONRzLCyNsuXqJGYl17qoB0N++rqaoxylj1G7+V0+L+1JVw
-	KHUe0nyw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vCLH7-00000005zLr-1h1F;
-	Fri, 24 Oct 2025 17:08:25 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	netfs@lists.linux.dev
-Subject: [PATCH 08/10] netfs: Use folio_next_pos()
-Date: Fri, 24 Oct 2025 18:08:16 +0100
-Message-ID: <20251024170822.1427218-9-willy@infradead.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251024170822.1427218-1-willy@infradead.org>
+	d=manguebit.org; s=dkim; h=Content-Type:MIME-Version:Date:References:
+	In-Reply-To:Subject:Cc:To:From:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=vmCP+pvBWjOmbkUmBX4W/jzxaydDg3hSDrVnUTEMRhY=; b=SRfYErt3hJGmMtFia2xTlJTs8I
+	gNGJxaayMrqfSaogj+hdT75QlqlXiJ6ywnfNvKtSfBcpE5bViOwuQKHVnCLBz5bJxmQDZwX6QRANV
+	O41r+XTW8DGwHX7hGaVgq6hGz2JElH+bEbM6augZC9juluiLZiHp8q6KXrsRh0YhvOEdyeLlKRd2Y
+	ZKy3EWYaNf/VRKWev+/KhBPhxI7OrM+0gmN6wtc1FeoKitydfrekz5fNLYKj0Pxrmv1jjAzES1ixK
+	2oWsGtMsW8KbA5z05b2e0Zq9q+QkN1y0/hVZpaoMa8FyI9uCqipaEmmCWGU82eTFyPhorvHpTYUHS
+	PG8hRchw==;
+Received: from pc by mx1.manguebit.org with local (Exim 4.98.2)
+	id 1vCLhq-00000000JlH-3nYX;
+	Fri, 24 Oct 2025 14:36:02 -0300
+Message-ID: <2f19d9bf0e8d2b70d52403e676bc119d@manguebit.org>
+From: Paulo Alcantara <pc@manguebit.org>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, David Howells
+ <dhowells@redhat.com>, netfs@lists.linux.dev
+Subject: Re: [PATCH 08/10] netfs: Use folio_next_pos()
+In-Reply-To: <20251024170822.1427218-9-willy@infradead.org>
 References: <20251024170822.1427218-1-willy@infradead.org>
+ <20251024170822.1427218-9-willy@infradead.org>
+Date: Fri, 24 Oct 2025 14:36:02 -0300
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-This is one instruction more efficient than open-coding folio_pos() +
-folio_size().  It's the equivalent of (x + y) << z rather than
-x << z + y << z.
+"Matthew Wilcox (Oracle)" <willy@infradead.org> writes:
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Paulo Alcantara <pc@manguebit.org>
-Cc: netfs@lists.linux.dev
----
- fs/netfs/buffered_write.c | 2 +-
- fs/netfs/misc.c           | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+> This is one instruction more efficient than open-coding folio_pos() +
+> folio_size().  It's the equivalent of (x + y) << z rather than
+> x << z + y << z.
+>
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Cc: David Howells <dhowells@redhat.com>
+> Cc: Paulo Alcantara <pc@manguebit.org>
+> Cc: netfs@lists.linux.dev
 
-diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
-index 09394ac2c180..f9d62abef2ac 100644
---- a/fs/netfs/buffered_write.c
-+++ b/fs/netfs/buffered_write.c
-@@ -535,7 +535,7 @@ vm_fault_t netfs_page_mkwrite(struct vm_fault *vmf, struct netfs_group *netfs_gr
- 		folio_unlock(folio);
- 		err = filemap_fdatawrite_range(mapping,
- 					       folio_pos(folio),
--					       folio_pos(folio) + folio_size(folio));
-+					       folio_next_pos(folio));
- 		switch (err) {
- 		case 0:
- 			ret = VM_FAULT_RETRY;
-diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
-index 486166460e17..82342c6d22cb 100644
---- a/fs/netfs/misc.c
-+++ b/fs/netfs/misc.c
-@@ -298,7 +298,7 @@ bool netfs_release_folio(struct folio *folio, gfp_t gfp)
- 	if (folio_test_dirty(folio))
- 		return false;
- 
--	end = umin(folio_pos(folio) + folio_size(folio), i_size_read(&ctx->inode));
-+	end = umin(folio_next_pos(folio), i_size_read(&ctx->inode));
- 	if (end > ctx->zero_point)
- 		ctx->zero_point = end;
- 
--- 
-2.47.2
-
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
