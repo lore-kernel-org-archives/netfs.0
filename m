@@ -1,74 +1,82 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E62C261581;
-	Mon, 27 Oct 2025 14:51:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B79275AFD;
+	Wed, 29 Oct 2025 12:55:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761576664; cv=none; b=h2Q2aq1w4YQAilW6S0LguF/q873a0mm6F8yGp/hAGrCgy49BywVjYQFbsON/GqqPvg8wqxXhWgkNR3BnPft/3C1evL1P9e9wEzigie0ToRxMA1Pjsk/AYjgLBjDhCWguCMLHsMAqEtP7DJzdbPLot+WdjsYP1teQsthjw8y/BdA=
+	t=1761742535; cv=none; b=F/EERNzyoCEgj24pHswBSjvSc24dBhHzsSRfJwLPgf+7lmPRls37TlK6IKK4MYpIm/cbAG1DyzqTE1iefIzT6Pz8fr21swtDYacpTr/WWkrS6CxCcCADt4FqNnrmwnMasVQouc90ofkCVf6AbSteUY74MEO0gGhNP3MWHTEN6DM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761576664; c=relaxed/simple;
-	bh=+nl6qHCZHJGT3JnqOAFKtfNaNZnKGabhphRMOwUnD4A=;
+	s=arc-20240116; t=1761742535; c=relaxed/simple;
+	bh=0CzE2vJmUarjE3+QMrd+j0mHeIz5jGi5cgcCV2j7Gto=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OO0J2uZf4EUk6fKU4XqJa2rH2MDzd/c3FDb4oxiLXBlzhs6FghOTpM+mU4aF8Mva8myTyR9RhZPM2IlADTa0QeyPowuUKxfawhb/khnLpd5F9isXXYjyXj8drWxjoWNBX6e9TU1LgtdVOhgscOxVhh04CAbQ5CZQT0+2xS3tQO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=wTpgTHVv; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=FkZn9sfhZTevY7ZKAozwJ3nCEW28qJ4zDK0KZq7rHfxW5pjH94st+ANQVaXmvpF1TFBECS/RtFRkmin48jMm5NVlz+KNj/3SJXlJFklvUJYr/G6Ok72BBhKrnXsj1I5f5ik6cfSo+yFL0fUDs0Q9AanY7jFxyT+2TkJBVvlNRsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ur6Ekr2s; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="wTpgTHVv"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=0990qxvQJ+FfqCLKog5x9UKLwa0JywL1QcNAF1x4llM=; b=wTpgTHVvS2jrMlkFlt2wdx9c9T
-	uGIJM2/UwY+7gVOrs1an/vxD6/siK0p3FFZZ9Wlev7u7ocFDFpgJG6AA7DCfPc6Iq4qzY6phvduod
-	c6ajJSjtPhTeuYE/f3YCISPNxLmJPkhWFRBKwyA3DPpC/uFyyL3gk2hnf/UrihT/j6QbzMKjFjsho
-	9/gUv+Q5ZstKIg8+VMl4i/BSqsAK6FRRpjCxv0zFRF49XM+HyjvNIKg6zfP96AEx1Cu3wUuNwz0Kb
-	jOO1+qCJbDE1QRKarxONhdGS9Zyid2wAH+uo/BZzPOl4c7B821nv3bosVt20ByqgF1PfKoi9/4mtU
-	P1ZW1P7Q==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDOYl-00000004Fae-1Y0U;
-	Mon, 27 Oct 2025 14:50:59 +0000
-Date: Mon, 27 Oct 2025 14:50:59 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: David Howells <dhowells@redhat.com>
-Cc: linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>,
-	Paulo Alcantara <pc@manguebit.org>, netfs@lists.linux.dev
-Subject: Re: [PATCH 08/10] netfs: Use folio_next_pos()
-Message-ID: <aP-G085ZIN_lR9c0@casper.infradead.org>
-References: <20251024170822.1427218-9-willy@infradead.org>
- <20251024170822.1427218-1-willy@infradead.org>
- <2253016.1761574605@warthog.procyon.org.uk>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ur6Ekr2s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA4FC4CEF7;
+	Wed, 29 Oct 2025 12:55:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761742535;
+	bh=0CzE2vJmUarjE3+QMrd+j0mHeIz5jGi5cgcCV2j7Gto=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ur6Ekr2sxpK9kC1PNi5PiLCDzlSRO6FM0+oaVL0Fz8YUh5SxgvQXiBvK9gL9vzX1y
+	 FJHfJrBxfhcUwe5dZlRw6ODhiRJl/EJm2rWbu5QrVsPtIdVs3alSnIez2tiAIWH6/h
+	 ox/2F95UyuvJYNXfLY2SCq3uBNnh9JIw+5PQXbGVm6nDZmKCjPdaqJF4gD6WZNIxfM
+	 +O9W7KhgM63n0OUdWoExlc/9tbhDAscPQvz7uiqUs93Re9GNmMrnQsoYwuL1lG1HkW
+	 z3MMcgndaOWm17okctdlh7QveqspiHKAXE5wiW4Qgxh8V7dEAnzHTEFQv2U98huZ28
+	 lcdMvlRM8I1iw==
+Date: Wed, 29 Oct 2025 13:55:24 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Miklos Szeredi <miklos@szeredi.hu>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Chuck Lever <chuck.lever@oracle.com>, 
+	Alexander Aring <alex.aring@gmail.com>, Trond Myklebust <trondmy@kernel.org>, 
+	Anna Schumaker <anna@kernel.org>, Steve French <sfrench@samba.org>, 
+	Paulo Alcantara <pc@manguebit.org>, Ronnie Sahlberg <ronniesahlberg@gmail.com>, 
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>, 
+	Bharath SM <bharathsm@microsoft.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+	David Howells <dhowells@redhat.com>, Tyler Hicks <code@tyhicks.com>, NeilBrown <neil@brown.name>, 
+	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
+	Amir Goldstein <amir73il@gmail.com>, Namjae Jeon <linkinjeon@kernel.org>, 
+	Steve French <smfrench@gmail.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Carlos Maiolino <cem@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
+	linux-cifs@vger.kernel.org, samba-technical@lists.samba.org, netfs@lists.linux.dev, 
+	ecryptfs@vger.kernel.org, linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org, 
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v3 00/13] vfs: recall-only directory delegations for knfsd
+Message-ID: <20251029-visuell-gluthitze-e321cef788d0@brauner>
+References: <20251021-dir-deleg-ro-v3-0-a08b1cde9f4c@kernel.org>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <2253016.1761574605@warthog.procyon.org.uk>
+In-Reply-To: <20251021-dir-deleg-ro-v3-0-a08b1cde9f4c@kernel.org>
 
-On Mon, Oct 27, 2025 at 02:16:45PM +0000, David Howells wrote:
-> Matthew Wilcox (Oracle) <willy@infradead.org> wrote:
+On Tue, Oct 21, 2025 at 11:25:35AM -0400, Jeff Layton wrote:
+> Behold, another version of directory delegations. This version contains
+> support for recall-only delegations. Support for CB_NOTIFY will be
+> forthcoming (once the client-side patches have caught up).
 > 
-> > This is one instruction more efficient than open-coding folio_pos() +
-> > folio_size().  It's the equivalent of (x + y) << z rather than
-> > x << z + y << z.
+> This main differences in this version are bugfixes, but the last patch
+> adds a more formal API for userland to request a delegation. That
+> support is optional. We can drop it and the rest of the series should be
+> fine.
 > 
-> Should that be noted to the gcc bugzilla as a missed optimisation?
+> My main interest in making delegations available to userland is to allow
+> testing this support without nfsd. I have an xfstest ready to submit for
+> this if that support looks acceptable. If it is, then I'll also plan to
+> submit an update for fcntl(2).
+> 
+> Christian, Chuck mentioned he was fine with you merging the nfsd bits
+> too, if you're willing to take the whole pile.
 
-I don't know?  Maybe there's a Law Of C Arithmetic that prevents it
-from doing this optimisation that we can ignore because we know that
-the calculation will never overflow.
-
-I tried with both gcc and LLVM and both produce better code for g()
-than for f():
-https://godbolt.org/z/YTc883f6G
-
-Interestingly, LLVM does better for f() than gcc does, but they produce
-identical code for g() (minor difference like using sal instead of shl
-but that feels unimportant).
-
-If you want to file optimisation bug(s) against gcc, feel free to use
-this example code.
+Absolutely!
