@@ -1,81 +1,191 @@
-Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1A224888A
-	for <netfs@lists.linux.dev>; Wed,  5 Nov 2025 05:48:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16FAC147C9B;
+	Wed,  5 Nov 2025 12:15:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762321686; cv=none; b=CQKt5WC6o5BAhakmuURboRvU9ipPVPE7645XMUVtZE6w6r8D2rnksHU4hmyPSAw+9jZJFZaWGInJamy5KUUwHNbIK0YrQ0ybi1JnzvVIMBPdhgKlwgdLYwG7ilupeg4a1E4YmcW3ZPVU/gYiKLxnI5RsSVPxZfQSU9bOtcmnuRI=
+	t=1762344950; cv=none; b=eL6M9qbiYBoPt/rQLfyFpY7ENHNgPA/8h3YOcBqlF8gjbzVEllj+a4JgVwhRPHjj24vd8F8ER9vRLkubxBHKUxTuZsgGmvOR7E+DSaxaCXW4g+V+SDd7kgJdiHOrF18jhZDaSdZ3A7fTPletI0o+S16jy/TMTt23AT5xUVmbIks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762321686; c=relaxed/simple;
-	bh=GlQIhOpVt8G+BVYMy665LNIo97/TwQy9Ja+ALJ1AUDo=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=W+yNlQlJBJEHCrZPbY14ZEHesQEzzKscR1QSqAZnVw6TmZa8Rj1PtFW2G44UQOxBjRg145GDpp1CxZhrN8Qtbx24D9CxksEjQncInGv19x0BJM23M7Zgvl0JqEB2gtv31lgK2T4LEZqUKWbduCqE35luYOd6cXB5H67oZ8eET20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-93e7b0584c9so534844939f.0
-        for <netfs@lists.linux.dev>; Tue, 04 Nov 2025 21:48:04 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762321683; x=1762926483;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=g4XDLXqrEs29g4qhc4+ZUYTByJ5LUyYE6CBWzXLnGEU=;
-        b=UV1Agiuv2aGtFec1gNQEz76Qlb0uyoLyI/Fz50ZWBt91Ugx1ElPnUp+HJuXPySmjlQ
-         A7VKtjegJVFZETbf0BDHKf5+++1m8R8IOSyk8ewxslhy6D1LbqW3iw85vM82LYEayhIq
-         0te0EFJrgn82/czMEL8ttvaOpftYxH5pOW8VNHyXUMFFzz3wKQD6/rUvSRIImpC3mBD3
-         sAh8XtbViL+APyJHfRrrhqEqhmlXeH2GIez71GyeGhHjw/mq7Th9/gBU7xGTkQHr4re2
-         vsQ6VHDSuF2NbV05ZYhfTspi2TUfOTz0JI7ozW+fYZkpz39fD7JHC0HJYEJ5eNP7jAbX
-         3PHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWjRKALEfDwqhyFvh+d9rklAEZ5329vNE//HWyinRW32T4qDBT7E7D/FXHvugngUarNlbz2RQ==@lists.linux.dev
-X-Gm-Message-State: AOJu0YyMui96si5jQwHbu2wcQmxW4V5NE7RsyHAnLxPR8H1vOF3SGoj2
-	eqXQhmhcMxh9G8iZrGVfW6S6r0PZm957zuNhHc4/aaSDefZUJs5UGL0goAMzpbfX/C5tilfCKRu
-	ziOeA+lhKZuSGlhY5bKLmcH0V3xQu8vKScur1Np4UDowaU0QsIJ4w7UMtwvw=
-X-Google-Smtp-Source: AGHT+IFp+75P9fzMNP6tFwZqfyhcKVqnVaql1CMi2hGDeHUR9fDxpaS8IRIyJ/54rHYeSSnjNRL0DzJ+OpUzQhVJDknW+FXvnEk4
+	s=arc-20240116; t=1762344950; c=relaxed/simple;
+	bh=j6nt+b2fOshIZ+T+ki5rUhiMWr57o6/QciYlKMH8SN4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Oy9akNY38Nueh7dHg4jggNb3473MZUtvkJfetfei3rQuZKqP1BKdZG61ltZE3PUF2yka2Go9pFlKIaJKe5K3J27ASn5JqhRPq6PPVp2J5ryHxdNfPI9tXiLOdLbVXtzRZGoew/YuZvMC/ROdwEjHV2IOPULvzt9pXmls3hOLV4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NS9wsXtX; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NS9wsXtX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE995C4CEF8;
+	Wed,  5 Nov 2025 12:15:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762344949;
+	bh=j6nt+b2fOshIZ+T+ki5rUhiMWr57o6/QciYlKMH8SN4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NS9wsXtXeg83J4YkDH8mQGdfGeGp3fYVvsVuRb2YFXCr9gg7zr2E8d5qLGHlzD0T9
+	 g0joBJEt/8wJYQwe1mmYw+Q404f9DdrfC55hzAoMVswnD7yGxZG/6kxn5HLFPcQkaD
+	 i0MkivAt2W1JCI7Pcf+hAGPttUlQ/azzKoFM9cyU6lVCro2L0in3QA2i40f7qu51Py
+	 84549oeilWi63mHbfBDkbClenojZhj7uLqIA6Mw933WfrbPuYWHB93sBAQS66SB7ea
+	 KfY8pXUuvVsObS2yZgrAtlj952qoNi+ocfRIDcqtj+fk9DUiRMH7XiYaZmIVV5Zm1k
+	 bqjk/PMisUGEg==
+Date: Wed, 5 Nov 2025 13:15:38 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: NeilBrown <neil@brown.name>, Miklos Szeredi <miklos@szeredi.hu>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Chuck Lever <chuck.lever@oracle.com>, 
+	Alexander Aring <alex.aring@gmail.com>, Trond Myklebust <trondmy@kernel.org>, 
+	Anna Schumaker <anna@kernel.org>, Steve French <sfrench@samba.org>, 
+	Paulo Alcantara <pc@manguebit.org>, Ronnie Sahlberg <ronniesahlberg@gmail.com>, 
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>, 
+	Bharath SM <bharathsm@microsoft.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+	David Howells <dhowells@redhat.com>, Tyler Hicks <code@tyhicks.com>, 
+	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
+	Amir Goldstein <amir73il@gmail.com>, Namjae Jeon <linkinjeon@kernel.org>, 
+	Steve French <smfrench@gmail.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Carlos Maiolino <cem@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
+	linux-cifs@vger.kernel.org, samba-technical@lists.samba.org, netfs@lists.linux.dev, 
+	ecryptfs@vger.kernel.org, linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org, 
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v4 10/17] vfs: make vfs_create break delegations on
+ parent directory
+Message-ID: <20251105-lamawolle-strom-bcd659e0b66a@brauner>
+References: <20251103-dir-deleg-ro-v4-0-961b67adee89@kernel.org>
+ <20251103-dir-deleg-ro-v4-10-961b67adee89@kernel.org>
+ <176221525113.1793333.253208063990645256@noble.neil.brown.name>
+ <6021e64ed25c3b3e7880f17accb0f7a7b89fac0e.camel@kernel.org>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:29c9:b0:945:9f2d:592f with SMTP id
- ca18e2360f4ac-94869ebc957mr295259839f.17.1762321683439; Tue, 04 Nov 2025
- 21:48:03 -0800 (PST)
-Date: Tue, 04 Nov 2025 21:48:03 -0800
-In-Reply-To: <68132c08.050a0220.14dd7d.0007.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <690ae513.050a0220.baf87.0009.GAE@google.com>
-Subject: Re: [syzbot] [nfs?] [netfs?] INFO: task hung in anon_pipe_write
-From: syzbot <syzbot+ef2c1c404cbcbcc66453@syzkaller.appspotmail.com>
-To: asmadeus@codewreck.org, brauner@kernel.org, ceph-devel@vger.kernel.org, 
-	dhowells@redhat.com, ericvh@kernel.org, idryomov@gmail.com, jack@suse.cz, 
-	jlayton@kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux_oss@crudebyte.com, lucho@ionkov.net, 
-	m@maowtm.org, mathieu.desnoyers@efficios.com, mhiramat@kernel.org, 
-	netfs@lists.linux.dev, rostedt@goodmis.org, syzkaller-bugs@googlegroups.com, 
-	v9fs@lists.linux.dev, viro@zeniv.linux.org.uk, xiubli@redhat.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <6021e64ed25c3b3e7880f17accb0f7a7b89fac0e.camel@kernel.org>
 
-syzbot suspects this issue was fixed by commit:
+On Mon, Nov 03, 2025 at 07:30:57PM -0500, Jeff Layton wrote:
+> On Tue, 2025-11-04 at 11:14 +1100, NeilBrown wrote:
+> > On Mon, 03 Nov 2025, Jeff Layton wrote:
+> > > In order to add directory delegation support, we need to break
+> > > delegations on the parent whenever there is going to be a change in the
+> > > directory.
+> > > 
+> > > Add a delegated_inode parameter to struct createdata. Most callers just
+> > > leave that as a NULL pointer, but do_mknodat() is changed to wait for a
+> > > delegation break if there is one.
+> > > 
+> > > Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> > > ---
+> > >  fs/namei.c         | 26 +++++++++++++++++---------
+> > >  include/linux/fs.h |  2 +-
+> > >  2 files changed, 18 insertions(+), 10 deletions(-)
+> > > 
+> > > diff --git a/fs/namei.c b/fs/namei.c
+> > > index fdf4e78cd041de8c564b7d1d89a46ba2aaf79d53..e8973000a312fb05ebb63a0d9bd83b9a5f8f805d 100644
+> > > --- a/fs/namei.c
+> > > +++ b/fs/namei.c
+> > > @@ -3487,6 +3487,9 @@ int vfs_create(struct createdata *args)
+> > >  
+> > >  	mode = vfs_prepare_mode(idmap, dir, mode, S_IALLUGO, S_IFREG);
+> > >  	error = security_inode_create(dir, dentry, mode);
+> > > +	if (error)
+> > > +		return error;
+> > > +	error = try_break_deleg(dir, args->delegated_inode);
+> > >  	if (error)
+> > >  		return error;
+> > >  	error = dir->i_op->create(idmap, dir, dentry, mode, args->excl);
+> > > @@ -4359,6 +4362,8 @@ static int may_mknod(umode_t mode)
+> > >  static int do_mknodat(int dfd, struct filename *name, umode_t mode,
+> > >  		unsigned int dev)
+> > >  {
+> > > +	struct delegated_inode delegated_inode = { };
+> > > +	struct createdata cargs = { };
+> > 
+> > If we must have 'createdata', can it have a 'struct delegated_inode'
+> > rather than a pointer to it?
+> > 
+> 
+> If we do that, then we'd need some way to signal that the caller
+> doesn't want to wait on the delegation break. Currently that's
+> indicated by setting cargs.delegated_inode to NULL. I suppose we could
+> add a bool for this or something.
+> 
+> I confess that I too am lukewarm on struct createdata. I can live with
+> it, but it's not clearly a win to me either.
+> 
+> Christian, thoughts?
 
-commit 290434474c332a2ba9c8499fe699c7f2e1153280
-Author: Tingmao Wang <m@maowtm.org>
-Date:   Sun Apr 6 16:18:42 2025 +0000
+If two stable voices of the community seem to have consensus that this
+isn't worth it then it's obviously fine to not do it.
 
-    fs/9p: Refresh metadata in d_revalidate for uncached mode too
-
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=10be532f980000
-start commit:   5bc1018675ec Merge tag 'pci-v6.15-fixes-3' of git://git.ke..
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=9f5bd2a76d9d0b4e
-dashboard link: https://syzkaller.appspot.com/bug?extid=ef2c1c404cbcbcc66453
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15631270580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12a0b0d4580000
-
-If the result looks correct, please mark the issue as fixed by replying with:
-
-#syz fix: fs/9p: Refresh metadata in d_revalidate for uncached mode too
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+> 
+> > 
+> > >  	struct mnt_idmap *idmap;
+> > >  	struct dentry *dentry;
+> > >  	struct path path;
+> > > @@ -4383,18 +4388,16 @@ static int do_mknodat(int dfd, struct filename *name, umode_t mode,
+> > >  	switch (mode & S_IFMT) {
+> > >  		case 0:
+> > >  		case S_IFREG:
+> > > -		{
+> > > -			struct createdata args = { .idmap = idmap,
+> > > -						   .dir = path.dentry->d_inode,
+> > > -						   .dentry = dentry,
+> > > -						   .mode = mode,
+> > > -						   .excl = true };
+> > > -
+> > > -			error = vfs_create(&args);
+> > > +			cargs.idmap = idmap,
+> > > +			cargs.dir = path.dentry->d_inode,
+> > > +			cargs.dentry = dentry,
+> > > +			cargs.delegated_inode = &delegated_inode;
+> > > +			cargs.mode = mode,
+> > > +			cargs.excl = true,
+> > > +			error = vfs_create(&cargs);
+> > >  			if (!error)
+> > >  				security_path_post_mknod(idmap, dentry);
+> > >  			break;
+> > > -		}
+> > >  		case S_IFCHR: case S_IFBLK:
+> > >  			error = vfs_mknod(idmap, path.dentry->d_inode,
+> > >  					  dentry, mode, new_decode_dev(dev));
+> > > @@ -4406,6 +4409,11 @@ static int do_mknodat(int dfd, struct filename *name, umode_t mode,
+> > >  	}
+> > >  out2:
+> > >  	end_creating_path(&path, dentry);
+> > > +	if (is_delegated(&delegated_inode)) {
+> > > +		error = break_deleg_wait(&delegated_inode);
+> > > +		if (!error)
+> > > +			goto retry;
+> > > +	}
+> > >  	if (retry_estale(error, lookup_flags)) {
+> > >  		lookup_flags |= LOOKUP_REVAL;
+> > >  		goto retry;
+> > > diff --git a/include/linux/fs.h b/include/linux/fs.h
+> > > index b61873767b37591aecadd147623d7dfc866bef82..cfcb20a7c4ce4b6dcec98b3eccbdb5ec8bab6fa9 100644
+> > > --- a/include/linux/fs.h
+> > > +++ b/include/linux/fs.h
+> > > @@ -2116,12 +2116,12 @@ struct createdata {
+> > >  	struct mnt_idmap *idmap;	// idmap of the mount the inode was found from
+> > >  	struct inode *dir;		// inode of parent directory
+> > >  	struct dentry *dentry;		// dentry of the child file
+> > > +	struct delegated_inode *delegated_inode; // returns parent inode, if delegated
+> > >  	umode_t mode;			// mode of the child file
+> > >  	bool excl;			// whether the file must not yet exist
+> > >  };
+> > >  
+> > >  int vfs_create(struct createdata *);
+> > > -
+> > >  struct dentry *vfs_mkdir(struct mnt_idmap *, struct inode *,
+> > >  			 struct dentry *, umode_t, struct delegated_inode *);
+> > >  int vfs_mknod(struct mnt_idmap *, struct inode *, struct dentry *,
+> > > 
+> > > -- 
+> > > 2.51.1
+> > > 
+> > > 
+> 
+> -- 
+> Jeff Layton <jlayton@kernel.org>
