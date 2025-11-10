@@ -1,176 +1,176 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDAB14F112;
-	Thu,  6 Nov 2025 12:09:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92442848B4
+	for <netfs@lists.linux.dev>; Mon, 10 Nov 2025 16:09:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762430944; cv=none; b=DJ77N3Sbj9SIU/ePx1iDtqsFJJpz2ge8Fdocds/zYsznwtoxXLuItZt1iGkwtjpyD+KIyGzktyzjpb30A2wxavxGrNaCVWV0N/JAlraLJ1oy9TQJbmK6ansnkwpWc/MYTAFGr9bAPrINeBvKzMU0Icc3dwC9xKVPrcg8ewnvrek=
+	t=1762790952; cv=none; b=eWgML7OaXmpvq85oTNwc3W3LtjG7f0l5kV1s/tvMLM/PPua4K8ZvjD0DV+EdOv37Z7+o9ydMq8p11jGWGx6axZovni0CNNuOHkR1MM/z6HhJ9XknlVrQRJF6kLzWsL8QzgJ5mwQ/7G0dQpqTZXscdlUgkzbOaQlAognBUWy+t8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762430944; c=relaxed/simple;
-	bh=LP7ZmyrMkXBm+ONLXJyVda0lQs6BJPqHUOBgiw51NPQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nZrrb5TVzNEBU9OpMuNVcPeDgyAvMmpOl4lZzi0hh8IbyMpdXIQL70RqvHQWxBFEcmAIvRYFdAkKRjuhbh7rUpBfSmX/DJqKzqSEkMZtY+C2RfzKQ2FC9HENV73eM02okfaaeZ6nIN/cl1wlpsttEIveRHx9DAC6L92BHx2G1Bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aCSP76bS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762790952; c=relaxed/simple;
+	bh=OKZOzwPNbZ0eA/RzD6GT+kbo2DW/QUWT3Vl/4pt9v6g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JiwKgSHQEF73kOO9dmrILHlUsd/bCektTGGEAS7Phte/PdB+OubmFyYW7SlGyCe/NVv+ioZUIrBvEzQwZZllq3+3+HjnrOWbJBkmkNkrgN69QUPeQEb01dqlhlPF6JffhI/DQg+N+gCRFNH9Q8foNlF1vwG/ia84SH+2yLFaN0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CyLVtpvx; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aCSP76bS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DBB8C113D0;
-	Thu,  6 Nov 2025 12:09:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762430943;
-	bh=LP7ZmyrMkXBm+ONLXJyVda0lQs6BJPqHUOBgiw51NPQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=aCSP76bShFtNtarqKQ39cOrob87BYEJLR8x3XybpvWCgVqAQg/pdqC7n7NRZSmbQS
-	 aNN47Anax/M1kyq/usu7O/0dBObpluAMnF3sFzlrhrSW8T43auNgEuci9QQYAtoBIx
-	 29Va/KeJj7GrIBHoYMiSKxlyXBSa59bf+6AeS5TxZu/sS49XPQCYJAhsJ7NnONgO66
-	 3Hy0defaktIndrn0UqyxX+ZlmLRDGnf42JeFjvZfb1NVnXcZZpwWwhut7If4/G9LSI
-	 v8698KoD1zXlJDLOT70thrR2ItNqSa0voVRpVm3ljJRTYzULb0nbvr8BfxPvlFNjUO
-	 /xHq47tX/fPpg==
-Message-ID: <fc9765e8c58fbbc14c8066f685477da0cb2b55d0.camel@kernel.org>
-Subject: Re: [PATCH v5 09/17] vfs: clean up argument list for vfs_create()
-From: Jeff Layton <jlayton@kernel.org>
-To: NeilBrown <neil@brown.name>
-Cc: Miklos Szeredi <miklos@szeredi.hu>, Alexander Viro
- <viro@zeniv.linux.org.uk>,  Christian Brauner	 <brauner@kernel.org>, Jan
- Kara <jack@suse.cz>, Chuck Lever	 <chuck.lever@oracle.com>, Alexander Aring
- <alex.aring@gmail.com>, Trond Myklebust <trondmy@kernel.org>, Anna
- Schumaker <anna@kernel.org>, Steve French <sfrench@samba.org>,  Paulo
- Alcantara	 <pc@manguebit.org>, Ronnie Sahlberg <ronniesahlberg@gmail.com>,
- Shyam Prasad N	 <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
- Bharath SM	 <bharathsm@microsoft.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>,  "Rafael J. Wysocki"	 <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, David Howells	 <dhowells@redhat.com>,
- Tyler Hicks <code@tyhicks.com>, Olga Kornievskaia	 <okorniev@redhat.com>,
- Dai Ngo <Dai.Ngo@oracle.com>, Amir Goldstein	 <amir73il@gmail.com>, Namjae
- Jeon <linkinjeon@kernel.org>, Steve French	 <smfrench@gmail.com>, Sergey
- Senozhatsky <senozhatsky@chromium.org>, Carlos Maiolino <cem@kernel.org>,
- Kuniyuki Iwashima <kuniyu@google.com>, "David S. Miller"	
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski	
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman	
- <horms@kernel.org>, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, 	linux-nfs@vger.kernel.org,
- linux-cifs@vger.kernel.org, 	samba-technical@lists.samba.org,
- netfs@lists.linux.dev, ecryptfs@vger.kernel.org, 
-	linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org,
- netdev@vger.kernel.org
-Date: Thu, 06 Nov 2025 07:08:59 -0500
-In-Reply-To: <176237805165.634289.1849067298194355086@noble.neil.brown.name>
-References: <20251105-dir-deleg-ro-v5-0-7ebc168a88ac@kernel.org>
-	, <20251105-dir-deleg-ro-v5-9-7ebc168a88ac@kernel.org>
-	 <176237805165.634289.1849067298194355086@noble.neil.brown.name>
-Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
- keydata=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
- QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.1 (3.58.1-1.fc43) 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CyLVtpvx"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-b5a631b9c82so2602338a12.1
+        for <netfs@lists.linux.dev>; Mon, 10 Nov 2025 08:09:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762790949; x=1763395749; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=s031glNNGPLU3pRhUQF/ls9Tz5E2v6rbM7VrNj/wX3k=;
+        b=CyLVtpvxzWPKyKXe5al/vII+vaQv0q/a9u7dwcJeu1e6qzqb35EPe4/R9Bc4ndFtvs
+         2hndebO91Mjbj5a2hm6WEZRludI20YelCvlatji0QzvbQwgdMeBGXHOXJJhuZPaI7dgS
+         O6o760s+yc19EWtZJ02U/jathg6YR6uFByV9s5qzZyeQr+WFWpitjjQLre2V3bOvDW++
+         zXJnuDeGyo9L+FPYqGytQ6tbU1D2nrx5j2f38vCdl9aAvJ+50thCicyVT3abIMmbiH84
+         sSMKp9xDB6WjywAMzewt36vjSXM1S2XsBPkJg0j/x4SDsawal8jSnDJfvCSdN0Cmed0R
+         QsMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762790949; x=1763395749;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=s031glNNGPLU3pRhUQF/ls9Tz5E2v6rbM7VrNj/wX3k=;
+        b=irBjubRgDkB3dX5k/gStXrJG24GbgIlFA3BIYFLAhUC+fmZK2JFfCuWKJytUE3LDjv
+         rlrl/oMGE0haWa1EMDjKX1bvLi/W+NMRpUjN4xoguQ/fXDrvI+OGH2zmQwGbdcv9WQAJ
+         5dPNS1BwM3L+16hyrk5SXs0wcvTrNLKEEshsz3VNkbZqxCNJz+SVEmwVXw2Hr4y7tGTM
+         oVPIw19odkD3zetVJ0tQsvUx7zkAQn3/zrQt9QrLe87Qlu8G13hp4pB+9Sac3oo3Y3V8
+         KQCqB6lO3nWYgL4ACRytcUu46x+sgzqX2wBQlLCxDnSRaz9rrTYctmx1hJEJQDk/McC7
+         jtew==
+X-Forwarded-Encrypted: i=1; AJvYcCWRLzsQFHUc4M3GF7J5uYk7gQ04w35mvOFkI8y2deKFqQPR/CFIktdg57ciJqK7tpBDGjfcOg==@lists.linux.dev
+X-Gm-Message-State: AOJu0YwEk2w/bG8eUSxqFM0G/HhoGHxKcIkbDGe6kdgHskUN02hkiTOA
+	ORCY33JJ+QkcF/6M8/9jAh4oKsAYCIuEVPWXvcoYlQRPugH434I2J59/LKGfEg3u9kONivHNj6Z
+	NZ48qu59FKMBdDkrbxkYmK7gFzns+Nvw=
+X-Gm-Gg: ASbGncuTTLRi8AeTJHXELcLK9SAu/5D5GnnFqeIcNtFL+c4MDytUlnzX3b2nfOYv2xb
+	yxJtpa3VcmtYrKgWOvDtObMWR4Z4jjuSIQgQ92O1quSnqmnQxzQ9+ebIN0k+VM5ByIQeCqJouRF
+	wsFZlXOEVpiD1Snjcv7M6JMyvdSCEfCMxruh6G0+JpSRyqyFXin2/+rDxr3KbrWHcidhkg2J7qO
+	iZwHggTcj1k9VK1NRyf9HhjGXogJyhCl19+TNkHBvFomdxkYVK/XtpWZ9ITfxVN1tcIPGo=
+X-Google-Smtp-Source: AGHT+IHOYPI89bvNijFudu8ipuYpe33+VB7nbqJZeXEdLg498kOVR3mmjHBZOcylAlfsBqli+DO2uzjCmhEfT9se4Vs=
+X-Received: by 2002:a17:902:fc4f:b0:298:2237:a2eb with SMTP id
+ d9443c01a7336-2982237a409mr51261425ad.16.1762790948766; Mon, 10 Nov 2025
+ 08:09:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+References: <20251106005333.956321-1-neilb@ownmail.net> <20251106005333.956321-12-neilb@ownmail.net>
+In-Reply-To: <20251106005333.956321-12-neilb@ownmail.net>
+From: Stephen Smalley <stephen.smalley.work@gmail.com>
+Date: Mon, 10 Nov 2025 11:08:57 -0500
+X-Gm-Features: AWmQ_bnsQdAKOPc2sWsQJTL6A89EPTloA4MsBf1tbsCjlSWDuuet8e3lOwk-mCw
+Message-ID: <CAEjxPJ528Ou4dvRwHo+kXjWreGicda8BOXkQRvq3vMED6JQKOQ@mail.gmail.com>
+Subject: Re: [PATCH v5 11/14] Add start_renaming_two_dentries()
+To: NeilBrown <neil@brown.name>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Amir Goldstein <amir73il@gmail.com>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	Jeff Layton <jlayton@kernel.org>, Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, 
+	David Howells <dhowells@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Tyler Hicks <code@tyhicks.com>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Chuck Lever <chuck.lever@oracle.com>, 
+	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
+	Namjae Jeon <linkinjeon@kernel.org>, Steve French <smfrench@gmail.com>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Carlos Maiolino <cem@kernel.org>, 
+	John Johansen <john.johansen@canonical.com>, Paul Moore <paul@paul-moore.com>, 
+	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
+	Ondrej Mosnacek <omosnace@redhat.com>, Mateusz Guzik <mjguzik@gmail.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Stefan Berger <stefanb@linux.ibm.com>, 
+	"Darrick J. Wong" <djwong@kernel.org>, linux-kernel@vger.kernel.org, netfs@lists.linux.dev, 
+	ecryptfs@vger.kernel.org, linux-nfs@vger.kernel.org, 
+	linux-unionfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
+	linux-xfs@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	selinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 2025-11-06 at 08:27 +1100, NeilBrown wrote:
-> On Thu, 06 Nov 2025, Jeff Layton wrote:
-> > As Neil points out:
-> >=20
-> > "I would be in favour of dropping the "dir" arg because it is always
-> > d_inode(dentry->d_parent) which is stable."
-> >=20
-> > ...and...
-> >=20
-> > "Also *every* caller of vfs_create() passes ".excl =3D true".  So maybe=
- we
-> > don't need that arg at all."
-> >=20
-> > Drop both arguments from vfs_create() and fix up the callers.
-> >=20
-> > Suggested-by: NeilBrown <neilb@ownmail.net>
-> > Signed-off-by: Jeff Layton <jlayton@kernel.org>
->=20
-> This I like.
->=20
-> Reviewed-by: NeilBrown <neil@brown.name>
->=20
-> It would be consistent to also remove the 'dir' arg from vfs_mkdir(),
-> vfs_mknod(), etc.  I wouldn't do that until we find out what other
-> people think of the change.
->=20
+On Wed, Nov 5, 2025 at 7:56=E2=80=AFPM NeilBrown <neilb@ownmail.net> wrote:
+>
+> From: NeilBrown <neil@brown.name>
+>
+> A few callers want to lock for a rename and already have both dentries.
+> Also debugfs does want to perform a lookup but doesn't want permission
+> checking, so start_renaming_dentry() cannot be used.
+>
+> This patch introduces start_renaming_two_dentries() which is given both
+> dentries.  debugfs performs one lookup itself.  As it will only continue
+> with a negative dentry and as those cannot be renamed or unlinked, it is
+> safe to do the lookup before getting the rename locks.
+>
+> overlayfs uses start_renaming_two_dentries() in three places and  selinux
+> uses it twice in sel_make_policy_nodes().
+>
+> In sel_make_policy_nodes() we now lock for rename twice instead of just
+> once so the combined operation is no longer atomic w.r.t the parent
+> directory locks.  As selinux_state.policy_mutex is held across the whole
+> operation this does open up any interesting races.
+>
+> Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+> Signed-off-by: NeilBrown <neil@brown.name>
+>
+> ---
+> changes since v3:
+>  added missing assignment to rd.mnt_idmap in ovl_cleanup_and_whiteout
+> ---
 
-I was thinking that too. I can roll patches to do those as well, but at
-this point I think I'd rather do that on top of this series rather than
-in the context of it.
---=20
-Jeff Layton <jlayton@kernel.org>
+> diff --git a/security/selinux/selinuxfs.c b/security/selinux/selinuxfs.c
+> index 232e087bce3e..a224ef9bb831 100644
+> --- a/security/selinux/selinuxfs.c
+> +++ b/security/selinux/selinuxfs.c
+> @@ -539,22 +540,30 @@ static int sel_make_policy_nodes(struct selinux_fs_=
+info *fsi,
+>         if (ret)
+>                 goto out;
+>
+> -       lock_rename(tmp_parent, fsi->sb->s_root);
+> +       rd.old_parent =3D tmp_parent;
+> +       rd.new_parent =3D fsi->sb->s_root;
+>
+>         /* booleans */
+> -       d_exchange(tmp_bool_dir, fsi->bool_dir);
+> +       ret =3D start_renaming_two_dentries(&rd, tmp_bool_dir, fsi->bool_=
+dir);
+> +       if (!ret) {
+> +               d_exchange(tmp_bool_dir, fsi->bool_dir);
+
+I would recommend an immediate goto out if ret !=3D 0; we don't want to
+silently fall through and possibly reset ret on the next
+start_renaming_two_dentries() call, thereby ultimately returning 0 to
+the caller and acting as if nothing bad happened.
+
+>
+> -       swap(fsi->bool_num, bool_num);
+> -       swap(fsi->bool_pending_names, bool_names);
+> -       swap(fsi->bool_pending_values, bool_values);
+> +               swap(fsi->bool_num, bool_num);
+> +               swap(fsi->bool_pending_names, bool_names);
+> +               swap(fsi->bool_pending_values, bool_values);
+>
+> -       fsi->bool_dir =3D tmp_bool_dir;
+> +               fsi->bool_dir =3D tmp_bool_dir;
+> +               end_renaming(&rd);
+> +       }
+>
+>         /* classes */
+> -       d_exchange(tmp_class_dir, fsi->class_dir);
+> -       fsi->class_dir =3D tmp_class_dir;
+> +       ret =3D start_renaming_two_dentries(&rd, tmp_class_dir, fsi->clas=
+s_dir);
+> +       if (ret =3D=3D 0) {
+> +               d_exchange(tmp_class_dir, fsi->class_dir);
+> +               fsi->class_dir =3D tmp_class_dir;
+>
+> -       unlock_rename(tmp_parent, fsi->sb->s_root);
+> +               end_renaming(&rd);
+> +       }
+>
+>  out:
+>         sel_remove_old_bool_data(bool_num, bool_names, bool_values);
+> --
+> 2.50.0.107.gf914562f5916.dirty
+>
