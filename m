@@ -1,172 +1,146 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07E82D2488
-	for <netfs@lists.linux.dev>; Mon, 17 Nov 2025 23:04:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77BF235C185
+	for <netfs@lists.linux.dev>; Thu, 20 Nov 2025 15:25:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763420681; cv=none; b=jk5U2AFXEg3wRdvEd4Va6tzS1Kx3c7hbMi2S/nbtt1woq8UtS1dmYX+ZTjYc+NtNTBoo+t9gF2j+V8vHpx4tyAU+1XjPmC/8YzynX4BEHLFb+udfVUJwXLMDKCiTVj4ZQFILbuxU292XViEtd23bimmbL+1LN8tBMu+DNcT4YyU=
+	t=1763652348; cv=none; b=G3G9p9Ct53dT/1VEF4pgQGZvK1CcovZXAf5JuN0DgZuV5LI8rxJtN0lKjnHx+XAos8qE93kkMaB3PwA76vX/zpJxTLmY53ToYLYG+YmB9bvO6rC9NNSf/NqORUv48dDxIc+WOK3ZcZ9uQJTID9lreJS8CwQp5njbqBlvgUa7dBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763420681; c=relaxed/simple;
-	bh=i7DdhnG71ftd4i2m2G21HgRfKhN3UzNnHz1O3MhLXC4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Wn7T7qX/9hGkM6JFInbrsy0B6se06rLN+BPa9+hKjuH81CmneIYIh9CpWaOMont4j5uZvD2/1zmqly7G4zlly+44vdK961zml3EPUFQcMfPfYuxUMaEf8mlrkAN5f//DAq4EraJ+Bq5x3HeclScUFa+44H/2q1sFWdOVPNcotj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=UmPOZA2H; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+	s=arc-20240116; t=1763652348; c=relaxed/simple;
+	bh=wSdVpLJCV33dPU5ELuUNEBkTNMU8h4s4XVJel9nkKwk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VX3Pxlb5E9dXmoQ85xYjSjFBAeXw8oXqlfZTMnJ6mjYbHBEfmYPc+qQgLWr3YUHA8aQaGO09MFszIiefF7Ej54XPLxC3FLvxFOQ/3jdhY0yf473yaHoiG/2lZZ8sRDJAL3ypUACMS8qAOvbAS4BoZCmszlnxUpDqZqTLU2CJInE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c82t0zIN; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="UmPOZA2H"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3436d6bdce8so6002825a91.3
-        for <netfs@lists.linux.dev>; Mon, 17 Nov 2025 15:04:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1763420676; x=1764025476; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=67DqjyCI/JhVTsF1ULoiPuOUOphLY2mp3g5O7RzL6g8=;
-        b=UmPOZA2HT3XAbB28RjQWc/8lh8ieu+0ofeQRZraovsmhddyN0ep8C3QikeO9yFuI7V
-         kg5WqFCprXqFnWKoSEWQRgBGgig1rmjmMYKzjF81Dj2yC/Ivo1jaSkOvE1i6MWnq9gsN
-         jWfM4MPXHRHctwtfGRYT3HdZYxlaUn7JUjzuEjEq9/waKw6g7xoyphq5v+WRD2Zkde18
-         Y5wLoyNUUkGkf8NDtIHL4U1tQ9lEAsF71E/70mwO7MLms4O22pbF2K9x4JpMzAfoTQQf
-         hOlSlvFGKWsctZXV+JMHSmDyinSO/ECK7JpIRHd+lD6n8XNtEvtP6XtYz9y5mFXGXtvI
-         33lQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763420676; x=1764025476;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=67DqjyCI/JhVTsF1ULoiPuOUOphLY2mp3g5O7RzL6g8=;
-        b=wSb/xwi6BP6h/lECTillz7H3uPrqjM4ZPb3OaQa9dT639YgpNbU489n8ENl7Kf1Bot
-         oo2Jry/oJJI5zLeL4oNnm4Ay/+GG2/eJkNbys1F9NBD52a9IfgPMsga3jG3uyMaPA6sL
-         PpAJfJ645IaWJI7S4RFK+H4PRX8edoa960IrIyCcq18EdBMEkndXcb84wj49EDGFCmKR
-         O/BvJIaki801CBVQJQEHoXP9FlWilUd4m+m0f0rNL1/j4QYEk8/OctFs1Ig+G0jVhN+k
-         7TqWc0ikzX+wRk9hWalEGXdRspOqdBVZRpZlCmB2OfzKQlomDoskBD/aS9LM+imGb/Nm
-         tMtg==
-X-Forwarded-Encrypted: i=1; AJvYcCWACaMO+BBrT90XfXkmh+dPabm6Y8ewpVgsyU4sy6ciCe4XZyrrrXiCP3fcYLyPhlmOWkSnEQ==@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywg45b0VX19xmEar571xuffNJaMOJO2++7WuALlsSrKLKOuULzj
-	YRgg35aeL6AoyWlHme2SmDg5oajtWAAE6D6KIGt3wcLOnHGY1n8Y5sRqIJYE4e3fx+NzteNdDDz
-	0BnfUuE+GRVt5jda7S6z7Hh0fGv2MColVnG8uM4NN
-X-Gm-Gg: ASbGncu4GEeMO6//fHPHJY+XBdF0K8e//1ryE0r+NY7WY/Ncz9zNQrDKNHDgtCGTrTO
-	hd0ndQE8Ki9fmcxDojiQQkjbnfb83yIH+BXnftb+2lqkop7YH6jv7kYcRN5Vlb7fSVuinElCBeI
-	GqOuwu/jqAbDD6OPAjdqH5gFG8KyKl6IiIuqvDCec20Rs3CWy0CQFj9KeRibi/EpTgwFFiM/fyk
-	PY7+Xki9VG3+oXAwvDvxSHRw8bMjVwD9PArDShbODrUaTRcbIcjRtSfrE/A6CNhUM8OkNRNrUi4
-	aomLBw==
-X-Google-Smtp-Source: AGHT+IEvNsvH0S9IPXXRMbbmgzHTccG9PPI2nYN0bRiYDZkjLr7eZa3zFcl2Aq+G2oZCl+9tdbOi4J//UzL45yvj1Lw=
-X-Received: by 2002:a17:90b:3a45:b0:341:2141:d809 with SMTP id
- 98e67ed59e1d1-343fa74b235mr16121302a91.26.1763420676475; Mon, 17 Nov 2025
- 15:04:36 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c82t0zIN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1763652344;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=PjNrAY4dFYWKw1aaXZDc9ufswCb6NZR4BOSYe0sks6k=;
+	b=c82t0zINF7nGQRtDIA7eHlJK9UoARQ9EUF1MxK6luNmdpK25P9PPKqofUQTBjJkyJ1D1sA
+	y8cGUvKWBvD1EUw00IxuOQ6Mdi8PQa9VpipU4DkN5ZUZ5xUEGqh8SpJjLqk+T2JXVmXcoz
+	SCj5ZbGvb2zOCqCGFMR7pA8VNcnV6uo=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-679-dhD_Sij2PfewjznRvvYsfw-1; Thu,
+ 20 Nov 2025 10:25:41 -0500
+X-MC-Unique: dhD_Sij2PfewjznRvvYsfw-1
+X-Mimecast-MFC-AGG-ID: dhD_Sij2PfewjznRvvYsfw_1763652340
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 02B9E19198A3;
+	Thu, 20 Nov 2025 15:25:32 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.42.28.5])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4D82930044DB;
+	Thu, 20 Nov 2025 15:25:29 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Steve French <sfrench@samba.org>
+Cc: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	linux-cifs@vger.kernel.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/9] netfs: Miscellaneous prep patches for rewrite of I/O layer
+Date: Thu, 20 Nov 2025 15:25:13 +0000
+Message-ID: <20251120152524.2711660-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251113002050.676694-1-neilb@ownmail.net> <20251113002050.676694-13-neilb@ownmail.net>
-In-Reply-To: <20251113002050.676694-13-neilb@ownmail.net>
-From: Paul Moore <paul@paul-moore.com>
-Date: Mon, 17 Nov 2025 18:04:25 -0500
-X-Gm-Features: AWmQ_blmwKtGFLQfMeJ-bOJqBB1-xlrqHYzasnjIoux8218WIXniQF0qawaCUpA
-Message-ID: <CAHC9VhQERRrabQhMUd3DHRg+TqV6Ztoo0kqwK_tn5u--in-f4Q@mail.gmail.com>
-Subject: Re: [PATCH v6 12/15] Add start_renaming_two_dentries()
-To: NeilBrown <neil@brown.name>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Amir Goldstein <amir73il@gmail.com>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	Jeff Layton <jlayton@kernel.org>, Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, 
-	David Howells <dhowells@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Tyler Hicks <code@tyhicks.com>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Chuck Lever <chuck.lever@oracle.com>, 
-	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
-	Namjae Jeon <linkinjeon@kernel.org>, Steve French <smfrench@gmail.com>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Carlos Maiolino <cem@kernel.org>, 
-	John Johansen <john.johansen@canonical.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Ondrej Mosnacek <omosnace@redhat.com>, Mateusz Guzik <mjguzik@gmail.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Stefan Berger <stefanb@linux.ibm.com>, 
-	"Darrick J. Wong" <djwong@kernel.org>, linux-kernel@vger.kernel.org, netfs@lists.linux.dev, 
-	ecryptfs@vger.kernel.org, linux-nfs@vger.kernel.org, 
-	linux-unionfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
-	linux-xfs@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	selinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On Wed, Nov 12, 2025 at 7:42=E2=80=AFPM NeilBrown <neilb@ownmail.net> wrote=
-:
->
-> From: NeilBrown <neil@brown.name>
->
-> A few callers want to lock for a rename and already have both dentries.
-> Also debugfs does want to perform a lookup but doesn't want permission
-> checking, so start_renaming_dentry() cannot be used.
->
-> This patch introduces start_renaming_two_dentries() which is given both
-> dentries.  debugfs performs one lookup itself.  As it will only continue
-> with a negative dentry and as those cannot be renamed or unlinked, it is
-> safe to do the lookup before getting the rename locks.
->
-> overlayfs uses start_renaming_two_dentries() in three places and  selinux
-> uses it twice in sel_make_policy_nodes().
->
-> In sel_make_policy_nodes() we now lock for rename twice instead of just
-> once so the combined operation is no longer atomic w.r.t the parent
-> directory locks.  As selinux_state.policy_mutex is held across the whole
-> operation this does not open up any interesting races.
->
-> Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-> Reviewed-by: Jeff Layton <jlayton@kernel.org>
-> Signed-off-by: NeilBrown <neil@brown.name>
->
-> ---
-> changes since v5:
->  - sel_make_policy_nodes now uses "goto out" on error from start_renaming=
-_two_dentries()
->
-> changes since v3:
->  added missing assignment to rd.mnt_idmap in ovl_cleanup_and_whiteout
-> ---
->  fs/debugfs/inode.c           | 48 ++++++++++++--------------
->  fs/namei.c                   | 65 ++++++++++++++++++++++++++++++++++++
->  fs/overlayfs/dir.c           | 43 ++++++++++++++++--------
->  include/linux/namei.h        |  2 ++
->  security/selinux/selinuxfs.c | 15 +++++++--
->  5 files changed, 131 insertions(+), 42 deletions(-)
+Hi Steve,
 
-...
+Could you consider taking these patches extracted from my I/O layer rewrite
+for the upcoming merge window.  The performance change should be neutral,
+but it cleans up the code a bit.
 
-> diff --git a/fs/namei.c b/fs/namei.c
-> index 4b740048df97..7f0384ceb976 100644
-> --- a/fs/namei.c
-> +++ b/fs/namei.c
-> @@ -3877,6 +3877,71 @@ int start_renaming_dentry(struct renamedata *rd, i=
-nt lookup_flags,
->  }
->  EXPORT_SYMBOL(start_renaming_dentry);
->
-> +/**
-> + * start_renaming_two_dentries - Lock to dentries in given parents for r=
-ename
+ (1) Add the smb3_read_* tracepoints to SMB1 as well as SMB2/3.
 
-I'm guessing you meant this to read "Lock *two* dentries ...".
+ (2) Use netfs_alloc/free_folioq_buffer() rather than cifs doing its own
+     version.
 
-Otherwise the SELinux changes look fine to me.
+ (3) Rename struct mid_q_entry to smb_message.  In my rewrite, smb_message
+     will get allocated in the marshalling functions in smb2pdu.c and
+     cifssmb.c rather than in transport.c and used to hand parameters down
+     - and so I think it could be better named for that.
 
-Acked-by: Paul Moore <paul@paul-moore.com> (SELinux)
+ (4) Remove the RFC1002 header from the smb_hdr struct so that it's
+     consistent with SMB2/3.  This allows I/O routines to be simplified and
+     shared.
 
-> + * @rd:           rename data containing parent
-> + * @old_dentry:   dentry of name to move
-> + * @new_dentry:   dentry to move to
-> + *
-> + * Ensure locks are in place for rename and check parentage is still cor=
-rect.
-> + *
-> + * On success the two dentries are stored in @rd.old_dentry and
-> + * @rd.new_dentry and @rd.old_parent and @rd.new_parent are confirmed to
-> + * be the parents of the dentries.
-> + *
-> + * References and the lock can be dropped with end_renaming()
-> + *
-> + * Returns: zero or an error.
-> + */
+ (5) Make SMB1's SendReceive() wrap cifs_send_recv() and thus share code
+     with SMB2/3.
 
---=20
-paul-moore.com
+ (6) Clean up a bunch of extra kvec[] that were required for RFC1002
+     headers from SMB1's header struct.
+
+ (7) Replace SendReceiveBlockingLock() with SendReceive() plus flags.
+
+ (8) Remove the server pointer from smb_message.  It can be passed down
+     from the caller to all places that need it.
+
+ (9) Don't need state locking in smb2_get_mid_entry() as we're just doing a
+     single read inside the lock.  READ_ONCE() should suffice instead.
+
+The patches can be found here also:
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=cifs-next
+
+Thanks,
+David
+
+Changes
+=======
+ver #2)
+ - Rebased on the ksmbd-for-next-next branch.
+ - Moved the patch to use netfs_alloc/free_folioq_buffer() down the stack.
+
+David Howells (9):
+  cifs: Add the smb3_read_* tracepoints to SMB1
+  cifs: Use netfs_alloc/free_folioq_buffer()
+  cifs: Rename mid_q_entry to smb_message
+  cifs: Remove the RFC1002 header from smb_hdr
+  cifs: Make smb1's SendReceive() wrap cifs_send_recv()
+  cifs: Clean up some places where an extra kvec[] was required for
+    rfc1002
+  cifs: Replace SendReceiveBlockingLock() with SendReceive() plus flags
+  cifs: Remove the server pointer from smb_message
+  cifs: Don't need state locking in smb2_get_mid_entry()
+
+ fs/smb/client/cifs_debug.c    |  47 +-
+ fs/smb/client/cifs_debug.h    |   2 +-
+ fs/smb/client/cifsencrypt.c   |  72 +--
+ fs/smb/client/cifsfs.c        |  31 +-
+ fs/smb/client/cifsglob.h      |  92 ++--
+ fs/smb/client/cifspdu.h       |   2 +-
+ fs/smb/client/cifsproto.h     |  76 ++--
+ fs/smb/client/cifssmb.c       | 806 +++++++++++++++++++---------------
+ fs/smb/client/cifstransport.c | 432 +++---------------
+ fs/smb/client/connect.c       | 188 ++++----
+ fs/smb/client/misc.c          |  32 +-
+ fs/smb/client/netmisc.c       |  15 +-
+ fs/smb/client/sess.c          |   8 +-
+ fs/smb/client/smb1ops.c       | 113 +++--
+ fs/smb/client/smb2misc.c      |  11 +-
+ fs/smb/client/smb2ops.c       | 206 +++------
+ fs/smb/client/smb2pdu.c       |  48 +-
+ fs/smb/client/smb2proto.h     |  12 +-
+ fs/smb/client/smb2transport.c | 111 +++--
+ fs/smb/client/transport.c     | 281 ++++++------
+ fs/smb/common/smb2pdu.h       |   3 -
+ fs/smb/common/smbglob.h       |   1 -
+ 22 files changed, 1159 insertions(+), 1430 deletions(-)
+
