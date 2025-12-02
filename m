@@ -1,121 +1,119 @@
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3D8305969
-	for <netfs@lists.linux.dev>; Tue,  2 Dec 2025 08:46:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902D01EF0B9
+	for <netfs@lists.linux.dev>; Tue,  2 Dec 2025 17:45:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764665216; cv=none; b=uB1459EsGo9J/X43d74fUs18MLqjIC/73y0yzShvr0lkHtEcYMCo2xmUlueDNi8rLsIQuE0UfeBdDlHduuq6PIr+c4LRbkdFsiUhbG5qYguh1H+9ZgFc3U1aVJxgBpbxh7kTiP0us9TFJvayBS8pUXLo6+p/fUTeGvMvJlOltvI=
+	t=1764697520; cv=none; b=odXq0VcnexAU2Hy/302BCIXwMWd3n6bqQij+YYY9JmFy1T9Kcsatqe20oh7wKoYh3jjsUgc3t3DX32A5waFefVPk3PSoSluVRxYI0OZSRy1Zc7T+UrcUCP2nxE5BS2xSfvHhF30sxnsRZtwGS8Mcghs+GPznzZTNFq7X2AhbRy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764665216; c=relaxed/simple;
-	bh=qcpxFQirLzafdSnNIq92XhuOn+HzWCu4AcZ2SW0UjqI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t4BtovtT16OSWETXotPi2ZIS7lixpGiMSlwqLsp45WyqcvfhSweKr0cXqz/Cw49yQshYAhueM5Sx6N9flD6dD+ko2corIGOYQTfwtqL2WY5sBA95x8LXUY82BF81FL13uTKJaSWyp8AKD4J+jGSR8lpj0vlGHPZQ8WnFL/MQx4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu; spf=pass smtp.mailfrom=szeredi.hu; dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b=dqheWpXh; arc=none smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szeredi.hu
+	s=arc-20240116; t=1764697520; c=relaxed/simple;
+	bh=tamybLxNrophK48+LjH+nI7WJXO09o5rS7gtzjOP3xc=;
+	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=YTSofzfPPbvyc20d3N5QXeSY+85Q/hv/IUYosBFk+XiPb9omi/pXpNDud6QlPL1XYJxloQDa+APkRqC9PdDHFW3DNJ5rjFqqvA1yztHq3kX5rFmCN9mQVc6Pe0ZCMypygIVMFxFbZraTWFcBzgKLJVZj5ttksVa1JLZW8vXk2BQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QKcBS+nU; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b="dqheWpXh"
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4ed66b5abf7so65033991cf.1
-        for <netfs@lists.linux.dev>; Tue, 02 Dec 2025 00:46:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google; t=1764665213; x=1765270013; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=dxvySic7ZCI3Kve7CCt8lN1Lme0d3OPvrFfTikR164w=;
-        b=dqheWpXhOL5tCW82MEPbzXDu2ebslIvmwdjf0k3+xE7dOUCbiuyrzHayWyOdPvOGSB
-         TGIIZS1B8sYJkUiEk8bhovD29aI7NGx2+shJ/HinynCai3Rv945O58foTicRIOCUHCuJ
-         uggOAOhdgvOsqGHhCdkzcgi+HJayTfcrJvlRo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764665213; x=1765270013;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dxvySic7ZCI3Kve7CCt8lN1Lme0d3OPvrFfTikR164w=;
-        b=Wlg25EeQqMZNWhZmQLjvTzEpkcdeLQa9b1xlXOhBCu7QYA4SRTP0JuAs1H4RJAyn84
-         zkZXwTTRXCMNfnm/WDaJf+9u5zzk7/lkHPrghyFtle7YZFb5VYj6Kc2jVuFg7QDkU50y
-         YacHmohvO15tuMH4lehMtTLAa03FcGnVP4glH6SlLbvcTPYM4ZidLmBPAnRZhAJZGYjF
-         /6PL8K4TWlEe9vWlCW1xwbW/s3yBDE2sDg/pi2Efl1iY/fuX4iz9x+jwHW6wHJW3lg1L
-         EpnsjYQnuEO2e+c6IMTUOlSj9uAHBSOhvT3CrDGg4rBfKOYSpGns9mKaS7VStDiwQ/2l
-         1b7w==
-X-Forwarded-Encrypted: i=1; AJvYcCW13xDikWP2tu7Gk8ugYAi1a+ENd5eBVjQIehc8V6OSIRJ7T5ahifrYOvYrxZRG156TkyRZmQ==@lists.linux.dev
-X-Gm-Message-State: AOJu0YxKKFX3B2bq5mFL7aSHqbREjLS/89qpiofVKYWnDQcG8gLpYuR3
-	bsQhFvVxXwOt+yZx9xVQ/vjVV/qMp/BpMwRx6pnWPDRu6XHMTi/KXZVc9bcODqQ7f9GFurY9gI+
-	S7dst4MVw17IbXlsiQNzlyLKAzqtgN0l3fbr7wrOb5Q==
-X-Gm-Gg: ASbGncsedN3xvAwUZTSUDjOr+3rEamrGClFfk0TW8phVdZJngRH4E/7plVuSA4pO90b
-	vfFRRxV9bThjpWteVvMC5RYxObxpgbuqVrcMgypr1/1A59Pie8G9Rz0oLVJADrQutGhtR0SMf/6
-	urUowiJNATznkT+HekuWg7IGQ+j///wYomyxXUbIKR4jhaDxP7Pnd+GDDcEZVhawy9RYVMkvmgX
-	+P/h7v6bpum0hsXVeZhM5U9tYLLKPwXFXajUyrzywLkxJ+DezE1rohkMeOyvXae2L8rzg==
-X-Google-Smtp-Source: AGHT+IEmdgKRfEJt7lhW9JewHKYA/V5LXGRt+5HoCO1i6voev0VJmL65LKUm+BLjfUqBCpppRBhIODxs9MlwVlA6duw=
-X-Received: by 2002:ac8:7dc2:0:b0:4ee:1f69:fdeb with SMTP id
- d75a77b69052e-4f0088dcc91mr26981181cf.11.1764665212783; Tue, 02 Dec 2025
- 00:46:52 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QKcBS+nU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1764697517;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=sO3YMt7bwHXHXoImGSFPk/MGZ4Jh8BA+UgosjHsNIMw=;
+	b=QKcBS+nUZ3pdpR6CbZyztYk3NYDNUMWBmlal0W1KXoUzJlHS38S5mPehB1l2YR//lP5NpT
+	5VgSD7Fq/gLKL8EveHANEzjA1QfNIWOXlV23guQMqQ64ixo7WIyD1+DF0IiyFbYhwMR8M5
+	0n7+h/PWF4wbulg0laMqbEKLQ0HCZl4=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-530-ww52pWIROKa1BUU12KTOWQ-1; Tue,
+ 02 Dec 2025 12:45:12 -0500
+X-MC-Unique: ww52pWIROKa1BUU12KTOWQ-1
+X-Mimecast-MFC-AGG-ID: ww52pWIROKa1BUU12KTOWQ_1764697510
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0D0671801303;
+	Tue,  2 Dec 2025 17:45:10 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.14])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B0CCF30001A4;
+	Tue,  2 Dec 2025 17:45:07 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: Steve French <sfrench@samba.org>
+cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.org>,
+    Shyam Prasad N <sprasad@microsoft.com>, linux-cifs@vger.kernel.org,
+    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+    stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] cifs: Fix handling of a beyond-EOF DIO/unbuffered read over SMB1
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251113002050.676694-1-neilb@ownmail.net> <20251113002050.676694-7-neilb@ownmail.net>
- <6713ea38-b583-4c86-b74a-bea55652851d@packett.cool> <176454037897.634289.3566631742434963788@noble.neil.brown.name>
- <CAOQ4uxjihcBxJzckbJis8hGcWO61QKhiqeGH+hDkTUkDhu23Ww@mail.gmail.com>
- <20251201083324.GA3538@ZenIV> <CAJfpegs+o01jgY76WsGnk9j41LS5V0JQSk--d6xsJJp4VjTh8Q@mail.gmail.com>
- <20251201170813.GH3538@ZenIV>
-In-Reply-To: <20251201170813.GH3538@ZenIV>
-From: Miklos Szeredi <miklos@szeredi.hu>
-Date: Tue, 2 Dec 2025 09:46:41 +0100
-X-Gm-Features: AWmQ_blWv82I_AJ0z54S1o3oAiX82VQ2RDfse7yanE0u3ZklpA9ZzlQdeqtb1vo
-Message-ID: <CAJfpegtJDJL7T0-Uj664xOm4N2e6fyJp_XwFecHX_9e9ipUyEw@mail.gmail.com>
-Subject: Re: [PATCH] fuse: fix conversion of fuse_reverse_inval_entry() to start_removing()
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Amir Goldstein <amir73il@gmail.com>, NeilBrown <neil@brown.name>, 
-	Christian Brauner <brauner@kernel.org>, Val Packett <val@packett.cool>, Jan Kara <jack@suse.cz>, 
-	linux-fsdevel@vger.kernel.org, Jeff Layton <jlayton@kernel.org>, 
-	Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, David Howells <dhowells@redhat.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Tyler Hicks <code@tyhicks.com>, Chuck Lever <chuck.lever@oracle.com>, 
-	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
-	Namjae Jeon <linkinjeon@kernel.org>, Steve French <smfrench@gmail.com>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Carlos Maiolino <cem@kernel.org>, 
-	John Johansen <john.johansen@canonical.com>, Paul Moore <paul@paul-moore.com>, 
-	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
-	Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>, 
-	Mateusz Guzik <mjguzik@gmail.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Stefan Berger <stefanb@linux.ibm.com>, "Darrick J. Wong" <djwong@kernel.org>, linux-kernel@vger.kernel.org, 
-	netfs@lists.linux.dev, ecryptfs@vger.kernel.org, linux-nfs@vger.kernel.org, 
-	linux-unionfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
-	linux-xfs@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	selinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1597478.1764697506.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 02 Dec 2025 17:45:06 +0000
+Message-ID: <1597479.1764697506@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On Mon, 1 Dec 2025 at 18:08, Al Viro <viro@zeniv.linux.org.uk> wrote:
+    =
 
-> Then as far as VFS is concerned, it's an equivalent of "we'd done
-> a dcache lookup and revalidate told us to bugger off", which does
-> *not* need locking the parent - the same sequence can very well
-> happen without touching any inode locks.
+If a DIO read or an unbuffered read request extends beyond the EOF, the
+server will return a short read and a status code indicating that EOF was
+hit, which gets translated to -ENODATA.  Note that the client does not cap
+the request at i_size, but asks for the amount requested in case there's a
+race on the server with a third party.
 
-Okay.
+Now, on the client side, the request will get split into multiple
+subrequests if rsize is smaller than the full request size.  A subrequest
+that starts before or at the EOF and returns short data up to the EOF will
+be correctly handled, with the NETFS_SREQ_HIT_EOF flag being set,
+indicating to netfslib that we can't read more.
 
-> IOW, from the point of view of locking protocol changes that's not
-> a removal at all.
->
-> Or do you need them serialized for fuse-internal purposes?
+If a subrequest, however, starts after the EOF and not at it, HIT_EOF will
+not be flagged, its error will be set to -ENODATA and it will be abandoned=
+.
+This will cause the request as a whole to fail with -ENODATA.
 
-Not as far as I can see. As to any fuse filesystem being reliant on
-this behavior, I think that's unlikely, though it's sort of documented
-in the libfuse APIs as:
+Fix this by setting NETFS_SREQ_HIT_EOF on any subrequest that lies beyond
+the EOF marker.
 
- * To avoid a deadlock this function must not be called in the
- * execution path of a related filesystem operation or within any code
- * that could hold a lock that could be needed to execute such an
- * operation. As of kernel 4.18, a "related operation" is a lookup(),
- * symlink(), mknod(), mkdir(), unlink(), rename(), link() or create()
- * request for the parent, and a setattr(), unlink(), rmdir(),
- * rename(), setxattr(), removexattr(), readdir() or readdirplus()
- * request for the inode itself.
+This can be reproduced by mounting with "cache=3Dnone,sign,vers=3D1.0" and
+doing a read of a file that's significantly bigger than the size of the
+file (e.g. attempting to read 64KiB from a 16KiB file).
 
-Why the locking was added in the first place?  Oversight, probably.
+Fixes: a68c74865f51 ("cifs: Fix SMB1 readv/writev callback in the same way=
+ as SMB2/3")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Steve French <sfrench@samba.org>
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: Shyam Prasad N <sprasad@microsoft.com>
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+---
+ fs/smb/client/cifssmb.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks,
-Miklos
+diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
+index 645831708e1b..1871d2c1a8e0 100644
+--- a/fs/smb/client/cifssmb.c
++++ b/fs/smb/client/cifssmb.c
+@@ -1395,7 +1395,7 @@ cifs_readv_callback(struct mid_q_entry *mid)
+ 	} else {
+ 		size_t trans =3D rdata->subreq.transferred + rdata->got_bytes;
+ 		if (trans < rdata->subreq.len &&
+-		    rdata->subreq.start + trans =3D=3D ictx->remote_i_size) {
++		    rdata->subreq.start + trans >=3D ictx->remote_i_size) {
+ 			rdata->result =3D 0;
+ 			__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
+ 		} else if (rdata->got_bytes > 0) {
+
