@@ -1,117 +1,112 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA65B3451D9;
-	Mon, 15 Dec 2025 14:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2CB341AC5;
+	Tue, 16 Dec 2025 11:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765808401; cv=none; b=Uz/ULNkROUSRhpVbfpWDpmGr7rc+aSqYkuhZUQpXW2ca5s5v5GaCVfYrEHsTV21OrRLyo9H5EpnPv6NYtiV8WnaaNUYPk2w8VhG+NJCq8ji1GqJCOBp+mEhJrNq/q+LXzfX4xw7wjogdm0Ols8d/MTQzcgr/XqW2gPqaqketfJU=
+	t=1765884882; cv=none; b=XFHPgTgDA+ocTUUm8iLOiRJsWYiaBd/EmzW9Y7qZmot19XwqBPfKuLNnJJ1fyQWO/e+VuXajTFcarWpiCMKX1WqvZ0HnUtPOw3s9GccgnK2VUNyDtTgoEETz9PRZKQ0yuNqAsE2uv9MXTaVxOR8IlRTqZeq8P1HKL3GlFrv3jgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765808401; c=relaxed/simple;
-	bh=SOKNAp3KlXqmQkYAHiY1KnI5hmWZlwxQAhzfS0nZwp0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kIoEB+n1sPAcQgcbWZrUiLBH+jZQZY3o6jxGUMLFjiuxGX500ACkKSve6XLqihOQw8EGfPHDOGNnKS8OpLkaOFF+tBdZQb1xKhsgLoTGcgp1JuPnzZ7c67KaxgVeZHXxsXIsLIC2cP2eGx2RBcmLvjW8qVe5gMficrmvqbPcgfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DFCKKO8Y; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1765884882; c=relaxed/simple;
+	bh=Yka1063WsBDL5EBUQSy5YiyHqs00dVg0CEw0JGL1uN4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pKz6rUn+OJXoEyCmGY2M1EwlGbTdU9Z/ZCuWHbKaa3hwqph/scF3C4cxdFzldqZkWkTeaJ5V5CYDXnUgejG0Klih+3a9JOF7ySIrjUsmri6A//zP99tdPvx2h5EORnMLQSoXltUwp3wuxxd4kaTW2xgEP8MRV3ZZormc7dFKYrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qy4ekxbn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DFCKKO8Y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0605C4CEF5;
-	Mon, 15 Dec 2025 14:19:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765808400;
-	bh=SOKNAp3KlXqmQkYAHiY1KnI5hmWZlwxQAhzfS0nZwp0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DFCKKO8Y56kGcvgU39JK+toyUpk4jGwiPG6HyglacSq1MKmKkenC3jKNS9/HS5ipp
-	 B6NSOx8wBgq7Am6EMfMeh1PNOzsczwCgxkrjC6/z42Hk9J8i+SuYZOm6VUp9ou3SV9
-	 dgItcJM7Pf5rvLbJn9iHf33BlNlYry5yy3lCZ7IwJ+0MJKNGUTfNv5fUXEn1llrPl4
-	 EdZzX8EDySvcR9aLsG+tR4I+BaJYILYt8x/3OPDwPDyv8kLUOno34+gcWfYODinh1u
-	 qnMHAYCJBYMihFLwg4WxBl6Nw3qxa68g95/milv0l5zl+UvAMcycihLDuAxNErOEg+
-	 Xu0/K5zP9ANjw==
-Date: Mon, 15 Dec 2025 15:19:49 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Miklos Szeredi <miklos@szeredi.hu>
-Cc: Al Viro <viro@zeniv.linux.org.uk>, Amir Goldstein <amir73il@gmail.com>, 
-	NeilBrown <neil@brown.name>, Val Packett <val@packett.cool>, Jan Kara <jack@suse.cz>, 
-	linux-fsdevel@vger.kernel.org, Jeff Layton <jlayton@kernel.org>, Chris Mason <clm@fb.com>, 
-	David Sterba <dsterba@suse.com>, David Howells <dhowells@redhat.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Tyler Hicks <code@tyhicks.com>, 
-	Chuck Lever <chuck.lever@oracle.com>, Olga Kornievskaia <okorniev@redhat.com>, 
-	Dai Ngo <Dai.Ngo@oracle.com>, Namjae Jeon <linkinjeon@kernel.org>, 
-	Steve French <smfrench@gmail.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Carlos Maiolino <cem@kernel.org>, John Johansen <john.johansen@canonical.com>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Ondrej Mosnacek <omosnace@redhat.com>, Mateusz Guzik <mjguzik@gmail.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Stefan Berger <stefanb@linux.ibm.com>, 
-	"Darrick J. Wong" <djwong@kernel.org>, linux-kernel@vger.kernel.org, netfs@lists.linux.dev, 
-	ecryptfs@vger.kernel.org, linux-nfs@vger.kernel.org, linux-unionfs@vger.kernel.org, 
-	linux-cifs@vger.kernel.org, linux-xfs@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	selinux@vger.kernel.org
-Subject: Re: [PATCH] fuse: fix conversion of fuse_reverse_inval_entry() to
- start_removing()
-Message-ID: <20251215-immens-hurtig-1f0b23aa4bf3@brauner>
-References: <20251113002050.676694-1-neilb@ownmail.net>
- <20251113002050.676694-7-neilb@ownmail.net>
- <6713ea38-b583-4c86-b74a-bea55652851d@packett.cool>
- <176454037897.634289.3566631742434963788@noble.neil.brown.name>
- <CAOQ4uxjihcBxJzckbJis8hGcWO61QKhiqeGH+hDkTUkDhu23Ww@mail.gmail.com>
- <20251201083324.GA3538@ZenIV>
- <CAJfpegs+o01jgY76WsGnk9j41LS5V0JQSk--d6xsJJp4VjTh8Q@mail.gmail.com>
- <20251205-unmoralisch-jahrtausend-cca02ad0e4fa@brauner>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qy4ekxbn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1C82C4CEF1;
+	Tue, 16 Dec 2025 11:34:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1765884882;
+	bh=Yka1063WsBDL5EBUQSy5YiyHqs00dVg0CEw0JGL1uN4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Qy4ekxbnNBg3DisQuYWm/6a0OjnIU/cxSSbtUrWb4t0XnxQs6o9UTkCysv7zCn6pV
+	 2RE3wHvvWYv4nzY0Bt3MnkVyDMiJ6M3Qk1dJxsrCclgnKLKy9NYKMwlbAMjIkCr7Wi
+	 RQt4AbpYvwfoUzSUeFvKt2PlCjuJZ+ZrYlXyFvHM=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	David Howells <dhowells@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	linux-cifs@vger.kernel.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 328/354] cifs: Fix handling of a beyond-EOF DIO/unbuffered read over SMB2
+Date: Tue, 16 Dec 2025 12:14:55 +0100
+Message-ID: <20251216111332.792869420@linuxfoundation.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251216111320.896758933@linuxfoundation.org>
+References: <20251216111320.896758933@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251205-unmoralisch-jahrtausend-cca02ad0e4fa@brauner>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Dec 05, 2025 at 02:09:41PM +0100, Christian Brauner wrote:
-> On Mon, Dec 01, 2025 at 03:03:08PM +0100, Miklos Szeredi wrote:
-> > On Mon, 1 Dec 2025 at 09:33, Al Viro <viro@zeniv.linux.org.uk> wrote:
-> > >
-> > > On Mon, Dec 01, 2025 at 09:22:54AM +0100, Amir Goldstein wrote:
-> > >
-> > > > I don't think there is a point in optimizing parallel dir operations
-> > > > with FUSE server cache invalidation, but maybe I am missing
-> > > > something.
-> > >
-> > > The interesting part is the expected semantics of operation;
-> > > d_invalidate() side definitely doesn't need any of that cruft,
-> > > but I would really like to understand what that function
-> > > is supposed to do.
-> > >
-> > > Miklos, could you post a brain dump on that?
-> > 
-> > This function is supposed to invalidate a dentry due to remote changes
-> > (FUSE_NOTIFY_INVAL_ENTRY).  Originally it was supplied a parent ID and
-> > a name and called d_invalidate() on the looked up dentry.
-> > 
-> > Then it grew a variant (FUSE_NOTIFY_DELETE) that was also supplied a
-> > child ID, which was matched against the looked up inode.  This was
-> > commit 451d0f599934 ("FUSE: Notifying the kernel of deletion."),
-> > Apparently this worked around the fact that at that time
-> > d_invalidate() returned -EBUSY if the target was still in use and
-> > didn't unhash the dentry in that case.
-> > 
-> > That was later changed by commit bafc9b754f75 ("vfs: More precise
-> > tests in d_invalidate") to unconditionally unhash the target, which
-> > effectively made FUSE_NOTIFY_INVAL_ENTRY and FUSE_NOTIFY_DELETE
-> > equivalent and the code in question unnecessary.
-> > 
-> > For the future, we could also introduce FUSE_NOTIFY_MOVE, that would
-> > differentiate between a delete and a move, while
-> > FUSE_NOTIFY_INVAL_ENTRY would continue to be the common (deleted or
-> > moved) notification.
-> > 
-> > Attaching untested patch to remove this cruft.
-> 
-> Should we revert the fuse specific bits of c9ba789dad15 ("VFS: introduce
-> start_creating_noperm() and start_removing_noperm()") and then apply
-> your changes afterwards?
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
-I think we shouldn't have this sitting around indefinitely so it would
-be good if we'd get a nod that this is ok or someone sending revert +
-fix that I can pick up. :)
+------------------
+
+From: David Howells <dhowells@redhat.com>
+
+[ Upstream commit 4ae4dde6f34a4124c65468ae4fa1f915fb40f900 ]
+
+If a DIO read or an unbuffered read request extends beyond the EOF, the
+server will return a short read and a status code indicating that EOF was
+hit, which gets translated to -ENODATA.  Note that the client does not cap
+the request at i_size, but asks for the amount requested in case there's a
+race on the server with a third party.
+
+Now, on the client side, the request will get split into multiple
+subrequests if rsize is smaller than the full request size.  A subrequest
+that starts before or at the EOF and returns short data up to the EOF will
+be correctly handled, with the NETFS_SREQ_HIT_EOF flag being set,
+indicating to netfslib that we can't read more.
+
+If a subrequest, however, starts after the EOF and not at it, HIT_EOF will
+not be flagged, its error will be set to -ENODATA and it will be abandoned.
+This will cause the request as a whole to fail with -ENODATA.
+
+Fix this by setting NETFS_SREQ_HIT_EOF on any subrequest that lies beyond
+the EOF marker.
+
+Fixes: 1da29f2c39b6 ("netfs, cifs: Fix handling of short DIO read")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+cc: Shyam Prasad N <sprasad@microsoft.com>
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/smb/client/smb2pdu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index 7aa87908e0ff1..b0ff9f7e8cea8 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -4634,7 +4634,7 @@ smb2_readv_callback(struct mid_q_entry *mid)
+ 	} else {
+ 		size_t trans = rdata->subreq.transferred + rdata->got_bytes;
+ 		if (trans < rdata->subreq.len &&
+-		    rdata->subreq.start + trans == ictx->remote_i_size) {
++		    rdata->subreq.start + trans >= ictx->remote_i_size) {
+ 			__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
+ 			rdata->result = 0;
+ 		}
+-- 
+2.51.0
+
+
+
