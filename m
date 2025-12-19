@@ -1,123 +1,160 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A837224B01
-	for <netfs@lists.linux.dev>; Fri, 19 Dec 2025 17:02:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D5D3A1E64;
+	Fri, 19 Dec 2025 23:33:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766163723; cv=none; b=Lzwn6HUzX4/hx8YC2KjUDrS/anl1TBsyPZkT0A3O3BFQqHReIwyefhjA/SAJo13Yod6mA5zR+v/dzMfkz3zQIIT0IYNI1WHHgakjzuXHpQ5oMhgBGDMuvf06jRs6J46725mdTLHYCkVpJpFCeXcFADoQ/N3QVe8lyPOCuMi7N10=
+	t=1766187230; cv=none; b=u5FdR/Ed9LTJuO5X/6A2DVSoSZcCg9tXG7XKFURQgbeFP2UdpK6ecpjyIH0OjCagysXk3dds7McnoaQJoZ2hTiwJyLAJ+j7eqIJYFPNUr6qnYt3Z+xE03EyO7uRUWfjjnBqxm2jc8RUmhvHOAYnAl579aU0z6cMeVttC+jVRago=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766163723; c=relaxed/simple;
-	bh=4SOBkthImmJzxLZLQ0s6iqP5eBQoze2VaxUSBNu4DVY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YXfSTIlRlih6O3PYiHFo7fKfCM49TRoXhfYYshpkkUGvxSV6ZR+ukc/pWivO8+ge/YWxXYxGnr8Bl5vkhcfJseeiYbMig40xM4OigTY6tK/7lFJ7JpV5iymEMtemHHfB8xnlPTP/vCpLelsnGgrP2MUnmUYAVjAZy3nJhrVqTm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dneg.com; spf=pass smtp.mailfrom=dneg.com; dkim=pass (2048-bit key) header.d=dneg.com header.i=@dneg.com header.b=Rl8Hd/kd; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dneg.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dneg.com
+	s=arc-20240116; t=1766187230; c=relaxed/simple;
+	bh=DqZWmDy/Ff5J419Ueo8IfUMcfkNbg66kqcJ+0BbeOKk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=f2Uc+4/K+m/AEn+uRJTR2F1NRRcO7LZjMF3FgZE68uXpeW5rEaLrgt3kjiLDNaA6gaEnhwPuSFlIn6KN3/rQOLVkVsoAf4tAcALwmHfIQsnNdCBFBDwliox34k16eVtr5kI4vpP2D3sj8VY9fsc6jLRk+zn2vwE+Ylb4zX/3cJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F4mUXYig; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dneg.com header.i=@dneg.com header.b="Rl8Hd/kd"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-64b9cb94ff5so1097512a12.2
-        for <netfs@lists.linux.dev>; Fri, 19 Dec 2025 09:02:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dneg.com; s=google; t=1766163720; x=1766768520; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=4SOBkthImmJzxLZLQ0s6iqP5eBQoze2VaxUSBNu4DVY=;
-        b=Rl8Hd/kdW922mQfijfOCYPQ+FH4H2hq8pPmcCPAkXEAdBSIkAPJ/z4kgHwgHh+eWbm
-         S2Xu94Q0PgZ7qWfD+bHY59q++kZdC/ctYc39bN/iJbsyRx/8NLetVwhTwNEcIdo5rqlF
-         9ZNZUS8Puh/qG/9atCg3XNzYezdqFt5JO5Xq7DwrePDbQNoDvTM59wcsiqMf2jeWuKjs
-         BnomPTDVi0SbNHUQYzjRGESBioBvqUHiQTEtItUtzAw90qjrKG3A/8cmXP0bcnNx5IBS
-         2/n82eq3LAteuBdr5+jnvx/zb7UJ9xiR0M8kKHK3nESXEdo4rNgq7s1UYxh0h7fMN/EJ
-         cvsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766163720; x=1766768520;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4SOBkthImmJzxLZLQ0s6iqP5eBQoze2VaxUSBNu4DVY=;
-        b=P0etKZIHBbXq/jyNcgwM2blKwTo3gP31F8pnq9r4xaVF4M3esCYeh+th4nbUiUVKVm
-         JMrQGR/KtW/q2G3QpysWS6z8XnYcMoOzVsvQOCUzbKX/JgZxTZC8zSvlECn6Jy59lZyX
-         Lv5TJHdAbD3PKuzWbWzrmvucc4Kw2NkZs6fYJa8XUBNZER2JC1VtNhPjA0KBL03NaUrC
-         OUhLr1+BMXPOvMYRBTOKwVktm1cKEjYPkrxO0wdyGxC07KCfo7HmFxiWJRual8pGBSvO
-         8nf0yIBtSWOySWqWvrG08uR2JqNqlbtg9+LNQSq+kf5vQF3MezhT2X5oYHYMeD3z7T8N
-         PHyA==
-X-Forwarded-Encrypted: i=1; AJvYcCW1/N4dTjgVXI53BaYeyrKJzl4Rd1DFgENtIJtQesqY0MccCX9X5/LbgRuss40DUhuY7drwcA==@lists.linux.dev
-X-Gm-Message-State: AOJu0YyqRndTBtHKrBxIDbgMmtgB88fIYeg/26f0k03Ec3o/zVClWktN
-	oP58x0/qraZi00fG6sWcejG0jEpOFcgCcLVvXXyx020/bkJqitS4I1Sp9KCp+tSV1+pFoaImvo2
-	lebBnXhNdoLEjIVCl8CrInIIdj0mRlt+G1qJBDIjdMZ7njw9/X1ZDnPd1MQ==
-X-Gm-Gg: AY/fxX7FVsPFv/7ILcohzfKsVozkTz8BYFVnlolbBxwITUsI4YHcXJ4IPq6r4rp5YnX
-	4L4LK7Vc17ua1mr8brpKbyHBB7YojVuHbbAt+Bv4IIikMnShx0O4apmsYnktq/MNI71IRqNj35L
-	eiuu+VEFdiWmDm9gAAlbnZe9Am2tkn3R2qeX26YxcbZvX/8d0Berg2xhjHEzdNfw9mFV8gq1CnF
-	mXJLsOkABv8nT0FZloi/Yg9L15dYomQUssZFaF1Y+eOcMwqbN7Hk8gtMbsu+FgSEzU7KQ==
-X-Google-Smtp-Source: AGHT+IFYZ+T/DDBxZfTv12nqi2MKs8l2/c/zepK2RVF8SggZrcKR3TLEu57nFKme181aAS6NO8AWiWlcMI4B7+apghM=
-X-Received: by 2002:a05:6402:5108:b0:649:b4d8:7946 with SMTP id
- 4fb4d7f45d1cf-64b8edb3335mr2602774a12.23.1766163719739; Fri, 19 Dec 2025
- 09:01:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F4mUXYig"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8B853C4CEF1;
+	Fri, 19 Dec 2025 23:33:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766187229;
+	bh=DqZWmDy/Ff5J419Ueo8IfUMcfkNbg66kqcJ+0BbeOKk=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=F4mUXYigtqDGPy1Bu1bTrZMbbjJC0yDgrK7pBYJ5DS88R1+lOtJc/05EFbGLMjv+N
+	 dyCDg7phmP6AI/qqlJbvp34apbB04HYDf/8xfoLQCOEw8Ts+t02DALj0GKNH6bcLyJ
+	 TO+7RAMMoCVM3u5B2n7vzOCtBKyzOs4OvooxdqX/l7CIPbAV+EqnFpU1wzBr6+nnp+
+	 +85gOTQZbZwBt9/Qpca9mZmOs9/zof24jVT/mWAbA/gsJyb0hp3ZhqNu7mrugXo6e6
+	 q58dN8J1aXFvMF3HX/1Y4GTh9QXSwsPijwL4vXEKJUMHS+zPUSOW2mR6RtxwU9K20X
+	 DAaouTUzxM0sw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 77845D78797;
+	Fri, 19 Dec 2025 23:33:49 +0000 (UTC)
+From: Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>
+Date: Sat, 20 Dec 2025 08:33:21 +0900
+Subject: [PATCH] netfs: fix folio unlock collection end point
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CADFF-zeNJUPLaVcogSBt=s4+o2Lty45-DueSYKJmCgZw6hraEg@mail.gmail.com>
-In-Reply-To: <CADFF-zeNJUPLaVcogSBt=s4+o2Lty45-DueSYKJmCgZw6hraEg@mail.gmail.com>
-From: Daire Byrne <daire@dneg.com>
-Date: Fri, 19 Dec 2025 17:01:22 +0000
-X-Gm-Features: AQt7F2oOfNfsPv8P8u21bp56Q8bnBK7hqHEOp3yV5u7A9mLHNUlUs2vFNcxWnPo
-Message-ID: <CAPt2mGOV+ZxVLkFFXRKX3Cr9vZ-pd=5QeN=cxwc_msGFtpPN=Q@mail.gmail.com>
-Subject: Re: fscache/NFS re-export server lockup
-To: mjnowen@gmail.com
-Cc: linux-nfs@vger.kernel.org, netfs@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251220-netfs_mmap_corruption-v1-1-da4a2ce87e18@codewreck.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqAIBBA0avErBN0oJKuEhFiY80ik7EiiO6et
+ PyL9x/IJEwZ+uoBoYsz77GEqSvwq4sLKZ5LA2psDKJWkY6Qp21zafK7yJmOIlSLZGwXgkfrodg
+ kFPj+v8P4vh+XyAOgZwAAAA==
+X-Change-ID: 20251220-netfs_mmap_corruption-62e187ffc28c
+To: David Howells <dhowells@redhat.com>, Paulo Alcantara <pc@manguebit.org>, 
+ Christian Schoenebeck <linux_oss@crudebyte.com>, 
+ Christian Brauner <brauner@kernel.org>
+Cc: netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, v9fs@lists.linux.dev, 
+ Dominique Martinet <asmadeus@codewreck.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3691;
+ i=asmadeus@codewreck.org; h=from:subject:message-id;
+ bh=bnehbcpLm5UV7kOLOAuC9015mdwwP/1OVmMXJJYp4+A=;
+ b=owEBbQKS/ZANAwAKAatOm+xqmOZwAcsmYgBpReDZTHI58pNcDP7ONjbVTvPcCmbidQsITsxhZ
+ tagjjNuBgWJAjMEAAEKAB0WIQT8g9txgG5a3TOhiE6rTpvsapjmcAUCaUXg2QAKCRCrTpvsapjm
+ cJKFD/4gdgI+gIbj9zSnPNdgrT/kLxxed+Z3o5ZPyzY1G2mM8Y7QBfPOkC2DmDeNjv5X2+sU0OS
+ Xu8Rfl4nFyvsIQ482o8zqxCF7ey03kKpxqru4+tNtp5XLVgRWWLLtS3axq74BN5uhUx2o5ZUdnl
+ kcrdmWOYNwHhf9sKxNe+wUphHrPN412lZh9azCMc8rJwkEyD6lvFZkdHKmzTsVDPkNHSipBEVGB
+ BlRM1lSkVavC4ZE8tg/W1S2AwhkYfzOTYnNJsV9bCqb+HbNx8jLiKc/4/62ZTA8bd3HOG8KrWE2
+ eIMedY4hLUYa511NHTPyDXgg5w/4ZTk3JOU20Eh+y7wYpvXvWzeboMxRx3BWSNd3UNGLTw7cuXs
+ xqLdW1EOAjUZKusZgsOrET/PJiB/xBxd8QE1Lo3Sgp8nBDBtZncEGbblebQVf5h1o5eh19HGQbp
+ +hKpOQvnljMrWKtQ7d5VlG/nKQ1qT5DLg0eVcrXENVRFVm2jHxKjuDsOmIZnQuZWv7kPhsS79+6
+ L+9mqYgadhE34xJ5t001x6Xu0zvp1DeQcTnJEr8x+Q+ZfvbKBO8JQ36Q4fysxLiMVZiI4s/EoNX
+ qVtupRpWrv/QbbLK1FpvahYTTN1CTFvdphKnpaq+HU3i8e+UYkBDTtNGJSYRgvEs3bBxb+Eos9V
+ Dk0IaxH0TUDXWhA==
+X-Developer-Key: i=asmadeus@codewreck.org; a=openpgp;
+ fpr=B894379F662089525B3FB1B9333F1F391BBBB00A
+X-Endpoint-Received: by B4 Relay for asmadeus@codewreck.org/default with
+ auth_id=435
+X-Original-From: Dominique Martinet <asmadeus@codewreck.org>
+Reply-To: asmadeus@codewreck.org
 
-On Fri, 19 Dec 2025 at 16:25, Mike Owen <mjnowen@gmail.com> wrote:
->
-> We are using NFS re-exporting with fscache but have had a number of
-> lockups with re-export servers.
->
-> The NFS re-export servers are running Ubuntu 24.04 with a
-> 6.14.0-36-generic kernel mounting Isilon and NetApp filers over NFSv3.
->
-> The NFS clients are mounting the re-exported shares over NFSv4 and
-> running AlmaLinux 9.6.
->
-> When the re-export server locks up, it is not possible to access the
-> /var/cache/fscache directory (separate file system) on the server and
-> all clients are hanging on their mounts from the re-export.
+From: Dominique Martinet <asmadeus@codewreck.org>
 
-That does kind of point to a filesystem problem with /var/cache/fscache itself?
+9p suffered from a corruption in mmap-heavy workloads such as compiling
+with clang (e.g. kernel build with `make LLVM=1`, failing with random
+errors on mmaped headers and clang segfaults)
 
-Can you stop the nfs server and is access to /var/cache/fscache still blocked?
+David Howells identified a problem in the netfs trace of such a crash,
+below:
+> We unlocked page ix=00005 before doing the ZERO subreq that clears
+> the page tail.  That shouldn't have happened since the collection
+> point hasn't reached the end of the folio yet.
 
-> When the server is rebooted, most of the contents of the
-> /var/cache/fscache directory is missing e.g. the file system contents
-> before the lockup may have been a few TBs, but after a reboot only a
-> few hundred GBs.
+netfs_collect_folio: R=00001b55 ix=00003 r=3000-4000 t=3000/5fb2
+netfs_folio: i=157f3 ix=00003-00003 read-done
+netfs_folio: i=157f3 ix=00003-00003 read-unlock
+netfs_collect_folio: R=00001b55 ix=00004 r=4000-5000 t=4000/5fb2
+netfs_folio: i=157f3 ix=00004-00004 read-done
+netfs_folio: i=157f3 ix=00004-00004 read-unlock
+netfs_collect_folio: R=00001b55 ix=00005 r=5000-5fb2 t=5000/5fb2
+netfs_folio: i=157f3 ix=00005-00005 read-done
+netfs_folio: i=157f3 ix=00005-00005 read-unlock
+...
+netfs_collect_stream: R=00001b55[0:] cto=5fb2 frn=ffffffff
+netfs_collect_state: R=00001b55 col=5fb2 cln=6000 n=c
+netfs_collect_stream: R=00001b55[0:] cto=5fb2 frn=ffffffff
+netfs_collect_state: R=00001b55 col=5fb2 cln=6000 n=8
+...
+netfs_sreq: R=00001b55[2] ZERO SUBMT f=000 s=5fb2 0/4e s=0 e=0
+netfs_sreq: R=00001b55[2] ZERO TERM  f=102 s=5fb2 4e/4e s=5 e=0
 
-I can't say I've ever seen that before... we use ext4 for the fscache
-filesystem mount on /var/cache/fscache.
+This patch changes the end condition for collecting folios that have
+been read, from "is the IO over?" to "have we read up till the end of
+the folio?" (collected_to >= fend), which delays the read-unlock to the
+"ZERO CONSUM" step after the page tail has been zeroed
 
-And I presume there is definitely nothing else that might be
-interacting with that /var/cache/fscache filesystem outside of fscache
-or cachefilesd?
+Reported-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+Link: https://lkml.kernel.org/r/2332946.iZASKD2KPV@weasel
+Fixes: e2d46f2ec332 ("netfs: Change the read result collector to only use one work item")
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+---
+A few notes out of order:
+- I don't really understand why this actually matter -- sure,
+  there'll be junk after the mmap region ends, but why does
+  this cause a bug? Since the folio is unlocked the zero fill operation
+  ends up zeroing the end of another page? Well, either way there's no
+  doubt that the early unlock was a problem...
+- I have no idea how to test that this doesn't break something else by
+  not unlocking a page that should be unlocked e.g. something that
+  wouldn't need zero-filling (partial refresh?) -- I don't *think* we
+  have anything like that, but I don't actually know, so pleae don't
+  trust me too much here... Nothing I normally test on 9p broke so it's
+  probably not too far off though.
 
-Our /etc/cachefilesd.conf is pretty basic (brun 30%, bcull 10%, bstop 3%).
+This has been broken for about a year so I guess there's no great hurry
+at this point, but any extra pair of eyes would be appreciated...
 
-> The kern.log (below) from the re-export server reports the following
-> when the lockup happens.
->
-> We have tried using a more recent 6.17.11 kernel on the re-export
-> server and changing the fscache file system from ext4 to xfs, but
-> still have the same lockups.
+(Christian S, I've tested as much as I could think of, but any extra
+validation would be great too if you have time!)
+---
+ fs/netfs/read_collect.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-We were running a heavily patched v6.4 kernel for almost 2 years and
-have just updated to v6.18.1 with no patches - so far so good!
+diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
+index a95e7aadafd072edbb0f1743e0020eaf65b7d1ed..7a0ffa675fb17aa7431c0fd6cc546deb0be0be22 100644
+--- a/fs/netfs/read_collect.c
++++ b/fs/netfs/read_collect.c
+@@ -137,7 +137,7 @@ static void netfs_read_unlock_folios(struct netfs_io_request *rreq,
+ 		rreq->front_folio_order = order;
+ 		fsize = PAGE_SIZE << order;
+ 		fpos = folio_pos(folio);
+-		fend = umin(fpos + fsize, rreq->i_size);
++		fend = fpos + fsize;
+ 
+ 		trace_netfs_collect_folio(rreq, folio, fend, collected_to);
+ 
 
-We are mostly re-exporting NFSv3 -> NFSv3 (Linux NFS storage servers)
-with a small amount of NFSv3 -> NFSv4.2 (Netapps).
+---
+base-commit: b10e94717f7e295d7ff6ce08249f7e31b630ef1b
+change-id: 20251220-netfs_mmap_corruption-62e187ffc28c
 
-> Any ideas on what is happening here - and how it may be fixed?
+Best regards,
+-- 
+Dominique Martinet <asmadeus@codewreck.org>
 
-Sorry I can't be more helpful.
 
-Daire
