@@ -1,160 +1,177 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D5D3A1E64;
-	Fri, 19 Dec 2025 23:33:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E846735966
+	for <netfs@lists.linux.dev>; Sat, 20 Dec 2025 12:31:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766187230; cv=none; b=u5FdR/Ed9LTJuO5X/6A2DVSoSZcCg9tXG7XKFURQgbeFP2UdpK6ecpjyIH0OjCagysXk3dds7McnoaQJoZ2hTiwJyLAJ+j7eqIJYFPNUr6qnYt3Z+xE03EyO7uRUWfjjnBqxm2jc8RUmhvHOAYnAl579aU0z6cMeVttC+jVRago=
+	t=1766233914; cv=none; b=m09MyqQ352bjE0r2yY+xF6JnumywKzYI5nl6velFsF6s+4SJ8RZGe1saQql7LJ6PBClg+LKyXt7Hl2JaMVe4XBHf/NMBChc4dCzMZhGhtWmNeHbNXxV1w7veHf4vt1FDeekqqySOSQ39eGId8S2vbOMP9ooeC0Iv/K5oao2SFwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766187230; c=relaxed/simple;
-	bh=DqZWmDy/Ff5J419Ueo8IfUMcfkNbg66kqcJ+0BbeOKk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=f2Uc+4/K+m/AEn+uRJTR2F1NRRcO7LZjMF3FgZE68uXpeW5rEaLrgt3kjiLDNaA6gaEnhwPuSFlIn6KN3/rQOLVkVsoAf4tAcALwmHfIQsnNdCBFBDwliox34k16eVtr5kI4vpP2D3sj8VY9fsc6jLRk+zn2vwE+Ylb4zX/3cJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F4mUXYig; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766233914; c=relaxed/simple;
+	bh=HiiZAKxtpNKLnOYl0GWimjE9g7TIzc3F5OFiwHQimaQ=;
+	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=Xhc+PN9PlSYppxAXIVsD0v+hHj6T7c6PGYA3sIuVaUSIzpNVn0Rx59oFI0WPNmdLOM5xvT8Vp3/vR/biWsTHscYuWzXhoI9JCzyAPM4fnBqez2mGNTAgsNokboc/TUNeIGn3fvywOa6R2RYlH82HDcI8XtkOPynh6tagym6PKzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LrnVZpla; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F4mUXYig"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8B853C4CEF1;
-	Fri, 19 Dec 2025 23:33:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766187229;
-	bh=DqZWmDy/Ff5J419Ueo8IfUMcfkNbg66kqcJ+0BbeOKk=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=F4mUXYigtqDGPy1Bu1bTrZMbbjJC0yDgrK7pBYJ5DS88R1+lOtJc/05EFbGLMjv+N
-	 dyCDg7phmP6AI/qqlJbvp34apbB04HYDf/8xfoLQCOEw8Ts+t02DALj0GKNH6bcLyJ
-	 TO+7RAMMoCVM3u5B2n7vzOCtBKyzOs4OvooxdqX/l7CIPbAV+EqnFpU1wzBr6+nnp+
-	 +85gOTQZbZwBt9/Qpca9mZmOs9/zof24jVT/mWAbA/gsJyb0hp3ZhqNu7mrugXo6e6
-	 q58dN8J1aXFvMF3HX/1Y4GTh9QXSwsPijwL4vXEKJUMHS+zPUSOW2mR6RtxwU9K20X
-	 DAaouTUzxM0sw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 77845D78797;
-	Fri, 19 Dec 2025 23:33:49 +0000 (UTC)
-From: Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>
-Date: Sat, 20 Dec 2025 08:33:21 +0900
-Subject: [PATCH] netfs: fix folio unlock collection end point
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LrnVZpla"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1766233912;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=EttdANpspnOT+Dim2C1JuGnSPCut69JUBFoLijH19Yo=;
+	b=LrnVZplasxSNO3oMeeqt+5+xaoNv7p6q0CgKJdRyxeoCAm15Gervj3kvYgfxlO8NVd4bf+
+	dxPY1UX4McHa9gb/OldkiwUyXh2XuHsOeiPAbfDqeyG6lpcP/TR8UwPK1vD3Cs0YBRLnAR
+	4NC0GEa1oqzaDuA4XqraD0es5K9/ZW0=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-288-LDDRf5UqNd635L2LF0Sa9w-1; Sat,
+ 20 Dec 2025 07:31:48 -0500
+X-MC-Unique: LDDRf5UqNd635L2LF0Sa9w-1
+X-Mimecast-MFC-AGG-ID: LDDRf5UqNd635L2LF0Sa9w_1766233906
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A5C0C1800343;
+	Sat, 20 Dec 2025 12:31:45 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.5])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 769F030001A2;
+	Sat, 20 Dec 2025 12:31:41 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <brauner@kernel.org>
+cc: David Howells <dhowells@redhat.com>,
+    Christian Schoenebeck <linux_oss@crudebyte.com>,
+    Dominique Martinet <asmadeus@codewreck.org>,
+    Eric Van Hensbergen <ericvh@kernel.org>,
+    Latchesar Ionkov <lucho@ionkov.net>,
+    Chris Arges <carges@cloudflare.com>,
+    Matthew Wilcox <willy@infradead.org>,
+    Steve French <sfrench@samba.org>, v9fs@lists.linux.dev,
+    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: [PATCH] netfs: Fix early read unlock of page with EOF in middle
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251220-netfs_mmap_corruption-v1-1-da4a2ce87e18@codewreck.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqAIBBA0avErBN0oJKuEhFiY80ik7EiiO6et
- PyL9x/IJEwZ+uoBoYsz77GEqSvwq4sLKZ5LA2psDKJWkY6Qp21zafK7yJmOIlSLZGwXgkfrodg
- kFPj+v8P4vh+XyAOgZwAAAA==
-X-Change-ID: 20251220-netfs_mmap_corruption-62e187ffc28c
-To: David Howells <dhowells@redhat.com>, Paulo Alcantara <pc@manguebit.org>, 
- Christian Schoenebeck <linux_oss@crudebyte.com>, 
- Christian Brauner <brauner@kernel.org>
-Cc: netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
- linux-kernel@vger.kernel.org, v9fs@lists.linux.dev, 
- Dominique Martinet <asmadeus@codewreck.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3691;
- i=asmadeus@codewreck.org; h=from:subject:message-id;
- bh=bnehbcpLm5UV7kOLOAuC9015mdwwP/1OVmMXJJYp4+A=;
- b=owEBbQKS/ZANAwAKAatOm+xqmOZwAcsmYgBpReDZTHI58pNcDP7ONjbVTvPcCmbidQsITsxhZ
- tagjjNuBgWJAjMEAAEKAB0WIQT8g9txgG5a3TOhiE6rTpvsapjmcAUCaUXg2QAKCRCrTpvsapjm
- cJKFD/4gdgI+gIbj9zSnPNdgrT/kLxxed+Z3o5ZPyzY1G2mM8Y7QBfPOkC2DmDeNjv5X2+sU0OS
- Xu8Rfl4nFyvsIQ482o8zqxCF7ey03kKpxqru4+tNtp5XLVgRWWLLtS3axq74BN5uhUx2o5ZUdnl
- kcrdmWOYNwHhf9sKxNe+wUphHrPN412lZh9azCMc8rJwkEyD6lvFZkdHKmzTsVDPkNHSipBEVGB
- BlRM1lSkVavC4ZE8tg/W1S2AwhkYfzOTYnNJsV9bCqb+HbNx8jLiKc/4/62ZTA8bd3HOG8KrWE2
- eIMedY4hLUYa511NHTPyDXgg5w/4ZTk3JOU20Eh+y7wYpvXvWzeboMxRx3BWSNd3UNGLTw7cuXs
- xqLdW1EOAjUZKusZgsOrET/PJiB/xBxd8QE1Lo3Sgp8nBDBtZncEGbblebQVf5h1o5eh19HGQbp
- +hKpOQvnljMrWKtQ7d5VlG/nKQ1qT5DLg0eVcrXENVRFVm2jHxKjuDsOmIZnQuZWv7kPhsS79+6
- L+9mqYgadhE34xJ5t001x6Xu0zvp1DeQcTnJEr8x+Q+ZfvbKBO8JQ36Q4fysxLiMVZiI4s/EoNX
- qVtupRpWrv/QbbLK1FpvahYTTN1CTFvdphKnpaq+HU3i8e+UYkBDTtNGJSYRgvEs3bBxb+Eos9V
- Dk0IaxH0TUDXWhA==
-X-Developer-Key: i=asmadeus@codewreck.org; a=openpgp;
- fpr=B894379F662089525B3FB1B9333F1F391BBBB00A
-X-Endpoint-Received: by B4 Relay for asmadeus@codewreck.org/default with
- auth_id=435
-X-Original-From: Dominique Martinet <asmadeus@codewreck.org>
-Reply-To: asmadeus@codewreck.org
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <938161.1766233898.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 20 Dec 2025 12:31:40 +0000
+Message-ID: <938162.1766233900@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-From: Dominique Martinet <asmadeus@codewreck.org>
+The read result collection for buffered reads seems to run ahead of the
+completion of subrequests under some circumstances, as can be seen in the
+following log snippet:
 
-9p suffered from a corruption in mmap-heavy workloads such as compiling
-with clang (e.g. kernel build with `make LLVM=1`, failing with random
-errors on mmaped headers and clang segfaults)
+    9p_client_res: client 18446612686390831168 response P9_TREAD tag  0 er=
+r 0
+    ...
+    netfs_sreq: R=3D00001b55[1] DOWN TERM  f=3D192 s=3D0 5fb2/5fb2 s=3D5 e=
+=3D0
+    ...
+    netfs_collect_folio: R=3D00001b55 ix=3D00004 r=3D4000-5000 t=3D4000/5f=
+b2
+    netfs_folio: i=3D157f3 ix=3D00004-00004 read-done
+    netfs_folio: i=3D157f3 ix=3D00004-00004 read-unlock
+    netfs_collect_folio: R=3D00001b55 ix=3D00005 r=3D5000-5fb2 t=3D5000/5f=
+b2
+    netfs_folio: i=3D157f3 ix=3D00005-00005 read-done
+    netfs_folio: i=3D157f3 ix=3D00005-00005 read-unlock
+    ...
+    netfs_collect_stream: R=3D00001b55[0:] cto=3D5fb2 frn=3Dffffffff
+    netfs_collect_state: R=3D00001b55 col=3D5fb2 cln=3D6000 n=3Dc
+    netfs_collect_stream: R=3D00001b55[0:] cto=3D5fb2 frn=3Dffffffff
+    netfs_collect_state: R=3D00001b55 col=3D5fb2 cln=3D6000 n=3D8
+    ...
+    netfs_sreq: R=3D00001b55[2] ZERO SUBMT f=3D000 s=3D5fb2 0/4e s=3D0 e=3D=
+0
+    netfs_sreq: R=3D00001b55[2] ZERO TERM  f=3D102 s=3D5fb2 4e/4e s=3D5 e=3D=
+0
 
-David Howells identified a problem in the netfs trace of such a crash,
-below:
-> We unlocked page ix=00005 before doing the ZERO subreq that clears
-> the page tail.  That shouldn't have happened since the collection
-> point hasn't reached the end of the folio yet.
+The 'cto=3D5fb2' indicates the collected file pos we've collected results =
+to
+so far - but we still have 0x4e more bytes to go - so we shouldn't have
+collected folio ix=3D00005 yet.  The 'ZERO' subreq that clears the tail
+happens after we unlock the folio, allowing the application to see the
+uncleared tail through mmap.
 
-netfs_collect_folio: R=00001b55 ix=00003 r=3000-4000 t=3000/5fb2
-netfs_folio: i=157f3 ix=00003-00003 read-done
-netfs_folio: i=157f3 ix=00003-00003 read-unlock
-netfs_collect_folio: R=00001b55 ix=00004 r=4000-5000 t=4000/5fb2
-netfs_folio: i=157f3 ix=00004-00004 read-done
-netfs_folio: i=157f3 ix=00004-00004 read-unlock
-netfs_collect_folio: R=00001b55 ix=00005 r=5000-5fb2 t=5000/5fb2
-netfs_folio: i=157f3 ix=00005-00005 read-done
-netfs_folio: i=157f3 ix=00005-00005 read-unlock
-...
-netfs_collect_stream: R=00001b55[0:] cto=5fb2 frn=ffffffff
-netfs_collect_state: R=00001b55 col=5fb2 cln=6000 n=c
-netfs_collect_stream: R=00001b55[0:] cto=5fb2 frn=ffffffff
-netfs_collect_state: R=00001b55 col=5fb2 cln=6000 n=8
-...
-netfs_sreq: R=00001b55[2] ZERO SUBMT f=000 s=5fb2 0/4e s=0 e=0
-netfs_sreq: R=00001b55[2] ZERO TERM  f=102 s=5fb2 4e/4e s=5 e=0
+The problem is that netfs_read_unlock_folios() will unlock a folio in whic=
+h
+the amount of read results collected hits EOF position - but the ZERO
+subreq lies beyond that and so happens after.
 
-This patch changes the end condition for collecting folios that have
-been read, from "is the IO over?" to "have we read up till the end of
-the folio?" (collected_to >= fend), which delays the read-unlock to the
-"ZERO CONSUM" step after the page tail has been zeroed
+Fix this by changing the end check to always be the end of the folio and
+never the end of the file.
+
+In the future, I should look at clearing to the end of the folio here rath=
+er
+than adding a ZERO subreq to do this.  On the other hand, the ZERO subreq =
+can
+run in parallel with an async READ subreq.  Further, the ZERO subreq may s=
+till
+be necessary to, say, handle extents in a ceph file that don't have any
+backing store and are thus implicitly all zeros.
+
+This can be reproduced by creating a file, the size of which doesn't align
+to a page boundary, e.g. 24998 (0x5fb2) bytes and then doing something
+like:
+
+    xfs_io -c "mmap -r 0 0x6000" -c "madvise -d 0 0x6000" \
+           -c "mread -v 0 0x6000" /xfstest.test/x
+
+The last 0x4e bytes should all be 00, but if the tail hasn't been cleared
+yet, you may see rubbish there.  This can be reproduced with kafs by
+modifying the kernel to disable the call to netfs_read_subreq_progress()
+and to stop afs_issue_read() from doing the async call for NETFS_READAHEAD=
+.
+Reproduction can be made easier by inserting an mdelay(100) in
+netfs_issue_read() for the ZERO-subreq case.
+
+AFS and CIFS are normally unlikely to show this as they dispatch READ ops
+asynchronously, which allows the ZERO-subreq to finish first.  9P's READ o=
+p is
+completely synchronous, so the ZERO-subreq will always happen after.  It i=
+sn't
+seen all the time, though, because the collection may be done in a worker
+thread.
 
 Reported-by: Christian Schoenebeck <linux_oss@crudebyte.com>
-Link: https://lkml.kernel.org/r/2332946.iZASKD2KPV@weasel
-Fixes: e2d46f2ec332 ("netfs: Change the read result collector to only use one work item")
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Link: https://lore.kernel.org/r/8622834.T7Z3S40VBb@weasel/
+Signed-off-by: David Howells <dhowells@redhat.com>
+Suggested-by: Dominique Martinet <asmadeus@codewreck.org>
+cc: Dominique Martinet <asmadeus@codewreck.org>
+cc: Christian Schoenebeck <linux_oss@crudebyte.com>
+cc: v9fs@lists.linux.dev
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
 ---
-A few notes out of order:
-- I don't really understand why this actually matter -- sure,
-  there'll be junk after the mmap region ends, but why does
-  this cause a bug? Since the folio is unlocked the zero fill operation
-  ends up zeroing the end of another page? Well, either way there's no
-  doubt that the early unlock was a problem...
-- I have no idea how to test that this doesn't break something else by
-  not unlocking a page that should be unlocked e.g. something that
-  wouldn't need zero-filling (partial refresh?) -- I don't *think* we
-  have anything like that, but I don't actually know, so pleae don't
-  trust me too much here... Nothing I normally test on 9p broke so it's
-  probably not too far off though.
-
-This has been broken for about a year so I guess there's no great hurry
-at this point, but any extra pair of eyes would be appreciated...
-
-(Christian S, I've tested as much as I could think of, but any extra
-validation would be great too if you have time!)
----
- fs/netfs/read_collect.c | 2 +-
+ fs/netfs/read_collect.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
-index a95e7aadafd072edbb0f1743e0020eaf65b7d1ed..7a0ffa675fb17aa7431c0fd6cc546deb0be0be22 100644
+index a95e7aadafd0..7a0ffa675fb1 100644
 --- a/fs/netfs/read_collect.c
 +++ b/fs/netfs/read_collect.c
-@@ -137,7 +137,7 @@ static void netfs_read_unlock_folios(struct netfs_io_request *rreq,
- 		rreq->front_folio_order = order;
- 		fsize = PAGE_SIZE << order;
- 		fpos = folio_pos(folio);
--		fend = umin(fpos + fsize, rreq->i_size);
-+		fend = fpos + fsize;
- 
+@@ -137,7 +137,7 @@ static void netfs_read_unlock_folios(struct netfs_io_r=
+equest *rreq,
+ 		rreq->front_folio_order =3D order;
+ 		fsize =3D PAGE_SIZE << order;
+ 		fpos =3D folio_pos(folio);
+-		fend =3D umin(fpos + fsize, rreq->i_size);
++		fend =3D fpos + fsize;
+ =
+
  		trace_netfs_collect_folio(rreq, folio, fend, collected_to);
- 
-
----
-base-commit: b10e94717f7e295d7ff6ce08249f7e31b630ef1b
-change-id: 20251220-netfs_mmap_corruption-62e187ffc28c
-
-Best regards,
--- 
-Dominique Martinet <asmadeus@codewreck.org>
-
+ =
 
