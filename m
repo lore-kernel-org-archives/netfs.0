@@ -1,83 +1,69 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8D9A1A3179
-	for <netfs@lists.linux.dev>; Sat, 20 Dec 2025 15:17:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B746914F112;
+	Sat, 20 Dec 2025 23:50:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766243845; cv=none; b=mkL63UGKPv2crvgCgvvqAzpdR7WdQmAKcoZlJiif1f4G59N/TNi0uSeDdEtrX2+/JZpediRUBw4spozUqFxbedSTa5gZmQ4pTzhCY0EFhpHuxajaVJMdATuZCaonaHfe6UEJDGZS1P+i6ZgSzscnbibwP95g1p5wEToxuxt0ces=
+	t=1766274629; cv=none; b=aBAmd9ncW4DHYbqtugPcTS16Ze/5jWoq+rMIKwQXsNXCYXZWgLq3F0hVAcfr1Py7kc3Su4R+iZJ1lXMFeQ042xQy0+xYAinNTkGDYfTq3bs6VkCvMntloA4/RJd4F+AyLPrErFqzqMVYDdbjdtNfc7oADZu5oaUM0MuLRNVkGxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766243845; c=relaxed/simple;
-	bh=e8z/1Np1RndNWC0tNeC0T0y+iRLoaBewoFzMNOL1kEE=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=T4bWQj+iWP/WOdflI2M+qhqcBUTvoZ9GOmv3ETw0ZYiZk4YLg1gl+aBFDnctKV5hrq2yuRkQUJLMgp4X5IQwrTCXgdzqwj7CpZDW6rz0e6kjJ4/c8kEpPJwzkpjUUhB/gBVDJfLD2PjczvvFGEk935bNP2k9WiSn1/Li8sRAEMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bSPdYtKe; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1766274629; c=relaxed/simple;
+	bh=ppz58eOKLPGxDuNvfdJ5krKR+xOC31BvvHD+9u3HPpI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KhFAEGVS+j7GnTl6v+Rcu1oCC2AuWgqouoH3BocAEIhdA43TD1HMjK37wy7lxZ99w5OAIe3r/l/87WWNnAJQc+ypPOjoyaWCZwOd2ytzMcFuho6pi7MASCP7kT9MyxYn+jAeQ4YkTDpweNCQMfwJxgAHVodawvcBTcjDaQuArlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=VyHA53nD; arc=none smtp.client-ip=5.189.157.229
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bSPdYtKe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1766243842;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e8z/1Np1RndNWC0tNeC0T0y+iRLoaBewoFzMNOL1kEE=;
-	b=bSPdYtKeK5q4TMNpMNWtnIXp5+RSa0Ta3/S4lL9L03cacRYC3o9RJDQLGIOH/HWbiPmz1c
-	RI+VAZNE2fDk4lYdIro4OePvV0IoF3etBGQfWfLBttL7qh819lufhpgKcXaqEIEKU/t/uJ
-	JQ/jYOaIguau1xfgCMdgrNHC2Bn/Ing=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-629-gj9iZeUoMP-3A5o7NcpMhw-1; Sat,
- 20 Dec 2025 10:17:19 -0500
-X-MC-Unique: gj9iZeUoMP-3A5o7NcpMhw-1
-X-Mimecast-MFC-AGG-ID: gj9iZeUoMP-3A5o7NcpMhw_1766243837
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0543D19560B2;
-	Sat, 20 Dec 2025 15:17:16 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.5])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4E38830001A2;
-	Sat, 20 Dec 2025 15:17:11 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <8618918.T7Z3S40VBb@weasel>
-References: <8618918.T7Z3S40VBb@weasel> <938162.1766233900@warthog.procyon.org.uk>
-To: Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: dhowells@redhat.com, Christian Brauner <brauner@kernel.org>,
-    Dominique Martinet <asmadeus@codewreck.org>,
-    Eric Van Hensbergen <ericvh@kernel.org>,
-    Latchesar Ionkov <lucho@ionkov.net>,
-    Chris Arges <carges@cloudflare.com>,
-    Matthew Wilcox <willy@infradead.org>,
-    Steve French <sfrench@samba.org>, v9fs@lists.linux.dev,
-    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org
+	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="VyHA53nD"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Content-ID:Content-Description;
+	bh=ppz58eOKLPGxDuNvfdJ5krKR+xOC31BvvHD+9u3HPpI=; b=VyHA53nDtwv41lzXOuG16N0Cwa
+	LQsEA+23dIrZWjdrG5mcikvyZz6ruwFYVE3A6TczLQM6WVRKoS4YRYBPGQVWEpsJwp2JL2/zUdgDJ
+	8kdo2Jl9RUJP5an9POHmXRZmOaTyqDeOwi88vY9AMMAhXPG5QHzZvY+YMQ28hyXs6IJx/SN+sXlBE
+	a3d/ELkPNkWZ2VuADsXwEEpovs9eMOX2yoxXPC+vTLttzV/+Z/jshkkHbppnecJCnNJ+E/bKaKIPK
+	EcYG0B8yrmq1RDkjTeJe6NNWCMbSmJ4uG4pBSEJY2s7ffmWaWChAfw95KFx+E9aeqyAck9cGdnBCk
+	cvmI/SGAFizz7BvTg7LphrDr3aCqupEykwdMty4arGMyDWszmDVGklGTIzacSOofZO8JGRrQVlgMJ
+	C/6EJslMm0W2wDuwt9XiCqDI5w7nk1jjB87GLg4FfXQ0lBgzF5Wd0jdhuYWrD5cuUaJqwhftMffcH
+	kzPvnrBui9KJzcuwzGbd1LhsEmrQJ8Td8vrdYi6yFlQlILo++m+Ctd36AoXcHAKPuW2Ziy82W4tKj
+	BTgbovVulx8iAKOThnnuiaGG+wjjcg9cRfTQCAMizuYAdyS0MlpQ1yD8nOBxoNWGqq+2pfjRza4HI
+	dHxQMD2yS29RYSW1uSfFx5XPccx60e45Nkz9bGv+g=;
+From: Christian Schoenebeck <linux_oss@crudebyte.com>
+To: Christian Brauner <brauner@kernel.org>,
+ David Howells <dhowells@redhat.com>,
+ Dominique Martinet <asmadeus@codewreck.org>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+ Latchesar Ionkov <lucho@ionkov.net>, Chris Arges <carges@cloudflare.com>,
+ Matthew Wilcox <willy@infradead.org>, Steve French <sfrench@samba.org>,
+ v9fs@lists.linux.dev, netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] netfs: Fix early read unlock of page with EOF in middle
+Date: Sun, 21 Dec 2025 00:50:09 +0100
+Message-ID: <22941732.EfDdHjke4D@weasel>
+In-Reply-To: <8618918.T7Z3S40VBb@weasel>
+References:
+ <938162.1766233900@warthog.procyon.org.uk> <8618918.T7Z3S40VBb@weasel>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <941466.1766243830.1@warthog.procyon.org.uk>
-Date: Sat, 20 Dec 2025 15:17:10 +0000
-Message-ID: <941467.1766243830@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 
-Christian Schoenebeck <linux_oss@crudebyte.com> wrote:
+On Saturday, 20 December 2025 15:55:09 CET Christian Schoenebeck wrote:
+> On Saturday, 20 December 2025 13:31:40 CET David Howells wrote:
+> > The read result collection for buffered reads seems to run ahead of the
+> > completion of subrequests under some circumstances, as can be seen in the
+[...]
+> With the patch applied, this issue disappeared. Give me some hours for more
+> thorough tests, due to the random factor involved.
 
-> What about write_collect.c side, is it safe as is?
+Dominique, David, looks good! Thanks!
 
-That's a good question - but it should be safe since it doesn't modify the
-content of the page and doesn't typically write beyond the EOF (though it
-might write a block that spans the EOF marker to the cache).
+Tested-by: Christian Schoenebeck <linux_oss@crudebyte.com>
 
-David
 
