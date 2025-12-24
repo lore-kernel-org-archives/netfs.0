@@ -1,76 +1,102 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA8B26F2AD;
-	Sat, 20 Dec 2025 23:54:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0E1315765;
+	Wed, 24 Dec 2025 12:31:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766274892; cv=none; b=MAeTx4n2T2eF5u4FIgQRJ4ypgmgtQCFKBl/nZKtyjBzwoYIbgmQiCf7bScCjF4ssrHfbE2P91/RGIO0QurbloL/E8yuzczpOyoK1jQ8Aqx8oGJgCgRItU3tP50G88h0NNfNFDsIDGlUlMdrc1Pqg5AoEojNyf2ORUlKj0AnH6rs=
+	t=1766579485; cv=none; b=JyAhqjOiBrnONeroISRZcw9tyiWRJQrO4sKPean9BoYpHA9PwMttWik7O5IiClt/m/ixDPhZ3ZV8L3fCnHRe5kgUsDBdyXNo5CFk36f+P5/Pkg2ZTbTNpgP75JiiUftxNnH74M8aYmuYZ7pDVsnU3FPMSYDgEx0E+YpgX7F1rZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766274892; c=relaxed/simple;
-	bh=AuK77p+yohH3kZOplLj1zN5mN+iIBy6gY89oh6lU5ow=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nQrv0vdbc4e5Q42HguUrRELAfPwwzfIj/n/+UFfbSNSXkGVDmFkd5rcokeptqozam11gELYWY/KEBbXOavXBKtK3mccoDc0Z6FB0I1JzzZae6aPSFv99cJFDVpUHtcwY8KKSwVDdhcjOqPbPxN4hi++VvpyGOQ1R40AbY1Vbqgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=FgnjQ4HP; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1766579485; c=relaxed/simple;
+	bh=bwXJJa5UIvtNLv3UOr4xkIKceEE7wzh9E4B/3ZqQ138=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GwgoltHxISw4Gh6fNRvd0cbBOhVT4KaRZwpc7a2COfd2UMJCnH5JuARuMOg9hR7y9iJvog/OwLkh4DMmc/QYlN0Bjk/qsYkro605KPLoqiFbU+uaG4XtvLsO5+nLR8nNiFdRLeazvZWUWi+FNdWTTUDW0Dn9OgSCKq/EgCVMXq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kE1sijUa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="FgnjQ4HP"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id DB01114C2D6;
-	Sun, 21 Dec 2025 00:54:37 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1766274881;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HHQ+u9WV3/UmY5FAfmxUeuQIkZysbZpJfbXHEk2ME6s=;
-	b=FgnjQ4HP4jh29C7rx2bjoXfWjS/oe35mArIv7kB6BJHnl7ZYQPSkzjNQqpmeo1euCJu2wP
-	T17PHcAmAtRejYT/LinDnL7Ah1Hi43VpaBS/NZf8TAhtYOBWRaYgVZxU57TevMV3uZ99H2
-	Wfc23RFTBi6waR8lrlM9xI1w7oNzrJRJiPeZpArH1BSm+OzVdQ/uEZNTz6cU+EbLqulYMB
-	fh5tpBoKrgGPdkBFSZ428prXExeJfa4M+wYX4DdhYNoJi0YRDbKtvyny5nmhIw6R/A/75b
-	91gCEGkHbUTprwpOiTSrXUkwUDmrREJ8mC4+S+nPaBE0pbKM3EkJal8pXSTstg==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 490b3aa1;
-	Sat, 20 Dec 2025 23:54:36 +0000 (UTC)
-Date: Sun, 21 Dec 2025 08:54:21 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kE1sijUa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A178C19421;
+	Wed, 24 Dec 2025 12:31:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766579484;
+	bh=bwXJJa5UIvtNLv3UOr4xkIKceEE7wzh9E4B/3ZqQ138=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=kE1sijUaDNKRy2uClNM15cW5Wa3Iloo5Flu8VR2jjbJWn+m4OdyOkbYvnOmOWTzfI
+	 +Lyf+0qfVFQ/aafBcqPQukxxdlIbeKrYod1ey7FNvDrcK7XOlKqxwgbgpAw/tq/iWT
+	 19k1PVui5xuUvZffDcckOqdklP0dbTJgtkckUZo5Mf9GoWL7bnjC8yYxsxA91/VcUK
+	 RnlIi5T2IJvxPb7uuU97r6OpfgiUvB45cuk/Jc3bG3OcEJkSsgL6deiTE0pNciKJV2
+	 0LsDXQK+E3OUapUigErrE/liMT6k4/PqonyJdvx6wtAEFgXsB1WuQtQ/y3r/9qQLG+
+	 jN5zOE9rNNa0Q==
+From: Christian Brauner <brauner@kernel.org>
 To: David Howells <dhowells@redhat.com>
 Cc: Christian Brauner <brauner@kernel.org>,
 	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
 	Eric Van Hensbergen <ericvh@kernel.org>,
 	Latchesar Ionkov <lucho@ionkov.net>,
 	Chris Arges <carges@cloudflare.com>,
 	Matthew Wilcox <willy@infradead.org>,
-	Steve French <sfrench@samba.org>, v9fs@lists.linux.dev,
-	netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+	Steve French <sfrench@samba.org>,
+	v9fs@lists.linux.dev,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] netfs: Fix early read unlock of page with EOF in middle
-Message-ID: <aUc3Lcy_u4FgnwjA@codewreck.org>
+Date: Wed, 24 Dec 2025 13:31:14 +0100
+Message-ID: <20251224-petrischalen-abtreiben-c023b9242319@brauner>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <938162.1766233900@warthog.procyon.org.uk>
 References: <938162.1766233900@warthog.procyon.org.uk>
- <8618918.T7Z3S40VBb@weasel>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <8618918.T7Z3S40VBb@weasel>
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1975; i=brauner@kernel.org; h=from:subject:message-id; bh=bwXJJa5UIvtNLv3UOr4xkIKceEE7wzh9E4B/3ZqQ138=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWR63xWR1tC5vbRLfbpM9WEmnplbNTK5xCe3JtpYRcx5E dLJlc7ZUcrCIMbFICumyOLQbhIut5ynYrNRpgbMHFYmkCEMXJwCMJFAY0aGD1v6JA4c8NiUmq5y ZrK3LOOrG+/UnmgtaBNbvk1eNtfJj+GfrW26z1KxVZsiGbpmulun+Cq2pz2+K5d7IPSefMmynTc 4AQ==
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-Christian Schoenebeck wrote on Sat, Dec 20, 2025 at 03:55:09PM +0100:
-> I had bisected this mmap() data corruption to e2d46f2ec332 ("netfs: Change the 
-> read result collector to only use one work item"). So maybe adding a Fixes: 
-> tag for this as suggested by Dominique?
+On Sat, 20 Dec 2025 12:31:40 +0000, David Howells wrote:
+> The read result collection for buffered reads seems to run ahead of the
+> completion of subrequests under some circumstances, as can be seen in the
+> following log snippet:
+> 
+>     9p_client_res: client 18446612686390831168 response P9_TREAD tag  0 err 0
+>     ...
+>     netfs_sreq: R=00001b55[1] DOWN TERM  f=192 s=0 5fb2/5fb2 s=5 e=0
+>     ...
+>     netfs_collect_folio: R=00001b55 ix=00004 r=4000-5000 t=4000/5fb2
+>     netfs_folio: i=157f3 ix=00004-00004 read-done
+>     netfs_folio: i=157f3 ix=00004-00004 read-unlock
+>     netfs_collect_folio: R=00001b55 ix=00005 r=5000-5fb2 t=5000/5fb2
+>     netfs_folio: i=157f3 ix=00005-00005 read-done
+>     netfs_folio: i=157f3 ix=00005-00005 read-unlock
+>     ...
+>     netfs_collect_stream: R=00001b55[0:] cto=5fb2 frn=ffffffff
+>     netfs_collect_state: R=00001b55 col=5fb2 cln=6000 n=c
+>     netfs_collect_stream: R=00001b55[0:] cto=5fb2 frn=ffffffff
+>     netfs_collect_state: R=00001b55 col=5fb2 cln=6000 n=8
+>     ...
+>     netfs_sreq: R=00001b55[2] ZERO SUBMT f=000 s=5fb2 0/4e s=0 e=0
+>     netfs_sreq: R=00001b55[2] ZERO TERM  f=102 s=5fb2 4e/4e s=5 e=0
+> 
+> [...]
 
-Yes, I had also confirmed the bug starts occuring since that commit (and
-the fix works on that point in the tree as well), please add:
-Fixes: e2d46f2ec332 ("netfs: Change the read result collector to only use one work item")
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-That aside, your commit message looks good to me:
-Acked-by: Dominique Martinet <asmadeus@codewreck.org>
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-Thank you for having taken the time to look at it!
--- 
-Dominique Martinet | Asmadeus
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[1/1] netfs: Fix early read unlock of page with EOF in middle
+      https://git.kernel.org/vfs/vfs/c/570ad253a345
