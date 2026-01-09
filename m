@@ -1,95 +1,404 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A4353016F2
-	for <netfs@lists.linux.dev>; Fri,  2 Jan 2026 18:43:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE828462
+	for <netfs@lists.linux.dev>; Fri,  9 Jan 2026 21:45:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767379436; cv=none; b=SPWakl+SFydPHWAiV6xSR+GojSY7VQ55VMTVLkjek4nUT9eG5W56o1c/f69pOeJIkeDI0q2L/D5DwAc4GZf1NMGpvvtpDNRj4zBidIQzARshQ776vcybY8KS5WVHFspjkaxCMZ7taBm6eT4jx3P9U4pTrFwtbs5meoULrau7vuI=
+	t=1767995161; cv=none; b=iZ7L0A70Zt8lszAeWFRWkCc5x1JQSkRdZTli1jy5QPxiu+mKOafwMEe7ogwWoBOmEDf4UHQIKIFq7Bp0U++Rwc/7s9P3WQFhww4lGMifz/NWy/uNurGDlpg6nJfJ3djLJsThz8z17+r22xPnRD4DIfSRWhVRlAW72pwc/wCXo3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767379436; c=relaxed/simple;
-	bh=xXFwLaJLVN0S3AO/xbklyFdgLL/H9ocBcD1lYUeNo80=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=YedsXhMD1Uc9ltezQPUm4foKDg0pe30Owl7r1D88oFwJyDynYwR2+IIb0JM8a5d9DQmcfK0w2/bWI3w62UogXy+Xrqe3caJ0Bzh6KG1NzYvvmO4m3d4PIyzKKfKvVLAK6mv0xsBC6VoS/0l3e01+N1yXjmXpcs9qXYx8UwthdKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Bssv3Xup; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1767995161; c=relaxed/simple;
+	bh=mbbQ4o9RmPpPn92iORj5QP4seNMsZQDrG6oEfU1i52g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=D5Vx3BHS2E90VDVRRb8aSyr8VZmw456X+Sa3wV7a3kE0W3qWc3IcdvvXJm1GjMGPoWiGTwkPRzgBEAeeKI6/JrG4tq1ebD6pMEsnfrinWe9ODHnoF6XTdXEo/YGmfy5g0iErVnOEmnf+LGiQMXJ2GJraW87+Oneb8nHHEEULpl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L2CiGCws; arc=none smtp.client-ip=209.85.160.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Bssv3Xup"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1767379433;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xXFwLaJLVN0S3AO/xbklyFdgLL/H9ocBcD1lYUeNo80=;
-	b=Bssv3XupFWLSzOgBsuk5wSKBqlKuOZqkR0ozjF/awDd0ctLJhCLzvvoG2O8vXUCMJctygb
-	F3bp/LIN1QgjoexMSTuTU06td+I/RqOGDrihFZuygelgLsWkbIXYf50CNS4uBKZbubRog9
-	V2bHOp+j6gwHZfJ1UIA8MkZ68SRZxM8=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-445-Bc0jOwyGPkes5HuU1_9Bdg-1; Fri,
- 02 Jan 2026 13:43:47 -0500
-X-MC-Unique: Bc0jOwyGPkes5HuU1_9Bdg-1
-X-Mimecast-MFC-AGG-ID: Bc0jOwyGPkes5HuU1_9Bdg_1767379426
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BF1EF19560B2;
-	Fri,  2 Jan 2026 18:43:45 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.4])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4895030001A2;
-	Fri,  2 Jan 2026 18:43:43 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <qvtkweac7g5ejiicsnb7cqxlxl35toi2ykdmguaszqkcnir355@zvaw3oxlxzex>
-References: <qvtkweac7g5ejiicsnb7cqxlxl35toi2ykdmguaszqkcnir355@zvaw3oxlxzex> <1430101.1764595523@warthog.procyon.org.uk>
-To: Enzo Matsumiya <ematsumiya@suse.de>
-Cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.org>,
-    Steve French <sfrench@samba.org>,
-    Shyam Prasad N <sprasad@microsoft.com>,
-    Stefan Metzmacher <metze@samba.org>, linux-cifs@vger.kernel.org,
-    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Subject: Re: Can we sort out the prototypes within the cifs headers?
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L2CiGCws"
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4ee1939e70bso48818341cf.3
+        for <netfs@lists.linux.dev>; Fri, 09 Jan 2026 13:45:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767995158; x=1768599958; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:reply-to:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=rL++8pWq6jIlaqD3oJhmNjEvgxeeRpcKtDmQV18E4Kc=;
+        b=L2CiGCwsZM5uKIhK2QJBCA280jMxOURcb0Ny6h0fbOY8MpSN0FYKrsBbsLAsjMCG+D
+         NonRndIbH47xpZPsyKEAI+DwNBVJLNN1KTyGnWu1Shr+AZRSwk4lf9lK/vldJaYk0Rsu
+         43RoUyU1dIIvnZt0Zw0k+IvKiNowA9iWmwuYj0ZVQlCAQPg/Z6wGU7dhGVKtmrShHJ+q
+         aTiygNlwNnAH282O9q1qkxLhxiXvy8jIl8RYHMO78ulC5cAWxqI2pqAYLLBUJVlKu9++
+         Z8RHbxHCOcLhSHSzGI/fDrQnoYF85Pbrnt3ja+OX+LdbLXHO34o1L+vlfyrmOasaf01t
+         ogiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767995158; x=1768599958;
+        h=cc:to:subject:message-id:date:from:reply-to:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rL++8pWq6jIlaqD3oJhmNjEvgxeeRpcKtDmQV18E4Kc=;
+        b=DGlRXni62K3RKJ0tqCFKz02REVSsSbSCo5tOO1ztCch3RLnbqPM0qsHIc2F52M/tDJ
+         HEtAsoczJR1dBTaXEgOqlpo5VxC+oBeYDWOCXsm5ijyM7yzZ+SyQ8fClPuwaBEvcRuN4
+         +Gna6B718aSvo54lGCc/J95pFHINc1BRxmIgjcZ2IpnjDjzQDQ8m/jwKCYEwPeboNd+A
+         EPqB+EHMfgUBNhoDNeXYTlwiRuFDr+SiIg4LaNjpJRGrTTufZ/FASjBLu9YOGzaxq7z5
+         Ex7CiJvjzHjmVscgMW//pXqEKvHDdEIJMSzxOwGCoIQPmDoeX31XWzdupKn0uhyUr0mM
+         95lQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUi5iSWyOEBHIaFmsHqsaHLvhRhMiUiRvduoG1QVvrn+ub03NfKDvHM7/Z+7IFCUvlKAlfHQw==@lists.linux.dev
+X-Gm-Message-State: AOJu0YxSpreS+tNtFdqxFnwsx9uTE+ZE/38UJm/5e4lGYnsmHURDhHCy
+	J+gzrbRB+iJnTee5XUgmtHKF1zm2SWI8NJwW6DfYTCUd/728UrgD+NrYD1UPvY2KE5k6kVHOOUZ
+	ucQt0ivfNJBHRnQWZvlNKcl2Fyib58j8=
+X-Gm-Gg: AY/fxX5DxUQB0IAMBatUYbD8SDFZlEchk8U9x8/23iXVWn8qCp+VIUDijzJTD98/J+c
+	/PBT76mGkurRDbOHUJf1z7U7/CzD6hHPO3ZRN9araj2XhCyTaiACgwHXfzacPvH7ki+8M+pjn3R
+	BBZC0AyNxJLryXUCbCzlU37BJpjInhitSe6dWNfMvaQ5pt+mpqPg/360rNEMEOKHn5JaCKFQhSW
+	9H18WRUxIxxkGo/U0NZ8VP5V5Mi6lFeADBGhqNv6nENNiVid87Z5eRjKTZz3BdG8ywug2JHLQMW
+	d0XEDpnZYQBVr8b4jvJR8zi4OQ==
+X-Google-Smtp-Source: AGHT+IGrinvXEY9OiYce+TV+BKLbJYrAdI9M0klPPYSTRtwqsSg1j27qRT3ooq85Ii1ZYUs7EEJkOm4GXqgNT2XGS4c=
+X-Received: by 2002:ac8:5f8f:0:b0:4f1:b6bc:5833 with SMTP id
+ d75a77b69052e-4ffb499a295mr144212351cf.54.1767995158057; Fri, 09 Jan 2026
+ 13:45:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1460703.1767379422.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 02 Jan 2026 18:43:42 +0000
-Message-ID: <1460704.1767379422@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+References: <CADFF-zeNJUPLaVcogSBt=s4+o2Lty45-DueSYKJmCgZw6hraEg@mail.gmail.com>
+ <CAPt2mGOV+ZxVLkFFXRKX3Cr9vZ-pd=5QeN=cxwc_msGFtpPN=Q@mail.gmail.com>
+In-Reply-To: <CAPt2mGOV+ZxVLkFFXRKX3Cr9vZ-pd=5QeN=cxwc_msGFtpPN=Q@mail.gmail.com>
+Reply-To: mjnowen@gmail.com
+From: Mike Owen <mjnowen@gmail.com>
+Date: Fri, 9 Jan 2026 21:45:47 +0000
+X-Gm-Features: AZwV_QhZdvrq4i5rbNq5OOb6VAebBhgj0Jieics57bjPw1K6HG8B62yseqEm4bk
+Message-ID: <CADFF-zcFgycZ7c0KC_5eUafjvba_ZxhzED0a7yDR4oip4_KxbA@mail.gmail.com>
+Subject: Re: fscache/NFS re-export server lockup
+To: Daire Byrne <daire@dneg.com>, dhowells@redhat.com
+Cc: linux-nfs@vger.kernel.org, netfs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-Enzo Matsumiya <ematsumiya@suse.de> wrote:
+Hi Daire, thanks for the comments.
 
-> +1 for the cleanups, thanks for doing that.
-> =
+> Can you stop the nfs server and is access to /var/cache/fscache still blocked?
+As the machine is deadlocked, after reboot (so the nfs server is
+definitely stopped), the actual data is gone/corrupted.
 
-> On backports, I think points 1-3 could be done together, but in separate
-> commits (per header file) to minimise conflicts.
-> =
+>And I presume there is definitely nothing else that might be
+interacting with that /var/cache/fscache filesystem outside of fscache
+or cachefilesd?
+Correct. Machine is dedicated to KNFSD caching duties.
 
-> 4 looks good to have.
+> Our /etc/cachefilesd.conf is pretty basic (brun 30%, bcull 10%, bstop 3%).
+Similar settings here:
+brun 20%
+bcull 7%
+bstop 3%
+frun 20%
+fcull 7%
+fstop 3%
+Although I should note that the issue happens when only ~10-20% of the
+NVMe capacity is used, so culling has never had to run at this point.
 
-Hi Enzo,
+We did try running 6.17.0 but made no difference. I see another thread
+of yours with Chuck: "refcount_t underflow (nfsd4_sequence_done?) with
+v6.18 re-export"
+and suggested commits to investigate, incl: cbfd91d22776 ("nfsd: never
+defer requests during idmap lookup") as well as try using 6.18.4, so
+it's possible there is a cascading issue here and we are in need of
+some NFS patches.
 
-Could you have a look at:
-
-https://lore.kernel.org/linux-cifs/20251222223006.1075635-1-dhowells@redha=
-t.com/T/#t
-
-see if you're okay with it?
+I'm hoping @dhowells might have some suggestions on how to further
+debug this issue, given the below stack we are seeing when it
+deadlocks?
 
 Thanks,
-David
+-Mike
 
+2025-12-03T15:54:24.189530+00:00 ip-172-23-113-43 kernel: netfs:
+fscache_begin_operation: cookie state change wait timed out:
+cookie->state=1 state=1
+2025-12-03T15:54:24.189546+00:00 ip-172-23-113-43 kernel: netfs:
+fscache_begin_operation: cookie state change wait timed out:
+cookie->state=1 state=1
+2025-12-03T15:54:24.189549+00:00 ip-172-23-113-43 kernel: netfs:
+O-cookie c=00049c53 [fl=6124 na=1 nA=2 s=L]
+2025-12-03T15:54:24.189550+00:00 ip-172-23-113-43 kernel: netfs:
+O-cookie c=0004ddfe [fl=4124 na=1 nA=2 s=L]
+2025-12-03T15:54:24.189551+00:00 ip-172-23-113-43 kernel: netfs:
+O-cookie V=0000000a
+[Enfs,4.2,2,108,887517ac,2,,,50,100000,100000,927c0,927c0,927c0,927c0,1]
+2025-12-03T15:54:24.189552+00:00 ip-172-23-113-43 kernel: netfs:
+O-cookie V=0000000f
+[Enfs,4.2,2,108,887517ac,3,,,50,100000,100000,927c0,927c0,927c0,927c0,1]
+2025-12-03T15:54:24.189553+00:00 ip-172-23-113-43 kernel: netfs:
+O-key=[56] '0100010c0200000008000000e7ba9075008000002000f360d67b09000000e7ba907508000000ffffffff000000000b00700b010000000000'
+2025-12-03T15:54:24.190876+00:00 ip-172-23-113-43 kernel: netfs:
+O-key=[56] '0100010c03000000070000002fbb9934008000002000f360d67b060000002fbb993407000000ffffffff000000000200c109010000000000'
+2025-12-03T15:54:24.702103+00:00 ip-172-23-113-43 kernel: netfs:
+fscache_begin_operation: cookie state change wait timed out:
+cookie->state=1 state=1
+2025-12-03T15:54:24.702112+00:00 ip-172-23-113-43 kernel: netfs:
+O-cookie c=000404b3 [fl=6124 na=1 nA=2 s=L]
+2025-12-03T15:54:24.702113+00:00 ip-172-23-113-43 kernel: netfs:
+O-cookie V=0000000f
+[Enfs,4.2,2,108,887517ac,3,,,50,100000,100000,927c0,927c0,927c0,927c0,1]
+2025-12-03T15:54:24.703856+00:00 ip-172-23-113-43 kernel: netfs:
+O-key=[56] '0100010c03000000070000007ece2438008000002000f360d67b060000007ece243807000000ffffffff000000000200c109010000000000'
+2025-12-03T15:57:25.438905+00:00 ip-172-23-113-43 kernel: INFO: task
+kcompactd0:171 blocked for more than 122 seconds.
+2025-12-03T15:57:25.438921+00:00 ip-172-23-113-43 kernel:
+Tainted: G           OE      6.14.0-36-generic #36~24.04.1-Ubuntu
+2025-12-03T15:57:25.438928+00:00 ip-172-23-113-43 kernel: "echo 0 >
+/proc/sys/kernel/hung_task_timeout_secs" disables this message.
+2025-12-03T15:57:25.439 is bellow995+00:00 ip-172-23-113-43 kernel:
+task:kcompactd0      state:D stack:0     pid:171   tgid:171   ppid:2
+   task_flags:0x210040 flags:0x00004000
+2025-12-03T15:57:25.440000+00:00 ip-172-23-113-43 kernel: Call Trace:
+2025-12-03T15:57:25.440000+00:00 ip-172-23-113-43 kernel:  <TASK>
+2025-12-03T15:57:25.440003+00:00 ip-172-23-113-43 kernel:
+__schedule+0x2cf/0x640
+2025-12-03T15:57:25.441017+00:00 ip-172-23-113-43 kernel:  schedule+0x29/0xd0
+2025-12-03T15:57:25.441022+00:00 ip-172-23-113-43 kernel:  io_schedule+0x4c/0x80
+2025-12-03T15:57:25.441023+00:00 ip-172-23-113-43 kernel:
+folio_wait_bit_common+0x138/0x310
+2025-12-03T15:57:25.441023+00:00 ip-172-23-113-43 kernel:  ?
+__pfx_wake_page_function+0x10/0x10
+2025-12-03T15:57:25.441024+00:00 ip-172-23-113-43 kernel:
+folio_wait_private_2+0x2c/0x60
+2025-12-03T15:57:25.441025+00:00 ip-172-23-113-43 kernel:
+nfs_release_folio+0xa0/0x120 [nfs]
+2025-12-03T15:57:25.441032+00:00 ip-172-23-113-43 kernel:
+filemap_release_folio+0x68/0xa0
+2025-12-03T15:57:25.441033+00:00 ip-172-23-113-43 kernel:
+split_huge_page_to_list_to_order+0x401/0x970
+2025-12-03T15:57:25.441033+00:00 ip-172-23-113-43 kernel:  ?
+compaction_alloc_noprof+0x1c5/0x2f0
+2025-12-03T15:57:25.441034+00:00 ip-172-23-113-43 kernel:
+split_folio_to_list+0x22/0x70
+2025-12-03T15:57:25.441035+00:00 ip-172-23-113-43 kernel:
+migrate_pages_batch+0x2f2/0xa70
+2025-12-03T15:57:25.441035+00:00 ip-172-23-113-43 kernel:  ?
+__pfx_compaction_free+0x10/0x10
+2025-12-03T15:57:25.441038+00:00 ip-172-23-113-43 kernel:  ?
+__pfx_compaction_alloc+0x10/0x10
+2025-12-03T15:57:25.441039+00:00 ip-172-23-113-43 kernel:  ?
+__mod_memcg_lruvec_state+0xf4/0x250
+2025-12-03T15:57:25.441039+00:00 ip-172-23-113-43 kernel:  ?
+migrate_pages_batch+0x5e8/0xa70
+2025-12-03T15:57:25.441040+00:00 ip-172-23-113-43 kernel:
+migrate_pages_sync+0x84/0x1e0
+2025-12-03T15:57:25.441040+00:00 ip-172-23-113-43 kernel:  ?
+__pfx_compaction_free+0x10/0x10
+2025-12-03T15:57:25.441041+00:00 ip-172-23-113-43 kernel:  ?
+__pfx_compaction_alloc+0x10/0x10
+2025-12-03T15:57:25.441044+00:00 ip-172-23-113-43 kernel:
+migrate_pages+0x38f/0x4c0
+2025-12-03T15:57:25.441047+00:00 ip-172-23-113-43 kernel:  ?
+__pfx_compaction_free+0x10/0x10
+2025-12-03T15:57:25.441048+00:00 ip-172-23-113-43 kernel:  ?
+__pfx_compaction_alloc+0x10/0x10
+2025-12-03T15:57:25.441048+00:00 ip-172-23-113-43 kernel:
+compact_zone+0x385/0x700
+2025-12-03T15:57:25.441049+00:00 ip-172-23-113-43 kernel:  ?
+isolate_migratepages_range+0xc1/0xf0
+2025-12-03T15:57:25.441049+00:00 ip-172-23-113-43 kernel:
+kcompactd_do_work+0xfc/0x240
+2025-12-03T15:57:25.441050+00:00 ip-172-23-113-43 kernel:  kcompactd+0x43f/0x4a0
+2025-12-03T15:57:25.441052+00:00 ip-172-23-113-43 kernel:  ?
+__pfx_autoremove_wake_function+0x10/0x10
+2025-12-03T15:57:25.441053+00:00 ip-172-23-113-43 kernel:  ?
+__pfx_kcompactd+0x10/0x10
+2025-12-03T15:57:25.441053+00:00 ip-172-23-113-43 kernel:  kthread+0xfe/0x230
+2025-12-03T15:57:25.441054+00:00 ip-172-23-113-43 kernel:  ?
+__pfx_kthread+0x10/0x10
+2025-12-03T15:57:25.441054+00:00 ip-172-23-113-43 kernel:
+ret_from_fork+0x47/0x70
+2025-12-03T15:57:25.441055+00:00 ip-172-23-113-43 kernel:  ?
+__pfx_kthread+0x10/0x10
+2025-12-03T15:57:25.441057+00:00 ip-172-23-113-43 kernel:
+ret_from_fork_asm+0x1a/0x30
+2025-12-03T15:57:25.441058+00:00 ip-172-23-113-43 kernel:  </TASK>
+2025-12-03T15:57:25.441059+00:00 ip-172-23-113-43 kernel: INFO: task
+jbd2/md127-8:6401 blocked for more than 122 seconds.
+2025-12-03T15:57:25.441059+00:00 ip-172-23-113-43 kernel:
+Tainted: G           OE      6.14.0-36-generic #36~24.04.1-Ubuntu
+2025-12-03T15:57:25.443097+00:00 ip-172-23-113-43 kernel: "echo 0 >
+/proc/sys/kernel/hung_task_timeout_secs" disables this message.
+2025-12-03T15:57:25.445001+00:00 ip-172-23-113-43 kernel:
+task:jbd2/md127-8    state:D stack:0     pid:6401  tgid:6401  ppid:2
+   task_flags:0x240040 flags:0x00004000
+2025-12-03T15:57:25.445005+00:00 ip-172-23-113-43 kernel: Call Trace:
+2025-12-03T15:57:25.445006+00:00 ip-172-23-113-43 kernel:  <TASK>
+2025-12-03T15:57:25.445006+00:00 ip-172-23-113-43 kernel:
+__schedule+0x2cf/0x640
+2025-12-03T15:57:25.445007+00:00 ip-172-23-113-43 kernel:  schedule+0x29/0xd0
+2025-12-03T15:57:25.445007+00:00 ip-172-23-113-43 kernel:
+jbd2_journal_wait_updates+0x71/0xf0
+2025-12-03T15:57:25.445008+00:00 ip-172-23-113-43 kernel:  ?
+__pfx_autoremove_wake_function+0x10/0x10
+2025-12-03T15:57:25.445008+00:00 ip-172-23-113-43 kernel:
+jbd2_journal_commit_transaction+0x26e/0x1800
+2025-12-03T15:57:25.445009+00:00 ip-172-23-113-43 kernel:  ?
+__update_idle_core+0x58/0x130
+2025-12-03T15:57:25.445010+00:00 ip-172-23-113-43 kernel:  ?
+psi_group_change+0x201/0x4e0
+2025-12-03T15:57:25.445010+00:00 ip-172-23-113-43 kernel:  ?
+psi_task_switch+0x130/0x3a0
+2025-12-03T15:57:25.445011+00:00 ip-172-23-113-43 kernel:  kjournald2+0xaa/0x250
+2025-12-03T15:57:25.445011+00:00 ip-172-23-113-43 kernel:  ?
+__pfx_autoremove_wake_function+0x10/0x10
+2025-12-03T15:57:25.445012+00:00 ip-172-23-113-43 kernel:  ?
+__pfx_kjournald2+0x10/0x10
+2025-12-03T15:57:25.445012+00:00 ip-172-23-113-43 kernel:  kthread+0xfe/0x230
+2025-12-03T15:57:25.445015+00:00 ip-172-23-113-43 kernel:  ?
+__pfx_kthread+0x10/0x10
+2025-12-03T15:57:25.445016+00:00 ip-172-23-113-43 kernel:
+ret_from_fork+0x47/0x70
+2025-12-03T15:57:25.445017+00:00 ip-172-23-113-43 kernel:  ?
+__pfx_kthread+0x10/0x10
+2025-12-03T15:57:25.445018+00:00 ip-172-23-113-43 kernel:
+ret_from_fork_asm+0x1a/0x30
+2025-12-03T15:57:25.445018+00:00 ip-172-23-113-43 kernel:  </TASK>
+2025-12-03T15:57:25.445019+00:00 ip-172-23-113-43 kernel: INFO: task
+nfsd:6783 blocked for more than 122 seconds.
+2025-12-03T15:57:25.445020+00:00 ip-172-23-113-43 kernel:
+Tainted: G           OE      6.14.0-36-generic #36~24.04.1-Ubuntu
+2025-12-03T15:57:25.445023+00:00 ip-172-23-113-43 kernel: "echo 0 >
+/proc/sys/kernel/hung_task_timeout_secs" disables this message.
+2025-12-03T15:57:25.447708+00:00 ip-172-23-113-43 kernel: task:nfsd
+        state:D stack:0     pid:6783  tgid:6783  ppid:2
+task_flags:0x240040 flags:0x00004000
+2025-12-03T15:57:25.447713+00:00 ip-172-23-113-43 kernel: Call Trace:
+2025-12-03T15:57:25.447714+00:00 ip-172-23-113-43 kernel:  <TASK>
+2025-12-03T15:57:25.447714+00:00 ip-172-23-113-43 kernel:
+__schedule+0x2cf/0x640
+2025-12-03T15:57:25.447715+00:00 ip-172-23-113-43 kernel:  schedule+0x29/0xd0
+2025-12-03T15:57:25.447716+00:00 ip-172-23-113-43 kernel:
+schedule_preempt_disabled+0x15/0x30
+2025-12-03T15:57:25.447716+00:00 ip-172-23-113-43 kernel:
+rwsem_down_read_slowpath+0x261/0x490
+2025-12-03T15:57:25.447717+00:00 ip-172-23-113-43 kernel:  ?
+mempool_alloc_slab+0x15/0x20
+2025-12-03T15:57:25.447717+00:00 ip-172-23-113-43 kernel:  down_read+0x48/0xd0
+2025-12-03T15:57:25.447718+00:00 ip-172-23-113-43 kernel:
+ext4_llseek+0xfc/0x120
+2025-12-03T15:57:25.447719+00:00 ip-172-23-113-43 kernel:  vfs_llseek+0x1c/0x40
+2025-12-03T15:57:25.447719+00:00 ip-172-23-113-43 kernel:
+cachefiles_do_prepare_read+0xc1/0x3d0 [cachefiles]
+2025-12-03T15:57:25.447720+00:00 ip-172-23-113-43 kernel:
+cachefiles_prepare_read+0x32/0x50 [cachefiles]
+2025-12-03T15:57:25.447720+00:00 ip-172-23-113-43 kernel:
+netfs_read_to_pagecache+0xc1/0x530 [netfs]
+2025-12-03T15:57:25.447721+00:00 ip-172-23-113-43 kernel:
+netfs_readahead+0x169/0x270 [netfs]
+2025-12-03T15:57:25.447735+00:00 ip-172-23-113-43 kernel:
+nfs_netfs_readahead+0x1f/0x40 [nfs]
+2025-12-03T15:57:25.447736+00:00 ip-172-23-113-43 kernel:
+nfs_readahead+0x184/0x2b0 [nfs]
+2025-12-03T15:57:25.447737+00:00 ip-172-23-113-43 kernel:  read_pages+0x85/0x220
+2025-12-03T15:57:25.447737+00:00 ip-172-23-113-43 kernel:  ?
+__pfx_workingset_update_node+0x10/0x10
+2025-12-03T15:57:25.447738+00:00 ip-172-23-113-43 kernel:
+page_cache_ra_unbounded+0x18e/0x240
+2025-12-03T15:57:25.447738+00:00 ip-172-23-113-43 kernel:
+page_cache_sync_ra+0x228/0x230
+2025-12-03T15:57:25.447739+00:00 ip-172-23-113-43 kernel:
+filemap_get_pages+0x133/0x4a0
+2025-12-03T15:57:25.447740+00:00 ip-172-23-113-43 kernel:
+filemap_splice_read+0x155/0x380
+2025-12-03T15:57:25.447740+00:00 ip-172-23-113-43 kernel:  ?
+find_inode+0xd9/0x100
+2025-12-03T15:57:25.447741+00:00 ip-172-23-113-43 kernel:
+nfs_file_splice_read+0xba/0xf0 [nfs]
+2025-12-03T15:57:25.447741+00:00 ip-172-23-113-43 kernel:
+do_splice_read+0x63/0xe0
+2025-12-03T15:57:25.447742+00:00 ip-172-23-113-43 kernel:
+splice_direct_to_actor+0xb1/0x260
+2025-12-03T15:57:25.447743+00:00 ip-172-23-113-43 kernel:  ?
+__pfx_nfsd_direct_splice_actor+0x10/0x10 [nfsd]
+2025-12-03T15:57:25.447743+00:00 ip-172-23-113-43 kernel:
+nfsd_splice_read+0x11b/0x130 [nfsd]
+2025-12-03T15:57:25.447744+00:00 ip-172-23-113-43 kernel:
+nfsd4_encode_splice_read+0x65/0x120 [nfsd]
+2025-12-03T15:57:25.447744+00:00 ip-172-23-113-43 kernel:
+nfsd4_encode_read+0x132/0x170 [nfsd]
+2025-12-03T15:57:25.447745+00:00 ip-172-23-113-43 kernel:
+nfsd4_encode_operation+0xd4/0x350 [nfsd]
+2025-12-03T15:57:25.447745+00:00 ip-172-23-113-43 kernel:
+nfsd4_proc_compound+0x1da/0x7d0 [nfsd]
+2025-12-03T15:57:25.447746+00:00 ip-172-23-113-43 kernel:
+nfsd_dispatch+0xd7/0x220 [nfsd]
+2025-12-03T15:57:25.447746+00:00 ip-172-23-113-43 kernel:
+svc_process_common+0x4c6/0x740 [sunrpc]
+2025-12-03T15:57:25.447747+00:00 ip-172-23-113-43 kernel:  ?
+__pfx_nfsd_dispatch+0x10/0x10 [nfsd]
+2025-12-03T15:57:25.447747+00:00 ip-172-23-113-43 kernel:
+svc_process+0x136/0x1f0 [sunrpc]
+2025-12-03T15:57:25.447748+00:00 ip-172-23-113-43 kernel:
+svc_handle_xprt+0x46e/0x570 [sunrpc]
+2025-12-03T15:57:25.447751+00:00 ip-172-23-113-43 kernel:
+svc_recv+0x184/0x2e0 [sunrpc]
+2025-12-03T15:57:25.447752+00:00 ip-172-23-113-43 kernel:  ?
+__pfx_nfsd+0x10/0x10 [nfsd]
+2025-12-03T15:57:25.447752+00:00 ip-172-23-113-43 kernel:  nfsd+0x90/0xf0 [nfsd]
+2025-12-03T15:57:25.447753+00:00 ip-172-23-113-43 kernel:  kthread+0xfe/0x230
+2025-12-03T15:57:25.447753+00:00 ip-172-23-113-43 kernel:  ?
+__pfx_kthread+0x10/0x10
+2025-12-03T15:57:25.447754+00:00 ip-172-23-113-43 kernel:
+ret_from_fork+0x47/0x70
+2025-12-03T15:57:25.447756+00:00 ip-172-23-113-43 kernel:  ?
+__pfx_kthread+0x10/0x10
+2025-12-03T15:57:25.447757+00:00 ip-172-23-113-43 kernel:
+ret_from_fork_asm+0x1a/0x30
+2025-12-03T15:57:25.447757+00:00 ip-172-23-113-43 kernel:  </TASK>
+
+
+On Fri, 19 Dec 2025 at 17:02, Daire Byrne <daire@dneg.com> wrote:
+>
+> On Fri, 19 Dec 2025 at 16:25, Mike Owen <mjnowen@gmail.com> wrote:
+> >
+> > We are using NFS re-exporting with fscache but have had a number of
+> > lockups with re-export servers.
+> >
+> > The NFS re-export servers are running Ubuntu 24.04 with a
+> > 6.14.0-36-generic kernel mounting Isilon and NetApp filers over NFSv3.
+> >
+> > The NFS clients are mounting the re-exported shares over NFSv4 and
+> > running AlmaLinux 9.6.
+> >
+> > When the re-export server locks up, it is not possible to access the
+> > /var/cache/fscache directory (separate file system) on the server and
+> > all clients are hanging on their mounts from the re-export.
+>
+> That does kind of point to a filesystem problem with /var/cache/fscache itself?
+>
+> Can you stop the nfs server and is access to /var/cache/fscache still blocked?
+>
+> > When the server is rebooted, most of the contents of the
+> > /var/cache/fscache directory is missing e.g. the file system contents
+> > before the lockup may have been a few TBs, but after a reboot only a
+> > few hundred GBs.
+>
+> I can't say I've ever seen that before... we use ext4 for the fscache
+> filesystem mount on /var/cache/fscache.
+>
+> And I presume there is definitely nothing else that might be
+> interacting with that /var/cache/fscache filesystem outside of fscache
+> or cachefilesd?
+>
+> Our /etc/cachefilesd.conf is pretty basic (brun 30%, bcull 10%, bstop 3%).
+>
+> > The kern.log (below) from the re-export server reports the following
+> > when the lockup happens.
+> >
+> > We have tried using a more recent 6.17.11 kernel on the re-export
+> > server and changing the fscache file system from ext4 to xfs, but
+> > still have the same lockups.
+>
+> We were running a heavily patched v6.4 kernel for almost 2 years and
+> have just updated to v6.18.1 with no patches - so far so good!
+>
+> We are mostly re-exporting NFSv3 -> NFSv3 (Linux NFS storage servers)
+> with a small amount of NFSv3 -> NFSv4.2 (Netapps).
+>
+> > Any ideas on what is happening here - and how it may be fixed?
+>
+> Sorry I can't be more helpful.
+>
+> Daire
