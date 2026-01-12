@@ -1,182 +1,119 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7DDD11713;
-	Sat, 10 Jan 2026 09:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4FF26FDBF;
+	Mon, 12 Jan 2026 09:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768038517; cv=none; b=YKyhX1+pLHz2Mf5wWeIhfujCPCz5PN28DJBbedG3DikS5xJu8k58FedUWHG9U8HEMPL5nCK2CBdNebhSKzfz7wEovahuAcuBXoXmWDvCZddIRdOGIbRV/0VVdEPYsYwLL7HBg1EmX2Pry3YCZW8SEeDeV0ztM6aB8wt6oY7leU8=
+	t=1768211146; cv=none; b=Zpu7aumk7FrxXDUkusCAL/axkiNItv9nqcLPB8t4GW0Q3XzwKZ0SnJ4G0QdNPFA8x8SSwuQFAmLcNXMuxASAuxI4q5sSMzvPye9+Y7LZe06KvoxocWT14itzbYRu/YjaGfwpKnASrlHYQUHUthtF1uP3Kc4R91heqCtc/Tm8cMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768038517; c=relaxed/simple;
-	bh=2pMUr17XpgrQhSuv59gTKcLq65rE5CC2s3p54E+p6l4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gM+BUT8da0NiuGDiJoPAHOzCD7JN3vWUZlbc3hAxjHA8E3zC4TdY3XtdZXJ7tZNu84IfDOS8J9Q7d97aZYtFSH1BbQNbIy1WvN2GW7OV96yAiORGQWHZ/KnnQyYJRna/zYxD6bDcx/4RySHztyXQcrEjTnZ3IvR6RouYOYdi4No=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kc8eccxX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768211146; c=relaxed/simple;
+	bh=DxZZGzK74wIR5W3ofx2JM6E8wyCgaH8nZoYwWgX+eR8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KK1tySqf/RA2cpWWpA/AZWNYS5ClU0Ec5mWt++mHODuOMLxjX150D8O8RPeSzenEA3mDr25wXGT98Mz3Punj9E8NZrutLYCB4QaYvBDQFqMtGTzSAh/JmQvaCe59tVU3pCWs0ojhjAD/gTsyGSeRSd8RNGueyT+4+HRKfGBtk24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qUeEQbxO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kc8eccxX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F5AAC4CEF1;
-	Sat, 10 Jan 2026 09:48:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qUeEQbxO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05681C19422;
+	Mon, 12 Jan 2026 09:45:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768038517;
-	bh=2pMUr17XpgrQhSuv59gTKcLq65rE5CC2s3p54E+p6l4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kc8eccxXoin+36nV3T3wmYJQ4cnmOJchuWsxLtILe1eAXvTaIIdWJRJJQIFtgdeAk
-	 GAaAjJU7yxqOO900A+IKMct4GxEiA1iTmFJhRfcZow50U7qYdJ2PTqdft00xkPJ5wj
-	 FQj3tbqPv3Y+RzdBddGueGFlTrfN3ubDjIUAHnHCgHzVFO6I5sicixCsS6JfeGDNaN
-	 HxGspFG1tgfLisGScVUci0KT2i7u6RQe6tifmHFIrA4XgMRhcPqbkj3B+nKuUIrLzP
-	 IrKiNNso4Aba7O21Ighvq4zRFwRqp12s8GXcLkmk8/+LbrxvMt+gPP0JsnYAtneagM
-	 eFFjGTp4p7YkQ==
-Date: Sat, 10 Jan 2026 04:48:36 -0500
-From: Mike Snitzer <snitzer@kernel.org>
-To: Mike Owen <mjnowen@gmail.com>
-Cc: Daire Byrne <daire@dneg.com>, dhowells@redhat.com,
-	linux-nfs@vger.kernel.org, netfs@lists.linux.dev,
-	trondmy@hammerspace.com, okorniev@redhat.com
-Subject: Re: fscache/NFS re-export server lockup
-Message-ID: <aWIgdDImfFg6fgxn@kernel.org>
-References: <CADFF-zeNJUPLaVcogSBt=s4+o2Lty45-DueSYKJmCgZw6hraEg@mail.gmail.com>
- <CAPt2mGOV+ZxVLkFFXRKX3Cr9vZ-pd=5QeN=cxwc_msGFtpPN=Q@mail.gmail.com>
- <CADFF-zcFgycZ7c0KC_5eUafjvba_ZxhzED0a7yDR4oip4_KxbA@mail.gmail.com>
+	s=k20201202; t=1768211146;
+	bh=DxZZGzK74wIR5W3ofx2JM6E8wyCgaH8nZoYwWgX+eR8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=qUeEQbxO/1bJOSJmWeCdO+VjleNy8B0ViluvHBno5gr59qB8VEEYWEF1rbAie3EAq
+	 0lBRAdHEvYyqkAHaFwEQSYJO7qICSgJMwVU+ZEnKnom6kmsD+MVv/kP2W50TNqRina
+	 kmDueNMdchfAb950mTM+K2bF8wYvPkz2bL6iZxf1vIrUkGWdBvVMPGbx9pJEtEUBfV
+	 IM3Dxy7GJeSsVnoP849ryUv7V8KBbcs5OYRuU/u3ZZJmvVfKYLY9RHyEOjm2pR6/Iw
+	 silI5tXIpzTrN8O2PvgT967TZ9iXPpt9mOUwWRmfeNSwvLi1wbJ+xb2XzRmSgGte9Z
+	 9hI9tmM6jxdEA==
+From: Christian Brauner <brauner@kernel.org>
+To: NeilBrown <neilb@ownmail.net>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	Jeff Layton <jlayton@kernel.org>,
+	Chris Mason <clm@fb.com>,
+	David Sterba <dsterba@suse.com>,
+	David Howells <dhowells@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Tyler Hicks <code@tyhicks.com>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <smfrench@gmail.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Carlos Maiolino <cem@kernel.org>,
+	John Johansen <john.johansen@canonical.com>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Stefan Berger <stefanb@linux.ibm.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	netfs@lists.linux.dev,
+	ecryptfs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	linux-unionfs@vger.kernel.org,
+	linux-cifs@vger.kernel.org,
+	linux-xfs@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	selinux@vger.kernel.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Val Packett <val@packett.cool>
+Subject: Re: [PATCH] fuse: fix conversion of fuse_reverse_inval_entry() to start_removing()
+Date: Mon, 12 Jan 2026 10:45:29 +0100
+Message-ID: <20260112-sonnen-diagramm-ae37279f315f@brauner>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <176454037897.634289.3566631742434963788@noble.neil.brown.name>
+References: <176454037897.634289.3566631742434963788@noble.neil.brown.name>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CADFF-zcFgycZ7c0KC_5eUafjvba_ZxhzED0a7yDR4oip4_KxbA@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1363; i=brauner@kernel.org; h=from:subject:message-id; bh=DxZZGzK74wIR5W3ofx2JM6E8wyCgaH8nZoYwWgX+eR8=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSmHNp3YLliou6j/3Ff/idODOBi2hrnHJFm6HLce0lit usnvUPLO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACbStoDhf+ApldVTH+9ump0Q 4sQyPVufZcfFQim/qg0H5pYcsWTsvsPIsItlrpnjleU7v1yNkzy16KEws3jZzJDTbjWb3t+wXH5 wHicA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-Hi Mike,
-
-On Fri, Jan 09, 2026 at 09:45:47PM +0000, Mike Owen wrote:
-> Hi Daire, thanks for the comments.
+On Mon, 01 Dec 2025 09:06:18 +1100, NeilBrown wrote:
+> The recent conversion of fuse_reverse_inval_entry() to use
+> start_removing() was wrong.
+> As Val Packett points out the original code did not call ->lookup
+> while the new code does.  This can lead to a deadlock.
 > 
-> > Can you stop the nfs server and is access to /var/cache/fscache still blocked?
-> As the machine is deadlocked, after reboot (so the nfs server is
-> definitely stopped), the actual data is gone/corrupted.
+> Rather than using full_name_hash() and d_lookup() as the old code
+> did, we can use try_lookup_noperm() which combines these.  Then
+> the result can be given to start_removing_dentry() to get the required
+> locks for removal.  We then double check that the name hasn't
+> changed.
 > 
-> >And I presume there is definitely nothing else that might be
-> interacting with that /var/cache/fscache filesystem outside of fscache
-> or cachefilesd?
-> Correct. Machine is dedicated to KNFSD caching duties.
-> 
-> > Our /etc/cachefilesd.conf is pretty basic (brun 30%, bcull 10%, bstop 3%).
-> Similar settings here:
-> brun 20%
-> bcull 7%
-> bstop 3%
-> frun 20%
-> fcull 7%
-> fstop 3%
-> Although I should note that the issue happens when only ~10-20% of the
-> NVMe capacity is used, so culling has never had to run at this point.
-> 
-> We did try running 6.17.0 but made no difference. I see another thread
-> of yours with Chuck: "refcount_t underflow (nfsd4_sequence_done?) with
-> v6.18 re-export"
-> and suggested commits to investigate, incl: cbfd91d22776 ("nfsd: never
-> defer requests during idmap lookup") as well as try using 6.18.4, so
-> it's possible there is a cascading issue here and we are in need of
-> some NFS patches.
-> 
-> I'm hoping @dhowells might have some suggestions on how to further
-> debug this issue, given the below stack we are seeing when it
-> deadlocks?
-> 
-> Thanks,
-> -Mike
+> [...]
 
-This commit from Trond, which he'll be sending to Linus soon as part
-of his 6.19-rc NFS client fixes pull request, should fix the NFS
-re-export induced nfs_release_folio deadlock reflected in your below
-stack trace:
-https://git.linux-nfs.org/?p=trondmy/linux-nfs.git;a=commitdiff;h=cce0be6eb4971456b703aaeafd571650d314bcca
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-Here is more context for why I know that to be likely, it fixed my
-nasty LOCALIO-based reexport deadlock situation too:
-https://lore.kernel.org/linux-nfs/20260107160858.6847-1-snitzer@kernel.org/
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-I'm doing my part to advocate that Red Hat (Olga cc'd) take this
-fix into RHEL 10.2 (and backport as needed).
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-Good luck getting Ubuntu to include this fix in a timely manner (we'll
-all thank you for that if you can help shake the Canonical tree).
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
-BTW, you'd do well to fix your editor/email so that it doesn't line
-wrap when you share logs on Linux mailing lists:
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
 
-> 2025-12-03T15:57:25.438905+00:00 ip-172-23-113-43 kernel: INFO: task
-> kcompactd0:171 blocked for more than 122 seconds.
-> 2025-12-03T15:57:25.438921+00:00 ip-172-23-113-43 kernel:
-> Tainted: G           OE      6.14.0-36-generic #36~24.04.1-Ubuntu
-> 2025-12-03T15:57:25.438928+00:00 ip-172-23-113-43 kernel: "echo 0 >
-> /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-> 2025-12-03T15:57:25.439 is bellow995+00:00 ip-172-23-113-43 kernel:
-> task:kcompactd0      state:D stack:0     pid:171   tgid:171   ppid:2
->    task_flags:0x210040 flags:0x00004000
-> 2025-12-03T15:57:25.440000+00:00 ip-172-23-113-43 kernel: Call Trace:
-> 2025-12-03T15:57:25.440000+00:00 ip-172-23-113-43 kernel:  <TASK>
-> 2025-12-03T15:57:25.440003+00:00 ip-172-23-113-43 kernel:
-> __schedule+0x2cf/0x640
-> 2025-12-03T15:57:25.441017+00:00 ip-172-23-113-43 kernel:  schedule+0x29/0xd0
-> 2025-12-03T15:57:25.441022+00:00 ip-172-23-113-43 kernel:  io_schedule+0x4c/0x80
-> 2025-12-03T15:57:25.441023+00:00 ip-172-23-113-43 kernel:
-> folio_wait_bit_common+0x138/0x310
-> 2025-12-03T15:57:25.441023+00:00 ip-172-23-113-43 kernel:  ?
-> __pfx_wake_page_function+0x10/0x10
-> 2025-12-03T15:57:25.441024+00:00 ip-172-23-113-43 kernel:
-> folio_wait_private_2+0x2c/0x60
-> 2025-12-03T15:57:25.441025+00:00 ip-172-23-113-43 kernel:
-> nfs_release_folio+0xa0/0x120 [nfs]
-> 2025-12-03T15:57:25.441032+00:00 ip-172-23-113-43 kernel:
-> filemap_release_folio+0x68/0xa0
-> 2025-12-03T15:57:25.441033+00:00 ip-172-23-113-43 kernel:
-> split_huge_page_to_list_to_order+0x401/0x970
-> 2025-12-03T15:57:25.441033+00:00 ip-172-23-113-43 kernel:  ?
-> compaction_alloc_noprof+0x1c5/0x2f0
-> 2025-12-03T15:57:25.441034+00:00 ip-172-23-113-43 kernel:
-> split_folio_to_list+0x22/0x70
-> 2025-12-03T15:57:25.441035+00:00 ip-172-23-113-43 kernel:
-> migrate_pages_batch+0x2f2/0xa70
-> 2025-12-03T15:57:25.441035+00:00 ip-172-23-113-43 kernel:  ?
-> __pfx_compaction_free+0x10/0x10
-> 2025-12-03T15:57:25.441038+00:00 ip-172-23-113-43 kernel:  ?
-> __pfx_compaction_alloc+0x10/0x10
-> 2025-12-03T15:57:25.441039+00:00 ip-172-23-113-43 kernel:  ?
-> __mod_memcg_lruvec_state+0xf4/0x250
-> 2025-12-03T15:57:25.441039+00:00 ip-172-23-113-43 kernel:  ?
-> migrate_pages_batch+0x5e8/0xa70
-> 2025-12-03T15:57:25.441040+00:00 ip-172-23-113-43 kernel:
-> migrate_pages_sync+0x84/0x1e0
-> 2025-12-03T15:57:25.441040+00:00 ip-172-23-113-43 kernel:  ?
-> __pfx_compaction_free+0x10/0x10
-> 2025-12-03T15:57:25.441041+00:00 ip-172-23-113-43 kernel:  ?
-> __pfx_compaction_alloc+0x10/0x10
-> 2025-12-03T15:57:25.441044+00:00 ip-172-23-113-43 kernel:
-> migrate_pages+0x38f/0x4c0
-> 2025-12-03T15:57:25.441047+00:00 ip-172-23-113-43 kernel:  ?
-> __pfx_compaction_free+0x10/0x10
-> 2025-12-03T15:57:25.441048+00:00 ip-172-23-113-43 kernel:  ?
-> __pfx_compaction_alloc+0x10/0x10
-> 2025-12-03T15:57:25.441048+00:00 ip-172-23-113-43 kernel:
-> compact_zone+0x385/0x700
-> 2025-12-03T15:57:25.441049+00:00 ip-172-23-113-43 kernel:  ?
-> isolate_migratepages_range+0xc1/0xf0
-> 2025-12-03T15:57:25.441049+00:00 ip-172-23-113-43 kernel:
-> kcompactd_do_work+0xfc/0x240
-> 2025-12-03T15:57:25.441050+00:00 ip-172-23-113-43 kernel:  kcompactd+0x43f/0x4a0
-> 2025-12-03T15:57:25.441052+00:00 ip-172-23-113-43 kernel:  ?
-> __pfx_autoremove_wake_function+0x10/0x10
-> 2025-12-03T15:57:25.441053+00:00 ip-172-23-113-43 kernel:  ?
-> __pfx_kcompactd+0x10/0x10
-> 2025-12-03T15:57:25.441053+00:00 ip-172-23-113-43 kernel:  kthread+0xfe/0x230
-> 2025-12-03T15:57:25.441054+00:00 ip-172-23-113-43 kernel:  ?
-> __pfx_kthread+0x10/0x10
-> 2025-12-03T15:57:25.441054+00:00 ip-172-23-113-43 kernel:
-> ret_from_fork+0x47/0x70
-> 2025-12-03T15:57:25.441055+00:00 ip-172-23-113-43 kernel:  ?
-> __pfx_kthread+0x10/0x10
-> 2025-12-03T15:57:25.441057+00:00 ip-172-23-113-43 kernel:
-> ret_from_fork_asm+0x1a/0x30
-> 2025-12-03T15:57:25.441058+00:00 ip-172-23-113-43 kernel:  </TASK>
+[1/1] fuse: fix conversion of fuse_reverse_inval_entry() to start_removing()
+      https://git.kernel.org/vfs/vfs/c/cab012375122
