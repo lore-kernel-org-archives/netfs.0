@@ -1,94 +1,93 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D7D39E6DC
-	for <netfs@lists.linux.dev>; Thu,  5 Feb 2026 09:37:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38DDD3A0EA0
+	for <netfs@lists.linux.dev>; Thu,  5 Feb 2026 09:45:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.49
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770284251; cv=pass; b=UZNwFZEJ37n+stPmc5ktRPnK59oSEBuzzhTltFB4iBkVL98oEYxpd/agTy6JB+87wqETOeiZIDIgHCNfBibSEyQh25Qi+w8KS1m+AAUDkVN0B4OoTe5EfpQn8DzgT+02sPgYmk9AWkT1Xxp2IqmF356RlNYVoVak64qtyUZ/l8w=
+	t=1770284753; cv=pass; b=fevDlPxm4Y5me+EeAmBFRZilIy+AK+dJnbMGJcu9AKlMSCmRVtb8IHeYCe3kLka6Z96yeXN6ujXD3H36ZzVlUwy+1qpY8wqFsP+xIOQhgjUq3yhegsbm0hEih3hSac0CUDQMRdWKNJov75AtjyexEz6TpoGpaNM7mDHxkCR9KQ0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770284251; c=relaxed/simple;
-	bh=O3zjcpb1gIgdrnZIOWkOIcCmTAMhdJCAtczZfkl8Mgo=;
+	s=arc-20240116; t=1770284753; c=relaxed/simple;
+	bh=gTHjRNg48uqIhlFUjNVy6w29gFOiVNhUd1etS9WljNU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WAzYR/ZgXqDUhQfl0FcWGaky8U5CYVpZtKdwoWWc0pXwiOqhxQUKA72zFm5xTrEgiS9Z6t0FrhTrjwSpcsqBmHXn+gTRucJ192H+l76+PGFfVcj0nELJ96/zEv4ceKfwKxpJjQSwZQ04l4ksDArzNMn2EdYxI9FzfLjxvniLD/o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HFKjVL2D; arc=pass smtp.client-ip=209.85.208.42
+	 To:Cc:Content-Type; b=NFsENoh4XI4q5jBQB3HDvxKMotvDVBnRiGnS1zUobp1DuSCw0VvclCKrtNQfvKhPqum2EBHzL61M40Tcz3spUbMPAlgLnmQmrB3RFlrWyRW+vggM7oiuz2w9BRARRDxaotMcHAizqeb0Ib1D5O8YcpWJOSJx0yCHIzT/bdkidu4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=apu3AEgM; arc=pass smtp.client-ip=209.85.208.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HFKjVL2D"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-659428faa2bso1273470a12.0
-        for <netfs@lists.linux.dev>; Thu, 05 Feb 2026 01:37:31 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770284250; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="apu3AEgM"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-658b511573cso1299075a12.0
+        for <netfs@lists.linux.dev>; Thu, 05 Feb 2026 01:45:53 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770284751; cv=none;
         d=google.com; s=arc-20240605;
-        b=VG5JBGKInvH7ZWAQIGY3xIZ/uU0FiUBDPQuB41zhgq4uwM/LJePv3vOXKBB/FDwgG9
-         YJTbiY7HWCrot66nkve/ECL65HJGsbiZNHchL3s2jaupp8yie77TbN33DSsBc7XL17sA
-         eKm2/stJLxMpAUsJVGHYHSknO31yHBtRaGZGJE4Hha6ika+yxq0A/5i9qJSVb5HQKmsC
-         uVo3sonGLXL7llyQyMJgTSKWNpW9h0FFpRX+ucyTiVvnHeOEfPfiEb6hmLvrwJfKV2tw
-         26TUYMvq/2aNlrXt6ChevQc3/RSoj7a3ZigAvEfkR3gmrzQc6Ri/AeGIntsRiQuHGk91
-         HGFQ==
+        b=cDd1e8P994YqdmZa42YKKcpJRWP4qZ1RNSoCm7FoinY5fPg78rVJZfT8mJVyOEykPx
+         7EHp3JuLsZoCMnpy8f3wdVNBNpAglt9+Sa4BY1b1bXlawQ4vDEv7QEBguRAHThOTkE6g
+         G3PcMMZjz/ALOtQ6S6w+XW/X5+OuIYpUHl9RR45MyjSy0F42XSYeIkOqA7X+w7vbFGCd
+         Ahgu2K+vgIyCJs9dfekjFnXOLfN9EqVduA4CnfgKttp9o2YhmGPJYMLgG+rCMxmxtcVN
+         arz1WdW7GNECWLa6B7ccwjK9LWuksaouTEbI0YHpYw5Ur5uL0rZ+rOD0U14Wrjyk8BxB
+         0Wrw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=ts7BIpqOHUIYO1yz8UgL/PwCOZwIbnvcvFeQ/hBIaCk=;
-        fh=4k+XaUYlOgWs0ZBTauYBQGwYPpc6waTMhYr7WbgzpWc=;
-        b=VoIXbJ1G+LFxKG5w198XH57fszyh+VKjKLUZSWyDSdzuyQ6g7Mj9f9QToCprxqIk87
-         N37KE+Bdfib+WqGsV5xZJpbxhbLhaOPihdp2R31JHAEPLMOixnJOMh7sTZtsTkYS/HA0
-         NETwm71VuAA4mQjAXu4OKUrijOgr6gTbktZmqtjp0VY2u7cIP8rr3Ly5gfqT8UyAttUb
-         YXmaMMVF+itBqJFSLz6a9b4Uae6P7rUSxL6pvkCAb7QdhtsR0Nf4XxfvRi8r+RRMA+8k
-         osaMzmTLCOYXj9NgI2RE9Ux98crpHhnj0RUX3hA2IhAW3n29bcNX21oVZ0woPbX3RQPe
-         EFZQ==;
+        bh=gTHjRNg48uqIhlFUjNVy6w29gFOiVNhUd1etS9WljNU=;
+        fh=YetJpL0fydT0roOYD6yFWBDdKxh6hJx6EOEnnNQqUG8=;
+        b=cEtY+8dIETo7pwh+ZVoN5IAZzWNiKDNWzhMSmKFDR7DtIyfImQFzQ+nu9D6ILC9E3k
+         ODlIg0E0WvrIGCY4/MWyVW2XsNUs7Mb6x0Lqa+wPe/QfKBzk4Bl+hHRhapLvpONNHTBJ
+         kCyQ++9EOp586WOspEhFEI8J8fBcjkKKPXpFsCxKqVP7Tv1jm/kqfWXjFkj62qaOdMHw
+         +Czj0Z8cLZSkX6ktsCvWJX3SPmsLjKQowuXJxuQGD4MNIuU/d3jCNS1LLw7aTLfM9824
+         bBqDk1Lj/xhhmpqd9qzQWziLJUS3CCNhmO/otEAbggXBotiuwoI7I+Sh6pCNsm1a+mXi
+         Vhvw==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770284250; x=1770889050; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1770284751; x=1770889551; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ts7BIpqOHUIYO1yz8UgL/PwCOZwIbnvcvFeQ/hBIaCk=;
-        b=HFKjVL2Dx3I36GuKEG4CpNekx1DIxaTUAwbZMBumWZQq/x7gSSwo2RPvZgpwzEsiSG
-         dBjmdpC0ZGD4n8QMFIOTY54gPP63FBqBGzV5Ej4Qn9abnFiRTGfDWTeC8XlwkwmdyDOZ
-         XYQU4HD2vwkXcho1PR5PKQjndyOs9R0Gjim5VTPl11o47//d80vZ3bQvWvXyIko8Wwhe
-         JMnkNU1XiOROCzcCFp9kqjY+9GZ03NaEuRE7ZzTejJTKh89cdHVIoF/dcmH0cWnN87ez
-         /oqel5znZzlF25saE81OFSXUsn2Df1bV1XMr84FhSuLUREvIHX3kn/GPG/TpNwcjw3QC
-         8VfA==
+        bh=gTHjRNg48uqIhlFUjNVy6w29gFOiVNhUd1etS9WljNU=;
+        b=apu3AEgMQLGxEU2XdLsfZ9XanUovGb6U8ZGw2mkBn/Ay9iy1AHUOYT4LDAgJKg6W8q
+         T91Hb+5QUNMrAtUxiHpY+FSW3feu50VjIfme86ySef+FCPYCZE7up0jWVbRoRH3Ty+c0
+         q2gcGua9ajxRRacZ1CSU4YkY0FNof49qmiCTXEWgPQuI1cHtvrbSqtyjMe/C9lxYxwYr
+         hP/cKfIPOOSaEatyN9/jhOmSKJMSbGQzQs2D9xXimDs2ieHgMrC5D6w4V97K4RVMS2gn
+         L3SkS85YLb47vCQyOuPOdDdAgF3nF5DSDmnPN5rKHmOeWnCOXTv6PRGvLRU91ViPqhJv
+         7c9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770284250; x=1770889050;
+        d=1e100.net; s=20230601; t=1770284751; x=1770889551;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ts7BIpqOHUIYO1yz8UgL/PwCOZwIbnvcvFeQ/hBIaCk=;
-        b=uz5eCbsU05lM7x10kvP3rIu0cQK12wU+2EDPpEW1aTHMyyOg2cSgIi/ooT49rUE7We
-         O1v0WfLoUiww0eEE3PpDfAv/7U4L2STa2tCi80FNdjmG3SSbGF59Og4TaU+L2cFQ4lnv
-         4OREo/6FUx/59ttwHrIvW6oMXIkI1F3Allh8nDbdIdNnlbxtlg45h8fGS6hhVi7B1h8n
-         QZwFKtKdkYOA4c17uaOM6OubQM54djCqrqSOJQ7pXn+ijGw2cRaBKgS8wPnRRU89lcGB
-         ZDTcIX4Zhb82aEmyVgiM4R1RwlEnhbpvMdcQHaSSXaHUWVzIlezi5QdRoF84u3aCwbSY
-         4Ymw==
-X-Forwarded-Encrypted: i=1; AJvYcCUXr4lHwHnJDQOhtSQnRFROzlHPjJzV5geRSLluCcANdnQklE0Fez5haZx0k34LE8PPfe0fDw==@lists.linux.dev
-X-Gm-Message-State: AOJu0YyegGUfSDJOgzeHfEE2S8G0DfXDv/Ee44pnMcGcuwqkMlnFslwU
-	8fe3rvoK/+fDsi+h2fZzh1fwqRLkETXRBR1Y6sbpMk/yNHSzJFJNQN5QlzAF/pI/8ZyjM2jY1q8
-	MsatZe1C1M7oqUVbzEcG5+RmIdlpdcUY=
-X-Gm-Gg: AZuq6aKB3t5wVuFaNPrCyQAvm/iUFZYE9xEgvyB2+0GSYShx+s7AIMQgH5KnQkrk7Ik
-	4BpqHp9GZErmzhaz24pRlHm7KIUsdKY3wOC2FzEt10ObOmxZQyPTY3l5CWX5OwmVv16nfSTFl2M
-	JMvWV1jTbFx5QosVnLamF14vRYVT99ovmeNVmrIytVhzQWfiQNAilA/ymESa+zZJESCIgxHzSc/
-	AKRZkpNoYAVUtjUEjcCSf/kUuU/UIkWoBeZSxOdW+BFeBgPqlZ7bBdGEYnfM+137FX2bMfvVcJ4
-	D1Noa2z6BX+65giZ0HtRCwV7fWTKuA==
-X-Received: by 2002:a05:6402:2688:b0:658:cf28:90ed with SMTP id
- 4fb4d7f45d1cf-65949cc1e5emr3920680a12.15.1770284249654; Thu, 05 Feb 2026
- 01:37:29 -0800 (PST)
+        bh=gTHjRNg48uqIhlFUjNVy6w29gFOiVNhUd1etS9WljNU=;
+        b=rIwO7vI7mEjjtCaRDFIheYls72ZiOa/lIOzCGPv2ArvnbKAIZrNkIkAtFM+nMSIGQE
+         Ot0V71hQLJgVHTYss1Xg88til2yfLwBwUIqsFS+Fo5DnSEqZfQGQkLCt/GUi3cQYaZhK
+         xVQE826SS7TZNI/LHtjn5nlvl9J2VTbTXFNdINrLWnsamhqkL0NLcwzhV7DGTw0mxMvN
+         wyjALFqFyfLMS0A9mxwexQuoVat9pbAZyaf1VG8dKq/sTsXkA76ZR11ll7gzjekaU7mh
+         hoQI+1tW+8Rw64yxjOBRFyIzBxmLVwSa+AqXuVZjHE+VauT9GLG4PFQeg71/MwdGZUUC
+         j5kQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV5+zHB3RQ8atZz1IJfZpqQblRgyqdxV4Ubd9+LAwLwh0J18fWZCCUjUYzwPVFZMP6N3pID/g==@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz9iBIUDMsn81TeINJq5muuN0QagiK7dg229eciGANiKDLiLbiW
+	FfnVDtd3iUyMHd7he3Exbq2tOnaAX0uamRV4sDxe7Se40IKvsD4oR/3GhFUgkeob5K30yXfbBLB
+	hngX7mjHPAa8WPBF62SlipQeO9b5r9mM=
+X-Gm-Gg: AZuq6aIJXlaAT3sYQDfQJ8odRKLW1wFWX+aE239k45jq5jTBtePQcPbTvVRDAPaRjJg
+	lWqhxUWVC+XncguYWJdnhPKmKzxHD4iVW0G93UZEZenowdxzEKmlglecbXrVWrYp2rixFDehKco
+	IUPUhF7sZnWJP2PJ7+L977tv6/5fXoSQlex6t1N+Z/q5dZivB8G1R8Kzrjf+Iml6BiFYJNP5olt
+	WBZExTH9Wwpfgb2q2RJLbSo/BFRgtCU1PLx3oqpXQrdFoccU4IGamWTZtxrQqWo9Fv5X/C98iOh
+	nNZOs3ndKjTi8NkV5L91Zfcj0ys17g==
+X-Received: by 2002:a17:907:7f92:b0:b87:31d1:4131 with SMTP id
+ a640c23a62f3a-b8e9f64603cmr435430866b.60.1770284751163; Thu, 05 Feb 2026
+ 01:45:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260204050726.177283-1-neilb@ownmail.net> <20260204050726.177283-12-neilb@ownmail.net>
-In-Reply-To: <20260204050726.177283-12-neilb@ownmail.net>
+References: <20260204050726.177283-1-neilb@ownmail.net> <20260204050726.177283-13-neilb@ownmail.net>
+In-Reply-To: <20260204050726.177283-13-neilb@ownmail.net>
 From: Amir Goldstein <amir73il@gmail.com>
-Date: Thu, 5 Feb 2026 10:37:18 +0100
-X-Gm-Features: AZwV_QjDs8XEOiRuWGAHzisKUrokVjcatEGo5N0FYjLzK48UQXH5p374RE5BkHo
-Message-ID: <CAOQ4uxiYUTi=8BjRFbY_GdBZR_5CuP6680me=_xQaPcQk7EFuQ@mail.gmail.com>
-Subject: Re: [PATCH 11/13] ovl: use is_subdir() for testing if one thing is a
- subdir of another
+Date: Thu, 5 Feb 2026 10:45:38 +0100
+X-Gm-Features: AZwV_Qg7CM-kXxjB2Qin-euJkaOUd7ni190R_n_ZLhun34eHr5T-i9uF6CbqXdo
+Message-ID: <CAOQ4uxi3bNYq1b4=qL-JLi19hRwurntfLZXhUMVL003NarBdGg@mail.gmail.com>
+Subject: Re: [PATCH 12/13] ovl: remove ovl_lock_rename_workdir()
 To: NeilBrown <neil@brown.name>
 Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
 	David Howells <dhowells@redhat.com>, Jan Kara <jack@suse.cz>, Chuck Lever <chuck.lever@oracle.com>, 
@@ -107,56 +106,20 @@ On Wed, Feb 4, 2026 at 6:09=E2=80=AFAM NeilBrown <neilb@ownmail.net> wrote:
 >
 > From: NeilBrown <neil@brown.name>
 >
-> Rather than using lock_rename(), use the more obvious is_subdir() for
-> ensuring that neither upper nor workdir contain the other.
-> Also be explicit in the comment that the two directories cannot be the
-> same.
+> This function is unused.
 >
-> As this is a point-it-time sanity check and does not provide any
-> on-going guarantees, the removal of locking does not introduce any
-> interesting races.
->
-> Signed-off-by: NeilBrown <neil@brown.name>
 
-Looks reasonable
+I am confused.
+What was this "fix" fixing an unused function:
+
+e9c70084a64e5 ovl: fail ovl_lock_rename_workdir() if either target is unhas=
+hed
+
+What am I missing?
+
+Otherwise, feel free to add:
 
 Reviewed-by: Amir Goldstein <amir73il@gmail.com>
 
-> ---
->  fs/overlayfs/super.c | 15 +++++----------
->  1 file changed, 5 insertions(+), 10 deletions(-)
->
-> diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
-> index ba9146f22a2c..2fd3e0aee50e 100644
-> --- a/fs/overlayfs/super.c
-> +++ b/fs/overlayfs/super.c
-> @@ -451,18 +451,13 @@ static int ovl_lower_dir(const char *name, const st=
-ruct path *path,
->         return 0;
->  }
->
-> -/* Workdir should not be subdir of upperdir and vice versa */
-> +/*
-> + * Workdir should not be subdir of upperdir and vice versa, and
-> + * they should not be the same.
-> + */
->  static bool ovl_workdir_ok(struct dentry *workdir, struct dentry *upperd=
-ir)
->  {
-> -       bool ok =3D false;
-> -
-> -       if (workdir !=3D upperdir) {
-> -               struct dentry *trap =3D lock_rename(workdir, upperdir);
-> -               if (!IS_ERR(trap))
-> -                       unlock_rename(workdir, upperdir);
-> -               ok =3D (trap =3D=3D NULL);
-> -       }
-> -       return ok;
-> +       return !is_subdir(workdir, upperdir) && !is_subdir(upperdir, work=
-dir);
->  }
->
->  static int ovl_setup_trap(struct super_block *sb, struct dentry *dir,
-> --
-> 2.50.0.107.gf914562f5916.dirty
->
+Thanks,
+Amir.
