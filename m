@@ -1,252 +1,331 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7BC3B8D65
-	for <netfs@lists.linux.dev>; Fri,  6 Feb 2026 13:35:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770384939; cv=pass; b=r1b3L8V2+1w7DaXRlfMK6uErDA/HQJ4eDkXd2EWsxgYFu1F+l+sm4oET8SXHeCp82Ht5dcCKM85pq1s+kO7E3QSqVwKCrRBlOruFwlG2DdRSlMvT+qh96yHQhe3lCJ0fLdrY97y+aXjUOQjPbFnO1TFWacXjEyHfbxB/ZTTUYUE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770384939; c=relaxed/simple;
-	bh=RxTY2ZddbzZaifKXYPGFFlp4mavJ0NrEEi4EM4pjmj8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OEHzs/ge3WV0KoA+tjh8gWh5Od6sMCsJYXXPf47eCf7rYiRM8gPLNm80oqB8pOm7of7r7gcgDQNEC8ypSBTufqJGPE1MLRq3Uz5OX9/jqWRCy+gpGq4JEfG4EfH+Eis4hBWFVhRp7DIQcEXMTEnp0Xhp0X8pbAF8hndnBv7F1+A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dKj7akIs; arc=pass smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29EDA19ABD8;
+	Tue, 10 Feb 2026 23:31:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770766315; cv=none; b=iVxk3CJuDhIN1w2UYpn4490zEEGaIzoHXtswAvpk0B8QCMj2Au8hnUPpaNbfTQqP5HOEos3md7MamuOhwaQ8zmWuNw/qB3bMI9tmZmp3dYYr8v75Cdi6BoY5di9nOzCe+trtyb35tZ9dweP0NCA8Xcf9K/GjTyGR2a0X3wAgHNs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770766315; c=relaxed/simple;
+	bh=i2LsVTJLiDP/fNc9zPNhFhVuok9lWdveDssQ+zprQY4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=c07Ua1G67q0XFaVYgzLlq9NGQA0Kz50qNh2X6QzUz3wxlxGKP39xQ/dQ27YXTYwDejlH+vsZm9CbTvsmhUw8CuR5NGwZC8VXivQT6UvdARlPvRAKqq0y367eAuS2AWDc0BNiKXDnLBb/skUXzxc7zuehOBgHGk8LsY4HUlUzQXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h2ucqS2s; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dKj7akIs"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-658cc45847cso3133240a12.0
-        for <netfs@lists.linux.dev>; Fri, 06 Feb 2026 05:35:38 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770384937; cv=none;
-        d=google.com; s=arc-20240605;
-        b=cEigK8OlCSRLF1S0GNbmz7pHUtYRSpVIt3NxCWljchYmC+yJsjjwIMDoVwaycaFzxg
-         GjGgiVk2OzfE8M4MhfkvJt+h0HvENcDBg0I7Ioid9jHW6zqXC1ip5K9ZkNPDMDN2ZxjW
-         OALi6CWN1B0Z7rYG7swfptKKiuRR/RuJr80SOjeMxdVM9ART88SujhuYTGeSgR28MzDY
-         IeLWha2gMPg6v050Bd9bS7Ngx+RmaPUguAOjw40MMiFTih9ojwBeDUraP28Gx1UnEO0T
-         T151cZrN6Nm7+7YrkBED7J2XSulhf4VsCvH7BtRagm2VnPAdr46gLYMxxfMThy/kUNiz
-         TJSQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=EpmWnKuQAvcxfN2n9Aws3fxLD/5TLycZ+iQI8ZhYj4E=;
-        fh=x6P4ZfhE5bFrloQfxmygy5ITY+TAAET6TTJGMiS+hkM=;
-        b=dWyD0Z6dTbcvxtoutu3wSp/j502X0EKpmSl7tqQmzC3VxSLtjXTXVkypDJjm9Pt4JX
-         UDu8sIPjrP9Bk62g5Pi0iqPqcLQ01YzeC7Miq14CL3PL9fwPAR44RnUlLN+j8vMEV3c7
-         OwJt1HDqgsHQ0/4TFLMPet8nTMPg7lzgWf+KS0ZD6MkghX3DS7TFLkSd+xgcSF/R+EM9
-         CBzj4zgirLGQGTzsd42mbr72MeH6K9le9XQEgVBWDI8Q7WQlBcW8RrI0pEn3qw2yNRS0
-         ZIRWoUnNF3T8aM4DhLjeMesSSAzYNNUiQ/Bez11eIhGI6MQSIHpke/5TXFJ1vewL501g
-         CMig==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770384937; x=1770989737; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EpmWnKuQAvcxfN2n9Aws3fxLD/5TLycZ+iQI8ZhYj4E=;
-        b=dKj7akIs2tNNGjt/hUaCrh9cgOvA2HDH98k2Zc7XbomnyXn55mnB3+De1lDjNSnt9n
-         Lbu3aUSK5iPNb50xMwPZYr+XcPVg3Tx8m2SrB+f7XN1bUg05nCYcCrQkl8ZC65h2SanY
-         E8IxZSWLQycQErRQ9+mR3GZMUD7zGMk2HTII2zPXyYlG1xaPGU45+zGk7hqHG00a1vCe
-         8OpCQ6QojYIe+EHyk7H4ngyFpQFksvC05+UVoDymezXtpGAlYwDNjVDP/nIuMLA3Qo2u
-         IzcX28DRvJEyk+53r1yeA0sKR9mf4Hg0QkIHTOrqF43mjUqB9F50lvtkMe8ZUMul2unW
-         Msuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770384937; x=1770989737;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=EpmWnKuQAvcxfN2n9Aws3fxLD/5TLycZ+iQI8ZhYj4E=;
-        b=xSjjgmQ9E4PsmFdXnXNnK8Jh/DGlA9OTWI2UOoB0oQhDpYHY+BLq2MwSoEJ7ts70AD
-         LFsh6ZF26up/YyK0I+ZsdAwavA8b7yqdqoKIMIiRBS8fx6PJaI4RNUCJ0aTse8InJ26e
-         257Kus/52/zpmPdv/8YOsSCVYgqEI5lidFgwRgKqPNkNJVLc7FpWXEsJD7x7xV23CwG8
-         PwbreiBxkKuSvgpAsxpa49GawzKB/U0YQl1Gp1ZndgxTFUFvdfF0FIsVYjNoUvLsji9Q
-         Qrh8d06TZ7fNN9pz3+3bu6zYvfmtu6T+MBbTOp9zoz6DmCFSBWYlN5M+dp/8W0AlXUPh
-         u7LA==
-X-Forwarded-Encrypted: i=1; AJvYcCUFNaW/+CV/O/Jek8RMMyx22WcFF81h26+QIdZon9J4iPp5ojZtnH6EbtXl3vKArZlKbvJsMQ==@lists.linux.dev
-X-Gm-Message-State: AOJu0YyGPWGTB+o10yHa4GTFOAa9+NvNuT1nEzz4Yt29CRrvGbDH4NaF
-	QJoFm+Lb90SomLz6rmfkea6O6QTMTtqlflZoyBEcDeqOodDkjxkswXTPLKD2LDBkpXc1CfXUvmR
-	abUNoWBgOXAPPBK71ugZW/8OLzlKlYWU=
-X-Gm-Gg: AZuq6aIv7WV6rsM0jgBESnsfLYotKtN1ODzjhIY81V5HlFCIyczv1t3oByAZvtu7YDB
-	39iLhruedr0usgTeY3HD7dsVyn6DUBYcQWrGwH4HTidxjv9ayMbc/NZm40tspOPdxVz+6Asoo5H
-	v1ET5ECM1G4QDu4zV8RGvcTZ8K+GjaMtfrTdNmAGF7l5rlYoHAt9ccDkzraVujupuehVrC7kJWN
-	FNUlpw3nVW6KwA/O3t4ihm//pYIGdwPu69EEbQnAiRmOasA1XI1tfpIiOh7+GCg+K4CcewDhRGb
-	BMhPmjqno3t/6F4wUCtyvzVbdeezWvnHUpmNb75K
-X-Received: by 2002:a05:6402:518f:b0:658:bd60:43e2 with SMTP id
- 4fb4d7f45d1cf-659841692cdmr1419837a12.17.1770384937041; Fri, 06 Feb 2026
- 05:35:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h2ucqS2s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD575C19423;
+	Tue, 10 Feb 2026 23:31:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770766314;
+	bh=i2LsVTJLiDP/fNc9zPNhFhVuok9lWdveDssQ+zprQY4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=h2ucqS2svxU9favFeUnRxtEz7ilwQNZQP8ZZ+XD8oSy4w8sD71hN9labasqWFpgSa
+	 JEMefGkuSefCgeQ7+oNuqhM9OJ47GTO6qu6qS2kRo0JHo/0hplMcXP9TJLKjVLyeES
+	 4glMdA4XjO9w+pVc41p1dZ+Fq6sJlfDUmjHyde8GC+k3aSAAHi1T0UQv22DidNLm9V
+	 YAvuYReC5klAAXPEyRnJjtkDck4n/WpTjxMRbOTIhkxJooUDEnOiDxxXqzbMchQdKg
+	 dOx5AfOnWE3z3uaO91cTFdg3c3kkEUW+LCvy6eHOxIUmVIak57d+Q06Y8h3QrKPqQK
+	 C/bqgRPbjob4w==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Shyam Prasad N <sprasad@microsoft.com>,
+	David Howells <dhowells@redhat.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>,
+	pc@manguebit.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.19-6.18] netfs: when subreq is marked for retry, do not check if it faced an error
+Date: Tue, 10 Feb 2026 18:31:05 -0500
+Message-ID: <20260210233123.2905307-20-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260210233123.2905307-1-sashal@kernel.org>
+References: <20260210233123.2905307-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260204050726.177283-1-neilb@ownmail.net> <20260204050726.177283-11-neilb@ownmail.net>
- <CAOQ4uxh-MLgwZCstwr6HyPXHVRmtj2F_=xS8pE3FN6Ex-wex4w@mail.gmail.com> <177034031005.16766.246184445940612287@noble.neil.brown.name>
-In-Reply-To: <177034031005.16766.246184445940612287@noble.neil.brown.name>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Fri, 6 Feb 2026 14:35:25 +0100
-X-Gm-Features: AZwV_QjjYiogfyc5arz_rTitKV8bnytIdEM4CjRfI_5mGtvMvwFYoZk4un_zak4
-Message-ID: <CAOQ4uxiWE5eVTrL-2EWVHGQEpEX7HSstj_+kEp-b7xZrnfoXMA@mail.gmail.com>
-Subject: Re: [PATCH 10/13] ovl: change ovl_create_real() to get a new lock
- when re-opening created file.
-To: NeilBrown <neil@brown.name>
-Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	David Howells <dhowells@redhat.com>, Jan Kara <jack@suse.cz>, Chuck Lever <chuck.lever@oracle.com>, 
-	Jeff Layton <jlayton@kernel.org>, Miklos Szeredi <miklos@szeredi.hu>, 
-	John Johansen <john.johansen@canonical.com>, Paul Moore <paul@paul-moore.com>, 
-	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
-	Stephen Smalley <stephen.smalley.work@gmail.com>, linux-kernel@vger.kernel.org, 
-	netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	linux-nfs@vger.kernel.org, linux-unionfs@vger.kernel.org, 
-	apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org, 
-	selinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.19
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Feb 6, 2026 at 2:11=E2=80=AFAM NeilBrown <neilb@ownmail.net> wrote:
->
-> On Thu, 05 Feb 2026, Amir Goldstein wrote:
-> > On Wed, Feb 4, 2026 at 6:09=E2=80=AFAM NeilBrown <neilb@ownmail.net> wr=
-ote:
-> > >
-> > > From: NeilBrown <neil@brown.name>
-> > >
-> > > When ovl_create_real() is used to create a file on the upper filesyst=
-em
-> > > it needs to return the resulting dentry - positive and hashed.
-> > > It is usually the case the that dentry passed to the create function
-> > > (e.g.  vfs_create()) will be suitable but this is not guaranteed.  Th=
-e
-> > > filesystem may unhash that dentry forcing a repeat lookup next time t=
-he
-> > > name is wanted.
-> > >
-> > > So ovl_create_real() must be (and is) aware of this and prepared to
-> > > perform that lookup to get a hash positive dentry.
-> > >
-> > > This is currently done under that same directory lock that provided
-> > > exclusion for the create.  Proposed changes to locking will make this
-> > > not possible - as the name, rather than the directory, will be locked=
-.
-> > > The new APIs provided for lookup and locking do not and cannot suppor=
-t
-> > > this pattern.
-> > >
-> > > The lock isn't needed.  ovl_create_real() can drop the lock and then =
-get
-> > > a new lock for the lookup - then check that the lookup returned the
-> > > correct inode.  In a well-behaved configuration where the upper
-> > > filesystem is not being modified by a third party, this will always w=
-ork
-> > > reliably, and if there are separate modification it will fail cleanly=
-.
-> > >
-> > > So change ovl_create_real() to drop the lock and call
-> > > ovl_start_creating_upper() to find the correct dentry.  Note that
-> > > start_creating doesn't fail if the name already exists.
-> > >
-> > > This removes the only remaining use of ovl_lookup_upper, so it is
-> > > removed.
-> > >
-> > > Signed-off-by: NeilBrown <neil@brown.name>
-> > > ---
-> > >  fs/overlayfs/dir.c       | 24 ++++++++++++++++++------
-> > >  fs/overlayfs/overlayfs.h |  7 -------
-> > >  2 files changed, 18 insertions(+), 13 deletions(-)
-> > >
-> > > diff --git a/fs/overlayfs/dir.c b/fs/overlayfs/dir.c
-> > > index ff3dbd1ca61f..ec08904d084d 100644
-> > > --- a/fs/overlayfs/dir.c
-> > > +++ b/fs/overlayfs/dir.c
-> > > @@ -219,21 +219,33 @@ struct dentry *ovl_create_real(struct ovl_fs *o=
-fs, struct dentry *parent,
-> > >                 err =3D -EIO;
-> > >         } else if (d_unhashed(newdentry)) {
-> > >                 struct dentry *d;
-> > > +               struct name_snapshot name;
-> > >                 /*
-> > >                  * Some filesystems (i.e. casefolded) may return an u=
-nhashed
-> > > -                * negative dentry from the ovl_lookup_upper() call b=
-efore
-> > > +                * negative dentry from the ovl_start_creating_upper(=
-) call before
-> > >                  * ovl_create_real().
-> >
-> >
-> > According to the new locking rules, if the hashed dentry itself is
-> > the synchronization object, is it going to be allowed to
-> > filesystem to unhash the dentry while the dentry still in the
-> > "creating" scope? It is hard for me to wrap my head around this.
->
-> It can be confusing....
->
-> It will be important for the name the remain locked (and hashed) until
-> the operation (create, remove, rename) either succeeds or fails.  So
-> leaving a dentry unhashed will be OK providing a subsequent lookup will
-> also succeed or fail in the same way.  The caller must be able to use
-> the dentry to access the object (i.e.  the inode) on success, but they
-> is nothing in POSIX that requires that the object still has any
-> particular name.
->
-> >
-> > Or do we need this here because some filesystems (casefold in
-> > particular) are not going to support parallel creations?
->
-> There is no reason that a casefolding filesystem would not support parall=
-el
-> ops. And it isn't just casefolding that acts like this.  At least one of
-> the special filesystems (tracefs maybe) always unhashes on create.  You
-> only ever get a hashed positive dentry as a result of lookup.
-> (overlayfs would never see this case of course).
->
-> >
-> > >                  * In that case, lookup again after making the newden=
-try
-> > >                  * positive, so ovl_create_upper() always returns a h=
-ashed
-> > >                  * positive dentry.
-> > > +                * As we have to drop the lock before the lookup a ra=
-ce
-> > > +                * could result in a lookup failure.  In that case we=
- return
-> > > +                * an error.
-> > >                  */
-> > > -               d =3D ovl_lookup_upper(ofs, newdentry->d_name.name, p=
-arent,
-> > > -                                    newdentry->d_name.len);
-> > > -               dput(newdentry);
-> > > -               if (IS_ERR_OR_NULL(d))
-> > > +               take_dentry_name_snapshot(&name, newdentry);
-> > > +               end_creating_keep(newdentry);
-> > > +               d =3D ovl_start_creating_upper(ofs, parent, &name.nam=
-e);
-> > > +               release_dentry_name_snapshot(&name);
-> >
-> > OK. not saying no to this (yet) but I have to admit that it is pretty
-> > ugly that the callers of ovl_create_real() want to create a specific
-> > stable name, which is could be passed in as const char *name
-> > and yet we end up doing this weird dance here just to keep the name
-> > from newdentry.
->
-> There are three callers of ovl_create_real()
->
-> ovl_lookup_or_create() does have a "const char *name".
-> ovl_create_upper() has a stable dentry from which it can copy a QSTR
-> ovl_create_temp() would need some sort of dance to keep hold of the
-> temporary name that was allocated.
->
-> If it weren't for ovl_create_temp() I would agree with you.
->
-> Though we could have the three callers of ovl_start_creating_temp() pass =
-a
-> "char name[OVL_TEMPNAME_SIZE]" in, then ovl_create_temp() would have
-> easy access.
-> I could do that if you like.
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-Yes, considering that two of the callers are from the same function
-(ovl_whiteout()) I think that would end up looking nicer.
+[ Upstream commit 82e8885bd7633a36ee9050e6d7f348a4155eed5f ]
 
-Thanks,
-Amir.
+The *_subreq_terminated functions today only process the NEED_RETRY
+flag when the subreq was successful or failed with EAGAIN error.
+However, there could be other retriable errors for network filesystems.
+
+Avoid this by processing the NEED_RETRY irrespective of the error
+code faced by the subreq. If it was specifically marked for retry,
+the error code must not matter.
+
+Acked-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+
+LLM Generated explanations, may be completely bogus:
+
+Now I have a complete picture. Let me provide my detailed analysis.
+
+---
+
+## Comprehensive Analysis
+
+### 1. Commit Message Analysis
+
+The commit title "netfs: when subreq is marked for retry, do not check
+if it faced an error" clearly describes a bug fix. The commit explains
+that `*_subreq_terminated` functions only process the
+`NETFS_SREQ_NEED_RETRY` flag when the subrequest was successful or had
+an `-EAGAIN` error, but network filesystems may set `NEED_RETRY` for
+other error codes.
+
+The commit has:
+- **Acked-by: David Howells** — the creator and maintainer of the netfs
+  subsystem
+- **Signed-off-by: Shyam Prasad N** — a CIFS/SMB kernel developer at
+  Microsoft
+- **Signed-off-by: Steve French** — the CIFS/SMB subsystem maintainer
+
+### 2. Code Change Analysis — The Bug
+
+**Read Path Bug** in `netfs_read_subreq_terminated()`
+(`read_collect.c`):
+
+When CIFS handles a `MID_REQUEST_SUBMITTED` or `MID_RETRY_NEEDED`
+response (as seen in `smb2pdu.c` lines 4633-4640):
+
+```4639:4640:fs/smb/client/smb2pdu.c
+                __set_bit(NETFS_SREQ_NEED_RETRY, &rdata->subreq.flags);
+                rdata->result = -EAGAIN;
+```
+
+Then at line 4707: `rdata->subreq.error = rdata->result;` (= -EAGAIN),
+and line 4710 calls `netfs_read_subreq_terminated()`.
+
+In the current code:
+
+```532:547:fs/netfs/read_collect.c
+        if (!subreq->error && subreq->transferred < subreq->len) {
+                // ... this block is SKIPPED because error is -EAGAIN
+(non-zero)
+        }
+```
+
+Then:
+
+```549:560:fs/netfs/read_collect.c
+        if (unlikely(subreq->error < 0)) {
+                trace_netfs_failure(rreq, subreq, subreq->error,
+netfs_fail_read);
+                if (subreq->source == NETFS_READ_FROM_CACHE) {
+                        netfs_stat(&netfs_n_rh_read_failed);
+                        __set_bit(NETFS_SREQ_NEED_RETRY,
+&subreq->flags);
+                } else {
+                        netfs_stat(&netfs_n_rh_download_failed);
+                        __set_bit(NETFS_SREQ_FAILED, &subreq->flags);
+// BUG: overrides NEED_RETRY!
+                }
+```
+
+For server downloads, `NETFS_SREQ_FAILED` is set **despite**
+`NETFS_SREQ_NEED_RETRY` already being set by CIFS. Since the collection
+code at line 269 checks `FAILED` **before** `NEED_RETRY` at line 277,
+and the retry code at line 94 abandons if `FAILED` is set, the
+subrequest is **permanently failed** instead of being retried.
+
+**Write Path Bug** in `netfs_write_subrequest_terminated()`
+(`write_collect.c`):
+
+```493:498:fs/netfs/write_collect.c
+        if (IS_ERR_VALUE(transferred_or_error)) {
+                subreq->error = transferred_or_error;
+                if (subreq->error == -EAGAIN)
+                        set_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags);
+                else
+                        set_bit(NETFS_SREQ_FAILED, &subreq->flags);
+```
+
+AFS sets `NETFS_SREQ_NEED_RETRY` for auth errors (`-EACCES`, `-EPERM`,
+`-ENOKEY`, etc.) at `fs/afs/write.c:165` before calling
+`netfs_write_subrequest_terminated()` with those error codes. Since the
+error is not `-EAGAIN`, the netfs layer overrides the filesystem's retry
+request with `FAILED`.
+
+### 3. The Fix
+
+1. **`read_collect.c`**: Adds a check for `NETFS_SREQ_NEED_RETRY` before
+   the error handling block. If NEED_RETRY is set, it pauses the request
+   and jumps past error checks via `goto skip_error_checks`, preventing
+   FAILED from being set.
+
+2. **`write_collect.c`**: Replaces the EAGAIN-only check with a check
+   for whether NEED_RETRY is already set. If set, FAILED is not applied.
+   This delegates retry decisions to the filesystem.
+
+3. **`read_retry.c` / `write_issue.c`**: Adds `subreq->error = 0` in
+   `netfs_reissue_read()` and `netfs_reissue_write()` to clear stale
+   error codes before reissuing.
+
+4. **`read_retry.c` abandon path**: Removes the `!subreq->error` check
+   since subrequests with `NEED_RETRY` can now legitimately carry error
+   codes.
+
+### 4. User Impact
+
+This bug directly affects:
+- **CIFS/SMB users** experiencing network disruptions (laptop lid
+  close/open, WiFi drops, VPN changes): reads fail with errors instead
+  of transparently retrying
+- **AFS users** needing key rotation during writes: writes fail instead
+  of retrying with a different key
+- These are common real-world scenarios for enterprise and laptop users
+
+### 5. Risk Assessment
+
+**Positive:**
+- Small patch (~30 lines across 4 files)
+- ACKed by the netfs subsystem maintainer
+- Logically sound: filesystems know better than the generic layer when
+  to retry
+- Addresses concrete, user-facing failures
+
+**Concerns:**
+- The write path removes the EAGAIN→NEED_RETRY fallback. AFS's
+  `afs_alloc_operation()` failure (line 133) passes -EAGAIN without pre-
+  setting NEED_RETRY — this would now fail instead of retry. However,
+  David Howells (AFS author) ACKed this change, accepting the behavioral
+  shift.
+- 9p similarly doesn't pre-set NEED_RETRY — -EAGAIN from 9p would no
+  longer trigger retry. This is likely intentional: the filesystem
+  should decide, not the generic layer.
+- The affected code (with the new collector architecture) exists from
+  v6.14 onward. v6.14 has a slightly different function signature for
+  `netfs_write_subrequest_terminated` (with `was_async` parameter),
+  requiring minor backport adjustment.
+
+### 6. Dependency Check
+
+- No missing dependencies: `NETFS_RREQ_PAUSE`,
+  `netfs_rreq_trace_set_pause`, and all other referenced symbols exist
+  in the current stable trees.
+- The patch is self-contained and doesn't appear to be part of a series.
+- For v6.18 stable, the patch should apply cleanly as the code matches
+  exactly.
+
+### 7. Conclusion
+
+This commit fixes a real, user-visible bug where network filesystem I/O
+operations marked for retry by CIFS and AFS are incorrectly treated as
+permanent failures by the netfs generic layer. The bug causes spurious
+I/O errors during common scenarios like network reconnections and
+authentication retries. The fix is small, reviewed by the subsystem
+maintainer, and addresses concrete failure paths. While it includes a
+deliberate behavioral shift in the write path (removing EAGAIN special-
+casing), this was reviewed and ACKed by the relevant maintainers. The
+risk is low relative to the benefit of fixing CIFS reconnection failures
+for a large user base.
+
+**YES**
+
+ fs/netfs/read_collect.c  | 10 ++++++++++
+ fs/netfs/read_retry.c    |  4 ++--
+ fs/netfs/write_collect.c |  8 ++++----
+ fs/netfs/write_issue.c   |  1 +
+ 4 files changed, 17 insertions(+), 6 deletions(-)
+
+diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
+index 7a0ffa675fb17..137f0e28a44c5 100644
+--- a/fs/netfs/read_collect.c
++++ b/fs/netfs/read_collect.c
+@@ -546,6 +546,15 @@ void netfs_read_subreq_terminated(struct netfs_io_subrequest *subreq)
+ 		}
+ 	}
+ 
++	/* If need retry is set, error should not matter unless we hit too many
++	 * retries. Pause the generation of new subreqs
++	 */
++	if (test_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags)) {
++		trace_netfs_rreq(rreq, netfs_rreq_trace_set_pause);
++		set_bit(NETFS_RREQ_PAUSE, &rreq->flags);
++		goto skip_error_checks;
++	}
++
+ 	if (unlikely(subreq->error < 0)) {
+ 		trace_netfs_failure(rreq, subreq, subreq->error, netfs_fail_read);
+ 		if (subreq->source == NETFS_READ_FROM_CACHE) {
+@@ -559,6 +568,7 @@ void netfs_read_subreq_terminated(struct netfs_io_subrequest *subreq)
+ 		set_bit(NETFS_RREQ_PAUSE, &rreq->flags);
+ 	}
+ 
++skip_error_checks:
+ 	trace_netfs_sreq(subreq, netfs_sreq_trace_terminated);
+ 	netfs_subreq_clear_in_progress(subreq);
+ 	netfs_put_subrequest(subreq, netfs_sreq_trace_put_terminated);
+diff --git a/fs/netfs/read_retry.c b/fs/netfs/read_retry.c
+index b99e84a8170af..7793ba5e3e8fc 100644
+--- a/fs/netfs/read_retry.c
++++ b/fs/netfs/read_retry.c
+@@ -12,6 +12,7 @@
+ static void netfs_reissue_read(struct netfs_io_request *rreq,
+ 			       struct netfs_io_subrequest *subreq)
+ {
++	subreq->error = 0;
+ 	__clear_bit(NETFS_SREQ_MADE_PROGRESS, &subreq->flags);
+ 	__set_bit(NETFS_SREQ_IN_PROGRESS, &subreq->flags);
+ 	netfs_stat(&netfs_n_rh_retry_read_subreq);
+@@ -242,8 +243,7 @@ static void netfs_retry_read_subrequests(struct netfs_io_request *rreq)
+ 	subreq = list_next_entry(subreq, rreq_link);
+ abandon:
+ 	list_for_each_entry_from(subreq, &stream->subrequests, rreq_link) {
+-		if (!subreq->error &&
+-		    !test_bit(NETFS_SREQ_FAILED, &subreq->flags) &&
++		if (!test_bit(NETFS_SREQ_FAILED, &subreq->flags) &&
+ 		    !test_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags))
+ 			continue;
+ 		subreq->error = -ENOMEM;
+diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
+index cbf3d9194c7bf..61eab34ea67ef 100644
+--- a/fs/netfs/write_collect.c
++++ b/fs/netfs/write_collect.c
+@@ -492,11 +492,11 @@ void netfs_write_subrequest_terminated(void *_op, ssize_t transferred_or_error)
+ 
+ 	if (IS_ERR_VALUE(transferred_or_error)) {
+ 		subreq->error = transferred_or_error;
+-		if (subreq->error == -EAGAIN)
+-			set_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags);
+-		else
++		/* if need retry is set, error should not matter */
++		if (!test_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags)) {
+ 			set_bit(NETFS_SREQ_FAILED, &subreq->flags);
+-		trace_netfs_failure(wreq, subreq, transferred_or_error, netfs_fail_write);
++			trace_netfs_failure(wreq, subreq, transferred_or_error, netfs_fail_write);
++		}
+ 
+ 		switch (subreq->source) {
+ 		case NETFS_WRITE_TO_CACHE:
+diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
+index dd8743bc8d7fe..34894da5a23ec 100644
+--- a/fs/netfs/write_issue.c
++++ b/fs/netfs/write_issue.c
+@@ -250,6 +250,7 @@ void netfs_reissue_write(struct netfs_io_stream *stream,
+ 	iov_iter_truncate(&subreq->io_iter, size);
+ 
+ 	subreq->retry_count++;
++	subreq->error = 0;
+ 	__clear_bit(NETFS_SREQ_MADE_PROGRESS, &subreq->flags);
+ 	__set_bit(NETFS_SREQ_IN_PROGRESS, &subreq->flags);
+ 	netfs_stat(&netfs_n_wh_retry_write_subreq);
+-- 
+2.51.0
+
