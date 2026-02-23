@@ -1,183 +1,303 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE0B3A1D2
-	for <netfs@lists.linux.dev>; Mon, 23 Feb 2026 13:25:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771853159; cv=none; b=LLcJBhsfpGnxKnCf0WtUgkNXSXFKS/oxYP8MtsLzzXR2893pt/HtuCLDX1NlnnAinWAFb5yN06QWyK4c1emd2oPVATlGwFWW9Aix06P8Cha1fcVUGfA5aDOcO1Io/tjh/67HuPUwntqZEVF4KmmpH/NXujo4LRXFK7/qGbcPfwM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771853159; c=relaxed/simple;
-	bh=SRAVdDf8NH6dQhsGRvBt/1wpgBOdKC9BirLKSw6L//k=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oopCaXjDOSB29eHa8mXZzyDenDYMSQQp4uY0qrE5xO+McdVRfLrwLugPadkKX7W7dvET+sDb72YhYQF2qIkGr8RY9VlSB7k8SDXbCBeCwQUi6DaGxkZl+V+FjKfID3f+H04sqyYPJZFEcwLVvNag38Cq8wY5f73YmTpUU55xSdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=RF0FDuhZ; arc=none smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF1A23C516
+	for <netfs@lists.linux.dev>; Mon, 23 Feb 2026 13:42:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771854156; cv=pass; b=a/07OGoilpYPyExQtyetgOWR+6b5jNzuX8qGdbjNipNYWgxm+QRpOqjdxn5mMMmCqkAuWVVhpsgsFmDNoZ3vHtfM/fSpjKGOK003L7EkfYmekkvt/NCqZmLMhXkrWlhvcY/qk3JvjRHXV1zvXOvIFHbZRH0oE2AToTiHXXsf/QY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771854156; c=relaxed/simple;
+	bh=3vshmxc5tGDcDwufTtgEK5XIRPq/zCoj7NLZuvL2OUM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dEW5ot0cO2bluG6UPVVu/keRdGhhqhp1HD3VvQVnZyCmxZKPBUVRsrB4uzYiY2L/gVtZjYNV8uUYAluHCAZU5TE8X+d9wGnzpayXDAyLX7Y0CRf/dIg7YPLJckfNZ8KmHRSklYhryk7i91VwrtPYQOJsEwE9xmZO5IHaWcBzcL0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aDpJA/wA; arc=pass smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="RF0FDuhZ"
-Received: from pps.filterd (m0044012.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61NCxnfE1835072;
-	Mon, 23 Feb 2026 05:25:49 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=t2qu4JKn1z2iQeoE564X+mR26Wg8TVgaWbcVkQrE+7Y=; b=RF0FDuhZejP9
-	O5JCFhKqWVKfqcDIItAIaN4aS/uF+/M42J1SaZfNzph56n6gBmQnmkQKTpbDbExY
-	7QdsBb8uiVRoHnLbQduUssKI0YdUEX9ylj7Als1zF7UNvq6iR+VdimnNHkpLQash
-	4RhHifSCjPSNG+EQMXOa36aJxrH3OJEiynucoT7UXVfV10iHn62j6XyGLTVguqX7
-	0jC4Uis0I6fpScsGuFj0ZiVdShOrS6It7Zn5R1zwumY2eeHx7S1Dsc9dsc92Yaz/
-	fkeH7pTObYHwdouHXPqHAKhnXs3JpHwkXxb6rOd7Bufrkwa6hp7/CfQHKQ7C7/Ce
-	yy6Sd1p3+w==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4cgqcj0553-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Mon, 23 Feb 2026 05:25:49 -0800 (PST)
-Received: from devbig003.atn7.facebook.com (2620:10d:c085:208::7cb7) by
- mail.thefacebook.com (2620:10d:c08b:78::c78f) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.35; Mon, 23 Feb 2026 13:25:47 +0000
-From: Chris Mason <clm@meta.com>
-To: NeilBrown <neil@brown.name>
-CC: Christian Brauner <brauner@kernel.org>,
-        Alexander Viro
-	<viro@zeniv.linux.org.uk>,
-        David Howells <dhowells@redhat.com>, Jan Kara
-	<jack@suse.cz>,
-        Chuck Lever <chuck.lever@oracle.com>,
-        Jeff Layton
-	<jlayton@kernel.org>, Miklos Szeredi <miklos@szeredi.hu>,
-        Amir Goldstein
-	<amir73il@gmail.com>,
-        John Johansen <john.johansen@canonical.com>,
-        Paul Moore
-	<paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn"
-	<serge@hallyn.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        "Darrick J. Wong" <djwong@kernel.org>, <linux-kernel@vger.kernel.org>,
-        <netfs@lists.linux.dev>, <linux-fsdevel@vger.kernel.org>,
-        <linux-nfs@vger.kernel.org>, <linux-unionfs@vger.kernel.org>,
-        <apparmor@lists.ubuntu.com>, <linux-security-module@vger.kernel.org>,
-        <selinux@vger.kernel.org>
-Subject: Re: [PATCH v2 06/15] selinux: Use simple_start_creating() / simple_done_creating()
-Date: Mon, 23 Feb 2026 05:24:41 -0800
-Message-ID: <20260223132533.136328-1-clm@meta.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260223011210.3853517-7-neilb@ownmail.net>
-References: <20260223011210.3853517-1-neilb@ownmail.net> <20260223011210.3853517-7-neilb@ownmail.net>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aDpJA/wA"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-65baa72399fso5716034a12.0
+        for <netfs@lists.linux.dev>; Mon, 23 Feb 2026 05:42:33 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771854152; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jqV8Kug7ymdqXWFxzDdUZTx6ZP8209lg4x/1Oppli9igxi51nZA5yhRe+h9TWzQ0Fy
+         Yc+A6nDV5igQn7axNnw92pmjI4eAOBEdijZIc1NBVv4c883XrTOg4D75DnvIgLQXcjQv
+         h8akL+YgYX+wSFFcsH9ViV73b8NRzi/N1y+O4Gr2E6NE61eXBQMMkvszpFjTncUOS7l5
+         N3O6G18jSlFLkQeetkF1oMLQ/AANrPh3mjW7A2mlnJv56VojgFskDPA2ZvPbgJ+/p7zy
+         qkBReIPbHKjAZqle1JMu8p2wqM03HNHH4kQ82fhS4qj8OKWo/uB4TpFkx+9HmZX0aFAB
+         ou6g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=RYqIR5a+IIRIL9B6CcCBN1lSzoy1pmPgI7+7PRVLxeU=;
+        fh=+Z1pwRAN0GMBiKinCicwuh/rTnULZ5B2scWhYuaydpk=;
+        b=InSDw/jKMi90B6xlcSvKuoCAAG642QEg+8eDK/VAb+E2I9ce3eocin0mPMXkzeadw8
+         r+n9xgO6EUS5BUqikwqroGAOAbHDEPfGDqb8EFCMZDLCPtJIeEjjd3JK7WIaCbpO68cL
+         9N1UmWEi2T96iZFWAXUBDkpyp6I6XmKZ9I4hfL8vpW2yXqakOoBSdZpe3ZzwWWeEGByO
+         4xlja5RqohXsaRPXekV3vCkDaAv6azjh5Wv2q1wgfklm7xpbJo/G50G6b2fkQ/8cgH5L
+         0Lvr0iT+/Rjmc9U+BZ2EIBzjxAIxtap3no5RdT/Oj0iCzbYYS/Jx7lDx9cFzysQUCrlp
+         lVyA==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771854152; x=1772458952; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RYqIR5a+IIRIL9B6CcCBN1lSzoy1pmPgI7+7PRVLxeU=;
+        b=aDpJA/wARWYrHLjtJ3Wkk+0etM95gamFqUMPj5Elqiy+oqXmViSGBMTMkHP2SCWGOZ
+         /Kv2XTbqxolSsb4v4u5M6tD+EcEKmTb0s4n0e/86oE4oJtKajmwuKKKOH3h5j9/J1x9b
+         luebLrVP+WKksf8bbDwfggVp+bPijbRHCtY6LJ6DpwIXYaef0Zr6xpbGDfRoPLtDJBYn
+         UU0fC6DCnesw8qkjdZH4MAPkR2lnNLkXF4IFXa4xgoiYYwh8Ny+LbVTlfuE3lPs7rUea
+         f20EV58KJzrA43faAIBgIK01rmU0qFUcUvCt4Tt/AcNfPy8h10MA8VBodX8u4mzN3aZR
+         z0NQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771854152; x=1772458952;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=RYqIR5a+IIRIL9B6CcCBN1lSzoy1pmPgI7+7PRVLxeU=;
+        b=cfxr0gPtuwcSVbTnDeUKRKuBSYEbVt1TyHPQ+o7KavjL8uNxv6ArNiX+MYN7h4frih
+         UU5xSpW44obgwbzICanLUbYtIF2x23sGLaqwVtytemZ/NkkCMcnsq/TuiiwjnlIE2MS4
+         KRbkPH68FFOmoTko8GzSehofOGIt+mG4CiEmOVZ7zUiSeWSIo7lFey7Jt/CG7tRKYo3A
+         gBRV/l8LCV4JmtrJ3nHiHqZIl9UfKbBsub5OO/H62z3Akgfo0HbkloPzqeWigc2pPcHV
+         WQExw/yc6nAcBKQK+wdX6wAqZHF6t2UAS9iwmwUgYJ4LccllvSpYP2X02qIIZxXOptWk
+         1FJg==
+X-Forwarded-Encrypted: i=1; AJvYcCUI0y+K+pTEI+t1cdLM6girbtxBQRXf6NTRjTPZjMlAR+2GhWZRupSys7CkNqC8oFydaMn7Yg==@lists.linux.dev
+X-Gm-Message-State: AOJu0YynyAAqNhh2pKRX6s3nGO7LYXGFxkljUZGZMSA7JRBxaOwdMDmq
+	ItFWLOrj1WYQRGWSutwiXj4dOKdlmFFO4+I5k8GQJmQVqamtknc9sXa1utBK3uVvU3jBUFCAaC1
+	XHyiQ1rtmyU9dVYJZH/cv37sIuUXmQyc=
+X-Gm-Gg: AZuq6aKhcuqMWxyIaeoHBlRNFWuUce84r0PpeU0TEEgSkcRdpiZc0TzKuirWy2cQgy4
+	zcbaxMcVOsB91EFcNg/n6yJ46AV94zD5jqJBwGbXVmS5dhSZFwbTtc5KetImWItQ4pOHi+hzXxS
+	rlVw633Wzkh5M/VSHsAy74pGEmZySyRLrABIy+YlCM9DLNh/WcEUlvUbxbUIiiKpXJfs6TlMOrK
+	B/GzPDvK97/XecZCgdodpMjFxERWxrqDhv7dUm8u05m1JlA56PbVkZL4AWwY8+XlrzdY4EFTJel
+	KMCLfGIo0ZRwTV8+29AQHPIS1zrdQbx2p9bmiySlww==
+X-Received: by 2002:a17:907:84b:b0:b90:bc06:2acc with SMTP id
+ a640c23a62f3a-b90bc063e40mr41246666b.5.1771854151460; Mon, 23 Feb 2026
+ 05:42:31 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: D5qTdhAt4Lmhg6QxkEqk6H5lNzMRMp0K
-X-Authority-Analysis: v=2.4 cv=QqxTHFyd c=1 sm=1 tr=0 ts=699c555d cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
- a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
- a=GgsMoib0sEa3-_RKJdDe:22 a=I-1mG6jRAAAA:8 a=VwQbUJbxAAAA:8 a=xVhDTqbCAAAA:8
- a=Gzw8Aq_Vnp1Aj3qmndoA:9 a=vAntc5lzOlbkVmf1VcWC:22 a=GrmWmAYt4dzCMttCBZOh:22
-X-Proofpoint-ORIG-GUID: D5qTdhAt4Lmhg6QxkEqk6H5lNzMRMp0K
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjIzMDExNSBTYWx0ZWRfX5fZdKXimKO6+
- kZyko22vbGzQln4wurgc8tw1wzQr7Z/M/sxa8EbahSsn61ubnLHxb8gTJ7VdRxSDu08D3AwU1rY
- fYPR5qpyvuYl/aso5dEMraDpxPhDwEM2FUw26G2Sq34aXTmy17ginzdJjwK2WfiqWNj97HBe9p8
- xzMxfRJJfjVae/wvrk7NxERz6hrtQfIc0UTgUjJyybKoMBwN0ET2QchyBOq7fsFDoBQ6xl8RzCn
- lkdwDSnchrjDt/iAGlZDOY36cOEvSQBZzh6kK0FijItiyaEMAvRFvJ3Y/08YpbztYFsnOJEkB2k
- o/eLu0xtuuBfvhqQuavN/mT0/Mj81CCR9wIXZZF3NKzda21leiHjfJzLzaQPR7bNJSPejFBRgtq
- XjdDDrL5rtOWqzykt0hPhzBdEi9CZv6YlEb+KidoNOC6khhcqIxOTiEFu0wgQOmXNJJVZFBuQMG
- qbs/pm/YTtp7YlcDtHQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-23_02,2026-02-23_02,2025-10-01_01
+References: <20260223011210.3853517-1-neilb@ownmail.net> <20260223011210.3853517-10-neilb@ownmail.net>
+ <20260223132027.4165509-1-clm@meta.com>
+In-Reply-To: <20260223132027.4165509-1-clm@meta.com>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Mon, 23 Feb 2026 15:42:19 +0200
+X-Gm-Features: AaiRm52WUoDV9vuNNf_TRYKkff03CBHKSKX_6G_n5O_M7CVzPVA-lit5gSUxti8
+Message-ID: <CAOQ4uxirM8dW9rOw4SvGtfH-s0Eg9LGuFk1aZooMvEDc=2tbyA@mail.gmail.com>
+Subject: Re: [PATCH v2 09/15] ovl: Simplify ovl_lookup_real_one()
+To: Chris Mason <clm@meta.com>
+Cc: NeilBrown <neil@brown.name>, Christian Brauner <brauner@kernel.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, David Howells <dhowells@redhat.com>, Jan Kara <jack@suse.cz>, 
+	Chuck Lever <chuck.lever@oracle.com>, Jeff Layton <jlayton@kernel.org>, 
+	Miklos Szeredi <miklos@szeredi.hu>, John Johansen <john.johansen@canonical.com>, 
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
+	"Darrick J. Wong" <djwong@kernel.org>, linux-kernel@vger.kernel.org, netfs@lists.linux.dev, 
+	linux-fsdevel@vger.kernel.org, linux-nfs@vger.kernel.org, 
+	linux-unionfs@vger.kernel.org, apparmor@lists.ubuntu.com, 
+	linux-security-module@vger.kernel.org, selinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-NeilBrown <neilb@ownmail.net> wrote:
-> From: NeilBrown <neil@brown.name>
-> 
-> Instead of explicitly locking the parent and performing a lookup in
-> selinux, use simple_start_creating(), and then use
-> simple_done_creating() to unlock.
-> 
-
-Hi everyone,
-
-Amir suggested I run these through, and this commit was flagged:
-
-commit bc981629767980bbaee2ca3c7348b5a648665a9d
-Author: NeilBrown <neil@brown.name>
-
-selinux: Use simple_start_creating() / simple_done_creating()
-
-Instead of explicitly locking the parent and performing a lookup in
-selinux, use simple_start_creating(), and then use
-simple_done_creating() to unlock.
-
-This extends the region that the directory is locked for, and also
-performs a lookup. The lock extension is of no real consequence.
-The lookup uses simple_lookup() and so always succeeds. Thus when
-d_make_persistent() is called the dentry will already be hashed.
-d_make_persistent() handles this case.
-
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Acked-by: Paul Moore <paul@paul-moore.com>
-
-> diff --git a/security/selinux/selinuxfs.c b/security/selinux/selinuxfs.c
-> index 3245cc531555b..7d4f90e5b12a0 100644
-> --- a/security/selinux/selinuxfs.c
-> +++ b/security/selinux/selinuxfs.c
-> @@ -1931,15 +1931,16 @@ static const struct inode_operations swapover_dir_inode_operations = {
->  static struct dentry *sel_make_swapover_dir(struct super_block *sb,
->  						unsigned long *ino)
->  {
-> -	struct dentry *dentry = d_alloc_name(sb->s_root, ".swapover");
-> +	struct dentry *dentry;
->  	struct inode *inode;
+On Mon, Feb 23, 2026 at 2:20=E2=80=AFPM Chris Mason <clm@meta.com> wrote:
 >
-> -	if (!dentry)
-> +	inode = sel_make_inode(sb, S_IFDIR);
-> +	if (!inode)
->  		return ERR_PTR(-ENOMEM);
+> NeilBrown <neilb@ownmail.net> wrote:
+> > From: NeilBrown <neil@brown.name>
+> >
+> > The primary purpose of this patch is to remove the locking from
+> > ovl_lookup_real_one() as part of centralising all locking of directorie=
+s
+> > for name operations.
+> >
+> > The locking here isn't needed.  By performing consistency tests after
+> > the lookup we can be sure that the result of the lookup was valid at
+> > least for a moment, which is all the original code promised.
+> >
+> > lookup_noperm_unlocked() is used for the lookup and it will take the
+> > lock if needed only where it is needed.
+> >
+> > Also:
+> >  - don't take a reference to real->d_parent.  The parent is
+> >    only use for a pointer comparison, and no reference is needed for
+> >    that.
+> >  - Several "if" statements have a "goto" followed by "else" - the
+> >    else isn't needed: the following statement can directly follow
+> >    the "if" as a new statement
+> >  - Use a consistent pattern of setting "err" before performing a test
+> >    and possibly going to "fail".
+> >  - remove the "out" label (now that we don't need to dput(parent) or
+> >    unlock) and simply return from fail:.
 >
-> -	inode = sel_make_inode(sb, S_IFDIR);
-> -	if (!inode) {
-> -		dput(dentry);
-> +	dentry = simple_start_creating(sb->s_root, ".swapover");
-> +	if (!dentry) {
-> +		iput(inode);
->  		return ERR_PTR(-ENOMEM);
->  	}
+> Hi everyone,
+>
+> Amir asked me to run these through, and this commit was flagged.  I recen=
+tly
+> changed the prompts to include some vfs knowledge:
 
-Can this cause a kernel crash when simple_start_creating() fails?
-
-The function simple_start_creating() returns ERR_PTR on failure, not
-NULL. The check `if (!dentry)` only catches NULL values. When
-simple_start_creating() fails and returns an ERR_PTR value like
-ERR_PTR(-ENOMEM), this value is non-NULL and the error check is bypassed.
-
-Execution would continue to d_make_persistent(dentry, inode), which
-attempts to lock dentry->d_lock, dereferencing the ERR_PTR value and
-causing a kernel crash.
-
-The old code used d_alloc_name() which returns NULL on error. The new
-code uses simple_start_creating() which returns ERR_PTR on error, but
-the error checking pattern wasn't updated to match.
-
-Should the check be `if (IS_ERR(dentry))` instead, and return dentry
-rather than ERR_PTR(-ENOMEM) to preserve the actual error code?
+Thanks Chris!
 
 >
-> @@ -1947,11 +1948,9 @@ static struct dentry *sel_make_swapover_dir(struct super_block *sb,
->  	inode->i_ino = ++(*ino);
->  	/* directory inodes start off with i_nlink == 2 (for "." entry) */
->  	inc_nlink(inode);
-> -	inode_lock(sb->s_root->d_inode);
->  	d_make_persistent(dentry, inode);
->  	inc_nlink(sb->s_root->d_inode);
-> -	inode_unlock(sb->s_root->d_inode);
-> -	dput(dentry);
-> +	simple_done_creating(dentry);
->  	return dentry;	// borrowed
->  }
+> https://github.com/masoncl/review-prompts/blob/main/kernel/subsystem/vfs.=
+md
+>
+> And I also put in some words to make it prefer reporting problems that mi=
+ght
+> not be bugs, but that do violate some rule in the .md files.  This might
+> be a false positive from that new shift toward blindly trusting the guide=
+s,
+> but I'll let everyone here decide:
+>
+> commit d1bfcef048896cdc9e4c57e3249b6ad344d64c02
+> Author: NeilBrown <neil@brown.name>
+>
+> ovl: Simplify ovl_lookup_real_one()
+>
+> This patch removes locking from ovl_lookup_real_one() and reorganizes the
+> control flow. The function now uses lookup_noperm_unlocked() instead of
+> lookup_noperm() and performs consistency validation after the lookup rath=
+er
+> than holding a lock during the operation.
+>
+> > diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
+> > index 83f80fdb15674..b448fc9424b64 100644
+> > --- a/fs/overlayfs/export.c
+> > +++ b/fs/overlayfs/export.c
+> > @@ -349,69 +349,64 @@ static struct dentry *ovl_dentry_real_at(struct d=
+entry *dentry, int idx)
+> >       return NULL;
+> >  }
+> >
+> > -/*
+> > - * Lookup a child overlay dentry to get a connected overlay dentry who=
+se real
+> > - * dentry is @real. If @real is on upper layer, we lookup a child over=
+lay
+> > - * dentry with the same name as the real dentry. Otherwise, we need to=
+ consult
+> > - * index for lookup.
+> > +/**
+> > + * ovl_lookup_real_one -  Lookup a child overlay dentry to get an over=
+lay dentry whose real dentry is given
+> > + * @connected: parent overlay dentry
+> > + * @real: given child real dentry
+> > + * @layer: layer in which @real exists
+> > + *
+> > + *
+> > + * Lookup a child overlay dentry in @connected with the same name as t=
+he @real
+> > + * dentry.  Then check that the parent of the result is the real dentr=
+y for
+> > + * @connected, and @real is the real dentry for the result.
+> > + *
+> > + * Returns:
+> > + *   %-ECHILD if the parent of @real is no longer the real dentry for =
+@connected.
+> > + *   %-ESTALE if @real is no the real dentry of the found dentry.
+>                                        ^^
+> There's a typo here: "is no the" should be "is not the".
+>
+> > + *   Otherwise the found dentry is returned.
+> >   */
+> >  static struct dentry *ovl_lookup_real_one(struct dentry *connected,
+> >                                         struct dentry *real,
+> >                                         const struct ovl_layer *layer)
+> >  {
+> > -     struct inode *dir =3D d_inode(connected);
+> > -     struct dentry *this, *parent =3D NULL;
+> > +     struct dentry *this;
+> >       struct name_snapshot name;
+> >       int err;
+> >
+> >       /*
+> > -      * Lookup child overlay dentry by real name. The dir mutex protec=
+ts us
+> > -      * from racing with overlay rename. If the overlay dentry that is=
+ above
+> > -      * real has already been moved to a parent that is not under the
+> > -      * connected overlay dir, we return -ECHILD and restart the looku=
+p of
+> > -      * connected real path from the top.
+> > -      */
+> > -     inode_lock_nested(dir, I_MUTEX_PARENT);
+> > -     err =3D -ECHILD;
+> > -     parent =3D dget_parent(real);
+> > -     if (ovl_dentry_real_at(connected, layer->idx) !=3D parent)
+> > -             goto fail;
+> > -
+> > -     /*
+> > -      * We also need to take a snapshot of real dentry name to protect=
+ us
+> > +      * We need to take a snapshot of real dentry name to protect us
+> >        * from racing with underlying layer rename. In this case, we don=
+'t
+> >        * care about returning ESTALE, only from dereferencing a free na=
+me
+> >        * pointer because we hold no lock on the real dentry.
+> >        */
+> >       take_dentry_name_snapshot(&name, real);
+> > -     /*
+> > -      * No idmap handling here: it's an internal lookup.
+> > -      */
+> > -     this =3D lookup_noperm(&name.name, connected);
+> > +     this =3D lookup_noperm_unlocked(&name.name, connected);
+> >       release_dentry_name_snapshot(&name);
+> > +
+> > +     err =3D -ECHILD;
+> > +     if (ovl_dentry_real_at(connected, layer->idx) !=3D real->d_parent=
+)
+> > +             goto fail;
+> > +
+>
+> A subsystem pattern flags this as potentially concerning: the VFS subsyst=
+em
+> guide indicates that TOCTOU validation checking d_parent should also chec=
+k
+> d_unhashed() because a dentry can be unhashed (removed from dcache by
+> concurrent operations) while its d_parent pointer remains unchanged.
+>
+> The old code held inode_lock_nested(dir, I_MUTEX_PARENT) during the entir=
+e
+> lookup and validation, which serialized with operations that could unhash=
+ the
+> dentry. The new lockless pattern creates a window where:
+>
+> 1. lookup_noperm_unlocked() completes and returns dentry `this`
+> 2. A concurrent unlink/remove operation unhashes `this`
+> 3. The d_parent validation passes (parent pointer unchanged)
+> 4. The function returns an unhashed dentry
+>
+> Other overlayfs code uses the complete pattern. For example, in
+> ovl_lock_rename_workdir() at fs/overlayfs/util.c:
+>
+>     if (work->d_parent !=3D workdir || d_unhashed(work)) {
+>         ...
+>     }
+>
+> Could this validation miss a race where the dentry is unhashed but d_pare=
+nt
+> still matches? The subsequent checks (!this->d_inode for -ENOENT,
+> wrong real dentry for -ESTALE) might catch some cases, but is that
+> sufficient for all the scenarios where an unhashed dentry could cause
+> problems?
+>
 
+It's a very good comment and very important rule to check, since
+we have at least 3 fix commits on breaking this rule, but as this
+code is utterly confusing to most human I do not blame LLM for getting
+confused here.
+
+The lock not taken on 'dir' which is the overlayfs inode and the checked
+'real' dentry is on the underlying fs.
+
+Therefore, the check of real->d_parent was not protected in old code as
+well as in new code - it is a mere best effort sanity check, so I think
+there is no added risk here.
+
+Neil, do you agree?
+
+Thanks,
+Amir.
