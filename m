@@ -1,123 +1,112 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F873451D9
-	for <netfs@lists.linux.dev>; Mon, 23 Feb 2026 09:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771840156; cv=pass; b=PPgK/PMxIXR2HCXCK016hkABdneYq4aNj3E8q+EwoE+azS7Xo15vVMiPShcbstjDOBU7pAhvadTUIzNRglMv3ylPjn4q8ppoU3vqzvC99AxmQngBOs+1tlchCyN1TReuHdpgL9xzAVrhgzivRiGqiKlctwc4XPrr5yiTHl4I+Gg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771840156; c=relaxed/simple;
-	bh=Xh4bjPWHtF+IO6/pJTbboimYkYntcuZV8mtoP+YljlA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hAOrYhhsKX7E498SWc1UgBl7z/eJhtblEI2nnWJKK4qWkCyV5JI2Dm2J9kI3VkCkXq5Jxdt3KHK9Gmljl71dEo0p/EYx8cKUDenPpMzomY3LWSZiGk9rUCfHNszS8QvboGmpqlqz574WDhItzUsS9IZh4klB8E8+ovUPWCNVJj0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EmSJnmPH; arc=pass smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182EE1C5F11
+	for <netfs@lists.linux.dev>; Mon, 23 Feb 2026 13:20:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771852863; cv=none; b=DNi+PqJn6qiDLhRQep6RQFkSMtaVJobnVPAH7IFw9gnPLKQZih/sG3ia/c60Emr/ZBeWfTWNUNPKvtyWRyss6Mj65s5vmXmc/DyqKQoOcU8DT8rLD/7wSNoHi/+0FHbbSnVWQpvDY0lyycYjQzzReHA1aFm2F2hgacQUUD2Ygqc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771852863; c=relaxed/simple;
+	bh=iWgTsjCk89uebRcrjCX70k5LZkhHzAYydV7uu88NyCg=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=igGw8F/jCyWlC9aKCu/+gCCW+UbtDk/eLNL3Q7f+sGnGWEljflPsRnY3NMShBE/dvZZ15Pyc+jzLOSaA1oQqFjYVGH31qjZnL0yzoOZIrBNozNIExzOhkaom0aNstCan0lMt9vtaNaNmSMp9Czsqtaz77CIiuVJGsidxH65f2r8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=uQ3peFVp; arc=none smtp.client-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EmSJnmPH"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-4359249bbacso3011584f8f.0
-        for <netfs@lists.linux.dev>; Mon, 23 Feb 2026 01:49:13 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771840152; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Fq3gTvvnsA2omLj4KOdwHQ0mqEz/BKFDlaXmX/u8pRdKDun1OR0xmvV0apZGDmkWCL
-         V6HeiKtWFgzaLv17XaQ5KC5pjo0hpL61rP5K4nPAnCbb6oXLsxSVf/VYWgsU0vqq6OeI
-         B3Wi0nLW5YF+vjtAN27aVzWMcO3wcLbfYSlHEaLSWaTGxA8+s9+7hRHCYFOpfbuQh9az
-         OVZ1ye0EUTEoaxlKF8TMfxBWVXbF4HeNsr8K3xjVJUrLrbt82pvjfgBTT/LwfSlnBSYC
-         3GyvsmKWCVSiHDv/6k9MqvNtxgGve7dpHvyDcYLcRkGWIucdQbUFC06KHsc/tRLLjSQl
-         zuYw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2/el3cFDhCdryFwCuaSLEKRCesYmHLj0qrChriFmVgE=;
-        fh=HgZjCcHnFOnfHOkIRTcdhUHG1wLcqnBRkYVUlKrEC9I=;
-        b=A9E4Gkfrh4zptXz4ZZdfwGLTZLKXeJbKa0SgtREKzP/BxM3dNAEyYDvaio5s2eSCQ4
-         ++u3hiwvc9nRbpcnPp1j1OhBaIb5Tx+htCJNgwt8KqVeYnLhtYHrUrWH131/0ZdaNUQX
-         WVEF6MlqAoddDh0eOZnjFzhy+U2tmgqB7uQe2YJ0N6/M1sMRoaddK3aV8P25DQdmsGqj
-         iAGM4HBaUU27H+XmBpyfpr82x/Nm+YaENP2AIf10JW7gZLSjKlNSHKtRyn520tYkX8bl
-         qTu1q6Xj6axnOeCbZtIiyn7lkttY4TKxTxxGbV5LG7GH/SfoReF8ZTJUvDHeyboeVnV3
-         PsxQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771840152; x=1772444952; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2/el3cFDhCdryFwCuaSLEKRCesYmHLj0qrChriFmVgE=;
-        b=EmSJnmPHFjTD3TzKNd4rqMTASGXaWzekdtD91yNV2LeXimJnvQcxdJQsYJt16tMAOH
-         hYfqsFjJK0tDRsRkw+i6R+Mdzc5df7RjNgf6gG+gieAL3mjG6a7xXDIZ7i17trIrA9g6
-         lnwdYZ+VQ8Qg2y284OqX/LZvKApNHdPsbXuUfTWzAUY0SsAyzCN8NW5APx3xtRC08oqA
-         Z/Se+fOgwe0f64OUmx2LrlAVAGwcVkX5CpqZM6hffXxm7vtOjkiONawFXuDoig4uAJc5
-         Zo1E/q7CEnR4fFnYFkGK5BKinHmmzJHOIdLQ99rBHDIYxVnlhNgRFhYfGLLpAGU+RuD2
-         uKsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771840152; x=1772444952;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=2/el3cFDhCdryFwCuaSLEKRCesYmHLj0qrChriFmVgE=;
-        b=MLxRFb89c2/B2NcuIipvElmSgnJ6HxYuaFzPGs/RLIfc6tI1M/BrSTXKP1zKZvPWmy
-         4oYGA+9G4OwoYAvxrH1GtHRU5r9QBYd5Y8F11C/g5I9HiWUlBJAEKGEFBCdKQxdKCRG4
-         59++v/xhfw4qW6cp+OwyZ7PYBKdlQK6sH3FD5JETnvl12WUAxe5QFtnNU5p+1EI3ixgA
-         knw/uCsD9m7cfdreTtTVpkehUEmObAyrDDSvB3xd01qWO9J6xT+YUbm2timVbOBJoO8Z
-         Ujy3olREqtVxAjo+xiwVxq13gyA0SVCOlaN1LSp1ChHcW5VzrjHW3TQ3Das6mqGbTV/E
-         Cl4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW4nwKXdODVpvZmEuHx7DADbQDgSdkpyPLiqJvf+x+iuI7WUgCQ1BOBLwwyBo4vr95UxFfIPA==@lists.linux.dev
-X-Gm-Message-State: AOJu0YxCgZy4t7ot0zOgxtmrya1IdgFfVKRJq2J2GmKfq/Hx0WXIN+iT
-	/bWmZPzV9Ugl05f9EsLz0xtUL3YGPgptY+536QUAbg9pBg3bgxtNboOUvsn077yLP7MLst0dLrF
-	fPWuAlTO0WpOxENWuy27FebwwwIAUrUE=
-X-Gm-Gg: ATEYQzx+jjYaEEuMPdgKqJCcgnP8dFZMWQgRwkksNiXkCI8V7DhYeM+GG/8kf8P4Raa
-	Rph4SDa2J2tSi9UM5+sCVV4JRRZplnIpVl2kjWRTYLSE3EL5nhDRfbghtLZJBYmGrV8qpc6cIzI
-	mwMJjFZpigblLu2A2XTTpEyFod+VsJGrZN5gvHZkY2om2/vBbNKseXAmcEPFnbPquXTXQ4X7Cnh
-	pHh60ZvHhUnLN29Mzdp0ufmRFkWLmW4vdZE+TUcWh7Fobe2p10Y1SQ6iln4oz56T/0NmGT/JzSS
-	Kanh8JGK/oTIAgWeLV/6Mt8WDyHr0KuAwDLBQq8cIw==
-X-Received: by 2002:a05:6000:4014:b0:437:6aa8:b7eb with SMTP id
- ffacd0b85a97d-4396fd9b885mr14177751f8f.5.1771840152054; Mon, 23 Feb 2026
- 01:49:12 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="uQ3peFVp"
+Received: from pps.filterd (m0148461.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61N7LjTw1689366;
+	Mon, 23 Feb 2026 05:20:44 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=+jj35zgXKhtaxe8slFh2KjLza6PRHJYalc4EKFRj1xk=; b=uQ3peFVpfrPv
+	P1eNTCmO7sZzHHxSMqkZfrVpKFA1ZEnJiWX/K6a64owsi6ZEvoptl9inCEq4kFSR
+	Su3fW5cc6nGdrgVNPCMEUHbdk304q1HIsAN5FKV59LzaXWQZsFEs71Pf7qXlwkbr
+	F1H13bcXnIobrOpdVfZtgIPQN5ydQKhi0m9N/GEp8DNUUNu5Rob+j0mAtAx1MUoS
+	73kX4wyXHXprW//vO0Qp4cgTVmqpvdF/05FYmEpkjjsqM2FdjNLFT7GqCHFxTynJ
+	bR/pXaaD35diR2KJiYAqPbwXBM2QqHLdbXRSVrAGsxgdiHxWZRHZZjVcXqa4V3D4
+	puHFLDf/GA==
+Received: from mail.thefacebook.com ([163.114.134.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4cgjehhvnu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Mon, 23 Feb 2026 05:20:44 -0800 (PST)
+Received: from devbig003.atn7.facebook.com (2620:10d:c085:208::f) by
+ mail.thefacebook.com (2620:10d:c08b:78::c78f) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.35; Mon, 23 Feb 2026 13:20:42 +0000
+From: Chris Mason <clm@meta.com>
+To: NeilBrown <neil@brown.name>
+CC: Christian Brauner <brauner@kernel.org>,
+        Alexander Viro
+	<viro@zeniv.linux.org.uk>,
+        David Howells <dhowells@redhat.com>, Jan Kara
+	<jack@suse.cz>,
+        Chuck Lever <chuck.lever@oracle.com>,
+        Jeff Layton
+	<jlayton@kernel.org>, Miklos Szeredi <miklos@szeredi.hu>,
+        Amir Goldstein
+	<amir73il@gmail.com>,
+        John Johansen <john.johansen@canonical.com>,
+        Paul Moore
+	<paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn"
+	<serge@hallyn.com>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>,
+        "Darrick J. Wong" <djwong@kernel.org>, <linux-kernel@vger.kernel.org>,
+        <netfs@lists.linux.dev>, <linux-fsdevel@vger.kernel.org>,
+        <linux-nfs@vger.kernel.org>, <linux-unionfs@vger.kernel.org>,
+        <apparmor@lists.ubuntu.com>, <linux-security-module@vger.kernel.org>,
+        <selinux@vger.kernel.org>
+Subject: Re: [PATCH v2 09/15] ovl: Simplify ovl_lookup_real_one()
+Date: Mon, 23 Feb 2026 05:13:37 -0800
+Message-ID: <20260223132027.4165509-1-clm@meta.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260223011210.3853517-10-neilb@ownmail.net>
+References: <20260223011210.3853517-1-neilb@ownmail.net> <20260223011210.3853517-10-neilb@ownmail.net>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260223011210.3853517-1-neilb@ownmail.net> <20260223011210.3853517-10-neilb@ownmail.net>
-In-Reply-To: <20260223011210.3853517-10-neilb@ownmail.net>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Mon, 23 Feb 2026 11:49:00 +0200
-X-Gm-Features: AaiRm53oCa-QOult778vTlpI836VKQ_vX_Rm7xdLmLP8dTvXCc4lfRf1Ct2RZiU
-Message-ID: <CAOQ4uxjtedA8B1QZDddRtsSP0XgFZCuBTD1VGvN4wawRyoox=A@mail.gmail.com>
-Subject: Re: [PATCH v2 09/15] ovl: Simplify ovl_lookup_real_one()
-To: NeilBrown <neil@brown.name>
-Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	David Howells <dhowells@redhat.com>, Jan Kara <jack@suse.cz>, Chuck Lever <chuck.lever@oracle.com>, 
-	Jeff Layton <jlayton@kernel.org>, Miklos Szeredi <miklos@szeredi.hu>, 
-	John Johansen <john.johansen@canonical.com>, Paul Moore <paul@paul-moore.com>, 
-	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
-	Stephen Smalley <stephen.smalley.work@gmail.com>, "Darrick J. Wong" <djwong@kernel.org>, 
-	linux-kernel@vger.kernel.org, netfs@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, linux-nfs@vger.kernel.org, 
-	linux-unionfs@vger.kernel.org, apparmor@lists.ubuntu.com, 
-	linux-security-module@vger.kernel.org, selinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjIzMDExNCBTYWx0ZWRfX+kME6KZmr89V
+ FuKP+HbtK6Ll3Q33VPnvmu6dSF4itJ8mVYWVnJ7GZz07InfaInBIu5fTcVWC3E0zX9IPFY3omT/
+ NFDzwO5fxPFfsJlAau4AJFE+l9AIU3wjNX4G3ORzecBxHBbJ8oF+WaRyFx+8A/R3s1DZchoPfZn
+ BibQx0Mjpw9jKbymWVR73+564ZbtEGwqzDPmsW7IOuY/8Obw6csoIk2hJfyMafNi5SrOz8czyFJ
+ uJ70XH74dPoeTLXMkqjRRdbf1qWlwih5nYz3Hg/ux3VdEAVnTH6MFH+Puak3DUvyCgsTd+5B5ZN
+ rWHWmiL/tZIpuwkvGsKU1fAPjFfWQNcucF5wuE/C/bPPnyiF4xRWJPNDkDJWCTjma7twh5jrIJ4
+ J19KZBZpHaCGFAR0Vi8F67Zew8QnYtdM0FhaOWXjdsvx/vRaCJFcBkpGw5CiMVv0w84749y9QKq
+ 0TDcj6dO/tU+Kqu3s2Q==
+X-Proofpoint-GUID: Fa5SgpH4NiF5_GiC7hGWmJ-OFXDNqwP8
+X-Proofpoint-ORIG-GUID: Fa5SgpH4NiF5_GiC7hGWmJ-OFXDNqwP8
+X-Authority-Analysis: v=2.4 cv=cK/tc1eN c=1 sm=1 tr=0 ts=699c542c cx=c_pps
+ a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
+ a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
+ a=GgsMoib0sEa3-_RKJdDe:22 a=e8O0uTMVAAAA:20 a=I-1mG6jRAAAA:8
+ a=jAaqfGSQgQmH2hLIMWsA:9 a=vAntc5lzOlbkVmf1VcWC:22 a=bA3UWDv6hWIuX7UZL3qL:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-23_02,2026-02-23_02,2025-10-01_01
 
-On Mon, Feb 23, 2026 at 2:13=E2=80=AFAM NeilBrown <neilb@ownmail.net> wrote=
-:
->
+NeilBrown <neilb@ownmail.net> wrote:
 > From: NeilBrown <neil@brown.name>
->
+> 
 > The primary purpose of this patch is to remove the locking from
 > ovl_lookup_real_one() as part of centralising all locking of directories
 > for name operations.
->
+> 
 > The locking here isn't needed.  By performing consistency tests after
 > the lookup we can be sure that the result of the lookup was valid at
 > least for a moment, which is all the original code promised.
->
+> 
 > lookup_noperm_unlocked() is used for the lookup and it will take the
 > lock if needed only where it is needed.
->
+> 
 > Also:
 >  - don't take a reference to real->d_parent.  The parent is
 >    only use for a pointer comparison, and no reference is needed for
@@ -129,139 +118,165 @@ On Mon, Feb 23, 2026 at 2:13=E2=80=AFAM NeilBrown <neilb@ownmail.net> wrote=
 >    and possibly going to "fail".
 >  - remove the "out" label (now that we don't need to dput(parent) or
 >    unlock) and simply return from fail:.
->
-> Reviewed-by: Jeff Layton <jlayton@kernel.org>
-> Signed-off-by: NeilBrown <neil@brown.name>
 
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Hi everyone,
 
-> ---
->  fs/overlayfs/export.c | 71 ++++++++++++++++++++-----------------------
->  1 file changed, 33 insertions(+), 38 deletions(-)
->
+Amir asked me to run these through, and this commit was flagged.  I recently
+changed the prompts to include some vfs knowledge:
+
+https://github.com/masoncl/review-prompts/blob/main/kernel/subsystem/vfs.md
+
+And I also put in some words to make it prefer reporting problems that might
+not be bugs, but that do violate some rule in the .md files.  This might
+be a false positive from that new shift toward blindly trusting the guides,
+but I'll let everyone here decide:
+
+commit d1bfcef048896cdc9e4c57e3249b6ad344d64c02
+Author: NeilBrown <neil@brown.name>
+
+ovl: Simplify ovl_lookup_real_one()
+
+This patch removes locking from ovl_lookup_real_one() and reorganizes the
+control flow. The function now uses lookup_noperm_unlocked() instead of
+lookup_noperm() and performs consistency validation after the lookup rather
+than holding a lock during the operation.
+
 > diff --git a/fs/overlayfs/export.c b/fs/overlayfs/export.c
-> index 83f80fdb1567..b448fc9424b6 100644
+> index 83f80fdb15674..b448fc9424b64 100644
 > --- a/fs/overlayfs/export.c
 > +++ b/fs/overlayfs/export.c
-> @@ -349,69 +349,64 @@ static struct dentry *ovl_dentry_real_at(struct den=
-try *dentry, int idx)
->         return NULL;
+> @@ -349,69 +349,64 @@ static struct dentry *ovl_dentry_real_at(struct dentry *dentry, int idx)
+>  	return NULL;
 >  }
 >
 > -/*
-> - * Lookup a child overlay dentry to get a connected overlay dentry whose=
- real
-> - * dentry is @real. If @real is on upper layer, we lookup a child overla=
-y
-> - * dentry with the same name as the real dentry. Otherwise, we need to c=
-onsult
+> - * Lookup a child overlay dentry to get a connected overlay dentry whose real
+> - * dentry is @real. If @real is on upper layer, we lookup a child overlay
+> - * dentry with the same name as the real dentry. Otherwise, we need to consult
 > - * index for lookup.
 > +/**
-> + * ovl_lookup_real_one -  Lookup a child overlay dentry to get an overla=
-y dentry whose real dentry is given
+> + * ovl_lookup_real_one -  Lookup a child overlay dentry to get an overlay dentry whose real dentry is given
 > + * @connected: parent overlay dentry
 > + * @real: given child real dentry
 > + * @layer: layer in which @real exists
 > + *
 > + *
-> + * Lookup a child overlay dentry in @connected with the same name as the=
- @real
-> + * dentry.  Then check that the parent of the result is the real dentry =
-for
+> + * Lookup a child overlay dentry in @connected with the same name as the @real
+> + * dentry.  Then check that the parent of the result is the real dentry for
 > + * @connected, and @real is the real dentry for the result.
 > + *
 > + * Returns:
-> + *   %-ECHILD if the parent of @real is no longer the real dentry for @c=
-onnected.
+> + *   %-ECHILD if the parent of @real is no longer the real dentry for @connected.
 > + *   %-ESTALE if @real is no the real dentry of the found dentry.
+                                       ^^
+There's a typo here: "is no the" should be "is not the".
+
 > + *   Otherwise the found dentry is returned.
 >   */
 >  static struct dentry *ovl_lookup_real_one(struct dentry *connected,
->                                           struct dentry *real,
->                                           const struct ovl_layer *layer)
+>  					  struct dentry *real,
+>  					  const struct ovl_layer *layer)
 >  {
-> -       struct inode *dir =3D d_inode(connected);
-> -       struct dentry *this, *parent =3D NULL;
-> +       struct dentry *this;
->         struct name_snapshot name;
->         int err;
+> -	struct inode *dir = d_inode(connected);
+> -	struct dentry *this, *parent = NULL;
+> +	struct dentry *this;
+>  	struct name_snapshot name;
+>  	int err;
 >
->         /*
-> -        * Lookup child overlay dentry by real name. The dir mutex protec=
-ts us
-> -        * from racing with overlay rename. If the overlay dentry that is=
- above
-> -        * real has already been moved to a parent that is not under the
-> -        * connected overlay dir, we return -ECHILD and restart the looku=
-p of
-> -        * connected real path from the top.
-> -        */
-> -       inode_lock_nested(dir, I_MUTEX_PARENT);
-> -       err =3D -ECHILD;
-> -       parent =3D dget_parent(real);
-> -       if (ovl_dentry_real_at(connected, layer->idx) !=3D parent)
-> -               goto fail;
+>  	/*
+> -	 * Lookup child overlay dentry by real name. The dir mutex protects us
+> -	 * from racing with overlay rename. If the overlay dentry that is above
+> -	 * real has already been moved to a parent that is not under the
+> -	 * connected overlay dir, we return -ECHILD and restart the lookup of
+> -	 * connected real path from the top.
+> -	 */
+> -	inode_lock_nested(dir, I_MUTEX_PARENT);
+> -	err = -ECHILD;
+> -	parent = dget_parent(real);
+> -	if (ovl_dentry_real_at(connected, layer->idx) != parent)
+> -		goto fail;
 > -
-> -       /*
-> -        * We also need to take a snapshot of real dentry name to protect=
- us
-> +        * We need to take a snapshot of real dentry name to protect us
->          * from racing with underlying layer rename. In this case, we don=
-'t
->          * care about returning ESTALE, only from dereferencing a free na=
-me
->          * pointer because we hold no lock on the real dentry.
->          */
->         take_dentry_name_snapshot(&name, real);
-> -       /*
-> -        * No idmap handling here: it's an internal lookup.
-> -        */
-> -       this =3D lookup_noperm(&name.name, connected);
-> +       this =3D lookup_noperm_unlocked(&name.name, connected);
->         release_dentry_name_snapshot(&name);
+> -	/*
+> -	 * We also need to take a snapshot of real dentry name to protect us
+> +	 * We need to take a snapshot of real dentry name to protect us
+>  	 * from racing with underlying layer rename. In this case, we don't
+>  	 * care about returning ESTALE, only from dereferencing a free name
+>  	 * pointer because we hold no lock on the real dentry.
+>  	 */
+>  	take_dentry_name_snapshot(&name, real);
+> -	/*
+> -	 * No idmap handling here: it's an internal lookup.
+> -	 */
+> -	this = lookup_noperm(&name.name, connected);
+> +	this = lookup_noperm_unlocked(&name.name, connected);
+>  	release_dentry_name_snapshot(&name);
 > +
-> +       err =3D -ECHILD;
-> +       if (ovl_dentry_real_at(connected, layer->idx) !=3D real->d_parent=
-)
-> +               goto fail;
+> +	err = -ECHILD;
+> +	if (ovl_dentry_real_at(connected, layer->idx) != real->d_parent)
+> +		goto fail;
 > +
->         err =3D PTR_ERR(this);
-> -       if (IS_ERR(this)) {
-> +       if (IS_ERR(this))
->                 goto fail;
-> -       } else if (!this || !this->d_inode) {
-> -               dput(this);
-> -               err =3D -ENOENT;
+
+A subsystem pattern flags this as potentially concerning: the VFS subsystem
+guide indicates that TOCTOU validation checking d_parent should also check
+d_unhashed() because a dentry can be unhashed (removed from dcache by
+concurrent operations) while its d_parent pointer remains unchanged.
+
+The old code held inode_lock_nested(dir, I_MUTEX_PARENT) during the entire
+lookup and validation, which serialized with operations that could unhash the
+dentry. The new lockless pattern creates a window where:
+
+1. lookup_noperm_unlocked() completes and returns dentry `this`
+2. A concurrent unlink/remove operation unhashes `this`
+3. The d_parent validation passes (parent pointer unchanged)
+4. The function returns an unhashed dentry
+
+Other overlayfs code uses the complete pattern. For example, in
+ovl_lock_rename_workdir() at fs/overlayfs/util.c:
+
+    if (work->d_parent != workdir || d_unhashed(work)) {
+        ...
+    }
+
+Could this validation miss a race where the dentry is unhashed but d_parent
+still matches? The subsequent checks (!this->d_inode for -ENOENT,
+wrong real dentry for -ESTALE) might catch some cases, but is that
+sufficient for all the scenarios where an unhashed dentry could cause
+problems?
+
+>  	err = PTR_ERR(this);
+> -	if (IS_ERR(this)) {
+> +	if (IS_ERR(this))
+>  		goto fail;
+> -	} else if (!this || !this->d_inode) {
+> -		dput(this);
+> -		err = -ENOENT;
 > +
-> +       err =3D -ENOENT;
-> +       if (!this || !this->d_inode)
->                 goto fail;
-> -       } else if (ovl_dentry_real_at(this, layer->idx) !=3D real) {
-> -               dput(this);
-> -               err =3D -ESTALE;
+> +	err = -ENOENT;
+> +	if (!this || !this->d_inode)
+>  		goto fail;
+> -	} else if (ovl_dentry_real_at(this, layer->idx) != real) {
+> -		dput(this);
+> -		err = -ESTALE;
 > +
-> +       err =3D -ESTALE;
-> +       if (ovl_dentry_real_at(this, layer->idx) !=3D real)
->                 goto fail;
-> -       }
+> +	err = -ESTALE;
+> +	if (ovl_dentry_real_at(this, layer->idx) != real)
+>  		goto fail;
+> -	}
 >
 > -out:
-> -       dput(parent);
-> -       inode_unlock(dir);
->         return this;
+> -	dput(parent);
+> -	inode_unlock(dir);
+>  	return this;
 >
 >  fail:
->         pr_warn_ratelimited("failed to lookup one by real (%pd2, layer=3D=
-%d, connected=3D%pd2, err=3D%i)\n",
->                             real, layer->idx, connected, err);
-> -       this =3D ERR_PTR(err);
-> -       goto out;
-> +       if (!IS_ERR(this))
-> +               dput(this);
-> +       return ERR_PTR(err);
+>  	pr_warn_ratelimited("failed to lookup one by real (%pd2, layer=%d, connected=%pd2, err=%i)\n",
+>  			    real, layer->idx, connected, err);
+> -	this = ERR_PTR(err);
+> -	goto out;
+> +	if (!IS_ERR(this))
+> +		dput(this);
+> +	return ERR_PTR(err);
 >  }
 >
 >  static struct dentry *ovl_lookup_real(struct super_block *sb,
-> --
-> 2.50.0.107.gf914562f5916.dirty
->
+
