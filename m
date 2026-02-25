@@ -1,206 +1,262 @@
-Received: from flow-a2-smtp.messagingengine.com (flow-a2-smtp.messagingengine.com [103.168.172.137])
+Received: from mx0b-00364e01.pphosted.com (mx0b-00364e01.pphosted.com [148.163.139.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68CA234A765
-	for <netfs@lists.linux.dev>; Tue, 24 Feb 2026 22:28:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F512EE617
+	for <netfs@lists.linux.dev>; Wed, 25 Feb 2026 23:44:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.139.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771972088; cv=none; b=pCqia1ICSSMCF4pEdidGRW8A7kvHNCBylT3I7ixxQV1TA0vbTj1zQq4PY7TcCeZMy62Py/Zcu9ZIYjvchRKIo4Oetfe6jRn5Tm6NpOP7nwjLioBx1nx0KQ1GbVcgGptaXFC2Fboh5T4cOcGWOZlQim21Pgjk7k3I1GmrR7yU+4A=
+	t=1772063083; cv=none; b=BoDnhX1FDlO08XwqHWofkvNvONd+zcUuf8FJs9oF/NGwmzT4ZDEProkWHUNZn4t6zfsksLndzEXSzXekpLbwilT1zNlBQLqcl//7hzunJ5aod3Wa/3V3/FH2XATZSc2/p28e97K8ODz3oupcX706b1EyBPEW0B4JfE6PFc/da8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771972088; c=relaxed/simple;
-	bh=ZN5XFPn7tUkfMGc5iwQB3ZTfDKP5sgGwhooynf+keDc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lL8t+sqLMQldy3zJChog+AeDoK7oFrlhm3v5fTjcsbv3ZyFLBLR6bTnPbjSrmZuCX/l2cZXG70YgMMBXW3JjaVUakMBndL3OUDjSHgx9Xx3JnA/EQqYZxlhftyxzm0F4SIPbJls3QUyoenbaesIqyAJbqW0V8UuBH0+Mv7+vOq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net; spf=pass smtp.mailfrom=ownmail.net; dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b=Qsc1ePeS; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=JJyeWTwq; arc=none smtp.client-ip=103.168.172.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ownmail.net
+	s=arc-20240116; t=1772063083; c=relaxed/simple;
+	bh=RPYa8SOtCEMGYvfhLiG7oMZP0LUGjYMFBvMU/E6aYSQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=q97K09q9cGsM/e8yr1GSdcDowFmBbm9ktDaZFauj8qQxjxS/6rKMFm/K6+J4CcHsuMqCEM5tufS8fEJ2x6ZlUf7ezY1xaMlxYehRHuqlPtOwfuTzW/oe+8d48/J6yav56Oq+7HPzPZq6NBYFyZ9H7zHi2JzganSSCiAaIofYWIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=columbia.edu; spf=pass smtp.mailfrom=columbia.edu; dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.b=NZaA/URT; arc=none smtp.client-ip=148.163.139.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=columbia.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=columbia.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b="Qsc1ePeS";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="JJyeWTwq"
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailflow.phl.internal (Postfix) with ESMTP id B1B5F138052C;
-	Tue, 24 Feb 2026 17:28:03 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Tue, 24 Feb 2026 17:28:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:reply-to:subject:subject:to:to; s=fm3; t=1771972083;
-	 x=1771979283; bh=wijvxZQWm9lKy/h3JSFEVjiYfslMBA04IhCaGLEm+aw=; b=
-	Qsc1ePeSEaLWi8BDrsD9vY2ogxq/J/OJ+6DtZSsY4kpbC630IqfzW2ELvRLbF0xH
-	n4n/hLKHJSnJiMVp1uNGG9Rlxq7ptH66Wbkf+bBs6qm42CnmQkbjQ5NXMMEBGMoH
-	h7PMEuKXYCi19HURgYdLP3S9jxRjkCqwMchfscEqtL3c4vBlqOlEUBAK97192xNf
-	6Ov/iwuTkTMx0yjx6vpVUsTSbCOyIXhOBPbDM6okDqghjBNbm+nEGNs8MDP1Uf7d
-	1ID2SjWug65BTZe73wsuY9EGSugYjl9IlHJ1k+IknPOIaYGQr90i6+2nvRg7L+0x
-	0cVwg5VLWo1u+dJo7qF0DQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1771972083; x=1771979283; bh=w
-	ijvxZQWm9lKy/h3JSFEVjiYfslMBA04IhCaGLEm+aw=; b=JJyeWTwqbNVQ7ik2z
-	5xdf8bbM5zDUFVdjfpi/zzOa4qnkq62FeoQ/DA5Z+vQmEJZ3al1E1urqxtv4d0Ld
-	bE1ikLaQU7vA7bjRcHCKFDcGsJm16dhB6MypAhLDUFS4hyxWokG7yCbDgvKL9Q4e
-	05Tz8O9CuryBcvGdj330lyokQejeynz5uXNSrCFgFmWDYFqg9CSSPo8XTTnnC5iK
-	qWAUDw+Qd/WvQhLieYeLl20fh1gs7DZndVW7Ou9sCisHuObLPHB2NuZ2SkbwWMBb
-	zCtwpOmP25+0KbHOPRdBmp+0GApQWThdjOdVsVn+3Bu+0AordG3i6cFHx7kw67Rj
-	DiUcQ==
-X-ME-Sender: <xms:8yWeaV50ce2t6SX59updm27nWQp8eGTKxw3rAaNZjL4DXBBbZSebtw>
-    <xme:8yWeaW1HraDo8_99jFRL_aecm-h1fk4i_3OGtcuNhB--O_d9DxhUuRfSUi879bqbG
-    qKZB0631GoQG-wU0UrmkcXYrikooe74BWIE3MGcCFOrhPDz>
-X-ME-Received: <xmr:8yWeaU-XLL_iiElhQE7t7J8AyUG3uo0EVt7_NHMg2d7Fu4ruE0u3FtfmxMP3FVr3s10BZVC3OC719hMiadZwuRCKmukNcpVQa2t6ZnAr5kfs>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvgedufeekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhephffvvefufffkofgjfhhrggfgsedtkeertdertddtnecuhfhrohhmpefpvghilheu
-    rhhofihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnh
-    epveevkeffudeuvefhieeghffgudektdelkeejiedtjedugfeukedvkeffvdefvddunecu
-    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepnhgvihhlsg
-    esohifnhhmrghilhdrnhgvthdpnhgspghrtghpthhtohepvddvpdhmohguvgepshhmthhp
-    ohhuthdprhgtphhtthhopehvihhrohesiigvnhhivhdrlhhinhhugidrohhrghdruhhkpd
-    hrtghpthhtohepshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphht
-    thhopehlihhnuhigqdhunhhiohhnfhhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheplhhinhhugidqshgvtghurhhithihqdhmohguuhhlvgesvhhgvghrrdhkvghr
-    nhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhnfhhssehvghgvrhdrkhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhn
-    vghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqfhhsuggvvhgvlhesvhhgvghrrdhkvg
-    hrnhgvlhdrohhrghdprhgtphhtthhopehmihhklhhoshesshiivghrvgguihdrhhhupdhr
-    tghpthhtohepjhgrtghksehsuhhsvgdrtgii
-X-ME-Proxy: <xmx:8yWeaXt3neb7aslKJKcFebjTHhwfQfaqArxLek_2NK9m5pOR6El_1Q>
-    <xmx:8yWeaQq0kEjtPws5Iv1mh25sJdoENaWIfgZyqM9V_JOnSEBMhRBEnQ>
-    <xmx:8yWeaSG23osBRWpmi-0jY49_lLWwSTQ7Jm6D4szgx_LxwBw-LjnaqA>
-    <xmx:8yWeaT5Y0nn_7QnsucvZuSrdnEqWFyMkR86WvQXCmZU-pM2CpKItwA>
-    <xmx:8yWeaexc3PiU1gq6QfAmp2yyI8lJDKi8Zck37lv-r0FJGHXHFn_25csr>
-Feedback-ID: i9d664b8f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 24 Feb 2026 17:27:57 -0500 (EST)
-From: NeilBrown <neilb@ownmail.net>
-To: Christian Brauner <brauner@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	David Howells <dhowells@redhat.com>,
-	Jan Kara <jack@suse.cz>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Amir Goldstein <amir73il@gmail.com>,
-	John Johansen <john.johansen@canonical.com>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	"Darrick J. Wong" <djwong@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	linux-unionfs@vger.kernel.org,
-	apparmor@lists.ubuntu.com,
-	linux-security-module@vger.kernel.org,
-	selinux@vger.kernel.org
-Subject: [PATCH v3 15/15] VFS: unexport lock_rename(), lock_rename_child(), unlock_rename()
-Date: Wed, 25 Feb 2026 09:17:00 +1100
-Message-ID: <20260224222542.3458677-16-neilb@ownmail.net>
-X-Mailer: git-send-email 2.50.0.107.gf914562f5916.dirty
-In-Reply-To: <20260224222542.3458677-1-neilb@ownmail.net>
-References: <20260224222542.3458677-1-neilb@ownmail.net>
-Reply-To: NeilBrown <neil@brown.name>
+	dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.b="NZaA/URT"
+Received: from pps.filterd (m0167074.ppops.net [127.0.0.1])
+	by mx0b-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61PNNEj52723044
+	for <netfs@lists.linux.dev>; Wed, 25 Feb 2026 18:44:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pps01; bh=05jgbknsbqZP1uCdgxmv7u4HMp
+	tdcfek0XZsU81eJwo=; b=NZaA/URTtN755x3xQdd19/fuZUZtYv1FQpcevc3XwH
+	GiJ5HRxGcY9iy/OYljXRxusFlBguMsPnyZDcmgj6ga3FB3ZEB6s8V8MYK1RQkRqs
+	73E3y2Il0kMvjM1FeCKvErS6Ge1o+L/OrnSKHrzy/0gMDrz4XGhlptm9EW5EZsiN
+	KbNXNDLUxHRAHYoImMhwtPfSo5MKLD5TPNctjPWYbFCDuzg3+QLXfj4h+8nzvl+h
+	eF35anfVfxgICHTPN/s3s6nvmvXB97+RSUwbstEdYahxR2kI4oqGBDlsjZPhkjFA
+	35Gntn163Y2SMifNAIheBj42FBACqKtXgkrnpRQmM3NQ==
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com [209.85.219.70])
+	by mx0b-00364e01.pphosted.com (PPS) with ESMTPS id 4chv4nxm84-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netfs@lists.linux.dev>; Wed, 25 Feb 2026 18:44:40 -0500 (EST)
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-899b4ce513cso24880876d6.3
+        for <netfs@lists.linux.dev>; Wed, 25 Feb 2026 15:44:40 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772063080; x=1772667880;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=05jgbknsbqZP1uCdgxmv7u4HMptdcfek0XZsU81eJwo=;
+        b=NJo92Pg7CVs19gS9DpeqOSsO4w/RrJILH3/Awn+mnYt49nj4hJMJ3mNfQ1wVLdhoNX
+         YZpn8YV3wGHQkpZYx15enly0pN3QdJAKOXCXRC3qIYfUalFMlAgJY8wA0T1JbuSa728X
+         TS2sYaIjYwINr0NSv/fwGi+4gYLwMgtHB14/hXZIZa7U4r1In/7DdojB6zXFARJMtVyz
+         QqbM4hSXOk3fVARsPfQ0WpaV3cAvJlIR1D6I3S2ZT0gYzT9GtSslT0p1WkQ3suHiSPvY
+         z6uD6aBQLYlhPUZQeNaK4DvYsRExNHCtCCX6dKw2OZPoxODzipcEXxV0xkWeXVvRFWR3
+         IZQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU5HmR83M/0b19Z3eyTEY7/QMbUTRMVJmBJQ6g8xXfPsQ1vL3t5u/vukr+oyJTTA2jxHldcsA==@lists.linux.dev
+X-Gm-Message-State: AOJu0YxJMTZUhtQq/xLJRagnrkEhmoU5l9YxriztLnmNYvDfXf8veBX/
+	KkLNJZpZS1YxWZccmctAEQmkU6U7L+GZRySHLfDh7aAGp2+YDCHEROXJcVYg3oOKKNzdDMIdNnO
+	QuCnNmr8juB9A/UZtk2IXfIgP8eyCpsaiAsqh/LOW2T0f9arEkkPn
+X-Gm-Gg: ATEYQzz+qjNA3ce3CeEWBjexZ2e2yK+I262qDkpAhMISwNYN6gyTGEN+fXNQq4skI/H
+	eXQherTfl+cgyAK4Ajy7g81/VETv8KeOzRe2W8Umwal45OVsrkVgZ8nyMwIcBa6w8pkiJ//K8Sh
+	ugHYr0aq8AVP5sL7CybY3JS2pcl4FPu3HyXS9kWzVm7tT1hj2fCdQIBMlMVuMeNoV6if7AAgb8w
+	QNmdvCoT6KUxRCXCFImQ2IbGqnVaEC7NlwUxYGMiKeTiZrWBj22EZq95vghk7ZRB2VrIvNWyiz7
+	dylymmh6JaIzPOolBQJ0rt8ZhTVCRrpy93q5VNu9WUCV52a1q7dFwi9K2QtHHbrxafOpCEDLZXl
+	XTs92BPqU8pf1FjxeAj/4HUUKWX6Ltn6i
+X-Received: by 2002:a05:6214:4387:b0:894:663f:cb4b with SMTP id 6a1803df08f44-89979e31f4amr253354996d6.7.1772063080181;
+        Wed, 25 Feb 2026 15:44:40 -0800 (PST)
+X-Received: by 2002:a05:6214:4387:b0:894:663f:cb4b with SMTP id 6a1803df08f44-89979e31f4amr253353936d6.7.1772063079588;
+        Wed, 25 Feb 2026 15:44:39 -0800 (PST)
+Received: from [127.0.1.1] ([216.158.158.246])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-899c738d80bsm3357606d6.41.2026.02.25.15.44.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Feb 2026 15:44:39 -0800 (PST)
+From: Tal Zussman <tz2294@columbia.edu>
+Subject: [PATCH v2 0/4] mm: Remove stray references to pagevec
+Date: Wed, 25 Feb 2026 18:44:24 -0500
+Message-Id: <20260225-pagevec_cleanup-v2-0-716868cc2d11@columbia.edu>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFiJn2kC/3WNQQ6CMBBFr0JmbQ0dsBpX3sMQU9oBJkFoWttoS
+ O9uZe/yveS/v0EgzxTgWm3gKXHgdSmAhwrMpJeRBNvCgDWqGvEknB4pkXmYmfQSnbDt2Uhl+np
+ AC2XlPA383ov3rvDE4bX6z36Q5M/+byUppGguhNiqRjUWb2ad47NnfSQbocs5fwEZhc9ksQAAA
+ A==
+X-Change-ID: 20260225-pagevec_cleanup-d47c16cb0f2d
+To: David Howells <dhowells@redhat.com>,
+        Marc Dionne <marc.dionne@auristor.com>,
+        Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+        Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+        Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Dan Williams <dan.j.williams@intel.com>, Jan Kara <jack@suse.cz>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>, Theodore Ts'o <tytso@mit.edu>
+Cc: Andreas Dilger <adilger.kernel@dilger.ca>,
+        Paulo Alcantara <pc@manguebit.org>,
+        Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
+        Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
+        Joseph Qi <joseph.qi@linux.alibaba.com>,
+        Steve French <sfrench@samba.org>,
+        Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+        Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+        Bharath SM <bharathsm@microsoft.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tursulin@ursulin.net>, Chris Mason <clm@fb.com>,
+        David Sterba <dsterba@suse.com>, Ilya Dryomov <idryomov@gmail.com>,
+        Alex Markuze <amarkuze@redhat.com>,
+        Viacheslav Dubeyko <slava@dubeyko.com>,
+        Andreas Gruenbacher <agruenba@redhat.com>,
+        Muchun Song <muchun.song@linux.dev>,
+        Oscar Salvador <osalvador@suse.de>,
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        "Darrick J. Wong" <djwong@kernel.org>,
+        Chuck Lever <chuck.lever@oracle.com>, Jeff Layton <jlayton@kernel.org>,
+        NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>,
+        Dai Ngo <Dai.Ngo@oracle.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+        John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>,
+        Pedro Falcato <pfalcato@suse.de>,
+        Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
+        Hugh Dickins <hughd@google.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Axel Rasmussen <axelrasmussen@google.com>,
+        Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+        Qi Zheng <zhengqi.arch@bytedance.com>, linux-afs@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+        linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+        nvdimm@lists.linux.dev, linux-ext4@vger.kernel.org,
+        netfs@lists.linux.dev, linux-nfs@vger.kernel.org,
+        ocfs2-devel@lists.linux.dev, linux-cifs@vger.kernel.org,
+        samba-technical@lists.samba.org, dri-devel@lists.freedesktop.org,
+        intel-gfx@lists.freedesktop.org, linux-btrfs@vger.kernel.org,
+        ceph-devel@vger.kernel.org, gfs2@lists.linux.dev,
+        linux-nilfs@vger.kernel.org, linux-xfs@vger.kernel.org,
+        cgroups@vger.kernel.org, Tal Zussman <tz2294@columbia.edu>
+X-Mailer: b4 0.14.3-dev-d7477
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772063077; l=3877;
+ i=tz2294@columbia.edu; s=20250528; h=from:subject:message-id;
+ bh=RPYa8SOtCEMGYvfhLiG7oMZP0LUGjYMFBvMU/E6aYSQ=;
+ b=N/1edh2L6XTHkwD9ieSfOXn9kYa5DYTkRpLgb6W+Pjo3fqU/OShuTpJ0EUyLfSHC66PI9wcY+
+ BU8+4Nx0zdtBWryBzWRqlHj5gGJzMg+bWxBXZztU9BaHETUf5RWJ+Bm
+X-Developer-Key: i=tz2294@columbia.edu; a=ed25519;
+ pk=BIj5KdACscEOyAC0oIkeZqLB3L94fzBnDccEooxeM5Y=
+X-Proofpoint-GUID: v2YINMKMP2VnGvxJKkXmN6vGMCZyZlnW
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI1MDIyNyBTYWx0ZWRfX6ozJMSwXTXLF
+ Y7O6HFpk2VkixCjLeRZGyr7zD+J5mJAmDsPdKjKJ+Z6+5pMuxMVzPriREYSUhGN2594o15zXQ8b
+ Ql4b5EWFQgSeH345bt+9MGGTWkjDLp6z0h3vx0KIzlGYgbNCPKvpUiCidNwQhLItJNpToFV0O9o
+ PXiSV8bcSMZHQNHVK6Bc/46OkUZ9EBndgjgzmU4BR8zP0sCVPXH20EDXXeXJYaVF91Lov/jEtHn
+ bSYkBbfOHiXlJukvMvG1s+SU+7M33Q3FbXFccpOot1HRdx2b37T7ThMCO3bfGOKKD+RGZVkyKG+
+ 7uxEHSQFyGF8i4dD6GHB/PYW3zt/OIyn6/BB3PjTKoM7/UYafRkG0vPx9Ld4H0KDNLcx1EMnBSI
+ Mo3yV1F44uWNVEPIzDhnu1kmC9Pi/M2FveBv7ejhV07WqD7WtB82LZi6oYAGY+CTcqoEhdFg1eW
+ klQRNVc/W02AvDTyX9Q==
+X-Authority-Analysis: v=2.4 cv=Cr6ys34D c=1 sm=1 tr=0 ts=699f8968 cx=c_pps
+ a=oc9J++0uMp73DTRD5QyR2A==:117 a=mD05b5UW6KhLIDvowZ5dSQ==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=x7bEGLp0ZPQA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=azVShVRs0zEubeQ0wG0L:22
+ a=VwQbUJbxAAAA:8 a=C2eTfLYCeeefI48a-yAA:9 a=QEXdDO2ut3YA:10
+ a=iYH6xdkBrDN1Jqds4HTS:22
+X-Proofpoint-ORIG-GUID: v2YINMKMP2VnGvxJKkXmN6vGMCZyZlnW
+X-Proofpoint-Virus-Version: vendor=nai engine=6800 definitions=11712
+ signatures=596818
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=10 suspectscore=0 adultscore=0 spamscore=0 clxscore=1011
+ bulkscore=10 phishscore=0 priorityscore=1501 impostorscore=10 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2602250227
 
-From: NeilBrown <neil@brown.name>
+struct pagevec was removed in commit 1e0877d58b1e ("mm: remove struct
+pagevec"). Remove any stray references to it and rename relevant files
+and macros accordingly.
 
-These three function are now only used in namei.c, so they don't need to
-be exported.
+While at it, remove unnecessary #includes of pagevec.h (now
+folio_batch.h) in .c files. There are probably more of these that could
+be removed in .h files, but those are more complex to verify.
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: NeilBrown <neil@brown.name>
 ---
- Documentation/filesystems/porting.rst | 7 +++++++
- fs/namei.c                            | 9 +++------
- include/linux/namei.h                 | 3 ---
- 3 files changed, 10 insertions(+), 9 deletions(-)
+Changes in v2:
+- Add tags from Matthew, David, and Chris (thanks!).
+- Add 3 new patches with more cleanups.
+- Link to v1: https://lore.kernel.org/r/20260225-pagevec_cleanup-v1-1-38e2246363d2@columbia.edu
 
-diff --git a/Documentation/filesystems/porting.rst b/Documentation/filesystems/porting.rst
-index 1dd31ab417a2..d02aa57e4477 100644
---- a/Documentation/filesystems/porting.rst
-+++ b/Documentation/filesystems/porting.rst
-@@ -1368,3 +1368,10 @@ lifetime, consider using inode_set_cached_link() instead.
- 
- lookup_one_qstr_excl() is no longer exported - use start_creating() or
- similar.
-+---
-+
-+** mandatory**
-+
-+lock_rename(), lock_rename_child(), unlock_rename() are no
-+longer available.  Use start_renaming() or similar.
-+
-diff --git a/fs/namei.c b/fs/namei.c
-index a5daa62399d7..77189335bbcc 100644
---- a/fs/namei.c
-+++ b/fs/namei.c
-@@ -3775,7 +3775,7 @@ static struct dentry *lock_two_directories(struct dentry *p1, struct dentry *p2)
- /*
-  * p1 and p2 should be directories on the same fs.
-  */
--struct dentry *lock_rename(struct dentry *p1, struct dentry *p2)
-+static struct dentry *lock_rename(struct dentry *p1, struct dentry *p2)
- {
- 	if (p1 == p2) {
- 		inode_lock_nested(p1->d_inode, I_MUTEX_PARENT);
-@@ -3785,12 +3785,11 @@ struct dentry *lock_rename(struct dentry *p1, struct dentry *p2)
- 	mutex_lock(&p1->d_sb->s_vfs_rename_mutex);
- 	return lock_two_directories(p1, p2);
- }
--EXPORT_SYMBOL(lock_rename);
- 
- /*
-  * c1 and p2 should be on the same fs.
-  */
--struct dentry *lock_rename_child(struct dentry *c1, struct dentry *p2)
-+static struct dentry *lock_rename_child(struct dentry *c1, struct dentry *p2)
- {
- 	if (READ_ONCE(c1->d_parent) == p2) {
- 		/*
-@@ -3827,9 +3826,8 @@ struct dentry *lock_rename_child(struct dentry *c1, struct dentry *p2)
- 	mutex_unlock(&c1->d_sb->s_vfs_rename_mutex);
- 	return NULL;
- }
--EXPORT_SYMBOL(lock_rename_child);
- 
--void unlock_rename(struct dentry *p1, struct dentry *p2)
-+static void unlock_rename(struct dentry *p1, struct dentry *p2)
- {
- 	inode_unlock(p1->d_inode);
- 	if (p1 != p2) {
-@@ -3837,7 +3835,6 @@ void unlock_rename(struct dentry *p1, struct dentry *p2)
- 		mutex_unlock(&p1->d_sb->s_vfs_rename_mutex);
- 	}
- }
--EXPORT_SYMBOL(unlock_rename);
- 
- /**
-  * __start_renaming - lookup and lock names for rename
-diff --git a/include/linux/namei.h b/include/linux/namei.h
-index c7a7288cdd25..2ad6dd9987b9 100644
---- a/include/linux/namei.h
-+++ b/include/linux/namei.h
-@@ -165,9 +165,6 @@ extern int follow_down_one(struct path *);
- extern int follow_down(struct path *path, unsigned int flags);
- extern int follow_up(struct path *);
- 
--extern struct dentry *lock_rename(struct dentry *, struct dentry *);
--extern struct dentry *lock_rename_child(struct dentry *, struct dentry *);
--extern void unlock_rename(struct dentry *, struct dentry *);
- int start_renaming(struct renamedata *rd, int lookup_flags,
- 		   struct qstr *old_last, struct qstr *new_last);
- int start_renaming_dentry(struct renamedata *rd, int lookup_flags,
+---
+Tal Zussman (4):
+      mm: Remove stray references to struct pagevec
+      fs: Remove unncessary pagevec.h includes
+      folio_batch: Rename pagevec.h to folio_batch.h
+      folio_batch: Rename PAGEVEC_SIZE to FOLIO_BATCH_SIZE
+
+ MAINTAINERS                                |  1 +
+ drivers/gpu/drm/drm_gem.c                  |  2 +-
+ drivers/gpu/drm/i915/gem/i915_gem_shmem.c  |  2 +-
+ drivers/gpu/drm/i915/gt/intel_gtt.h        |  2 +-
+ drivers/gpu/drm/i915/i915_gpu_error.c      |  2 +-
+ fs/afs/internal.h                          |  1 -
+ fs/afs/write.c                             |  1 -
+ fs/btrfs/compression.c                     |  2 +-
+ fs/btrfs/extent_io.c                       |  6 +++---
+ fs/btrfs/tests/extent-io-tests.c           |  2 +-
+ fs/buffer.c                                |  2 +-
+ fs/ceph/addr.c                             |  2 +-
+ fs/dax.c                                   |  1 -
+ fs/ext4/file.c                             |  1 -
+ fs/ext4/inode.c                            |  2 +-
+ fs/ext4/page-io.c                          |  1 -
+ fs/ext4/readpage.c                         |  1 -
+ fs/f2fs/checkpoint.c                       |  2 +-
+ fs/f2fs/compress.c                         |  2 +-
+ fs/f2fs/data.c                             |  2 +-
+ fs/f2fs/f2fs.h                             |  2 --
+ fs/f2fs/file.c                             |  1 -
+ fs/f2fs/node.c                             |  2 +-
+ fs/gfs2/aops.c                             |  2 +-
+ fs/hugetlbfs/inode.c                       |  2 +-
+ fs/mpage.c                                 |  1 -
+ fs/netfs/buffered_write.c                  |  1 -
+ fs/nfs/blocklayout/blocklayout.c           |  1 -
+ fs/nfs/dir.c                               |  1 -
+ fs/nilfs2/btree.c                          |  2 +-
+ fs/nilfs2/page.c                           |  2 +-
+ fs/nilfs2/segment.c                        |  2 +-
+ fs/ocfs2/refcounttree.c                    |  1 -
+ fs/ramfs/file-nommu.c                      |  2 +-
+ fs/smb/client/connect.c                    |  1 -
+ fs/smb/client/file.c                       |  1 -
+ include/linux/{pagevec.h => folio_batch.h} | 16 ++++++++--------
+ include/linux/folio_queue.h                |  8 ++++----
+ include/linux/iomap.h                      |  2 +-
+ include/linux/sunrpc/svc.h                 |  2 +-
+ include/linux/swap.h                       |  2 --
+ include/linux/writeback.h                  |  2 +-
+ mm/filemap.c                               |  2 +-
+ mm/gup.c                                   |  2 +-
+ mm/memcontrol.c                            |  2 +-
+ mm/mlock.c                                 |  2 +-
+ mm/page-writeback.c                        |  2 +-
+ mm/page_alloc.c                            |  2 +-
+ mm/shmem.c                                 |  6 +++---
+ mm/swap.c                                  |  4 ++--
+ mm/swap_state.c                            |  4 ++--
+ mm/truncate.c                              |  8 ++++----
+ mm/vmscan.c                                |  2 +-
+ 53 files changed, 56 insertions(+), 73 deletions(-)
+---
+base-commit: 957a3fab8811b455420128ea5f41c51fd23eb6c7
+change-id: 20260225-pagevec_cleanup-d47c16cb0f2d
+
+Best regards,
 -- 
-2.50.0.107.gf914562f5916.dirty
+Tal Zussman <tz2294@columbia.edu>
 
