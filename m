@@ -1,93 +1,93 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94A63750DE
-	for <netfs@lists.linux.dev>; Tue,  3 Mar 2026 02:28:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4D2374E74
+	for <netfs@lists.linux.dev>; Tue,  3 Mar 2026 02:30:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.177
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772504911; cv=pass; b=c2nX1mkq7XhdnRb76VOnq+Z+xGVjQ7XUaXcKHxupx8fbvoUfHBNPiZGlt+pQnfpyhsCxUHR9kBOA1SeSOR03+f5azuQOMJTvccYWYUbk4LENmNbm0owNjRQ982JIZ6paZgQhlHCSWNBpeLcKwx6POrI17dq2+z3xZMUZsCu0WnE=
+	t=1772505027; cv=pass; b=oy8shv/jRv7Ohv4YJaXx/rJXS/vNhLPERXXcxGnmT38UqK+3h+hSG4nLHBLFXHlqoTfZq83FcEZ7mzeEWnH4uiEEa35YrlIfBuVtJ71yYMfMhMoh4kjwE5R02T6fAZInNwFzUmWP/npJTybYQii1mw36r20adP1ZeQ7XtytyEHE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772504911; c=relaxed/simple;
-	bh=CmpPLTDLjoziZGQueGxnmQI7O2xObKPRhPekUhrY70I=;
+	s=arc-20240116; t=1772505027; c=relaxed/simple;
+	bh=dpQSmzkUM5eywQT8MkIz9dqIAPHwbz822026FlJmJ4U=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FWV0jSjvhVMe72veqT0ymUUCpe9BXnYJPO6aAPaRfbEyyptJTdey6ul8kKmjfhAKSzISXbtsZjZzH6WTuKsdVo7e8rVIDYEe0yvx3wK9gL74mMvHSLgUgjyMyuhCMS8snI3hRSJBqgbs/l5Vu5a/NyQ7437AMjtvnIXXjs+Rz68=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=NQ/tr48s; arc=pass smtp.client-ip=209.85.216.50
+	 To:Cc:Content-Type; b=HrJ0coP0NL3iFxdaTa4Q/8KFmV9HMx+RxTbnUpTExuRWHZS7FWQKgFZT+kTAxj8YQmizUkxJXxp/+TLgW61umSE+1tTLzpZ5Oc11zZrg3jUkrJnhj3tZKBs8cNU0vbqgFTo4QCBxgznRv5L+nz0ScKi7FYu3E4Uto8qdhQ1I8YQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=Y20eewbt; arc=pass smtp.client-ip=209.85.215.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="NQ/tr48s"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-359832fc558so1784592a91.0
-        for <netfs@lists.linux.dev>; Mon, 02 Mar 2026 18:28:29 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772504909; cv=none;
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="Y20eewbt"
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c70f5d6a6a4so3040126a12.1
+        for <netfs@lists.linux.dev>; Mon, 02 Mar 2026 18:30:24 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772505024; cv=none;
         d=google.com; s=arc-20240605;
-        b=WilikjEfMFKCEn0HkFDu4cgBj8WvrAjFLDe8FarpxXaVKvQQ6Gb4hFW7PzhZ1Zm2Ig
-         Cyk+wzaALzteQRZQUTDWO+FAB17y9qyxQBTdt/sV7MWmPipuexr0MwvyFG6i2lbDQbKm
-         NRuhrKiUTbFW/sroIx8NDf46Cbvw5obulVVZss4MQ5sq97WJgupyWdXb8wHKFROvTf7r
-         FVdEDX4qR4YjQxdeNiyWr1wClFzytQ9eZRqnFvpgHSSqcwlS/7jX2UTeKHFWOVuhQuOm
-         WZ6e7TBRVPQEEbdJLDI0bnS8G1Djishzy/TvvwnhR/sUm9K8O/0xUim8LbAGr2b/RRpJ
-         iVJA==
+        b=ZfZ5PjR76Xg/24uL8TIeX9Kret1gMtjStLRTwSFGWYcWL2CBA/Upl8cdyWImgoS9OD
+         AKbDtNUgxHls3oe7dx8KIJWDgjdT+k6aVUWLAor1RO/1o1m3gYXuiFC2+3p0dHMUXOFw
+         JbXaiBv98biufhvrFmgRsLFwOCSCtV38x9sY2HQIkw3rHUZd10MztDjhjESxQOwoU3aD
+         Ls7xpqaN9aTDv49CkQ7jbk1MZHR1RxR4BoVOL4O202/ONOmrC2BZDczwR2YMiKfrXKpm
+         MozmLYO+WwYgufA1w4LHEVxwfgDg2gLtPB0WfKefcY0Ts+ecwtPSZfx8HaeLXtiX/7l9
+         SA7A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=C1bg6xiI4y6+7k2tjKhPvGRGK3TFDQKnfwBJ+EjIYKA=;
-        fh=tAYc3ED3p9QrUfNA55p3y7rSB1b98Migo53CwQV5tkY=;
-        b=kY9/NMEoouRZfoVvOUBMrnUKTudIgaN8jcl/25fW84Su/7jZIaQGGsUBuvRKp3LCxF
-         yT3qdQl2nUorNzVmXqS23+ATq+fi9BwEnJD47/JCij4soMxeoNFdowky+zRSwxp5PUp+
-         YpjpfdE6ZTQ6/DuiwcpbHs2cVP2db3vjUZFrK9tIIBHoPBbGjhtIqHP9KoWZRkRK9i0S
-         bhmWBJAKR3lWE4t8Ox1VsDWBBSm0/bwbIN7mmBypnCzcVQDJQMSJcp72d8JBVOxJOTJj
-         7joe2KZHfRLLAzRDrhY0MdgC8Z0ZfwhE26TO6qie+0oUUusAgG/vqa/RJyqdfamLkWTf
-         uIjQ==;
+        bh=VKlMqpEd7YBdXym1IpYpN4BFku3eaQLOirqfkrIT+SY=;
+        fh=AGZE/Qp1l6l7LO+xrGzEf44zjF8y9sATKHoXugNanDI=;
+        b=dMQ9pDUzINHXI94mG5N501Ttrvfjcrs8qsNIv8d9ZLguIvoQh8TrNxWeLw04CRB7Cu
+         1YPKfph8KRhK2HDu4NRWw0rB7PpIylL38bB3YwZmgn54/oxNt868FlMNW86rZ5ygw8y2
+         QsBh8jW1PO/4NxjKRGG/aDiu8TSPajPT7t3Lzza5UaRWd8GzLuFMoqyopPGn3lcvAvaa
+         2rDBA58sLhtropx+R3T4WiVj3vg+KgugsiU2aweynuhTm6UxdEnRHrWhZypuCVb4tyPA
+         kUUTzI0Q6CvEeWpubu4sAPJhKxi51doXHl6KfeHv5gRot/f9j4j4F/kzo9kYnN9HK1+W
+         CkvA==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1772504909; x=1773109709; darn=lists.linux.dev;
+        d=paul-moore.com; s=google; t=1772505024; x=1773109824; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=C1bg6xiI4y6+7k2tjKhPvGRGK3TFDQKnfwBJ+EjIYKA=;
-        b=NQ/tr48sJ+m2o5jcGhgvlRuFY8k21269ikWTle7tUnB9GPFxykpO2zAB+xcEfoHL/t
-         wCz43zqn2gDMgEsZ/mc98F4Ltsd72IkrsoWIyQ4sxBAEV7o70DFQMRS05dvfNuJLa5Ll
-         dPlBbM7xI+jPgJp9HaIk/gxqLDVLYMP5tb1jQcLG5EahbizYVqzR09jcUopiWsg4204m
-         T4mwPzpHjols2IpwMzTE1IDu0FL1TkF1osChYY1qg+l2MYVFEqy1c8PoIfIPlljTKFZT
-         m+SU0fKR0KiVUTLCCw8JOJFXerm/HteDJz7igoNW1ZcMOAMr7QgXqSq5skMH6ENixcXv
-         jIuw==
+        bh=VKlMqpEd7YBdXym1IpYpN4BFku3eaQLOirqfkrIT+SY=;
+        b=Y20eewbtbz88r0CvB6vcLgaucgAvnBcfx1y7go1deDjXuIV0B6haeoUzjRHKOppOUS
+         Chc3uap9Bggfk0yzSzFgn1WGGbygOGS3RD14Vvg/7xXeey2dbQlTZnc/BhSImjvfzsaF
+         V+LDv9YRh3Whk+bP1AM/SrpEZmwOuPy78KJCy/hwn553RUPF+bbaJv6Hszca3Lsj8E2N
+         oU8pUD7GmxYiwjUP8WIdQtaTEFIKqv4YYScTFs/48QphWDQG+4Ah9Xa+oL4yMkG6NxjN
+         zoKUsHpSWxqZpWw3xAWuAhOrYm4nSzag0Psx1Cy0K4HiLA3/kjOTE1qCW2BXlre1OpNw
+         jMTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772504909; x=1773109709;
+        d=1e100.net; s=20230601; t=1772505024; x=1773109824;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=C1bg6xiI4y6+7k2tjKhPvGRGK3TFDQKnfwBJ+EjIYKA=;
-        b=wFeKKtC6Nr18No3GraffegqcytUfAFKm5AhtJfb9hcuEfD7ipx9piunL67F/wnr8Sr
-         3Adfh/C5uTgmt7xIRzIJee4rbYq/0XjrY6MSK103NHrZzeZMETT8HuLuvOuu0Ckksohq
-         gYVL4Y8sZZsObX1IFwlCDL1PeHUGzkzn7Vzc0DXGXZHfoYIFfhHg35Rar66mc7vMOUA/
-         NrOSxiz0FTSET2Jg7We8+60YezsGBaFLmbDmHOvKNZmPpF5zd1dLLDlpotf4d0xwgvCx
-         FtWeTOfnBFGKqXxE5NNQNV+LzA6g2FKAvtjZrbNqwRzkXmg6Ytt+03aWVPpqGCYjvEVM
-         RTbw==
-X-Forwarded-Encrypted: i=1; AJvYcCVxDAjlCW7ev60jcwtmrHUNj6vXsTsYtSQjFYtqz0UO/be0ATFB+flc1TDslkJ4RhiQ48YjbQ==@lists.linux.dev
-X-Gm-Message-State: AOJu0YzwoHnFwV/MrNo2VpJ2T8j9FaatVuArXcCZ7ehzQVUVytp3kDw/
-	QjzvJVvmevlF52spEET3hl2PEcg5CPB/oTnE5tNN7yaaqfCd4uxvgyrFo/Z49AVEYcOLqOIaZ+f
-	ejdFJmWkbq2bJPF10EL3Zhj0UcFCjglH791+B7qSd
-X-Gm-Gg: ATEYQzyh9lOJaVluhr/LaKykAdLHmHaf4lr/0nuuCbOStQNqjMrGhhm9w7nIOTaEXqi
-	55r5T19+TEcdwcFmdWXETFEIuB251FMEhwJ6lrl0kySyzEQLp2TxXiZmvDXPvnOtw26dD8hllAb
-	FtrowoJ/u6A54kLiQ7MzN2vS9pQDgpGx5FTjiMtMdLO2Bbu65pf4mj2P4qqwWk9waape5rGTIaW
-	xIwPbipQPFyXNAKdxsWFWFGNvdpGvZWd1iRjW2v4BEj4+GX90BVKzb0/7m6PWzZv73OwjwPSYTO
-	e0YWCg8=
-X-Received: by 2002:a17:90a:7f93:b0:356:1db4:8fe5 with SMTP id
- 98e67ed59e1d1-35965cc714fmr9453563a91.29.1772504909127; Mon, 02 Mar 2026
- 18:28:29 -0800 (PST)
+        bh=VKlMqpEd7YBdXym1IpYpN4BFku3eaQLOirqfkrIT+SY=;
+        b=JhDuo2kNEQyzhcI2N1Vzylm8q3/jh2gJed8lo8v7yM+iqN8Q92g3RdSqQn29Xehmk1
+         Bs5uRprf4xivNxw4FXejUYElTEfu80nhuHtP2b9t3S2PbmiADvtKiBcSpMkK7ZPf1fAo
+         nEq0t+o9E1d0HICnz/d27mnL7NHtdKW6aM12IDLHaIK469R1tpWPJAbmg4Mdp48/Qk0h
+         HN1TKCyHpQqSfDJHw/4VGPJGF1OthexaeK8Pfd0wJOrk6u85Clu0jZk5ap+ujvkVjRkd
+         UyzznrCQkIcc4UZ85JxpsgU5qPcs7+ORkqQqqmxHo3rAMpQ3sJIItU5ymLyXhom+5CEO
+         kuiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWCyt7vHyi3T5U7xS7iDgfH/ZXXbmpKYhFCmTg2YcIU/dCbl8ux6L0AJzrShWo8g8/GIDApAg==@lists.linux.dev
+X-Gm-Message-State: AOJu0YwpZZwRaXORSBd/fqp4BuDkqvJw5hZso251v9F3sGvgB4SM7OTT
+	6ZolEEAfbv/MLFXooO9YLN7czeUSbv4yGAvo+riuXrh5LufJXdvk3ghrFXNjcvWHBJ39M2ps02c
+	2qVezlbBLqFB0hQAhu69eC6qDIGLz/V6cPpMHjwZ/
+X-Gm-Gg: ATEYQzz3KSKhq4QqW7DN1fvvWBrO3EYsHvEOtHZ7Bqkn4riQEYFtvCcHSK1h9iduhmL
+	81ejNTZh7wF5KHlPWIR+qA3fzoKcUYJXVKU21wo1yzjTipbfJ/VdThMCfww7uPKDVhBFcErhPaV
+	ULgnNU764UUfp5reuXOUSy/VDnVLtvBOErxlKt1ZvYZrxXwWLN1Xlr8XdJuIKH7Nwwx65mIPW3+
+	COexw9/2Zd3K0U7m6EpFqnKEIWxn5ATcqE72cE3qbEdNCz/y/KvVsAUgzhjsUok4P3iBh4LX/aR
+	01fzuIydyVYIjzmfKQ==
+X-Received: by 2002:a17:903:244a:b0:2ae:56f8:747b with SMTP id
+ d9443c01a7336-2ae56f8786cmr37920855ad.57.1772505023451; Mon, 02 Mar 2026
+ 18:30:23 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org> <20260302-iino-u64-v2-49-e5388800dae0@kernel.org>
-In-Reply-To: <20260302-iino-u64-v2-49-e5388800dae0@kernel.org>
+References: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org> <20260302-iino-u64-v2-105-e5388800dae0@kernel.org>
+In-Reply-To: <20260302-iino-u64-v2-105-e5388800dae0@kernel.org>
 From: Paul Moore <paul@paul-moore.com>
-Date: Mon, 2 Mar 2026 21:28:17 -0500
-X-Gm-Features: AaiRm53ToDAKLnqMzF7h_Rr5obeE3dnKPI4TQkaY52RSs5vb8oGyabc3Zmeif9I
-Message-ID: <CAHC9VhRLAhMYL1ax3+LCeLLhnK0XGnvs0kGPGgHaptTaDynroA@mail.gmail.com>
-Subject: Re: [PATCH v2 049/110] security: use PRIino format for i_ino
+Date: Mon, 2 Mar 2026 21:30:10 -0500
+X-Gm-Features: AaiRm53tOqTCLn9NgvLgqwCOFo4xSyksjolr8ucn59RQ44Ck0r7mzGeRmSI5U0c
+Message-ID: <CAHC9VhSHj7qc-tKxEN45bkfr+Dha59ihzOGiCO2WDYTYoB-LeA@mail.gmail.com>
+Subject: Re: [PATCH v2 105/110] security: replace PRIino with %llu/%llx format strings
 To: Jeff Layton <jlayton@kernel.org>
 Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
 	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
@@ -175,14 +175,11 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 2, 2026 at 3:36=E2=80=AFPM Jeff Layton <jlayton@kernel.org> wro=
+On Mon, Mar 2, 2026 at 3:50=E2=80=AFPM Jeff Layton <jlayton@kernel.org> wro=
 te:
 >
-> Convert security i_ino format strings to use the PRIino format
-> macro in preparation for the widening of i_ino via kino_t.
->
-> Also correct signed format specifiers to unsigned, since inode
-> numbers are unsigned values.
+> Now that i_ino is u64 and the PRIino format macro has been removed,
+> replace all uses in security with the concrete format strings.
 >
 > Signed-off-by: Jeff Layton <jlayton@kernel.org>
 > ---
@@ -194,8 +191,7 @@ te:
 >  security/smack/smack_lsm.c           | 12 ++++++------
 >  6 files changed, 20 insertions(+), 20 deletions(-)
 
-No comment on the PRIino specifier, but the LSM framework and SELinux
-changes seem complete.
+For the LSM framework and SELinux changes ...
 
 Acked-by: Paul Moore <paul@paul-moore.com> (LSM/SELinux)
 
