@@ -1,202 +1,160 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com [209.85.161.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620A236B057
-	for <netfs@lists.linux.dev>; Fri,  6 Mar 2026 03:09:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772766569; cv=pass; b=UP1ShPUgO42PGFLTCAFmWnKF3GOE1j7ZBngf2dSbHKhvnp0HsNYMn/L51fto/CpBJIXL87DwWEzBiAp846y6T5oMZP9PnNGk+W9FNzEzBq1D0HhB2u8RESBSm7HpqFPL8UBZ4whvdluhv18GDPYgTHMTCNH1Y7Q9TIyAc61w3to=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772766569; c=relaxed/simple;
-	bh=bviOEAiclB40zHgWtMns3qOTI6tH10B4GOXwr6aNFqE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NObUJn+H+iwKdadKmQKVRPn5QqyboyZwBoayThy/v9u6mNxwsBEaybWF7XgZyRYQOwrLdDg7vn7Gx4UoUsYSJQaltMQGqXF4UQ1NMQoCnmDYyQjnOW6K6L6lpBIoUWdsxscnU8FOhcbD28Hntl/+XfOjqlPrNs/bPIuNqRHV9KE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=F35VEhtP; arc=pass smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="F35VEhtP"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-35994d84c6dso2071685a91.2
-        for <netfs@lists.linux.dev>; Thu, 05 Mar 2026 19:09:25 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772766564; cv=none;
-        d=google.com; s=arc-20240605;
-        b=SspLPKv2QGhOKQ/whQZRmVtid3xGy8EtxiBoIOHGCc3rAaPHsPln1cNV+pGg1ftmjX
-         r4ABVuLqi/MM4ChKaenG4nI66v+A27kc5GwIKgbIRegd3+fM7ptIve7kpyBitAU5Hxn/
-         LqR/hGgbUJjHzj1bx8XY0zcetscBFwnRz5YVFn+iMB+ekRwwxT5jvX2pl5MDyIQdfIQ/
-         qn4PhDvEwp7qT8KDwdrLsblzZGd6Eq/ZPsx9dNFOilSESU8aQBjAWt9e7ZtokT6CQh3Y
-         /otPRIO6VooMqQlAIzR632oPz4tQARee+kKHUDwjf9lpVZbCUQ8+3Q7S/8Pcp074A1cg
-         qj3A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=a2wyFmqtgQuSSxu/y1lHXpYQVnaUEjD/9HUkzSu97q4=;
-        fh=GSXFsInvHvO5VhxPp+LX/FmFvjaNY2QE0D+qXpJGOJ4=;
-        b=Cfto4Q/Wl8OTWV3CsAO5EldkJai10mHs4KyUL+LaVaQ3WEum3T4R4vOYvZASmjjlIa
-         0jLoMhxyqxHADYMqib+ay965sz2B+UBTn+GZ7XYCvo5U0dB/gZZrH7HF+bEgbZg8wOTx
-         04mX5bf0bzcWALy72ZK6RqXONCBatI4XvwX4mJSR0NBDic1ccEmtVyG/4GFjDrnVmm8F
-         gLI6POhUS3ekauR8GZaw/FwKkcOJFJQIO/n+RyBT3E4we9gclNMOE0dHKLozIH1zpvQ2
-         +wJz7/lhv5tJJ+zkFS7ZQgNZFTdkmRIM5VTRncLnZhCdAWMABNmyOcv+bXq7J8Cf2xX1
-         K/yA==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1772766564; x=1773371364; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=a2wyFmqtgQuSSxu/y1lHXpYQVnaUEjD/9HUkzSu97q4=;
-        b=F35VEhtPqiW1xpbAA9+Bd6GaApnmdm+m9z4Pu22G3qCufjkKl0ffaq3ILPiTCgXHPI
-         m4mPJgN29aXhaco/A0KA3aOC7MpPwj4eiOq4YehUL3lh3pCrFtE39eQCGImeZX7oPQpd
-         BuBtG0eS8ehkaG4w9/Ma6JBPg/VePXArUxbjP2wZZ0w5sV+7EBUvMpCwGlW/1iXG30sU
-         EdeS9W7OSJAgH+MXiy1bt9Ago5rb5lkTdL7dM9phyusCNnKPSNb3KzhzM/7JO+w4cs0h
-         XFEkbn/gCfrvWpRHC2jPAHlQQ+4KKjfe7H6/wP8WpHdwowUdOKRGPD/cI3ZI6OMd4od/
-         5l1g==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A296A368284
+	for <netfs@lists.linux.dev>; Fri,  6 Mar 2026 06:36:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.70
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772778981; cv=none; b=VbIhB+cDdDDcMJI/Z1v5ZY4BFuVwSYGbvP9nbsk2nI594mltPVXh0u4uM5W3ihz2cnYjys8SNbVjM3fJUyLufpZKAGU1+C4g4tw0MiRE9KM1QeT7rtaMhBqSiNNgecEZHDXlSATVOqUiyyIa2doyrmjo3L9EnWJgAbdHUQQ/A5M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772778981; c=relaxed/simple;
+	bh=vOFWcD9VgS+J2CrjRSLI6m6RzJjvI4JzAWbvcLw4kfw=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=koNFrZEw6Mqo9bY4rC4jZrqym8OlAbUXdklI3qRA8MQP5S9IRZQTFTZAxjsYnpIBBK5zHRfVGOaZaGd3osz8JlveBrKmZgKIEtEA2Ss920LLKponYbXhZ8ikF5brvLWtorEorCM0lluoPhLp7YGLoOrenr/Qejf05xiAXQZe5mE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f70.google.com with SMTP id 006d021491bc7-679dda090fbso151536533eaf.2
+        for <netfs@lists.linux.dev>; Thu, 05 Mar 2026 22:36:19 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772766564; x=1773371364;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=a2wyFmqtgQuSSxu/y1lHXpYQVnaUEjD/9HUkzSu97q4=;
-        b=jkvwLlPoXAEklQsz5Ewj5sd0vB9yxylEw8eGhwIW+otFETkg4F07bPwSawrDvsu0c9
-         5IEA4HRqkZGVuEDPje3lcNUoT6Jalvvm2EgUGsEqAhvX75jYeZGS8jV0yysfGuGqjj1F
-         T81i4iz09n2EkqM2y1bzLPLfM8BDfQePhBNrAeLn7kApJFV2lltaZaaiw/Q8h/hkQtO0
-         ZE9CrlsNXqNi1BSkpREhyk8ofum27DtgjXmzt4CwMxLn20pFUlbw87Qm7phWRTfA3Y6j
-         5gHHc19HsRBv/n7I6KF5x8J/t/cvu0f9fvYGNiEcZvt4tRHwbrAbXWdTcZFM3LHs8n3J
-         9TWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVM6uVkzm4xRDZu5SKzDYF0jGtKwGij0L7SrdeUXeN2+/Xh5oNM8tahztYdM7nU8j/49eSZHw==@lists.linux.dev
-X-Gm-Message-State: AOJu0YzSYyTcHEmCsNTQSNMUWve3RhBTvixmHlWPiHO+9o+i+cCrUnlX
-	kweaYuohngVe29UFqk/dSbw4mTMVuzxbHnHeZ6SE9NEsHRKTIojjwVI4MLb6JGIGPiLzrMFYIV4
-	rjb4KOa/TR2KGfzTTwpV37Ljjbud48Bml9fmPQWee
-X-Gm-Gg: ATEYQzwz2B9gXA/C9SMnHYAaULeMCYQHwuKkN1D1yU9l+W14ZTzdHYfACTveyRyWeNj
-	KsTYxo5vz4lX44LPLj11xmtovENG/lKT2fkrk1/gP96wFT1WiD27gObrc72LBSxhQig29WsA6vn
-	Ey/3aFfYOcqRw7Q6HlcikY3OMEA4l5T8F4UC/olZMxJXGxdS+DZzFPTbKYVuWVShUHrsEKDal3x
-	ccIC1UiZlA7Y6aKgccUyPyO2UjScwgZkk7jyBiRAU4ag0BgfybLZ2qoXJK16FF1XeQrUc7pQveh
-	POmtT1Q=
-X-Received: by 2002:a17:90b:390a:b0:34c:35ce:3c5f with SMTP id
- 98e67ed59e1d1-359be28da81mr585228a91.5.1772766564424; Thu, 05 Mar 2026
- 19:09:24 -0800 (PST)
+        d=1e100.net; s=20230601; t=1772778979; x=1773383779;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xjCUsjN0/IVVP3mFuyWfmY85swmEI0tCp3uwii5R7sU=;
+        b=p3Jyfa3Zy+oDD2hd/aCTHaV6aXLhlW/32TdRr1GRvwJ6aZ2h/nJRxTSx64YWXn3sL0
+         Z2IyQOf33LXb/Xs01mj20PIyiQMzDH37vmyL1CYL2eX1atK7ZRC2SNqUPtx4CyD+jWgK
+         kqHjtent/yEXFBglTGUiKG5WkfxKj3J02IEiVhGYfkvBvIi3e9msgIWKjEZ/lPRtSs0T
+         5h4+64+OujeEwBQdfrSD9bbwYzbFx3QrBaJY0PxTCk0QPdcIzexdzocy7t6RtzkDXqTX
+         XiKYeh9tj+5B4q5T8dLtY/Ch79tdqzUv+Y7tvEGrYnxDkqqyYHZEeNazeg0SEyFGsHv0
+         tO5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWEEd4ke35jGaqURDRjeJd6vqola5yRf9OfvWtG08VHGeOTRGQpZjIzg2Ec6n+P9Mhx/O4/Sw==@lists.linux.dev
+X-Gm-Message-State: AOJu0YzFKw8DE82wU4qQ04j2HEoOTWrdQIk+xyCOCej6SpfaG+CVtdIh
+	dUXTcZ57iBj9G28CpPOLHI5zCusTY3Ugj7cF+/rcExoAMkc71nwzwQuLlkP99JDtWngM9JbPEdV
+	FRCbkDpqDCCKxS/9+EpDgvWXMhmG8ubFl//nxTKDdmcHxYMx1aFLwqidHCfM=
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260304-iino-u64-v3-0-2257ad83d372@kernel.org> <20260304-iino-u64-v3-2-2257ad83d372@kernel.org>
-In-Reply-To: <20260304-iino-u64-v3-2-2257ad83d372@kernel.org>
-From: Paul Moore <paul@paul-moore.com>
-Date: Thu, 5 Mar 2026 22:09:12 -0500
-X-Gm-Features: AaiRm51A9fGFpauPslQfX6LBJuSyutri4HG-shh7wAOHtGm4QDzvXC5jtThE_pI
-Message-ID: <CAHC9VhQix8opxrX--w-pw5vEAiLaYX=kPhnm4x+dEFEwHiVnfQ@mail.gmail.com>
-Subject: Re: [PATCH v3 02/12] audit: widen ino fields to u64
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Dan Williams <dan.j.williams@intel.com>, 
-	Eric Biggers <ebiggers@kernel.org>, "Theodore Y. Ts'o" <tytso@mit.edu>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, 
-	David Howells <dhowells@redhat.com>, Paulo Alcantara <pc@manguebit.org>, 
-	Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>, 
-	Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>, 
-	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
-	Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>, 
-	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
-	Steve French <sfrench@samba.org>, Ronnie Sahlberg <ronniesahlberg@gmail.com>, 
-	Shyam Prasad N <sprasad@microsoft.com>, Bharath SM <bharathsm@microsoft.com>, 
-	Alexander Aring <alex.aring@gmail.com>, Ryusuke Konishi <konishi.ryusuke@gmail.com>, 
-	Viacheslav Dubeyko <slava@dubeyko.com>, Eric Van Hensbergen <ericvh@kernel.org>, 
-	Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, 
-	Christian Schoenebeck <linux_oss@crudebyte.com>, David Sterba <dsterba@suse.com>, 
-	Marc Dionne <marc.dionne@auristor.com>, Ian Kent <raven@themaw.net>, 
-	Luis de Bethencourt <luisbg@kernel.org>, Salah Triki <salah.triki@gmail.com>, 
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>, Ilya Dryomov <idryomov@gmail.com>, 
-	Alex Markuze <amarkuze@redhat.com>, Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu, 
-	Nicolas Pitre <nico@fluxnic.net>, Tyler Hicks <code@tyhicks.com>, Amir Goldstein <amir73il@gmail.com>, 
-	Christoph Hellwig <hch@infradead.org>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Yangtao Li <frank.li@vivo.com>, 
-	Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>, David Woodhouse <dwmw2@infradead.org>, 
-	Richard Weinberger <richard@nod.at>, Dave Kleikamp <shaggy@kernel.org>, 
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Mark Fasheh <mark@fasheh.com>, 
-	Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>, 
-	Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Anders Larsen <al@alarsen.net>, 
-	Zhihao Cheng <chengzhihao1@huawei.com>, Damien Le Moal <dlemoal@kernel.org>, 
-	Naohiro Aota <naohiro.aota@wdc.com>, Johannes Thumshirn <jth@kernel.org>, 
-	John Johansen <john.johansen@canonical.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
-	Roberto Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
-	Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
-	Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>, 
-	Casey Schaufler <casey@schaufler-ca.com>, Alex Deucher <alexander.deucher@amd.com>, 
-	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, Eric Dumazet <edumazet@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	James Clark <james.clark@linaro.org>, "Darrick J. Wong" <djwong@kernel.org>, 
-	Martin Schiller <ms@dev.tdt.de>, Eric Paris <eparis@redhat.com>, Joerg Reuter <jreuter@yaina.de>, 
-	Marcel Holtmann <marcel@holtmann.org>, Johan Hedberg <johan.hedberg@gmail.com>, 
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Oliver Hartkopp <socketcan@hartkopp.net>, 
-	Marc Kleine-Budde <mkl@pengutronix.de>, David Ahern <dsahern@kernel.org>, 
-	Neal Cardwell <ncardwell@google.com>, Steffen Klassert <steffen.klassert@secunet.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, Remi Denis-Courmont <courmisch@gmail.com>, 
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, Xin Long <lucien.xin@gmail.com>, 
-	Magnus Karlsson <magnus.karlsson@intel.com>, 
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, nvdimm@lists.linux.dev, 
-	fsverity@lists.linux.dev, linux-mm@kvack.org, netfs@lists.linux.dev, 
-	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, 
-	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
-	samba-technical@lists.samba.org, linux-nilfs@vger.kernel.org, 
-	v9fs@lists.linux.dev, linux-afs@lists.infradead.org, autofs@vger.kernel.org, 
-	ceph-devel@vger.kernel.org, codalist@coda.cs.cmu.edu, 
-	ecryptfs@vger.kernel.org, linux-mtd@lists.infradead.org, 
-	jfs-discussion@lists.sourceforge.net, ntfs3@lists.linux.dev, 
-	ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org, 
-	linux-unionfs@vger.kernel.org, apparmor@lists.ubuntu.com, 
-	linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org, 
-	selinux@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
-	linaro-mm-sig@lists.linaro.org, netdev@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, linux-fscrypt@vger.kernel.org, 
-	linux-xfs@vger.kernel.org, linux-hams@vger.kernel.org, 
-	linux-x25@vger.kernel.org, audit@vger.kernel.org, 
-	linux-bluetooth@vger.kernel.org, linux-can@vger.kernel.org, 
-	linux-sctp@vger.kernel.org, bpf@vger.kernel.org
+X-Received: by 2002:a05:6820:1607:b0:663:40d:4893 with SMTP id
+ 006d021491bc7-67b9bc4f053mr834261eaf.3.1772778978736; Thu, 05 Mar 2026
+ 22:36:18 -0800 (PST)
+Date: Thu, 05 Mar 2026 22:36:18 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69aa75e2.050a0220.13f275.000f.GAE@google.com>
+Subject: [syzbot] [netfs?] kernel BUG in netfs_limit_iter
+From: syzbot <syzbot+9c058f0d63475adc97fd@syzkaller.appspotmail.com>
+To: dhowells@redhat.com, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netfs@lists.linux.dev, pc@manguebit.org, 
+	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 4, 2026 at 10:33=E2=80=AFAM Jeff Layton <jlayton@kernel.org> wr=
-ote:
->
-> inode->i_ino is being widened from unsigned long to u64. The audit
-> subsystem uses unsigned long ino in struct fields, function parameters,
-> and local variables that store inode numbers from arbitrary filesystems.
-> On 32-bit platforms this truncates inode numbers that exceed 32 bits,
-> which will cause incorrect audit log entries and broken watch/mark
-> comparisons.
->
-> Widen all audit ino fields, parameters, and locals to u64, and update
-> the inode format string from %lu to %llu to match.
->
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
-> ---
->  include/linux/audit.h   |  2 +-
->  kernel/audit.h          | 13 ++++++-------
->  kernel/audit_fsnotify.c |  4 ++--
->  kernel/audit_watch.c    | 12 ++++++------
->  kernel/auditsc.c        |  4 ++--
->  5 files changed, 17 insertions(+), 18 deletions(-)
+Hello,
 
-Acked-by: Paul Moore <paul@paul-moore.com>
+syzbot found the following issue on:
 
---=20
-paul-moore.com
+HEAD commit:    c107785c7e8d Merge tag 'modules-7.0-rc3.fixes' of git://gi..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=13d408ba580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=976ba5a93c4add9e
+dashboard link: https://syzkaller.appspot.com/bug?extid=9c058f0d63475adc97fd
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16421552580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=166a97e6580000
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-c107785c.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/3a4a4abcd973/vmlinux-c107785c.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/f60667f16840/bzImage-c107785c.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+9c058f0d63475adc97fd@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+kernel BUG at fs/netfs/iterator.c:248!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+CPU: 3 UID: 0 PID: 6437 Comm: syz.9.39 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:netfs_limit_iter+0x100d/0x1100 fs/netfs/iterator.c:248
+Code: ff e9 a4 f4 ff ff 48 89 de 48 c7 c7 a0 db ab 8e e8 e8 3f 74 fe e9 59 f6 ff ff e8 9e e8 b1 ff e9 6f f6 ff ff e8 74 6b 45 ff 90 <0f> 0b e8 fc e7 b1 ff e9 cd f9 ff ff 4c 89 f6 48 c7 c7 20 dc ab 8e
+RSP: 0018:ffffc900040e6d18 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff82c3391b
+RDX: ffff8880298a0000 RSI: ffffffff82c3484c RDI: ffff8880298a0000
+RBP: 0000000000000003 R08: 0000000000000001 R09: 0000000000000005
+R10: 0000000000000003 R11: 0000000000000012 R12: 000000007fffffff
+R13: 1ffff9200081cda9 R14: ffff88801c7f3960 R15: ffff888022886580
+FS:  000055556085f500(0000) GS:ffff8880d6644000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000c008fdc000 CR3: 000000002f279000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ netfs_unbuffered_write+0x25d/0x2080 fs/netfs/direct_write.c:128
+ netfs_unbuffered_write_iter_locked+0x801/0xab0 fs/netfs/direct_write.c:287
+ netfs_unbuffered_write_iter+0x40c/0x710 fs/netfs/direct_write.c:377
+ v9fs_file_write_iter+0xbf/0x100 fs/9p/vfs_file.c:409
+ __kernel_write_iter+0x2ac/0x920 fs/read_write.c:621
+ __kernel_write+0xf6/0x140 fs/read_write.c:641
+ __dump_emit fs/coredump.c:1221 [inline]
+ dump_emit+0x21f/0x330 fs/coredump.c:1259
+ elf_core_dump+0x2127/0x3d10 fs/binfmt_elf.c:2062
+ coredump_write fs/coredump.c:1050 [inline]
+ do_coredump fs/coredump.c:1127 [inline]
+ vfs_coredump+0x27bc/0x5570 fs/coredump.c:1201
+ get_signal+0x1f2a/0x21e0 kernel/signal.c:3019
+ arch_do_signal_or_restart+0x91/0x7a0 arch/x86/kernel/signal.c:337
+ __exit_to_user_mode_loop kernel/entry/common.c:64 [inline]
+ exit_to_user_mode_loop kernel/entry/common.c:98 [inline]
+ __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
+ irqentry_exit_to_user_mode_prepare include/linux/irq-entry-common.h:270 [inline]
+ irqentry_exit_to_user_mode include/linux/irq-entry-common.h:339 [inline]
+ irqentry_exit+0x1f8/0x670 kernel/entry/common.c:219
+ asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:618
+RIP: 0033:0x0
+Code: Unable to access opcode bytes at 0xffffffffffffffd6.
+RSP: 002b:0000200000000088 EFLAGS: 00010217
+RAX: 0000000000000000 RBX: 00007f5120e15fa0 RCX: 00007f5120b9c799
+RDX: 0000000000000000 RSI: 0000200000000080 RDI: 0000000000008000
+RBP: 00007f5120c32bd9 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000206 R12: 0000000000000000
+R13: 00007f5120e15fac R14: 00007f5120e15fa0 R15: 00007f5120e15fa0
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:netfs_limit_iter+0x100d/0x1100 fs/netfs/iterator.c:248
+Code: ff e9 a4 f4 ff ff 48 89 de 48 c7 c7 a0 db ab 8e e8 e8 3f 74 fe e9 59 f6 ff ff e8 9e e8 b1 ff e9 6f f6 ff ff e8 74 6b 45 ff 90 <0f> 0b e8 fc e7 b1 ff e9 cd f9 ff ff 4c 89 f6 48 c7 c7 20 dc ab 8e
+RSP: 0018:ffffc900040e6d18 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff82c3391b
+RDX: ffff8880298a0000 RSI: ffffffff82c3484c RDI: ffff8880298a0000
+RBP: 0000000000000003 R08: 0000000000000001 R09: 0000000000000005
+R10: 0000000000000003 R11: 0000000000000012 R12: 000000007fffffff
+R13: 1ffff9200081cda9 R14: ffff88801c7f3960 R15: ffff888022886580
+FS:  000055556085f500(0000) GS:ffff8880d6644000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000c008fdc000 CR3: 000000002f279000 CR4: 0000000000352ef0
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
