@@ -1,131 +1,131 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB561E7C23
-	for <netfs@lists.linux.dev>; Sat,  7 Mar 2026 04:39:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53A635AC2A
+	for <netfs@lists.linux.dev>; Sat,  7 Mar 2026 07:26:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772858397; cv=none; b=J2G6+pwf+g6QF/WpoQtasOaGIjJaiUrIxJm3kJkqnKqxhuSrNmS1b349mH8sLtD7ChhckBNSClv9DHpPZnzL65lRd1ofbH84ebbcSpWPo8V4QBnEhUkYK8memcYB3GR7yGuNjWD8IWfmvZI4aLGp4In1oGwHI1WVtel6qIp/vPg=
+	t=1772868412; cv=none; b=hPJaQKBYfVIM22EoWuxDNIRN4pp2uSYhE6gIKevMYx7CPG9B+0WkkNacpAG1VnUpjhWVPYmxpROBx1zzowfYUFYzn+FHZtUFBqHb7y0akyGhoIsaiVe2A3Jmiek2syDSU4Ube60q+EV+Z43H7i4A9JKtwnIzET9KeqXxX8J6QZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772858397; c=relaxed/simple;
-	bh=4ATwsTz8ziLAyDuWlK4KdVZopPk0DA6HM2567HiDEEc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Svf/Xd2riKs5Nk61g+lmUh9FYwqtyBM8mdz4gFLwOWCm5PlZI/eTFr5Dk4SrHF4putI4P/SAjHPNTmyqjCeEfIKO+6cZ7H+8GzLYy2hCv8jwVwg58Pg+iHkCc7dGEMyrsdDGnNBfTmHIBr7Tf8C1AudwDU53VOmw5v70bzOYkZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=huyfqGRL; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1772868412; c=relaxed/simple;
+	bh=1QMAAgZY48Yqw+WyxXnTyPe9TZ78bLVfyssf1fdjCSs=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
+	 Message-ID:Content-Type; b=VekxVOmv8Dewo1mQiFQ1WGVAEGbZPOE//Y0Cazpf9SCBenLfW+sGYQ32/YHQ2YM6ogCTUWQgUCzRgxAJXqDqYHpreWswBvF5zGtOKArWkzi2lFKtvTPhizeqUyX8FMFJFu7lat0iT0FcY3hj6i5gq783qL+j5jdM7gL9YPN1Xgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KvEIwKE8; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="huyfqGRL"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-358d80f60ccso5093794a91.3
-        for <netfs@lists.linux.dev>; Fri, 06 Mar 2026 20:39:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772858395; x=1773463195; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=enfq5btaKGYj0ZOezkkWdQHPcpQw23/+zvd7oPjvhzg=;
-        b=huyfqGRL+dH2yAFUomd5hnOF634rv+ukhm+9jrTKIauw3Zntl40nnqCNo4gwcaWgmI
-         G6ioa4WzZPrcDLDs7zR6nsqaZVLhEUbOJN6kr3SGQZDV5niQMDXr+nkJObpmw1gwOEG2
-         ZvTubdNkZR9gRX4+O9XllR4O1FAGpwI0bY8XTC1J9ebTmVXI37CNy0YaGGgk0+0bQo53
-         NDohk6QHSY4pvwtazWQHalAzV5COfbBD1VLNRKpBdeOabrYu/WFifQIbFTMVwmAO40ki
-         I1yGYwbNCX9bwZWrzBDOeq4MOguPjpfqNI6iFxnW1owgYv98HVW7oiFCyU2Puw/OOfTQ
-         gnvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772858395; x=1773463195;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=enfq5btaKGYj0ZOezkkWdQHPcpQw23/+zvd7oPjvhzg=;
-        b=DKdcJRsUgy49CkD++spOwlQjf6tH0/zMoBkV11RAj33CBOAHu7ChpOu8ZwQhph2G2g
-         ItEjrHEnrOmNDWPhLCzG4kZ6aPq7gKa5hWv9OwEwjJbEVFUVK/0P4iYKMgq9p27f84qn
-         vs104XfYerVTNLIacCzGgzTHDgFXn2WocUnPUYgYPpKuXUcGZDpaEWhZV6VBZIXoNTVE
-         PAjdT/HXFAcEa2UpDNzU4aq1+tVX+BX52doJ05mjZWopoXil42IXb48zS6KNzBvBjgxM
-         GSDJwhcCg8lO4eswR+K+T5zuL4cE4sOdMhnWbaZKIJGeWVSs3BEGZkKNTwj3JtNeeAlw
-         6MyQ==
-X-Gm-Message-State: AOJu0Ywqi6GTS4FRuEIU1Q9mf3Y6Tv5TgtFaqgpZKUh75dCXUeaLaVgx
-	Oo2FPytF+bg8AijY3QUpOxOS/QDZDJt3sx2wZTgp0PrIxeWly4wp3PsY
-X-Gm-Gg: ATEYQzwgzB2buBlXe8LnvVrd1QcuZpR0OOorx66z8HJdUV3fnpYgdR3LAIUkMYey/zH
-	3hYHsL1e0yxgsiwQWRfYkQVYBjDvJlQmSHts9O4hY9XOHJaI01+p9dlHvdHUwn4tNDf/VNASYhg
-	odj5NthvIRnQnM5V9GXYDLMT8QnxrrQ8jIBw29weiJYHMTtCfuYGT8fj5xpIrDFKy0KUnTn0Aj1
-	PFuRbvwKoDZX0WyLqLDaLB0K79Nynxq2CwrDNfJR9KtoAvCqqgye8QTLJlKjpGxKzLOyduMVfjQ
-	K2UPVCSiFf9BEGwxEDg5kC4hwX6ymGJ4sRGxSqTR9K8BhrFqzJ5OwBYG1/hiXS3chhfHXckLjSv
-	VVMu6svdUHSfodL8JPoD/dyQcHlhDV5X5L270dvNF9MCTLfSwxRchmhC1ULGmnYl0WhB4lBndoO
-	Z4u07u2hpEk/6TgiIrR8Uc3/7ehTmWiMk7ouNBLehW5Cu8owoOup+hhkT+qn7tzXOXUoC9aARyF
-	M+YjNA=
-X-Received: by 2002:a17:90b:498b:b0:340:be44:dd11 with SMTP id 98e67ed59e1d1-359be3536a4mr4381767a91.27.1772858395271;
-        Fri, 06 Mar 2026 20:39:55 -0800 (PST)
-Received: from deepanshu-kernel-hacker.. ([2405:201:682f:389d:4191:5f1c:7dc6:bad2])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359b2d38ab8sm6809244a91.1.2026.03.06.20.39.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Mar 2026 20:39:54 -0800 (PST)
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-To: dhowells@redhat.com,
-	pc@manguebit.org,
-	brauner@kernel.org
-Cc: netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	syzbot+7227db0fbac9f348dba0@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <Kartikey406@gmail.com>
-Subject: [PATCH] netfs: Fix NULL pointer dereference in netfs_unbuffered_write() on retry
-Date: Sat,  7 Mar 2026 10:09:47 +0530
-Message-ID: <20260307043947.347092-1-kartikey406@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KvEIwKE8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772868410;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OSyukFyK0VO7CYgQ3ffHcnodQl8eA54nJ8YJgzyGTOA=;
+	b=KvEIwKE8ZqdGKSQLECVTNVekjQ6xXgHpF4dsC2TPAh/9/6qicfgzHWyYEELKODtCN+W5r4
+	wdz+1WaxUZs/dSSkjnb1UoeYUmaxN7t33CFmXkKtpEdw0Q6dqOscEbqnpFz0bfinm7TXO2
+	CoyzBB2+wxAGzQKKnyuHxX9pvE8gPdA=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-168-sDRjS14VPmiAvSRWfsjoUg-1; Sat,
+ 07 Mar 2026 02:26:46 -0500
+X-MC-Unique: sDRjS14VPmiAvSRWfsjoUg-1
+X-Mimecast-MFC-AGG-ID: sDRjS14VPmiAvSRWfsjoUg_1772868404
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 80A411956089;
+	Sat,  7 Mar 2026 07:26:44 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.45.224.65])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DBA313003E9F;
+	Sat,  7 Mar 2026 07:26:41 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <69aa75e2.050a0220.13f275.000f.GAE@google.com>
+References: <69aa75e2.050a0220.13f275.000f.GAE@google.com>
+To: syzbot <syzbot+9c058f0d63475adc97fd@syzkaller.appspotmail.com>
+Cc: dhowells@redhat.com, Deepanshu Kartikey <kartikey406@gmail.com>,
+    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+    netfs@lists.linux.dev, pc@manguebit.org,
+    syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot] [netfs?] kernel BUG in netfs_limit_iter
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Sat, 07 Mar 2026 07:26:40 +0000
+Message-ID: <675769.1772868400@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: E6Aecq-nlyaOiZMnM0ePHsNcgQBB-6-lI3UaNjS32C4_1772868404
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <675768.1772868400.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
 
-When a write subrequest is marked NETFS_SREQ_NEED_RETRY, the retry path
-in netfs_unbuffered_write() unconditionally calls stream->prepare_write()
-without checking if it is NULL.
+#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git=
+ c107785c7e8d
 
-Filesystems such as 9P do not set the prepare_write operation, so
-stream->prepare_write remains NULL. When get_user_pages() fails with
--EFAULT and the subrequest is flagged for retry, this results in a NULL
-pointer dereference at fs/netfs/direct_write.c:189.
+commit eb8299de8f603a6d7acf50e534c87ac1adeb3060
+Author: Deepanshu Kartikey <kartikey406@gmail.com>
+Date:   Sat Mar 7 10:09:47 2026 +0530
 
-Fix this by mirroring the pattern already used in write_retry.c: if
-stream->prepare_write is NULL, skip renegotiation and directly reissue
-the subrequest via netfs_reissue_write(), which handles iterator reset,
-IN_PROGRESS flag, stats update and reissue internally.
-
-Fixes: a0b4c7a49137 ("netfs: Fix unbuffered/DIO writes to dispatch subrequests in strict sequence")
-Reported-by: syzbot+7227db0fbac9f348dba0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7227db0fbac9f348dba0
-Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
----
- fs/netfs/direct_write.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+    netfs: Fix NULL pointer dereference in netfs_unbuffered_write() on retr=
+y
+   =20
+    When a write subrequest is marked NETFS_SREQ_NEED_RETRY, the retry path
+    in netfs_unbuffered_write() unconditionally calls stream->prepare_write=
+()
+    without checking if it is NULL.
+   =20
+    Filesystems such as 9P do not set the prepare_write operation, so
+    stream->prepare_write remains NULL. When get_user_pages() fails with
+    -EFAULT and the subrequest is flagged for retry, this results in a NULL
+    pointer dereference at fs/netfs/direct_write.c:189.
+   =20
+    Fix this by mirroring the pattern already used in write_retry.c: if
+    stream->prepare_write is NULL, skip renegotiation and directly reissue
+    the subrequest via netfs_reissue_write(), which handles iterator reset,
+    IN_PROGRESS flag, stats update and reissue internally.
+   =20
+    Fixes: a0b4c7a49137 ("netfs: Fix unbuffered/DIO writes to dispatch subr=
+equests in strict sequence")
+    Reported-by: syzbot+7227db0fbac9f348dba0@syzkaller.appspotmail.com
+    Closes: https://syzkaller.appspot.com/bug?extid=3D7227db0fbac9f348dba0
+    Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
 
 diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
 index dd1451bf7543..4d9760e36c11 100644
 --- a/fs/netfs/direct_write.c
 +++ b/fs/netfs/direct_write.c
-@@ -186,10 +186,18 @@ static int netfs_unbuffered_write(struct netfs_io_request *wreq)
- 		stream->sreq_max_segs	= INT_MAX;
- 
- 		netfs_get_subrequest(subreq, netfs_sreq_trace_get_resubmit);
--		stream->prepare_write(subreq);
- 
--		__set_bit(NETFS_SREQ_IN_PROGRESS, &subreq->flags);
--		netfs_stat(&netfs_n_wh_retry_write_subreq);
-+		if (stream->prepare_write) {
-+			stream->prepare_write(subreq);
-+			__set_bit(NETFS_SREQ_IN_PROGRESS, &subreq->flags);
-+			netfs_stat(&netfs_n_wh_retry_write_subreq);
-+		} else {
-+			struct iov_iter source;
+@@ -186,10 +186,18 @@ static int netfs_unbuffered_write(struct netfs_io_req=
+uest *wreq)
+ =09=09stream->sreq_max_segs=09=3D INT_MAX;
+=20
+ =09=09netfs_get_subrequest(subreq, netfs_sreq_trace_get_resubmit);
+-=09=09stream->prepare_write(subreq);
+=20
+-=09=09__set_bit(NETFS_SREQ_IN_PROGRESS, &subreq->flags);
+-=09=09netfs_stat(&netfs_n_wh_retry_write_subreq);
++=09=09if (stream->prepare_write) {
++=09=09=09stream->prepare_write(subreq);
++=09=09=09__set_bit(NETFS_SREQ_IN_PROGRESS, &subreq->flags);
++=09=09=09netfs_stat(&netfs_n_wh_retry_write_subreq);
++=09=09} else {
++=09=09=09struct iov_iter source;
 +
-+			netfs_reset_iter(subreq);
-+			source = subreq->io_iter;
-+			netfs_reissue_write(stream, subreq, &source);
-+		}
- 	}
- 
- 	netfs_unbuffered_write_done(wreq);
--- 
-2.43.0
++=09=09=09netfs_reset_iter(subreq);
++=09=09=09source =3D subreq->io_iter;
++=09=09=09netfs_reissue_write(stream, subreq, &source);
++=09=09}
+ =09}
+=20
+ =09netfs_unbuffered_write_done(wreq);
 
