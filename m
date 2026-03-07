@@ -1,73 +1,73 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53A635AC2A
-	for <netfs@lists.linux.dev>; Sat,  7 Mar 2026 07:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291442472AE
+	for <netfs@lists.linux.dev>; Sat,  7 Mar 2026 07:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772868412; cv=none; b=hPJaQKBYfVIM22EoWuxDNIRN4pp2uSYhE6gIKevMYx7CPG9B+0WkkNacpAG1VnUpjhWVPYmxpROBx1zzowfYUFYzn+FHZtUFBqHb7y0akyGhoIsaiVe2A3Jmiek2syDSU4Ube60q+EV+Z43H7i4A9JKtwnIzET9KeqXxX8J6QZA=
+	t=1772868432; cv=none; b=ms6w3caHLCZ4Dsgr22Oi3IEbDgw+M49x7CLLWo3pyj0LEFjyPcpEjbXSAA0mFwJXvngpa+egbI//AiMoMUfjWxfDjYC4e9TNxH2cHToZzQNcwe8/p8JuuJv+uix9P1Sdr5VCFNB+A9r7p8tfC0Ch7Y8b7buswdnPPrR1NzBrfMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772868412; c=relaxed/simple;
+	s=arc-20240116; t=1772868432; c=relaxed/simple;
 	bh=1QMAAgZY48Yqw+WyxXnTyPe9TZ78bLVfyssf1fdjCSs=;
 	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
-	 Message-ID:Content-Type; b=VekxVOmv8Dewo1mQiFQ1WGVAEGbZPOE//Y0Cazpf9SCBenLfW+sGYQ32/YHQ2YM6ogCTUWQgUCzRgxAJXqDqYHpreWswBvF5zGtOKArWkzi2lFKtvTPhizeqUyX8FMFJFu7lat0iT0FcY3hj6i5gq783qL+j5jdM7gL9YPN1Xgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KvEIwKE8; arc=none smtp.client-ip=170.10.133.124
+	 Message-ID:Content-Type; b=F9XQqUzkNvhcBfXxXIU9d6XbSm/BHo5nMrFevq0bCegbEbIFIVto0z3w2g1KRkq3ApGPQF9sHen/jcGHUTEI4BT9cDyw9MlgNkuuajPtWLCNpqznVce/2zgDQrNgXt4y3ythKuS/Nvw9nCdf215owOselpFxb7XZO8bd+rnGfs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fcw1MJA0; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KvEIwKE8"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fcw1MJA0"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772868410;
+	s=mimecast20190719; t=1772868429;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
 	bh=OSyukFyK0VO7CYgQ3ffHcnodQl8eA54nJ8YJgzyGTOA=;
-	b=KvEIwKE8ZqdGKSQLECVTNVekjQ6xXgHpF4dsC2TPAh/9/6qicfgzHWyYEELKODtCN+W5r4
-	wdz+1WaxUZs/dSSkjnb1UoeYUmaxN7t33CFmXkKtpEdw0Q6dqOscEbqnpFz0bfinm7TXO2
-	CoyzBB2+wxAGzQKKnyuHxX9pvE8gPdA=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	b=fcw1MJA02Vu7kelI0MDqjKoyCNgTknFczJg37dYZ92xTyQhVULv+ED28V34ZuA1n0D+mhQ
+	O7Y5Kr9Eq16ld0RiRwPT/IE7MqE4uWcWcEnnH5hdpFlwDdrWCIb62bhFGNbS+Ly1Gx/thh
+	r6pRircPka20kHi6tN1VnkM2r39s/Uo=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-168-sDRjS14VPmiAvSRWfsjoUg-1; Sat,
- 07 Mar 2026 02:26:46 -0500
-X-MC-Unique: sDRjS14VPmiAvSRWfsjoUg-1
-X-Mimecast-MFC-AGG-ID: sDRjS14VPmiAvSRWfsjoUg_1772868404
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-622-RyG6nwQ7MOGbrQvZ0iXstA-1; Sat,
+ 07 Mar 2026 02:27:05 -0500
+X-MC-Unique: RyG6nwQ7MOGbrQvZ0iXstA-1
+X-Mimecast-MFC-AGG-ID: RyG6nwQ7MOGbrQvZ0iXstA_1772868424
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 80A411956089;
-	Sat,  7 Mar 2026 07:26:44 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4DC1A180049D;
+	Sat,  7 Mar 2026 07:27:04 +0000 (UTC)
 Received: from warthog.procyon.org.uk (unknown [10.45.224.65])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DBA313003E9F;
-	Sat,  7 Mar 2026 07:26:41 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B5B9418001FE;
+	Sat,  7 Mar 2026 07:27:01 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
 	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
 	Kingdom.
 	Registered in England and Wales under Company Registration No. 3798903
 From: David Howells <dhowells@redhat.com>
-In-Reply-To: <69aa75e2.050a0220.13f275.000f.GAE@google.com>
-References: <69aa75e2.050a0220.13f275.000f.GAE@google.com>
-To: syzbot <syzbot+9c058f0d63475adc97fd@syzkaller.appspotmail.com>
+In-Reply-To: <69aa75e2.050a0220.13f275.0010.GAE@google.com>
+References: <69aa75e2.050a0220.13f275.0010.GAE@google.com>
+To: syzbot <syzbot+7227db0fbac9f348dba0@syzkaller.appspotmail.com>
 Cc: dhowells@redhat.com, Deepanshu Kartikey <kartikey406@gmail.com>,
     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
     netfs@lists.linux.dev, pc@manguebit.org,
     syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [netfs?] kernel BUG in netfs_limit_iter
+Subject: Re: [syzbot] [netfs?] BUG: unable to handle kernel NULL pointer dereference in netfs_unbuffered_write
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Sat, 07 Mar 2026 07:26:40 +0000
-Message-ID: <675769.1772868400@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: E6Aecq-nlyaOiZMnM0ePHsNcgQBB-6-lI3UaNjS32C4_1772868404
+Date: Sat, 07 Mar 2026 07:27:00 +0000
+Message-ID: <675785.1772868420@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-MFC-PROC-ID: nxdCdPhDRwcKV1fJfyCBcTfGzaE3hQZGcXlVDcYsUX0_1772868424
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <675768.1772868400.1@warthog.procyon.org.uk>
+Content-ID: <675784.1772868420.1@warthog.procyon.org.uk>
 Content-Transfer-Encoding: quoted-printable
 
 #syz test: git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git=
