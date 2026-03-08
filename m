@@ -1,72 +1,171 @@
-Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from flow-a8-smtp.messagingengine.com (flow-a8-smtp.messagingengine.com [103.168.172.143])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0692DA77F
-	for <netfs@lists.linux.dev>; Sat,  7 Mar 2026 14:12:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB24328B58
+	for <netfs@lists.linux.dev>; Sun,  8 Mar 2026 20:58:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.143
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772892725; cv=none; b=cPCj+ekz1N25YGFWU8a6lzHBP0U128aOdst8pdNmhcO7J2HD9hfZVBgBXLvCoQC+/9+unEOkc3dUZeWjumJ6BQM4KnRQQTE8p0oD8MqZXgqv2L9m+RNOlQiXIAx9/5zfutnlfdOxKKARkTgAnra0ZaBFaPc8P8LydkvzyVn5OF4=
+	t=1773003493; cv=none; b=B297i3ac83a5LtfAnTu3QFoAx73NrDezv0WPCCdQDnNvZRRpKusj/PbsUypdprXyGYdwpq1rPQn+2EJM0tVq6GE6s+JcLapx1t7ZGNqeZFNMtElaPXZ/ZoTgvoQjgDVX3O1H5lFmDvTHelvofJDHjyWz5aHhtUmAYkiNOywHR8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772892725; c=relaxed/simple;
-	bh=WATbRmx/veztlxbajH6ebmO2CxzS4Ua6ZlttOzHkp04=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=TBcQvKvMReDZfWMFSlJgHaAlnnL21TJbzLIA9BhIy978eokcDFn++NPNjGGKDNgpxzgY5W1Ar7qDecJ01OvjPeUsIJWJJ4S2mm+UUUkrjC0nMu82Cvb+FYEeIKvY0iMmqqK1+y+tjOng8euJ8cH2YsIpmIbqgo4c7uHLPWm5iUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-7d4cf783c73so139287766a34.3
-        for <netfs@lists.linux.dev>; Sat, 07 Mar 2026 06:12:03 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772892722; x=1773497522;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=il3sOCmcrVJs9HHc6eX/g7XL5qIrdkLnxgjrjyiZbpU=;
-        b=EgUhCs/n5H8PpWzjMjvw/Ed/8bbMQ4ugcSGgoPQyG63rlHUQI+vn18viGQ2ZV+VDnq
-         dcNEu3GuZHLcStqBgIYjyxATsax9WxuH+USExLl1A6yilIwdvQch/O+hG8/ig5N1DDAo
-         f77jugfeFN6Ea4QuFAoJy3y7TvIckaouJ1YxCXg33MscM0fZ0uGz/im5/gpyQk8IvBu1
-         IlfElnZ3wVsXMN8bappWrcg73SaigK3vVW+Pc6azJyZHP8CUwzpZOuIi/F4RdG079avd
-         gO5gOJprhnpWD2v/uY21YSqCPdFv+zfDzWSxHKnE73Gp0GsscsUimgtJZfbFniKsXrd3
-         i0hg==
-X-Forwarded-Encrypted: i=1; AJvYcCU6WVI9sd+G2cs52xquxiHO3dHnXuw7ziEEn6cVmMtSTGVC/kxu7IqYvMVFp1Uq8fvuREEtZw==@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz3tAOyugGgy24hUldKgVvxKLlWaeqp5sHWqNR8IIgefRd36OEM
-	UkjDAzJpkc7XcQXK+wJMiUrEJePeVIywo1olfO/GnfcVT9DCVj6gbeBSwqgt/xLGBVYQ7kTQSx8
-	jAC1Tk6dImDgKqYIEcFoHkp54HTcF199EkUnky8CIcBc0lHg9aczWSHvSRS0=
+	s=arc-20240116; t=1773003493; c=relaxed/simple;
+	bh=YvwnwHgyC3oEQa0I1j525crmDtzyCfGyFwtXdz585BU=;
+	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
+	 References:Date:Message-id; b=JGIWJJs+q6wT81end9ZjfD6AqjuQ9n0tTyTG0nSJUtrnZ5xYp3HPxcYa5qYbDfuAo1+c067qa6AH9vbBSM1vfagItGITJjlWtnMdCZMnFx3vt09TEHahhYTFXJFZ17emeQj8GRz7WcMpAUa3YvQoL73sV65tfvajw6D2LRhFrhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net; spf=pass smtp.mailfrom=ownmail.net; dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b=Nyy1fGep; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=GHGSibMw; arc=none smtp.client-ip=103.168.172.143
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ownmail.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b="Nyy1fGep";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="GHGSibMw"
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailflow.phl.internal (Postfix) with ESMTP id E5D3B13808ED;
+	Sun,  8 Mar 2026 16:58:09 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Sun, 08 Mar 2026 16:58:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to; s=fm1; t=
+	1773003489; x=1773010689; bh=+iypvS0zaTSKL0sJFSGnV+90rJ7NwnakODh
+	88UBVbxc=; b=Nyy1fGep1NAOdoC4ys0fihQQOAa4IL42zfq0IvtSw9HwYJLZAur
+	Ps92XTBfup1MiJY2jk4/AQz2th5KZLEBqfMaYNhvwb99g0LBwKnM8xUEEKXdgKTn
+	iEZgi2XRPUc5mOsju+U1SsZ0XuTk97e1G+TvaUs0UgEWuCEpGvKxHub7Fr8NzePQ
+	F6jc70Xi+GLzG48D6AKuJRyzr/qNVEz6PSACk6zG7NyURmA+z9W+GYGQUz9Sequ0
+	MDP8DWX9s7NcXZnQ17acBLw3uNCm42d4dV4qgFTfdT/1lWc1ZOIsJxzbxZXjIvWM
+	uVaaeebTvdn1kw4vaeRvQyoQY4+vkAqWiiQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773003489; x=
+	1773010689; bh=+iypvS0zaTSKL0sJFSGnV+90rJ7NwnakODh88UBVbxc=; b=G
+	HGSibMweZXfcFPVEa8qTAg1920mH8b3M5plTJQ4y5f96lM0ypf27HM4c/UAySBmm
+	DZNhGy5ImsPGICRiTdhRP+TGXvBFmWPZY17dh7fXetsdhXCks4IMB/rP6iNp1iaU
+	LK91YfzxM0GOGNH9+s3glVWI7DpuSJrqrRuxGMPR04EVCO/4tRv4OyVYYCSthsLo
+	hVCdX/pAxOcMFN6CQkYecarwAp2sSGJQEDC2Nu+eqjJ5ZgA6455m7flLIqp54XFo
+	jil7fvItfzmz1OnLWw0UW+svzSwXlPLSAQBfEev4w8rFBaDivkzKy7ULy0nxmm+M
+	KgkBFxXdL2RO4I2Y5xVNQ==
+X-ME-Sender: <xms:3-KtaSVctBSQ0SV_4hXsjWRkglm51vBgsco7eLnJzRkXOELG71FzoQ>
+    <xme:3-KtaSjB2rGOr7OFkyfnq7Dp2t1nYH99sV9ZG2WLPsYFsLSdpnH6BKGWxcSwcl7o1
+    oNTwtE7rLcKtqp-tzupFwXpCKt77cRv4Z4yxSfn4e5V4MeQvxs>
+X-ME-Received: <xmr:3-Ktae5tS02XwBv-i39mfEyQVpaoQ-u3VFqQO8y4dRUul7KOwa5yqttp3ypt5BxZU3mf45hpnrzPGzLEU1_5oKoiZkHPceyr5LfUBLIaf1ix>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvjeeivddvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurheptgfgggfhvfevufgjfhffkfhrsehtqhertddttdejnecuhfhrohhmpefpvghilheu
+    rhhofihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnh
+    epffetfedvgeevjeelhffhkefgffejvddtvefftdegueeiveffjeeukeffkeefkefhnecu
+    ffhomhgrihhnpehmshhgihgurdhlihhnkhenucevlhhushhtvghrufhiiigvpedtnecurf
+    grrhgrmhepmhgrihhlfhhrohhmpehnvghilhgssehofihnmhgrihhlrdhnvghtpdhnsggp
+    rhgtphhtthhopedvvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepvhhirhhose
+    iivghnihhvrdhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopehsvghlihhnuhigsehv
+    ghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidquhhnihhonhhfsh
+    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhsvggtuhhr
+    ihhthidqmhhoughulhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplh
+    hinhhugidqnhhfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhn
+    uhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlih
+    hnuhigqdhfshguvghvvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    mhhikhhlohhssehsiigvrhgvughirdhhuhdprhgtphhtthhopehjrggtkhesshhushgvrd
+    gtii
+X-ME-Proxy: <xmx:3-KtaS6zJduiAbAHq99KcsXa77lpCopPadKmwp3x8ZIfGmkzNTCohA>
+    <xmx:3-KtaUHxOA8u3U6E4eLAbRpC0yb57cCfAxRA4ha_pVtvmLiUgg9e7w>
+    <xmx:3-KtaYwwNGnKGgahf3vu9ylTclTI_dSyC-frB-eGtBIC_WzxhkiWWA>
+    <xmx:3-Ktac2Z1yfOcKeBZZnd8l7Su01udxDrDDt7_G5Nnt_T2jF2UNTW8g>
+    <xmx:4eKtaa8I7VALp6o1nHvBb2BSlMCJyvLkZlfOMwwpOLNHk0sla81lLmFr>
+Feedback-ID: i9d664b8f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 8 Mar 2026 16:58:01 -0400 (EDT)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:2283:b0:67b:a91f:8f07 with SMTP id
- 006d021491bc7-67ba91f93e7mr456981eaf.29.1772892722158; Sat, 07 Mar 2026
- 06:12:02 -0800 (PST)
-Date: Sat, 07 Mar 2026 06:12:02 -0800
-In-Reply-To: <683930.1772891469@warthog.procyon.org.uk>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69ac3232.050a0220.13f275.0056.GAE@google.com>
-Subject: Re: [syzbot] [netfs?] kernel BUG in netfs_limit_iter
-From: syzbot <syzbot+9c058f0d63475adc97fd@syzkaller.appspotmail.com>
-To: dhowells@redhat.com, kartikey406@gmail.com, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netfs@lists.linux.dev, pc@manguebit.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+From: NeilBrown <neilb@ownmail.net>
+To: "Christian Brauner" <brauner@kernel.org>
+Cc: "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "David Howells" <dhowells@redhat.com>, "Jan Kara" <jack@suse.cz>,
+ "Chuck Lever" <chuck.lever@oracle.com>, "Jeff Layton" <jlayton@kernel.org>,
+ "Miklos Szeredi" <miklos@szeredi.hu>, "Amir Goldstein" <amir73il@gmail.com>,
+ "John Johansen" <john.johansen@canonical.com>,
+ "Paul Moore" <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>,
+ "Stephen Smalley" <stephen.smalley.work@gmail.com>,
+ "Darrick J. Wong" <djwong@kernel.org>, linux-kernel@vger.kernel.org,
+ netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+ linux-nfs@vger.kernel.org, linux-unionfs@vger.kernel.org,
+ apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
+ selinux@vger.kernel.org
+Subject: [PATCH] FIXUP: cachefiles: change cachefiles_bury_object to use
+ start_renaming_dentry()
+In-reply-to: <20260306-stolz-verzichten-2ee626da4503@brauner>
+References: <20260224222542.3458677-1-neilb@ownmail.net>,
+ <20260224222542.3458677-11-neilb@ownmail.net>,
+ <20260306-stolz-verzichten-2ee626da4503@brauner>
+Date: Mon, 09 Mar 2026 07:57:58 +1100
+Message-id: <177300347820.5556.314358492166337403@noble.neil.brown.name>
+Reply-To: NeilBrown <neil@brown.name>
 
-Hello,
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+From: NeilBrown <neil@brown.name>
 
-Reported-by: syzbot+9c058f0d63475adc97fd@syzkaller.appspotmail.com
-Tested-by: syzbot+9c058f0d63475adc97fd@syzkaller.appspotmail.com
+[[This fixup for f242581e611e in vfs/vfs-7.1.directory provides a new
+commit description has preserves the error returns and log message, and
+importantly calls cachefiles_io_error() in exactly the same
+circumstances as the original - thanks]]
 
-Tested on:
+Rather then using lock_rename() and lookup_one() etc we can use
+the new start_renaming_dentry().  This is part of centralising dir
+locking and lookup so that locking rules can be changed.
 
-commit:         c107785c Merge tag 'modules-7.0-rc3.fixes' of git://gi..
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-console output: https://syzkaller.appspot.com/x/log.txt?x=1756db5a580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=976ba5a93c4add9e
-dashboard link: https://syzkaller.appspot.com/bug?extid=9c058f0d63475adc97fd
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=15916b5a580000
+Some error conditions are checked in start_renaming_dentry() but need to
+be re-checked when an error is reported to ensure correct handling.
+The check that ->graveyard is still d_can_lookup() is dropped as this
+was checked when ->graveyard was assigned, and it cannot be changed.
 
-Note: testing is done by a robot and is best-effort only.
+Signed-off-by: NeilBrown <neil@brown.name>
+Link: https://patch.msgid.link/20260224222542.3458677-11-neilb@ownmail.net
+---
+ fs/cachefiles/namei.c | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
+
+diff --git a/fs/cachefiles/namei.c b/fs/cachefiles/namei.c
+index 3af42ec78411..c464c72a51cb 100644
+--- a/fs/cachefiles/namei.c
++++ b/fs/cachefiles/namei.c
+@@ -309,7 +309,26 @@ int cachefiles_bury_object(struct cachefiles_cache *cach=
+e,
+ 	rd.flags =3D 0;
+ 	ret =3D start_renaming_dentry(&rd, 0, rep, &QSTR(nbuffer));
+ 	if (ret) {
+-		cachefiles_io_error(cache, "Cannot lock/lookup in graveyard");
++		/* Some errors aren't fatal */
++		if (ret =3D=3D -EXDEV)
++			/* double-lock failed */
++			return ret;
++		if (d_unhashed(rep) || rep->d_parent !=3D dir || IS_DEADDIR(d_inode(rep)))=
+ {
++			/* the entry was probably culled when we dropped the parent dir
++			 * lock */
++			_leave(" =3D 0 [culled?]");
++			return 0;
++		}
++		if (ret =3D=3D -EINVAL || ret =3D=3D -ENOTEMPTY) {
++			cachefiles_io_error(cache, "May not make directory loop");
++			return -EIO;
++		}
++		if (ret =3D=3D -ENOMEM) {
++			_leave(" =3D -ENOMEM");
++			return -ENOMEM;
++		}
++
++		cachefiles_io_error(cache, "Lookup error %d", ret);
+ 		return -EIO;
+ 	}
+=20
+--=20
+2.50.0.107.gf914562f5916.dirty
+
