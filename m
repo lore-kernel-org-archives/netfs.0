@@ -1,238 +1,235 @@
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E753E5597
-	for <netfs@lists.linux.dev>; Mon,  9 Mar 2026 18:02:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD501F181F;
+	Mon,  9 Mar 2026 19:00:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773079379; cv=none; b=niNTT1Rm87d/tMTxszgF+UBGwUwwAaTEDSqRs0ioAqeys70f6v6Bi7e/T9hfKeHqx54Qeb5OgyyW4mpDNbgGKiNIHknFbIfNn28VGfpxc0CuWg/rsBii6R8pzXCY49x5zz5Ix6y3FxPnYuKEN4XVhVeqAocrl/2w9deGlFuKC3g=
+	t=1773082852; cv=none; b=hbboXr1FRH1yH1Aeg/UWImGNmTgX8X7CvcbvUpkiJ9ziFJXAR+RUcJLtshXOoPF2pOzmddBsyNZhq5iLbLAHtjL6O+t7clVaM9AkgeAzns3lUFO/Z88DFhOHwBkLaaWroBs1CT+kjb1JKK3yDinMePH76HCe4Oxd3UVl3MmjAAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773079379; c=relaxed/simple;
-	bh=jO4db0+Vvz27njqBCFARGJJrX6R5+m40AGf5WBcVFOw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cLW1e3SsQBYWEMpM0MzHmVnXymcMyS0fnuKm3qq7aXvdS6t88FTgd0qzR8p2UT17jIKnEGM70kXXKWpCm+xX5LpHZCo+goaJ+tuvymzdGyh8CGTUFeLJF+8q34sAbQ211MMQUfi2tv3KqX9i2pHwTA904LxB3B7TNelGn9gQAEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dubeyko.com; spf=pass smtp.mailfrom=dubeyko.com; dkim=pass (2048-bit key) header.d=dubeyko-com.20230601.gappssmtp.com header.i=@dubeyko-com.20230601.gappssmtp.com header.b=HhMWwTX4; arc=none smtp.client-ip=209.85.128.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dubeyko.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dubeyko.com
+	s=arc-20240116; t=1773082852; c=relaxed/simple;
+	bh=zuZybXxG4NWtCCamlMtgm4GPhCUwWs75GokKHhfMbyA=;
+	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
+	 Date:MIME-Version; b=aL/nRn8PSGQ6KDWj7xaIyZ5+vIzeeS9IyoZMOgxI4e3YnM4RsGj6rGYlbyB/L5E+y5BX9OdgJ+e4BS5dQg0AI9L+gyDyFuFK3fYheg3jjGszpUsirBCzij+WpjoRYqAMLczbNufQZV8utDaLPqSnGHtyKRbV+dHDtMRrtfLhhV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=d2IgH4d2; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dubeyko-com.20230601.gappssmtp.com header.i=@dubeyko-com.20230601.gappssmtp.com header.b="HhMWwTX4"
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-79495b1aaa7so105337437b3.1
-        for <netfs@lists.linux.dev>; Mon, 09 Mar 2026 11:02:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dubeyko-com.20230601.gappssmtp.com; s=20230601; t=1773079377; x=1773684177; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=U0E0WjzWnjqKyFX0awNnkIKkxya+sqvMWbLiiTHfrHc=;
-        b=HhMWwTX43qU9aROFKwOXAVW5upjNg6F7gmQAzqPi7dW5FQqM6pLePAXs/+ZcB9qtkl
-         W5ffIfoM7Nr/vKD507dp6wpHyZjBm9si3MkWsc90bM4ZTBMN71HDGwZJX6T7f9bdSLgL
-         vM2uNglJORcCT40A2qUI1/9F2WV9uNrrvJ9e5k1uXtqj6hEwHeQRxYTs1Sx+ifrh7ASr
-         2g4GxWmxFKo5oSmoVlk694PJuF3SXztSGMblIT6gSR8bSw3yPIypZu2wIjFiaeoEKwkU
-         p5KrE8nqXRopyi5V/QXy+LEU41jSpC983PtUc2uARotesqhv7vMrebMr2JwmDAh6qnWN
-         XEAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773079377; x=1773684177;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=U0E0WjzWnjqKyFX0awNnkIKkxya+sqvMWbLiiTHfrHc=;
-        b=rhrIFG6WIepK/um50FdIdp6eDTLJKXRv9J37Y//wBgjz5N6Ap1J8qf/OhBaBjzxV6g
-         fqgJUmwxcoII/tBboiedH5p4FbbuydWWG8OfOmrsDcdBXGmLVRXuOSgqJWAvTKJWmNnT
-         BJEWNIZ6XgFtBbK9CT+C2LCVepRLqshoJd35D2ITl1aKo7qIt0nnaH6Sd7Zb/6fzm1Hm
-         Pae4cA022dtiCkbpXmDe3uFOE5/v9PfS17024DV17yMQqkvbPtO+o8pvO2N6tV/YdfQF
-         5nVkBEor5xYqMhgqEhKBQNXam8kZuDcTcKDCGJr0TCAaeykDNrC4ItMAoHCQEZ/DIdW1
-         8rNw==
-X-Forwarded-Encrypted: i=1; AJvYcCWP4OlP7eZrphvB1WLSfo27xUF90a9p+PZZNdz5/Ft36hvvYDT6fpgQrfG190dCpnmUVLPvsA==@lists.linux.dev
-X-Gm-Message-State: AOJu0YxgOwfDMfC7deO/yiA+kPXG27c8AgMYZ4NYFotz7V1MnjpDS6Z/
-	GGVUDkYkKp/NQ+1nMr5hmEzrdme46234wybCMai7g5TAp7QkLZxX5ew8skayjtTsgoA=
-X-Gm-Gg: ATEYQzxuEh/Y8rgpGLT2K0gFC6jh4FOLsPlyzjOtkFLgP3ZuR31/QVJbsoReDYeNkC1
-	Kr5XPVpszoPJQqpYvWJTxbbWAXgOGuE+f+Pto2AC3CTDv2LWWhV9yfPOI421Y60y/5Z0iiR8UxP
-	3DQ7Lh53sUK18/eA/6GSJ8zUZdpYSJ8VrrmYanQT/dDQekd3JMzSr6JcZsCRksr5StaSagkg1kC
-	ZpcriWuLQJDL1DI/HtIOB4CyelGLGjy2EGELzA5Yxu1gmUej8NM6lZFgAzSUYe+QqgItKWb1tjN
-	Z0D/tRME7NQ5fpwYrQCp/VRH3bwnYbNTj6d0tjzBbrq8CcwnVxQDVOjqa5vux1g7VrEmD7p5MT/
-	mf3ZgM5lSRyBcEKGkYtsj23oKRhW20eYYstKp1MW3+fOnP0/zaj9VfjSEhUKDNNIhBkPTmSVZqb
-	PSsvWbu0/Umz7KovxhfBKbrisEXqudWYNAmwzRorIVzMIjo5V+gE75wBR6wkODTeoOXeO66SADs
-	11+7XNK+YpkFHk8VnkBLlLa5oJQytQ=
-X-Received: by 2002:a05:690c:6d81:b0:799:1fb:9a7a with SMTP id 00721157ae682-79901fba578mr24740977b3.28.1773079376767;
-        Mon, 09 Mar 2026 11:02:56 -0700 (PDT)
-Received: from system76-pc.attlocal.net ([2600:1700:6476:1430:e4e3:2aa7:b432:e03b])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7990a63ff43sm2005327b3.26.2026.03.09.11.02.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Mar 2026 11:02:55 -0700 (PDT)
-From: Viacheslav Dubeyko <slava@dubeyko.com>
-To: dhowells@redhat.com,
-	pc@manguebit.org,
-	netfs@lists.linux.dev
-Cc: ceph-devel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	Slava.Dubeyko@ibm.com,
-	slava@dubeyko.com,
-	vdubeyko@redhat.com
-Subject: [PATCH] netfs: fix VM_BUG_ON_FOLIO() issue in netfs_write_begin() call
-Date: Mon,  9 Mar 2026 11:02:16 -0700
-Message-ID: <20260309180215.2479178-2-slava@dubeyko.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="d2IgH4d2"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 629BiYp9402979;
+	Mon, 9 Mar 2026 19:00:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=5swsN0
+	rUxxavDq9zMYnPJS2Jv47BUk07HnZRz0pbh40=; b=d2IgH4d2cI76xjXosS08+5
+	z7p4cmRM3+vsUQToHiG2nB8DP/joMF596z7727f61cqMRXeNJJpaPHxOajT8sUoA
+	4hdB+fd4u1HsuNVMFr3OsadtAG1CKvM35tVtsMpgaqqCM2ZBMMXJkpG++BlAdorh
+	a25OzV7jJWb6oFmtakhiLNn+qzaAmqYeRhvuloIidiB6X0BgKDL71O4yfuzN3RUh
+	AoqpvZ653XjMWMMwrSPrZbVK8uRNsl6RplSUCc6nWvYsnXyDf2A2VF2Up7qZowSZ
+	aJlNA2A77/MP8caSRZkmC6D9PsUx9bOXT5BvUfyuxzfxj3qWmymQF0ir3jH77L1w
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4crcun7rdb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 09 Mar 2026 19:00:09 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 629FvaW1015771;
+	Mon, 9 Mar 2026 19:00:08 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cs121ww0t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 09 Mar 2026 19:00:08 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 629J079s4915810
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 9 Mar 2026 19:00:08 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B444C58064;
+	Mon,  9 Mar 2026 19:00:07 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E09F35805A;
+	Mon,  9 Mar 2026 19:00:04 +0000 (GMT)
+Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.61.72.80])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  9 Mar 2026 19:00:04 +0000 (GMT)
+Message-ID: <c9500adc562665d44feaca9206f23a5ba07432c1.camel@linux.ibm.com>
+Subject: Re: [PATCH v3 00/12] vfs: change inode->i_ino from unsigned long
+ to u64
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-trace-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
+        fsverity@lists.linux.dev, linux-mm@kvack.org, netfs@lists.linux.dev,
+        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+        linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+        samba-technical@lists.samba.org, linux-nilfs@vger.kernel.org,
+        v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
+        autofs@vger.kernel.org, ceph-devel@vger.kernel.org,
+        codalist@coda.cs.cmu.edu, ecryptfs@vger.kernel.org,
+        linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net,
+        ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev,
+        devel@lists.orangefs.org, linux-unionfs@vger.kernel.org,
+        apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
+        linux-integrity@vger.kernel.org, selinux@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+        netdev@vger.kernel.org, linux-perf-users@vger.kernel.org,
+        linux-fscrypt@vger.kernel.org, linux-xfs@vger.kernel.org,
+        linux-hams@vger.kernel.org, linux-x25@vger.kernel.org,
+        audit@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+        linux-can@vger.kernel.org, linux-sctp@vger.kernel.org,
+        bpf@vger.kernel.org
+In-Reply-To: <f22758116dabd3c135a833bcb5cfcd2ea4f6ecf4.camel@kernel.org>
+References: <20260304-iino-u64-v3-0-2257ad83d372@kernel.org>
+		 <05b5d55c49b5a1bbc43a5315e3c84872e7e634b3.camel@linux.ibm.com>
+	 <f22758116dabd3c135a833bcb5cfcd2ea4f6ecf4.camel@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 09 Mar 2026 15:00:04 -0400
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: IXXixi4WEaMt5ZLipHNyYmLY2v6HWLsd
+X-Authority-Analysis: v=2.4 cv=Hp172kTS c=1 sm=1 tr=0 ts=69af18ba cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
+ a=o9bg_TheAfZNAX0b3qsA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA5MDE2NSBTYWx0ZWRfX6z/xa1oiKPHE
+ y5EqU++9e+D9gbPsThEA40KAIQaMNONuQFv6rphXC4UXK9hbuizpabscJIBcCstT+gR2HtuKysP
+ juuUkxGaMl7wxMTZHQleqdpaj1BApzfJEmhJlxbY5TY+zaAhKCE7FmRzIMEIOEQTi0cM+UreNNn
+ frwDdmfnFwh4sJREHHlQDdGWVECyjZbYar7Sfrv1WmeMPxeeCh8/LcWzrRHQxRnw2tvA2a4D8NR
+ c7ma8KolSpfVjNgJ0OleioMQBwEZGtoJr7jBKqVpvCDiflI9IHYr2EnI/OMDVmsDQcjOAtzHE2E
+ Cqs2ZZL0dk00OuX7g/sw5bXFEAXaWjWvfls2vJrY4HNOaz6u97184uDaehJuW5B2dmjBv87lTJU
+ mdY20MyhE/Ql/CExB+A/Xcl6KkN3u1kmsdTu44KKD0LP1RVDdsR5dGWPIvWKEchoHvJnuy6WqMG
+ FGu2ZyF+vBxNE+HNtfg==
+X-Proofpoint-ORIG-GUID: IXXixi4WEaMt5ZLipHNyYmLY2v6HWLsd
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-09_05,2026-03-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 adultscore=0 malwarescore=0 impostorscore=0 suspectscore=0
+ spamscore=0 phishscore=0 clxscore=1015 priorityscore=1501 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603090165
 
-From: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+On Mon, 2026-03-09 at 13:59 -0400, Jeff Layton wrote:
+> On Mon, 2026-03-09 at 13:47 -0400, Mimi Zohar wrote:
+> > [ I/O socket time out.  Trimming the To list.]
+> >=20
+> > On Wed, 2026-03-04 at 10:32 -0500, Jeff Layton wrote:
+> > > This version squashes all of the format-string changes and the i_ino
+> > > type change into the same patch. This results in a giant 600+ line pa=
+tch
+> > > at the end of the series, but it does remain bisectable.  Because the
+> > > patchset was reorganized (again) some of the R-b's and A-b's have bee=
+n
+> > > dropped.
+> > >=20
+> > > The entire pile is in the "iino-u64" branch of my tree, if anyone is
+> > > interested in testing this.
+> > >=20
+> > >     https://git.kernel.org/pub/scm/linux/kernel/git/jlayton/linux.git=
+/
+> > >=20
+> > > Original cover letter follows:
+> > >=20
+> > > ----------------------8<-----------------------
+> > >=20
+> > > Christian said [1] to "just do it" when I proposed this, so here we a=
+re!
+> > >=20
+> > > For historical reasons, the inode->i_ino field is an unsigned long,
+> > > which means that it's 32 bits on 32 bit architectures. This has cause=
+d a
+> > > number of filesystems to implement hacks to hash a 64-bit identifier
+> > > into a 32-bit field, and deprives us of a universal identifier field =
+for
+> > > an inode.
+> > >=20
+> > > This patchset changes the inode->i_ino field from an unsigned long to=
+ a
+> > > u64. This shouldn't make any material difference on 64-bit hosts, but
+> > > 32-bit hosts will see struct inode grow by at least 4 bytes. This cou=
+ld
+> > > have effects on slabcache sizes and field alignment.
+> > >=20
+> > > The bulk of the changes are to format strings and tracepoints, since =
+the
+> > > kernel itself doesn't care that much about the i_ino field. The first
+> > > patch changes some vfs function arguments, so check that one out
+> > > carefully.
+> > >=20
+> > > With this change, we may be able to shrink some inode structures. For
+> > > instance, struct nfs_inode has a fileid field that holds the 64-bit
+> > > inode number. With this set of changes, that field could be eliminate=
+d.
+> > > I'd rather leave that sort of cleanups for later just to keep this
+> > > simple.
+> > >=20
+> > > Much of this set was generated by LLM, but I attributed it to myself
+> > > since I consider this to be in the "menial tasks" category of LLM usa=
+ge.
+> > >=20
+> > > [1]: https://lore.kernel.org/linux-fsdevel/20260219-portrait-winkt-95=
+9070cee42f@brauner/
+> > >=20
+> > > Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> >=20
+> > Jeff, missing from this patch set is EVM.  In hmac_add_misc() EVM copie=
+s the
+> > i_ino and calculates either an HMAC or file meta-data hash, which is th=
+en
+> > signed.=20
+> >=20
+> >=20
+>=20
+> Thanks Mimi, good catch.
+>=20
+> It looks like we should just be able to change the ino field to a u64
+> alongside everything else. Something like this:
+>=20
+> diff --git a/security/integrity/evm/evm_crypto.c b/security/integrity/evm=
+/evm_crypto.c
+> index c0ca4eedb0fe..77b6c2fa345e 100644
+> --- a/security/integrity/evm/evm_crypto.c
+> +++ b/security/integrity/evm/evm_crypto.c
+> @@ -144,7 +144,7 @@ static void hmac_add_misc(struct shash_desc *desc, st=
+ruct inode *inode,
+>                           char type, char *digest)
+>  {
+>         struct h_misc {
+> -               unsigned long ino;
+> +               u64 ino;
+>                 __u32 generation;
+>                 uid_t uid;
+>                 gid_t gid;
+>=20
 
-The multiple runs of generic/013 test-case is capable
-to reproduce a kernel BUG at mm/filemap.c:1504 with
-probability of 30%.
+Agreed.
 
-while true; do
-  sudo ./check generic/013
-done
+>=20
+> That should make no material difference on 64-bit hosts. What's the
+> effect on 32-bit? Will they just need to remeasure everything or would
+> the consequences be more dire? Do we have any clue whether anyone is
+> using EVM in 32-bit environments?
 
-[ 9849.452376] page: refcount:3 mapcount:0 mapping:00000000e58ff252 index:0x10781 pfn:0x1c322
-[ 9849.452412] memcg:ffff8881a1915800
-[ 9849.452417] aops:ceph_aops ino:1000058db9e dentry name(?):"f9XXXXXX"
-[ 9849.452432] flags: 0x17ffffc0000000(node=0|zone=2|lastcpupid=0x1fffff)
-[ 9849.452441] raw: 0017ffffc0000000 0000000000000000 dead000000000122 ffff88816110d248
-[ 9849.452445] raw: 0000000000010781 0000000000000000 00000003ffffffff ffff8881a1915800
-[ 9849.452447] page dumped because: VM_BUG_ON_FOLIO(!folio_test_locked(folio))
-[ 9849.452474] ------------[ cut here ]------------
-[ 9849.452476] kernel BUG at mm/filemap.c:1504!
-[ 9849.478635] Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-[ 9849.481772] CPU: 2 UID: 0 PID: 84223 Comm: fsstress Not tainted 7.0.0-rc1+ #18 PREEMPT(full)
-[ 9849.482881] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-9.fc43 06/1
-0/2025
-[ 9849.484539] RIP: 0010:folio_unlock+0x85/0xa0
-[ 9849.485076] Code: 89 df 31 f6 e8 1c f3 ff ff 48 8b 5d f8 c9 31 c0 31 d2 31 f6 31 ff c3 cc
-cc cc cc 48 c7 c6 80 6c d9 a7 48 89 df e8 4b b3 10 00 <0f> 0b 48 89 df e8 21 e6 2c 00 eb 9d 0f 1f 40 00 66 66 2e 0f 1f 84
-[ 9849.493818] RSP: 0018:ffff8881bb8076b0 EFLAGS: 00010246
-[ 9849.495740] RAX: 0000000000000000 RBX: ffffea00070c8980 RCX: 0000000000000000
-[ 9849.498678] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-[ 9849.500559] RBP: ffff8881bb8076b8 R08: 0000000000000000 R09: 0000000000000000
-[ 9849.501097] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000010782000
-[ 9849.502108] R13: ffff8881935de738 R14: ffff88816110d010 R15: 0000000000001000
-[ 9849.502516] FS:  00007e36cbe94740(0000) GS:ffff88824a899000(0000) knlGS:0000000000000000
-[ 9849.502996] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 9849.503810] CR2: 000000c0002b0000 CR3: 000000011bbf6004 CR4: 0000000000772ef0
-[ 9849.504459] PKRU: 55555554
-[ 9849.504626] Call Trace:
-[ 9849.505242]  <TASK>
-[ 9849.505379]  netfs_write_begin+0x7c8/0x10a0
-[ 9849.505877]  ? __kasan_check_read+0x11/0x20
-[ 9849.506384]  ? __pfx_netfs_write_begin+0x10/0x10
-[ 9849.507178]  ceph_write_begin+0x8c/0x1c0
-[ 9849.507934]  generic_perform_write+0x391/0x8f0
-[ 9849.508503]  ? __pfx_generic_perform_write+0x10/0x10
-[ 9849.509062]  ? file_update_time_flags+0x19a/0x4b0
-[ 9849.509581]  ? ceph_get_caps+0x63/0xf0
-[ 9849.510259]  ? ceph_get_caps+0x63/0xf0
-[ 9849.510530]  ceph_write_iter+0xe79/0x1ae0
-[ 9849.511282]  ? __pfx_ceph_write_iter+0x10/0x10
-[ 9849.511839]  ? lock_acquire+0x1ad/0x310
-[ 9849.512334]  ? ksys_write+0xf9/0x230
-[ 9849.512582]  ? lock_is_held_type+0xaa/0x140
-[ 9849.513128]  vfs_write+0x512/0x1110
-[ 9849.513634]  ? __fget_files+0x33/0x350
-[ 9849.513893]  ? __pfx_vfs_write+0x10/0x10
-[ 9849.514143]  ? mutex_lock_nested+0x1b/0x30
-[ 9849.514394]  ksys_write+0xf9/0x230
-[ 9849.514621]  ? __pfx_ksys_write+0x10/0x10
-[ 9849.514887]  ? do_syscall_64+0x25e/0x1520
-[ 9849.515122]  ? __kasan_check_read+0x11/0x20
-[ 9849.515366]  ? trace_hardirqs_on_prepare+0x178/0x1c0
-[ 9849.515655]  __x64_sys_write+0x72/0xd0
-[ 9849.515885]  ? trace_hardirqs_on+0x24/0x1c0
-[ 9849.516130]  x64_sys_call+0x22f/0x2390
-[ 9849.516341]  do_syscall_64+0x12b/0x1520
-[ 9849.516545]  ? do_syscall_64+0x27c/0x1520
-[ 9849.516783]  ? do_syscall_64+0x27c/0x1520
-[ 9849.517003]  ? lock_release+0x318/0x480
-[ 9849.517220]  ? __x64_sys_io_getevents+0x143/0x2d0
-[ 9849.517479]  ? percpu_ref_put_many.constprop.0+0x8f/0x210
-[ 9849.517779]  ? entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[ 9849.518073]  ? do_syscall_64+0x25e/0x1520
-[ 9849.518291]  ? __kasan_check_read+0x11/0x20
-[ 9849.518519]  ? trace_hardirqs_on_prepare+0x178/0x1c0
-[ 9849.518799]  ? do_syscall_64+0x27c/0x1520
-[ 9849.519024]  ? local_clock_noinstr+0xf/0x120
-[ 9849.519262]  ? entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[ 9849.519544]  ? do_syscall_64+0x25e/0x1520
-[ 9849.519781]  ? __kasan_check_read+0x11/0x20
-[ 9849.520008]  ? trace_hardirqs_on_prepare+0x178/0x1c0
-[ 9849.520273]  ? do_syscall_64+0x27c/0x1520
-[ 9849.520491]  ? trace_hardirqs_on_prepare+0x178/0x1c0
-[ 9849.520767]  ? irqentry_exit+0x10c/0x6c0
-[ 9849.520984]  ? trace_hardirqs_off+0x86/0x1b0
-[ 9849.521224]  ? exc_page_fault+0xab/0x130
-[ 9849.521472]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[ 9849.521766] RIP: 0033:0x7e36cbd14907
-[ 9849.521989] Code: 10 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b7 0f 1f 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 48 89 54 24 18 48 89 74 24
-[ 9849.523057] RSP: 002b:00007ffff2d2a968 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-[ 9849.523484] RAX: ffffffffffffffda RBX: 000000000000e549 RCX: 00007e36cbd14907
-[ 9849.523885] RDX: 000000000000e549 RSI: 00005bd797ec6370 RDI: 0000000000000004
-[ 9849.524277] RBP: 0000000000000004 R08: 0000000000000047 R09: 00005bd797ec6370
-[ 9849.524652] R10: 0000000000000078 R11: 0000000000000246 R12: 0000000000000049
-[ 9849.525062] R13: 0000000010781a37 R14: 00005bd797ec6370 R15: 0000000000000000
-[ 9849.525447]  </TASK>
-[ 9849.525574] Modules linked in: intel_rapl_msr intel_rapl_common intel_uncore_frequency_common intel_pmc_core pmt_telemetry pmt_discovery pmt_class intel_pmc_ssram_telemetry intel_vsec kvm_intel joydev kvm irqbypass ghash_clmulni_intel aesni_intel input_leds rapl mac_hid psmouse vga16fb serio_raw vgastate floppy i2c_piix4 bochs qemu_fw_cfg i2c_smbus pata_acpi sch_fq_codel rbd msr parport_pc ppdev lp parport efi_pstore
-[ 9849.529150] ---[ end trace 0000000000000000 ]---
-[ 9849.529502] RIP: 0010:folio_unlock+0x85/0xa0
-[ 9849.530813] Code: 89 df 31 f6 e8 1c f3 ff ff 48 8b 5d f8 c9 31 c0 31 d2 31 f6 31 ff c3 cc cc cc cc 48 c7 c6 80 6c d9 a7 48 89 df e8 4b b3 10 00 <0f> 0b 48 89 df e8 21 e6 2c 00 eb 9d 0f 1f 40 00 66 66 2e 0f 1f 84
-[ 9849.534986] RSP: 0018:ffff8881bb8076b0 EFLAGS: 00010246
-[ 9849.536198] RAX: 0000000000000000 RBX: ffffea00070c8980 RCX: 0000000000000000
-[ 9849.537718] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-[ 9849.539321] RBP: ffff8881bb8076b8 R08: 0000000000000000 R09: 0000000000000000
-[ 9849.540862] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000010782000
-[ 9849.542438] R13: ffff8881935de738 R14: ffff88816110d010 R15: 0000000000001000
-[ 9849.543996] FS:  00007e36cbe94740(0000) GS:ffff88824b899000(0000) knlGS:0000000000000000
-[ 9849.545854] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 9849.547092] CR2: 00007e36cb3ff000 CR3: 000000011bbf6006 CR4: 0000000000772ef0
-[ 9849.548679] PKRU: 55555554
+All good questions. Unfortunately I don't know the answer to most of them. =
+What
+we do know: changing the size of the i_ino field would affect EVM file meta=
+data
+verification and would require relabeling the filesystem.  Even packages
+containing EVM portable signatures, which don't include or verify the i_ino
+number, would be affected.
 
-The race sequence:
-1. Read completes -> netfs_read_collection() runs
-2. netfs_wake_rreq_flag(rreq, NETFS_RREQ_IN_PROGRESS, ...)
-3. netfs_wait_for_read() returns -EFAULT to netfs_write_begin()
-4. The netfs_unlock_abandoned_read_pages() unlocks the folio
-5. netfs_write_begin() calls folio_unlock(folio) -> VM_BUG_ON_FOLIO()
+Mimi
 
-The key reason of the issue that netfs_unlock_abandoned_read_pages()
-doesn't check the flag NETFS_RREQ_NO_UNLOCK_FOLIO and executes
-folio_unlock() unconditionally. This patch implements in
-netfs_unlock_abandoned_read_pages() logic similar to
-netfs_unlock_read_folio().
 
-Signed-off-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-cc: David Howells <dhowells@redhat.com>
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-cc: Ceph Development <ceph-devel@vger.kernel.org>
----
- fs/netfs/read_retry.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/fs/netfs/read_retry.c b/fs/netfs/read_retry.c
-index 7793ba5e3e8f..71a0c7ed163a 100644
---- a/fs/netfs/read_retry.c
-+++ b/fs/netfs/read_retry.c
-@@ -285,8 +285,15 @@ void netfs_unlock_abandoned_read_pages(struct netfs_io_request *rreq)
- 			struct folio *folio = folioq_folio(p, slot);
- 
- 			if (folio && !folioq_is_marked2(p, slot)) {
--				trace_netfs_folio(folio, netfs_folio_trace_abandon);
--				folio_unlock(folio);
-+				if (folio->index == rreq->no_unlock_folio &&
-+				    test_bit(NETFS_RREQ_NO_UNLOCK_FOLIO,
-+					     &rreq->flags)) {
-+					_debug("no unlock");
-+				} else {
-+					trace_netfs_folio(folio,
-+						netfs_folio_trace_abandon);
-+					folio_unlock(folio);
-+				}
- 			}
- 		}
- 	}
--- 
-2.53.0
 
