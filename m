@@ -1,61 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B8D309DDB;
-	Mon,  9 Mar 2026 08:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8236B3783C5;
+	Mon,  9 Mar 2026 09:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773045813; cv=none; b=KLU7xL3dhdNnahorS4dtYw8qXDBaRdaeB7Vy93ZaavFiPmO0fE/rfrliublQj52BdyYordVgH/mpp4nAadlTv9BrLd9s0Yj+PpG/s39pXSC/+rIXm0yPn4w79G/M0lG+PKouXI+H/OJh/2Y9xg8q32fxPkqV/8cg48jewizfySA=
+	t=1773047852; cv=none; b=r/6+IE869Go7MLOi85s6QOQ4TG1m4XfqH1Gx5zZ+IJripBBKRYq6hBaF43eDuRUjSIGUuHMLTWOX/62vdigH4zZl5L5O6pwxsxtV2trNDyCV2evPdUwkAutoErNabKXApnGPA2TCLflOZFEkfKoCjvN6ZVBsiuwn4m79WGV6i8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773045813; c=relaxed/simple;
-	bh=gWqdkhYkbwmWU6R89018XFPGLsD6YIoMVWMHNNFNIjY=;
+	s=arc-20240116; t=1773047852; c=relaxed/simple;
+	bh=8AVx+6PpZLmeEmZfmErpNzzwzguq4bd/Ps3vZTGRPyo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EDinT/6O0jufoVCNmxue/Um+55P/I6XtVdiCxm8UYxl7mmms/vczgSUR1qHR7LfB/vkUqSOgK9tTR8PgFLYeuGkDylS4fa6lRqd4dfWpwTGxkEjeJqRS4XkTjQYm458WEosoOHgyPebvDOWNtBdXs8DLeR5bvB4dH9s8iQvxYBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k9vzEqn9; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=Nyh5R7kxQQjeqlSqPNsqvqNFaFO0rBsGzgkOsJ9R2WuW6Q2UiWJXKrVWhosioivD4TV7nT/FLVFJkPouoO4nkk7XfLKKkn42LhMDvWeNPqERvn7KX/rw0Nu4Wu/a2t5L2Ax67U5h19+0WcLHmJuqqaLsKC++Ay7c3SadLZUcLfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fqcNBi/O; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k9vzEqn9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E055C4CEF7;
-	Mon,  9 Mar 2026 08:43:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fqcNBi/O"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC440C4CEF7;
+	Mon,  9 Mar 2026 09:17:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773045812;
-	bh=gWqdkhYkbwmWU6R89018XFPGLsD6YIoMVWMHNNFNIjY=;
+	s=k20201202; t=1773047852;
+	bh=8AVx+6PpZLmeEmZfmErpNzzwzguq4bd/Ps3vZTGRPyo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k9vzEqn9kc0ui4yBsdwdBMUgAyweBD3Kr29vk19sY7bOzDSmvn0Jfj+cXsffDIRsQ
-	 iJKTXhJJGgq1IOUTgjmsZu1gxY4soe3V/gdyjvNLo325waAwG2AvVm2ZrUWF5XSdcb
-	 3H9tsnIPkW3+hxeNohicMtbEOPYryEudTq59JqqLdXrAxDcEWzQ33vM7iwvU4Ldi9B
-	 aSjIUycqKtgtnXu8ST2y+yc/6KHr71rJwChT83ACfzO50C6ywsXyC7rbfEEZPqniF6
-	 LTOjfcFZ5rnd1FlYCZD5lftA+F1D8umsJ7AQZRuVV56RV+u9YHVc0QL77ZjLXnQjUL
-	 dPAp2uCJFJrRA==
+	b=fqcNBi/ONNrbMjCW+oYZYLfCAwVlG8Iz13Zu5/5AgoWEPMuLa8fl3VH8TETzUaGuo
+	 kTSs+hOvpMI7WGuk3G8HBSQgFKv2FeD2lk+57na/MGoAQ7jjFgMUHwXiK6OVVCOtw9
+	 Gx1z1Jb1psKwJXX21eG6zxv5hY+5eaTbAfY7CLmZbJyxBte/6K79QZzHXll3TpOYzh
+	 D5qvpiAuYbO+bQYKavPQt7khDqJPslzzPC2AIXQSDe2PzOEMyTtXCyksGjW+rDmDZm
+	 vj6CyQeokqMin00Xa3LGmntftm31KsFWwGy4ZdXDiVPQwz2XEkJEp6SuPFoBD0nxk4
+	 6lvzcaBY6wMIA==
 From: Christian Brauner <brauner@kernel.org>
-To: NeilBrown <neilb@ownmail.net>
+To: dhowells@redhat.com,
+	pc@manguebit.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>
 Cc: Christian Brauner <brauner@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	David Howells <dhowells@redhat.com>,
-	Jan Kara <jack@suse.cz>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Amir Goldstein <amir73il@gmail.com>,
-	John Johansen <john.johansen@canonical.com>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	linux-kernel@vger.kernel.org,
+	jlayton@kernel.org,
 	netfs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	linux-unionfs@vger.kernel.org,
-	apparmor@lists.ubuntu.com,
-	linux-security-module@vger.kernel.org,
-	selinux@vger.kernel.org
-Subject: Re: [PATCH] FIXUP: cachefiles: change cachefiles_bury_object to use start_renaming_dentry()
-Date: Mon,  9 Mar 2026 09:43:15 +0100
-Message-ID: <20260309-verdacht-parkhaus-3a9cde4d4a7a@brauner>
+	linux-kernel@vger.kernel.org,
+	syzbot+9c058f0d63475adc97fd@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <Kartikey406@gmail.com>
+Subject: Re: [PATCH] netfs: Fix kernel BUG in netfs_limit_iter() for ITER_KVEC iterators
+Date: Mon,  9 Mar 2026 10:17:24 +0100
+Message-ID: <20260309-stemmen-gezaubert-dc04924cdbc2@brauner>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <177300347820.5556.314358492166337403@noble.neil.brown.name>
-References: <177300347820.5556.314358492166337403@noble.neil.brown.name>
+In-Reply-To: <20260307090041.359870-1-kartikey406@gmail.com>
+References: <20260307090041.359870-1-kartikey406@gmail.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -63,24 +50,26 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1303; i=brauner@kernel.org; h=from:subject:message-id; bh=gWqdkhYkbwmWU6R89018XFPGLsD6YIoMVWMHNNFNIjY=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSu69DZnyF4wTameb/Gop+1zYqeihL/n+0/9eUU78Y9m xon6mp97ShlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZiIxh5Ghi15q6cvCuLe6h/e fjUrftKlq7NWZQqF3T258sqfEMElemGMDDu3L9sfnCOirm+sOl3uzbdtL/xvKr2/H6t/ZLtHv9C F11wA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1441; i=brauner@kernel.org; h=from:subject:message-id; bh=8AVx+6PpZLmeEmZfmErpNzzwzguq4bd/Ps3vZTGRPyo=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSum6DGuEPr5yqmprmr1idPK1pwuPG6Q5Jj/aylLu+cb i+t4Zt2pKOUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAiVmKMDCem8DMVb26fzB1Q 1npH42pYwoLLft96hF7KRGn3Hl3N5cbI8PPE3QcdP5a3nHb4o8lT9zY389lFoefZ65l7p9nWtC+ X4gQA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-On Mon, 09 Mar 2026 07:57:58 +1100, NeilBrown wrote:
-> [[This fixup for f242581e611e in vfs/vfs-7.1.directory provides a new
-> commit description has preserves the error returns and log message, and
-> importantly calls cachefiles_io_error() in exactly the same
-> circumstances as the original - thanks]]
+On Sat, 07 Mar 2026 14:30:41 +0530, Deepanshu Kartikey wrote:
+> When a process crashes and the kernel writes a core dump to a 9P
+> filesystem, __kernel_write() creates an ITER_KVEC iterator. This
+> iterator reaches netfs_limit_iter() via netfs_unbuffered_write(), which
+> only handles ITER_FOLIOQ, ITER_BVEC and ITER_XARRAY iterator types,
+> hitting the BUG() for any other type.
 > 
-> Rather then using lock_rename() and lookup_one() etc we can use
-> the new start_renaming_dentry().  This is part of centralising dir
-> locking and lookup so that locking rules can be changed.
+> Fix this by adding netfs_limit_kvec() following the same pattern as
+> netfs_limit_bvec(), since both kvec and bvec are simple segment arrays
+> with pointer and length fields. Dispatch it from netfs_limit_iter() when
+> the iterator type is ITER_KVEC.
 > 
 > [...]
 
-Applied to the vfs-7.1.directory branch of the vfs/vfs.git tree.
-Patches in the vfs-7.1.directory branch should appear in linux-next soon.
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
 Please report any outstanding bugs that were missed during review in a
 new review to the original patch series allowing us to drop it.
@@ -92,7 +81,7 @@ Note that commit hashes shown below are subject to change due to rebase,
 trailer updates or similar. If in doubt, please check the listed branch.
 
 tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs-7.1.directory
+branch: vfs.fixes
 
-[1/1] FIXUP: cachefiles: change cachefiles_bury_object to use start_renaming_dentry()
-      (fixup)
+[1/1] netfs: Fix kernel BUG in netfs_limit_iter() for ITER_KVEC iterators
+      https://git.kernel.org/vfs/vfs/c/67e467a11f62
