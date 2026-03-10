@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5DA381AF8;
-	Tue, 10 Mar 2026 11:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22653C3BF4;
+	Tue, 10 Mar 2026 11:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773141199; cv=none; b=YuEHMeh7A4Ak5x/FyOYIvDNic2E+1UKHnutHNpWcGwJCiSvLogZD6z7Ig5syEXYPLVP4+dK8s+eQSRpuPUxBF8gvm/Oea/Ut39untqCKqcglpM24i/EyjWXNlh5HVvwlzXTU23qVmy2jxgNSQLY7dcFrorXlXQDj1Oruxy60egA=
+	t=1773142138; cv=none; b=ZhGcAo9J4wvULShJuIqqKCHuCBdc04jlzHo+u4fEThtW9dbrGh9HSVfW3SHhIjPN5undzTUKDowGgvgex8QqYgruWYXqMj51t1XvSwdjH9UTwJPusvIgWVgwQ7RzqyjyUKa4A+q3r29i26NHUst/Fno1+DhDUp2Sr3uFLEDIbBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773141199; c=relaxed/simple;
+	s=arc-20240116; t=1773142138; c=relaxed/simple;
 	bh=KHkNa2iY+LzydtP3MVJvWvXZcYuJYQktkJTPOV5J9bU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bldKezYa3CmBInVwGLdENftzLG5YOl8dAh/DF/GwBmrDrsdXjJifzquY4DWAGSe2jP+BxDTM92Y9c0etmn90GoKwm0WNaolziVIcxbCNhsBCRQO9CbFIh3ymte0llf37Rb+NLrCTp44DX8/ZJeexpeJrDXR94PeeOAnzk/QyJik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FYcVDVFq; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=pZ+j5d/YC+jt61oyLQtyDUxOL9pof5zogL2hOnUq5H/6i4jzXsSRUbUf4oRaXdXyJ6AAsTJ3Pb9pWlQKTjJb2x7zVmCxKmEXbSA/ulGvgNFUXOKJGWqeokrG7tWj7gY/l4kIZFQDg+cfj3/JF2ANqVJCsMrKXSR+k20XAByeAJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R5lK42S3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FYcVDVFq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FA2BC19423;
-	Tue, 10 Mar 2026 11:13:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R5lK42S3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5325C2BC9E;
+	Tue, 10 Mar 2026 11:28:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773141199;
+	s=k20201202; t=1773142137;
 	bh=KHkNa2iY+LzydtP3MVJvWvXZcYuJYQktkJTPOV5J9bU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FYcVDVFqhBGsAhcZx0HNv6PcGCXiAuKmIQYIIpHvpWPge/I1AX9cVjxwMkn3wosXd
-	 Gq06g3CYuLcwBc6a7LXkB3EsmUOT+VH4tii3WJAdQ/BmvYTmWpjpZzlYn0JEN8U8dt
-	 jPqADh5iMe77LUffCMm/mD7akY424heuQ2jwXcO99IA9Y48ZMLkMPGErcFiTcjpF3n
-	 eUoyPbvpneLTqPYSSDtrnyr7yM8XlJOMk6Wna6vqp4RHDYmX2JZCkIVYQ27wi3UJrA
-	 QQ/hAxRsGB6FSxH+J2hp37y4RpMRGCQWmh2zTptQzt6N36g8fBZsb8S00vmMNqq0CD
-	 8Q2QMHgYoQKxw==
+	b=R5lK42S33dEfdY0nnzEpIPhL5LCjwzpLDESpFuEX/gygb29WHbqHh1Z196xLQ9s55
+	 eWKoVtJ2IC3mFseykXwwDDmrm5du+APtVAIAyHWYJx7xhRTc5PVGAc3YHPUxG3JVRa
+	 P+n/KYGwn3w55GrMUIjAt1zb54jmAj1WaW1MjnkYRJjj9oGx/OC0vRM2c7BrwEwG49
+	 WyN5BNWmPYJjuUoVnSdKMLZh4yor4kJk4qFfF0ZSKTMGnODANjjjkI1yBBrWMzDAX2
+	 l6IYxKnrRUyqch677J+ydG9FA9SlryD3berKYoP+R6Ggil4dKqBSShq0RkonvFniEY
+	 WEVegbagwpHXQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
@@ -36,12 +36,12 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-fsdevel@vger.kernel.org,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 200/311] netfs: Fix unbuffered/DIO writes to dispatch subrequests in strict sequence
-Date: Tue, 10 Mar 2026 07:04:07 -0400
-Message-ID: <ee5d760a85b4bee4ab9a1ff4f800fa6586304c84.1773140655.git.sashal@kernel.org>
+Subject: [PATCH 6.18 225/314] netfs: Fix unbuffered/DIO writes to dispatch subrequests in strict sequence
+Date: Tue, 10 Mar 2026 07:18:04 -0400
+Message-ID: <3e28c56e3de133e0be9714f4854199c58ce6ed69.1773141555.git.sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1773140654.git.sashal@kernel.org>
-References: <cover.1773140654.git.sashal@kernel.org>
+In-Reply-To: <cover.1773141554.git.sashal@kernel.org>
+References: <cover.1773141554.git.sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
