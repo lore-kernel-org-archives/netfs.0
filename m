@@ -1,74 +1,71 @@
-Received: from mx1.manguebit.org (mx1.manguebit.org [143.255.12.172])
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2953C3FB053;
-	Wed, 18 Mar 2026 16:25:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=143.255.12.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45232F60A7;
+	Wed, 18 Mar 2026 23:12:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773851133; cv=none; b=hKednT3k2Zm/qwgA67/KZZuMTRepHkHqRXPpS74eiJw4DjIeX4SHLaDMzs/LvPr0ANry3iX1kXkjyv/A0cBEq8uTW4Mb39bFOdWXlPsNXrUJl45AztiUla7KHgKZq/qAcKBgud/fg96VjdXPCSHc1+lSoWomxRYT14iAm+zEgaM=
+	t=1773875551; cv=none; b=mEcLRLf4mBuTI4RELO2QHHbI1uWkE1pxXt2AZiqMAf+CxMjQRmvR3ea6Z0hth7Vws3pNF+BA2V4iMEfHl//33uccaQKAgZWUv0JbDsu7yNgEbWpVuf590fKwOPOy57PLEDIEdPz5UBCPVuFPWFHqbrn8iI3HG+UvFx0Ev+9Mg/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773851133; c=relaxed/simple;
-	bh=yFmsiKMZ6LIKiIoYQngAUtBJrmBcteth7bPXdLdaSU4=;
-	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Date:
-	 MIME-Version:Content-Type; b=plov4MFIrS0Cc3TivnLQFet6fbn7X99ZMxTsgGdA1zhDJNPkEVVLwyn9c2XVds0jqMxAnIMBvVRFe65waka+2+MEHn7wr7AxUrZsNrVAVrX8lf5HDF9e+pk/nTo5w0FxfC/f8zp1voeaZEQoih6p2odGGXPGiu05jE3IbgtwQQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org; spf=pass smtp.mailfrom=manguebit.org; dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b=EnUfUEZz; arc=none smtp.client-ip=143.255.12.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b="EnUfUEZz"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=manguebit.org; s=dkim; h=Content-Type:MIME-Version:Date:References:
-	In-Reply-To:Subject:Cc:To:From:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=jojGjcss2Or8mEfvtNw4nzQRr4QUxTorpz0ASy7gfwo=; b=EnUfUEZzdEdHls61fs2YJdlECP
-	V7fqbn6kOnMRdoilNr5w0bPSenewxidjQ89E1X9DFGpd9Tp6htsq/LG6kRWjhKHl90YWJ5oHxS88a
-	s4F9aYahrBzqneRo2LDj/Kc6P4BMa+Le23KMkG7jt8sga4kkOAZMOe7Q/GkO0qfTke6chhZuSwNnf
-	OVc0INOSOo58dIRdv1sOo4yVCy5F4hhOxpcB3m8QabzYypXsmq50gWJcu+bzNV2uOzM27ONkdCPT+
-	vgE8J5y0io3SpCPU30gj6wvl0v+jZq0QPj/jXxr1gIXTaNopUJYPP3gdOkgWkmAyWrFm2TiRewCYQ
-	f9FLqXqQ==;
-Received: from pc by mx1.manguebit.org with local (Exim 4.99.1)
-	id 1w2thw-000000019ID-465s;
-	Wed, 18 Mar 2026 13:25:20 -0300
-Message-ID: <b391df6ccd4c9e86cc58964a374fc55f@manguebit.org>
-From: Paulo Alcantara <pc@manguebit.org>
-To: David Howells <dhowells@redhat.com>, Christian Brauner <brauner@kernel.org>
-Cc: dhowells@redhat.com, netfs@lists.linux.dev,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] netfs: Fix read abandonment during retry
-In-Reply-To: <3775287.1773848338@warthog.procyon.org.uk>
-References: <3775287.1773848338@warthog.procyon.org.uk>
-Date: Wed, 18 Mar 2026 13:25:20 -0300
+	s=arc-20240116; t=1773875551; c=relaxed/simple;
+	bh=JCh4IeE/Cn60D/pNAmjztbTuiNBWjjTZpNihj1Tve9Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JCOffRpAytYhlGLwfkI40vvEG4iUXtUnpHJgkQoL5pmEPwghKbGvMoknLhkTGI5s6Ta3ZpugBMjZZJAeIbbujlmudptXkkjeQfyNcJN4rYms+bjHeOvV01LnL8trD2+hTutLEILizZQ+gAVE6rz2RF4y98sJs7vlbB3BPcLOzGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9F2241A01AB;
+	Wed, 18 Mar 2026 23:12:21 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf14.hostedemail.com (Postfix) with ESMTPA id 729DB2D;
+	Wed, 18 Mar 2026 23:12:17 +0000 (UTC)
+Date: Wed, 18 Mar 2026 19:12:46 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Christian Brauner <brauner@kernel.org>, Linus Torvalds
+ <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ linux-modules@vger.kernel.org, linux-nfs@vger.kernel.org,
+ bpf@vger.kernel.org, kunit-dev@googlegroups.com, linux-doc@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, netfs@lists.linux.dev,
+ io-uring@vger.kernel.org, audit@vger.kernel.org, rcu@vger.kernel.org,
+ kvm@vger.kernel.org, virtualization@lists.linux.dev,
+ netdev@vger.kernel.org, linux-mm@kvack.org,
+ linux-security-module@vger.kernel.org, Christian Loehle
+ <christian.loehle@arm.com>, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] kthread: remove kthread_exit()
+Message-ID: <20260318191246.21f5cae8@gandalf.local.home>
+In-Reply-To: <20260311104736.51b53405@pumpkin>
+References: <20260310-work-kernel-exit-v2-0-30711759d87b@kernel.org>
+	<20260310-work-kernel-exit-v2-1-30711759d87b@kernel.org>
+	<20260311104736.51b53405@pumpkin>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 729DB2D
+X-Rspamd-Server: rspamout06
+X-Stat-Signature: k3okmar3gqwa3bym6uatb3yctgtgf59r
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX18ZAlHD7zRdqyhWTgVQ561leKpKdrlCUw4=
+X-HE-Tag: 1773875537-654795
+X-HE-Meta: U2FsdGVkX1+7MRZYfjkh8tY3o0PNQxfTCp9CNyhqYR5NFfoxVPCM5iPNukWLzQIvK353tkgDvhZEdUedgHQ5QAkLbovGV5fvwkWyav20iib+DYA0dDHoYUnOxRBuEyIUuWk0DzuG1lL8+oddkej4s1MPcpQDwUN5GqInEA4qcRZLkJpWWxd7t1PfzHXZfqpOcF7WAx+PlcQksO8TPjRtlBOpPJasveRV7LExQmrExj38ijzYTXM4IkABls4ZOZgZxz6jQwh3Jnl0QSJRHa6iPYc7cT5zoaTdKKIxa3A6zx0cZRoh9me2qihdhYWm4g9GrHKVoLJDzQiYMqh11BNCWgZQJ5CMSezB
 
-David Howells <dhowells@redhat.com> writes:
+On Wed, 11 Mar 2026 10:47:36 +0000
+David Laight <david.laight.linux@gmail.com> wrote:
 
-> Under certain circumstances, all the remaining subrequests from a read
-> request will get abandoned during retry.  The abandonment process expects
-> the 'subreq' variable to be set to the place to start abandonment from, but
-> it doesn't always have a useful value (it will be uninitialised on the
-> first pass through the loop and it may point to a deleted subrequest on
-> later passes).
->
-> Fix the first jump to "abandon:" to set subreq to the start of the first
-> subrequest expected to need retry (which, in this abandonment case, turned
-> out unexpectedly to no longer have NEED_RETRY set).
->
-> Also clear the subreq pointer after discarding superfluous retryable
-> subrequests to cause an oops if we do try to access it.
->
-> Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> cc: Paulo Alcantara <pc@manguebit.org>
-> cc: netfs@lists.linux.dev
-> cc: linux-fsdevel@vger.kernel.org
-> ---
->  fs/netfs/read_retry.c |    5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+> > -#define module_put_and_kthread_exit(code) kthread_exit(code)
+> > +#define module_put_and_kthread_exit(code) do_exit(code)  
+> 
+> I'm intrigued...
+> How does that actually know to do the module_put()?
+> (I know it does one - otherwise my driver wouldn't unload.)
 
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+It's in the !CONFIG_MODULES section. No module_put() necessary. Only the
+kthread_exit (do_exit) is needed.
+
+-- Steve
