@@ -1,96 +1,90 @@
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD302E54A3
-	for <netfs@lists.linux.dev>; Mon, 23 Mar 2026 18:38:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402CF3E2745
+	for <netfs@lists.linux.dev>; Mon, 23 Mar 2026 20:14:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774291110; cv=none; b=kizOmWa5XYzABzTQfX/SepWTKlRCkJ+/u3giGnlbTE62N6zGKAHThMdZ04PA5Hjxp6LX9BayIh51x1WLNqUI2NlLajX4U0RdAYy1biS4ELiaVcA2Q3Bqw0bwnMjl08/LqRhv10Kj3+HO20Jpr7d8tjyQyjkLAEyYtpcDXQ/pIvM=
+	t=1774296884; cv=none; b=j9UoYPHCFAOg9622mb0620CV4TRGmvrAud1JpqHiu00YZH4UcMonjKyEJwsgKSJ+W/aUGYYcGy/Q041X2q4o67RaEQENmOGu4HGKAL+d8QLzJQdtcLTbYnr0cksYtcuIVftE/bQtzoof6Nowg0aznNWlzAWYo/lRyhssXr0qJtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774291110; c=relaxed/simple;
-	bh=9zAQOPPXZrLE9As8tHWODwXqS9OjumANAbv6fs3Mhnw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lh/qaB4iTuzFWe+yiTRtzASpJbXkxgCPwMrEk1uNOAaXONiPyG5assWaHS+j/HTKVcmJRHInYMtr8/1tbM4oheM9/wOFPOoeMWzsWUR9oFwIrp6W3J71B3fCWL+2/0B8ioIdeYbDkjjZJN2e16XCyNOEg6CtdAbDfvGkOq3/Pkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chenxiaosong.com; spf=pass smtp.mailfrom=chenxiaosong.com; dkim=pass (2048-bit key) header.d=chenxiaosong.com header.i=@chenxiaosong.com header.b=ihR/iwj9; arc=none smtp.client-ip=95.215.58.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chenxiaosong.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chenxiaosong.com
+	s=arc-20240116; t=1774296884; c=relaxed/simple;
+	bh=F+ddKRQ39xlfAIr6n3sDo9L+xJ5paXR2AtPlU73aYFU=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
+	 Message-ID:Content-Type; b=TWkv9MzIs9PKJKHIHegv8hBrTX+pzdNkOsuqj/KXDlg41wc6r7sg2vzudNRZr6Ngivs/RcNw6gSQiOpqwbqHU9RjEeU+JkOfPmC0K3f3fJM9X5XkrtJI76XjsmwEnbl8l2t2Q6CvmIlCBlOhZ1vbIqBOvkDJFUdlu5/yXRymIA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=U6aOzKkQ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=chenxiaosong.com header.i=@chenxiaosong.com header.b="ihR/iwj9"
-Message-ID: <2d8ce118-2f7a-4b7f-8786-4581b29cb74e@chenxiaosong.com>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chenxiaosong.com;
-	s=key1; t=1774291104;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="U6aOzKkQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774296882;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cr9/0LFyyYkqM0Pl3Rn47qpHPVg9ycKUoMlJD6pGGO8=;
-	b=ihR/iwj9opQaeC2aYOw/oDW4g6VvS0xc15eOo1h9NmBXhS7PQ3Y6TbVmve07OXXhbswZ5d
-	KV8v4hhNnyDvKhtuPIhhczStJwHvSMcbGHKHjbV0Kmm2+gJX3zSPXeel4drobTC8EAm99u
-	+gn4ki6o2knL38XpdrmHem1q50BIu7ymz8ZfrCr/hb0bm8YHHWYpjfqGRASgCxlpEsB8N6
-	CpnI4haCxZC5Qr+t1OIcWzTJ4cdAei6RZqJanVcl/47vkXEyc3RoLRSQsWL4LTFqeCEakZ
-	gbBXY6sPSaWG5WU54Nm70vLEl1W/eLU1cuIHRefQ7UX0kCe3O5Zqnkw5EIZFlQ==
-Date: Tue, 24 Mar 2026 02:37:27 +0800
+	bh=lUVGj/gLaPfVvuJQ5VZBM9LF/E7WLCa5Qqxd3/TmoQo=;
+	b=U6aOzKkQPwSeCsRyxa766qQ2E9hfwiLFlMselfW79GJJAXfkES7zIsHsxl79bWNsR3OV8N
+	sVKhsrCvLNTenMTlVtCTVVao+2GkO6FFCu3C51P8/OhUadXezRLdXZX458lBMH5T20rK7H
+	diNHVaMXnX1wbNXJwlXtqT7ZZSTXr3I=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-279-abKn93TAPU2bn-bvqjtKYQ-1; Mon,
+ 23 Mar 2026 16:14:35 -0400
+X-MC-Unique: abKn93TAPU2bn-bvqjtKYQ-1
+X-Mimecast-MFC-AGG-ID: abKn93TAPU2bn-bvqjtKYQ_1774296873
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 62D281955D57;
+	Mon, 23 Mar 2026 20:14:31 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.33.121])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 79DED19560B1;
+	Mon, 23 Mar 2026 20:14:23 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <2d8ce118-2f7a-4b7f-8786-4581b29cb74e@chenxiaosong.com>
+References: <2d8ce118-2f7a-4b7f-8786-4581b29cb74e@chenxiaosong.com> <20260304140328.112636-1-dhowells@redhat.com> <20260304140328.112636-18-dhowells@redhat.com>
+To: ChenXiaoSong <chenxiaosong@chenxiaosong.com>
+Cc: dhowells@redhat.com, Matthew Wilcox <willy@infradead.org>,
+    Christoph Hellwig <hch@infradead.org>, Jens Axboe <axboe@kernel.dk>,
+    Leon Romanovsky <leon@kernel.org>, Steve French <smfrench@gmail.com>,
+    Christian Brauner <christian@brauner.io>,
+    Paulo Alcantara <pc@manguebit.com>, netfs@lists.linux.dev,
+    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+    v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org, Paulo Alcantara <pc@manguebit.org>
+Subject: Re: [RFC PATCH 17/17] netfs: Combine prepare and issue ops and grab the buffers on request
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [RFC PATCH 17/17] netfs: Combine prepare and issue ops and grab
- the buffers on request
-To: David Howells <dhowells@redhat.com>, Matthew Wilcox
- <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>,
- Jens Axboe <axboe@kernel.dk>, Leon Romanovsky <leon@kernel.org>,
- Steve French <smfrench@gmail.com>
-Cc: Christian Brauner <christian@brauner.io>,
- Paulo Alcantara <pc@manguebit.com>, netfs@lists.linux.dev,
- linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
- linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- Paulo Alcantara <pc@manguebit.org>
-References: <20260304140328.112636-1-dhowells@redhat.com>
- <20260304140328.112636-18-dhowells@redhat.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: ChenXiaoSong <chenxiaosong@chenxiaosong.com>
-In-Reply-To: <20260304140328.112636-18-dhowells@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Date: Mon, 23 Mar 2026 20:14:22 +0000
+Message-ID: <3574143.1774296862@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: fdReTulfYgAbeZcQi_D8JGgyuhElFZ7wk7P9n2BqD6I_1774296873
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <3574142.1774296862.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
 
-Hi David,
+ChenXiaoSong <chenxiaosong@chenxiaosong.com> wrote:
 
-https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/commit/?h=netfs-next&id=a99af9686490fa9a099679bcbfa1b56c839b8d98
+> I reviewed this patch in your repository's netfs-next branch (it looks
+> slightly different from the version posted to the mailing list) and found=
+ two
+> issues, the following additional changes are needed:
 
-I reviewed this patch in your repository's netfs-next branch (it looks 
-slightly different from the version posted to the mailing list) and 
-found two issues, the following additional changes are needed:
+Thanks!  I've been testing the patches further and cleaning them up.  I wil=
+l
+hopefully post them again soon.
 
-```
---- a/fs/netfs/direct_write.c
-+++ b/fs/netfs/direct_write.c
-@@ -161,8 +161,8 @@ static int netfs_unbuffered_write(struct 
-netfs_io_request *wreq)
-                                         break;
-                                 }
-                                 netfs_put_subrequest(subreq, 
-netfs_sreq_trace_put_failed);
--                               subreq = NULL;
-                                 ret = subreq->error;
-+                               subreq = NULL;
-                                 goto failed;
-                         }
-                         break;
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index 697a47e96d2a..112363f17a84 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -808,6 +808,7 @@ struct netfs_writethrough 
-*netfs_begin_writethrough(struct kiocb *iocb, size_t l
-         if (bvecq_buffer_init(&wreq->load_cursor, GFP_NOFS) < 0) {
-                 netfs_put_failed_request(wreq);
-                 mutex_unlock(&ictx->wb_lock);
-+               kfree(wthru);
-                 return ERR_PTR(-ENOMEM);
-         }
-```
+David
+
