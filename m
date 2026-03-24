@@ -1,85 +1,79 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560563C457C
-	for <netfs@lists.linux.dev>; Tue, 24 Mar 2026 07:16:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296CD33ADA7
+	for <netfs@lists.linux.dev>; Tue, 24 Mar 2026 07:39:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774336605; cv=none; b=DDR3pU6vmPj0CccaTNxWM0BxvbfQIjfLCw9jHdl6KDU6PngrwoFEdvbN5nK8OMftIH1/FFgGNKoB+ddpmtnnKJT4MYap5TeKEzteR4h2BHX8WhgRDpR6z+ElXM2jU+oYn5hsCUC6NpK5/27dMJRj5m6jEMlDVsaIEvtoDo55Iww=
+	t=1774338005; cv=none; b=Y5/WcnTHYi0Ww4s2jUVzSgT/f6KZhNhQbLfFHPMdq2O1KUcWu9+gDnDARVcZOEm5g8A0gIyJcF9gazG0GUKu/fqlMcYg1POs5m7iR3ESN+ZeRFFB9a++iL/iiRxKjN2SZbpRpiWD0d4S5W4VPVaDhjAi/iKcg1JZkl/1rIdhjTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774336605; c=relaxed/simple;
-	bh=PBVX1N2R3/W/l111+TonSytoIMzWFKGCCwwoAJdItIY=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
-	 Message-ID:Content-Type; b=F9RllrLoKl4/Bzgawt4B5OrXnGtOq36u8BEaWnUqPvjXXxuf+tUzdkWg68avCCXJwHpYenSZrQw7gkxuIKf97/Va+bjYnB3rmURRCfImbJ0bccpaQZTo3kpU/+9YF1FqRLX0pSvK1Jwla2jBsEzlW2mBrK4sgOt1DsBUahyQJFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YCfeNwSz; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1774338005; c=relaxed/simple;
+	bh=mi3gdzaUmtn9w/TP53O7kR6uDy0niGdUMjM0cGZaeos=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bZywPWMx9GohEN/zgHbAUMFgmquiFOMKNIOmxYyHuzivUG6U9lqz5B/a2OW6SPPuHvEBRHu58UbGwedaIx3h/vTgHfTr9EONYKQ60Vnf3h3xJIcsCJr1/5POKJqfW5fxXBDBG2XWkVg351I2fbEeOnXv6fyxyZ7NzfANGICdxm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chenxiaosong.com; spf=pass smtp.mailfrom=chenxiaosong.com; dkim=pass (2048-bit key) header.d=chenxiaosong.com header.i=@chenxiaosong.com header.b=aVYGo8QD; arc=none smtp.client-ip=95.215.58.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chenxiaosong.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chenxiaosong.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YCfeNwSz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774336596;
+	dkim=pass (2048-bit key) header.d=chenxiaosong.com header.i=@chenxiaosong.com header.b="aVYGo8QD"
+Message-ID: <c456a6ce-c883-4631-a5c7-5d2255205546@chenxiaosong.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chenxiaosong.com;
+	s=key1; t=1774337994;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PBVX1N2R3/W/l111+TonSytoIMzWFKGCCwwoAJdItIY=;
-	b=YCfeNwSzZz5xQpk8mfmCkEtqlVw6P8TQwCrCOD1XNUAn059wdd9m1UbMhBO2BaHOtbDTtw
-	txkxIpmzeQgp5JO4fKksDrdt4N/WordbW7e4HsKX1HuJbmu4zJQofTERaEDilx3xXYhu1I
-	haAxGJ1qwtgASMAO3pGrtaI7OT7ThKo=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-600-zO6vSdySMAq3GDoE2zgKUg-1; Tue,
- 24 Mar 2026 03:16:31 -0400
-X-MC-Unique: zO6vSdySMAq3GDoE2zgKUg-1
-X-Mimecast-MFC-AGG-ID: zO6vSdySMAq3GDoE2zgKUg_1774336587
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6BBCE195605E;
-	Tue, 24 Mar 2026 07:16:19 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.44.33.121])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 50E0F1955D71;
-	Tue, 24 Mar 2026 07:16:13 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <a1949f85-2e92-429e-83eb-91a7691b9a9b@chenxiaosong.com>
-References: <a1949f85-2e92-429e-83eb-91a7691b9a9b@chenxiaosong.com> <20260304140328.112636-1-dhowells@redhat.com> <20260304140328.112636-18-dhowells@redhat.com> <2d8ce118-2f7a-4b7f-8786-4581b29cb74e@chenxiaosong.com> <63655684a778145167a549b4a6251ccf@manguebit.org>
-To: ChenXiaoSong <chenxiaosong@chenxiaosong.com>
-Cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.org>,
-    Matthew Wilcox <willy@infradead.org>,
-    Christoph Hellwig <hch@infradead.org>, Jens Axboe <axboe@kernel.dk>,
-    Leon Romanovsky <leon@kernel.org>, Steve French <smfrench@gmail.com>,
-    Christian Brauner <christian@brauner.io>, netfs@lists.linux.dev,
-    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-    v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 17/17] netfs: Combine prepare and issue ops and grab the buffers on request
+	bh=5eOENhlVmNFoGhcyrUHBr89Eq8YlcagZTKhzxwQn70g=;
+	b=aVYGo8QDJKCgtWnuX3YYyJNBBQk9h054kOklpA3Erm5b6NE/I5cV0UGOiK2Pwm1aCvNXHa
+	3pkXx0htAXM2AhwwhNhUaI64M6C/jaGktZyUMtQWE9U27MXqoMhFsrpls0BhhgqFp8JS5j
+	HM347bHypBf60h0eBo3YDICFpGg19SxT1BegKfZOCxhS81enNp+fLKWuO2yOrL8CiFDx4H
+	0APOygJrHzzq+0BVEyNaghptjEKvw90uWOIFJPTRdrEdNNt1Q3fG5kNOwJOy9+Iz7bfEXp
+	nVvM9ljkbQuCkCe+K07S0gQfG5yKSPn4SdGhoFYDiFdRLNm9YMOLcEDeTAC97w==
+Date: Tue, 24 Mar 2026 15:38:54 +0800
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Tue, 24 Mar 2026 07:16:11 +0000
-Message-ID: <3597849.1774336571@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-MFC-PROC-ID: 7jeXtuaI_uH-xbaVefZTKgOeYr7eQiO1mlhmrkSTTNQ_1774336587
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3597848.1774336571.1@warthog.procyon.org.uk>
+Subject: Re: [RFC PATCH 17/17] netfs: Combine prepare and issue ops and grab
+ the buffers on request
+To: David Howells <dhowells@redhat.com>
+Cc: Paulo Alcantara <pc@manguebit.org>, Matthew Wilcox <willy@infradead.org>,
+ Christoph Hellwig <hch@infradead.org>, Jens Axboe <axboe@kernel.dk>,
+ Leon Romanovsky <leon@kernel.org>, Steve French <smfrench@gmail.com>,
+ Christian Brauner <christian@brauner.io>, netfs@lists.linux.dev,
+ linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+ linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <a1949f85-2e92-429e-83eb-91a7691b9a9b@chenxiaosong.com>
+ <20260304140328.112636-1-dhowells@redhat.com>
+ <20260304140328.112636-18-dhowells@redhat.com>
+ <2d8ce118-2f7a-4b7f-8786-4581b29cb74e@chenxiaosong.com>
+ <63655684a778145167a549b4a6251ccf@manguebit.org>
+ <3597849.1774336571@warthog.procyon.org.uk>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: ChenXiaoSong <chenxiaosong@chenxiaosong.com>
+In-Reply-To: <3597849.1774336571@warthog.procyon.org.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-ChenXiaoSong <chenxiaosong@chenxiaosong.com> wrote:
+`netfs_put_request()` only decrements the reference count by one, while 
+`netfs_put_failed_request()` (refcout == 2) immediately frees the 
+request by calling `netfs_free_request()`.
 
-> In netfs_writeback_single(), on the failure path, should we call
-> netfs_put_failed_request() instead of netfs_put_request()?
+Since the `refcount == 2` after `netfs_create_write_req() -> 
+netfs_alloc_request()`, on the failure path, calling 
+`netfs_put_request()` will not free the request.
 
-It doesn't matter exactly, as the only difference really is whether it gets
-bumped over to a workqueue, but it's probably better to avoid that if we can.
+Please let me know if my understanding is incorrect.
 
-David
+Thanks,
+ChenXiaoSong <chenxiaosong@kylinos.cn>
+
+On 3/24/26 15:16, David Howells wrote:
+> It doesn't matter exactly, as the only difference really is whether it gets
+> bumped over to a workqueue, but it's probably better to avoid that if we can.
 
