@@ -1,176 +1,240 @@
-Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC303491E1
-	for <netfs@lists.linux.dev>; Thu, 26 Mar 2026 09:07:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0CE530F815
+	for <netfs@lists.linux.dev>; Thu, 26 Mar 2026 10:15:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774516061; cv=none; b=q7hLQljDJ93aj0gdO7PsJHeRB14h43V+ITjafJjKXp8N+vD61ICJnYIKNpxPAHl/XolnxHlqGKSJ4QeH9gk2HTQucqXPdwXuzROxWD93rcTyy31NVHj70jdZvA2ZQS39W2UqY2twDi+KHwnvSd5M2vVbBzlu/rFVOryX7McGc0Y=
+	t=1774520141; cv=none; b=k9ThJZnFB7301BBAdTZy5zQbfw+a6Naq70IdAZwpHiruHhJfL6Z044FmEgq7vtdMH4m/h9Voo41SLkVuH0oheK6+D1YwM1yqPPhSDttIArMBCCawKi64KPWyyhtb5aU/rLUzbEX3r/Mfm/OzvJD9go1pqS/ASv16AoxnbLKScBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774516061; c=relaxed/simple;
-	bh=AhvTutpNDSH1ZnqHoPh2Qr+GKgd3XsnSEPuaEo1+oTI=;
-	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
-	 References:Date:Message-id; b=Ovb03NfQkGKu27Ow25wyZR+rLgl/FhVfDlxxtg5GG1CKDzJmCcmBBJMRMQIEB/dHiTGgNISggmuP4ohvDn7DqLZGx2+eYrQTrDHen5OePD9Y46tnDnkigStLclDuULjx8qFSza1EIr9R3yO8Iztw2eYLHqp2N2d9M6uaCY374Qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net; spf=pass smtp.mailfrom=ownmail.net; dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b=Ci0R/S5q; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=jPw5uZK1; arc=none smtp.client-ip=103.168.172.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ownmail.net
+	s=arc-20240116; t=1774520141; c=relaxed/simple;
+	bh=W0RSubsvuNUP/MY+w/2zHRDsOkwolFMbD9JJNN69e5U=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
+	 Message-ID:Content-Type; b=bgi5tYFpIPfWrQsPWE8JRBnadAPm9m2dnLMl7+8nf46+x4eBlL4MLmlWewMwvbt1xBwcQwWHFqPsLvSthE6I7jeWDYQ5sjKWQaf1ycdI8fsUJHLRrz0JSMKWCIoLBuUE7zEW2tmS9xd/qy4+sN3fbcSQriJ1lYM+vNVV5Jq8nwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fKe8vS7L; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b="Ci0R/S5q";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jPw5uZK1"
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id ACEB6140023B;
-	Thu, 26 Mar 2026 05:07:38 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-10.internal (MEProxy); Thu, 26 Mar 2026 05:07:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to; s=fm1; t=
-	1774516058; x=1774602458; bh=EJYv+PDF1XE+NSawL3FUaebZXRas4lB0PSe
-	if3tk8+g=; b=Ci0R/S5q72qxxg8xuVzrvyDFG0kocISKxHtbYd/x+Oxd2keIZH2
-	5d08Id+lpuOxwF9+itjGFLoqVkM9YfMdnruQr2pxnsLN/3ryvqKWqd2SvWOxEDoN
-	1mPYm9/MCKsqUKuHHmnepSHIc7wf/pYV0rl9USk7cNA8Am2RY1ZLTFdM1HwbYwL8
-	EfUZ5q3JGJ+pofBzy4yiJMFEvxEtsXyfp+/p2mvpTK6tGT1GOgWCVFK8erNt+Mdt
-	o5Yc1CqCERgc8QuigOE+NrOfO0eUcLqHte/yi2g8c8EkkeOwdk2GaqbBiyJscq05
-	qOYSD18TqTZ54pBKVghuOgkFTwbkiOlyy9Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774516058; x=
-	1774602458; bh=EJYv+PDF1XE+NSawL3FUaebZXRas4lB0PSeif3tk8+g=; b=j
-	Pw5uZK1bs78sEYRY+T1bGx6U8XO5jO0ZB8QWO1bNRasoGJFWc/1Bi8IjKsdOTUq+
-	XbF1j6Pt3OT9m5/e1LcwY7opaCxTV1o12Dt5+YTa9QF6AyCu+oa9JZ9nR1BPxWR7
-	D/twH0TCPRKvVhFkSzfNUgXfDry5uxfsBuQwgML1CYwQrdDvv0z6KiqFUDamPAIy
-	3DfA76zTjvtNhQQpoNRGC0qHH5Dl/2ul0JxnOVkIVmg/fYm4z6no1QAaLFC4nlKj
-	7WspIEBlwZvuCllYlHwPW1oHGuWXLuUAHS0mfwBa7QBIM8/Fk7dul9luIdUQgGwK
-	j+ywdRWjHT+nqKzhNKHfw==
-X-ME-Sender: <xms:WvfEaQBQUZ-g2I1RXdPmXRn4aaAHK94Oc5Yr0Y1cVYJq0AozOHvXSg>
-    <xme:WvfEaVHwMta2UWF3F0r2a-gXW3NY1JYhkTR4TykP_U2BxdOW-HsGCB6-CkjAUUvmE
-    4LQXymHoUvZDnetwCn_BfBIa8DEB7vtSGafOVwfEDf_cHb3UQ>
-X-ME-Received: <xmr:WvfEaXPtYkd41n5TSxszc7HTuLBzuXnWF5NwCYXto3mIFTMq_Epn48tO9RnX9QT8bmH5zk79-lRZwhaUJTtmDYvksShaSRGBnDoap-Kyywhu>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefvdeileekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurheptgfgggfhvfevufgjfhffkfhrsehtqhertddttdejnecuhfhrohhmpefpvghilheu
-    rhhofihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnh
-    epleejtdefgeeukeeiteduveehudevfeffvedutefgteduhfegvdfgtdeigeeuudejnecu
-    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepnhgvihhlsg
-    esohifnhhmrghilhdrnhgvthdpnhgspghrtghpthhtohepkedpmhhouggvpehsmhhtphho
-    uhhtpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrd
-    horhhgpdhrtghpthhtoheplhhinhhugidqfhhsuggvvhgvlhesvhhgvghrrdhkvghrnhgv
-    lhdrohhrghdprhgtphhtthhopeguhhhofigvlhhlshesrhgvughhrghtrdgtohhmpdhrtg
-    hpthhtohepphgtsehmrghnghhuvggsihhtrdhorhhgpdhrtghpthhtohepnhgvthhfshes
-    lhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdgrfhhssehlih
-    hsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepsghrrghunhgvrheskhgv
-    rhhnvghlrdhorhhgpdhrtghpthhtohepmhgrrhgtrdgtrdguihhonhhnvgesghhmrghilh
-    drtghomh
-X-ME-Proxy: <xmx:WvfEaW4hBfSP5G1qaAAQ7qm2Cn_FyIYcvlyiT4KHhQ68Z3gcvIdyKw>
-    <xmx:WvfEaag_IDmsWAy44kVXtXOA4FGTjIEND3g9_jxyFhe4fpeN-cLgXQ>
-    <xmx:WvfEabfAbbwtBr0bmDfytmUw8sYV-HOqKVgoJ7FL5KOI4s6_BTensw>
-    <xmx:WvfEaSx0mvkxYP4GENh0IUJ2czgkFxFMuc59aU5vdSfuS63M8JVFdQ>
-    <xmx:WvfEaT7wTggvIj7GTLTX1agYAq0AezpS2OXb6havrOsWz77zJL7Kgp41>
-Feedback-ID: i9d664b8f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 26 Mar 2026 05:07:36 -0400 (EDT)
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fKe8vS7L"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774520138;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0v3gzSjGywfYDE/j1yc8G6gToL1M6HVG21hZM/li6Hw=;
+	b=fKe8vS7L2yhCqVJ4aZOEgS7cRMvple++FwRGFpSAvN4TLiTyi5TaxDK8gJjxhTR1BJQsPG
+	ZjpETrr0JKi49Y3Rlk5GeK6Zywploqz/bbiHb+Rzgl7jDudL9D1wEbIqKavIdok5rFGvpB
+	Rqp8mgcf9IHuq9n+ymQ7vne+krE+nyk=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-662-hIhGNZZ5N-Kc2XEvrZSWWQ-1; Thu,
+ 26 Mar 2026 06:15:35 -0400
+X-MC-Unique: hIhGNZZ5N-Kc2XEvrZSWWQ-1
+X-Mimecast-MFC-AGG-ID: hIhGNZZ5N-Kc2XEvrZSWWQ_1774520133
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 30FD81955DB6;
+	Thu, 26 Mar 2026 10:15:33 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.33.121])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 767FF1800351;
+	Thu, 26 Mar 2026 10:15:29 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <4001609.1774391729@warthog.procyon.org.uk>
+References: <4001609.1774391729@warthog.procyon.org.uk>
+To: NeilBrown <neil@brown.name>
+Cc: dhowells@redhat.com, Marc Dionne <marc.dionne@auristor.com>,
+    Paulo Alcantara <pc@manguebit.org>,
+    Christian Brauner <brauner@kernel.org>, netfs@lists.linux.dev,
+    linux-afs@lists.infradead.org, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: [PATCH v2] cachefiles: Fix excess dput() after end_removing()
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: NeilBrown <neilb@ownmail.net>
-To: "David Howells" <dhowells@redhat.com>
-Cc: "Marc Dionne" <marc.c.dionne@gmail.com>, dhowells@redhat.com,
- "Paulo Alcantara" <pc@manguebit.org>,
- "Christian Brauner" <brauner@kernel.org>, netfs@lists.linux.dev,
- linux-afs@lists.infradead.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] cachefiles: Fix excess dput() after end_removing()
-In-reply-to: <405501.1774511482@warthog.procyon.org.uk>
-References:
- <CAB9dFdvs4=ZbqHeoMFXj39tPxCxKsApHXdyCxvjT8aAAbRCf6Q@mail.gmail.com>,
- <4001609.1774391729@warthog.procyon.org.uk>,
- <4002225.1774392603@warthog.procyon.org.uk>,
- <405501.1774511482@warthog.procyon.org.uk>
-Date: Thu, 26 Mar 2026 20:07:32 +1100
-Message-id: <177451605242.1851489.9347587959983302502@noble.neil.brown.name>
-Reply-To: NeilBrown <neil@brown.name>
+Date: Thu, 26 Mar 2026 10:15:28 +0000
+Message-ID: <508495.1774520128@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-MFC-PROC-ID: rHMicd6_hAqJuSfssgpiROYZOZZQEJ9y-9QOEamCSKU_1774520133
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <508494.1774520128.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 26 Mar 2026, David Howells wrote:
-> Marc Dionne <marc.c.dionne@gmail.com> wrote:
->=20
-> > I think it is the correct Fixes tag, but I'm not sure that this is
-> > actually the right fix.  7bb1eb45e43c switched other callers of
-> > cachefiles_bury_object to use start_removing_dentry, which gets an
-> > additional ref, and removed the extra dget from
-> > cachefiles_bury_object.  In the cachefiles_cull case however, the
-> > dentry is from start_removing and has a single ref on entry to
-> > cachefiles_bury_object, which is an issue as "rep" may be used there
-> > after end_removing may have put the last ref.  So the correct is
-> > probably for cachefiles_cull to add a dget() before the call to
-> > cachefiles_bury_object.
->=20
-> Ugh.  You're right.
->=20
-> The problem is that we're calling start_removing() without knowing whether =
-we
-> can just unlink the object.  I wonder if I need to do the lookup in
-> cachefiles_lookup_for_cull() and only then call start_removing_dentry() if
-> it's not a directory (directories get moved to the graveyard for cachefilesd
-> to tear down).
->=20
-> I think the right solution is actually to move start_removing_dentry() down
-> into cachefiles_bury_object() and make it contingent on the dentry being a
-> non-dir.
->=20
-> David
->=20
->=20
+   =20
+When cachefiles_cull() calls cachefiles_bury_object(), the latter eats the
+former's ref on the victim dentry that it obtained from
+cachefiles_lookup_for_cull().  However, commit 7bb1eb45e43c left the dput
+of the victim in place, resulting in occasional:
 
-cachesfiles_bury_object() has a comment saying:
+  WARNING: fs/dcache.c:829 at dput.part.0+0xf5/0x110, CPU#7: cachefilesd/11=
+831
+  cachefiles_cull+0x8c/0xe0 [cachefiles]
+  cachefiles_daemon_cull+0xcd/0x120 [cachefiles]
+  cachefiles_daemon_write+0x14e/0x1d0 [cachefiles]
+  vfs_write+0xc3/0x480
+  ...
 
- * On entry there must be at least 2 refs on rep, one will be dropped on exit.
+reports.
 
-and this is consistent with the code in that function.
+Actually, it's worse than that: cachefiles_bury_object() eats the ref it
+was given - and then may continue to access the now-unref'd dentry it if it
+turns out to be a directory.  So simply removing the aberrant dput() is not
+sufficient.
 
-It is called from 3 places.
-- cachefiles_invalidate_cookie(), cachesfiles_look_up_object(), and
-  cachefiles_acquire_volume() all precede it with a
-  start_removing_dentry() which results in 2 references to the dentry
-  (the original and and extra which it takes) - so that fits with the
-  comment.
+Fix this by making cachefiles_bury_object() retain the ref itself around
+end_removing() if it needs to keep it and then drop the ref before returnin=
+g.
 
-- cachesfiles_cull() preceeds it with cachesfiles_lookup_for_cull()
-  which uses start_removing() which returns with 1 reference to the
-  dentry.  As the dentry didn't pre-exist, there is only one ref.
-  So this is incorrect.
+Fixes: bd6ede8a06e8 ("VFS/nfsd/cachefiles/ovl: introduce start_removing() a=
+nd end_removing()")
+Reported-by: Marc Dionne <marc.dionne@auristor.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: NeilBrown <neil@brown.name>
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: netfs@lists.linux.dev
+cc: linux-afs@lists.infradead.org
+cc: linux-fsdevel@vger.kernel.org
+---
+ fs/cachefiles/namei.c |   36 +++++++++++++++++++++---------------
+ 1 file changed, 21 insertions(+), 15 deletions(-)
 
-cachesfiles_cull() needs to take an extra reference to victim so that
-when cachefiles_busy_object() calls end_removing, it still has a valid
-reference.
-
-So I think
-
+diff --git a/fs/cachefiles/namei.c b/fs/cachefiles/namei.c
+index e5ec90dccc27..20138309733f 100644
 --- a/fs/cachefiles/namei.c
 +++ b/fs/cachefiles/namei.c
-@@ -781,7 +781,7 @@ int cachefiles_cull(struct cachefiles_cache *cache, struc=
-t dentry *dir,
- 	if (ret < 0)
- 		goto error_unlock;
+@@ -287,14 +287,14 @@ int cachefiles_bury_object(struct cachefiles_cache *c=
+ache,
+ =09if (!d_is_dir(rep)) {
+ =09=09ret =3D cachefiles_unlink(cache, object, dir, rep, why);
+ =09=09end_removing(rep);
+-
+ =09=09_leave(" =3D %d", ret);
+ =09=09return ret;
+ =09}
 =20
--	ret =3D cachefiles_bury_object(cache, NULL, dir, victim,
-+	ret =3D cachefiles_bury_object(cache, NULL, dir, dget(victim),
- 				     FSCACHE_OBJECT_WAS_CULLED);
- 	dput(victim);
- 	if (ret < 0)
+ =09/* directories have to be moved to the graveyard */
+ =09_debug("move stale object to graveyard");
+-=09end_removing(rep);
++=09dget(rep);
++=09end_removing(rep); /* Drops ref on rep */
+=20
+ try_again:
+ =09/* first step is to make up a grave dentry in the graveyard */
+@@ -304,8 +304,10 @@ int cachefiles_bury_object(struct cachefiles_cache *ca=
+che,
+=20
+ =09/* do the multiway lock magic */
+ =09trap =3D lock_rename(cache->graveyard, dir);
+-=09if (IS_ERR(trap))
+-=09=09return PTR_ERR(trap);
++=09if (IS_ERR(trap)) {
++=09=09ret =3D PTR_ERR(trap);
++=09=09goto out;
++=09}
+=20
+ =09/* do some checks before getting the grave dentry */
+ =09if (rep->d_parent !=3D dir || IS_DEADDIR(d_inode(rep))) {
+@@ -313,25 +315,27 @@ int cachefiles_bury_object(struct cachefiles_cache *c=
+ache,
+ =09=09 * lock */
+ =09=09unlock_rename(cache->graveyard, dir);
+ =09=09_leave(" =3D 0 [culled?]");
+-=09=09return 0;
++=09=09ret =3D 0;
++=09=09goto out;
+ =09}
+=20
++=09ret =3D -EIO;
+ =09if (!d_can_lookup(cache->graveyard)) {
+ =09=09unlock_rename(cache->graveyard, dir);
+ =09=09cachefiles_io_error(cache, "Graveyard no longer a directory");
+-=09=09return -EIO;
++=09=09goto out;
+ =09}
+=20
+ =09if (trap =3D=3D rep) {
+ =09=09unlock_rename(cache->graveyard, dir);
+ =09=09cachefiles_io_error(cache, "May not make directory loop");
+-=09=09return -EIO;
++=09=09goto out;
+ =09}
+=20
+ =09if (d_mountpoint(rep)) {
+ =09=09unlock_rename(cache->graveyard, dir);
+ =09=09cachefiles_io_error(cache, "Mountpoint in cache");
+-=09=09return -EIO;
++=09=09goto out;
+ =09}
+=20
+ =09grave =3D lookup_one(&nop_mnt_idmap, &QSTR(nbuffer), cache->graveyard);
+@@ -343,11 +347,12 @@ int cachefiles_bury_object(struct cachefiles_cache *c=
+ache,
+=20
+ =09=09if (PTR_ERR(grave) =3D=3D -ENOMEM) {
+ =09=09=09_leave(" =3D -ENOMEM");
+-=09=09=09return -ENOMEM;
++=09=09=09ret =3D -ENOMEM;
++=09=09=09goto out;
+ =09=09}
+=20
+ =09=09cachefiles_io_error(cache, "Lookup error %ld", PTR_ERR(grave));
+-=09=09return -EIO;
++=09=09goto out;
+ =09}
+=20
+ =09if (d_is_positive(grave)) {
+@@ -362,7 +367,7 @@ int cachefiles_bury_object(struct cachefiles_cache *cac=
+he,
+ =09=09unlock_rename(cache->graveyard, dir);
+ =09=09dput(grave);
+ =09=09cachefiles_io_error(cache, "Mountpoint in graveyard");
+-=09=09return -EIO;
++=09=09goto out;
+ =09}
+=20
+ =09/* target should not be an ancestor of source */
+@@ -370,7 +375,7 @@ int cachefiles_bury_object(struct cachefiles_cache *cac=
+he,
+ =09=09unlock_rename(cache->graveyard, dir);
+ =09=09dput(grave);
+ =09=09cachefiles_io_error(cache, "May not make directory loop");
+-=09=09return -EIO;
++=09=09goto out;
+ =09}
+=20
+ =09/* attempt the rename */
+@@ -404,8 +409,10 @@ int cachefiles_bury_object(struct cachefiles_cache *ca=
+che,
+ =09__cachefiles_unmark_inode_in_use(object, d_inode(rep));
+ =09unlock_rename(cache->graveyard, dir);
+ =09dput(grave);
+-=09_leave(" =3D 0");
+-=09return 0;
++=09_leave(" =3D %d", ret);
++out:
++=09dput(rep);
++=09return ret;
+ }
+=20
+ /*
+@@ -812,7 +819,6 @@ int cachefiles_cull(struct cachefiles_cache *cache, str=
+uct dentry *dir,
+=20
+ =09ret =3D cachefiles_bury_object(cache, NULL, dir, victim,
+ =09=09=09=09     FSCACHE_OBJECT_WAS_CULLED);
+-=09dput(victim);
+ =09if (ret < 0)
+ =09=09goto error;
+ 
 
-would be a correct fix.
-
-If you agree I can post a properly formated patch which explanation.
-
-Thanks,
-NeilBrown
