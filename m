@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1473E5581
-	for <netfs@lists.linux.dev>; Thu, 26 Mar 2026 10:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43DF3E6DD4
+	for <netfs@lists.linux.dev>; Thu, 26 Mar 2026 10:47:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774522023; cv=none; b=EqeDM1U7H2JsWc0WtlbqtTm7+oDiePw9fuFd/N/JPxf/cC3osSMwrzlpMpkAX8TFQr5ckfWWFfFmwz696IlZt7pQTDPg0QKHUIsaKD8oWZUrwajxyxJOEUTnmI6Q3LqPLoQtJstGrV+h/BCcNZXthocB/BtVUa6SqQJhQy5aRE8=
+	t=1774522032; cv=none; b=XPJpdHn8jyRDBviSn+Xo2D0vFXk/rsuYVZJ2CFDMY4X/Jzkj1Jw1ILS+LOJEVrh8qGvPM5uhm5CZXb5V19gNE5uKDOPezvZWr3xr3iWip827cYlawPaE1BAe2xSewsWemjQAyQ4jyjLKClR9D+RIxKtfjTKqfoj7Y3v/x2U4kZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774522023; c=relaxed/simple;
-	bh=szclke4JIsBjvbhewBgvgDMxYA3sk65zpYLRMFX9C2c=;
+	s=arc-20240116; t=1774522032; c=relaxed/simple;
+	bh=JSDeL6SwtVG7tcOuyPSqzZl0BvtjT+R1aGX/1tT+wNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=IW5hr16Rg5vcbW2hN3iWtu4TNK2u/Bt8LpMOlqbTeE7CPOy+9zUIBHgaXxg4zTbJ9P6TdR+aqrBXgj0eJ3fpwV6gA6YakCUUx+jSBaCqcU0OTc2Xmf2l2bK7RhLbznO1Na8PXNDmEXao5mOZcAwtfRPVl/kU9kwh/ekJRjCMyUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DloiwA8l; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:content-type; b=FK3un7B8aUBrcSxm7fHKh/EbBblngU3A4CwWcbXbC+0YvNtlkO7nnHTrjcuKmpAHtQP/63rHC4wT4gCEZChBEbjeLzYZFE2qof9zQWumCtLKrzEFm+JyxlGQLp2ehAb7syfSRbGzFP/l+UjQwI+2sbhLF1/jnr1QS+ORH4ylVJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z6BnXDkJ; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DloiwA8l"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z6BnXDkJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774522019;
+	s=mimecast20190719; t=1774522026;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9JBhkshmo9wp53/7HssoafiGynGAcR+6aULQINPD5UQ=;
-	b=DloiwA8lAUtURUf6jK8oCCxluyiSInkEvirjdnbYYiIgsbGau3AHoi9hdABOKwSHbCtzDp
-	kS6tyAIEPH0H2VxJaWFMYnXrnA/x4Qn1UDBAzu+xSX5AUGpAXSdFrdmZLq8fZpqihFsarJ
-	CH0QeKVZ5hSzLbLGIvqYQ//DzDCBlYc=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+	bh=/tdvGHLBae6cwxkiV/xURdgZGIZUXmsfYZzZeOFw5ZU=;
+	b=Z6BnXDkJhQZTzwuc6PzR54+W6O4Zhhx7uDpw7mMlcS87CNDRuHmjyS2WTnhbx1lbF7ZbkV
+	gMwBGYbGoZMiRU0T7HDDp3BKR/8No5nBPkA7S7KLSMr/JqWiqUtoMq9G8SVqK2GJiB7XEY
+	/xoBvVFyxNta4KQTxDrWJvL76T8jsjQ=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-402-lIkaQfXkP4W9euIGMAGh9A-1; Thu,
- 26 Mar 2026 06:46:54 -0400
-X-MC-Unique: lIkaQfXkP4W9euIGMAGh9A-1
-X-Mimecast-MFC-AGG-ID: lIkaQfXkP4W9euIGMAGh9A_1774522012
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-244-6Q1OkKBWMNewwDpzF46dXQ-1; Thu,
+ 26 Mar 2026 06:47:02 -0400
+X-MC-Unique: 6Q1OkKBWMNewwDpzF46dXQ-1
+X-Mimecast-MFC-AGG-ID: 6Q1OkKBWMNewwDpzF46dXQ_1774522020
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 88EF519560A2;
-	Thu, 26 Mar 2026 10:46:51 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F1A2819560B4;
+	Thu, 26 Mar 2026 10:46:59 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.44.33.121])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B082C1955D84;
-	Thu, 26 Mar 2026 10:46:44 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 42F741800673;
+	Thu, 26 Mar 2026 10:46:53 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>,
 	Matthew Wilcox <willy@infradead.org>,
@@ -67,9 +67,9 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Paulo Alcantara <pc@manguebit.org>
-Subject: [PATCH 05/26] netfs: Fix read abandonment during retry
-Date: Thu, 26 Mar 2026 10:45:20 +0000
-Message-ID: <20260326104544.509518-6-dhowells@redhat.com>
+Subject: [PATCH 06/26] netfs: Fix the handling of stream->front by removing it
+Date: Thu, 26 Mar 2026 10:45:21 +0000
+Message-ID: <20260326104544.509518-7-dhowells@redhat.com>
 In-Reply-To: <20260326104544.509518-1-dhowells@redhat.com>
 References: <20260326104544.509518-1-dhowells@redhat.com>
 Precedence: bulk
@@ -78,57 +78,190 @@ List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-MFC-PROC-ID: KG2T4gCNnFYLKqj0mibQcVQ-9WD4fPq4DOC5KtQd950_1774522012
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-MFC-PROC-ID: XTraxDcYj0FJT4a1k1nZ5TI5SYcfkj8_0slYolI3Fmk_1774522020
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Under certain circumstances, all the remaining subrequests from a read
-request will get abandoned during retry.  The abandonment process expects
-the 'subreq' variable to be set to the place to start abandonment from, but
-it doesn't always have a useful value (it will be uninitialised on the
-first pass through the loop and it may point to a deleted subrequest on
-later passes).
+The netfs_io_stream::front member is meant to point to the subrequest
+currently being collected on a stream, but it isn't actually used this way
+by direct write (which mostly ignores it).  However, there's a tracepoint
+which looks at it.  Further, stream->front is actually redundant with
+stream->subrequests.next.
 
-Fix the first jump to "abandon:" to set subreq to the start of the first
-subrequest expected to need retry (which, in this abandonment case, turned
-out unexpectedly to no longer have NEED_RETRY set).
+Fix the potential problem in the direct code by just removing the member
+and using stream->subrequests.next instead, thereby also simplifying the
+code.
 
-Also clear the subreq pointer after discarding superfluous retryable
-subrequests to cause an oops if we do try to access it.
-
+Fixes: a0b4c7a49137 ("netfs: Fix unbuffered/DIO writes to dispatch subrequests in strict sequence")
+Reported-by: Paulo Alcantara <pc@manguebit.org>
 Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Paulo Alcantara <pc@manguebit.org>
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
 ---
- fs/netfs/read_retry.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/netfs/buffered_read.c     | 3 +--
+ fs/netfs/direct_read.c       | 3 +--
+ fs/netfs/direct_write.c      | 1 -
+ fs/netfs/read_collect.c      | 4 ++--
+ fs/netfs/read_single.c       | 1 -
+ fs/netfs/write_collect.c     | 4 ++--
+ fs/netfs/write_issue.c       | 3 +--
+ include/linux/netfs.h        | 1 -
+ include/trace/events/netfs.h | 8 ++++----
+ 9 files changed, 11 insertions(+), 17 deletions(-)
 
-diff --git a/fs/netfs/read_retry.c b/fs/netfs/read_retry.c
-index 71a0c7ed163a..68fc869513ef 100644
---- a/fs/netfs/read_retry.c
-+++ b/fs/netfs/read_retry.c
-@@ -93,8 +93,10 @@ static void netfs_retry_read_subrequests(struct netfs_io_request *rreq)
- 		       from->start, from->transferred, from->len);
- 
- 		if (test_bit(NETFS_SREQ_FAILED, &from->flags) ||
--		    !test_bit(NETFS_SREQ_NEED_RETRY, &from->flags))
-+		    !test_bit(NETFS_SREQ_NEED_RETRY, &from->flags)) {
-+			subreq = from;
- 			goto abandon;
-+		}
- 
- 		list_for_each_continue(next, &stream->subrequests) {
- 			subreq = list_entry(next, struct netfs_io_subrequest, rreq_link);
-@@ -178,6 +180,7 @@ static void netfs_retry_read_subrequests(struct netfs_io_request *rreq)
- 				if (subreq == to)
- 					break;
+diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
+index 88a0d801525f..a8c0d86118c5 100644
+--- a/fs/netfs/buffered_read.c
++++ b/fs/netfs/buffered_read.c
+@@ -171,9 +171,8 @@ static void netfs_queue_read(struct netfs_io_request *rreq,
+ 	spin_lock(&rreq->lock);
+ 	list_add_tail(&subreq->rreq_link, &stream->subrequests);
+ 	if (list_is_first(&subreq->rreq_link, &stream->subrequests)) {
+-		stream->front = subreq;
+ 		if (!stream->active) {
+-			stream->collected_to = stream->front->start;
++			stream->collected_to = subreq->start;
+ 			/* Store list pointers before active flag */
+ 			smp_store_release(&stream->active, true);
+ 		}
+diff --git a/fs/netfs/direct_read.c b/fs/netfs/direct_read.c
+index a498ee8d6674..f72e6da88cca 100644
+--- a/fs/netfs/direct_read.c
++++ b/fs/netfs/direct_read.c
+@@ -71,9 +71,8 @@ static int netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
+ 		spin_lock(&rreq->lock);
+ 		list_add_tail(&subreq->rreq_link, &stream->subrequests);
+ 		if (list_is_first(&subreq->rreq_link, &stream->subrequests)) {
+-			stream->front = subreq;
+ 			if (!stream->active) {
+-				stream->collected_to = stream->front->start;
++				stream->collected_to = subreq->start;
+ 				/* Store list pointers before active flag */
+ 				smp_store_release(&stream->active, true);
  			}
-+			subreq = NULL;
- 			continue;
+diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
+index 4d9760e36c11..f9ab69de3e29 100644
+--- a/fs/netfs/direct_write.c
++++ b/fs/netfs/direct_write.c
+@@ -111,7 +111,6 @@ static int netfs_unbuffered_write(struct netfs_io_request *wreq)
+ 			netfs_prepare_write(wreq, stream, wreq->start + wreq->transferred);
+ 			subreq = stream->construct;
+ 			stream->construct = NULL;
+-			stream->front = NULL;
  		}
  
+ 		/* Check if (re-)preparation failed. */
+diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
+index 137f0e28a44c..e5f6665b3341 100644
+--- a/fs/netfs/read_collect.c
++++ b/fs/netfs/read_collect.c
+@@ -205,7 +205,8 @@ static void netfs_collect_read_results(struct netfs_io_request *rreq)
+ 	 * in progress.  The issuer thread may be adding stuff to the tail
+ 	 * whilst we're doing this.
+ 	 */
+-	front = READ_ONCE(stream->front);
++	front = list_first_entry_or_null(&stream->subrequests,
++					 struct netfs_io_subrequest, rreq_link);
+ 	while (front) {
+ 		size_t transferred;
+ 
+@@ -301,7 +302,6 @@ static void netfs_collect_read_results(struct netfs_io_request *rreq)
+ 		list_del_init(&front->rreq_link);
+ 		front = list_first_entry_or_null(&stream->subrequests,
+ 						 struct netfs_io_subrequest, rreq_link);
+-		stream->front = front;
+ 		spin_unlock(&rreq->lock);
+ 		netfs_put_subrequest(remove,
+ 				     notes & ABANDON_SREQ ?
+diff --git a/fs/netfs/read_single.c b/fs/netfs/read_single.c
+index 8e6264f62a8f..d0e23bc42445 100644
+--- a/fs/netfs/read_single.c
++++ b/fs/netfs/read_single.c
+@@ -107,7 +107,6 @@ static int netfs_single_dispatch_read(struct netfs_io_request *rreq)
+ 	spin_lock(&rreq->lock);
+ 	list_add_tail(&subreq->rreq_link, &stream->subrequests);
+ 	trace_netfs_sreq(subreq, netfs_sreq_trace_added);
+-	stream->front = subreq;
+ 	/* Store list pointers before active flag */
+ 	smp_store_release(&stream->active, true);
+ 	spin_unlock(&rreq->lock);
+diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
+index 83eb3dc1adf8..b194447f4b11 100644
+--- a/fs/netfs/write_collect.c
++++ b/fs/netfs/write_collect.c
+@@ -228,7 +228,8 @@ static void netfs_collect_write_results(struct netfs_io_request *wreq)
+ 		if (!smp_load_acquire(&stream->active))
+ 			continue;
+ 
+-		front = stream->front;
++		front = list_first_entry_or_null(&stream->subrequests,
++						 struct netfs_io_subrequest, rreq_link);
+ 		while (front) {
+ 			trace_netfs_collect_sreq(wreq, front);
+ 			//_debug("sreq [%x] %llx %zx/%zx",
+@@ -279,7 +280,6 @@ static void netfs_collect_write_results(struct netfs_io_request *wreq)
+ 			list_del_init(&front->rreq_link);
+ 			front = list_first_entry_or_null(&stream->subrequests,
+ 							 struct netfs_io_subrequest, rreq_link);
+-			stream->front = front;
+ 			spin_unlock(&wreq->lock);
+ 			netfs_put_subrequest(remove,
+ 					     notes & SAW_FAILURE ?
+diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
+index 437268f65640..2db688f94125 100644
+--- a/fs/netfs/write_issue.c
++++ b/fs/netfs/write_issue.c
+@@ -206,9 +206,8 @@ void netfs_prepare_write(struct netfs_io_request *wreq,
+ 	spin_lock(&wreq->lock);
+ 	list_add_tail(&subreq->rreq_link, &stream->subrequests);
+ 	if (list_is_first(&subreq->rreq_link, &stream->subrequests)) {
+-		stream->front = subreq;
+ 		if (!stream->active) {
+-			stream->collected_to = stream->front->start;
++			stream->collected_to = subreq->start;
+ 			/* Write list pointers before active flag */
+ 			smp_store_release(&stream->active, true);
+ 		}
+diff --git a/include/linux/netfs.h b/include/linux/netfs.h
+index 72ee7d210a74..ba17ac5bf356 100644
+--- a/include/linux/netfs.h
++++ b/include/linux/netfs.h
+@@ -140,7 +140,6 @@ struct netfs_io_stream {
+ 	void (*issue_write)(struct netfs_io_subrequest *subreq);
+ 	/* Collection tracking */
+ 	struct list_head	subrequests;	/* Contributory I/O operations */
+-	struct netfs_io_subrequest *front;	/* Op being collected */
+ 	unsigned long long	collected_to;	/* Position we've collected results to */
+ 	size_t			transferred;	/* The amount transferred from this stream */
+ 	unsigned short		error;		/* Aggregate error for the stream */
+diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
+index 2d366be46a1c..cbe28211106c 100644
+--- a/include/trace/events/netfs.h
++++ b/include/trace/events/netfs.h
+@@ -740,19 +740,19 @@ TRACE_EVENT(netfs_collect_stream,
+ 		    __field(unsigned int,	wreq)
+ 		    __field(unsigned char,	stream)
+ 		    __field(unsigned long long,	collected_to)
+-		    __field(unsigned long long,	front)
++		    __field(unsigned long long,	issued_to)
+ 			     ),
+ 
+ 	    TP_fast_assign(
+ 		    __entry->wreq	= wreq->debug_id;
+ 		    __entry->stream	= stream->stream_nr;
+ 		    __entry->collected_to = stream->collected_to;
+-		    __entry->front	= stream->front ? stream->front->start : UINT_MAX;
++		    __entry->issued_to	= atomic64_read(&wreq->issued_to);
+ 			   ),
+ 
+-	    TP_printk("R=%08x[%x:] cto=%llx frn=%llx",
++	    TP_printk("R=%08x[%x:] cto=%llx ito=%llx",
+ 		      __entry->wreq, __entry->stream,
+-		      __entry->collected_to, __entry->front)
++		      __entry->collected_to, __entry->issued_to)
+ 	    );
+ 
+ TRACE_EVENT(netfs_folioq,
 
