@@ -1,99 +1,112 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D4C3C0634
-	for <netfs@lists.linux.dev>; Mon, 30 Mar 2026 10:50:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453173C277F
+	for <netfs@lists.linux.dev>; Mon, 30 Mar 2026 10:55:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774867806; cv=none; b=SB+Xv+OtO/NBrV1lyutk0ddPkqfa5/GsRbZmw6rUbLgboR21vcRKmPCevW+y9xajOedC+fcnXPDdkPWXiF0AGVGO4DXwNXNoJ447/Aebs83qBUFbRP8q+y5M0rRhNqJb67Y0E9tAN+cGItxt6o/4Ej4yEfdBvCmfh0Hq644KDcQ=
+	t=1774868161; cv=none; b=QB+vtVuVnLHWGEHPKUBZU/5eB42InqXTq8jDouREH3V6qbm5DIdrJ3Vkccf28WM0tvd3z+8FAzAkofkRYIUX3koEERxAFRJRNe18JYJL3CegOwcv/66oTzzwu1hR1iNlsLCPusi2JeGaLPOq8iaN9iqdy6hWqbAVPpAgdNhH8MA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774867806; c=relaxed/simple;
-	bh=rkX3ZpoDYjVfKThIe6nRJg+WV4QDMgWCxcdEimVscKw=;
-	h=In-Reply-To:References:To:Cc:Subject:MIME-Version:From:Date:
-	 Message-ID:Content-Type; b=O1XHizANpXRkE77HloRQ7qKLw6/FVat9TOr+3jZ0z9GwijAeBVBYvoBukF3bntXaSKoZL4DFyFGjTgssBC147uIEBdINlrRLIF0eNQeujle1Sgrc8C7o4MOG5kOSMlIgRGG5DuRPUKJmT46QRpgW21+af3fQ0Petvnhjzl1r3Gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=P0n734+T; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1774868161; c=relaxed/simple;
+	bh=ztpxb9hQu5tkAcfN8a3ttcSKgHCqdHEOgG+ht9Crucs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=syPjoQJ1r7WsCQriapRV6/h1WVgxUK36LiwjaeN2D2Zd/svgqamnJXyRW9cAG0uxfWCzgRiB9YfH8OhgkbR4TX723Hvpgij9WUgSNtJO3QifljUSrNteR07nc/RtXdISwZb0mzb8G0zFSAeojtpcI40Zag2Z5mWCBPjPDC28bZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=RA1WKPGv; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="P0n734+T"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774867804;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4WG/SeRSfzsyNWeLhZKLjrg2/KPXx46Pf/FiBPy0PmY=;
-	b=P0n734+TJcw6deuQFQwCd1i5cE985h1zhEMPRyqL4gYZMmqIJqtR8aXzR+pe8+VQZ6KrGG
-	MwGX6XkRqaJ0gAYRSMZzM9TDyCHZ+DCMh+ie+O1Riy65rl1qoQErLeofLlBzjX49+rx53G
-	VWZ4IYUARgz7+pYQ2LoO/b1QGT4se98=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-426-JLNIgM7fPXu4cdrMLHIQ5w-1; Mon,
- 30 Mar 2026 06:49:58 -0400
-X-MC-Unique: JLNIgM7fPXu4cdrMLHIQ5w-1
-X-Mimecast-MFC-AGG-ID: JLNIgM7fPXu4cdrMLHIQ5w_1774867795
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B30281944F11;
-	Mon, 30 Mar 2026 10:49:53 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.44.35.245])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 543211955D84;
-	Mon, 30 Mar 2026 10:49:44 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-In-Reply-To: <52ad0aa6-d8dd-4ba1-adf2-f79128df9d90@samba.org>
-References: <52ad0aa6-d8dd-4ba1-adf2-f79128df9d90@samba.org> <20260326104544.509518-1-dhowells@redhat.com>
-To: Stefan Metzmacher <metze@samba.org>
-Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
-    Matthew Wilcox <willy@infradead.org>,
-    Christoph Hellwig <hch@infradead.org>,
-    Steve French <smfrench@gmail.com>,
-    Namjae Jeon <linkinjeon@kernel.org>,
-    Paulo Alcantara <pc@manguebit.com>, Jens Axboe <axboe@kernel.dk>,
-    Leon Romanovsky <leon@kernel.org>, Steve French <sfrench@samba.org>,
-    ChenXiaoSong <chenxiaosong@chenxiaosong.com>,
-    Marc Dionne <marc.dionne@auristor.com>,
-    Eric Van Hensbergen <ericvh@kernel.org>,
-    Dominique Martinet <asmadeus@codewreck.org>,
-    Ilya Dryomov <idryomov@gmail.com>,
-    Trond Myklebust <trondmy@kernel.org>, netfs@lists.linux.dev,
-    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-    v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org,
-    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 00/26] netfs: Keep track of folios in a segmented bio_vec[] chain
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="RA1WKPGv"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-43b9144790dso2324617f8f.1
+        for <netfs@lists.linux.dev>; Mon, 30 Mar 2026 03:55:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1774868156; x=1775472956; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RqgOUnrTeGkoKfySHKsNvdoK2i879eNBFvf4HV8oBRY=;
+        b=RA1WKPGv4ADIoMIFJm1RaPAyGvzP0Glys4HP+ulRWQ8cT0SRqWwpOsWkGluG98gKQm
+         Vm8V2VxBOn1MyDt+wkWeXr8ylkJpq7FgIqG3jYO4CnbCHN6ecC3MQdYTIyFvQKgoHtVm
+         R4fVqAlggd6XHvaGdUB8YlfulpysYoI9QAVz0OExNSIlCrF9jJOl1xRZmrnXe/0a9qRE
+         odo+PJ5T3Jnk8MABwiI/h3iWjoT+WQ83TspFbtDn8UJKKhEd25Rrcg4A0tKOdq3whCfU
+         JxEhIbZQ/u50o9Ae8RfAqdPCU5G/AUdQhBXAxODwYjRT6nABkZad3aZdx39HA+jFLeXG
+         om1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774868156; x=1775472956;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RqgOUnrTeGkoKfySHKsNvdoK2i879eNBFvf4HV8oBRY=;
+        b=lwirjZ07t615dO0WXnsFF+tuzPVnyyEm65XlZiXhSHwRzrm2YOWFXkhUS7Hlg8ykvo
+         V09cDnr+mgEszSodCVul2w04gP7kklfB530Qo1iRqgs4mgqrruw4N+TNQlEL5buGz8t5
+         nHbX50W4G/lFG7Im8tpJHWVgSdkjfQzxTyUVXBpzuKjNaE5FvAh0M8K1F0OKKgHBVck7
+         imKZ7LmIXCcxt9mgKG2h9dGVTt7RfRva/JcB5HTaRGgDmz3HxyLjSOGC1eEgIrvOfdbS
+         sld3IRIiUPTMfvNh1NYFQ1x7v1PRKduuH7o49RyWo+Ij9+DdZX2CaqifxZXBwOp/P7Co
+         gFoA==
+X-Forwarded-Encrypted: i=1; AJvYcCWkD7dwdjEsjxC9G9kfz4KvL6O7sCyEllLHtpm+HDkyzlwwD+TWV0HMAT8GWln+aUNfVuYBjA==@lists.linux.dev
+X-Gm-Message-State: AOJu0YwygY2qSSbLB8E/Cn48VhnnTMr0x5kuE/4bECHdkUotoba+1cyo
+	VZNjCw5FLZoqe/K/zOaaAKFz64b/K8I0JdBEhCXgw7RxsWEgJn/JBcLkcpYDjV49AZc=
+X-Gm-Gg: ATEYQzzwMjUibbSLvcp/LCRhuR/2czejKWu9tPsE7GJIE6wfTt6rVHE4UY9vN/FZUFZ
+	m4oD303iH3nfuxp9d4TpODyGuE12KVWTJrj2IS0obO6djCDRsvdoDYRf2mTuhjDj0l2xhH4W50D
+	WZsYZCQ+oQhrV4nW1Jv7pp6tuoubhvt9uIXmnZApdjxRgdgGvGtBxhm6hGrttxHpj1PbSLHqV71
+	iZ631BhO6oIhTqcpFSfWS2wInh+rDPL3FEpu6jf8JUxIvLvs1ovCfKLCZIEW5dfc5yuRCd3r0QM
+	OahIskcLOViaxx9Dej72dBmHsGkjuCh4DO36SrwtzciP9Zai+Ph1nyV+ZBqB/PHoIJhePg7ViOH
+	NtHGd6qOGoTvnv0lHWMbWXR8acyvqV+CC7IgMNdmareqP/4dvaANwmMRoAJ7MuL2VESHpWE6BKt
+	47x5HjMrng1PXLfwsn5kNaeLb+VDyXitP8mRYGMeWg4KzGwrgLh42AAmx5F8KwHlf1CG3Z0fjEi
+	Zce8zAXX/Gb7NMPkHUn9KfeD4SVaOrd6BvXrQ==
+X-Received: by 2002:a5d:5308:0:b0:43c:ef4f:79de with SMTP id ffacd0b85a97d-43cef4f7b6amr11247379f8f.16.1774868156221;
+        Mon, 30 Mar 2026 03:55:56 -0700 (PDT)
+Received: from raven.intern.cm-ag (p200300dc6f2b4400023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f2b:4400:230:64ff:fe74:809])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43cf330872asm16371655f8f.17.2026.03.30.03.55.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Mar 2026 03:55:55 -0700 (PDT)
+From: Max Kellermann <max.kellermann@ionos.com>
+To: dhowells@redhat.com,
+	pc@manguebit.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Max Kellermann <max.kellermann@ionos.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] netfs: add missing folio_end_private_2() to netfs_pgpriv2_copy_folio()
+Date: Mon, 30 Mar 2026 12:55:48 +0200
+Message-ID: <20260330105548.1371339-1-max.kellermann@ionos.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: David Howells <dhowells@redhat.com>
-Date: Mon, 30 Mar 2026 11:49:41 +0100
-Message-ID: <1180465.1774867781@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-MFC-PROC-ID: LchIrRH7g7qneNzVSeo7M35RVqc8lBi0fm2T862ezLA_1774867795
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1005366.1774861048.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Stefan Metzmacher <metze@samba.org> wrote:
+This deprecated PG_private_2 copy-to-cache path can leak folio private
+state on rolling-buffer allocation failure.
 
-> Another possible way would be to skip this for now
-> cifs: Remove support for ITER_KVEC/BVEC/FOLIOQ from smb_extract_iter_to_r=
-dma()
-> and I rebase my changes on top of Davids patches assuming they
-> will be stable commits (at least up to
-> cifs: Support ITER_BVECQ in smb_extract_iter_to_rdma())
+netfs_pgpriv2_copy_to_cache() sets PG_private_2 first, then
+netfs_pgpriv2_copy_folio() tries to append the folio to the tracking
+buffer.  If that append fails, it just returns without calling
+folio_end_private_2().  The folio is then no longer tracked for copy
+completion, but later invalidate/release paths still block on that bit
+in netfs_invalidate_folio() and netfs_release_folio(), so the folio
+can become permanently stuck/unreclaimable.
 
-I could certainly split my removal patch.  I want to remove FOLIOQ support,
-but I can leave KVEC and/or BVEC if they're still needed.
+Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
+Cc: stable@vger.kernel.org
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+---
+ fs/netfs/read_pgpriv2.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-David
+diff --git a/fs/netfs/read_pgpriv2.c b/fs/netfs/read_pgpriv2.c
+index a1489aa29f78..ab73fa62378b 100644
+--- a/fs/netfs/read_pgpriv2.c
++++ b/fs/netfs/read_pgpriv2.c
+@@ -55,6 +55,7 @@ static void netfs_pgpriv2_copy_folio(struct netfs_io_request *creq, struct folio
+ 	/* Attach the folio to the rolling buffer. */
+ 	if (rolling_buffer_append(&creq->buffer, folio, 0) < 0) {
+ 		clear_bit(NETFS_RREQ_FOLIO_COPY_TO_CACHE, &creq->flags);
++		folio_end_private_2(folio);
+ 		return;
+ 	}
+ 
+-- 
+2.47.3
 
