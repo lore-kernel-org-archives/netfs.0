@@ -1,112 +1,89 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from hr2.samba.org (hr2.samba.org [144.76.82.148])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453173C277F
-	for <netfs@lists.linux.dev>; Mon, 30 Mar 2026 10:55:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8AE3A4F54;
+	Mon, 30 Mar 2026 13:57:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.82.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774868161; cv=none; b=QB+vtVuVnLHWGEHPKUBZU/5eB42InqXTq8jDouREH3V6qbm5DIdrJ3Vkccf28WM0tvd3z+8FAzAkofkRYIUX3koEERxAFRJRNe18JYJL3CegOwcv/66oTzzwu1hR1iNlsLCPusi2JeGaLPOq8iaN9iqdy6hWqbAVPpAgdNhH8MA=
+	t=1774879073; cv=none; b=KS4yGh/ex8ephWK/UeLIewPIeiATS2bY+MJ6I/zw3bmyhyt5xH5TkJLmhtmUhl3kM+yUtEw9JnuLkkScYndN87t2F6FZRQ1yWU3V04pDUQagVLorpR66rJPbdJK0sA1RgLjjLPdStMLpOeJ/B10pmbDLrY8QqZfwSXpB/n0mWZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774868161; c=relaxed/simple;
-	bh=ztpxb9hQu5tkAcfN8a3ttcSKgHCqdHEOgG+ht9Crucs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=syPjoQJ1r7WsCQriapRV6/h1WVgxUK36LiwjaeN2D2Zd/svgqamnJXyRW9cAG0uxfWCzgRiB9YfH8OhgkbR4TX723Hvpgij9WUgSNtJO3QifljUSrNteR07nc/RtXdISwZb0mzb8G0zFSAeojtpcI40Zag2Z5mWCBPjPDC28bZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=RA1WKPGv; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+	s=arc-20240116; t=1774879073; c=relaxed/simple;
+	bh=pcW6LXETd4GRRYCmR8ynpqdeQSEEzpJd8b7cdKVtty8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SY0C3MfwyOtCEQPiI7597X2J+jA/BfqU/vc6Ahmr0riSzFqEHDW4ngmGgga9nLCCXeakwcNEmwqaeFOveIQjWfpaLGj66OBee/hub5i3If7Jbw7e0ZfStQx8c3j5jMjLEjgmW90zVz9St13YjznVs/HCOlbWvSZ0CAcFYyegcvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org; spf=pass smtp.mailfrom=samba.org; dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b=lSYNp7Wf; arc=none smtp.client-ip=144.76.82.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samba.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="RA1WKPGv"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-43b9144790dso2324617f8f.1
-        for <netfs@lists.linux.dev>; Mon, 30 Mar 2026 03:55:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1774868156; x=1775472956; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=RqgOUnrTeGkoKfySHKsNvdoK2i879eNBFvf4HV8oBRY=;
-        b=RA1WKPGv4ADIoMIFJm1RaPAyGvzP0Glys4HP+ulRWQ8cT0SRqWwpOsWkGluG98gKQm
-         Vm8V2VxBOn1MyDt+wkWeXr8ylkJpq7FgIqG3jYO4CnbCHN6ecC3MQdYTIyFvQKgoHtVm
-         R4fVqAlggd6XHvaGdUB8YlfulpysYoI9QAVz0OExNSIlCrF9jJOl1xRZmrnXe/0a9qRE
-         odo+PJ5T3Jnk8MABwiI/h3iWjoT+WQ83TspFbtDn8UJKKhEd25Rrcg4A0tKOdq3whCfU
-         JxEhIbZQ/u50o9Ae8RfAqdPCU5G/AUdQhBXAxODwYjRT6nABkZad3aZdx39HA+jFLeXG
-         om1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774868156; x=1775472956;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RqgOUnrTeGkoKfySHKsNvdoK2i879eNBFvf4HV8oBRY=;
-        b=lwirjZ07t615dO0WXnsFF+tuzPVnyyEm65XlZiXhSHwRzrm2YOWFXkhUS7Hlg8ykvo
-         V09cDnr+mgEszSodCVul2w04gP7kklfB530Qo1iRqgs4mgqrruw4N+TNQlEL5buGz8t5
-         nHbX50W4G/lFG7Im8tpJHWVgSdkjfQzxTyUVXBpzuKjNaE5FvAh0M8K1F0OKKgHBVck7
-         imKZ7LmIXCcxt9mgKG2h9dGVTt7RfRva/JcB5HTaRGgDmz3HxyLjSOGC1eEgIrvOfdbS
-         sld3IRIiUPTMfvNh1NYFQ1x7v1PRKduuH7o49RyWo+Ij9+DdZX2CaqifxZXBwOp/P7Co
-         gFoA==
-X-Forwarded-Encrypted: i=1; AJvYcCWkD7dwdjEsjxC9G9kfz4KvL6O7sCyEllLHtpm+HDkyzlwwD+TWV0HMAT8GWln+aUNfVuYBjA==@lists.linux.dev
-X-Gm-Message-State: AOJu0YwygY2qSSbLB8E/Cn48VhnnTMr0x5kuE/4bECHdkUotoba+1cyo
-	VZNjCw5FLZoqe/K/zOaaAKFz64b/K8I0JdBEhCXgw7RxsWEgJn/JBcLkcpYDjV49AZc=
-X-Gm-Gg: ATEYQzzwMjUibbSLvcp/LCRhuR/2czejKWu9tPsE7GJIE6wfTt6rVHE4UY9vN/FZUFZ
-	m4oD303iH3nfuxp9d4TpODyGuE12KVWTJrj2IS0obO6djCDRsvdoDYRf2mTuhjDj0l2xhH4W50D
-	WZsYZCQ+oQhrV4nW1Jv7pp6tuoubhvt9uIXmnZApdjxRgdgGvGtBxhm6hGrttxHpj1PbSLHqV71
-	iZ631BhO6oIhTqcpFSfWS2wInh+rDPL3FEpu6jf8JUxIvLvs1ovCfKLCZIEW5dfc5yuRCd3r0QM
-	OahIskcLOViaxx9Dej72dBmHsGkjuCh4DO36SrwtzciP9Zai+Ph1nyV+ZBqB/PHoIJhePg7ViOH
-	NtHGd6qOGoTvnv0lHWMbWXR8acyvqV+CC7IgMNdmareqP/4dvaANwmMRoAJ7MuL2VESHpWE6BKt
-	47x5HjMrng1PXLfwsn5kNaeLb+VDyXitP8mRYGMeWg4KzGwrgLh42AAmx5F8KwHlf1CG3Z0fjEi
-	Zce8zAXX/Gb7NMPkHUn9KfeD4SVaOrd6BvXrQ==
-X-Received: by 2002:a5d:5308:0:b0:43c:ef4f:79de with SMTP id ffacd0b85a97d-43cef4f7b6amr11247379f8f.16.1774868156221;
-        Mon, 30 Mar 2026 03:55:56 -0700 (PDT)
-Received: from raven.intern.cm-ag (p200300dc6f2b4400023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f2b:4400:230:64ff:fe74:809])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43cf330872asm16371655f8f.17.2026.03.30.03.55.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Mar 2026 03:55:55 -0700 (PDT)
-From: Max Kellermann <max.kellermann@ionos.com>
-To: dhowells@redhat.com,
-	pc@manguebit.org,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Max Kellermann <max.kellermann@ionos.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] netfs: add missing folio_end_private_2() to netfs_pgpriv2_copy_folio()
-Date: Mon, 30 Mar 2026 12:55:48 +0200
-Message-ID: <20260330105548.1371339-1-max.kellermann@ionos.com>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b="lSYNp7Wf"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=samba.org;
+	s=42; h=From:Cc:To:Date:Message-ID;
+	bh=aHLXtwCMFeKjEs/VsnRh986+QoltAhaGyi5eb+m+M2o=; b=lSYNp7WftXgNZI9nAPuFMFcKqY
+	HEmA505012e9xqEKFQaNN1zovmIMMfDhNZY37xSKz2H2whDuvOmUZFmRxWz3Yaqnl/BelRXXp44rw
+	Y37GF+vBFdN1uNuw5CZTbr66zdDM08ln+E5ImeL4BcoAfP9R9v1BIE9GZHzP9ZWEWNuFwee+HjifT
+	Xpye22zs124AMG/L1f2BAIylpljBlz0jNngKSbDfSWKnSx4pR7WEfoAfIANLq+RGWwpoqALSvK5wq
+	QwAGdLAO0tdCgSWWQw5JXUdt7q4bCG8mpUq4nc5S1VfADIFpRkXiOCjGf6UJ/FNmqyfheFdUVwZu4
+	9mmWLziXMCsHMnERmzv106kqFnT+hqVLPuW/f84tnZfNDxT/oB25+Pw3ASTxShUG260kt9palsKsg
+	TN/W2lMJA++aKUig0vH7n6qlghHLahYcjmUvDxhrAIl/0/94Y9U77HhO+CgFinlTv1xR/drRKxmik
+	sB9oukHjqX3Ywk7rgEeGLZEC;
+Received: from [127.0.0.2] (localhost [127.0.0.1])
+	by hr2.samba.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__ECDSA_SECP256R1_SHA256__CHACHA20_POLY1305:256)
+	(Exim)
+	id 1w7D7b-000000055qd-0zuk;
+	Mon, 30 Mar 2026 13:57:39 +0000
+Message-ID: <9639cd12-5e9d-4eb4-9d9c-f5047ccad7b7@samba.org>
+Date: Mon, 30 Mar 2026 15:57:38 +0200
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/26] netfs: Keep track of folios in a segmented
+ bio_vec[] chain
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <christian@brauner.io>,
+ Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>,
+ Steve French <smfrench@gmail.com>, Namjae Jeon <linkinjeon@kernel.org>,
+ Paulo Alcantara <pc@manguebit.com>, Jens Axboe <axboe@kernel.dk>,
+ Leon Romanovsky <leon@kernel.org>, Steve French <sfrench@samba.org>,
+ ChenXiaoSong <chenxiaosong@chenxiaosong.com>,
+ Marc Dionne <marc.dionne@auristor.com>,
+ Eric Van Hensbergen <ericvh@kernel.org>,
+ Dominique Martinet <asmadeus@codewreck.org>,
+ Ilya Dryomov <idryomov@gmail.com>, Trond Myklebust <trondmy@kernel.org>,
+ netfs@lists.linux.dev, linux-afs@lists.infradead.org,
+ linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
+ ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
+ linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <52ad0aa6-d8dd-4ba1-adf2-f79128df9d90@samba.org>
+ <20260326104544.509518-1-dhowells@redhat.com>
+ <1180465.1774867781@warthog.procyon.org.uk>
+Content-Language: en-US
+From: Stefan Metzmacher <metze@samba.org>
+In-Reply-To: <1180465.1774867781@warthog.procyon.org.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-This deprecated PG_private_2 copy-to-cache path can leak folio private
-state on rolling-buffer allocation failure.
+Am 30.03.26 um 12:49 schrieb David Howells:
+> Stefan Metzmacher <metze@samba.org> wrote:
+> 
+>> Another possible way would be to skip this for now
+>> cifs: Remove support for ITER_KVEC/BVEC/FOLIOQ from smb_extract_iter_to_rdma()
+>> and I rebase my changes on top of Davids patches assuming they
+>> will be stable commits (at least up to
+>> cifs: Support ITER_BVECQ in smb_extract_iter_to_rdma())
+> 
+> I could certainly split my removal patch.  I want to remove FOLIOQ support,
+> but I can leave KVEC and/or BVEC if they're still needed.
 
-netfs_pgpriv2_copy_to_cache() sets PG_private_2 first, then
-netfs_pgpriv2_copy_folio() tries to append the folio to the tracking
-buffer.  If that append fails, it just returns without calling
-folio_end_private_2().  The folio is then no longer tracked for copy
-completion, but later invalidate/release paths still block on that bit
-in netfs_invalidate_folio() and netfs_release_folio(), so the folio
-can become permanently stuck/unreclaimable.
+Yes, please keep them, I guess we can removed unused stuff at the end of the
+merge window.
 
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-Cc: stable@vger.kernel.org
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
----
- fs/netfs/read_pgpriv2.c | 1 +
- 1 file changed, 1 insertion(+)
+Any idea on how to resolve the actual conflict?
 
-diff --git a/fs/netfs/read_pgpriv2.c b/fs/netfs/read_pgpriv2.c
-index a1489aa29f78..ab73fa62378b 100644
---- a/fs/netfs/read_pgpriv2.c
-+++ b/fs/netfs/read_pgpriv2.c
-@@ -55,6 +55,7 @@ static void netfs_pgpriv2_copy_folio(struct netfs_io_request *creq, struct folio
- 	/* Attach the folio to the rolling buffer. */
- 	if (rolling_buffer_append(&creq->buffer, folio, 0) < 0) {
- 		clear_bit(NETFS_RREQ_FOLIO_COPY_TO_CACHE, &creq->flags);
-+		folio_end_private_2(folio);
- 		return;
- 	}
- 
--- 
-2.47.3
+Thanks!
+metze
 
