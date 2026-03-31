@@ -1,89 +1,86 @@
-Received: from hr2.samba.org (hr2.samba.org [144.76.82.148])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8AE3A4F54;
-	Mon, 30 Mar 2026 13:57:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.82.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F236E3D890A;
+	Tue, 31 Mar 2026 09:52:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774879073; cv=none; b=KS4yGh/ex8ephWK/UeLIewPIeiATS2bY+MJ6I/zw3bmyhyt5xH5TkJLmhtmUhl3kM+yUtEw9JnuLkkScYndN87t2F6FZRQ1yWU3V04pDUQagVLorpR66rJPbdJK0sA1RgLjjLPdStMLpOeJ/B10pmbDLrY8QqZfwSXpB/n0mWZg=
+	t=1774950746; cv=none; b=kidBCLfbPP5IJp8ANz7PhQd/ep5syC/LUTb3p4BrUZQcibngrrnH1/2Wy09ZJoh0BmTJc5hSobxSUgzYuQAHwJHiOgnuA053ETNFT6JTJpAJ6OnxvB3LnFnkAfTYtFFXmyCviQhykDdTzpUdrql886AedStnkGGgpQ90VjIj0AA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774879073; c=relaxed/simple;
-	bh=pcW6LXETd4GRRYCmR8ynpqdeQSEEzpJd8b7cdKVtty8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SY0C3MfwyOtCEQPiI7597X2J+jA/BfqU/vc6Ahmr0riSzFqEHDW4ngmGgga9nLCCXeakwcNEmwqaeFOveIQjWfpaLGj66OBee/hub5i3If7Jbw7e0ZfStQx8c3j5jMjLEjgmW90zVz9St13YjznVs/HCOlbWvSZ0CAcFYyegcvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org; spf=pass smtp.mailfrom=samba.org; dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b=lSYNp7Wf; arc=none smtp.client-ip=144.76.82.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samba.org
+	s=arc-20240116; t=1774950746; c=relaxed/simple;
+	bh=17qLFkIbQA2q1tAC17tUA3ZGIC5prgMJ3fgdS0mLA4A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sRIwd1FdU7EBTqyTEhkoLwhfrFQMmgWUHMWLvre7GBjXbu527Pye+4LUO2zGaCicU1TFDvDzORXbsIP7BQglvsfIkiKHp82V7jGMggFDPQKneetyHR9+uTi2lKXWv02x7XlbKxYJz1NkRXhJFf5RuL/zUdTquhDF+Quf/Z20fTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rqr8r1bB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b="lSYNp7Wf"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=samba.org;
-	s=42; h=From:Cc:To:Date:Message-ID;
-	bh=aHLXtwCMFeKjEs/VsnRh986+QoltAhaGyi5eb+m+M2o=; b=lSYNp7WftXgNZI9nAPuFMFcKqY
-	HEmA505012e9xqEKFQaNN1zovmIMMfDhNZY37xSKz2H2whDuvOmUZFmRxWz3Yaqnl/BelRXXp44rw
-	Y37GF+vBFdN1uNuw5CZTbr66zdDM08ln+E5ImeL4BcoAfP9R9v1BIE9GZHzP9ZWEWNuFwee+HjifT
-	Xpye22zs124AMG/L1f2BAIylpljBlz0jNngKSbDfSWKnSx4pR7WEfoAfIANLq+RGWwpoqALSvK5wq
-	QwAGdLAO0tdCgSWWQw5JXUdt7q4bCG8mpUq4nc5S1VfADIFpRkXiOCjGf6UJ/FNmqyfheFdUVwZu4
-	9mmWLziXMCsHMnERmzv106kqFnT+hqVLPuW/f84tnZfNDxT/oB25+Pw3ASTxShUG260kt9palsKsg
-	TN/W2lMJA++aKUig0vH7n6qlghHLahYcjmUvDxhrAIl/0/94Y9U77HhO+CgFinlTv1xR/drRKxmik
-	sB9oukHjqX3Ywk7rgEeGLZEC;
-Received: from [127.0.0.2] (localhost [127.0.0.1])
-	by hr2.samba.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__ECDSA_SECP256R1_SHA256__CHACHA20_POLY1305:256)
-	(Exim)
-	id 1w7D7b-000000055qd-0zuk;
-	Mon, 30 Mar 2026 13:57:39 +0000
-Message-ID: <9639cd12-5e9d-4eb4-9d9c-f5047ccad7b7@samba.org>
-Date: Mon, 30 Mar 2026 15:57:38 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rqr8r1bB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DE38C19423;
+	Tue, 31 Mar 2026 09:52:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774950745;
+	bh=17qLFkIbQA2q1tAC17tUA3ZGIC5prgMJ3fgdS0mLA4A=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Rqr8r1bBFrxo8SZkPBiPt6zvkGrDgZWYHvbpcXTiwzJnMYMDe4YOEcMJljdf8emer
+	 hS9J33wXjmqX8Kiz4cDsDFBbcUIEd8ueSJD5GmUj6kagywoxLpPhjvrhPmt2Dspo/y
+	 OQQAnTOcc315TvSU8X6fWcXq6fGoa/FT8O7r86JraVo0AFkUTMXih3irZ/VOTmUyQo
+	 pRLWOAxGehAqhrn5Q2ayoTZCyoY1rsTuzNSa54F/HluLHlV7d0NlrbUoiFMWvlzA2v
+	 t5gFw2u1WJlYY+/FxaHta63RzxtKrYcnY1/QV/ADoWGbp1rg8kvlMHnINy74Q/ovF6
+	 EFCEaPpzQ0JYA==
+From: Christian Brauner <brauner@kernel.org>
+To: David Howells <dhowells@redhat.com>,
+	NeilBrown <neilb@ownmail.net>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] cachefiles: fix incorrect dentry refcount in cachefiles_cull()
+Date: Tue, 31 Mar 2026 11:52:18 +0200
+Message-ID: <20260331-abspielen-windkanal-8efc1a3700fc@brauner>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <177456350181.1851489.16359967086642190170@noble.neil.brown.name>
+References: <177456350181.1851489.16359967086642190170@noble.neil.brown.name>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/26] netfs: Keep track of folios in a segmented
- bio_vec[] chain
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <christian@brauner.io>,
- Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>,
- Steve French <smfrench@gmail.com>, Namjae Jeon <linkinjeon@kernel.org>,
- Paulo Alcantara <pc@manguebit.com>, Jens Axboe <axboe@kernel.dk>,
- Leon Romanovsky <leon@kernel.org>, Steve French <sfrench@samba.org>,
- ChenXiaoSong <chenxiaosong@chenxiaosong.com>,
- Marc Dionne <marc.dionne@auristor.com>,
- Eric Van Hensbergen <ericvh@kernel.org>,
- Dominique Martinet <asmadeus@codewreck.org>,
- Ilya Dryomov <idryomov@gmail.com>, Trond Myklebust <trondmy@kernel.org>,
- netfs@lists.linux.dev, linux-afs@lists.infradead.org,
- linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
- ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
- linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <52ad0aa6-d8dd-4ba1-adf2-f79128df9d90@samba.org>
- <20260326104544.509518-1-dhowells@redhat.com>
- <1180465.1774867781@warthog.procyon.org.uk>
-Content-Language: en-US
-From: Stefan Metzmacher <metze@samba.org>
-In-Reply-To: <1180465.1774867781@warthog.procyon.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1409; i=brauner@kernel.org; h=from:subject:message-id; bh=17qLFkIbQA2q1tAC17tUA3ZGIC5prgMJ3fgdS0mLA4A=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSenhnyf579An4OruPac0O6WJTZf3Y9t3ZlVTLWk+4v3 /5OR/tmRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwETCjzEyXMry2ZDG+jDE5nGh 0aXL6+eZz9GXt3X/bczYedVDZPfE+YwMqwou7igIvX3eifma3N85iWl6TA+cr+8Ln+09P6zg/aM j3AA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-Am 30.03.26 um 12:49 schrieb David Howells:
-> Stefan Metzmacher <metze@samba.org> wrote:
+On Fri, 27 Mar 2026 09:18:21 +1100, NeilBrown wrote:
+> The patch mentioned below changed cachefiles_bury_object() to expect 2
+> references to the 'rep' dentry.  Three of the callers were changed to
+> use start_removing_dentry() which takes an extra reference so in those
+> cases the call gets the expected references.
 > 
->> Another possible way would be to skip this for now
->> cifs: Remove support for ITER_KVEC/BVEC/FOLIOQ from smb_extract_iter_to_rdma()
->> and I rebase my changes on top of Davids patches assuming they
->> will be stable commits (at least up to
->> cifs: Support ITER_BVECQ in smb_extract_iter_to_rdma())
+> However there is another call to cachefiles_bury_object() in
+> cachefiles_cull() which did not need to be changed to use
+> start_removing_dentry() and so was not properly considered.
+> It still passed the dentry with just one reference so the net result is
+> that a reference is lost.
 > 
-> I could certainly split my removal patch.  I want to remove FOLIOQ support,
-> but I can leave KVEC and/or BVEC if they're still needed.
+> [...]
 
-Yes, please keep them, I guess we can removed unused stuff at the end of the
-merge window.
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-Any idea on how to resolve the actual conflict?
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-Thanks!
-metze
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[1/1] cachefiles: fix incorrect dentry refcount in cachefiles_cull()
+      https://git.kernel.org/vfs/vfs/c/1635c2acdde8
