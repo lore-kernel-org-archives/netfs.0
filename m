@@ -1,344 +1,212 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B482D7D2E
-	for <netfs@lists.linux.dev>; Wed,  1 Apr 2026 17:54:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFEF522ACEB
+	for <netfs@lists.linux.dev>; Wed,  1 Apr 2026 20:56:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775066061; cv=none; b=HGrGBnGbBoqWf9Ao7a+ieWMRuRu2IRvsPDVABJCMnHc6T8rShoEq76BwhXztEXTxsFES5LaarNojEssaWneuLW8LND956sUDRPX6GifusLeNeIpuMBD0GCCdiHrHRA5JzqsrH3YOqkSxhhcmcMFNekzSCL1W2X+KC38RCANIWO4=
+	t=1775076983; cv=none; b=tdbTIvcWlKKuqx20QZsEgfmEv2ro+c5dMPGSDfQ4PUDTHfYnTZv46nThmcltXM5+4oInpt2xGoAPWa5XqHpCh6Ji9OceOtAKdKpPMSXPtI1gon4YbtzOUxCE/7kYSF8KPsHLoef/hke+Ju8R+2Et0d5w53xBCoMASgu0YlYvuII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775066061; c=relaxed/simple;
-	bh=1VlEL/xXzyrJJvx7yEhwTan9HP+wmq6OZnejImKjpAE=;
-	h=Content-Type:Message-ID:Date:MIME-Version:From:Subject:To; b=UUEMNe9BwBJcE7vs8VjiFX+m1hXp/NkxZS2C2OlR6dvNx6icB+r45Y1sG6U/Jhuvx3LYmJGgiUhWCa0eHTcfiP9XMc+AHF+qwhEcibm6210i/8B1zvG0kA7JKxnAwHDIpWCuT7krMvaAnEkCuZeIE1rxcmTCIP1kh1o8Pui2NuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PePi9zjE; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1775076983; c=relaxed/simple;
+	bh=ruhqRuTEeSnlUtb1ed9VMt41ZI3HJlzRccGuOXzsxs0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jHtKM4lwFJDq6SwsgeHVtD2bszaYNAinlT+e1CWcBkPQdAHpSICX88IYk533xblS4LzIroClvTI7c44VoFP1KD6y7WDzvW4LKx+656xCQMgnCe9i1zqVJiI3Irm2JPHlnpVEIqvGNpQw+baiTULUmE3UZiIbT3TW1lK4E1c/h+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=JzLNDwbq; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PePi9zjE"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5a13e1cfa45so68395e87.2
-        for <netfs@lists.linux.dev>; Wed, 01 Apr 2026 10:54:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="JzLNDwbq"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-482f454be5bso14380725e9.0
+        for <netfs@lists.linux.dev>; Wed, 01 Apr 2026 13:56:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775066057; x=1775670857; darn=lists.linux.dev;
-        h=content-language:to:subject:from:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ce/ZvDRqNZw7GdAZ/3d5FlhIqA+xX3hk0+RuGoOBMbk=;
-        b=PePi9zjEMHGg8H8HnKF2ptyZe6/l4JomO22KrNHZ+1QFvmioW6aDlyDy1j6CXJu+Uj
-         yRly45v0OCNwAQtFvpS/nTxXZY2L/sMFuFNSrFJE814ykFZA/mXk6+dHNfD42zUvCeCt
-         wi2jWWqNlIsV3m447fVcG6nb3X3jCa10IrYgU+JknGN1hQ2xtsSjoR3zn7R8fHbkBZjr
-         XDozaiFWHz6kmJhv5if0AOYrp5xduXgmBoA08sjC0Vgwa/cFKOOm3lCHqxIeolY3L56o
-         QVWajyeNhfCgtruUfmWTDEZcOLw34lrTM7etSQyZY4T1RURmmz94NHyJI54C3bFQJk6J
-         Wl5A==
+        d=ionos.com; s=google; t=1775076979; x=1775681779; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4y38OjeCEJcXrt/pjxqcqwKy5B+FZ5WVvHJbYZD1e28=;
+        b=JzLNDwbqGcCy/nm8WJ/uRHlbDqBp/p6ydAOBMPwlS1318ACQumt1VlAuj9CLdcdb97
+         NeH1aJJHJcfnYXIqhOux8C+Qk0u34CSdqssxpea3wd2jA9kxusfA0Hg61TzjDwB1jg+D
+         v+oXk5e4MvqwLJPdjh0LYkfG/6s96SvmPgcc/eN6OTKtYH6ShNJa4PajFQxGoqU7cTrD
+         PXPIRfhwlOJQo6mlirwfWn1Sp2y9ZLmXMR/WPAhkyJ+PN0cGAtZufUA/1FBuUAz55oYx
+         U6cXex8kwhoo0tOrzkN3GRq8M+OWrhMtRvG3e9J9t7FwKe3pMR9q5E+ebLjMbgNEobBJ
+         J00w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775066057; x=1775670857;
-        h=content-language:to:subject:from:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1775076979; x=1775681779;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Ce/ZvDRqNZw7GdAZ/3d5FlhIqA+xX3hk0+RuGoOBMbk=;
-        b=Wj2n2PBxlphrog3Rrqed88r6BVxh2b8N8bqmlfJLEntWmJC5W33snWoXkZaj6uv8Tx
-         TE/lniCdh/70qoMab5aS4puhqJIactlW7wwP2GPmfdGZs1KPuhBIfOQB9nVzkwVmwDyU
-         5aEPacc/wGfNcdATs/aHEToCrSgLCLar7bCSl9lt75YbLK4q0EX48mBg5d3+z40P1kTw
-         PiQlXAzkxDBTAAOsJYqtmJeo2hHEQjjafxJRsyJanLqngx0igHVQLA1xn6lio706rqgP
-         nrqE2B/oXIlY4iu50IJkCfHTkfMsC0ntXvxsKgFtwS4kZIn78IT6sVQ+PO5nbUpsx+AY
-         N5VQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVuASYCcWLTTdtNU+Rb8Q32P8cLRrXuD6Z8lajqV8TyKLVB7433QWLCxovFIfvZ4DDyVGQE+w==@lists.linux.dev
-X-Gm-Message-State: AOJu0YxUIhCqgB1Z286An8VWPcBAJOfMMu6+CXMsSndO8LkfNMc47fDe
-	x+u99fauPIVAwYIW/K86CRyKjCHkfMGUsB4RImyu2/VM3t6FeuENEvU6
-X-Gm-Gg: ATEYQzw3R/qq2f9UJ9Ud3KSnlfZytKc4waaGaLLKX+UMe4ipzltNgcfQ3MqTKtjdiac
-	B7D5SsP/YT79F/7alyLNFmsagQZ3QczGJUyqabEYT69YLimvmbC7fPo054DinVAhx4Ce1WZ3WBC
-	2PpB0U99xE/spnLFFIbItDUKK1H+35DmxbfoNeNLk6PsyFwGXDlSlX7nJnGfejdV9dXFkEOMhJp
-	wJACWyOiXHyUdCK77BHe/ysdggwCYrX9zKnOxKX1UzYQvZEfduc211bK6fGmjpyEIzL/hNzsID3
-	9P0hH6Vxhr0oCx7+ZVlAjhs+lawVlJeqLGZC++qN/vQxGHhihfPlK+0Fx+CdZn3m+iwiFAHGv7Z
-	z1/HUhrtMWnv384Nhx0X7hhHbjiDhW/bYvC39AfRSeWr0iZyunt0S/c69ijO2btPBho5tw1b7eJ
-	jU6k7HJE735/NJZEeHfWN7AZtGDB81H1KnU4+KBSLCsU0FjwuiS0SQX3wlCL/qbtmW/ycH6kH7d
-	LgiB8wmO6c=
-X-Received: by 2002:a05:6512:3042:b0:5a1:3bfd:b87b with SMTP id 2adb3069b0e04-5a2c1f221b8mr1646591e87.30.1775066057088;
-        Wed, 01 Apr 2026 10:54:17 -0700 (PDT)
-Received: from [192.168.0.125] (cdmjno2.plus.com. [31.125.38.23])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38cd217ba60sm1146111fa.38.2026.04.01.10.54.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Apr 2026 10:54:16 -0700 (PDT)
-Content-Type: multipart/mixed; boundary="------------5tTvaaAnR050Px7Fm80EnnAT"
-Message-ID: <3820f743-ef30-4ace-bad0-fea2f97398fc@gmail.com>
-Date: Wed, 1 Apr 2026 18:54:15 +0100
+        bh=4y38OjeCEJcXrt/pjxqcqwKy5B+FZ5WVvHJbYZD1e28=;
+        b=VBNGhx8wv9B/JFOXPlcE8JN5IkpFseqcHCRsptpb7GB54e4rxzy5rZZIGG1e/bjPYk
+         zSUAIzz8Rv8WyH9XgxaSUgvS8XUB4Ts09J47CXcvxj7L646QRtphuM+FzFVrUaQi5VbD
+         4q+evdHU3x51zqBj+98D5N4WhhAhAQ8P0P1MA1NPPTbY68GPv7sD2SKhsx/RpHMOexnL
+         B9ndr5FEC6xixqi35XGt2DWKI3R7MhdfeOnz90vBc1C7wyTrmbxfz9wfpyH1H0qPGs4m
+         +54EdQS5Q/igioP7BmJY+VpTd9GSLnP7XGzNwI0dYpXDbsXMyS+zfzLnt8FWHYf8ETed
+         NV7g==
+X-Forwarded-Encrypted: i=1; AJvYcCUE6d2lGp0ZuC4dW83iHviA3A3fQSeB/K+DwzKtnQuavzsYmNJlVtE5pz6YgRRs9hQ/ePBnOQ==@lists.linux.dev
+X-Gm-Message-State: AOJu0YwtrqeqUg09IfWwzs+rMOX3ALO4Rf/HClp+YzCSmHhmRAiXspxF
+	Egl9ba9LjYKkCCxsvK8JGmNkF+D4wMoC9yXuu9Il4PzN8WHachw093/kUdnLT056M1o=
+X-Gm-Gg: ATEYQzxmUfUvjkYV+nyiiPObEJXsIRbbykqxRIxxywagJ+ExDFNZLfpsFSL/k3QJOY6
+	uTz8bXxnaDJrgQ/1HDo7yaFXS+2HhAh2ivPcTYu7Te/DMmFJCbeVE8Nk5lGtRUrnnXFfRvlCdHA
+	ceXRlbt7C9kZcSa7o5erdpczf2/TcS1Cl0WeQCEPmMr2Y7rcagZkG0QgY12Q0/BPee/2sOxPUxq
+	ava4XNe4nXsMYDBt34cip/l2ZXzuz7C45mIJuouA2bELAWozZgBzScpd7jXY+JvHP28zrGYhySk
+	rhkzsbnTeTE+MI2XCnFWXRnvw6rB0TGuKogA3Q0ochDSMd4JBBRtFNY7+3xp8ZGi02GmUs5uBJD
+	cOm/jbDp9llRSU+PfzkTtXIdIUhe86ed1NXcwdaCIRkLFfa8NDJVgXTCOmz10HOHRzvyEwdwhaZ
+	CcchGQc4EieAbBgVoa2NXrpsNU84BdA1G6JMNVBsFaCRwbi7LnTzSWhdaMq4LZJB1zkRPmoqHkB
+	xq10hFYVHeFrXB/0eNSJ9+kG/o=
+X-Received: by 2002:a05:600c:1551:b0:486:f893:56c6 with SMTP id 5b1f17b1804b1-488835a15d2mr88248075e9.10.1775076979136;
+        Wed, 01 Apr 2026 13:56:19 -0700 (PDT)
+Received: from raven.intern.cm-ag (p200300dc6f2b4400023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f2b:4400:230:64ff:fe74:809])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4888a567bfasm53369835e9.0.2026.04.01.13.56.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Apr 2026 13:56:18 -0700 (PDT)
+From: Max Kellermann <max.kellermann@ionos.com>
+To: idryomov@gmail.com,
+	amarkuze@redhat.com,
+	ceph-devel@vger.kernel.org,
+	dhowells@redhat.com,
+	pc@manguebit.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Max Kellermann <max.kellermann@ionos.com>
+Subject: [PATCH] ceph: do not fill fscache for RWF_DONTCACHE writeback
+Date: Wed,  1 Apr 2026 22:56:13 +0200
+Message-ID: <20260401205613.2095623-1-max.kellermann@ionos.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Mike Owen <mjnowen@gmail.com>
-Subject: WARNING in nfs_free_request: PG_WB_END stale during NFS read
- completion with FS-Cache
-To: linux-nfs@vger.kernel.org, netfs@lists.linux.dev
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 
-This is a multi-part message in MIME format.
---------------5tTvaaAnR050Px7Fm80EnnAT
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Avoid populating the local fscache with writeback from dropbehind
+folios.
 
-I am running a fleet of KNFSD NFS re-export proxy instances with kernel 6.19.4 (vanilla stable, compiled from source with no custom patches). Under production
-NFS read load, 13 of 16 instances hit a `WARN_ON_ONCE` in `nfs_free_request()` at `fs/nfs/pagelist.c:587`. The WARNING fires in the NFS read completion path and indicates that the `PG_WB_END` page-group synchronisation flag is unexpectedly still set when an `nfs_page` request is being freed.
+At the moment, buffered RWF_DONTCACHE writes still go through the
+usual Ceph writeback path, which mirrors the written data into
+fscache.  The data is dropped from the page cache, but we still spend
+local I/O and local cache space to retain a copy in fscache.
 
-The WARNING does not cause a crash or data corruption, but it reproduces consistently across the majority of instances under load.
+The DONTCACHE documentation is only about the page cache and the
+intent is to avoid caching data that will not be needed again soon.
+I believe skipping fscache writes during Ceph writeback on such pages
+would follow the same spirit: commit the write to permanent storage,
+but otherwise get it out of the way quickly.
 
-I have written up the detailed issue, per attached: "nfs-free-request-warning-report.md", including reproducer steps.
+Use folio_test_dropbehind() to treat such folios as non-cacheable for
+the purposes of Ceph's write-side fscache population.  This skips both
+ceph_set_page_fscache() and the corresponding write-to-cache operation
+for dropbehind folios.
 
-WARNING: fs/nfs/pagelist.c:587 at nfs_free_request+0x175/0x1e0 [nfs], CPU#10: kworker/u96:47/131414
-Modules linked in: tls tcp_diag udp_diag inet_diag nfsd auth_rpcgss nfsv3 nfs_acl nfs lockd grace cachefiles netfs xfs raid0 ...
-CPU: 10 UID: 0 PID: 131414 Comm: kworker/u96:47 Tainted: G           OE       6.19.4-knfsd #1 VOLUNTARY
-Hardware name: Amazon EC2 i3en.6xlarge/, BIOS 1.0 10/16/2017
-Workqueue: nfsiod rpc_async_release [sunrpc]
-RIP: 0010:nfs_free_request+0x175/0x1e0 [nfs]
-Code: 48 8b 43 38 84 c0 0f 89 ce fe ff ff 0f 0b 48 8b 43 38 f6 c4 01 0f 84 cc fe ff ff 0f 0b 48 8b 43 38 f6 c4 02 0f 84 ca fe ff ff <0f> 0b 48 8b 43 38 f6 c4 04 0f 84 c8 fe ff ff 0f 0b 48 8b 43 38 f6
-RSP: 0018:ffffd1de8a523d18 EFLAGS: 00010202
-RAX: 0000000000000204 RBX: ffff8aa811146180 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff8aa811146180
-RBP: ffffd1de8a523d28 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: ffff8aa811146180
-R13: ffff8aa811146180 R14: 0000000000000001 R15: ffff8ac45ab8a298
-FS:  0000000000000000(0000) GS:ffff8ad5a4b3c000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007339078ee200 CR3: 000000015b244005 CR4: 00000000007706f0
-PKRU: 55555554
-Call Trace:
- <TASK>
- nfs_page_group_destroy+0x65/0xc0 [nfs]
- nfs_page_group_destroy+0x9f/0xc0 [nfs]
- nfs_release_request+0x36/0x60 [nfs]
- nfs_readpage_release.isra.0+0x37/0x80 [nfs]
- nfs_read_completion+0x80/0x170 [nfs]
- nfs_pgio_release+0x16/0x20 [nfs]
- rpc_free_task+0x3f/0x80 [sunrpc]
- rpc_async_release+0x33/0x50 [sunrpc]
- process_one_work+0x182/0x350
- worker_thread+0x19a/0x320
- ? __pfx_worker_thread+0x10/0x10
- kthread+0xf9/0x210
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x25c/0x290
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1a/0x30
- </TASK>
----[ end trace 0000000000000000 ]---
+The writepages path can batch together folios with different cacheability,
+so track cacheable subranges separately and only submit fscache writes
+for contiguous non-dropbehind spans.
 
-Questions:
+This keeps normal buffered writeback unchanged, while making
+RWF_DONTCACHE a better match for its intended "don't retain this
+locally" behavior and avoiding unnecessary local cache traffic.
 
-1. Is this a known issue in the NFS page-group synchronisation code
-   when FS-Cache/cachefiles is active?
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+---
+Note: this is an additional feature on top of my Ceph-DONTCACHE patch,
+see https://lore.kernel.org/ceph-devel/20260401053109.1861724-1-max.kellermann@ionos.com/
+---
+ fs/ceph/addr.c | 34 ++++++++++++++++++++++++++++++----
+ 1 file changed, 30 insertions(+), 4 deletions(-)
 
-2. Could the netfs/cachefiles write-back path (writing read data to
-   the cache) inadvertently set `PG_WB_END` on `nfs_page` structures
-   during a read operation?
+diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+index 2090fc78529c..9612a1d8ccb2 100644
+--- a/fs/ceph/addr.c
++++ b/fs/ceph/addr.c
+@@ -576,6 +576,21 @@ static inline void ceph_fscache_write_to_cache(struct inode *inode, u64 off, u64
+ }
+ #endif /* CONFIG_CEPH_FSCACHE */
+ 
++static inline bool ceph_folio_is_cacheable(const struct folio *folio, bool caching)
++{
++	/* Dropbehind writeback should not populate the local fscache. */
++	return caching && !folio_test_dropbehind(folio);
++}
++
++static inline void ceph_flush_fscache_write(struct inode *inode, u64 off, u64 *len)
++{
++	if (!*len)
++		return;
++
++	ceph_fscache_write_to_cache(inode, off, *len, true);
++	*len = 0;
++}
++
+ struct ceph_writeback_ctl
+ {
+ 	loff_t i_size;
+@@ -730,7 +745,7 @@ static int write_folio_nounlock(struct folio *folio,
+ 	struct ceph_writeback_ctl ceph_wbc;
+ 	struct ceph_osd_client *osdc = &fsc->client->osdc;
+ 	struct ceph_osd_request *req;
+-	bool caching = ceph_is_cache_enabled(inode);
++	bool caching = ceph_folio_is_cacheable(folio, ceph_is_cache_enabled(inode));
+ 	struct page *bounce_page = NULL;
+ 
+ 	doutc(cl, "%llx.%llx folio %p idx %lu\n", ceph_vinop(inode), folio,
+@@ -1412,11 +1427,14 @@ int ceph_submit_write(struct address_space *mapping,
+ 	bool caching = ceph_is_cache_enabled(inode);
+ 	u64 offset;
+ 	u64 len;
++	u64 cache_offset, cache_len;
+ 	unsigned i;
+ 
+ new_request:
+ 	offset = ceph_fscrypt_page_offset(ceph_wbc->pages[0]);
+ 	len = ceph_wbc->wsize;
++	cache_offset = 0;
++	cache_len = 0;
+ 
+ 	req = ceph_osdc_new_request(&fsc->client->osdc,
+ 				    &ci->i_layout, vino,
+@@ -1477,9 +1495,11 @@ int ceph_submit_write(struct address_space *mapping,
+ 	ceph_wbc->op_idx = 0;
+ 	for (i = 0; i < ceph_wbc->locked_pages; i++) {
+ 		u64 cur_offset;
++		bool cache_page;
+ 
+ 		page = ceph_fscrypt_pagecache_page(ceph_wbc->pages[i]);
+ 		cur_offset = page_offset(page);
++		cache_page = ceph_folio_is_cacheable(page_folio(page), caching);
+ 
+ 		/*
+ 		 * Discontinuity in page range? Ceph can handle that by just passing
+@@ -1491,7 +1511,7 @@ int ceph_submit_write(struct address_space *mapping,
+ 				break;
+ 
+ 			/* Kick off an fscache write with what we have so far. */
+-			ceph_fscache_write_to_cache(inode, offset, len, caching);
++			ceph_flush_fscache_write(inode, cache_offset, &cache_len);
+ 
+ 			/* Start a new extent */
+ 			osd_req_op_extent_dup_last(req, ceph_wbc->op_idx,
+@@ -1514,13 +1534,19 @@ int ceph_submit_write(struct address_space *mapping,
+ 
+ 		set_page_writeback(page);
+ 
+-		if (caching)
++		if (cache_page) {
++			if (!cache_len)
++				cache_offset = cur_offset;
+ 			ceph_set_page_fscache(page);
++			cache_len += thp_size(page);
++		} else {
++			ceph_flush_fscache_write(inode, cache_offset, &cache_len);
++		}
+ 
+ 		len += thp_size(page);
+ 	}
+ 
+-	ceph_fscache_write_to_cache(inode, offset, len, caching);
++	ceph_flush_fscache_write(inode, cache_offset, &cache_len);
+ 
+ 	if (ceph_wbc->size_stable) {
+ 		len = min(len, ceph_wbc->i_size - offset);
+-- 
+2.47.3
 
-3. Is this specific to the re-export (nfsd + NFS client on same host)
-   configuration, or could it affect any NFS client with FS-Cache
-   enabled?
-
-Any guidance or patches to address this would be greatly appreciated.
-
-Thank you for reading.
--Mike
-
---------------5tTvaaAnR050Px7Fm80EnnAT
-Content-Type: text/markdown; charset=UTF-8;
- name="nfs-free-request-warning-report.md"
-Content-Disposition: attachment; filename="nfs-free-request-warning-report.md"
-Content-Transfer-Encoding: base64
-
-IyBXQVJOSU5HIGluIG5mc19mcmVlX3JlcXVlc3Q6IFBHX1dCX0VORCBzdGFsZSBpbiBORlMg
-cmVhZCBjb21wbGV0aW9uIHBhdGgKCiMjIFN1bW1hcnkKCkkgYW0gcnVubmluZyBhIGZsZWV0
-IG9mIEtORlNEIE5GUyByZS1leHBvcnQgcHJveHkgaW5zdGFuY2VzIHdpdGgga2VybmVsIDYu
-MTkuNCAodmFuaWxsYQpzdGFibGUsIGNvbXBpbGVkIGZyb20gc291cmNlIHdpdGggbm8gY3Vz
-dG9tIHBhdGNoZXMpLiBVbmRlciBwcm9kdWN0aW9uCk5GUyByZWFkIGxvYWQsIDEzIG9mIDE2
-IGluc3RhbmNlcyBoaXQgYSBgV0FSTl9PTl9PTkNFYCBpbgpgbmZzX2ZyZWVfcmVxdWVzdCgp
-YCBhdCBgZnMvbmZzL3BhZ2VsaXN0LmM6NTg3YC4gVGhlIFdBUk5JTkcgZmlyZXMgaW4KdGhl
-IE5GUyByZWFkIGNvbXBsZXRpb24gcGF0aCBhbmQgaW5kaWNhdGVzIHRoYXQgdGhlIGBQR19X
-Ql9FTkRgCnBhZ2UtZ3JvdXAgc3luY2hyb25pc2F0aW9uIGZsYWcgaXMgdW5leHBlY3RlZGx5
-IHN0aWxsIHNldCB3aGVuIGFuCmBuZnNfcGFnZWAgcmVxdWVzdCBpcyBiZWluZyBmcmVlZC4K
-ClRoZSBXQVJOSU5HIGRvZXMgbm90IGNhdXNlIGEgY3Jhc2ggb3IgZGF0YSBjb3JydXB0aW9u
-LCBidXQgaXQKcmVwcm9kdWNlcyBjb25zaXN0ZW50bHkgYWNyb3NzIHRoZSBtYWpvcml0eSBv
-ZiBpbnN0YW5jZXMgdW5kZXIgbG9hZC4KCiMjIEVudmlyb25tZW50CgotICoqS2VybmVsKio6
-IDYuMTkuNCAodmFuaWxsYSBzdGFibGUgZnJvbSBrZXJuZWwub3JnLCBubyBjdXN0b20gcGF0
-Y2hlcykKLSAqKkhhcmR3YXJlKio6IEFtYXpvbiBFQzIgaTNlbi42eGxhcmdlIChJbnRlbCBY
-ZW9uIDgyNTlDTCwgMjQgdkNQVXMsIDE5MkdCIFJBTSwgMsOXIDcuNVRCIE5WTWUgaW5zdGFu
-Y2Ugc3RvcmUpCi0gKipBcmNoaXRlY3R1cmUqKjogTkZTIHJlLWV4cG9ydCBwcm94eSAoc2Vl
-IGRpYWdyYW0gYmVsb3cpCi0gKipGUy1DYWNoZSoqOiBFbmFibGVkIHZpYSBgY2FjaGVmaWxl
-c2Agb24gWEZTLWZvcm1hdHRlZCBSQUlEMCBvZiBsb2NhbCBOVk1lIChtb3VudGVkIGF0IGAv
-dmFyL2NhY2hlL2ZzY2FjaGVgKQoKIyMjIE5GUyBSZS1FeHBvcnQgUHJveHkgQXJjaGl0ZWN0
-dXJlCgpUaGUgS05GU0QgcHJveHkgc2l0cyBiZXR3ZWVuIE5GUyBjbGllbnRzIGFuZCBhIHNv
-dXJjZSBORlMgZmlsZXIuIEl0IHJlLWV4cG9ydHMgTkZTIG1vdW50cyB3aXRoCkZTLUNhY2hl
-IGVuYWJsZWQgdG8gYWNjZWxlcmF0ZSByZXBlYXRlZCByZWFkczoKCmBgYHRleHQKTkZTIENs
-aWVudHMg4pSA4pSATkZTdjPilIDilIA+IEtORlNEIFByb3h5IChuZnNkICsgTkZTIGNsaWVu
-dCArIGNhY2hlZmlsZXMpIOKUgOKUgE5GU3Yz4pSA4pSAPiBTb3VyY2UgRmlsZXIKICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAg4pSCCiAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgIOKUnOKUgOKUgCBuZnNkIHNlcnZlcyBkb3duc3RyZWFtIGNsaWVudHMKICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAg4pSc4pSA4pSAIE5GUyBjbGllbnQgbW91bnRzIHNvdXJj
-ZSBmaWxlciB3aXRoIGZzYyAoRlMtQ2FjaGUpCiAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgIOKUnOKUgOKUgCBjYWNoZWZpbGVzL25ldGZzIHdyaXRlcyByZWFkIGRhdGEgdG8gbG9j
-YWwgWEZTIGNhY2hlCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIOKUlOKUgOKUgCBu
-ZnNkIHJlLXJlYWRzIGZyb20gY2FjaGUgb24gc3Vic2VxdWVudCBjbGllbnQgcmVxdWVzdHMK
-YGBgCgpUaGlzIG1lYW5zIHRoZSBwcm94eSBydW5zIGJvdGggbmZzZCAoc2VydmVyKSBhbmQg
-dGhlIE5GUyBjbGllbnQKc2ltdWx0YW5lb3VzbHksIHdpdGggdGhlIGNhY2hlZmlsZXMvbmV0
-ZnMgbGF5ZXIgcGVyZm9ybWluZyB3cml0ZS1iYWNrCm9mIHJlYWQgZGF0YSB0byB0aGUgbG9j
-YWwgWEZTLWJhY2tlZCBjYWNoZSB2b2x1bWUuCgojIyBSQ0EKCldoYXQgZm9sbG93cyBpcyBh
-IEdlbkFJIGFuYWx5c2lzIG9mIHRoZSBwb3NzaWJsZSByb290IGNhdXNlIG9mIHRoZSBpc3N1
-ZS4KCiMjIFN0YWNrIFRyYWNlCgpGcm9tIGluc3RhbmNlIGBpLTBmZDU3NTIxOTI1M2U0Mzg4
-YCAocmVwcmVzZW50YXRpdmUgb2YgYWxsIDEzIGFmZmVjdGVkCmluc3RhbmNlcyk6CgpgYGB0
-ZXh0CldBUk5JTkc6IGZzL25mcy9wYWdlbGlzdC5jOjU4NyBhdCBuZnNfZnJlZV9yZXF1ZXN0
-KzB4MTc1LzB4MWUwIFtuZnNdLCBDUFUjMTA6IGt3b3JrZXIvdTk2OjQ3LzEzMTQxNApNb2R1
-bGVzIGxpbmtlZCBpbjogdGxzIHRjcF9kaWFnIHVkcF9kaWFnIGluZXRfZGlhZyBuZnNkIGF1
-dGhfcnBjZ3NzIG5mc3YzIG5mc19hY2wgbmZzIGxvY2tkIGdyYWNlIGNhY2hlZmlsZXMgbmV0
-ZnMgeGZzIHJhaWQwIC4uLgpDUFU6IDEwIFVJRDogMCBQSUQ6IDEzMTQxNCBDb21tOiBrd29y
-a2VyL3U5Njo0NyBUYWludGVkOiBHICAgICAgICAgICBPRSAgICAgICA2LjE5LjQta25mc2Qg
-IzEgVk9MVU5UQVJZCkhhcmR3YXJlIG5hbWU6IEFtYXpvbiBFQzIgaTNlbi42eGxhcmdlLywg
-QklPUyAxLjAgMTAvMTYvMjAxNwpXb3JrcXVldWU6IG5mc2lvZCBycGNfYXN5bmNfcmVsZWFz
-ZSBbc3VucnBjXQpSSVA6IDAwMTA6bmZzX2ZyZWVfcmVxdWVzdCsweDE3NS8weDFlMCBbbmZz
-XQpDb2RlOiA0OCA4YiA0MyAzOCA4NCBjMCAwZiA4OSBjZSBmZSBmZiBmZiAwZiAwYiA0OCA4
-YiA0MyAzOCBmNiBjNCAwMSAwZiA4NCBjYyBmZSBmZiBmZiAwZiAwYiA0OCA4YiA0MyAzOCBm
-NiBjNCAwMiAwZiA4NCBjYSBmZSBmZiBmZiA8MGY+IDBiIDQ4IDhiIDQzIDM4IGY2IGM0IDA0
-IDBmIDg0IGM4IGZlIGZmIGZmIDBmIDBiIDQ4IDhiIDQzIDM4IGY2ClJTUDogMDAxODpmZmZm
-ZDFkZThhNTIzZDE4IEVGTEFHUzogMDAwMTAyMDIKUkFYOiAwMDAwMDAwMDAwMDAwMjA0IFJC
-WDogZmZmZjhhYTgxMTE0NjE4MCBSQ1g6IDAwMDAwMDAwMDAwMDAwMDAKUkRYOiAwMDAwMDAw
-MDAwMDAwMDAwIFJTSTogMDAwMDAwMDAwMDAwMDAwMCBSREk6IGZmZmY4YWE4MTExNDYxODAK
-UkJQOiBmZmZmZDFkZThhNTIzZDI4IFIwODogMDAwMDAwMDAwMDAwMDAwMCBSMDk6IDAwMDAw
-MDAwMDAwMDAwMDAKUjEwOiAwMDAwMDAwMDAwMDAwMDAwIFIxMTogMDAwMDAwMDAwMDAwMDAw
-MCBSMTI6IGZmZmY4YWE4MTExNDYxODAKUjEzOiBmZmZmOGFhODExMTQ2MTgwIFIxNDogMDAw
-MDAwMDAwMDAwMDAwMSBSMTU6IGZmZmY4YWM0NWFiOGEyOTgKRlM6ICAwMDAwMDAwMDAwMDAw
-MDAwKDAwMDApIEdTOmZmZmY4YWQ1YTRiM2MwMDAoMDAwMCkga25sR1M6MDAwMDAwMDAwMDAw
-MDAwMApDUzogIDAwMTAgRFM6IDAwMDAgRVM6IDAwMDAgQ1IwOiAwMDAwMDAwMDgwMDUwMDMz
-CkNSMjogMDAwMDczMzkwNzhlZTIwMCBDUjM6IDAwMDAwMDAxNWIyNDQwMDUgQ1I0OiAwMDAw
-MDAwMDAwNzcwNmYwClBLUlU6IDU1NTU1NTU0CkNhbGwgVHJhY2U6CiA8VEFTSz4KIG5mc19w
-YWdlX2dyb3VwX2Rlc3Ryb3krMHg2NS8weGMwIFtuZnNdCiBuZnNfcGFnZV9ncm91cF9kZXN0
-cm95KzB4OWYvMHhjMCBbbmZzXQogbmZzX3JlbGVhc2VfcmVxdWVzdCsweDM2LzB4NjAgW25m
-c10KIG5mc19yZWFkcGFnZV9yZWxlYXNlLmlzcmEuMCsweDM3LzB4ODAgW25mc10KIG5mc19y
-ZWFkX2NvbXBsZXRpb24rMHg4MC8weDE3MCBbbmZzXQogbmZzX3BnaW9fcmVsZWFzZSsweDE2
-LzB4MjAgW25mc10KIHJwY19mcmVlX3Rhc2srMHgzZi8weDgwIFtzdW5ycGNdCiBycGNfYXN5
-bmNfcmVsZWFzZSsweDMzLzB4NTAgW3N1bnJwY10KIHByb2Nlc3Nfb25lX3dvcmsrMHgxODIv
-MHgzNTAKIHdvcmtlcl90aHJlYWQrMHgxOWEvMHgzMjAKID8gX19wZnhfd29ya2VyX3RocmVh
-ZCsweDEwLzB4MTAKIGt0aHJlYWQrMHhmOS8weDIxMAogPyBfX3BmeF9rdGhyZWFkKzB4MTAv
-MHgxMAogcmV0X2Zyb21fZm9yaysweDI1Yy8weDI5MAogPyBfX3BmeF9rdGhyZWFkKzB4MTAv
-MHgxMAogcmV0X2Zyb21fZm9ya19hc20rMHgxYS8weDMwCiA8L1RBU0s+Ci0tLVsgZW5kIHRy
-YWNlIDAwMDAwMDAwMDAwMDAwMDAgXS0tLQpgYGAKCiMjIEFuYWx5c2lzCgojIyMgQ2FsbCBw
-YXRoCgpUaGUgV0FSTklORyBvY2N1cnMgaW4gdGhlIE5GUyAqKnJlYWQqKiBjb21wbGV0aW9u
-IHBhdGgsIHJ1bm5pbmcgaW4gdGhlCmBuZnNpb2RgIHdvcmtxdWV1ZToKCmBgYHRleHQKcnBj
-X2FzeW5jX3JlbGVhc2UKICDihpIgcnBjX2ZyZWVfdGFzawogICAg4oaSIG5mc19wZ2lvX3Jl
-bGVhc2UKICAgICAg4oaSIG5mc19yZWFkX2NvbXBsZXRpb24KICAgICAgICDihpIgbmZzX3Jl
-YWRwYWdlX3JlbGVhc2UKICAgICAgICAgIOKGkiBuZnNfcmVsZWFzZV9yZXF1ZXN0CiAgICAg
-ICAgICAgIOKGkiBrcmVmX3B1dCDihpIgbmZzX3BhZ2VfZ3JvdXBfZGVzdHJveQogICAgICAg
-ICAgICAgIOKGkiBuZnNfZnJlZV9yZXF1ZXN0ICAgICAgICDihpAgV0FSTklORyBmaXJlcyBo
-ZXJlCmBgYAoKVGhlIGRvdWJsZSBgbmZzX3BhZ2VfZ3JvdXBfZGVzdHJveWAgZW50cnkgaW4g
-dGhlIGNhbGwgdHJhY2UgaW5kaWNhdGVzIGEKbXVsdGktbWVtYmVyIHBhZ2UgZ3JvdXA6IGEg
-c3VicmVxdWVzdCByZWxlYXNlcyBpdHMgcmVmZXJlbmNlIG9uIHRoZSBoZWFkCnJlcXVlc3Qs
-IHRyaWdnZXJpbmcgdGhlIGhlYWQncyBncm91cCBkZXN0cnVjdGlvbiwgd2hpY2ggdGhlbiBj
-YWxscwpgbmZzX2ZyZWVfcmVxdWVzdCgpYCBmb3IgZWFjaCBtZW1iZXIgaW4gdGhlIGRvLi53
-aGlsZSBsb29wLgoKIyMjIFdoaWNoIFdBUk4gZmlyZXMKClRoZSBgbmZzX2ZyZWVfcmVxdWVz
-dCgpYCBmdW5jdGlvbiBjb250YWlucyBzZXZlcmFsIGBXQVJOX09OX09OQ0VgIGRlYnVnCmNo
-ZWNrcyB0aGF0IHZlcmlmeSBhbGwgcGFnZS1ncm91cCBzeW5jaHJvbmlzYXRpb24gZmxhZ3Mg
-YXJlIGNsZWFyZWQKYmVmb3JlIGZyZWVpbmcgYW4gYG5mc19wYWdlYDoKCmBgYGMKdm9pZCBu
-ZnNfZnJlZV9yZXF1ZXN0KHN0cnVjdCBuZnNfcGFnZSAqcmVxKQp7CiAgICBXQVJOX09OX09O
-Q0UocmVxLT53Yl90aGlzX3BhZ2UgIT0gcmVxKTsKICAgIFdBUk5fT05fT05DRSh0ZXN0X2Jp
-dChQR19URUFSRE9XTiwgJnJlcS0+d2JfZmxhZ3MpKTsKICAgIFdBUk5fT05fT05DRSh0ZXN0
-X2JpdChQR19VTkxPQ0tQQUdFLCAmcmVxLT53Yl9mbGFncykpOwogICAgV0FSTl9PTl9PTkNF
-KHRlc3RfYml0KFBHX1VQVE9EQVRFLCAmcmVxLT53Yl9mbGFncykpOwogICAgV0FSTl9PTl9P
-TkNFKHRlc3RfYml0KFBHX1dCX0VORCwgJnJlcS0+d2JfZmxhZ3MpKTsgICAgIC8qIOKGkCB0
-aGlzIG9uZSAqLwogICAgV0FSTl9PTl9PTkNFKHRlc3RfYml0KFBHX1JFTU9WRSwgJnJlcS0+
-d2JfZmxhZ3MpKTsKICAgIC4uLgp9CmBgYAoKRGlzYXNzZW1ibHkgb2YgdGhlIGBDb2RlOmAg
-ZHVtcCBjb25maXJtcyB0aGUgZmF1bHRpbmcgYDwwZj4gMGJgICh1ZDIpCmNvcnJlc3BvbmRz
-IHRvIHRoZSBgdGVzdCBhaCwgMHgwMmAgaW5zdHJ1Y3Rpb24sIHdoaWNoIHRlc3RzIGJpdCA5
-IG9mCmB3Yl9mbGFnc2Ag4oCUIGkuZS4gYFBHX1dCX0VORGAuCgojIyMgVGhlIHN0YWxlIGZs
-YWcKClJBWCBjb250YWlucyBgd2JfZmxhZ3NgIGF0IHRoZSBwb2ludCBvZiB0aGUgV0FSTi4g
-QWNyb3NzIHRoZSAxMwphZmZlY3RlZCBpbnN0YW5jZXMsIHR3byB2YWx1ZXMgYXJlIG9ic2Vy
-dmVkOgoKLSBgUkFYPTB4MjA0YCDihpIgYFBHX0NMRUFOKDIpYCArIGBQR19XQl9FTkQoOSlg
-IOKAlCBvYnNlcnZlZCBvbiAxMCBpbnN0YW5jZXMKLSBgUkFYPTB4MjA1YCDihpIgYFBHX0JV
-U1koMClgICsgYFBHX0NMRUFOKDIpYCArIGBQR19XQl9FTkQoOSlgIOKAlCBvYnNlcnZlZCBv
-biAzIGluc3RhbmNlcwoKQm90aCB2YWx1ZXMgaGF2ZSBgUEdfV0JfRU5EYCAoYml0IDkpIHNl
-dC4gVGhlIGRpZmZlcmVuY2UgaXMgd2hldGhlcgpgUEdfQlVTWWAgKHRoZSByZXF1ZXN0IGxv
-Y2sgYml0KSBoYXMgYmVlbiBjbGVhcmVkIHlldCDigJQgcmVmbGVjdGluZyB0d28Kc2xpZ2h0
-bHkgZGlmZmVyZW50IHRpbWluZyBzbmFwc2hvdHMgb2YgdGhlIHNhbWUgcmFjZS4KCiMjIyBX
-aHkgUEdfV0JfRU5EIHNob3VsZCBub3QgYmUgc2V0IGhlcmU/CgpgUEdfV0JfRU5EYCBpcyBh
-IHBhZ2UtZ3JvdXAgc3luY2hyb25pc2F0aW9uIGZsYWcgdXNlZCB2aWEKYG5mc19wYWdlX2dy
-b3VwX3N5bmNfb25fYml0KHJlcSwgUEdfV0JfRU5EKWAgaW4gYG5mc193cml0ZV9jb21wbGV0
-aW9uKClgCih0aGUgd3JpdGUgcGF0aCkuIEluIHRoZSBub3JtYWwgcmVhZCBwYXRoLCBgUEdf
-V0JfRU5EYCBzaG91bGQgbmV2ZXIgYmUKc2V0LiBUaGUgcmVhZCBwYXRoIHVzZXMgYFBHX1VQ
-VE9EQVRFYCAodmlhIGBuZnNfcGFnZV9ncm91cF9zZXRfdXB0b2RhdGUoKWApCmFuZCBgUEdf
-VU5MT0NLUEFHRWAgKHZpYSBgbmZzX3JlYWRwYWdlX3JlbGVhc2UoKWApLCBidXQgbm90IGBQ
-R19XQl9FTkRgLgoKSSBzdXNwZWN0IHRoZSBjYWNoZWZpbGVzL25ldGZzIGludGVncmF0aW9u
-IG1heSBiZSBpbnZvbHZlZD8gSW4gdGhlCnJlLWV4cG9ydCBwcm94eSBjb25maWd1cmF0aW9u
-LCB3aGVuIHRoZSBORlMgY2xpZW50IHJlYWRzIGZyb20gdGhlIHNvdXJjZQpmaWxlciB3aXRo
-IEZTLUNhY2hlIGVuYWJsZWQsIHRoZSBuZXRmcyBsYXllciBhbHNvIHdyaXRlcyB0aGUgcmVh
-ZCBkYXRhCnRvIHRoZSBjYWNoZWZpbGVzIGJhY2tpbmcgc3RvcmUuIFRoaXMgY3JlYXRlcyBh
-IGh5YnJpZCByZWFkK3dyaXRlCmxpZmVjeWNsZSBmb3IgdGhlIHBhZ2VzIGludm9sdmVkLiBJ
-dCBpcyBwb3NzaWJsZSB0aGF0IHRoZSBjYWNoZQp3cml0ZS1iYWNrIHBhdGggc2V0cyBgUEdf
-V0JfRU5EYCBvbiBwYWdlIGdyb3VwIG1lbWJlcnMgZHVyaW5nIHdoYXQgdGhlCk5GUyBjbGll
-bnQgY29uc2lkZXJzIGEgcmVhZCBvcGVyYXRpb24sIGFuZCB0aGUgZmxhZyBpcyBub3QgcHJv
-cGVybHkKY2xlYXJlZCBiZWZvcmUgdGhlIHJlYWQgY29tcGxldGlvbiB0ZWFycyBkb3duIHRo
-ZSBwYWdlIGdyb3VwLgoKIyMgUGF0dGVybiBBY3Jvc3MgSW5zdGFuY2VzCgojIyMgSGl0IHJh
-dGUKCjEzIG9mIDE2IGluc3RhbmNlcyAoODElKSBoaXQgdGhlIFdBUk5JTkcuIEFsbCBpbnN0
-YW5jZXMgcnVuIHRoZSBzYW1lCmtlcm5lbCwgc2FtZSBjb25maWd1cmF0aW9uLCBhbmQgc2Vy
-dmUgdGhlIHNhbWUgdHlwZSBvZiBORlMgcmUtZXhwb3J0Cndvcmtsb2FkLgoKIyMjIFRpbWlu
-ZwoKVGhlIDEzIHdhcm5pbmdzIGFyZSBzcHJlYWQgb3ZlciBhcHByb3hpbWF0ZWx5IDUuNSBo
-b3VycyBvbiB0aGUgc2FtZSBkYXksCndpdGggbm8gdHdvIGluc3RhbmNlcyBmaXJpbmcgYXQg
-dGhlIHNhbWUgdGltZS4gVGhpcyBpcyBjb25zaXN0ZW50IHdpdGgKYSByYWNlIGNvbmRpdGlv
-biB0aGF0IHRyaWdnZXJzIGluZGVwZW5kZW50bHkgdW5kZXIgbG9hZDoKCmBgYHRleHQKMTI6
-MDgg4oCUIGktMGQ5ZGIyMjJjNTZiMTQ4ZDEKMTM6MjEg4oCUIGktMDU2MWUxODlhMDZjNWEy
-ODgKMTM6Mzkg4oCUIGktMGM3ZGNhYWU0MDBjMjM5MmMKMTM6NTIg4oCUIGktMDRjNDI4ZTQw
-YWZkNjRjYTMKMTU6MTMg4oCUIGktMGYwMzI3NDcxMzQ2MDNlN2IKMTU6Mjgg4oCUIGktMGU5
-ZDc5MDk2ODk1NzkzMzIKMTU6MzIg4oCUIGktMDRkMmUxNTcyYTAzYjQ3MWIKMTY6MDEg4oCU
-IGktMGUzZTkzYTNjODM2N2MyN2QKMTY6Mjkg4oCUIGktMGZkNTc1MjE5MjUzZTQzODgKMTY6
-NTgg4oCUIGktMDFiMWVkNDRhYmZkNTJjZjUKMTc6MTIg4oCUIGktMDJlZjg3ODA2MmQ0ZjVm
-ODYKMTc6MTgg4oCUIGktMGVjY2IyNjRjYzkwZWI3MzcKMTc6MzYg4oCUIGktMDY0YzY0OWVh
-YWYxOTZhZTcKYGBgCgojIyMgQ2FsbCB0cmFjZSB2YXJpYW50cwoKVHdvIHZhcmlhbnRzIGFy
-ZSBvYnNlcnZlZDoKCioqVmFyaWFudCBBKiogKDggaW5zdGFuY2VzKSDigJQgcmVjdXJzaXZl
-IHBhZ2UgZ3JvdXAgZGVzdHJveSAobXVsdGktbWVtYmVyCnBhZ2UgZ3JvdXAgd2hlcmUgc3Vi
-cmVxdWVzdCByZWxlYXNlcyB0aGUgaGVhZCk6CgpgYGB0ZXh0Cm5mc19wYWdlX2dyb3VwX2Rl
-c3Ryb3krMHg2NS8weGMwICAg4oaQIG5mc19mcmVlX3JlcXVlc3QodG1wKSBpbiBkby4ud2hp
-bGUKbmZzX3BhZ2VfZ3JvdXBfZGVzdHJveSsweDlmLzB4YzAgICDihpAgbmZzX3JlbGVhc2Vf
-cmVxdWVzdChoZWFkKSBhdCBlbmQKbmZzX3JlbGVhc2VfcmVxdWVzdCsweDM2LzB4NjAKbmZz
-X3JlYWRwYWdlX3JlbGVhc2UKYGBgCgoqKlZhcmlhbnQgQioqICg1IGluc3RhbmNlcykg4oCU
-IGRpcmVjdCwgbm9uLXJlY3Vyc2l2ZSAoc2luZ2xlLW1lbWJlciBwYWdlCmdyb3VwIG9yIGhl
-YWQgaXMgdGhlIG9ubHkgcmVtYWluaW5nIG1lbWJlcik6CgpgYGB0ZXh0Cm5mc19wYWdlX2dy
-b3VwX2Rlc3Ryb3krMHg2NS8weGMwICAg4oaQIG5mc19mcmVlX3JlcXVlc3QodG1wKQpuZnNf
-cmVsZWFzZV9yZXF1ZXN0KzB4MzYvMHg2MApuZnNfcmVhZHBhZ2VfcmVsZWFzZQpgYGAKCkJv
-dGggdmFyaWFudHMgZW5kIGF0IHRoZSBzYW1lIGBuZnNfZnJlZV9yZXF1ZXN0YCB3aXRoIGBQ
-R19XQl9FTkRgIHNldC4KCiMjIFJlcHJvZHVjdGlvbgoKVGhpcyBpcyByZXByb2R1Y2libGUg
-dW5kZXIgc3VzdGFpbmVkIE5GUyByZWFkIGxvYWQgdGhyb3VnaCB0aGUgcHJveHkKd2l0aCBG
-Uy1DYWNoZSAoY2FjaGVmaWxlcykgZW5hYmxlZC4gVGhlIHdvcmtsb2FkIGludm9sdmVzIG11
-bHRpcGxlIE5GUwpjbGllbnRzIHBlcmZvcm1pbmcgY29uY3VycmVudCByZWFkcyB0aHJvdWdo
-IHRoZSBLTkZTRCByZS1leHBvcnQgcHJveHksCnRyaWdnZXJpbmcgY29sZC1jYWNoZSBmaWxs
-cyB3aGVyZSB0aGUgTkZTIGNsaWVudCByZWFkcyBmcm9tIHRoZSBzb3VyY2UKZmlsZXIgYW5k
-IGNhY2hlZmlsZXMgd3JpdGVzIHRoZSBkYXRhIHRvIHRoZSBsb2NhbCBYRlMgY2FjaGUuCgpT
-aW5jZSBgV0FSTl9PTl9PTkNFYCBvbmx5IGZpcmVzIG9uY2UgcGVyIGJvb3QsIHRoZSBhY3R1
-YWwgZnJlcXVlbmN5IG9mCnRoZSByYWNlIGNvbmRpdGlvbiBpcyBsaWtlbHkgaGlnaGVyIHRo
-YW4gd2hhdCB0aGUgbG9ncyBzaG93LgoKIyMgUmVwcm9kdWNlcgoKU29tZXdoYXQgZXhjZXNz
-aXZlLCBidXQgdXNpbmcgMiBGSU8gam9icywgcnVubmluZyBvbiAxMCB4IG1hY2hpbmVzLCBt
-b3VudGluZyBhIHNpbmdsZSBLTkZTRCBwcm94eSBpbnN0YW5jZSwgd2hpY2loIGluLXR1cm4g
-bW91bnRzIGEgc2luZ2xlLCBzb3VyY2UgTkZTIGZpbGVyLCBJIGNhbiAxMDAlIHJlcHJvZHVj
-ZSB0aGUgaXNzdWUsIHVzaW5nIGBzdHJlc3MtbmdgIHRvIHNpbXVsYXRlIHByb2R1Y3Rpb24g
-bG9hZC4gMXN0IEZJTyBqb2IgY3JlYXRlcyB0aGUgZmlsZXMsIDJuZCBGSU8gam9iIHJlYWRz
-IHRoZSBmaWxlcy4gU291cmNlIGRhdGEgaXMgNi40VEIgb2YgcmFuZG9tIGRhdGEuIFRoZSBG
-SU8gMm5kIGpvYiBydW5zIGZvciA2MCBtaW51dGVzLCBidXQgdGhpcyBpc3N1ZSB3aWxsIHN1
-cmZhY2UgbXVjaCBzb29uZXIuCgoqKkZJTyBqb2IgMToqKgoKYGBgdGV4dApbd2FybmluZy1s
-b2ctbWVzc2FnZV0KaW9lbmdpbmU9c3luYwpkaXJlY3Q9MApydz13cml0ZQpkaXJlY3Rvcnk9
-L21udC9kYXRhCnVuaXF1ZV9maWxlbmFtZT0wCmJzPTFNCnNpemU9MTBHCm51bWpvYnM9NjQK
-YGBgCgoqKkZJTyBqb2IgMjoqKgoKYGBgdGV4dApbd2FybmluZy1sb2ctbWVzc2FnZV0KaW9l
-bmdpbmU9cG9zaXhhaW8KZGlyZWN0PTAKdGltZV9iYXNlZAphbGxvd19maWxlX2NyZWF0ZT0w
-CmRpcmVjdG9yeT0vbW50L2RhdGEKdW5pcXVlX2ZpbGVuYW1lPTAKYnM9MU0Kcnc9cmFuZHJl
-YWQKc2l6ZT0xMEcKbnVtam9icz02NApydW50aW1lPTYwbQpub3JhbmRvbW1hcApgYGAKCkFk
-ZGl0aW9uYWxseSwgcnVuIHRoaXMgY29tbWFuZCBvbiBhIEtORlNEIHByb3h5IGluc3RhbmNl
-IHdoaWxzdCB0aGUgMm5kIEZJTyBqb2IgaXMgcnVubmluZyB0byBzdHJhaW4gdGhlIHN5c3Rl
-bSBtZW1vcnk6CgpgYGBiYXNoCnN1ZG8gc3RyZXNzLW5nIC0tdm0gOCAtLXZtLWJ5dGVzIDk1
-JSAtLXZtLW1ldGhvZCBhbGwgLS10aW1lb3V0IDYwbSAtLW9vbS1hdm9pZApgYGAKCiMjIFF1
-ZXN0aW9ucwoKMS4gSXMgdGhpcyBhIGtub3duIGlzc3VlIGluIHRoZSBORlMgcGFnZS1ncm91
-cCBzeW5jaHJvbmlzYXRpb24gY29kZQogICB3aGVuIEZTLUNhY2hlL2NhY2hlZmlsZXMgaXMg
-YWN0aXZlPwoKMi4gQ291bGQgdGhlIG5ldGZzL2NhY2hlZmlsZXMgd3JpdGUtYmFjayBwYXRo
-ICh3cml0aW5nIHJlYWQgZGF0YSB0bwogICB0aGUgY2FjaGUpIGluYWR2ZXJ0ZW50bHkgc2V0
-IGBQR19XQl9FTkRgIG9uIGBuZnNfcGFnZWAgc3RydWN0dXJlcwogICBkdXJpbmcgYSByZWFk
-IG9wZXJhdGlvbj8KCjMuIElzIHRoaXMgc3BlY2lmaWMgdG8gdGhlIHJlLWV4cG9ydCAobmZz
-ZCArIE5GUyBjbGllbnQgb24gc2FtZSBob3N0KQogICBjb25maWd1cmF0aW9uLCBvciBjb3Vs
-ZCBpdCBhZmZlY3QgYW55IE5GUyBjbGllbnQgd2l0aCBGUy1DYWNoZQogICBlbmFibGVkPwoK
-QW55IGd1aWRhbmNlIG9yIHBhdGNoZXMgdG8gYWRkcmVzcyB0aGlzIHdvdWxkIGJlIGdyZWF0
-bHkgYXBwcmVjaWF0ZWQuCgpUaGFuayB5b3UgZm9yIHJlYWRpbmcuCg==
-
---------------5tTvaaAnR050Px7Fm80EnnAT--
