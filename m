@@ -1,47 +1,77 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D6B30FF20;
-	Tue, 31 Mar 2026 17:10:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285892FD1AA
+	for <netfs@lists.linux.dev>; Wed,  1 Apr 2026 05:31:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774977020; cv=none; b=Jv2+mn9PfLBgEsgQPAeTfUnbG4mGaXAEyCb7YgepomkPgL8mg5Ji8Zbg03GIe2RnF9JuaTscb2hPnaeZP2GT6jrfJ/QcYEtjAeBG0G9IjnYLMxQiPw3UjlkNeliz593tCKO3P0C8k9Rq1L3E19S/IxZgEdo+2ISzeA+MeJ0e+1A=
+	t=1775021486; cv=none; b=lMEmD7m/XgwAWBo3V/4x29lvaKlxd5M3vuhNVCJuDn3qM0YUbsgu7w2LcEEIb8R4SyCLkVr2wK3MJj+HqduT1oIeuD93RqbFIl6uf2qh4XZURx45Ls/T3NMn+7Q7QGcKDi8AmxJhVp4An0OzCua4inqiOSowcPEsYyyeoxM/vcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774977020; c=relaxed/simple;
-	bh=0O7pbVwcKP6zzxAn3nAxvdvlnhR1hbnc9pRjVpoFrKg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M59HuFkL8JJ53NcNKfq5Ato4ktXC5bBU7skdPdgHmr4RYglqppB7yttIBqgjZ4BmzJABxZEde5OKesRSW8mtrPKrxyh39WRKHcUyj8B1QnV4afqsdFhaP6MA5vEgtjBBSTAEm8PgpIHq360a7WaivkiJam+U5KNJ06Q/6dRTFiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OJkkXCGu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775021486; c=relaxed/simple;
+	bh=1acFv9UcJq9+zgv/G5mvLf3RsrhjHmkaCp5DZNmUp3I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TwHtvSBNNjsLjtOL4Bo1G2HpAdnvSBZJjI8bu11Mxz/imS+BC0nv28y60p/LhXxGmhysv+fuybDvR1FijOwViNlhH6Q9KDBHvA7qiThmzLr5BQUIrZ08rn7668MDP8VMePNls/KYpOFWKQhIEdWabGpXIWPWoZrHs+Mg3jOOYiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=RboqtXrA; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OJkkXCGu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87B27C2BCB1;
-	Tue, 31 Mar 2026 17:10:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774977019;
-	bh=0O7pbVwcKP6zzxAn3nAxvdvlnhR1hbnc9pRjVpoFrKg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OJkkXCGuYXwWU9+ews6h1BF7pgGCBCu9dNBTOf1W/MSjlzUbaAbJEHjBtLjQtTyap
-	 bh3AIqgx3x454fjP82U3ysLDaHEc9aBic3DG3xSF3JuK9mxbaZda22GA9il09op9Ql
-	 mGrQXAkR13w+gte4DIR2H8NF9ygobcQqfqojj2lU=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Paulo Alcantara <pc@manguebit.org>,
-	David Howells <dhowells@redhat.com>,
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="RboqtXrA"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-43b41b545d9so6963293f8f.2
+        for <netfs@lists.linux.dev>; Tue, 31 Mar 2026 22:31:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1775021482; x=1775626282; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=d53g2GmJS96aqelgbC9uJM1PvtU82NHOHG7LQJxQEik=;
+        b=RboqtXrAZPTUJamKiUR6F4MHbpDLMGGlNoTakX+GWod5z9GNFUz+CsywlfPf4Iq/I0
+         rsoYeHGl5jB2jAZAgfv2xzImjyjQx7BJrYkUNPB60vmqyPsCmDREdT9i8jrJ8kfT9NPt
+         /S3u4T5VgMI/Ie56mCgtgHphH/RicyBwxEBf8uXLv2tbuIE48mqMj046liV+7pu4cV0R
+         bDaah+jDG19QmilLIRk+V/8VFIDYMTWP63XHPhWyMDCeP2dbt91oVzSTp5J4v7HXMOwq
+         Y3VtXuUn6MOq59JS6kPgViZO0f92bHGb9m8gPbmV69j05N3U2fHgfqJNUML/aJiUigrc
+         0Sng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775021482; x=1775626282;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=d53g2GmJS96aqelgbC9uJM1PvtU82NHOHG7LQJxQEik=;
+        b=hQTyxbCpO2FKTWO6xIwsCQO1fosGUFJvPwQJ/U+vt2UG8hOE3m66EQfMShfAwg8wkl
+         eQhQoakxXWLZtLijXzEN/NmJxU5hNLUadb71GdqpxTX3qicApgYdbkMuPVPOfluUeR7c
+         4sSpzk4HTH/vhIV04Re8zvDBFdNIx+kubXYOlwUqM6+lCW3N4NHAg0rgdPPzx6dvTuVs
+         egTV8RMNFoRrojkYIl7M8cTU5EqsxgcyFCMHFkANIKntPxLqyQjc5do2WZNwRpEcrUXW
+         MmFKUdIC5Pu+4zI3YhJWVEWjX36oLz2Q25dkzAwBce8BQY/j1Kw0wjuoU9MiABqo3Rw2
+         dvfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVQXVsNOVFhuWy8tILCLuWfmfqECQWDkumlFnCp9vw1ptPQ/1j6kn1OfS7gzyqqnXASHthy/A==@lists.linux.dev
+X-Gm-Message-State: AOJu0YzKwLLRrhbCVR6yPVB9w9YWA7JifRb7pBWnaKh1igH8JkWj3dzp
+	zAE1RTifK3H0bDEIKKj18NwIRH8DP1KtUXZUZRshuF8qgZlysxVK9mr5L9fNTEo6oNKk+ff/OpP
+	SK5BI
+X-Gm-Gg: ATEYQzw8c4mMXeEehxNpcFu4g1+N4+R7ibkc/LiPi33FtdZw16pmFFvm6Ilb//TaAkU
+	X+bicsxHlbN+8MfKsQBfqjrP+ChZmUC+Y5eKe/NQZnAHAB0vDy3doaIYy5YtICvBtHVQTQiBnZ0
+	UeUcwsrNTR/R1Oc/X9Ef9t2Ma9AnqbnteC0dUFdcqopK3AySKEOOcbSLvztEhv84h0ryEbrBT02
+	9+sh9H1/97ys24Ri4id3WAHyptcAHFyEnbgHpLrBV5XUqvwXybkXl+kqY25N70u8KcQRw7IBVWY
+	9kzNwm3fpJKmrvaqjcuCIzzZ60tKSQ3/KnVKYKuWIRKn8yv/Av2VQuDY0vACEXGvOTrw3HVYUHw
+	hFMbiBWlIoP5pzNTvKnqF5pEfRjVxw/wXG8CXBLMC0AEaytnfdWP6usWJ2F3WGoDX2bQlAyPjw4
+	yE53RrpESHY4mtP2yVXdgf9qbQxaT/CjvOafIAZe71sgjKcgVu184leQR627aL1+GNhtQfeAOtD
+	iK7DelIIcc1990eqQ2+ft+DtDc=
+X-Received: by 2002:a05:6000:4201:b0:43c:f66e:f2d with SMTP id ffacd0b85a97d-43d150c14camr4102944f8f.27.1775021482478;
+        Tue, 31 Mar 2026 22:31:22 -0700 (PDT)
+Received: from raven.intern.cm-ag (p200300dc6f2b4400023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f2b:4400:230:64ff:fe74:809])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43cf21e9e24sm31410655f8f.10.2026.03.31.22.31.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Mar 2026 22:31:22 -0700 (PDT)
+From: Max Kellermann <max.kellermann@ionos.com>
+To: idryomov@gmail.com,
+	amarkuze@redhat.com,
+	ceph-devel@vger.kernel.org,
+	dhowells@redhat.com,
+	pc@manguebit.org,
 	netfs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 305/309] netfs: Fix the handling of stream->front by removing it
-Date: Tue, 31 Mar 2026 18:23:28 +0200
-Message-ID: <20260331161804.790300354@linuxfoundation.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260331161753.468533260@linuxfoundation.org>
-References: <20260331161753.468533260@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+	linux-kernel@vger.kernel.org
+Cc: Max Kellermann <max.kellermann@ionos.com>
+Subject: [PATCH] ceph: support RWF_DONTCACHE
+Date: Wed,  1 Apr 2026 07:31:09 +0200
+Message-ID: <20260401053109.1861724-1-max.kellermann@ionos.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -50,200 +80,108 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+Similar to commit 902893e39076 ("NFS: Enable use of the RWF_DONTCACHE
+flag on the NFS client").
 
-------------------
+The Ceph client now supports RWF_DONTCACHE for buffered file IO, but
+it needs preserve the IOCB_DONTCACHE state through
+netfs_write_begin().
 
-From: David Howells <dhowells@redhat.com>
+Unlike NFS, Ceph does not need to defer drop-behind until after a
+separate COMMIT step.  Ceph's buffered writeback completes when the
+OSD write completes, so the existing folio_end_writeback() handling is
+sufficient.
 
-[ Upstream commit 0e764b9d46071668969410ec5429be0e2f38c6d3 ]
+This patch changes netfs because Ceph does not get its write_begin
+folio directly.  ceph_write_begin() is a wrapper around
+netfs_write_begin(), and that helper was calling
+__filemap_get_folio(FGP_WRITEBEGIN, ...) without access to the kiocb.
+As a result, the per-IO IOCB_DONTCACHE flag was lost before folio
+allocation.
 
-The netfs_io_stream::front member is meant to point to the subrequest
-currently being collected on a stream, but it isn't actually used this way
-by direct write (which mostly ignores it).  However, there's a tracepoint
-which looks at it.  Further, stream->front is actually redundant with
-stream->subrequests.next.
+Fix this by passing the kiocb into netfs_write_begin() and switching
+it to write_begin_get_folio(iocb, ...), so IOCB_DONTCACHE is
+translated into FGP_DONTCACHE when appropriate.  Then set
+FOP_DONTCACHE on ceph_file_fops so the VFS will accept RWF_DONTCACHE
+for files on Ceph.
 
-Fix the potential problem in the direct code by just removing the member
-and using stream->subrequests.next instead, thereby also simplifying the
-code.
-
-Fixes: a0b4c7a49137 ("netfs: Fix unbuffered/DIO writes to dispatch subrequests in strict sequence")
-Reported-by: Paulo Alcantara <pc@manguebit.org>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/4158599.1774426817@warthog.procyon.org.uk
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 ---
- fs/netfs/buffered_read.c     | 3 +--
- fs/netfs/direct_read.c       | 3 +--
- fs/netfs/direct_write.c      | 1 -
- fs/netfs/read_collect.c      | 4 ++--
- fs/netfs/read_single.c       | 1 -
- fs/netfs/write_collect.c     | 4 ++--
- fs/netfs/write_issue.c       | 3 +--
- include/linux/netfs.h        | 1 -
- include/trace/events/netfs.h | 8 ++++----
- 9 files changed, 11 insertions(+), 17 deletions(-)
+ fs/ceph/addr.c           | 3 ++-
+ fs/ceph/file.c           | 1 +
+ fs/netfs/buffered_read.c | 6 +++---
+ include/linux/netfs.h    | 3 ++-
+ 4 files changed, 8 insertions(+), 5 deletions(-)
 
+diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+index 2090fc78529c..b4ea3ba8211e 100644
+--- a/fs/ceph/addr.c
++++ b/fs/ceph/addr.c
+@@ -1865,7 +1865,8 @@ static int ceph_write_begin(const struct kiocb *iocb,
+ 	struct ceph_inode_info *ci = ceph_inode(inode);
+ 	int r;
+ 
+-	r = netfs_write_begin(&ci->netfs, file, inode->i_mapping, pos, len, foliop, NULL);
++	r = netfs_write_begin(iocb, &ci->netfs, file, inode->i_mapping, pos,
++			      len, foliop, NULL);
+ 	if (r < 0)
+ 		return r;
+ 
+diff --git a/fs/ceph/file.c b/fs/ceph/file.c
+index 5e7c73a29aa3..341589ef32cd 100644
+--- a/fs/ceph/file.c
++++ b/fs/ceph/file.c
+@@ -3191,4 +3191,5 @@ const struct file_operations ceph_file_fops = {
+ 	.compat_ioctl = compat_ptr_ioctl,
+ 	.fallocate	= ceph_fallocate,
+ 	.copy_file_range = ceph_copy_file_range,
++	.fop_flags = FOP_DONTCACHE,
+ };
 diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index 37ab6f28b5ad0..88361e8c70961 100644
+index a8c0d86118c5..6ec7c2459d8a 100644
 --- a/fs/netfs/buffered_read.c
 +++ b/fs/netfs/buffered_read.c
-@@ -171,9 +171,8 @@ static void netfs_queue_read(struct netfs_io_request *rreq,
- 	spin_lock(&rreq->lock);
- 	list_add_tail(&subreq->rreq_link, &stream->subrequests);
- 	if (list_is_first(&subreq->rreq_link, &stream->subrequests)) {
--		stream->front = subreq;
- 		if (!stream->active) {
--			stream->collected_to = stream->front->start;
-+			stream->collected_to = subreq->start;
- 			/* Store list pointers before active flag */
- 			smp_store_release(&stream->active, true);
- 		}
-diff --git a/fs/netfs/direct_read.c b/fs/netfs/direct_read.c
-index a498ee8d66745..f72e6da88cca7 100644
---- a/fs/netfs/direct_read.c
-+++ b/fs/netfs/direct_read.c
-@@ -71,9 +71,8 @@ static int netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
- 		spin_lock(&rreq->lock);
- 		list_add_tail(&subreq->rreq_link, &stream->subrequests);
- 		if (list_is_first(&subreq->rreq_link, &stream->subrequests)) {
--			stream->front = subreq;
- 			if (!stream->active) {
--				stream->collected_to = stream->front->start;
-+				stream->collected_to = subreq->start;
- 				/* Store list pointers before active flag */
- 				smp_store_release(&stream->active, true);
- 			}
-diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
-index 4d9760e36c119..f9ab69de3e298 100644
---- a/fs/netfs/direct_write.c
-+++ b/fs/netfs/direct_write.c
-@@ -111,7 +111,6 @@ static int netfs_unbuffered_write(struct netfs_io_request *wreq)
- 			netfs_prepare_write(wreq, stream, wreq->start + wreq->transferred);
- 			subreq = stream->construct;
- 			stream->construct = NULL;
--			stream->front = NULL;
- 		}
+@@ -589,6 +589,7 @@ static bool netfs_skip_folio_read(struct folio *folio, loff_t pos, size_t len,
  
- 		/* Check if (re-)preparation failed. */
-diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
-index 137f0e28a44c5..e5f6665b3341e 100644
---- a/fs/netfs/read_collect.c
-+++ b/fs/netfs/read_collect.c
-@@ -205,7 +205,8 @@ static void netfs_collect_read_results(struct netfs_io_request *rreq)
- 	 * in progress.  The issuer thread may be adding stuff to the tail
- 	 * whilst we're doing this.
- 	 */
--	front = READ_ONCE(stream->front);
-+	front = list_first_entry_or_null(&stream->subrequests,
-+					 struct netfs_io_subrequest, rreq_link);
- 	while (front) {
- 		size_t transferred;
+ /**
+  * netfs_write_begin - Helper to prepare for writing [DEPRECATED]
++ * @iocb: The kiocb describing the write request
+  * @ctx: The netfs context
+  * @file: The file to read from
+  * @mapping: The mapping to read from
+@@ -620,7 +621,7 @@ static bool netfs_skip_folio_read(struct folio *folio, loff_t pos, size_t len,
+  * Note that this should be considered deprecated and netfs_perform_write()
+  * used instead.
+  */
+-int netfs_write_begin(struct netfs_inode *ctx,
++int netfs_write_begin(const struct kiocb *iocb, struct netfs_inode *ctx,
+ 		      struct file *file, struct address_space *mapping,
+ 		      loff_t pos, unsigned int len, struct folio **_folio,
+ 		      void **_fsdata)
+@@ -631,8 +632,7 @@ int netfs_write_begin(struct netfs_inode *ctx,
+ 	int ret;
  
-@@ -301,7 +302,6 @@ static void netfs_collect_read_results(struct netfs_io_request *rreq)
- 		list_del_init(&front->rreq_link);
- 		front = list_first_entry_or_null(&stream->subrequests,
- 						 struct netfs_io_subrequest, rreq_link);
--		stream->front = front;
- 		spin_unlock(&rreq->lock);
- 		netfs_put_subrequest(remove,
- 				     notes & ABANDON_SREQ ?
-diff --git a/fs/netfs/read_single.c b/fs/netfs/read_single.c
-index 5c0dc4efc7922..9d48ced80d1fa 100644
---- a/fs/netfs/read_single.c
-+++ b/fs/netfs/read_single.c
-@@ -107,7 +107,6 @@ static int netfs_single_dispatch_read(struct netfs_io_request *rreq)
- 	spin_lock(&rreq->lock);
- 	list_add_tail(&subreq->rreq_link, &stream->subrequests);
- 	trace_netfs_sreq(subreq, netfs_sreq_trace_added);
--	stream->front = subreq;
- 	/* Store list pointers before active flag */
- 	smp_store_release(&stream->active, true);
- 	spin_unlock(&rreq->lock);
-diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
-index 83eb3dc1adf8a..b194447f4b111 100644
---- a/fs/netfs/write_collect.c
-+++ b/fs/netfs/write_collect.c
-@@ -228,7 +228,8 @@ static void netfs_collect_write_results(struct netfs_io_request *wreq)
- 		if (!smp_load_acquire(&stream->active))
- 			continue;
+ retry:
+-	folio = __filemap_get_folio(mapping, index, FGP_WRITEBEGIN,
+-				    mapping_gfp_mask(mapping));
++	folio = write_begin_get_folio(iocb, mapping, index, len);
+ 	if (IS_ERR(folio))
+ 		return PTR_ERR(folio);
  
--		front = stream->front;
-+		front = list_first_entry_or_null(&stream->subrequests,
-+						 struct netfs_io_subrequest, rreq_link);
- 		while (front) {
- 			trace_netfs_collect_sreq(wreq, front);
- 			//_debug("sreq [%x] %llx %zx/%zx",
-@@ -279,7 +280,6 @@ static void netfs_collect_write_results(struct netfs_io_request *wreq)
- 			list_del_init(&front->rreq_link);
- 			front = list_first_entry_or_null(&stream->subrequests,
- 							 struct netfs_io_subrequest, rreq_link);
--			stream->front = front;
- 			spin_unlock(&wreq->lock);
- 			netfs_put_subrequest(remove,
- 					     notes & SAW_FAILURE ?
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index 437268f656409..2db688f941251 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -206,9 +206,8 @@ void netfs_prepare_write(struct netfs_io_request *wreq,
- 	spin_lock(&wreq->lock);
- 	list_add_tail(&subreq->rreq_link, &stream->subrequests);
- 	if (list_is_first(&subreq->rreq_link, &stream->subrequests)) {
--		stream->front = subreq;
- 		if (!stream->active) {
--			stream->collected_to = stream->front->start;
-+			stream->collected_to = subreq->start;
- 			/* Write list pointers before active flag */
- 			smp_store_release(&stream->active, true);
- 		}
 diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-index 72ee7d210a744..ba17ac5bf356a 100644
+index ba17ac5bf356..d58c614e32fd 100644
 --- a/include/linux/netfs.h
 +++ b/include/linux/netfs.h
-@@ -140,7 +140,6 @@ struct netfs_io_stream {
- 	void (*issue_write)(struct netfs_io_subrequest *subreq);
- 	/* Collection tracking */
- 	struct list_head	subrequests;	/* Contributory I/O operations */
--	struct netfs_io_subrequest *front;	/* Op being collected */
- 	unsigned long long	collected_to;	/* Position we've collected results to */
- 	size_t			transferred;	/* The amount transferred from this stream */
- 	unsigned short		error;		/* Aggregate error for the stream */
-diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
-index 2d366be46a1c3..cbe28211106c5 100644
---- a/include/trace/events/netfs.h
-+++ b/include/trace/events/netfs.h
-@@ -740,19 +740,19 @@ TRACE_EVENT(netfs_collect_stream,
- 		    __field(unsigned int,	wreq)
- 		    __field(unsigned char,	stream)
- 		    __field(unsigned long long,	collected_to)
--		    __field(unsigned long long,	front)
-+		    __field(unsigned long long,	issued_to)
- 			     ),
- 
- 	    TP_fast_assign(
- 		    __entry->wreq	= wreq->debug_id;
- 		    __entry->stream	= stream->stream_nr;
- 		    __entry->collected_to = stream->collected_to;
--		    __entry->front	= stream->front ? stream->front->start : UINT_MAX;
-+		    __entry->issued_to	= atomic64_read(&wreq->issued_to);
- 			   ),
- 
--	    TP_printk("R=%08x[%x:] cto=%llx frn=%llx",
-+	    TP_printk("R=%08x[%x:] cto=%llx ito=%llx",
- 		      __entry->wreq, __entry->stream,
--		      __entry->collected_to, __entry->front)
-+		      __entry->collected_to, __entry->issued_to)
- 	    );
- 
- TRACE_EVENT(netfs_folioq,
+@@ -414,7 +414,8 @@ int netfs_writeback_single(struct address_space *mapping,
+ struct readahead_control;
+ void netfs_readahead(struct readahead_control *);
+ int netfs_read_folio(struct file *, struct folio *);
+-int netfs_write_begin(struct netfs_inode *, struct file *,
++int netfs_write_begin(const struct kiocb *iocb,
++		      struct netfs_inode *ctx, struct file *file,
+ 		      struct address_space *, loff_t pos, unsigned int len,
+ 		      struct folio **, void **fsdata);
+ int netfs_writepages(struct address_space *mapping,
 -- 
-2.53.0
-
-
+2.47.3
 
