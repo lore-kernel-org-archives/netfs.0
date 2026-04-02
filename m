@@ -1,330 +1,207 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE293BF66C
-	for <netfs@lists.linux.dev>; Thu,  2 Apr 2026 11:07:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B6037A49D
+	for <netfs@lists.linux.dev>; Thu,  2 Apr 2026 18:55:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775128030; cv=none; b=h+a/LgSSul44+2i3YL33lqXn0Ug6ST/tbe3gxa2AwC1l1m5TIC0Cxd6z89293nyquhCKIUGj+IXa7X6VgEHqYXsNTZgx+CaJX0FqeHX8Vtgn1ViaB7J/utnszgVDuMi9PfLONINMBqjPeepF+MEckHD5Dreu1DeEqanPf8+AEvE=
+	t=1775156111; cv=none; b=NQyzB9YtcOR7/UbrV5A0ScdkfjWvy0iDln8o+6FOAebzzvTYV2plX8fsUGNomyi/TtSzLyMhreTGIlGYLTao7lZJsjvnBs0eHXyMt+aIFqlqRQnLeLSjZXJwtn5oj3xTRxOhyvqTyzOtZOVC4DSW+REqwgGlPQyZC/YdykdUvNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775128030; c=relaxed/simple;
-	bh=Bvqo9k+uWe79hD+EUzdQrkh/Lqm87qTJgqtYKXT+ZqI=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version:Content-Type; b=K5qiK6+57D4c0BLgN/xHH7hjHxyImDaF8cqD+PWlhKUr6KR9HbHigA20lUXuW1JV/+tsMhqHsbhQs2fvgHp3fjUH2DadDjqdERrQF8rSncLlzFp5DbrUvdYRlexS6iLwbh1IPdbbq2VUs7ms2Z0L9ju8UnrMrhh2+2mzrx/nWTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H/UF1eRH; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1775156111; c=relaxed/simple;
+	bh=2qenenM/NFJvVOmXrLREjj9JCYxIcR1TnvsYacEgTq8=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=r3b/eeWYIIZQWp8qYESXjylHsS/G8Z+DqYciDyk78TZL1jmaEpuy00tzeDF4cDrQQ6YxUtdkrc+gFF2sRF4E0Mlw81/W7nfNdpNN+yq6+YdBDpiF/GYNk8MojEU2VzJ7tS1TRqqJj3vwPaO/4iT3gIUxpC9l+HddiiuHV3l1GkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VE9yIOYC; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H/UF1eRH"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-82748257f5fso1160279b3a.1
-        for <netfs@lists.linux.dev>; Thu, 02 Apr 2026 04:07:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775128025; x=1775732825; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:date:subject:cc:to:from
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=FqVUaOxIIQGdvZuHr4y8df1rC/Cd4m3EejmoyV3YomM=;
-        b=H/UF1eRHAmea13lTlUVdWpfpY8sjZR0bBlgYQ7J3Y5IVHcZP3JPsL8ZiauQM3aCo/p
-         HW/7y4XvnNFcGB0UPB63ZTj+n3YYthQfpAlkrJWhMWgHqQ35Q/bqoM6dvY6mNe506/3v
-         N2nNMfCndi/xIS8NXwXNTeQscQFSBGEaQghElWUanNqzsHpRhyVqJIkBU2XYt0PNl2BT
-         IRUrn64d+YFhFv2Fq2um94WT2iXapwhqkZU+SseZnu9IkgbBEcF844+RALtKdSM4odSP
-         weaGNR43U2lrdaPpFb1JP38MTnakPfCP1yaZ9DQos7m78ejo/pr0C6nRRMIdkAt9WZjB
-         biDA==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VE9yIOYC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1775156107;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wP5895ATXKzeNsspcDiQdZDMG4VClmmAZrztImhHyc8=;
+	b=VE9yIOYCf3KS5+3AsFe+tkqVIEhdWY2pUMlzWFn8zafjnoqRw0h4f4Vy6zPvcl1yjGnBzd
+	f1lPuYDvOASWoiGsITe2O1OaNKy69ZF00L+GYp1aH2RbnKk1Q2RCIZowrp/AwjnWBHTEph
+	cfLngEXUGfETXgfRocBHMpLn4TziCQs=
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com
+ [209.85.167.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-180-gbiF7a8IPyG1beEfa-3Vpg-1; Thu, 02 Apr 2026 14:55:05 -0400
+X-MC-Unique: gbiF7a8IPyG1beEfa-3Vpg-1
+X-Mimecast-MFC-AGG-ID: gbiF7a8IPyG1beEfa-3Vpg_1775156104
+Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-46ecd914389so723383b6e.2
+        for <netfs@lists.linux.dev>; Thu, 02 Apr 2026 11:55:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775128025; x=1775732825;
-        h=content-transfer-encoding:mime-version:date:subject:cc:to:from
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FqVUaOxIIQGdvZuHr4y8df1rC/Cd4m3EejmoyV3YomM=;
-        b=bMYgUmj3i9oslVgJ+zCuIeQcCta5tlCGHzi2fd9ZUQZiv0AKi0YLhEAk5zyWP5aRAE
-         lSBtpD6DN/FHJlwipCld2P10OdPMBktJc5Evjs0GXsxzJ2Z1VJB6GklvLcyVbkPrnMlv
-         bNWtUuc/dS9t27g7nH4CeITIISy5XeyIifYYvCfy2bTCIcTQ6+dAsfeBpIqG5AO0+oWI
-         NpU7uH4GanS73ezgh6qWUtuvJt68RowF0R7fwkKhpj1dhclT/6ewDaAKFxsXjl7nRoss
-         pwyOz2KmkI5tjP9RvyNclILK3BXE9clySoi9Y/7uVk+A+eJHF/i15vFEhzaivsgkDjjO
-         dqAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV5B/9sqfuQK99QzTxlGapDEfd9ciU2IIMsVok5Cwndj04jb3rtNKNav5Q2nV0SjaKvEYB9Yw==@lists.linux.dev
-X-Gm-Message-State: AOJu0YwhG4bXCFnbLt+ddEXeC/9FUw0iO7ufgO3yQo8maJP1g7c3wCTo
-	9r56fyOllNV4D24yhJQRmq9Bs7p9w/iqy5UKzbe8nV9giST1aM8BctfaRBZfi1CO7rS+bw==
-X-Gm-Gg: ATEYQzx4inxAcPLYV1mycSJExf0W6/qO+rO2x1B+ncWPb+uCn5YU7Op+4xTk1ak07mY
-	LiTpzSDQwCZgactHuHcAS++l4jssYcbEINRWSwhS5offG6JOTQBUeEm3gWGc1T8WDawBRNJWXDD
-	HtGDEEWfaob8rw0Jda9ejqlijWqb5tyWh2MBVSbGHDfqtCiQaQ7Y+0PQgX4E88mXnipJq0A78bs
-	5z0nTrsUkBYSbBSQUkdCjw/ms5/SiNske/SBhRMKgjedjTymoKAgV+xkZ446np1MUWhngXfFhcv
-	48mTR4WUGrPE8acO69HX+cxe/OLx1Xhkf6xAZSmBSKV6mUUE9usrN2xakCqUhQxOf6k0/QJUmOK
-	s5E5sEL5lgGwBZB8A4cvPXY2KqleSpsgjsCTx+MwNP/46Z+qU2aQ80ghT7TaDEiLBpaopCWWdpq
-	eXcPkOr2Ld1A9w/Ic5c2g=
-X-Received: by 2002:a05:6a00:2d02:b0:82c:9c4e:66ca with SMTP id d2e1a72fcca58-82d00209118mr2082347b3a.2.1775128024851;
-        Thu, 02 Apr 2026 04:07:04 -0700 (PDT)
-Received: from localhost ([137.132.22.254])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82cf9c68273sm3716913b3a.41.2026.04.02.04.07.04
+        d=1e100.net; s=20251104; t=1775156104; x=1775760904;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kAqgUQ3fPhJxhiGUcpjyYMy4ZHB+Q3w4TN9iGgHF/Is=;
+        b=IwmJ0Ki1sU5hLJLPB9x7hpm3824ohShENUn7ip7YJnN+jLS8c1QIjyjwZYXeSUI/Po
+         im3sDEjLDubOjnISMKuQf1Uqdb/ocXE6phC/gATDP9uWJ6m/tGYD94rPpFHOGdzLFoLN
+         3NFHhgdhdPmMav2pcKiUnUCdin4EtXu/swbmvgz+UjLHNxDQ2/H6nu+SiZ1URZTlb4xL
+         lkza5WpG2E986qYYomLQUAL7pZulu1S0Y8/2aw7Rlhpmn/kDA2IhnNcXDFpNXzX6G6xk
+         jkn5uQeBuwuiS4EmjBD03HHsWAccosNfFpygp0RfXnmqhl0hZgw9Xnpx+PxcwCEArmSZ
+         UrEA==
+X-Forwarded-Encrypted: i=1; AJvYcCU12uOFx9HSJN8iVaMmyITZGcYwQ4n4GkhjTw3rnHwEpIaIEAGPx33zy1ZJAlfgOB1uZ5W9tg==@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw5T4jPHow97pXiZaAtOQihgJMI7+Ii6Z+SO/5FUzo10yBJqd63
+	U5V+qamurcO0ja1vU5y27WH7XVRjZFYGpyuiLHKc+XcrWrG0L/ynfz5qg3F2AzvcoS1rjOlkYJN
+	EJjxKD6o7c3sYezCoPfi9cc61PRT2yhRmkHnxtGTfQLyJ92h7EbgPBr5C
+X-Gm-Gg: ATEYQzwfjG2qcSALtVBmuhvK/JhdtDFS8TvjX5rMuEGaOPudYg6q/BVF5wxQWMZlYWG
+	Q6/i5uycy5ek433dSWIRv1+50hKBIs6ejDmnNOc3Gn4RuRQxFNQbCSr5dBvaPbZEd/VpXcsML/J
+	YbTs464KoB0SmkAZN0ukYyDTs1XPE+3mnfcqK9PWEirZFlp8KbUVkVcbtEUAPohwT7gAEuJRDA5
+	2sLuWNx2IYqpATdUexwpCgOZzIGY81qfZFdz3ZDRjnDHLlWhYDNs85gmP6H1xXjja5uvqozw2X/
+	nfHo/av4PbIl0wHKFtZIM9X1bfbK6wncQ5auYEPsgsFpJkdKtlN+AtUHPZs2FGDtDXMupPh2Sd1
+	fI+OywCWCSoL49mN1IQudgs69gJMBs0aW5agte4qDLFzHmjM/fN36
+X-Received: by 2002:a05:6808:159b:b0:460:f435:2a71 with SMTP id 5614622812f47-46ef8218f3dmr283087b6e.46.1775156104464;
+        Thu, 02 Apr 2026 11:55:04 -0700 (PDT)
+X-Received: by 2002:a05:6808:159b:b0:460:f435:2a71 with SMTP id 5614622812f47-46ef8218f3dmr283065b6e.46.1775156103974;
+        Thu, 02 Apr 2026 11:55:03 -0700 (PDT)
+Received: from li-4c4c4544-0032-4210-804c-c3c04f423534.ibm.com ([2600:1700:6476:1430::29])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7dba72fd409sm2594664a34.16.2026.04.02.11.55.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Apr 2026 04:07:04 -0700 (PDT)
-Message-ID: <69ce4dd8.050a0220.11816b.80c8@mx.google.com>
-From: ven0mfuzzer <ven0mkernelfuzzer@gmail.com>
-To: Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-        Tom Talpey <tom@talpey.com>,
-        Paulo Alcantara <pc@manguebit.org>,
-        Steve French <sfrench@samba.org>,
-        David Howells <dhowells@redhat.com>,
-        Bharath SM <bharathsm@microsoft.com>,
-        Shyam Prasad N <sprasad@microsoft.com>
-Cc: linux-cifs@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        samba-technical@lists.samba.org,
-        netfs@lists.linux.dev,
-        linux-fsdevel@vger.kernel.org
-Subject: [BUG] Linux Kernel CIFS Client Circular Locking: wb_lock vs lock_sem
-Date: Thu, 02 Apr 2026 19:07:02 +0800
+        Thu, 02 Apr 2026 11:55:03 -0700 (PDT)
+Message-ID: <74ebe2eb03ce3b1ae3038badffc8397d82d3eff2.camel@redhat.com>
+Subject: Re: [PATCH] ceph: support RWF_DONTCACHE
+From: Viacheslav Dubeyko <vdubeyko@redhat.com>
+To: Max Kellermann <max.kellermann@ionos.com>, idryomov@gmail.com, 
+	amarkuze@redhat.com, ceph-devel@vger.kernel.org, dhowells@redhat.com, 
+	pc@manguebit.org, netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Date: Thu, 02 Apr 2026 11:55:02 -0700
+In-Reply-To: <20260401053109.1861724-1-max.kellermann@ionos.com>
+References: <20260401053109.1861724-1-max.kellermann@ionos.com>
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43app2)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Mailer: KernelStackFuzz send_email.sh
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: KHn4ru9XpDn_etjy7FZmMP3WEmxbxXpFSPPeNYgH9B8_1775156104
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Linux Kernel CIFS Client Circular Locking: wb_lock vs lock_sem
+On Wed, 2026-04-01 at 07:31 +0200, Max Kellermann wrote:
+> Similar to commit 902893e39076 ("NFS: Enable use of the RWF_DONTCACHE
+> flag on the NFS client").
+>=20
+> The Ceph client now supports RWF_DONTCACHE for buffered file IO, but
+> it needs preserve the IOCB_DONTCACHE state through
+> netfs_write_begin().
+>=20
+> Unlike NFS, Ceph does not need to defer drop-behind until after a
+> separate COMMIT step.  Ceph's buffered writeback completes when the
+> OSD write completes, so the existing folio_end_writeback() handling is
+> sufficient.
+>=20
+> This patch changes netfs because Ceph does not get its write_begin
+> folio directly.  ceph_write_begin() is a wrapper around
+> netfs_write_begin(), and that helper was calling
+> __filemap_get_folio(FGP_WRITEBEGIN, ...) without access to the kiocb.
+> As a result, the per-IO IOCB_DONTCACHE flag was lost before folio
+> allocation.
+>=20
+> Fix this by passing the kiocb into netfs_write_begin() and switching
+> it to write_begin_get_folio(iocb, ...), so IOCB_DONTCACHE is
+> translated into FGP_DONTCACHE when appropriate.  Then set
+> FOP_DONTCACHE on ceph_file_fops so the VFS will accept RWF_DONTCACHE
+> for files on Ceph.
+>=20
+> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+> ---
+>  fs/ceph/addr.c           | 3 ++-
+>  fs/ceph/file.c           | 1 +
+>  fs/netfs/buffered_read.c | 6 +++---
+>  include/linux/netfs.h    | 3 ++-
+>  4 files changed, 8 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+> index 2090fc78529c..b4ea3ba8211e 100644
+> --- a/fs/ceph/addr.c
+> +++ b/fs/ceph/addr.c
+> @@ -1865,7 +1865,8 @@ static int ceph_write_begin(const struct kiocb *ioc=
+b,
+>  =09struct ceph_inode_info *ci =3D ceph_inode(inode);
+>  =09int r;
+> =20
+> -=09r =3D netfs_write_begin(&ci->netfs, file, inode->i_mapping, pos, len,=
+ foliop, NULL);
+> +=09r =3D netfs_write_begin(iocb, &ci->netfs, file, inode->i_mapping, pos=
+,
+> +=09=09=09      len, foliop, NULL);
+>  =09if (r < 0)
+>  =09=09return r;
+> =20
+> diff --git a/fs/ceph/file.c b/fs/ceph/file.c
+> index 5e7c73a29aa3..341589ef32cd 100644
+> --- a/fs/ceph/file.c
+> +++ b/fs/ceph/file.c
+> @@ -3191,4 +3191,5 @@ const struct file_operations ceph_file_fops =3D {
+>  =09.compat_ioctl =3D compat_ptr_ioctl,
+>  =09.fallocate=09=3D ceph_fallocate,
+>  =09.copy_file_range =3D ceph_copy_file_range,
+> +=09.fop_flags =3D FOP_DONTCACHE,
+>  };
+> diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
+> index a8c0d86118c5..6ec7c2459d8a 100644
+> --- a/fs/netfs/buffered_read.c
+> +++ b/fs/netfs/buffered_read.c
+> @@ -589,6 +589,7 @@ static bool netfs_skip_folio_read(struct folio *folio=
+, loff_t pos, size_t len,
+> =20
+>  /**
+>   * netfs_write_begin - Helper to prepare for writing [DEPRECATED]
 
-  1. Vulnerability Title
+The netfs_write_begin() is deprecated function. Maybe, it's time to switch
+CephFS on netfs_perform_write() finally?
 
-Linux Kernel CIFS Client wb_lock / lock_sem Circular Locking Deadlock During Writeback
+Thanks,
+Slava.
 
-  2. High-Level Overview
+> + * @iocb: The kiocb describing the write request
+>   * @ctx: The netfs context
+>   * @file: The file to read from
+>   * @mapping: The mapping to read from
+> @@ -620,7 +621,7 @@ static bool netfs_skip_folio_read(struct folio *folio=
+, loff_t pos, size_t len,
+>   * Note that this should be considered deprecated and netfs_perform_writ=
+e()
+>   * used instead.
+>   */
+> -int netfs_write_begin(struct netfs_inode *ctx,
+> +int netfs_write_begin(const struct kiocb *iocb, struct netfs_inode *ctx,
+>  =09=09      struct file *file, struct address_space *mapping,
+>  =09=09      loff_t pos, unsigned int len, struct folio **_folio,
+>  =09=09      void **_fsdata)
+> @@ -631,8 +632,7 @@ int netfs_write_begin(struct netfs_inode *ctx,
+>  =09int ret;
+> =20
+>  retry:
+> -=09folio =3D __filemap_get_folio(mapping, index, FGP_WRITEBEGIN,
+> -=09=09=09=09    mapping_gfp_mask(mapping));
+> +=09folio =3D write_begin_get_folio(iocb, mapping, index, len);
+>  =09if (IS_ERR(folio))
+>  =09=09return PTR_ERR(folio);
+> =20
+> diff --git a/include/linux/netfs.h b/include/linux/netfs.h
+> index ba17ac5bf356..d58c614e32fd 100644
+> --- a/include/linux/netfs.h
+> +++ b/include/linux/netfs.h
+> @@ -414,7 +414,8 @@ int netfs_writeback_single(struct address_space *mapp=
+ing,
+>  struct readahead_control;
+>  void netfs_readahead(struct readahead_control *);
+>  int netfs_read_folio(struct file *, struct folio *);
+> -int netfs_write_begin(struct netfs_inode *, struct file *,
+> +int netfs_write_begin(const struct kiocb *iocb,
+> +=09=09      struct netfs_inode *ctx, struct file *file,
+>  =09=09      struct address_space *, loff_t pos, unsigned int len,
+>  =09=09      struct folio **, void **fsdata);
+>  int netfs_writepages(struct address_space *mapping,
 
-A circular locking dependency exists in the Linux kernel CIFS client between `&ctx->wb_lock` (netfs writeback lock) and `&cifsi->lock_sem` (CIFS inode lock semaphore). When a `close()` operation triggers writeback and calls `cifs_reopen_file()` while holding `wb_lock`, it attempts to acquire `lock_sem`. Simultaneously, a concurrent `write()` path holds `lock_sem` and attempts to acquire `wb_lock` via `netfs_begin_writethrough()`. This AB-BA lock ordering conflict produces a potential deadlock. The deadlock is triggered by MITM-induced connection disruption during active writeback, causing the CIFS client to call `cifs_reopen_file()` in the writeback path where it should not need to reconnect.
-
-This vulnerability was discovered using ven0mfuzzer, our custom-designed MITM-based network filesystem fuzzer developed by our team. Following the common syzkaller practice, we submit the kernel crash trace as the primary reproduction artifact.
-
-  3. Affected Product and Version Information
-
-Product: Linux Kernel (upstream mainline)
-Affected Component: `fs/smb/client/file.c` — `cifs_reopen_file()` (acquires `lock_sem`)
-Supporting Components:
-- `fs/netfs/writeback.c` — `netfs_writepages()` (acquires `wb_lock`)
-- `fs/netfs/write_issue.c` — `netfs_begin_writethrough()` (acquires `wb_lock`)
-- `fs/smb/client/file.c` — `cifs_strict_writev()`, `cifs_get_writable_file()`
-
-  Tested Versions (confirmed vulnerable)
-- Linux kernel 6.19.0 (mainline, commit `44331bd6a610`, gcc 11.4.0, built 2026-02-13)
-- Linux kernel 6.12.74 (LTS, used in Google kernelCTF COS target)
-
-  Affected Version Range
-All kernels with netfs-based CIFS writeback (approximately 6.8 through 6.19) are believed affected.
-
-  Affected Distributions and Products
-
- |  Vendor / Product  |  Notes  | 
- | --- | --- | 
- |  Red Hat Enterprise Linux (RHEL 9.x)  |  Ships kernels >= 5.14 with backported netfs/CIFS  | 
- |  Ubuntu (22.04 LTS, 24.04 LTS)  |  HWE kernels 6.x include vulnerable code  | 
- |  SUSE Linux Enterprise Server (SLES 15 SP5+)  |  Kernel 6.x based  | 
- |  Debian (Bookworm, Trixie)  |  Kernels 6.1+  | 
- |  Fedora (39+)  |  Kernels 6.5+  | 
- |  Amazon Linux 2023  |  Kernel 6.1 LTS based  | 
- |  Google ChromeOS / COS  |  kernelCTF target, confirmed vulnerable on 6.12.74  | 
-
-  4. Root Cause Analysis
-
-  4.a. Detailed Description
-
-The deadlock arises from two conflicting lock acquisition orders:
-
-Path 1 (close → writeback → reopen):
-`close()` → `cifs_flush()` → `netfs_writepages()` [acquires wb_lock] → `cifs_begin_writeback()` → `cifs_get_writable_file()` → `cifs_reopen_file()` [tries lock_sem] — blocked if another thread holds `lock_sem`.
-
-Path 2 (write → writethrough):
-`write()` → `cifs_strict_writev()` [acquires lock_sem implicitly] → `netfs_perform_write()` → `netfs_begin_writethrough()` [tries wb_lock] — blocked if Path 1 holds `wb_lock`.
-
-When MITM-corrupted SMB2 responses cause connection disruption, `cifs_reopen_file()` is called in the writeback path (which already holds `wb_lock`). This creates the circular dependency.
-
-  4.b. Code Flow
-
----
-  CPU0 (dd/855, close path)           CPU1 (write path)
-  ----                                ----
-  close() → cifs_flush()
-    → netfs_writepages()
-      lock(&ctx->wb_lock)             cifs_strict_writev()
-                                        lock(&cifsi->lock_sem)
-    → cifs_begin_writeback()
-      → cifs_get_writable_file()        → netfs_perform_write()
-        → cifs_reopen_file()              → netfs_begin_writethrough()
-          rlock(&cifsi->lock_sem)           lock(&ctx->wb_lock)
-          ^^^ BLOCKED                       ^^^ BLOCKED
-                     DEADLOCK 
----
-
-  4.c. Crash Trace
-
-This vulnerability was discovered by ven0mfuzzer. The following kernel trace is submitted following syzkaller's common practice of providing the raw crash trace as the primary reproduction evidence:
-
----
-[  599.752057] 
-[  599.752318] ======================================================
-[  599.752885] WARNING: possible circular locking dependency detected
-[  599.753401] 6.19.0-g44331bd6a610-dirty #5 Not tainted
-[  599.753757] ------------------------------------------------------
-[  599.754139] dd/855 is trying to acquire lock:
-[  599.754424] ffff888112e5f790 (&cifsi->lock_sem){++++}-{4:4}, at: cifs_reopen_file+0x14aa/0x1e00
-[  599.755109] 
-[  599.755109] but task is already holding lock:
-[  599.755500] ffff888112e5f6c0 (&ctx->wb_lock){+.+.}-{4:4}, at: netfs_writepages+0xba/0xb20
-[  599.756130] 
-[  599.756130] which lock already depends on the new lock.
-[  599.756130] 
-[  599.756633] 
-[  599.756633] the existing dependency chain (in reverse order) is:
-[  599.757090] 
-[  599.757090] -> #1 (&ctx->wb_lock){+.+.}-{4:4}:
-[  599.757496]        lock_acquire+0x150/0x2c0
-[  599.757807]        __mutex_lock+0x19f/0x2330
-[  599.758128]        netfs_begin_writethrough+0x64/0x340
-[  599.758478]        netfs_perform_write+0x13a1/0x2150
-[  599.758833]        netfs_buffered_write_iter_locked+0x1d0/0x240
-[  599.759220]        cifs_strict_writev+0x996/0xe20
-[  599.759545]        vfs_write+0x6bc/0x1200
-[  599.759835]        ksys_write+0x12a/0x250
-[  599.760107]        do_syscall_64+0x111/0x690
-[  599.760419]        entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[  599.760776] 
-[  599.760776] -> #0 (&cifsi->lock_sem){++++}-{4:4}:
-[  599.761114]        check_prev_add+0xeb/0xd00
-[  599.761348]        __lock_acquire+0x1641/0x2260
-[  599.761593]        lock_acquire+0x150/0x2c0
-[  599.761819]        down_read+0x9b/0x450
-[  599.762033]        cifs_reopen_file+0x14aa/0x1e00
-[  599.762287]        cifs_get_writable_file+0x57a/0xa30
-[  599.762562]        cifs_begin_writeback+0x49/0xf0
-[  599.762818]        netfs_writepages+0x4eb/0xb20
-[  599.763070]        do_writepages+0x26a/0x5c0
-[  599.763319]        filemap_writeback+0x1fc/0x290
-[  599.763575]        filemap_write_and_wait_range+0xa6/0x130
-[  599.763874]        cifs_flush+0xb8/0x2d0
-[  599.764094]        filp_flush+0x128/0x1d0
-[  599.764324]        __x64_sys_close+0x7f/0x120
-[  599.764569]        do_syscall_64+0x111/0x690
-[  599.764804]        entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[  599.765092] 
-[  599.765092] other info that might help us debug this:
-[  599.765092] 
-[  599.765477]  Possible unsafe locking scenario:
-[  599.765477] 
-[  599.765767]        CPU0                    CPU1
-[  599.766007]        ----                    ----
-[  599.766234]   lock(&ctx->wb_lock);
-[  599.766426]                                lock(&cifsi->lock_sem);
-[  599.766741]                                lock(&ctx->wb_lock);
-[  599.767046]   rlock(&cifsi->lock_sem);
-[  599.767251] 
-[  599.767251]   DEADLOCK 
-[  599.767251] 
-[  599.767541] 1 lock held by dd/855:
-[  599.767724]  #0: ffff888112e5f6c0 (&ctx->wb_lock){+.+.}-{4:4}, at: netfs_writepages+0xba/0xb20
-[  599.768201] 
-[  599.768201] stack backtrace:
-[  599.768451] CPU: 0 UID: 0 PID: 855 Comm: dd Not tainted 6.19.0-g44331bd6a610-dirty #5 PREEMPT(lazy) 
-[  599.768475] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
-[  599.768494] Call Trace:
-[  599.768509]  <TASK>
-[  599.768518]  dump_stack_lvl+0xc6/0x120
-[  599.768545]  print_circular_bug+0x2d1/0x400
-[  599.768569]  check_noncircular+0x146/0x160
-[  599.768594]  check_prev_add+0xeb/0xd00
-[  599.768617]  __lock_acquire+0x1641/0x2260
-[  599.768647]  lock_acquire+0x150/0x2c0
-[  599.768669]  ? cifs_reopen_file+0x14aa/0x1e00
-[  599.768694]  ? __pfx___might_resched+0x10/0x10
-[  599.768722]  ? dentry_path_raw+0xcd/0x120
-[  599.768756]  down_read+0x9b/0x450
-[  599.768780]  ? cifs_reopen_file+0x14aa/0x1e00
-[  599.768803]  ? __pfx_down_read+0x10/0x10
-[  599.768826]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  599.768852]  ? __build_path_from_dentry_optional_prefix+0x423/0x620
-[  599.768880]  cifs_reopen_file+0x14aa/0x1e00
-[  599.768908]  ? __pfx_smb2_get_lease_key+0x10/0x10
-[  599.768941]  ? __pfx_cifs_reopen_file+0x10/0x10
-[  599.768969]  ? cifs_get_writable_file+0x570/0xa30
-[  599.768996]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  599.769020]  ? lock_release+0xc7/0x270
-[  599.769044]  cifs_get_writable_file+0x57a/0xa30
-[  599.769072]  ? iov_iter_folio_queue+0x31/0x1f0
-[  599.769117]  cifs_begin_writeback+0x49/0xf0
-[  599.769145]  netfs_writepages+0x4eb/0xb20
-[  599.769175]  ? __pfx_netfs_writepages+0x10/0x10
-[  599.769204]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  599.769228]  ? kasan_save_stack+0x42/0x60
-[  599.769263]  ? kasan_save_stack+0x33/0x60
-[  599.769290]  ? kasan_record_aux_stack+0xa7/0xc0
-[  599.769314]  ? __call_rcu_common.constprop.0+0x71/0xb00
-[  599.769345]  ? __fput+0x68d/0xb70
-[  599.769371]  ? fput_close_sync+0x118/0x240
-[  599.769399]  ? __x64_sys_close+0x8b/0x120
-[  599.769429]  ? __pfx_netfs_writepages+0x10/0x10
-[  599.769459]  do_writepages+0x26a/0x5c0
-[  599.769486]  ? __pfx_do_writepages+0x10/0x10
-[  599.769512]  filemap_writeback+0x1fc/0x290
-[  599.769541]  ? __pfx_filemap_writeback+0x10/0x10
-[  599.769582]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  599.769607]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  599.769630]  ? lock_is_held_type+0x8f/0x100
-[  599.769651]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  599.769677]  filemap_write_and_wait_range+0xa6/0x130
-[  599.769713]  cifs_flush+0xb8/0x2d0
-[  599.769740]  ? __pfx_cifs_flush+0x10/0x10
-[  599.769767]  filp_flush+0x128/0x1d0
-[  599.769789]  __x64_sys_close+0x7f/0x120
-[  599.769819]  do_syscall_64+0x111/0x690
-[  599.769845]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[  599.769866] RIP: 0033:0x7f2a653e59e0
-[  599.769882] Code: 0d 00 00 00 eb b2 e8 0f f8 01 00 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 80 3d 01 2c 0e 00 00 74 17 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 48 c3 0f 1f 80 00 00 00 00 48 83 ec 18 89 7c
-[  599.769902] RSP: 002b:00007fff1b0d2738 EFLAGS: 00000202 ORIG_RAX: 0000000000000003
-[  599.769922] RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 00007f2a653e59e0
-[  599.769935] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000001
-[  599.769947] RBP: 00007f2a652ea6c0 R08: 001c504f75800000 R09: 00007f2a654d4000
-[  599.769961] R10: 00007f2a653064f0 R11: 0000000000000202 R12: 0000000000000000
-[  599.769974] R13: 0000000000000000 R14: 0000000000000008 R15: 0000000000000008
-[  599.769993]  </TASK>
-[  599.855370] CIFS: VFS: \\10.0.0.2 SMB response too long (134217728 bytes)
-[  600.866435] CIFS: VFS: generate_smb3signingkey: dumping generated AES session keys
-[  600.867038] CIFS: VFS: Session Id    01 00 00 00 00 00 00 00
-[  600.867488] CIFS: VFS: Cipher type   1
-[  600.867783] CIFS: VFS: Session Key   60 f3 79 68 76 95 29 2f dd 55 e3 70 3c dc 60 b9
-[  600.868472] CIFS: VFS: Signing Key   9f cb c1 31 b8 79 0e ae a2 ac 10 0c e1 8b f9 fe
-[  600.869030] CIFS: VFS: ServerIn Key  65 cf ab 4d ce ba 97 26 88 6e f8 42 2e 8a 06 e9
-[  600.869605] CIFS: VFS: ServerOut Key a0 30 bd 69 e2 e7 ef 34 6a a1 ae a3 95 f7 dd 8f
-[  600.897704] dd (850) used greatest stack depth: 20312 bytes left
-[  601.137178] CIFS: VFS: \\10.0.0.2 RFC 1002 unknown response type 0x5
-[  601.141560] CIFS: VFS: \\10.0.0.2\IPC$ reconnect tcon failed rc = -11
-[  601.151852] CIFS: VFS: generate_smb3signingkey: dumping generated AES session keys
-[  601.152430] CIFS: VFS: Session Id    01 00 00 00 00 00 00 00
-[  601.152802] CIFS: VFS: Cipher type   1
-[  601.153054] CIFS: VFS: Session Key   b7 e4 09 8f f5 15 be c6 26 eb 47 b4 eb 81 ba 54
-[  601.153645] CIFS: VFS: Signing Key   3d cb ba 59 5d 85 1d 38 4f 68 e3 a0 36 f9 9d 7c
-[  601.154133] CIFS: VFS: ServerIn Key  af 0f b2 27 b8 df ff ca 23 48 fe 21 73 ca ab e1
-[  601.154628] CIFS: VFS: ServerOut Key 3a bc c1 4b 06 ee ce 01 e0 a3 05 db d7 30 d5 91
-[  601.254390] cat (865) used greatest stack depth: 20144 bytes left
-
----
-
-  4.d. Suggested Fix
-
-Drop `wb_lock` before calling `cifs_reopen_file()` in the writeback path, or restructure `cifs_begin_writeback()` so that file reopening does not occur while `wb_lock` is held. Alternatively, the `cifs_get_writable_file()` function should use `down_read_trylock()` on `lock_sem` when called from the writeback path and return an error if the lock cannot be acquired, allowing the caller to retry later.
-
-  5. Discovery Method and Reproduction
-
-  5.a. Discovery
-
-This vulnerability was discovered using ven0mfuzzer, a custom-designed MITM-based network filesystem fuzzer developed by our team. The fuzzer operates by positioning an AF_PACKET/TCP transparent proxy between a Linux kernel filesystem client (VM-A) and its server (VM-B), then mutating network protocol messages in-flight.
-
-Following the common syzkaller practice, we submit the kernel crash trace as the primary reproduction artifact. The trace above was captured with LOCKDEP enabled on kernel 6.19.0.
-
-  5.b. Reproduction Setup
-
----
-VM-A (CIFS client) ──SMB2──► Host:44446 (MITM proxy) ──TCP──► Host:44445 ──hostfwd──► VM-B:445 (ksmbd)
----
-
-Trigger condition: Concurrent `close()` (triggering writeback flush) and `write()` operations on the same CIFS-mounted file while the MITM proxy corrupts SMB2 responses to force a reconnection in the writeback path.
-
----
-Reported-by: ven0mfuzzer <ven0mkernelfuzzer@gmail.com>
-Link: https://github.com/KernelStackFuzz/KernelStackFuzz
