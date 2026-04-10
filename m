@@ -1,115 +1,210 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DAB42EDD62
-	for <netfs@lists.linux.dev>; Fri,  3 Apr 2026 18:13:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775239995; cv=pass; b=HzYp0EeZICe83J8xJQ+3gfeBxz0+7dls0Mjxmdccseg4ZQBTW6YMm9Kc0VxCmRVTJesI6+THy6LpkTf5/a0XTDDg9iOrnI85b4mg/SAifXjXKbUe/DgVIZM4YZhRiWsLuWKwD0Do/TXBz//lt8Kcdz93gCrS79AZMFhKCQHusHE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775239995; c=relaxed/simple;
-	bh=ElB7ZuZLzGIcWqd5VRRtQQIBNNObowpCHWvdAYEp0Ls=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RmhbCYMjfzMNLYN3IVvXv4vZsYxz1YWNejf1QdMjlXplS23E6mIQ8HO69XcyP2ao4qF3RDdHS5cEp6oVtT1OYoQfkv3BFKfZkkN0puEtrFoudcDb/anJKnbERw/cX/p1O3vCawT7IbtsAiki2/XefE6SBNK7AX1NRXi0W6XFjy4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=BhzcdlLw; arc=pass smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6C1D2DC767
+	for <netfs@lists.linux.dev>; Fri, 10 Apr 2026 05:59:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775800761; cv=none; b=QDACyItzV1ndWdvwYVCmegHYiYEYKcsoGcXW/C1HpDmyTppGWEcZxIH9S2w64Cmqk6yGn1aMCUI/hTw6fr6R9Expn8bNy5a5ikretcMDSAl6re1kIbMghuFYLxbvSS1vqqpLrx4w3uaXOfLVdmVIBSZL2AXsCHx1SRDwsNkX4ag=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775800761; c=relaxed/simple;
+	bh=ys5DkVZJq0GuwqSjzZXEYHSbFOhD+C4s6x/HWZuWJu0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=oq+ASD+tsFYh1qLCtGFnP9tzNRYCMhlQeUwn1C4c/5zK2+VLH3NLc7DSrX+TyXv4xMmVnlJhtCs2SWv87Afbcsic2r3/BLZqQSm1crfKIy2Y0p/8M4IFOneMRwu5XNwESHRsBY5tjNuTBleOF9RTHP2oMt6751a75+ZPAcAm5xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l4sJqkNH; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="BhzcdlLw"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b941762394aso280618166b.1
-        for <netfs@lists.linux.dev>; Fri, 03 Apr 2026 11:13:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775239992; cv=none;
-        d=google.com; s=arc-20240605;
-        b=bUo/m5OoCUrR5KuS7bWdraZt/n6BCINOjcOcSd2WqqkpVhY+9E4ZcEa4sazrwFxIGP
-         P1mZJpKn/a9StR9E2Im7E4g4YJNTO2kQKZCqBL2UvhjQCGkO3TXR+dnOkA2Z7IX5O232
-         f1RQ3RpzcIUB8bBdrX3DHozN08BXmk7DdELlHYwEYE5ULJ6SIaLKTQZ90ASH0GgAA+aT
-         SAp2XXUMD4m+etQlsQRbY/NDUZVhzflCws2VlhvKV/64lB+Sql+2+Xg+aOt4bgMb0eDG
-         79XCM69Ep/ZWOtQ94CvSWUMIR80/MHX8f/2OkJqim/i7TeeLq/xf8DyqtDbpvKdyk4EW
-         2FAg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ElB7ZuZLzGIcWqd5VRRtQQIBNNObowpCHWvdAYEp0Ls=;
-        fh=bTROiw3JujqitdQdOjCvIPup7gVelANNVWBfOXqT8QE=;
-        b=kNylhJWdDDEbE1hVdxrPmKz/Z/vphVxtkrE6jtxotBE5orstlhN0nCzGGymqkDGFv3
-         wKL/bks1ITawOo6H68F78OSBABk4Y0zeAhdUrulJV31Jn0FDXs/oLNwds4Rf2PbttjsN
-         RkFOJjsAWwJhE09A4iTvQDEJhSPAoeS7mlmqGtYSwHLjytHD040GsU2m3ReBIuj6paT5
-         ase49P1ZBnuqQ0OY1mvkrDLobcuBE89N3zCXsOi+IZQ8uPNgODaEazdiqqr6vx7eg9nt
-         AUnhnF0fJvCk9VNkB4wQc5G6Sddf5fiX15/6kxyn3GaasDpsEst7vTJsTu1rmKyvUT5j
-         7j7A==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l4sJqkNH"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-43b983bb07eso980035f8f.0
+        for <netfs@lists.linux.dev>; Thu, 09 Apr 2026 22:59:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1775239992; x=1775844792; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ElB7ZuZLzGIcWqd5VRRtQQIBNNObowpCHWvdAYEp0Ls=;
-        b=BhzcdlLweLW94AAzwMHl7uE8O44uvuJUGKEgdIljyzZXjeoJLGZUy42WLKvRWLmRIj
-         OJeJkRFa+X+iMBkLSVwPr+/Wd8yGbKSrDCc9Mn8SzC3aXviGw9lvm0/kG81Cg+z5BYKF
-         Nm9Qcp+71JQiFtc7bmsyX5lUfhtcgzAbxNYmQDRdfISx/5fKtWsNY48pYsinFic9sgZY
-         eckT7F003YTnTifRoUIqh5BkL8ptmTAIriftlZU6VWfsLz2Hb0/25LyW1Fovem1SklCa
-         573M/h4KXQF0/nVMlIULBPTmQc9Dze/t2/VMrfjnoVYQjuGcv1LqxqhGJt6j34zCvpNi
-         ObTA==
+        d=gmail.com; s=20251104; t=1775800758; x=1776405558; darn=lists.linux.dev;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1ttLDxm0ieSoWUqU7Qsf8QeJ6W3C2avJVf1XkCWa1Pk=;
+        b=l4sJqkNHSatHNGc+G2mQD1Zugz9e4+5hE8Pd17Cl6bsRmQFo+CDs5wfP/o2hYb/0E/
+         OCDh9PHe/cqQzP1g9N7G1QJCNfHwCanIAlJZus/e4ktleofr+WU3HsKydQ44lpmkOkOk
+         fCJCSBp4+4GFgBvb+e0kjmwzc7RYJU+Nbe1KP2MRtYZ/FYTej185onwm8hB2vSDOy+1H
+         2scfIC6gNCdYWv+mBcPNgmTziDKgVcO3WvE0b5W3AMwSsovAVBiPlxxRWDgltcaLXGmc
+         gs1/5N5DyuRiRmnqsOfZ8c3DeutahFyIX9O5YOAhNjQvmQX/b/WwpN52f5se/NtfGDz0
+         7ymg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775239992; x=1775844792;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ElB7ZuZLzGIcWqd5VRRtQQIBNNObowpCHWvdAYEp0Ls=;
-        b=Rn5p1C4IwR9NW47sbKGqBeFyEA7AQfBUxw3bgF+qy28I5bIoSr7eYnzdddxF1llvV3
-         Mv6L0wmYqepZRXj8ZloW9c+IR71Y4pin5Wd1X4oy2c0KU8qmScsvfMdKSKWCaQZFs8Np
-         TrkcqXOmW78RsgQq4VaxHnYsbQPdwcwEllSGB2HPTLhiMA4F0/qnOEefk6x29D6pXCVS
-         ejFmznvohy12EID/ZhtTgifVhRxijTlsR4yYOhMTlC5s6VjJ1d/4/3cYuJCC5zGyPH26
-         XcdowT/8gmRSN87DhC0LPtrdqOjbjVC5tuzK8SuvWzuN66HCfdzZyHXDI17Y588dA5jr
-         QGdg==
-X-Forwarded-Encrypted: i=1; AJvYcCVaEdhsbQzaDWbtNxEGUlEc6rAA6Xsjw/ntw8wE1FP6Hh2PF0QBggcJWr21Jh8Um8Mu7EDxNA==@lists.linux.dev
-X-Gm-Message-State: AOJu0YxTtcrxkwSMSb+DyQ/UpHxna+1vhWFHMI4avsCGVhdYe+yMgwnQ
-	MtwLi5DG5e1UWfhR+T7xDSNbWght61Hx0KJyNf6qpGWWXaCm8vmcFyauwOOZi+/v0R9g/lTxpNL
-	RrCZnbOWuuY3UgHhCAJPxkvYXpw6asdIRivq1Rja8ug==
-X-Gm-Gg: AeBDietAkVyGUswyAIWqx3xOhivbysxfGe40akbjTg4EL5XPDX4oqKAkHXRGsjA67GS
-	C0VZf6n9XqUmW2GW2SQ5KoDiNmu5FZ0TxzgF7TxN47zM6vKea30m7lVa/VMH2N9zNaY162QR3DF
-	zFmI6SfY150rWv9jiuVcE91zKhRX+SgNc9d9leCg6UDbxTxvnOmNyhHG5j1ZXPaiW3kibKty3Fb
-	5a65s401prWzmwKffwiklvO2Tv4BfxyIGzCjC/jDVspPhg7+evDId82wHzELUObLGYWQhO/Joxm
-	Eno4FVjYdXJVbqLxXW5hyGniXpgBRitMgZIe
-X-Received: by 2002:a17:907:c002:b0:b97:f22f:43c3 with SMTP id
- a640c23a62f3a-b9c67951924mr190315866b.31.1775239992468; Fri, 03 Apr 2026
- 11:13:12 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1775800758; x=1776405558;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1ttLDxm0ieSoWUqU7Qsf8QeJ6W3C2avJVf1XkCWa1Pk=;
+        b=iszBwRQDMphC/2mrfkaNKS0Ea4Is9khVChuxL44Dd3+91jwqraBa9/8A2cCEFs0hOC
+         Tjw1pbYZnbCbmls1R1N/Ja7vF/58ve+VFOpXCP+GFZVdmd8JUJreW8+cpXYhgTSWH1R6
+         +Rj2YPezmVsrXrVwi7/mWy6stgGpvhxnF4X5hjmh9z3ABOdrfkEJ131mUAmDjg4uYHxR
+         UZ8iYWG5zkeRLRLIJaqQtAFhwEXZar+XBVmLthRWgR5l0yZmen0sCqv56kyGnHNpvC/9
+         bR+Nm4XYfMPvFibiq3FnCLkpqpdL4uX+FnYKMDW1NQvXxTCfq5QSMk4cb3sk9c5Dx4pt
+         TKtA==
+X-Gm-Message-State: AOJu0YwdGrp54LNhDIwMUfn71a7AARHvNjZtZY5F492PISEc7ZOtIzBe
+	uEsMKZ+yN5rhAr7/c26uhRJ5O1vHir9E5bsDeJrOsMJX7XEeKXEnkjM9
+X-Gm-Gg: AeBDieugU2Qh2lBbekpkkSSQG0ETahCB/0uZQT6FYLz86A2U93o91l1LUuvuxOzUQyu
+	wVwf3Ne3LI/sOL4femxVVRx9BH++M5x1CrLb8l4kEjwpMtflV4QZblC3LZ7Qawk7XFsQ+ibCM9A
+	y3FkyniUGV4wlADUxmB8oN9k5mRzef2wNqnEhKU4ntSoHK1ci1b9TBOEgpb/3eckH8QmnFet0s5
+	cVTxsTmS8u6oPcB/RRayK23fo/ph04WGSuDrvrTNXO8yI/rzp/HeLFdPm+tAJi5rl9UtTsnuwH2
+	adG67t/b48w2fLTYlNQnWSWkyqt3T7VHzWl6y48Q2tt4MCYqS7v64YxemNKbQm34ATFzFkgsHJy
+	eebEXkI4GJ+Ru/RyN3uRUUEm1dHICFQ7pL0/LPvLUXxTHKC81itjKC5Wlog+oDR4bKXNxECxpr8
+	/HQiJDJ/Gh4Wfz2tAG2ks=
+X-Received: by 2002:a05:6000:288b:b0:439:c040:cc8a with SMTP id ffacd0b85a97d-43d642b6a81mr2345267f8f.32.1775800757998;
+        Thu, 09 Apr 2026 22:59:17 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d63ab84cdsm4849467f8f.0.2026.04.09.22.59.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Apr 2026 22:59:17 -0700 (PDT)
+Date: Fri, 10 Apr 2026 08:59:14 +0300
+From: Dan Carpenter <error27@gmail.com>
+To: David Howells <dhowells@redhat.com>
+Cc: netfs@lists.linux.dev
+Subject: [bug report] netfs: Fix unbuffered/DIO writes to dispatch
+ subrequests in strict sequence
+Message-ID: <adiRsuLerMVmvJ36@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260401205613.2095623-1-max.kellermann@ionos.com>
- <dc807d60a59d18dca7a14256285b1cfdeb13d907.camel@redhat.com>
- <CAKPOu+9FvR-ZdhcQc-+KzVMgobCkrJpzEsJis2ekuz0zwC_qZQ@mail.gmail.com> <ff8929f3cc1ceb1fef43f292c9c5926a25d8336a.camel@redhat.com>
-In-Reply-To: <ff8929f3cc1ceb1fef43f292c9c5926a25d8336a.camel@redhat.com>
-From: Max Kellermann <max.kellermann@ionos.com>
-Date: Fri, 3 Apr 2026 20:13:01 +0200
-X-Gm-Features: AQROBzCml0wejgS8KWhp_lEvInrGoAcd3uhJWZZ3HEky3MQRfu_mu4yL7bGyHI4
-Message-ID: <CAKPOu+_ghf7cw8zT2K-hyKhdWiFaQss2jFQ-JsUUPBU0MmSFfQ@mail.gmail.com>
-Subject: Re: [PATCH] ceph: do not fill fscache for RWF_DONTCACHE writeback
-To: Viacheslav Dubeyko <vdubeyko@redhat.com>
-Cc: idryomov@gmail.com, amarkuze@redhat.com, ceph-devel@vger.kernel.org, 
-	dhowells@redhat.com, pc@manguebit.org, netfs@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Fri, Apr 3, 2026 at 7:18=E2=80=AFPM Viacheslav Dubeyko <vdubeyko@redhat.=
-com> wrote:
-> Why the offset is not good enough?
+Hello David Howells,
 
-Because the "offset" variable tracks the whole write, including the
-folios that are supposed to be omitted from the fscache.
+Commit a0b4c7a49137 ("netfs: Fix unbuffered/DIO writes to dispatch
+subrequests in strict sequence") from Feb 26, 2026 (linux-next),
+leads to the following Smatch static checker warning:
 
---=20
-Max Kellermann
-Principal Architect
-Hosting Technology
+	fs/netfs/direct_write.c:203 netfs_unbuffered_write()
+	error: uninitialized symbol 'ret'.
 
-cm4all | Im Mediapark 6a | 50670 K=C3=B6ln | Germany
-General information about the company can be found here:
-https://www.cm4all.com/impressum
-A member of the IONOS Group
+fs/netfs/direct_write.c
+    94 static int netfs_unbuffered_write(struct netfs_io_request *wreq)
+    95 {
+    96         struct netfs_io_subrequest *subreq = NULL;
+    97         struct netfs_io_stream *stream = &wreq->io_streams[0];
+    98         int ret;
+    99 
+    100         _enter("%llx", wreq->len);
+    101 
+    102         if (wreq->origin == NETFS_DIO_WRITE)
+    103                 inode_dio_begin(wreq->inode);
+    104 
+    105         stream->collected_to = wreq->start;
+    106 
+    107         for (;;) {
+    108                 bool retry = false;
+    109 
+    110                 if (!subreq) {
+    111                         netfs_prepare_write(wreq, stream, wreq->start + wreq->transferred);
+    112                         subreq = stream->construct;
+    113                         stream->construct = NULL;
+    114                 }
+    115 
+    116                 /* Check if (re-)preparation failed. */
+    117                 if (unlikely(test_bit(NETFS_SREQ_FAILED, &subreq->flags))) {
+    118                         netfs_write_subrequest_terminated(subreq, subreq->error);
+    119                         wreq->error = subreq->error;
+    120                         break;
+
+If we break on the first iteration
+
+    121                 }
+    122 
+    123                 iov_iter_truncate(&subreq->io_iter, wreq->len - wreq->transferred);
+    124                 if (!iov_iter_count(&subreq->io_iter))
+    125                         break;
+
+or here
+
+    126 
+    127                 subreq->len = netfs_limit_iter(&subreq->io_iter, 0,
+    128                                                stream->sreq_max_len,
+    129                                                stream->sreq_max_segs);
+    130                 iov_iter_truncate(&subreq->io_iter, subreq->len);
+    131                 stream->submit_extendable_to = subreq->len;
+    132 
+    133                 trace_netfs_sreq(subreq, netfs_sreq_trace_submit);
+    134                 stream->issue_write(subreq);
+    135 
+    136                 /* Async, need to wait. */
+    137                 netfs_wait_for_in_progress_stream(wreq, stream);
+    138 
+    139                 if (test_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags)) {
+    140                         retry = true;
+    141                 } else if (test_bit(NETFS_SREQ_FAILED, &subreq->flags)) {
+    142                         ret = subreq->error;
+    143                         wreq->error = ret;
+    144                         netfs_see_subrequest(subreq, netfs_sreq_trace_see_failed);
+    145                         subreq = NULL;
+    146                         break;
+    147                 }
+    148                 ret = 0;
+    149 
+    150                 if (!retry) {
+    151                         netfs_unbuffered_write_collect(wreq, stream, subreq);
+    152                         subreq = NULL;
+    153                         if (wreq->transferred >= wreq->len)
+    154                                 break;
+    155                         if (!wreq->iocb && signal_pending(current)) {
+    156                                 ret = wreq->transferred ? -EINTR : -ERESTARTSYS;
+    157                                 trace_netfs_rreq(wreq, netfs_rreq_trace_intr);
+    158                                 break;
+    159                         }
+    160                         continue;
+    161                 }
+    162 
+    163                 /* We need to retry the last subrequest, so first reset the
+    164                  * iterator, taking into account what, if anything, we managed
+    165                  * to transfer.
+    166                  */
+    167                 subreq->error = -EAGAIN;
+    168                 trace_netfs_sreq(subreq, netfs_sreq_trace_retry);
+    169                 if (subreq->transferred > 0)
+    170                         iov_iter_advance(&wreq->buffer.iter, subreq->transferred);
+    171 
+    172                 if (stream->source == NETFS_UPLOAD_TO_SERVER &&
+    173                     wreq->netfs_ops->retry_request)
+    174                         wreq->netfs_ops->retry_request(wreq, stream);
+    175 
+    176                 __clear_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags);
+    177                 __clear_bit(NETFS_SREQ_BOUNDARY, &subreq->flags);
+    178                 __clear_bit(NETFS_SREQ_FAILED, &subreq->flags);
+    179                 subreq->io_iter                = wreq->buffer.iter;
+    180                 subreq->start                = wreq->start + wreq->transferred;
+    181                 subreq->len                = wreq->len   - wreq->transferred;
+    182                 subreq->transferred        = 0;
+    183                 subreq->retry_count        += 1;
+    184                 stream->sreq_max_len        = UINT_MAX;
+    185                 stream->sreq_max_segs        = INT_MAX;
+    186 
+    187                 netfs_get_subrequest(subreq, netfs_sreq_trace_get_resubmit);
+    188 
+    189                 if (stream->prepare_write) {
+    190                         stream->prepare_write(subreq);
+    191                         __set_bit(NETFS_SREQ_IN_PROGRESS, &subreq->flags);
+    192                         netfs_stat(&netfs_n_wh_retry_write_subreq);
+    193                 } else {
+    194                         struct iov_iter source;
+    195 
+    196                         netfs_reset_iter(subreq);
+    197                         source = subreq->io_iter;
+    198                         netfs_reissue_write(stream, subreq, &source);
+    199                 }
+    200         }
+    201 
+    202         netfs_unbuffered_write_done(wreq);
+--> 203         _leave(" = %d", ret);
+    204         return ret;
+
+Then ret is uninitialized
+
+    205 }
+
+This email is a free service from the Smatch-CI project [smatch.sf.net].
+
+regards,
+dan carpenter
