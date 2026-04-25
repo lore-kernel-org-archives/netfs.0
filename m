@@ -1,99 +1,223 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DCF4388E43
-	for <netfs@lists.linux.dev>; Sat, 25 Apr 2026 07:32:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81050350D58
+	for <netfs@lists.linux.dev>; Sat, 25 Apr 2026 12:54:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777102348; cv=none; b=tgFZkAt+cUF2vSEefPV95vWuzAP0U6+7jpcsuMrPl1vmGEOTadLRJTMvORcDpUdAwkJ+hdQD0HQvnM19U1Xx5AYX37hW8etPufgacNYG1wjmddExTwq/3nyCIeITgoQcc3VYXl/AbXWH3JmnSacRGB4zdb5bIV5zRt0m5zShhk0=
+	t=1777121680; cv=none; b=Omf6o/d3xIzqxjt3fmbnAr67XebSPtoQyOTfrvpjmp9P1bHwh1HX1BD/v7uaAd4UNRfpBQ37SD/5fjm33M2dzyqtEu99zOMeJlgs3Y9GQIWVXfGIRcbzXq09qbJD4L7a7QTNDY6Dd2FNAaU6MYGqcc1l3VgTiFpFc13TfdiQFbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777102348; c=relaxed/simple;
-	bh=y32nYLTk0UfM44gNYYnWDQb7s5+ig3q3E6F5/3ZZLBo=;
-	h=From:To:cc:Subject:MIME-Version:Date:Message-ID:Content-Type; b=KwVyf6aGeygtS1ya5eRFY4fon8i2bZjagRvvnkkVutB2wdgPCVHgabSDtjFdcKj2W/7Jpg0Y/MRwiflMQJy2tAAF7vbk+RUR/KgGEEH7JyZErnc7VUURxH4lEeMFg+vCT/aLdjw+0XvxhTQRP4llBl+2nMtUBVrXC6DY4wyxp40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LhWP3AeD; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1777121680; c=relaxed/simple;
+	bh=RRQ0IXdttCveiiHSEJbAsHURjxw1HDI3FgodXfjDv7Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=dmTo/Pz9iCPjart5N5oPsrNx+yjlfNwgfsBR0hbTj8WyxnPytjrAktiVgo7Vd+vY6ysLBVlRXEyb0fVE2AiSfQohFxtUIaNWe6tEWfPkPljRZbHEANpaty3sM9/0ldcDn2md2eYYqnhjd5Pvy6DSKk6iyxtE6ZMlYJ9ohlHAk4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Wi4Mp3VF; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LhWP3AeD"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Wi4Mp3VF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777102345;
+	s=mimecast20190719; t=1777121678;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=kCPzgxNONlk0wGV1iInk9bbC6BXgWWpBNwud2RQfBVM=;
-	b=LhWP3AeD1xYRoHt+uIrELtm1+Mf0qrsJTOVNbN3Pw9Z5m2BJKGY6d5NHb35EV0vhnCOADT
-	km3BSgccrJ+2QVd6PaF2zHjDCDXF+5PnOw0ySU8oymy1SaZ0Twf597qPoZUNYwQhKDbDm9
-	WtAU8ybE1LD1k6TM1TyAH1zvhqS1vuc=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=pVwB7OIP/Kn8ajofvoCHRiXa+pRDIyAY5VS4PTcDuJ8=;
+	b=Wi4Mp3VF6lSgUahUNHWcY+fcuNK8tti7peBqSB/oqfVm9Zdk3KSYDpmnYSS/bC6WSu+sDH
+	SbKzDAkRlaNI0QZiA4lflx9rhYGI9GLaGMROvhRV7g5pGZrBlyVzy+lAOtFDsLyZyJEARy
+	4lNHyOrP/hx8i9tz1FWbpW/ScOUbMfY=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-553-Y-xCKVZrPAimNIw5vkrq9Q-1; Sat,
- 25 Apr 2026 03:32:21 -0400
-X-MC-Unique: Y-xCKVZrPAimNIw5vkrq9Q-1
-X-Mimecast-MFC-AGG-ID: Y-xCKVZrPAimNIw5vkrq9Q_1777102340
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-74-jZgm73z_OD-3sDHpzV6hkQ-1; Sat,
+ 25 Apr 2026 08:54:35 -0400
+X-MC-Unique: jZgm73z_OD-3sDHpzV6hkQ-1
+X-Mimecast-MFC-AGG-ID: jZgm73z_OD-3sDHpzV6hkQ_1777121674
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BB57B1800451;
-	Sat, 25 Apr 2026 07:32:19 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.44.48.17])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 90AEE180047F;
-	Sat, 25 Apr 2026 07:32:17 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7F40E195608B;
+	Sat, 25 Apr 2026 12:54:33 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.44.48.17])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6307819560AB;
+	Sat, 25 Apr 2026 12:54:29 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>
-cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.org>,
-    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Subject: [PATCH] netfs: Fix wrong sort of request put in error handling
+Cc: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 00/19] netfs: Miscellaneous fixes
+Date: Sat, 25 Apr 2026 13:54:04 +0100
+Message-ID: <20260425125426.3855807-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Sat, 25 Apr 2026 08:32:15 +0100
-Message-ID: <3643632.1777102335@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: oHWx48UbOZMPsyHk78py1wba2ltQsImECjIqxagmH5I_1777102340
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: aBiGsMOCFHVqBTQ172CFxR28ShLGTnIKaelRM6pnASk_1777121674
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3643631.1777102335.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-   =20
-Fix netfs_write_begin() to call netfs_put_request(), not
-netfs_put_failed_request(), if it has already tried to dispatch the
-request.
+Hi Christian,
 
-Fixes: 453f1cc34a8f ("netfs: Fix leak of request in netfs_write_begin() err=
-or handling")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
----
- fs/netfs/buffered_read.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Here are the outstanding miscellaneous fixes for netfslib gathered together
+and with some fixes-to-fixes folded down and one rearrangement.  Various
+Sashiko review comments[1][2] are addressed:
 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index 5c78ec14e46b..7e7dacded8f7 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -693,9 +693,9 @@ int netfs_write_begin(struct netfs_inode *ctx,
-=20
- =09netfs_read_to_pagecache(rreq, NULL);
- =09ret =3D netfs_wait_for_read(rreq);
--=09if (ret < 0)
--=09=09goto error_put;
- =09netfs_put_request(rreq, netfs_rreq_trace_put_return);
-+=09if (ret < 0)
-+=09=09goto error;
-=20
- have_folio:
- =09ret =3D folio_wait_private_2_killable(folio);
+ (1) Fix triggering of a VM_BUG_ON_FOLIO() in netfs_write_begin().
+
+ (2) Fix error handling in netfs_extract_user_iter().
+
+ (3) Fix netfs_invalidate_folio() to clear the folio dirty bit if all dirty
+     data removed.
+
+ (4) Defer the emission of trace_netfs_folio() in netfs_perform_write().
+     This allows the next patch to emit the correct traces.
+
+ (5) Fix the handling of a partially failed copy (ie. EFAULT) into a
+     streaming write folio.  Also remove the netfs_folio if a streaming
+     write folio is entirely overwritten.
+
+ (6) Fix netfs_read_gaps() to remove the netfs_folio from a filled folio.
+
+ (7) Fix the calculation of zero_point in netfs_release_folio() to limit it
+     to ->remote_i_size, not ->i_size.
+
+ (8) Fix netfs_perform_write() to not disable streaming writes when writing
+     to an fd that's open O_RDWR.
+
+ (9) Fix an early put of the sink page used in netfs_read_gaps(), before
+     the request has completed.
+
+(10) Fix request leak in netfs_write_begin() error handling.
+
+(11) Fix a potential UAF in netfs_unlock_abandoned_read_pages() due to
+     trying to check index of each folio we're abandoning to see if that
+     folio is actually owned by the caller (in which case, we're not
+     actually allowed to dereference it).
+
+(12) Fix a potentially uninitialised error value in
+     netfs_extract_user_iter().
+
+(13) Fix incorrect adjustment of dirty region when partially invalidating a
+     streaming write folio.
+
+(14) Fix the handling of folio->private in netfs_perform_write() and the
+     attached netfs_folio and/or group when a streaming write folio is
+     modified.
+
+(15) Fix the potential for 64-bit tearing on a 32-bit machine when reading
+     netfs_inode->remote_i_size and ->zero_point by using much the same
+     mechanism as is used for ->i_size.
+
+(16) Fix netfs_read_folio() to wait on writeback first (it holds the folio
+     lock) otherwise we aren't allowed to look at the netfs_folio struct as
+     that could be modified at any time by the writeback collector.
+
+(17) Fix read and write result collection to use barriering correctly to
+     access a request's subrequest lists without taking a lock.
+
+     This adds list_add_tail_release() and list_first_entry_acquire() to
+     appropriate incorporate barriering into some list functions.
+
+(18) Fix afs_get_link() to take the vnode->validate_lock around
+     afs_read_single() to prevent a race with another caller of
+     afs_get_link() also trying to read the symlink content.
+
+(19) Fix the RCU handling of symlinks in RCU pathwalk.  The problems were
+     that afs_get_link() didn't use proper RCU pointer dereferencing and
+     that AFS symlinks can be updated remotely, potentially causing the
+     buffer memory to be changed.
+
+These are applied on top of your vfs.fixes branch.
+
+The patches can also be found here:
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-fixes
+
+Thanks,
+David
+
+[1] https://sashiko.dev/#/patchset/20260414082004.3756080-1-dhowells%40redhat.com
+[2] https://sashiko.dev/#/patchset/20260326104544.509518-1-dhowells%40redhat.com
+
+Changes
+=======
+ver #3)
+- Rebase on linus/master.
+- Consolidate the various sets of fixes for reposting.
+- Fold down fixes-to-fixes.
+- Move the tracing change in netfs_perform_write() down to below the patch
+  it primarily affects.
+
+base-commit: 27d128c1cff64c3b8012cc56dd5a1391bb4f1821
+
+David Howells (17):
+  netfs: Fix netfs_invalidate_folio() to clear dirty bit if all changes
+    gone
+  netfs: Defer the emission of trace_netfs_folio()
+  netfs: Fix streaming write being overwritten
+  netfs: Fix read-gaps to remove netfs_folio from filled folio
+  netfs: Fix zeropoint update where i_size > remote_i_size
+  netfs: Fix write streaming disablement if fd open O_RDWR
+  netfs: Fix early put of sink folio in netfs_read_gaps()
+  netfs: Fix leak of request in netfs_write_begin() error handling
+  netfs: Fix potential UAF in netfs_unlock_abandoned_read_pages()
+  netfs: Fix potential uninitialised var in netfs_extract_user_iter()
+  netfs: Fix partial invalidation of streaming-write folio
+  netfs: Fix folio->private handling in netfs_perform_write()
+  netfs: Fix potential for tearing in ->remote_i_size and ->zero_point
+  netfs: Fix netfs_read_folio() to wait on writeback
+  netfs: Fix missing barriers when accessing stream->subrequests
+    locklessly
+  afs: Fix afs_get_link() to take validate_lock around afs_read_single()
+  afs: Fix RCU handling of symlinks in RCU pathwalk
+
+Paulo Alcantara (1):
+  netfs: fix error handling in netfs_extract_user_iter()
+
+Viacheslav Dubeyko (1):
+  netfs: fix VM_BUG_ON_FOLIO() issue in netfs_write_begin() call
+
+ fs/9p/vfs_inode.c            |   2 +-
+ fs/9p/vfs_inode_dotl.c       |   4 +-
+ fs/afs/Makefile              |   1 +
+ fs/afs/dir.c                 |  33 +++-
+ fs/afs/fsclient.c            |   4 +-
+ fs/afs/inode.c               | 104 +-----------
+ fs/afs/internal.h            |  35 +++-
+ fs/afs/symlink.c             | 242 ++++++++++++++++++++++++++++
+ fs/afs/write.c               |   2 +-
+ fs/afs/yfsclient.c           |   4 +-
+ fs/netfs/buffered_read.c     |  39 +++--
+ fs/netfs/buffered_write.c    | 111 ++++++++-----
+ fs/netfs/direct_read.c       |  15 +-
+ fs/netfs/direct_write.c      |   4 +-
+ fs/netfs/internal.h          |   3 +
+ fs/netfs/iterator.c          |  15 +-
+ fs/netfs/misc.c              |  21 ++-
+ fs/netfs/read_collect.c      |   6 +-
+ fs/netfs/read_retry.c        |  11 +-
+ fs/netfs/read_single.c       |  12 +-
+ fs/netfs/write_collect.c     |   7 +-
+ fs/netfs/write_issue.c       |   3 +-
+ fs/smb/client/cifsfs.c       |  24 +--
+ fs/smb/client/cifssmb.c      |   2 +-
+ fs/smb/client/file.c         |   9 +-
+ fs/smb/client/inode.c        |   9 +-
+ fs/smb/client/readdir.c      |   3 +-
+ fs/smb/client/smb2ops.c      |  16 +-
+ fs/smb/client/smb2pdu.c      |   2 +-
+ include/linux/list.h         |  37 +++++
+ include/linux/netfs.h        | 298 +++++++++++++++++++++++++++++++++--
+ include/trace/events/netfs.h |   8 +
+ 32 files changed, 826 insertions(+), 260 deletions(-)
+ create mode 100644 fs/afs/symlink.c
 
