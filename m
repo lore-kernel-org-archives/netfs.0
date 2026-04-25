@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D07395D8E
-	for <netfs@lists.linux.dev>; Sat, 25 Apr 2026 12:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF3739A040
+	for <netfs@lists.linux.dev>; Sat, 25 Apr 2026 12:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777121730; cv=none; b=OXkUIzAg+PNWvngMtPQneHL1U+n+ft/Ytj35aJFMt90DHlz+2/Ra//gtAgAtbfBMUV05RrT6X6tO7KeuoiagMxvelGNpt2VgE8NxeQBodkROi5VsszSZ5/EV4tCksGg+vDPzZoOcmx+M53qC96bKtmVdoBwCDP3jQrI4ADIC5P8=
+	t=1777121735; cv=none; b=gqqQLuQMeO1eA82viupmwwIn7Kpir8vJ6/Cb/DyWVS0SGIJt44zhoTtr9yDW9/eUKY8A/Rqyh8rPJIZiDxZtP7QyLKbMMhk/smRjRXSWUSEEY2nJ51iLldDmf3S3xt6YyLwjWq5pBRBDcOAeTrcGnlSgPrBP1xwnr73Hmm2K3qI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777121730; c=relaxed/simple;
-	bh=pB+TlCdoIzRiaUB++xVaBhEiYx4ICCnZHBrrumr5qEA=;
+	s=arc-20240116; t=1777121735; c=relaxed/simple;
+	bh=doY4tw6HO4COwmAEu0lJzC/1YWc/xFcPxgbQcXLfBPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=lBxZyGbNk2oKjNaLSVylKMHd0x1j+awsgQSzqdLpzr6wq3MoQSqShiJvODcOUk84l/2QcNh5UcZxeasavTVNo1t6XHXBPur/JqGCm7OWMdA1Mu1JxRh6GUYlMFzyc6E+r/ND5ODuFWbjymoI2bAD4EX8Db+/5ymbdNF0DbjsgkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Cbi0WR3A; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:content-type; b=XwAv9AxNKZpiFwi/uZ/v4CGlzQxfKTfyu4Z3v9NvL9pfmRDV/8S5Pzwe3qWe1x87Smphf7EGtexSokCvJegK/3ttpv0l36YXseswQG+zxVjufkB4DunJr6ASoNJEP9OZDp9TGHZNP1bhf4v0HqZyOSwSzy0RhTsCCH/J4Nk9hhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hztw4qNo; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Cbi0WR3A"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hztw4qNo"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777121728;
+	s=mimecast20190719; t=1777121733;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/BtyRY9+hFtAe12V1Tupp9IRsYh3wXdEmKBtkAVoEyc=;
-	b=Cbi0WR3APUydWQaHafaN5yQQsgoT/nfkWpfIYomqCyZLHMzwpJiavi499E2r6zBXuXC7Ue
-	34LGrMofLuiulgzd68KyP+f27b5WIim4EJofFm2jJlOYIcqN1IXGD0nTagC6rZkwIzhChS
-	tl8M71XjhOkFpGEecPtBr5Fe+BMs36o=
+	bh=wQ15NswonOfL2LAifEn2IpFjOav5R5DrXYplmrXGZD8=;
+	b=hztw4qNozUz/MdNHSu8Z3BAjDU0R2dgzrDHMC4TMFqDWzUTpCyKIds9QZiMwTcTM4FLPjN
+	ka/jcev/GLMu/sJkA/tvh2dEe+mKWqH/I1FYSNNZzUBUNbkOdMbE6WT8exsG1oic87awOh
+	5LrvHZJKbXLD5ikc5DKoL0Y1VEEzYGo=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-152-q9477iFjMsCcR9bZuxU6dw-1; Sat,
- 25 Apr 2026 08:55:25 -0400
-X-MC-Unique: q9477iFjMsCcR9bZuxU6dw-1
-X-Mimecast-MFC-AGG-ID: q9477iFjMsCcR9bZuxU6dw_1777121723
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-678-WY4-SVFYNZ2LtRy-uNLTaQ-1; Sat,
+ 25 Apr 2026 08:55:29 -0400
+X-MC-Unique: WY4-SVFYNZ2LtRy-uNLTaQ-1
+X-Mimecast-MFC-AGG-ID: WY4-SVFYNZ2LtRy-uNLTaQ_1777121728
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6BC10195608B;
-	Sat, 25 Apr 2026 12:55:23 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 646911956080;
+	Sat, 25 Apr 2026 12:55:28 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.44.48.17])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5F3473007572;
-	Sat, 25 Apr 2026 12:55:20 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 246783007572;
+	Sat, 25 Apr 2026 12:55:24 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>
 Cc: David Howells <dhowells@redhat.com>,
@@ -52,10 +52,11 @@ Cc: David Howells <dhowells@redhat.com>,
 	ceph-devel@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
 	Matthew Wilcox <willy@infradead.org>
-Subject: [PATCH v3 10/19] netfs: Fix leak of request in netfs_write_begin() error handling
-Date: Sat, 25 Apr 2026 13:54:14 +0100
-Message-ID: <20260425125426.3855807-11-dhowells@redhat.com>
+Subject: [PATCH v3 11/19] netfs: Fix potential UAF in netfs_unlock_abandoned_read_pages()
+Date: Sat, 25 Apr 2026 13:54:15 +0100
+Message-ID: <20260425125426.3855807-12-dhowells@redhat.com>
 In-Reply-To: <20260425125426.3855807-1-dhowells@redhat.com>
 References: <20260425125426.3855807-1-dhowells@redhat.com>
 Precedence: bulk
@@ -65,38 +66,98 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: 9ryET2kUf5f1dnvQZqJZU6Ri7j4Ua73BcjX9Xry1gqo_1777121723
+X-Mimecast-MFC-PROC-ID: _Xgl-5AYv9G35NGhyJAjjjxNHJ55oMavRiwoJKXXg3c_1777121728
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Fix netfs_write_begin() to not leak our ref on the request in the event
-that we get an error from netfs_wait_for_read().
+netfs_unlock_abandoned_read_pages(rreq) accesses the index of the folios it
+is wanting to unlock and compares that to rreq->no_unlock_folio so that it
+doesn't unlock a folio being read for netfs_perform_write() or
+netfs_write_begin().
 
-Fixes: 4090b31422a6 ("netfs: Add a function to consolidate beginning a read")
+However, given that netfs_unlock_abandoned_read_pages() is called _after_
+NETFS_RREQ_IN_PROGRESS is cleared, the one folio that it's not allowed to
+dereference is the one specified by ->no_unlock_folio as ownership
+immediately reverts to the caller.
+
+Fix this by storing the folio pointer instead and using that rather than
+the index.  Also fix netfs_unlock_read_folio() where the same applies.
+
+Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
 Closes: https://sashiko.dev/#/patchset/20260414082004.3756080-1-dhowells%40redhat.com
 Signed-off-by: David Howells <dhowells@redhat.com>
 cc: Paulo Alcantara <pc@manguebit.org>
+cc: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
 cc: Matthew Wilcox <willy@infradead.org>
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
 ---
- fs/netfs/buffered_read.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/netfs/buffered_read.c | 4 ++--
+ fs/netfs/read_collect.c  | 2 +-
+ fs/netfs/read_retry.c    | 2 +-
+ include/linux/netfs.h    | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index 3fe129a9b1c3..0ba224d23f0f 100644
+index 0ba224d23f0f..f94c7f3780e0 100644
 --- a/fs/netfs/buffered_read.c
 +++ b/fs/netfs/buffered_read.c
-@@ -689,9 +689,9 @@ int netfs_write_begin(struct netfs_inode *ctx,
- 
- 	netfs_read_to_pagecache(rreq, NULL);
- 	ret = netfs_wait_for_read(rreq);
-+	netfs_put_request(rreq, netfs_rreq_trace_put_return);
- 	if (ret < 0)
+@@ -672,7 +672,7 @@ int netfs_write_begin(struct netfs_inode *ctx,
+ 		ret = PTR_ERR(rreq);
  		goto error;
--	netfs_put_request(rreq, netfs_rreq_trace_put_return);
+ 	}
+-	rreq->no_unlock_folio	= folio->index;
++	rreq->no_unlock_folio	= folio;
+ 	__set_bit(NETFS_RREQ_NO_UNLOCK_FOLIO, &rreq->flags);
  
- have_folio:
- 	ret = folio_wait_private_2_killable(folio);
+ 	ret = netfs_begin_cache_read(rreq, ctx);
+@@ -738,7 +738,7 @@ int netfs_prefetch_for_write(struct file *file, struct folio *folio,
+ 		goto error;
+ 	}
+ 
+-	rreq->no_unlock_folio = folio->index;
++	rreq->no_unlock_folio = folio;
+ 	__set_bit(NETFS_RREQ_NO_UNLOCK_FOLIO, &rreq->flags);
+ 	ret = netfs_begin_cache_read(rreq, ctx);
+ 	if (ret == -ENOMEM || ret == -EINTR || ret == -ERESTARTSYS)
+diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
+index e5f6665b3341..eae067e3eaa5 100644
+--- a/fs/netfs/read_collect.c
++++ b/fs/netfs/read_collect.c
+@@ -83,7 +83,7 @@ static void netfs_unlock_read_folio(struct netfs_io_request *rreq,
+ 	}
+ 
+ just_unlock:
+-	if (folio->index == rreq->no_unlock_folio &&
++	if (folio == rreq->no_unlock_folio &&
+ 	    test_bit(NETFS_RREQ_NO_UNLOCK_FOLIO, &rreq->flags)) {
+ 		_debug("no unlock");
+ 	} else {
+diff --git a/fs/netfs/read_retry.c b/fs/netfs/read_retry.c
+index 68fc869513ef..999177426141 100644
+--- a/fs/netfs/read_retry.c
++++ b/fs/netfs/read_retry.c
+@@ -288,7 +288,7 @@ void netfs_unlock_abandoned_read_pages(struct netfs_io_request *rreq)
+ 			struct folio *folio = folioq_folio(p, slot);
+ 
+ 			if (folio && !folioq_is_marked2(p, slot)) {
+-				if (folio->index == rreq->no_unlock_folio &&
++				if (folio == rreq->no_unlock_folio &&
+ 				    test_bit(NETFS_RREQ_NO_UNLOCK_FOLIO,
+ 					     &rreq->flags)) {
+ 					_debug("no unlock");
+diff --git a/include/linux/netfs.h b/include/linux/netfs.h
+index ba17ac5bf356..62a528f90666 100644
+--- a/include/linux/netfs.h
++++ b/include/linux/netfs.h
+@@ -252,7 +252,7 @@ struct netfs_io_request {
+ 	unsigned long long	collected_to;	/* Point we've collected to */
+ 	unsigned long long	cleaned_to;	/* Position we've cleaned folios to */
+ 	unsigned long long	abandon_to;	/* Position to abandon folios to */
+-	pgoff_t			no_unlock_folio; /* Don't unlock this folio after read */
++	const struct folio	*no_unlock_folio; /* Don't unlock this folio after read */
+ 	unsigned int		direct_bv_count; /* Number of elements in direct_bv[] */
+ 	unsigned int		debug_id;
+ 	unsigned int		rsize;		/* Maximum read size (0 for none) */
 
