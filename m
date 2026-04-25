@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2983B374E7A
-	for <netfs@lists.linux.dev>; Sat, 25 Apr 2026 12:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6D439657B
+	for <netfs@lists.linux.dev>; Sat, 25 Apr 2026 12:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777121715; cv=none; b=hWc+W9wiis0avepqrBBdAwsSbbqOSbyAh9rF2Sr6AstXfvqa7FxRWSiRPhDnL0vWR+n48H1qMNRE7iESJdlC2Bnqs1Ek2dYa2oVVGBLLD6ITjgRKrxjpfR9hyyg4mTnZySmAaOr3Maym745/kC9wJrwaQsLrxW9zyJTnwVCKBCc=
+	t=1777121721; cv=none; b=JXJD5wKye1SCQ3BBfHGU2+/tVNayQyg3hIiKpT/h4Giq1hf97dpBs/Aury4UlTmTMSFqHwVA8epbLkiQTlJNQKbOe7DGiWCAQYNMFzioAcD7roMZ/c63sysKIjdLQXWOLK/Hz5GfwEuCmPf45UYwmIU2WkrryedLyfS7g/VXeoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777121715; c=relaxed/simple;
-	bh=nGH70d4XRAbidMXvHCD6HzbQ1ECJVS7A+JZBT9D/19o=;
+	s=arc-20240116; t=1777121721; c=relaxed/simple;
+	bh=ar/1916KJK1hP9MglWUn/gBgMrjkAt6aacrmlpZbKGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=qnXNLYw8l9tX78HpCdbap61oqRkS1wSvZ6mWtTTtj3RxY/vy42lSxvqEZfMccX+FaGKOzQ41fIKIvFRp8LOhRJrpWWmX5EDDBxqDYXhJZ2YTzUyxPWpgzjSGN2SSsiPCjyJsZ0nvqQWq+FW9hew+sptRzkl3wBuIIc4+GtqttPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FTCLtFqp; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:content-type; b=H/gkJtF+fmdpEGOZiHPETOul78+lPMvo0RQNEshlev7mc+E/hnGfgOXSOKfIXKK3RyfUC2YnWGtUxdkiQ1UZ1RpyqY6U/q8iONZXr3kTotdg+VMGCCemQ5v2qmg9ILRc8BLDvb3sx8I97KYDywg3GxKO0v0alah9hqNAAOi7JhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Y9lW3h4J; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FTCLtFqp"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Y9lW3h4J"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777121711;
+	s=mimecast20190719; t=1777121719;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2MfJQB7/qymTq033uKX+KS+yRirCrgDyasPANbPHLD0=;
-	b=FTCLtFqpXREtiTvTjp+InAjaIw34UOMXPG65MoXy7uVL7sUNReSrTdg16AdSdhibc+S0Ru
-	WCM8YV9fxNu2PFU3xrDzDhM4IG61ZZ8Bu5qnbX2AunZ9X+a8wkP7UgMuCV6olM+EI1bBUw
-	ayG12VvDZ3nZ+0g/qUjqMw9mL5qz+Ms=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=16oz/EvePMB/RKF9sHxIwhF0EbAmx1Zkbc6oHlQ4AMU=;
+	b=Y9lW3h4JsdyXcu6HJ4lKfYYxUMcs9wLjuMeh4RGnvvEIOrq6wl+yYJQlMVNW1U5CsHSMQv
+	n45glm2LLMyeMOkOJ1HDiQw0YE6MYLObXxyl40uYxZ4CWAtguWJsdtxxA6zTutNz6jIZqD
+	ccV9OsqHmNGlBuPxT7tn5M3ntcaCk9g=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-131-IZZUQhSuMFKMZEV-YcWYQQ-1; Sat,
- 25 Apr 2026 08:55:05 -0400
-X-MC-Unique: IZZUQhSuMFKMZEV-YcWYQQ-1
-X-Mimecast-MFC-AGG-ID: IZZUQhSuMFKMZEV-YcWYQQ_1777121704
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-543-G83z7RghPU6rZeiFNRYGow-1; Sat,
+ 25 Apr 2026 08:55:15 -0400
+X-MC-Unique: G83z7RghPU6rZeiFNRYGow-1
+X-Mimecast-MFC-AGG-ID: G83z7RghPU6rZeiFNRYGow_1777121713
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6420E180057D;
-	Sat, 25 Apr 2026 12:55:04 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C5C11195608F;
+	Sat, 25 Apr 2026 12:55:13 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.44.48.17])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 573571800351;
-	Sat, 25 Apr 2026 12:55:01 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C1BFF1801558;
+	Sat, 25 Apr 2026 12:55:10 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>
 Cc: David Howells <dhowells@redhat.com>,
@@ -53,9 +53,9 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Matthew Wilcox <willy@infradead.org>
-Subject: [PATCH v3 06/19] netfs: Fix read-gaps to remove netfs_folio from filled folio
-Date: Sat, 25 Apr 2026 13:54:10 +0100
-Message-ID: <20260425125426.3855807-7-dhowells@redhat.com>
+Subject: [PATCH v3 08/19] netfs: Fix write streaming disablement if fd open O_RDWR
+Date: Sat, 25 Apr 2026 13:54:12 +0100
+Message-ID: <20260425125426.3855807-9-dhowells@redhat.com>
 In-Reply-To: <20260425125426.3855807-1-dhowells@redhat.com>
 References: <20260425125426.3855807-1-dhowells@redhat.com>
 Precedence: bulk
@@ -64,88 +64,58 @@ List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: hBiYlGmfM8WTHbPKURDQtOLeWwA1t3sf4rRnMahVfY8_1777121704
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-MFC-PROC-ID: ouCInyMIQdhrZqmTJsrcXtvyxXKBowUcbuoE9D9X-40_1777121713
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Fix netfs_read_gaps() to remove the netfs_folio record from the folio
-record before marking the folio uptodate if it successfully fills the gaps
-around the dirty data in a streaming write folio (dirty, but not uptodate).
+In netfs_perform_write(), "write streaming" (the caching of dirty data in
+dirty but !uptodate folios) is performed to avoid the need to read data
+that is just going to get immediately overwritten.  However, this is/will
+be disabled in three circumstances: if the fd is open O_RDWR, if fscache is
+in use (as we need to round out the blocks for DIO) or if content
+encryption is enabled (again for rounding out purposes).
 
-Found with:
+The idea behind disabling it if the fd is open O_RDWR is that we'd need to
+flush the write-streaming page before we could read the data, particularly
+through mmap.  But netfs now fills in the gaps if ->read_folio() is called
+on the page, so that is unnecessary.  Further, this doesn't actually work
+if a separate fd is open for reading.
 
-    fsx -q -N 1000000 -p 10000 -o 128000 -l 600000 \
-        /xfstest.test/junk --replay-ops=junk.fsxops
+Fix this by removing the check for O_RDWR, thereby allowing streaming
+writes even when we might read.
 
-using the following as junk.fsxops:
+This caused a number of problems with the generic/522 xfstest, but those
+are now fixed.
 
-    truncate 0x0 0x138b1 0x8b15d *
-    write 0x507ee 0x10df7 0x927c0
-    write 0x19993 0x10e04 0x927c0 *
-    mapwrite 0x66214 0x1a253 0x927c0
-    copy_range 0xb704 0x89b9 0x24429 0x79380
-    write 0x2402b 0x144a2 0x90660 *
-    mapwrite 0x204d5 0x140a0 0x927c0 *
-    copy_range 0x1f72c 0x137d0 0x7a906 0x927c0 *
-    read 0 0x9157c 0x9157c
-
-on cifs with the default cache option.
-
-It shows folio 0x24 misbehaving if the FMODE_READ check is commented out in
-netfs_perform_write():
-
-                if (//(file->f_mode & FMODE_READ) ||
-                    netfs_is_cache_enabled(ctx)) {
-
-and no fscache.  This was initially found with the generic/522 xfstest.
-
+Fixes: c38f4e96e605 ("netfs: Provide func to copy data to pagecache for buffered write")
 Signed-off-by: David Howells <dhowells@redhat.com>
 cc: Paulo Alcantara <pc@manguebit.org>
 cc: Matthew Wilcox <willy@infradead.org>
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
 ---
- fs/netfs/buffered_read.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ fs/netfs/buffered_write.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index a8c0d86118c5..e87a55bda8c5 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -397,6 +397,7 @@ static int netfs_read_gaps(struct file *file, struct folio *folio)
- {
- 	struct netfs_io_request *rreq;
- 	struct address_space *mapping = folio->mapping;
-+	struct netfs_group *group = netfs_folio_group(folio);
- 	struct netfs_folio *finfo = netfs_folio_info(folio);
- 	struct netfs_inode *ctx = netfs_inode(mapping->host);
- 	struct folio *sink = NULL;
-@@ -463,6 +464,12 @@ static int netfs_read_gaps(struct file *file, struct folio *folio)
+diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
+index 165e4a3c8b62..c7b49b38a710 100644
+--- a/fs/netfs/buffered_write.c
++++ b/fs/netfs/buffered_write.c
+@@ -281,12 +281,9 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
  
- 	ret = netfs_wait_for_read(rreq);
- 	if (ret >= 0) {
-+		if (group)
-+			folio_change_private(folio, group);
-+		else
-+			folio_detach_private(folio);
-+		kfree(finfo);
-+		trace_netfs_folio(folio, netfs_folio_trace_filled_gaps);
- 		flush_dcache_folio(folio);
- 		folio_mark_uptodate(folio);
- 	}
-@@ -498,10 +505,8 @@ int netfs_read_folio(struct file *file, struct folio *folio)
- 	struct netfs_inode *ctx = netfs_inode(mapping->host);
- 	int ret;
- 
--	if (folio_test_dirty(folio)) {
--		trace_netfs_folio(folio, netfs_folio_trace_read_gaps);
-+	if (folio_test_dirty(folio))
- 		return netfs_read_gaps(file, folio);
--	}
- 
- 	_enter("%lx", folio->index);
- 
+ 		/* We don't want to do a streaming write on a file that loses
+ 		 * caching service temporarily because the backing store got
+-		 * culled and we don't really want to get a streaming write on
+-		 * a file that's open for reading as ->read_folio() then has to
+-		 * be able to flush it.
++		 * culled.
+ 		 */
+-		if ((file->f_mode & FMODE_READ) ||
+-		    netfs_is_cache_enabled(ctx)) {
++		if (netfs_is_cache_enabled(ctx)) {
+ 			if (finfo) {
+ 				netfs_stat(&netfs_n_wh_wstream_conflict);
+ 				goto flush_content;
 
