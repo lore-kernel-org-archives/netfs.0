@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD1B38654F
-	for <netfs@lists.linux.dev>; Sat, 25 Apr 2026 12:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F38B364EB0
+	for <netfs@lists.linux.dev>; Sat, 25 Apr 2026 12:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777121708; cv=none; b=i1cfiM5e2QKbztdBp40Aa8/vhGlDxCMixJPxR8eGB/klU/bURaU7GN0HKkKfk+jnLXrLnYCVxq5L5mwSHPx9cW4uYhPubGrnNKHZaQoXjGF7Vki/TSYCgOW/pnHgwznBRfoMj8mBYi88J+ylItX8CvfSZXGvlLAhZAukbtRydmw=
+	t=1777121715; cv=none; b=bxURhZJwLuIwcf0a0OLM2397jwt7mQY2kSX/oWCH7JJHzQ2RPHhINUutbDRhQV2JGBECbf/I8MbbfIq55kAnTXjgWReNB/eBc6vdy1LEVRf5nNWGSzqszt6NvbJI/cQSTdgACdyTHsx5aQLWV3Y4MWzunWalr/E3AcwRGJBuX1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777121708; c=relaxed/simple;
-	bh=9j5/dEk1nuavP9c7Mm6z3WVXHb5kswzKhu0IZvmrw7U=;
+	s=arc-20240116; t=1777121715; c=relaxed/simple;
+	bh=0RD9WK7Z8b1cfNWJfuywH/XVdQi+DID7QaHnobdiupA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=cMnCuQeloFAOP451gcxvOx0LBdv61mpjZkFr9OGcIZ5hv6cxcl/Yi6UKrC17BIpqSwgVlfcHSKPr89MVxBAStIckUq3o6S11bTz96B/nVs7nMeDTGLqqvnCLmxgoyhrqTV6Mnz3N1NgZ62Hxrg1y6kX7oSvGaUmvMkbNujGKqDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WBLea/5w; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:content-type; b=hqrXz8RNddKxNNIOWpymBwXG/bRf0O3kvyZI8TrFwVHlX8OT38KI1MPKsD9EDqG0qNheRfDBf404HiYrIZHJsHtlhwolp43VzzQFyAU5/D6NxKvtkpq0ym93mfS+t+ZE9vYyGDfpis8R1c8CXg1yUbo0XpV2KqSz3+YAXICcSnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=czvG+TCH; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WBLea/5w"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="czvG+TCH"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777121704;
+	s=mimecast20190719; t=1777121712;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SAuDfItFyO4D0alvtN3lqINjyYfl9NeJc3tZVlSezTo=;
-	b=WBLea/5wNG3/c8/U7hP80LT1KgTEjaiBzU8rXbB63HOttVYaXuoQylSpvsH3uZ3vpGO+8l
-	fLmlbfEYpLz0m5/pJj5QYoMgogCxpgFlNTG740Gw0gIpPgbXOwPjIoPtm+NcPFQhBwIemr
-	tZm5+VNW6RCHIpDm62d5LoFTklZNHPA=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=hwkDzJJVkIB8QUWldBqXDsmI02iLpH9t4nRKDWmeUI0=;
+	b=czvG+TCHw7sLokwHcbekHc5VsRIW70VK1b5D+xaeBke9g4/mQ5NcCRvLEHTETEUx6ror+0
+	tgsatnfTmN7qEvfsqfmCjxRwbs0MP2SpXh/80jmsCSzo3a/7TN/AKV3yRwLgqwgdru/mYq
+	8kzUdNcfbzAI0mI/EYNjZrkSoC/sFVs=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-642-oHXAZx66PZOgSkRAq2LP3g-1; Sat,
- 25 Apr 2026 08:55:01 -0400
-X-MC-Unique: oHXAZx66PZOgSkRAq2LP3g-1
-X-Mimecast-MFC-AGG-ID: oHXAZx66PZOgSkRAq2LP3g_1777121699
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-632-5RXKACmKMJGgYMmdRiei9Q-1; Sat,
+ 25 Apr 2026 08:55:11 -0400
+X-MC-Unique: 5RXKACmKMJGgYMmdRiei9Q-1
+X-Mimecast-MFC-AGG-ID: 5RXKACmKMJGgYMmdRiei9Q_1777121710
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9CB631800348;
-	Sat, 25 Apr 2026 12:54:59 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 17023195609F;
+	Sat, 25 Apr 2026 12:55:09 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.44.48.17])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9B8963007572;
-	Sat, 25 Apr 2026 12:54:56 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 23E7E19560AB;
+	Sat, 25 Apr 2026 12:55:05 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>
 Cc: David Howells <dhowells@redhat.com>,
@@ -53,9 +53,9 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Matthew Wilcox <willy@infradead.org>
-Subject: [PATCH v3 05/19] netfs: Fix streaming write being overwritten
-Date: Sat, 25 Apr 2026 13:54:09 +0100
-Message-ID: <20260425125426.3855807-6-dhowells@redhat.com>
+Subject: [PATCH v3 07/19] netfs: Fix zeropoint update where i_size > remote_i_size
+Date: Sat, 25 Apr 2026 13:54:11 +0100
+Message-ID: <20260425125426.3855807-8-dhowells@redhat.com>
 In-Reply-To: <20260425125426.3855807-1-dhowells@redhat.com>
 References: <20260425125426.3855807-1-dhowells@redhat.com>
 Precedence: bulk
@@ -64,168 +64,71 @@ List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: f-ZfuXlPKL0cevo3hji3YRGFsBHDm2XIxe8WIdrtGJg_1777121699
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: 7UH5wdZZOfeq-O3BVKvnEVcqEe889uUBQhFI0lCFF1k_1777121710
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-In order to avoid reading whilst writing, netfslib will allow "streaming
-writes" in which dirty data is stored directly into folios without reading
-them first.  Such folios are marked dirty but may not be marked uptodate.
-If a folio is entirely written by a streaming write, uptodate will be set,
-otherwise it will have a netfs_folio struct attached to ->private recording
-the dirty region.
+Fix the update of the zero point[*] by netfs_release_folio() when there is
+uncommitted data in the pagecache beyond the folio being released but the
+on-server EOF is in this folio (ie. i_size > remote_i_size).  The update
+needs to limit zero_point to remote_i_size, not i_size as i_size is a local
+phenomenon reflecting updates made locally to the pagecache, not stuff
+written to the server.  remote_i_size tracks the server's i_size.
 
-In the event that a partially written streaming write page is to be
-overwritten entirely by a single write(), netfs_perform_write() will try to
-copy over it, but doesn't discard the netfs_folio if it succeeds; further,
-it doesn't correctly handle a partial copy that overwrites some of the
-dirty data.
+[*] The zero point is the file position from which we can assume that the
+    server will just return zeros, so we can avoid generating reads.
 
-Fix this by the following:
-
- (1) If the folio is successfully overwritten, free the netfs_folio struct
-     before marking the page uptodate.
-
- (2) If the copy to the folio partially fails, but short of the dirty data,
-     just ignore the copy.
-
- (3) If the copy partially fails and overwrites some of the dirty data,
-     accept the copy, update the netfs_folio struct to record the new data.
-     If the folio is now filled, free the netfs_folio and set uptodate,
-     otherwise return a partial write.
+Note that netfs_invalidate_folio() probably doesn't need fixing as
+zero_point should be updated by setattr after truncation.
 
 Found with:
 
-	fsx -q -N 1000000 -p 10000 -o 128000 -l 600000 \
-	  /xfstest.test/junk --replay-ops=junk.fsxops
+    fsx -q -N 1000000 -p 10000 -o 128000 -l 600000 \
+        /xfstest.test/junk --replay-ops=junk.fsxops
 
 using the following as junk.fsxops:
 
-	truncate 0x0 0 0x927c0
-	write 0x63fb8 0x53c8 0
-	copy_range 0xb704 0x19b9 0x24429 0x79380
-	write 0x2402b 0x144a2 0x90660 *
-	write 0x204d5 0x140a0 0x927c0 *
-	copy_range 0x1f72c 0x137d0 0x7a906 0x927c0 *
-	read 0x00000 0x20000 0x9157c
-	read 0x20000 0x20000 0x9157c
-	read 0x40000 0x20000 0x9157c
-	read 0x60000 0x20000 0x9157c
-	read 0x7e1a0 0xcfb9 0x9157c
+    truncate 0x0 0x1bbae 0x82864
+    write 0x3ef2e 0xf9c8 0x1bbae
+    write 0x67e05 0xcb5a 0x4e8f6
+    mapread 0x57781 0x85b6 0x7495f
+    copy_range 0x5d3d 0x10329 0x54fac 0x7495f
+    write 0x64710 0x1c2b 0x7495f
+    mapread 0x64000 0x1000 0x7495f
 
 on cifs with the default cache option.
 
-It shows folio 0x24 misbehaving if the FMODE_READ check is commented out in
-netfs_perform_write():
+It shows read-gaps on folio 0x64 failing with a short read (ie. it hits
+EOF) if the FMODE_READ check is commented out in netfs_perform_write():
 
-		if (//(file->f_mode & FMODE_READ) ||
-		    netfs_is_cache_enabled(ctx)) {
+                if (//(file->f_mode & FMODE_READ) ||
+                    netfs_is_cache_enabled(ctx)) {
 
 and no fscache.  This was initially found with the generic/522 xfstest.
 
-Fixes: 8f52de0077ba ("netfs: Reduce number of conditional branches in netfs_perform_write()")
+Fixes: cce6bfa6ca0e ("netfs: Fix trimming of streaming-write folios in netfs_inval_folio()")
 Signed-off-by: David Howells <dhowells@redhat.com>
 cc: Paulo Alcantara <pc@manguebit.org>
 cc: Matthew Wilcox <willy@infradead.org>
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
 ---
- fs/netfs/buffered_write.c    | 45 +++++++++++++++++++++++++-----------
- include/trace/events/netfs.h |  2 ++
- 2 files changed, 34 insertions(+), 13 deletions(-)
+ fs/netfs/misc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
-index fab172252759..165e4a3c8b62 100644
---- a/fs/netfs/buffered_write.c
-+++ b/fs/netfs/buffered_write.c
-@@ -246,18 +246,36 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 		/* See if we can write a whole folio in one go. */
- 		if (!maybe_trouble && offset == 0 && part >= flen) {
- 			copied = copy_folio_from_iter_atomic(folio, offset, part, iter);
--			if (unlikely(copied == 0))
-+			if (likely(copied == part)) {
-+				if (finfo) {
-+					trace = netfs_whole_folio_modify_filled;
-+					goto folio_now_filled;
-+				}
-+				__netfs_set_group(folio, netfs_group);
-+				folio_mark_uptodate(folio);
-+				trace = netfs_whole_folio_modify;
-+				goto copied;
-+			}
-+			if (copied == 0)
- 				goto copy_failed;
--			if (unlikely(copied < part)) {
-+			if (!finfo || copied <= finfo->dirty_offset) {
- 				maybe_trouble = true;
- 				iov_iter_revert(iter, copied);
- 				copied = 0;
- 				folio_unlock(folio);
- 				goto retry;
- 			}
--			__netfs_set_group(folio, netfs_group);
--			folio_mark_uptodate(folio);
--			trace = netfs_whole_folio_modify;
-+
-+			/* We overwrote some existing dirty data, so we have to
-+			 * accept the partial write.
-+			 */
-+			finfo->dirty_len += finfo->dirty_offset;
-+			if (finfo->dirty_len == flen)
-+				goto folio_now_filled;
-+			if (copied > finfo->dirty_len)
-+				finfo->dirty_len = copied;
-+			finfo->dirty_offset = 0;
-+			trace = netfs_whole_folio_modify_efault;
- 			goto copied;
- 		}
+diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
+index d8e8a4b59768..e386cf31eb1e 100644
+--- a/fs/netfs/misc.c
++++ b/fs/netfs/misc.c
+@@ -302,7 +302,7 @@ bool netfs_release_folio(struct folio *folio, gfp_t gfp)
+ 	if (folio_test_dirty(folio))
+ 		return false;
  
-@@ -327,16 +345,10 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 				goto copy_failed;
- 			finfo->dirty_len += copied;
- 			if (finfo->dirty_offset == 0 && finfo->dirty_len == flen) {
--				if (finfo->netfs_group)
--					folio_change_private(folio, finfo->netfs_group);
--				else
--					folio_detach_private(folio);
--				folio_mark_uptodate(folio);
--				kfree(finfo);
- 				trace = netfs_streaming_cont_filled_page;
--			} else {
--				trace = netfs_streaming_write_cont;
-+				goto folio_now_filled;
- 			}
-+			trace = netfs_streaming_write_cont;
- 			goto copied;
- 		}
+-	end = umin(folio_next_pos(folio), i_size_read(&ctx->inode));
++	end = umin(folio_next_pos(folio), ctx->remote_i_size);
+ 	if (end > ctx->zero_point)
+ 		ctx->zero_point = end;
  
-@@ -350,6 +362,13 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 			goto out;
- 		continue;
- 
-+	folio_now_filled:
-+		if (finfo->netfs_group)
-+			folio_change_private(folio, finfo->netfs_group);
-+		else
-+			folio_detach_private(folio);
-+		folio_mark_uptodate(folio);
-+		kfree(finfo);
- 	copied:
- 		trace_netfs_folio(folio, trace);
- 		flush_dcache_folio(folio);
-diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
-index 0b702f74aefe..67f6d56c94ce 100644
---- a/include/trace/events/netfs.h
-+++ b/include/trace/events/netfs.h
-@@ -177,6 +177,8 @@
- 	EM(netfs_folio_is_uptodate,		"mod-uptodate")	\
- 	EM(netfs_just_prefetch,			"mod-prefetch")	\
- 	EM(netfs_whole_folio_modify,		"mod-whole-f")	\
-+	EM(netfs_whole_folio_modify_efault,	"mod-whole-f!")	\
-+	EM(netfs_whole_folio_modify_filled,	"mod-whole-f+")	\
- 	EM(netfs_modify_and_clear,		"mod-n-clear")	\
- 	EM(netfs_streaming_write,		"mod-streamw")	\
- 	EM(netfs_streaming_write_cont,		"mod-streamw+")	\
 
