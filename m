@@ -1,47 +1,45 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5524C39DBC9
-	for <netfs@lists.linux.dev>; Sat, 25 Apr 2026 12:56:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B28BC372B51
+	for <netfs@lists.linux.dev>; Mon, 27 Apr 2026 15:30:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777121773; cv=none; b=WtpA2SkSyBhbPuxYf3wEe0i7CygbIZ1p4AKdpWod/Uhf2W/zN3il5HVkMMzjBdjOTyLuESJ8v/et3ZXF1lHj953QzBAZcBRHLjwtOTqTPOApAACt6DJ5TofM9Mmf0QguDMrqjXeng5CsqpfHzrLgjxVlxx11Wi8QlbVX3plyuH0=
+	t=1777303810; cv=none; b=sg6RKzujPm95cizSNUp5nyZGxKsKNuHM6QLlg18mKGcNXCWNtDnLEVvkdh9wGG7h3qEiNOu5aPz70IavnPGjVIA7Hp3W5/yY0EVqmGYaCIH/g2LPCU6nMccLOa/tT1ElKO/ILKthtUiO3vOhtrEKjqr9K8rltU55/NEkkMEM5dM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777121773; c=relaxed/simple;
-	bh=kw2ph8ABWMFW8tR55XpKSH31TjAqka9pQ8vYplEDMbQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=rdZSAC4cq/sd6ENTGxkTlPGSfdniBuN6u0ySIN4m4Spx5iOmsutCsbeHU633Q5NknR+Fi8FCz1AgtHAfM7/JU8BCmRhjxuoxFq+JvYhBC3D0+iMPcjl/a9+w88QmeUNHSNtns0X59mX/bgojEFRrJHHSM3r4AAOEnfdByRAbWSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZN92EoGM; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1777303810; c=relaxed/simple;
+	bh=9mtHwprel4YUhVJ/yNA5gZtNbxzGa/mm5aEiFdM6BP0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=Ug+vKBe+P51fVTMWSq+oyagTOrRkTG5RxjXXcBLSOQctfF2+9Kdi8SpuLYvPiGYZ1tdgQONj30WghNHRQuDiAcrGrtelwDVKAip4na/7L42v0CqM08WKNz0q43MvxuNDTeA2Z//0Ucq/ckgzHa50jjeO8X1CZvAfdmywwWc2SfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=V5Heksy8; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZN92EoGM"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="V5Heksy8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777121770;
+	s=mimecast20190719; t=1777303806;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IWpVZfCnfPMvlRQ9r7wWIQ56Qq3yXfMQ6qgWCReefRo=;
-	b=ZN92EoGM4yOC4PDf+DzGir5AFihDYGOYmPyFYWrAuZwmHE6uDtElRw6Jh5P6bQZLdhQey+
-	b9fMIm9KhSjHWn3st5yKFtNQou5YkBlXwnhYs3b57IXZVkKCk2f0NqsGTrcVo2+dhnbMBx
-	9ob7WjOVAjUUKJvCRt97wt0yyciPNOY=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=H5+gLZpTVBHNcHgnFm3F1qgIg3WyEfh1s/qCYiLgz64=;
+	b=V5Heksy8M8Ig9alvWzbhQp6mRru2JInfoOCuxkdaZzyxYTS2wVeOB2UsoETDjKPIXwK8Iv
+	AsVzN00fL506S8IzIu2IhKKrDrKO9jpu9WNEpLUHLfyvrPJ7XisroQVCHoIXTRZhPFBCt/
+	TcrhbUCb9VN4gA4u0aNnk98xacDzRpE=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-250-zJ_0kpNLMbqgjL8Oyj5Llw-1; Sat,
- 25 Apr 2026 08:56:07 -0400
-X-MC-Unique: zJ_0kpNLMbqgjL8Oyj5Llw-1
-X-Mimecast-MFC-AGG-ID: zJ_0kpNLMbqgjL8Oyj5Llw_1777121765
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-207-QzFmg9yUPbO98TKq5J007A-1; Mon,
+ 27 Apr 2026 11:30:03 -0400
+X-MC-Unique: QzFmg9yUPbO98TKq5J007A-1
+X-Mimecast-MFC-AGG-ID: QzFmg9yUPbO98TKq5J007A_1777303801
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 991C319560AF;
-	Sat, 25 Apr 2026 12:56:05 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.44.48.17])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 953061944CED;
-	Sat, 25 Apr 2026 12:56:02 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 652121956054;
+	Mon, 27 Apr 2026 15:30:01 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.44.32.126])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 63455180047F;
+	Mon, 27 Apr 2026 15:29:57 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>
 Cc: David Howells <dhowells@redhat.com>,
@@ -51,685 +49,197 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-cifs@vger.kernel.org,
 	ceph-devel@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Marc Dionne <marc.dionne@auristor.com>
-Subject: [PATCH v3 19/19] afs: Fix RCU handling of symlinks in RCU pathwalk
-Date: Sat, 25 Apr 2026 13:54:23 +0100
-Message-ID: <20260425125426.3855807-20-dhowells@redhat.com>
-In-Reply-To: <20260425125426.3855807-1-dhowells@redhat.com>
-References: <20260425125426.3855807-1-dhowells@redhat.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 00/22] netfs: Miscellaneous fixes
+Date: Mon, 27 Apr 2026 16:29:27 +0100
+Message-ID: <20260427152953.180038-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-MFC-PROC-ID: lz8etkHt_WlpHQle95mrVHqFWiXU_B4yAN3CyZ2-SFU_1777121765
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-MFC-PROC-ID: PtYDItk-F0mhY7CzOEemL46-jl2jGjEh4yVhZ44YtGE_1777303801
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-The afs filesystem in the kernel doesn't handle RCU pathwalk of symlinks
-correctly.  The problem is twofold: firstly, it doesn't treat the buffer
-pointers as RCU pointers with the appropriate barriering; and secondly, it
-can race with another thread updating the contents of the symlink because a
-third party updated it on the server.
+Hi Christian,
 
-Fix this by the following means:
+Here are the outstanding miscellaneous fixes for netfslib gathered together
+and with some fixes-to-fixes folded down and one rearrangement.  Various
+Sashiko review comments[1][2][3] are addressed:
 
- (1) Keep a separate copy of the symlink contents with an rcu_head.  This
-     is always going to be a lot smaller than a page, so it can be
-     kmalloc'd and save quite a bit of memory.  It also needs a refcount
-     for non-RCU pathwalk.
+ (1) Fix subrequest cancellation cleanup in DIO read and single-read.
 
- (2) Split the symlink read and write-to-cache routines in afs from those
-     for directories.
+ (2) Fix read and write result collection to use barriering correctly to
+     access a request's subrequest lists without taking a lock.
 
- (3) Discard the I/O buffer as soon as the write-to-cache completes as this
-     is a full page (plus a folio_queue).
+     This adds list_add_tail_release() and list_first_entry_acquire() to
+     appropriate incorporate barriering into some list functions.
 
- (4) If there's no cache, discard the I/O buffer immediately after reading
-     and copying if there is no cache.
+ (3) Fix missing locking around retry adding new subrequests.
 
-Fixes: 6698c02d64b2 ("afs: Locally initialise the contents of a new symlink on creation")
-Closes: https://sashiko.dev/#/patchset/20260326104544.509518-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-cc: linux-fsdevel@vger.kernel.org
----
- fs/afs/Makefile    |   1 +
- fs/afs/dir.c       |  33 +++++--
- fs/afs/fsclient.c  |   4 +-
- fs/afs/inode.c     | 105 +-------------------
- fs/afs/internal.h  |  35 +++++--
- fs/afs/symlink.c   | 242 +++++++++++++++++++++++++++++++++++++++++++++
- fs/afs/yfsclient.c |   4 +-
- 7 files changed, 303 insertions(+), 121 deletions(-)
+ (4) Fix netfs_read_to_pagecache() to pause on subrequest I/O failure.
+
+ (5) Fix the potential for 64-bit tearing on a 32-bit machine when reading
+     netfs_inode->remote_i_size and ->zero_point by using much the same
+     mechanism as is used for ->i_size.
+
+ (6) Fix the calculation of zero_point in netfs_release_folio() to limit it
+     to ->remote_i_size, not ->i_size.
+
+ (7) Fix triggering of a VM_BUG_ON_FOLIO() in netfs_write_begin().
+
+ (8) Fix error handling in netfs_extract_user_iter().
+
+ (9) Fix netfs_invalidate_folio() to clear the folio dirty bit if all dirty
+     data removed.
+
+(10) Defer the emission of trace_netfs_folio() in netfs_perform_write().
+     This allows the next patch to emit the correct traces.
+
+(11) Fix the handling of a partially failed copy (ie. EFAULT) into a
+     streaming write folio.  Also remove the netfs_folio if a streaming
+     write folio is entirely overwritten.
+
+(12) Fix netfs_read_gaps() to remove the netfs_folio from a filled folio.
+
+(13) Fix netfs_perform_write() to not disable streaming writes when writing
+     to an fd that's open O_RDWR.
+
+(14) Fix an early put of the sink page used in netfs_read_gaps(), before
+     the request has completed.
+
+(15) Fix request leak in netfs_write_begin() error handling.
+
+(16) Fix a potential UAF in netfs_unlock_abandoned_read_pages() due to
+     trying to check index of each folio we're abandoning to see if that
+     folio is actually owned by the caller (in which case, we're not
+     actually allowed to dereference it).
+
+(17) Fix a potentially uninitialised error value in
+     netfs_extract_user_iter().
+
+(18) Fix incorrect adjustment of dirty region when partially invalidating a
+     streaming write folio.
+
+(19) Fix the handling of folio->private in netfs_perform_write() and the
+     attached netfs_folio and/or group when a streaming write folio is
+     modified.
+
+(20) Fix netfs_read_folio() to wait on writeback first (it holds the folio
+     lock) otherwise we aren't allowed to look at the netfs_folio struct as
+     that could be modified at any time by the writeback collector.
+
+(21) Fix write skipping in dir/symlink writepages.
+
+(22) Fix the locking used by afs_get_link().
+
+The patches can also be found here:
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-fixes
+
+Thanks,
+David
+
+[1] https://sashiko.dev/#/patchset/20260414082004.3756080-1-dhowells%40redhat.com
+[2] https://sashiko.dev/#/patchset/20260326104544.509518-1-dhowells%40redhat.com
+[3] https://sashiko.dev/#/patchset/20260425125426.3855807-1-dhowells%40redhat.com
+
+Changes
+=======
+ver #4)
+- Rebase on v7.0-rc1
+- Fix latest set of Sashiko issues[3].
+  - Move the ->subrequests barriering patch up front as it modifies
+    linux/list.h.
+  - Split that barriering patch and make the first patch to harmonise the
+    order of adding a read subreq to the queue, for buffered, dio and
+    single reads and to fix cancellation on prep failure.  The second patch
+    then fixes the barriering.
+  - Lock ->subrequests in retry when adding in extra subreqs.
+  - Use a spinlock as well when modifying ->zero_point with a seq lock.
+  - Atomically check and change ->zero_point when bumping it up.
+  - Merged the two patches sorting out the locking in afs symlink handling,
+    then fixed a number of issues in them.
+- Added a patch to make afs dir and symlink writepages skip if the
+  validate_lock is held and WB_SYNC_NONE is set.
+
+ver #3)
+- Rebase on linus/master.
+- Consolidate the various sets of fixes for reposting.
+- Fold down fixes-to-fixes.
+- Move the tracing change in netfs_perform_write() down to below the patch
+  it primarily affects.
+
+base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
+
+David Howells (20):
+  netfs: Fix cancellation of a DIO and single read subrequests
+  netfs: Fix missing barriers when accessing stream->subrequests
+    locklessly
+  netfs: Fix missing locking around retry adding new subreqs
+  netfs: Fix netfs_read_to_pagecache() to pause on subreq failure
+  netfs: Fix potential for tearing in ->remote_i_size and ->zero_point
+  netfs: Fix zeropoint update where i_size > remote_i_size
+  netfs: Fix netfs_invalidate_folio() to clear dirty bit if all changes
+    gone
+  netfs: Defer the emission of trace_netfs_folio()
+  netfs: Fix streaming write being overwritten
+  netfs: Fix read-gaps to remove netfs_folio from filled folio
+  netfs: Fix write streaming disablement if fd open O_RDWR
+  netfs: Fix early put of sink folio in netfs_read_gaps()
+  netfs: Fix leak of request in netfs_write_begin() error handling
+  netfs: Fix potential UAF in netfs_unlock_abandoned_read_pages()
+  netfs: Fix potential uninitialised var in netfs_extract_user_iter()
+  netfs: Fix partial invalidation of streaming-write folio
+  netfs: Fix folio->private handling in netfs_perform_write()
+  netfs: Fix netfs_read_folio() to wait on writeback
+  netfs, afs: Fix write skipping in dir/link writepages
+  afs: Fix the locking used by afs_get_link()
+
+Paulo Alcantara (1):
+  netfs: fix error handling in netfs_extract_user_iter()
+
+Viacheslav Dubeyko (1):
+  netfs: fix VM_BUG_ON_FOLIO() issue in netfs_write_begin() call
+
+ fs/9p/vfs_inode.c            |   2 +-
+ fs/9p/vfs_inode_dotl.c       |   4 +-
+ fs/afs/Makefile              |   1 +
+ fs/afs/dir.c                 |  76 ++++----
+ fs/afs/fsclient.c            |   4 +-
+ fs/afs/inode.c               | 104 +----------
+ fs/afs/internal.h            |  34 +++-
+ fs/afs/symlink.c             | 267 +++++++++++++++++++++++++++++
+ fs/afs/validation.c          |   8 +-
+ fs/afs/write.c               |   2 +-
+ fs/afs/yfsclient.c           |   4 +-
+ fs/netfs/buffered_read.c     |  64 ++++---
+ fs/netfs/buffered_write.c    | 147 ++++++++++------
+ fs/netfs/direct_read.c       |  19 +-
+ fs/netfs/direct_write.c      |   4 +-
+ fs/netfs/internal.h          |   2 +
+ fs/netfs/iterator.c          |  15 +-
+ fs/netfs/misc.c              |  21 ++-
+ fs/netfs/read_collect.c      |   6 +-
+ fs/netfs/read_retry.c        |  13 +-
+ fs/netfs/read_single.c       |  20 +--
+ fs/netfs/write_collect.c     |   7 +-
+ fs/netfs/write_issue.c       |   8 +-
+ fs/netfs/write_retry.c       |   2 +
+ fs/smb/client/cifsfs.c       |  28 +--
+ fs/smb/client/cifssmb.c      |   2 +-
+ fs/smb/client/file.c         |   9 +-
+ fs/smb/client/inode.c        |   9 +-
+ fs/smb/client/readdir.c      |   3 +-
+ fs/smb/client/smb2ops.c      |  16 +-
+ fs/smb/client/smb2pdu.c      |   2 +-
+ include/linux/list.h         |  37 ++++
+ include/linux/netfs.h        | 324 +++++++++++++++++++++++++++++++++--
+ include/trace/events/netfs.h |   8 +
+ 34 files changed, 949 insertions(+), 323 deletions(-)
  create mode 100644 fs/afs/symlink.c
-
-diff --git a/fs/afs/Makefile b/fs/afs/Makefile
-index b49b8fe682f3..0d8f1982d596 100644
---- a/fs/afs/Makefile
-+++ b/fs/afs/Makefile
-@@ -30,6 +30,7 @@ kafs-y := \
- 	server.o \
- 	server_list.o \
- 	super.o \
-+	symlink.o \
- 	validation.o \
- 	vlclient.o \
- 	vl_alias.o \
-diff --git a/fs/afs/dir.c b/fs/afs/dir.c
-index aaaa55878ffd..40f6791114ec 100644
---- a/fs/afs/dir.c
-+++ b/fs/afs/dir.c
-@@ -68,7 +68,7 @@ const struct inode_operations afs_dir_inode_operations = {
- };
- 
- const struct address_space_operations afs_dir_aops = {
--	.writepages	= afs_single_writepages,
-+	.writepages	= afs_dir_writepages,
- };
- 
- const struct dentry_operations afs_fs_dentry_operations = {
-@@ -294,7 +294,7 @@ static ssize_t afs_do_read_single(struct afs_vnode *dvnode, struct file *file)
- 	return ret;
- }
- 
--ssize_t afs_read_single(struct afs_vnode *dvnode, struct file *file)
-+static ssize_t afs_read_single(struct afs_vnode *dvnode, struct file *file)
- {
- 	ssize_t ret;
- 
-@@ -1763,13 +1763,20 @@ static int afs_link(struct dentry *from, struct inode *dir,
- 	return ret;
- }
- 
-+static void afs_symlink_put(struct afs_operation *op)
-+{
-+	kfree(op->create.symlink);
-+	op->create.symlink = NULL;
-+	afs_create_put(op);
-+}
-+
- static const struct afs_operation_ops afs_symlink_operation = {
- 	.issue_afs_rpc	= afs_fs_symlink,
- 	.issue_yfs_rpc	= yfs_fs_symlink,
- 	.success	= afs_create_success,
- 	.aborted	= afs_check_for_remote_deletion,
- 	.edit_dir	= afs_create_edit_dir,
--	.put		= afs_create_put,
-+	.put		= afs_symlink_put,
- };
- 
- /*
-@@ -1779,7 +1786,9 @@ static int afs_symlink(struct mnt_idmap *idmap, struct inode *dir,
- 		       struct dentry *dentry, const char *content)
- {
- 	struct afs_operation *op;
-+	struct afs_symlink *symlink;
- 	struct afs_vnode *dvnode = AFS_FS_I(dir);
-+	size_t clen = strlen(content);
- 	int ret;
- 
- 	_enter("{%llx:%llu},{%pd},%s",
-@@ -1791,12 +1800,20 @@ static int afs_symlink(struct mnt_idmap *idmap, struct inode *dir,
- 		goto error;
- 
- 	ret = -EINVAL;
--	if (strlen(content) >= AFSPATHMAX)
-+	if (clen >= AFSPATHMAX)
-+		goto error;
-+
-+	ret = -ENOMEM;
-+	symlink = kmalloc_flex(struct afs_symlink, content, clen + 1, GFP_KERNEL);
-+	if (!symlink)
- 		goto error;
-+	refcount_set(&symlink->ref, 1);
-+	memcpy(symlink->content, content, clen + 1);
- 
- 	op = afs_alloc_operation(NULL, dvnode->volume);
- 	if (IS_ERR(op)) {
- 		ret = PTR_ERR(op);
-+		kfree(symlink);
- 		goto error;
- 	}
- 
-@@ -1808,7 +1825,7 @@ static int afs_symlink(struct mnt_idmap *idmap, struct inode *dir,
- 	op->dentry		= dentry;
- 	op->ops			= &afs_symlink_operation;
- 	op->create.reason	= afs_edit_dir_for_symlink;
--	op->create.symlink	= content;
-+	op->create.symlink	= symlink;
- 	op->mtime		= current_time(dir);
- 	ret = afs_do_sync_operation(op);
- 	afs_dir_unuse_cookie(dvnode, ret);
-@@ -2192,10 +2209,10 @@ static int afs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
- }
- 
- /*
-- * Write the file contents to the cache as a single blob.
-+ * Write the directory contents to the cache as a single blob.
-  */
--int afs_single_writepages(struct address_space *mapping,
--			  struct writeback_control *wbc)
-+int afs_dir_writepages(struct address_space *mapping,
-+		       struct writeback_control *wbc)
- {
- 	struct afs_vnode *dvnode = AFS_FS_I(mapping->host);
- 	struct iov_iter iter;
-diff --git a/fs/afs/fsclient.c b/fs/afs/fsclient.c
-index 95494d5f2b8a..a2ffd60889f8 100644
---- a/fs/afs/fsclient.c
-+++ b/fs/afs/fsclient.c
-@@ -886,7 +886,7 @@ void afs_fs_symlink(struct afs_operation *op)
- 	namesz = name->len;
- 	padsz = (4 - (namesz & 3)) & 3;
- 
--	c_namesz = strlen(op->create.symlink);
-+	c_namesz = strlen(op->create.symlink->content);
- 	c_padsz = (4 - (c_namesz & 3)) & 3;
- 
- 	reqsz = (6 * 4) + namesz + padsz + c_namesz + c_padsz + (6 * 4);
-@@ -910,7 +910,7 @@ void afs_fs_symlink(struct afs_operation *op)
- 		bp = (void *) bp + padsz;
- 	}
- 	*bp++ = htonl(c_namesz);
--	memcpy(bp, op->create.symlink, c_namesz);
-+	memcpy(bp, op->create.symlink->content, c_namesz);
- 	bp = (void *) bp + c_namesz;
- 	if (c_padsz > 0) {
- 		memset(bp, 0, c_padsz);
-diff --git a/fs/afs/inode.c b/fs/afs/inode.c
-index 5207c4a003f6..ff2b8fc7f3df 100644
---- a/fs/afs/inode.c
-+++ b/fs/afs/inode.c
-@@ -25,105 +25,6 @@
- #include "internal.h"
- #include "afs_fs.h"
- 
--void afs_init_new_symlink(struct afs_vnode *vnode, struct afs_operation *op)
--{
--	size_t size = strlen(op->create.symlink) + 1;
--	size_t dsize = 0;
--	char *p;
--
--	if (netfs_alloc_folioq_buffer(NULL, &vnode->directory, &dsize, size,
--				      mapping_gfp_mask(vnode->netfs.inode.i_mapping)) < 0)
--		return;
--
--	vnode->directory_size = dsize;
--	p = kmap_local_folio(folioq_folio(vnode->directory, 0), 0);
--	memcpy(p, op->create.symlink, size);
--	kunmap_local(p);
--	set_bit(AFS_VNODE_DIR_READ, &vnode->flags);
--	netfs_single_mark_inode_dirty(&vnode->netfs.inode);
--}
--
--static void afs_put_link(void *arg)
--{
--	struct folio *folio = virt_to_folio(arg);
--
--	kunmap_local(arg);
--	folio_put(folio);
--}
--
--const char *afs_get_link(struct dentry *dentry, struct inode *inode,
--			 struct delayed_call *callback)
--{
--	struct afs_vnode *vnode = AFS_FS_I(inode);
--	struct folio *folio;
--	char *content;
--	ssize_t ret;
--
--	if (!dentry) {
--		/* RCU pathwalk. */
--		if (!test_bit(AFS_VNODE_DIR_READ, &vnode->flags) || !afs_check_validity(vnode))
--			return ERR_PTR(-ECHILD);
--		goto good;
--	}
--
--	if (test_bit(AFS_VNODE_DIR_READ, &vnode->flags))
--		goto fetch;
--
--	ret = afs_validate(vnode, NULL);
--	if (ret < 0)
--		return ERR_PTR(ret);
--
--	if (!test_and_clear_bit(AFS_VNODE_ZAP_DATA, &vnode->flags) &&
--	    test_bit(AFS_VNODE_DIR_READ, &vnode->flags))
--		goto good;
--
--fetch:
--	if (down_write_killable(&vnode->validate_lock) < 0)
--		return ERR_PTR(-ERESTARTSYS);
--	if (test_and_clear_bit(AFS_VNODE_ZAP_DATA, &vnode->flags) ||
--	    !test_bit(AFS_VNODE_DIR_READ, &vnode->flags)) {
--		ret = afs_read_single(vnode, NULL);
--		if (ret < 0) {
--			up_write(&vnode->validate_lock);
--			return ERR_PTR(ret);
--		}
--		set_bit(AFS_VNODE_DIR_READ, &vnode->flags);
--	}
--
--	up_write(&vnode->validate_lock);
--
--good:
--	folio = folioq_folio(vnode->directory, 0);
--	folio_get(folio);
--	content = kmap_local_folio(folio, 0);
--	set_delayed_call(callback, afs_put_link, content);
--	return content;
--}
--
--int afs_readlink(struct dentry *dentry, char __user *buffer, int buflen)
--{
--	DEFINE_DELAYED_CALL(done);
--	const char *content;
--	int len;
--
--	content = afs_get_link(dentry, d_inode(dentry), &done);
--	if (IS_ERR(content)) {
--		do_delayed_call(&done);
--		return PTR_ERR(content);
--	}
--
--	len = umin(strlen(content), buflen);
--	if (copy_to_user(buffer, content, len))
--		len = -EFAULT;
--	do_delayed_call(&done);
--	return len;
--}
--
--static const struct inode_operations afs_symlink_inode_operations = {
--	.get_link	= afs_get_link,
--	.readlink	= afs_readlink,
--};
--
- static noinline void dump_vnode(struct afs_vnode *vnode, struct afs_vnode *parent_vnode)
- {
- 	static unsigned long once_only;
-@@ -223,7 +124,7 @@ static int afs_inode_init_from_status(struct afs_operation *op,
- 			inode->i_mode	= S_IFLNK | status->mode;
- 			inode->i_op	= &afs_symlink_inode_operations;
- 		}
--		inode->i_mapping->a_ops	= &afs_dir_aops;
-+		inode->i_mapping->a_ops	= &afs_symlink_aops;
- 		inode_nohighmem(inode);
- 		mapping_set_release_always(inode->i_mapping);
- 		break;
-@@ -765,12 +666,14 @@ void afs_evict_inode(struct inode *inode)
- 			.range_end = LLONG_MAX,
- 		};
- 
--		afs_single_writepages(inode->i_mapping, &wbc);
-+		inode->i_mapping->a_ops->writepages(inode->i_mapping, &wbc);
- 	}
- 
- 	netfs_wait_for_outstanding_io(inode);
- 	truncate_inode_pages_final(&inode->i_data);
- 	netfs_free_folioq_buffer(vnode->directory);
-+	if (vnode->symlink)
-+		afs_replace_symlink(vnode, NULL);
- 
- 	afs_set_cache_aux(vnode, &aux);
- 	netfs_clear_inode_writeback(inode, &aux);
-diff --git a/fs/afs/internal.h b/fs/afs/internal.h
-index 599353c33337..c7adc3677e41 100644
---- a/fs/afs/internal.h
-+++ b/fs/afs/internal.h
-@@ -710,6 +710,7 @@ struct afs_vnode {
- #define AFS_VNODE_DIR_READ	11		/* Set if we've read a dir's contents */
- 
- 	struct folio_queue	*directory;	/* Directory contents */
-+	struct afs_symlink __rcu *symlink;	/* Symlink content */
- 	struct list_head	wb_keys;	/* List of keys available for writeback */
- 	struct list_head	pending_locks;	/* locks waiting to be granted */
- 	struct list_head	granted_locks;	/* locks granted on this file */
-@@ -776,6 +777,15 @@ struct afs_permits {
- 	struct afs_permit	permits[] __counted_by(nr_permits);	/* List of permits sorted by key pointer */
- };
- 
-+/*
-+ * Copy of symlink content for normal use.
-+ */
-+struct afs_symlink {
-+	struct rcu_head		rcu;
-+	refcount_t		ref;
-+	char			content[];
-+};
-+
- /*
-  * Error prioritisation and accumulation.
-  */
-@@ -887,7 +897,7 @@ struct afs_operation {
- 		struct {
- 			int	reason;		/* enum afs_edit_dir_reason */
- 			mode_t	mode;
--			const char *symlink;
-+			struct afs_symlink *symlink;
- 		} create;
- 		struct {
- 			bool	need_rehash;
-@@ -1098,13 +1108,12 @@ extern const struct inode_operations afs_dir_inode_operations;
- extern const struct address_space_operations afs_dir_aops;
- extern const struct dentry_operations afs_fs_dentry_operations;
- 
--ssize_t afs_read_single(struct afs_vnode *dvnode, struct file *file);
- ssize_t afs_read_dir(struct afs_vnode *dvnode, struct file *file)
- 	__acquires(&dvnode->validate_lock);
- extern void afs_d_release(struct dentry *);
- extern void afs_check_for_remote_deletion(struct afs_operation *);
--int afs_single_writepages(struct address_space *mapping,
--			  struct writeback_control *wbc);
-+int afs_dir_writepages(struct address_space *mapping,
-+		       struct writeback_control *wbc);
- 
- /*
-  * dir_edit.c
-@@ -1246,10 +1255,6 @@ extern void afs_fs_probe_cleanup(struct afs_net *);
-  */
- extern const struct afs_operation_ops afs_fetch_status_operation;
- 
--void afs_init_new_symlink(struct afs_vnode *vnode, struct afs_operation *op);
--const char *afs_get_link(struct dentry *dentry, struct inode *inode,
--			 struct delayed_call *callback);
--int afs_readlink(struct dentry *dentry, char __user *buffer, int buflen);
- extern void afs_vnode_commit_status(struct afs_operation *, struct afs_vnode_param *);
- extern int afs_fetch_status(struct afs_vnode *, struct key *, bool, afs_access_t *);
- extern int afs_ilookup5_test_by_fid(struct inode *, void *);
-@@ -1599,6 +1604,20 @@ void afs_detach_volume_from_servers(struct afs_volume *volume, struct afs_server
- extern int __init afs_fs_init(void);
- extern void afs_fs_exit(void);
- 
-+/*
-+ * symlink.c
-+ */
-+extern const struct inode_operations afs_symlink_inode_operations;
-+extern const struct address_space_operations afs_symlink_aops;
-+
-+void afs_replace_symlink(struct afs_vnode *vnode, struct afs_symlink *symlink);
-+void afs_init_new_symlink(struct afs_vnode *vnode, struct afs_operation *op);
-+const char *afs_get_link(struct dentry *dentry, struct inode *inode,
-+			 struct delayed_call *callback);
-+int afs_readlink(struct dentry *dentry, char __user *buffer, int buflen);
-+int afs_symlink_writepages(struct address_space *mapping,
-+			   struct writeback_control *wbc);
-+
- /*
-  * validation.c
-  */
-diff --git a/fs/afs/symlink.c b/fs/afs/symlink.c
-new file mode 100644
-index 000000000000..8d2521c5f19d
---- /dev/null
-+++ b/fs/afs/symlink.c
-@@ -0,0 +1,242 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/* AFS filesystem symbolic link handling
-+ *
-+ * Copyright (C) 2026 Red Hat, Inc. All Rights Reserved.
-+ * Written by David Howells (dhowells@redhat.com)
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/fs.h>
-+#include <linux/namei.h>
-+#include <linux/pagemap.h>
-+#include <linux/iov_iter.h>
-+#include "internal.h"
-+
-+static void afs_put_symlink(struct afs_symlink *symlink)
-+{
-+	if (refcount_dec_and_test(&symlink->ref))
-+		kfree_rcu(symlink, rcu);
-+}
-+
-+void afs_replace_symlink(struct afs_vnode *vnode, struct afs_symlink *symlink)
-+{
-+	struct afs_symlink *old;
-+
-+	old = rcu_replace_pointer(vnode->symlink, symlink,
-+				  lockdep_is_held(&vnode->validate_lock));
-+	if (old)
-+		afs_put_symlink(old);
-+}
-+
-+/*
-+ * Set up a locally created symlink inode for immediate write to the cache.
-+ */
-+void afs_init_new_symlink(struct afs_vnode *vnode, struct afs_operation *op)
-+{
-+	size_t dsize = 0;
-+	size_t size = strlen(op->create.symlink->content) + 1;
-+	char *p;
-+
-+	rcu_assign_pointer(vnode->symlink, op->create.symlink);
-+	op->create.symlink = NULL;
-+
-+	if (!fscache_cookie_enabled(netfs_i_cookie(&vnode->netfs)))
-+		return;
-+
-+	if (netfs_alloc_folioq_buffer(NULL, &vnode->directory, &dsize, size,
-+				      mapping_gfp_mask(vnode->netfs.inode.i_mapping)) < 0)
-+		return;
-+
-+	vnode->directory_size = dsize;
-+	p = kmap_local_folio(folioq_folio(vnode->directory, 0), 0);
-+	memcpy(p, vnode->symlink, size);
-+	kunmap_local(p);
-+	netfs_single_mark_inode_dirty(&vnode->netfs.inode);
-+}
-+
-+/*
-+ * Read a symlink in a single download.
-+ */
-+static ssize_t afs_do_read_symlink(struct afs_vnode *vnode)
-+{
-+	struct afs_symlink *symlink;
-+	struct iov_iter iter;
-+	ssize_t ret;
-+	loff_t i_size;
-+
-+	i_size = i_size_read(&vnode->netfs.inode);
-+	if (i_size > PAGE_SIZE - 1) {
-+		trace_afs_file_error(vnode, -EFBIG, afs_file_error_dir_big);
-+		return -EFBIG;
-+	}
-+
-+	if (!vnode->directory) {
-+		size_t cur_size = 0;
-+
-+		ret = netfs_alloc_folioq_buffer(NULL,
-+						&vnode->directory, &cur_size, PAGE_SIZE,
-+						mapping_gfp_mask(vnode->netfs.inode.i_mapping));
-+		vnode->directory_size = PAGE_SIZE - 1;
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	iov_iter_folio_queue(&iter, ITER_DEST, vnode->directory, 0, 0, PAGE_SIZE);
-+
-+	/* AFS requires us to perform the read of a symlink as a single unit to
-+	 * avoid issues with the content being changed between reads.
-+	 */
-+	ret = netfs_read_single(&vnode->netfs.inode, NULL, &iter);
-+	if (ret >= 0) {
-+		i_size = i_size_read(&vnode->netfs.inode);
-+		if (i_size > PAGE_SIZE - 1) {
-+			trace_afs_file_error(vnode, -EFBIG, afs_file_error_dir_big);
-+			return -EFBIG;
-+		}
-+		vnode->directory_size = i_size;
-+
-+		/* Copy the symlink. */
-+		symlink = kmalloc_flex(struct afs_symlink, content, i_size + 1,
-+				       GFP_KERNEL);
-+		if (!symlink)
-+			return -ENOMEM;
-+
-+		refcount_set(&symlink->ref, 1);
-+		symlink->content[i_size] = 0;
-+
-+		const char *s = kmap_local_folio(folioq_folio(vnode->directory, 0), 0);
-+
-+		memcpy(symlink->content, s, i_size);
-+		kunmap_local(s);
-+
-+		afs_replace_symlink(vnode, symlink);
-+	}
-+
-+	if (!fscache_cookie_enabled(netfs_i_cookie(&vnode->netfs))) {
-+		netfs_free_folioq_buffer(vnode->directory);
-+		vnode->directory = NULL;
-+		vnode->directory_size = 0;
-+	}
-+
-+	return ret;
-+}
-+
-+static ssize_t afs_read_symlink(struct afs_vnode *vnode)
-+{
-+	ssize_t ret;
-+
-+	fscache_use_cookie(afs_vnode_cache(vnode), false);
-+	ret = afs_do_read_symlink(vnode);
-+	fscache_unuse_cookie(afs_vnode_cache(vnode), NULL, NULL);
-+	return ret;
-+}
-+
-+static void afs_put_link(void *arg)
-+{
-+	afs_put_symlink(arg);
-+}
-+
-+const char *afs_get_link(struct dentry *dentry, struct inode *inode,
-+			 struct delayed_call *callback)
-+{
-+	struct afs_symlink *symlink;
-+	struct afs_vnode *vnode = AFS_FS_I(inode);
-+	ssize_t ret;
-+
-+	if (!dentry) {
-+		/* RCU pathwalk. */
-+		if (!vnode->symlink || !afs_check_validity(vnode))
-+			return ERR_PTR(-ECHILD);
-+		set_delayed_call(callback, NULL, NULL);
-+		return rcu_dereference(vnode->symlink)->content;
-+	}
-+
-+	if (vnode->symlink) {
-+		ret = afs_validate(vnode, NULL);
-+		if (ret < 0)
-+			return ERR_PTR(ret);
-+
-+		down_read(&vnode->validate_lock);
-+		if (!test_bit(AFS_VNODE_ZAP_DATA, &vnode->flags))
-+			goto good;
-+		up_read(&vnode->validate_lock);
-+	}
-+
-+	if (down_write_killable(&vnode->validate_lock) < 0)
-+		return ERR_PTR(-ERESTARTSYS);
-+	if (!vnode->symlink ||
-+	    test_and_clear_bit(AFS_VNODE_ZAP_DATA, &vnode->flags)) {
-+		ret = afs_read_symlink(vnode);
-+		if (ret < 0) {
-+			up_write(&vnode->validate_lock);
-+			return ERR_PTR(ret);
-+		}
-+	}
-+
-+	downgrade_write(&vnode->validate_lock);
-+	
-+good:
-+	symlink = rcu_dereference_protected(vnode->symlink,
-+					    lockdep_is_held(&vnode->validate_lock));
-+	refcount_inc(&symlink->ref);
-+	up_read(&vnode->validate_lock);
-+
-+	set_delayed_call(callback, afs_put_link, symlink);
-+	return symlink->content;
-+}
-+
-+int afs_readlink(struct dentry *dentry, char __user *buffer, int buflen)
-+{
-+	DEFINE_DELAYED_CALL(done);
-+	const char *content;
-+	int len;
-+
-+	content = afs_get_link(dentry, d_inode(dentry), &done);
-+	if (IS_ERR(content)) {
-+		do_delayed_call(&done);
-+		return PTR_ERR(content);
-+	}
-+
-+	len = umin(strlen(content), buflen);
-+	if (copy_to_user(buffer, content, len))
-+		len = -EFAULT;
-+	do_delayed_call(&done);
-+	return len;
-+}
-+
-+/*
-+ * Write the symlink contents to the cache as a single blob.  We then throw
-+ * away the page we used to receive it.
-+ */
-+int afs_symlink_writepages(struct address_space *mapping,
-+			   struct writeback_control *wbc)
-+{
-+	struct afs_vnode *vnode = AFS_FS_I(mapping->host);
-+	struct iov_iter iter;
-+	int ret = 0;
-+
-+	down_write(&vnode->validate_lock);
-+
-+	if (vnode->directory &&
-+	    atomic64_read(&vnode->cb_expires_at) != AFS_NO_CB_PROMISE) {
-+		iov_iter_folio_queue(&iter, ITER_SOURCE, vnode->directory, 0, 0,
-+				     i_size_read(&vnode->netfs.inode));
-+		ret = netfs_writeback_single(mapping, wbc, &iter);
-+	}
-+
-+	netfs_free_folioq_buffer(vnode->directory);
-+	vnode->directory = NULL;
-+	vnode->directory_size = 0;
-+
-+	up_write(&vnode->validate_lock);
-+	return ret;
-+}
-+
-+const struct inode_operations afs_symlink_inode_operations = {
-+	.get_link	= afs_get_link,
-+	.readlink	= afs_readlink,
-+};
-+
-+const struct address_space_operations afs_symlink_aops = {
-+	.writepages	= afs_symlink_writepages,
-+};
-diff --git a/fs/afs/yfsclient.c b/fs/afs/yfsclient.c
-index 24fb562ebd33..d941179730a9 100644
---- a/fs/afs/yfsclient.c
-+++ b/fs/afs/yfsclient.c
-@@ -960,7 +960,7 @@ void yfs_fs_symlink(struct afs_operation *op)
- 
- 	_enter("");
- 
--	contents_sz = strlen(op->create.symlink);
-+	contents_sz = strlen(op->create.symlink->content);
- 	call = afs_alloc_flat_call(op->net, &yfs_RXYFSSymlink,
- 				   sizeof(__be32) +
- 				   sizeof(struct yfs_xdr_RPCFlags) +
-@@ -981,7 +981,7 @@ void yfs_fs_symlink(struct afs_operation *op)
- 	bp = xdr_encode_u32(bp, 0); /* RPC flags */
- 	bp = xdr_encode_YFSFid(bp, &dvp->fid);
- 	bp = xdr_encode_name(bp, name);
--	bp = xdr_encode_string(bp, op->create.symlink, contents_sz);
-+	bp = xdr_encode_string(bp, op->create.symlink->content, contents_sz);
- 	bp = xdr_encode_YFSStoreStatus(bp, &mode, &op->mtime);
- 	yfs_check_req(call, bp);
- 
 
