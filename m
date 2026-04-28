@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9693A480DD1
-	for <netfs@lists.linux.dev>; Tue, 28 Apr 2026 13:19:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3FFF481237
+	for <netfs@lists.linux.dev>; Tue, 28 Apr 2026 13:19:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777382396; cv=none; b=Vso+Pq45O/t10250r4xjJur9DZH+nTFNo3nGEkbpkHdVWdHGkMA3YajYfEdzwyDlbekZRzNcli8lF23dHl3o+tJ3OqLOZw0HF/zao0KC8AMcS7PHqye2WitIh6GasbnhTOGLLYrM6s65Vz07nqqRt9ym/6w4AoMOgImtDGW5dBw=
+	t=1777382399; cv=none; b=pXNjd8vosftgNfZLoizX3+YkR3Fb8Z4E5fF6MOiIjaVdIswfXFC7zpyToR/IT56yQaCs7P6ZfHAcluDWsztYz2p3lrhB0jzlc/djLxSLl/stKoI39M0ZSqgbSYOeN2IAxZW7fYyGDrhLs9SKHsknqh7f89jm01J/DbL8UiZmOb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777382396; c=relaxed/simple;
-	bh=lShWzYTWI8ZUl/3TWOlKibNVqtrcytr9UqfpImgWSR8=;
+	s=arc-20240116; t=1777382399; c=relaxed/simple;
+	bh=hhlZHzVkZGgNw65TAqSXoZn8aY9+h0Opjd6qveHBrl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=NprWtSriD/L2gC7JuoHGjVd9FkNf31wJEcz+KfZGu43AunYBAcXczLtZF4z7xuxx9fgn9lCrqY7M2gHkA0M874o9o8X8uSsWGNjzwscRE6vEF5/n3ISLggwfDYfojwIfoJPeG/taBPxp6c5MYiqgbZ/nUjA1uvrbPBEcn/mD28g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iFzoqM6s; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:content-type; b=rhN3G1LZNE0RH1gNXqaGf4Sg716vBtpzpSJRMefv94jOFOFtniVdwx4a66i67hq99qGb1PujFe/r9eRc+boWngurB8vx4gGxWma8/ZdLjvlt15lr+rIFf48Npi91foHDwHhrUnF7Chz1+9xlF3TSSz+VnbmAJB3023pBAEznw8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RPuQu+Dl; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iFzoqM6s"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RPuQu+Dl"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777382393;
+	s=mimecast20190719; t=1777382397;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TrTX3198kpCCtDQYOVWR0o7cIHQgx0i2zjy1/WuKGSY=;
-	b=iFzoqM6s1Y8j7fGB43B9PpV4UsRcrG4CwhiVVo+tb5Vowe2AASt/u6ge19WI90SU6EbVE2
-	3mXqIVM3dkexI3HJvCtPfNvjLK7OBziLBozvmTQIIHw9FNwtnXwWl/kJz83ner4oNt5RLo
-	2G8rzx5c67Es2F7nATmJ4ul6GG+imKo=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=mt629XDWKB+tZOOSAJE2LdFWKC9Q9poIqsffgDORXAw=;
+	b=RPuQu+DlmEGOcpiI6k0mmVL4tzOWH7Pi3AxBjMaEJyy2lnCWUaT0To1YxxFnJtmjPJ9UNi
+	U0Mknm7giclIFrmNvv4n9+xxzKfq1EJ+/9p/LZB6ejsOANe6sWGA4md28Ys5n5W8+30Ezg
+	XAJuCDvMKNqSQf0vPIWXyrRmXXPTlHc=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-359-6l-1WpSePNiY0FvjE4FSxA-1; Tue,
- 28 Apr 2026 09:19:46 -0400
-X-MC-Unique: 6l-1WpSePNiY0FvjE4FSxA-1
-X-Mimecast-MFC-AGG-ID: 6l-1WpSePNiY0FvjE4FSxA_1777382383
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-474-3o6WZebRMVq1RarP7C2BZg-1; Tue,
+ 28 Apr 2026 09:19:54 -0400
+X-MC-Unique: 3o6WZebRMVq1RarP7C2BZg-1
+X-Mimecast-MFC-AGG-ID: 3o6WZebRMVq1RarP7C2BZg_1777382393
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 246C4185A926;
-	Tue, 28 Apr 2026 13:19:20 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 03053195605B;
+	Tue, 28 Apr 2026 13:19:53 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.44.32.126])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 357AA195608E;
-	Tue, 28 Apr 2026 13:19:16 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1473F180047F;
+	Tue, 28 Apr 2026 13:19:49 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>
 Cc: David Howells <dhowells@redhat.com>,
@@ -52,10 +52,10 @@ Cc: David Howells <dhowells@redhat.com>,
 	ceph-devel@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Matthew Wilcox <willy@infradead.org>
-Subject: [PATCH v5 16/24] netfs: Fix write streaming disablement if fd open O_RDWR
-Date: Tue, 28 Apr 2026 14:17:46 +0100
-Message-ID: <20260428131756.922303-17-dhowells@redhat.com>
+	Marc Dionne <marc.dionne@auristor.com>
+Subject: [PATCH v5 23/24] netfs, afs: Fix write skipping in dir/link writepages
+Date: Tue, 28 Apr 2026 14:17:53 +0100
+Message-ID: <20260428131756.922303-24-dhowells@redhat.com>
 In-Reply-To: <20260428131756.922303-1-dhowells@redhat.com>
 References: <20260428131756.922303-1-dhowells@redhat.com>
 Precedence: bulk
@@ -64,75 +64,85 @@ List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-MFC-PROC-ID: luu-0rWtJkrR62h8h6--LpAkEmCBDuX4oM08vIPzlds_1777382383
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-MFC-PROC-ID: jWozIFE_sWmkecVbYIYWZtX4e3F3w5ov0s7OEU2WW4A_1777382393
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-In netfs_perform_write(), "write streaming" (the caching of dirty data in
-dirty but !uptodate folios) is performed to avoid the need to read data
-that is just going to get immediately overwritten.  However, this is/will
-be disabled in three circumstances: if the fd is open O_RDWR, if fscache is
-in use (as we need to round out the blocks for DIO) or if content
-encryption is enabled (again for rounding out purposes).
+Fix netfs_write_single() and afs_single_writepages() to better handle a
+write that would be skipped due to lock contention and WB_SYNC_NONE by
+returning 1 from netfs_write_single() if it skipped and making
+afs_single_writepages() skip also.  If a skip occurs, the inode must be
+re-marked as the VFS may have cleared the mark.
 
-The idea behind disabling it if the fd is open O_RDWR is that we'd need to
-flush the write-streaming page before we could read the data, particularly
-through mmap.  But netfs now fills in the gaps if ->read_folio() is called
-on the page, so that is unnecessary.  Further, this doesn't actually work
-if a separate fd is open for reading.
+This is really only theoretical for directories in netfs_write_single() as
+the only path to that is through afs_single_writepages() that takes the
+->validate_lock around it, thereby serialising it.
 
-Fix this by removing the check for O_RDWR, thereby allowing streaming
-writes even when we might read.
-
-This caused a number of problems with the generic/522 xfstest, but those
-are now fixed.
-
-Fixes: c38f4e96e605 ("netfs: Provide func to copy data to pagecache for buffered write")
+Fixes: 6dd80936618c ("afs: Use netfslib for directories")
 Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: netfs@lists.linux.dev
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
 cc: linux-fsdevel@vger.kernel.org
 ---
- fs/netfs/buffered_write.c | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+ fs/afs/dir.c           | 11 ++++++++++-
+ fs/netfs/write_issue.c |  7 ++++++-
+ 2 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
-index 25571a570ac9..11a8f64b1177 100644
---- a/fs/netfs/buffered_write.c
-+++ b/fs/netfs/buffered_write.c
-@@ -203,11 +203,11 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+diff --git a/fs/afs/dir.c b/fs/afs/dir.c
+index aaaa55878ffd..d1542a1a50bf 100644
+--- a/fs/afs/dir.c
++++ b/fs/afs/dir.c
+@@ -2206,7 +2206,14 @@ int afs_single_writepages(struct address_space *mapping,
+ 	/* Need to lock to prevent the folio queue and folios from being thrown
+ 	 * away.
+ 	 */
+-	down_read(&dvnode->validate_lock);
++	if (!down_read_trylock(&dvnode->validate_lock)) {
++		if (wbc->sync_mode == WB_SYNC_NONE) {
++			/* The VFS will have undirtied the inode. */
++			netfs_single_mark_inode_dirty(&dvnode->netfs.inode);
++			return 0;
++		}
++		down_read(&dvnode->validate_lock);
++	}
+ 
+ 	if (is_dir ?
+ 	    test_bit(AFS_VNODE_DIR_VALID, &dvnode->flags) :
+@@ -2214,6 +2221,8 @@ int afs_single_writepages(struct address_space *mapping,
+ 		iov_iter_folio_queue(&iter, ITER_SOURCE, dvnode->directory, 0, 0,
+ 				     i_size_read(&dvnode->netfs.inode));
+ 		ret = netfs_writeback_single(mapping, wbc, &iter);
++		if (ret == 1)
++			ret = 0; /* Skipped write due to lock conflict. */
+ 	}
+ 
+ 	up_read(&dvnode->validate_lock);
+diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
+index 0b07ebecb157..a85ec300b79a 100644
+--- a/fs/netfs/write_issue.c
++++ b/fs/netfs/write_issue.c
+@@ -823,6 +823,9 @@ static int netfs_write_folio_single(struct netfs_io_request *wreq,
+  *
+  * Write a monolithic, non-pagecache object back to the server and/or
+  * the cache.
++ *
++ * Return: 0 if successful; 1 if skipped due to lock conflict and WB_SYNC_NONE;
++ * or a negative error code.
+  */
+ int netfs_writeback_single(struct address_space *mapping,
+ 			   struct writeback_control *wbc,
+@@ -839,8 +842,10 @@ int netfs_writeback_single(struct address_space *mapping,
+ 
+ 	if (!mutex_trylock(&ictx->wb_lock)) {
+ 		if (wbc->sync_mode == WB_SYNC_NONE) {
++			/* The VFS will have undirtied the inode. */
++			netfs_single_mark_inode_dirty(&ictx->inode);
+ 			netfs_stat(&netfs_n_wb_lock_skip);
+-			return 0;
++			return 1;
  		}
- 
- 		/* Decide how we should modify a folio.  We might be attempting
--		 * to do write-streaming, in which case we don't want to a
--		 * local RMW cycle if we can avoid it.  If we're doing local
--		 * caching or content crypto, we award that priority over
--		 * avoiding RMW.  If the file is open readably, then we also
--		 * assume that we may want to read what we wrote.
-+		 * to do write-streaming, as we don't want to a local RMW cycle
-+		 * if we can avoid it.  If we're doing local caching or content
-+		 * crypto, we award that priority over avoiding RMW.  If the
-+		 * file is open readably, then we let ->read_folio() fill in
-+		 * the gaps.
- 		 */
- 		finfo = netfs_folio_info(folio);
- 		group = netfs_folio_group(folio);
-@@ -283,12 +283,9 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 
- 		/* We don't want to do a streaming write on a file that loses
- 		 * caching service temporarily because the backing store got
--		 * culled and we don't really want to get a streaming write on
--		 * a file that's open for reading as ->read_folio() then has to
--		 * be able to flush it.
-+		 * culled.
- 		 */
--		if ((file->f_mode & FMODE_READ) ||
--		    netfs_is_cache_enabled(ctx)) {
-+		if (netfs_is_cache_enabled(ctx)) {
- 			if (finfo) {
- 				netfs_stat(&netfs_n_wh_wstream_conflict);
- 				goto flush_content;
+ 		netfs_stat(&netfs_n_wb_lock_wait);
+ 		mutex_lock(&ictx->wb_lock);
 
