@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3433F4DFE;
-	Wed, 20 May 2026 14:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 768D33F075F;
+	Wed, 20 May 2026 15:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779288951; cv=none; b=ofA0vYvZ7HahWhID5U/SxZRms00oJGTZDq554vg3ce2bZVlMrs6juyMWVNJj7reWEuqnL4bQJkp9Ho5deoIxAmuD8jklg8+9D48Hle7FDjv0hNq7Jqdrmy3fYregFb53Mdn5V5E/lgrJR4WRibDJYCs+jhl4e6lxKfDEMZ7dcyg=
+	t=1779289376; cv=none; b=g9i5gxjl3JN4DmviQahWMqIy78KzyH2m25yvSvgjfHcbawN80D0XJgGkfp7D8yXWNJoFT/vFxBvMFhhrROE1XFfH+3s2owkO8RZgXli5itvMZEbibl4jtcs4YdmWa2uwMvNT6+b0ac73zs6YOnmwX4adiOZC8n1R0M4phUEO0gQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779288951; c=relaxed/simple;
-	bh=1ZFT2xwRnipcgnYme9F+Kdg+2Jc6VYQwi8OSLQFjaao=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=neW2+egl6jXJO4b4zKYn4ccYq1bwNFbpD3NTNfiG2aGWcBYnZ5H+tUnoXz2d5ExikfWKW7X3Gb4T/FNekLlS5nMwE4sCfqQTxmDGnHU0j+h618f7k+5Zxc6fI+CAJz+/PjOJg5fYZNc6QaaYNGB/dtan/OKD+nSCwIlVslpIOCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=06lZBJxC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779289376; c=relaxed/simple;
+	bh=l7UNYwvTcP8Gvl5RvIURP0Ib0JnZnzgYHrFikZYWQJo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PGyP93QgAjy+fD2u5woR9govC8HERiZ2Pfku2Xjb+JlWKTLBYHH6JErLqMfSXLVEH6Od7i6mYzH9Z4XVoxX8pX8Xa/uQudJpOhqIFVuQsBKuuav9wV9psEnHbPPsdi7cRbZzWV5b8leakyMB4mBwPMwZ8zqv7xJbwCdTVrHn0Zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MeF2Dh/X; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="06lZBJxC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4D231F000E9;
-	Wed, 20 May 2026 14:55:49 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MeF2Dh/X"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F9981F000E9;
+	Wed, 20 May 2026 15:02:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779288950;
-	bh=HLE62M7w9kZ6jsf9hfAUbwys/2p9xPwFi+21QB5zz3Q=;
+	s=korg; t=1779289375;
+	bh=r332MFDoTKHbbBzEBeT9rujy28Omj9FwKOguxRV4hk8=;
 	h=Subject:To:Cc:From:Date;
-	b=06lZBJxC2PEuo0FUOfV8xCfIqx6ZM0wE0R3wvs0GV3wact7rSjf9zg/gt0/0gkzgB
-	 tLLeXw+TNL8g9BkkgHzmZAiDKQzjgbtv6XRQNd4RVnwJZ6LXPqZ4dziUeWnfyCJu7C
-	 Icj9A4SgsN5FjeOzSgXy28RO9tiLpMqYw7atQzTY=
-Subject: Patch "netfs: fix error handling in netfs_extract_user_iter()" has been added to the 7.0-stable tree
+	b=MeF2Dh/X0lgWYfq8n21s369OuYCOe5BZf/ENyEgTQqIB02pSUROHpbEX8lV26zal7
+	 ZC0oR6paf+vLbmOFSRf14C7Y0y7kvXF7xLEjHJI+bExpLIiMn7QdnjfFhndF1QKR13
+	 HlgFVI5JO9TwardWfOidbV8Jt3cYQrA0F3i7e/O4=
+Subject: Patch "netfs: fix error handling in netfs_extract_user_iter()" has been added to the 6.6-stable tree
 To: brauner@kernel.org,dhowells@redhat.com,gregkh@linuxfoundation.org,netfs@lists.linux.dev,pc@manguebit.org,xifeng@redhat.com
 Cc: <stable-commits@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 20 May 2026 16:54:24 +0200
-Message-ID: <2026052024-explain-idealism-239e@gregkh>
+Date: Wed, 20 May 2026 17:01:17 +0200
+Message-ID: <2026052017-washboard-dangling-ff2e@gregkh>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -44,12 +44,12 @@ This is a note to let you know that I've just added the patch titled
 
     netfs: fix error handling in netfs_extract_user_iter()
 
-to the 7.0-stable tree which can be found at:
+to the 6.6-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
      netfs-fix-error-handling-in-netfs_extract_user_iter.patch
-and it can be found in the queue-7.0 subdirectory.
+and it can be found in the queue-6.6 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
 please let <stable@vger.kernel.org> know about it.
@@ -126,4 +126,5 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 Patches currently in stable-queue which might be from pc@manguebit.org are
 
-queue-7.0/netfs-fix-error-handling-in-netfs_extract_user_iter.patch
+queue-6.6/netfs-fix-error-handling-in-netfs_extract_user_iter.patch
+queue-6.6/smb-client-fix-oob-reads-parsing-symlink-error-respo.patch
