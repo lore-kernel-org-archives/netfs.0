@@ -1,105 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD58356775;
-	Sat, 23 May 2026 09:23:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3325ADDA9;
+	Mon, 25 May 2026 06:13:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779528230; cv=none; b=TFDemfQS72Pq6RPaFDLmoNwom1S3/FHbroOxo3PA/qi7kMz/oe+AuLZTybr1IRJ0nVqiF7bJQvkdT7c4KcbuaJxUVPmzgaiPSsvkvKCblHUMSpmjT7QVyoKiGEfKjtHNnNgxuWUM4CAygxXViGDeJ+SZ5WiPhwPxWLQ5iTlYC94=
+	t=1779689603; cv=none; b=PWKcT2/U5R7B74SXluvjO0ipblnh3+W8dACtlHI7pC/uIU94tor9MgAit51FY6wW+5SE5mYg5XVOy1Rlz2owa7tLyKqEFfZFs92kHQw4sjZLiG69zDklbho8FbwohmMZQkobuFXYqsq1MWWLe/pWV1XeVKQ3gU0yg7q3H+71t5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779528230; c=relaxed/simple;
-	bh=bUIUGFKnY3Z4EVRyWqxE78d/xZ/iydFC4PoS+S4qLJU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=gcilaXnd965tNoA0e7o62OS8SYFjfE2Ra/haW5M1Au7pbUBhAqx1Qlf+9TM+Vd4GX+VAFz2XquSb1ZTYcGZaLTEe535D5fjY3sNKwlKKiLPbweblZxd5TcZITGbFS4cFESR1vUKEqy4asssTQkNXGGt1fpfl6V+NTYk+t8cwZNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oh4lBiK6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779689603; c=relaxed/simple;
+	bh=eeD04UdoyibCLUbSESv4nDuwLvjdA69yocynqRXPeSQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=is2PNyz4XmIVLBUpW43iGhnDlWk9ygsFCI6C+ucV9nptBXkmcydX5jA7tPt65Zt9X+IqGHiqX8ieqgoyWd/4mjkyPRGwPAcklvi0PLBY3TCAVKgkNItHTfnihdPqUicNC8OdmnRh5fydxFetpR4lFC7GVsfDZxNv3l0ZKvuHPTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ch8C4AQu; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oh4lBiK6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5591F000E9;
-	Sat, 23 May 2026 09:23:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779528229;
-	bh=2XGEAsO83+mFX8zHP0SN+MoQZ49jKrFiYv8r6Cqnit0=;
-	h=Subject:To:Cc:From:Date;
-	b=Oh4lBiK6q7UWP7WA474nFLW/crEXpDDuPhf3b12tT5NTWztPI35HGy2073bUJvRFu
-	 VsRQ3Zh5RBQA+1Mg8oRaYHIiNaW63uPzGxUUP61ASpCXHTTDEDxRElB4b4gjQMYlnO
-	 0SMXd3ssw7bte2ycYlycEy9yT0olUy5W33H4nNc8=
-Subject: Patch "netfs: Fix potential uninitialised var in netfs_extract_user_iter()" has been added to the 7.0-stable tree
-To: brauner@kernel.org,dhowells@redhat.com,gregkh@linuxfoundation.org,netfs@lists.linux.dev,pc@manguebit.org,willy@infradead.org
-Cc: <stable-commits@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Sat, 23 May 2026 11:23:51 +0200
-Message-ID: <2026052351-twiddle-obliged-1a2b@gregkh>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ch8C4AQu"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=k3SPzxVyWdadKptBoGs22ABp+4fSutAbLhXgTnFnk+c=; b=ch8C4AQus3YZ806Wh67oNprJWu
+	4YgLFI2/PnBCMuybdDy7PbfGtTtnOYTERUedeW5E5Ru5s2A42Wbka5YWGITgpXyoniyxVkeoX4jLc
+	IUiRdYgZdzB/Am4gsRBuGO/BRVBQ7wRZfgKXj1zZbTQQSFMZAafdMq1Nx00l5Uir2sYkM1+syo7Sb
+	tR2MZOHYxgUNgn6enT0n7mgnTQttQ6CNWFQCnUaBYMiOmFQAvhU06ASH+830Qwzg/OZoJ2MMde8pk
+	5myaDznWnGdkaDDiOgZB+6sZOcmbLJfO3PHqjAYQdxaW+wE6I2paALx9V82PLnhPBfyxJiW3AXzQ8
+	ADrqVaWg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wROYn-0000000GOIp-2PQ1;
+	Mon, 25 May 2026 06:13:09 +0000
+Date: Sun, 24 May 2026 23:13:09 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <christian@brauner.io>,
+	Matthew Wilcox <willy@infradead.org>,
+	Christoph Hellwig <hch@infradead.org>,
+	Paulo Alcantara <pc@manguebit.org>, Jens Axboe <axboe@kernel.dk>,
+	Leon Romanovsky <leon@kernel.org>, Steve French <sfrench@samba.org>,
+	ChenXiaoSong <chenxiaosong@chenxiaosong.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Trond Myklebust <trondmy@kernel.org>, netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org
+Subject: Re: [PATCH v2 05/21] Add a function to kmap one page of a multipage
+ bio_vec
+Message-ID: <ahPodavlA-gt44FO@infradead.org>
+References: <20260518222959.488126-1-dhowells@redhat.com>
+ <20260518222959.488126-6-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-X-Patchwork-Hint: ignore 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260518222959.488126-6-dhowells@redhat.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
+On Mon, May 18, 2026 at 11:29:37PM +0100, David Howells wrote:
+> Add a function to kmap one page of a multipage bio_vec by offset (which is
+> added to the offset in the bio_vec internally).  The caller is responsible
+> for calculating how much of the page is then available.
+> 
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+> cc: Matthew Wilcox <willy@infradead.org>
+> cc: Christoph Hellwig <hch@infradead.org>
+> cc: Jens Axboe <axboe@kernel.dk>
+> cc: linux-block@vger.kernel.org
+> cc: netfs@lists.linux.dev
+> cc: linux-fsdevel@vger.kernel.org
+> ---
+>  include/linux/bvec.h | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
+> 
+> diff --git a/include/linux/bvec.h b/include/linux/bvec.h
+> index d36dd476feda..9df4a56fef61 100644
+> --- a/include/linux/bvec.h
+> +++ b/include/linux/bvec.h
+> @@ -299,4 +299,21 @@ static inline phys_addr_t bvec_phys(const struct bio_vec *bvec)
+>  	return page_to_phys(bvec->bv_page) + bvec->bv_offset;
+>  }
+>  
+> +/**
+> + * kmap_local_bvec - Map part of a bvec into the kernel virtual address space
+> + * @bvec: bvec to map
+> + * @offset: Offset into bvec
+> + *
+> + * Map the page containing the byte at @offset into the kernel virtual address
+> + * space.  The caller is responsible for making sure this doesn't overrun.
+> + *
+> + * Call kunmap_local on the returned address to unmap.
+> + */
+> +static inline void *kmap_local_bvec(struct bio_vec *bvec, size_t offset)
 
-This is a note to let you know that I've just added the patch titled
+The name is rather confusing for something that does not map the entire
+bvec, and is an anagram of the existing bvec_kmap_local.  So please
+rename it to bvec_kmap_partial or something.
 
-    netfs: Fix potential uninitialised var in netfs_extract_user_iter()
+> +{
+> +	offset += bvec->bv_offset;
+> +
+> +	return kmap_local_page(bvec->bv_page + offset / PAGE_SIZE) + offset % PAGE_SIZE;
 
-to the 7.0-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+Overly long line.  Also this can use shits and byte masking to be a tad
+more efficient and matching the rest of the bvec code.
 
-The filename of the patch is:
-     netfs-fix-potential-uninitialised-var-in-netfs_extract_user_iter.patch
-and it can be found in the queue-7.0 subdirectory.
+Users of this would be interesting and why you're not simply using a
+bvec_iter at page granularity, which is what other block kmap code
+does.
 
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
-
-
-From 7e3d8db899d54af39fafb2eb3392b0cdae9973b5 Mon Sep 17 00:00:00 2001
-From: David Howells <dhowells@redhat.com>
-Date: Tue, 12 May 2026 13:33:45 +0100
-Subject: netfs: Fix potential uninitialised var in netfs_extract_user_iter()
-
-From: David Howells <dhowells@redhat.com>
-
-commit 7e3d8db899d54af39fafb2eb3392b0cdae9973b5 upstream.
-
-In netfs_extract_user_iter(), if it's given a zero-length iterator, it will
-fall through the loop without setting ret, and so the error handling
-behaviour will be undefined, depending on whether ret happens to be
-negative.  The value of ret then propagates back up the callstack.
-
-Fix this by presetting ret to 0.
-
-Fixes: 85dd2c8ff368 ("netfs: Add a function to extract a UBUF or IOVEC into a BVEC iterator")
-Closes: https://sashiko.dev/#/patchset/20260414082004.3756080-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-9-dhowells@redhat.com
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- fs/netfs/iterator.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/fs/netfs/iterator.c
-+++ b/fs/netfs/iterator.c
-@@ -43,7 +43,7 @@ ssize_t netfs_extract_user_iter(struct i
- 	unsigned int max_pages;
- 	unsigned int npages = 0;
- 	unsigned int i;
--	ssize_t ret;
-+	ssize_t ret = 0;
- 	size_t count = orig_len, offset, len;
- 	size_t bv_size, pg_size;
- 
-
-
-Patches currently in stable-queue which might be from dhowells@redhat.com are
-
-queue-7.0/netfs-fix-error-handling-in-netfs_extract_user_iter.patch
-queue-7.0/netfs-fix-potential-uninitialised-var-in-netfs_extract_user_iter.patch
-queue-7.0/lib-kunit_iov_iter-fix-memory-leaks.patch
