@@ -1,97 +1,142 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CED2480DD6
-	for <netfs@lists.linux.dev>; Thu,  4 Jun 2026 14:27:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FEB23346BE
+	for <netfs@lists.linux.dev>; Mon,  8 Jun 2026 11:01:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780583236; cv=none; b=YMKdqAC8NMXVvYIo014cYWLym6J3C7QC59CCBTOydFgv2eJM4972lAdfMNhqdq0giEFq6nmndqN+MQitTdnPexAbefmrInn3m0rwrECX5zKOg4+3H9lE3bGH8S4QcoNdrYz0DV/I5LY4kHVHqHVDVw35azdVciGNJNY4YShbxls=
+	t=1780916472; cv=none; b=A0JtCo4R25Fa538s3k9VmRwU1L5IvzSxAdqoe3a/faadRsCl5dxgf3yGyvwuQIE4hBWZV2BsHp0Zf+sQw91rBSNJgxzyNJL8h6h6HiDgzj7Z+PCIxWb/jKvkgPMRW/xFfP4eUHLKdnXWzFJK3H27Bzc/hjdNfIMxH/5KbEdSg/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780583236; c=relaxed/simple;
-	bh=9QTOFDsJ3yOCe4Q053NkQEMQbsYSBManmQn/Nq59ARg=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
-	 Message-ID:Content-Type; b=Xd4VV8O9XHnb7OqqVX9ZtiWkv64b5w/xmT3tymQwoy1YIWJGXIwmIglKwaS0ECRN/uw5duoU6YZcfnAiTNTDvzXKp8IgL8X89M3gENt+ueaY8c2zG3fiBDmKfh87WjBgGG4qdWWzK14HsIAtF1QbsQBi589AkzZPNdQaCm5bayU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=D7n4L3J2; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1780916472; c=relaxed/simple;
+	bh=8g0Km+wTllPgif0YetINHKgCf6jpLdWm0/DJ/2GG2wo=;
+	h=From:To:cc:Subject:MIME-Version:Date:Message-ID:Content-Type; b=q1ChWheL5cEMuGKy1XhrsGbnvxq9cI0Ao2qZCULIDnjOOcPUZqyAUoxLlWJS/LNYXqnbKhSJ+SAQPCmCHKqhej5bgZZUU2EzsrwxnJCEBfI+IApWp5Ft0hqV5nmImKvl7cF45OAbUObr+ltOGkQrG38fDUpOyFo1HsKbXT8qiXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=APXhYwHP; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="D7n4L3J2"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="APXhYwHP"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780583234;
+	s=mimecast20190719; t=1780916470;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+OfjBfn5py7b5HQjhhTkuXyu2HLnt9jaf0NDydzON4I=;
-	b=D7n4L3J26KENO/vcoQolgg/bPPWfJMM+mZPg3MTMIS3xbddWQIaihy3MAZEV2OcCOSKPfH
-	Cn/Y9YBMpjPgIxQvPwP2HQSDoOQU+P49YARX8C2BcOlLJe925s4Xq1DQchPVbgittAsr7D
-	jFGtOWGWwSBkzJAA9hv6AIPB0f3usYw=
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=9SXCgNjMghh6C+4hPV14AAMZ8D4gwubIky3iA7jjxbY=;
+	b=APXhYwHPu+XQujnyIP+i8b2cpVPBWsZYltcFpmws/vMb9X+4jVj2vzc1L0l2c6v7PSEZiU
+	+4zR4to98tmQwOIkJFIC2VtA5FanwV91UN/17UNEYNgnqVULYA0FmSYkPNvwT19Xqe8HCR
+	IVzfYOMXnlp1lwhXTjLjssSEIqwjDUA=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-493-PwOfHFj9OsiIKGl_Ou9BIA-1; Thu,
- 04 Jun 2026 10:27:11 -0400
-X-MC-Unique: PwOfHFj9OsiIKGl_Ou9BIA-1
-X-Mimecast-MFC-AGG-ID: PwOfHFj9OsiIKGl_Ou9BIA_1780583228
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-408-IxHbEggeN7ycyd0rUrVZvw-1; Mon,
+ 08 Jun 2026 07:01:05 -0400
+X-MC-Unique: IxHbEggeN7ycyd0rUrVZvw-1
+X-Mimecast-MFC-AGG-ID: IxHbEggeN7ycyd0rUrVZvw_1780916464
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5D7CE1956050;
-	Thu,  4 Jun 2026 14:27:07 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.44.50.14])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 22BEF1955BC0;
-	Thu,  4 Jun 2026 14:26:59 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 341301955DA0;
+	Mon,  8 Jun 2026 11:01:04 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.32.43])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F04771800361;
+	Mon,  8 Jun 2026 11:01:01 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
 	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
 	Kingdom.
 	Registered in England and Wales under Company Registration No. 3798903
 From: David Howells <dhowells@redhat.com>
-In-Reply-To: <ahPon44OlN0SqzU6@infradead.org>
-References: <ahPon44OlN0SqzU6@infradead.org> <20260518222959.488126-1-dhowells@redhat.com> <20260518222959.488126-7-dhowells@redhat.com>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
-    Matthew Wilcox <willy@infradead.org>,
-    Paulo Alcantara <pc@manguebit.org>, Jens Axboe <axboe@kernel.dk>,
-    Leon Romanovsky <leon@kernel.org>, Steve French <sfrench@samba.org>,
-    ChenXiaoSong <chenxiaosong@chenxiaosong.com>,
-    Marc Dionne <marc.dionne@auristor.com>,
-    Eric Van Hensbergen <ericvh@kernel.org>,
-    Dominique Martinet <asmadeus@codewreck.org>,
-    Ilya Dryomov <idryomov@gmail.com>,
-    Trond Myklebust <trondmy@kernel.org>, netfs@lists.linux.dev,
-    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-    v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org,
-    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-    linux-block@vger.kernel.org
-Subject: Re: [PATCH v2 06/21] iov_iter: Make iov_iter_get_pages*() wrap iov_iter_extract_pages()
+To: Christian Brauner <brauner@kernel.org>
+cc: dhowells@redhat.com, Marc Dionne <marc.dionne@auristor.com>,
+    Paulo Alcantara <pc@manguebit.org>, netfs@lists.linux.dev,
+    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] netfs: Fix decision whether to disallow write-streaming due to fscache use
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Thu, 04 Jun 2026 15:26:58 +0100
-Message-ID: <127172.1780583218@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-MFC-PROC-ID: WU2GqBR8GqzlVIWcte-8pGuKbd25gvJJV7-WLGlRTfg_1780583228
+Date: Mon, 08 Jun 2026 12:01:00 +0100
+Message-ID: <419380.1780916460@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-MFC-PROC-ID: rZSEa8bWaGBQvktUq4YKbxPOtelHXP5swgZGKwkZIkM_1780916464
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <127171.1780583218.1@warthog.procyon.org.uk>
+Content-ID: <419379.1780916460.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
 
-Christoph Hellwig <hch@infradead.org> wrote:
+netfs_perform_write() buffers data by writing it into the pagecache for
+later writeback.  If the folio it wants to write to isn't present, it uses
+"write streaming" in which is will store partial data in a non-uptodate,
+but dirty folio.
 
-> On Mon, May 18, 2026 at 11:29:38PM +0100, David Howells wrote:
-> > Make iov_iter_get_pages*() wrap iov_iter_extract_pages() for kernel
-> > iterator types (e.g. ITER_BVEC, ITER_FOLIOQ, ITER_XARRAY).  The pages
-> > obtained have their refcounts incremented afterwards if they're not slab
-> > pages.  ITER_KVEC is left returning -EFAULT.
-> 
-> Just kill off iov_iter_get_pages*, please.  Or at least stop using it
-> where these types matter.
+However, when fscache is in use, this is a potential problem as writes to
+the cache have to be aligned to the cache backend's DIO granularity, and so
+netfs_perform_write() attempts to suppress write-streaming in such a case,
+requiring the folio content to be fetched first unless the entire folio is
+going to be overwritten.  This allows the content to be written to the
+cache too.
 
-Much as I would like to, this isn't the place to do it.  It will require an
-overhaul of the network socket buffering.
+Unfortunately, the test netfs_perform_write() uses isn't correct because it
+doesn't take into account the fact that the object lookup is asynchronous
+and farmed off to a work queue, so there's a short window in which the
+cache is doing a lookup but the test fails because the answer is undefined.
 
-David
+This can be triggered by the generic/464 xfstest, and causes a warning to
+be emitted in cachefiles (in code not yet upstream) because it sees a write
+that doesn't have its bounds rounded out to DIO alignment.
+
+Fix this by changing the condition to whether FSCACHE_COOKIE_IS_CACHING is
+set on a cookie rather than whether the cookie is marked enabled.  Note
+that this is really just a hint as to whether we allow write streaming or
+not and no other aspects of the cookie or cache object are accessed.
+
+Reported-by: Marc Dionne <marc.dionne@auristor.com>
+cc: David Howells <dhowells@redhat.com>
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+---
+ fs/netfs/buffered_write.c |    2 +-
+ fs/netfs/internal.h       |   12 ++++++++++++
+ 2 files changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
+index 6bde3320bcec..2cdb68e6b16f 100644
+--- a/fs/netfs/buffered_write.c
++++ b/fs/netfs/buffered_write.c
+@@ -277,7 +277,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct =
+iov_iter *iter,
+ =09=09 * caching service temporarily because the backing store got
+ =09=09 * culled.
+ =09=09 */
+-=09=09if (netfs_is_cache_enabled(ctx)) {
++=09=09if (netfs_is_cache_maybe_enabled(ctx)) {
+ =09=09=09if (finfo) {
+ =09=09=09=09netfs_stat(&netfs_n_wh_wstream_conflict);
+ =09=09=09=09goto flush_content;
+diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
+index 645996ecfc80..d889caa401dc 100644
+--- a/fs/netfs/internal.h
++++ b/fs/netfs/internal.h
+@@ -239,6 +239,18 @@ static inline bool netfs_is_cache_enabled(struct netfs=
+_inode *ctx)
+ #endif
+ }
+=20
++static inline bool netfs_is_cache_maybe_enabled(struct netfs_inode *ctx)
++{
++#if IS_ENABLED(CONFIG_FSCACHE)
++=09struct fscache_cookie *cookie =3D ctx->cache;
++
++=09return fscache_cookie_valid(cookie) &&
++=09=09test_bit(FSCACHE_COOKIE_IS_CACHING, &cookie->flags);
++#else
++=09return false;
++#endif
++}
++
+ /*
+  * Get a ref on a netfs group attached to a dirty page (e.g. a ceph snap).
+  */
 
