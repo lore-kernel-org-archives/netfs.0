@@ -1,74 +1,54 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C446A436347
-	for <netfs@lists.linux.dev>; Tue, 16 Jun 2026 10:12:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281161FFC59;
+	Tue, 16 Jun 2026 12:39:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781604768; cv=none; b=BRf+v9pZG4+ioFP5Ggt4zYctYKRy8HoUyYEDWYjZT6EewavjHbNSM4PaGnd0iUYsE2r+Rc/fAeADR2SwL+HoEnAJvyfg1rzEA+pPcYFWC7YR2d0RnXYLYqaiV66ThnGoUlNEFxRQxGa/zdziZW9JDJIIynZBeWM4IAmtoUNtNfo=
+	t=1781613555; cv=none; b=UnAl1u2PNQiR1mFL5RGjsplsM8GwGeyn0ZPWWktLeZkoKBTaSzDNTdAEMVnsQjXdVW/J76QlsIaHAsfd0Jp2ILB7HSebYrux6kLFcMECbhvTyttBhfaJqxSTqXL6JdMR9JSf8kOC+ps7FL89ODwkTCnHa0HkODayQkHKyKZUYlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781604768; c=relaxed/simple;
-	bh=ruY45ttVeiyQLQwko7KQrYYWXy4JG5B3riX9l+a5hd4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=tEGrHQfgEYKNgwqVdcdeyzWp4hw3+eBAy+Th+kkHD8uCMVXjo0Cc7SbK9/cmAoWZpd6sgHvZc8LVkWQHhGUjatNz+KRJ7iUi4hS4yfiLrY6NyWTqh1yBLCzsIzU/tpChkKZlws+jUS+e8Wv4QYlVbEgyr5nKNn5erQJEEnmEh4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YYMo3N2V; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1781613555; c=relaxed/simple;
+	bh=jLVmUs0h5h3IaSBoYYaiyzR1phrnWSJ/3wq7JcB45ME=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kVqfXxefPTJXO+TAPM/FezLONen5TFZrZc3LROiqvXw1nJnnyLdFLXczeDDnsj/C81rKL8p0x9phpNiHrWD/XtoDnmvEAMswhpjwbZMOK75vtyb3U75RoomeF+ZsTNWRgiqZkHKFOHhFfkpIJU5ltHTa0uLW8xZl4oooPaIaHb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=zCeou/M6; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YYMo3N2V"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781604765;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G0n6jjl7CQg3ycUEFyobHO2Y/1gqjiW+QmR0BwEEEt4=;
-	b=YYMo3N2VnpseVk7HbUyfBkYlpotK4u1bh+SjbQxENTYRUoJYiSB6qXmX8BJHVVEgMmvZTQ
-	JNEwMYIspjm1CEbzc3DAccxMkm6MZElH37Cq2ej6m+JHUqigVDqYRiEW3D4F3yv1mwIGE2
-	D1vN6CDIc8+CP5q3dNChiANSOADoDVE=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-156-NzcYndrqM-WxUWpiP4tobg-1; Tue,
- 16 Jun 2026 06:12:39 -0400
-X-MC-Unique: NzcYndrqM-WxUWpiP4tobg-1
-X-Mimecast-MFC-AGG-ID: NzcYndrqM-WxUWpiP4tobg_1781604756
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CBD401956055;
-	Tue, 16 Jun 2026 10:12:36 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.44.50.44])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EDB891771;
-	Tue, 16 Jun 2026 10:12:30 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>,
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="zCeou/M6"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=5EdZEQr56NngtMqetLIh7uZxlqXA7wuIkjKsBUo8El4=; b=zCeou/M6O+/c/sRe+2gVAa7PYn
+	/KGY5iI9ZorqbKaBi5gXM79A0Hdh87LTj912G443HMxkWrGn0vWchAG3TFECfQnM6v2lC/uSjBqoL
+	unuBQjir0+H5uXtGG+05z7ucyZOR3NZABpZ7FpeNTbGirx4ZEz4FAR6SX5JEPMTJs3QKNHb8IbzXe
+	hJKSVJQ8C87eIs1+oQfvfAYMlUhbS3Kmcvbh4MlMQ0PC+8gj2+I35CR8YcARLds8XWm4PWNEx5RcB
+	qN3CmCnObaGamY5XTxdYAdmKdHlFGMP265JrzvBpMWrwOKmazoOKLhJSUJMFBSoGutNBxFM4b5WQ2
+	bOx5tseA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wZT4C-0000000FlxD-2thP;
+	Tue, 16 Jun 2026 12:38:56 +0000
+Date: Tue, 16 Jun 2026 05:38:56 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <christian@brauner.io>,
 	Matthew Wilcox <willy@infradead.org>,
-	Christoph Hellwig <hch@infradead.org>
-Cc: David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Leon Romanovsky <leon@kernel.org>,
-	Steve French <sfrench@samba.org>,
+	Christoph Hellwig <hch@infradead.org>,
+	Paulo Alcantara <pc@manguebit.org>, Jens Axboe <axboe@kernel.dk>,
+	Leon Romanovsky <leon@kernel.org>, Steve French <sfrench@samba.org>,
 	ChenXiaoSong <chenxiaosong@chenxiaosong.com>,
 	Marc Dionne <marc.dionne@auristor.com>,
 	Eric Van Hensbergen <ericvh@kernel.org>,
 	Dominique Martinet <asmadeus@codewreck.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	v9fs@lists.linux.dev,
-	linux-erofs@lists.ozlabs.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 30/30] CHANGES
-Date: Tue, 16 Jun 2026 11:08:19 +0100
-Message-ID: <20260616100821.2062304-31-dhowells@redhat.com>
-In-Reply-To: <20260616100821.2062304-1-dhowells@redhat.com>
+	Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 00/30] netfs: Keep track of folios in a segmented
+ bio_vec[] chain
+Message-ID: <ajFD4ELy4yBpu0fb@infradead.org>
 References: <20260616100821.2062304-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
@@ -76,283 +56,22 @@ List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
-X-Mimecast-MFC-PROC-ID: TXBW2Jc7ZNvM_ajIVLZhgvuj6k-AivlzunawBQlYZCA_1781604756
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260616100821.2062304-1-dhowells@redhat.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
----
- fs/netfs/iterator.c    | 22 ++++++++++++++--------
- fs/netfs/read_retry.c  | 12 +++++++++---
- fs/netfs/write_issue.c | 24 ++++++++++++++++++++++--
- fs/netfs/write_retry.c | 23 ++++++++++++++---------
- fs/nfs/fscache.c       |  3 ++-
- fs/smb/client/file.c   |  2 +-
- 6 files changed, 62 insertions(+), 24 deletions(-)
+On Tue, Jun 16, 2026 at 11:07:49AM +0100, David Howells wrote:
+> Hi Christian,
+> 
+> Could you add these patches to the VFS tree for next?
 
-diff --git a/fs/netfs/iterator.c b/fs/netfs/iterator.c
-index d464e1784b8a..5e8e816eeff3 100644
---- a/fs/netfs/iterator.c
-+++ b/fs/netfs/iterator.c
-@@ -33,8 +33,8 @@
-  * the original iterator will have been advanced by the amount extracted.
-  *
-  * If an error occurs and no pages are extracted, an error will be returned and
-- * any allocated bvecq will be freed.  The allocated bvecq will also be freed
-- * if no pages are extracted, but no error is recorded.
-+ * any allocated bvecq will be freed.  If there is no data to be extracted (or
-+ * @max_len or @max_pages are zero), a single empty bvecq will be returned.
-  *
-  * The bvecq segments are marked with indications on how to get clean up the
-  * extracted fragments.
-@@ -43,7 +43,7 @@ ssize_t netfs_extract_iter(struct iov_iter *orig, size_t max_len, size_t max_pag
- 			   unsigned long long fpos, struct bvecq **_bvecq_head,
- 			   iov_iter_extraction_t extraction_flags)
- {
--	struct bvecq *bq_tail = NULL;
-+	struct bvecq *bq_tail = NULL, *bq;
- 	ssize_t ret = 0;
- 	size_t extracted = 0;
- 
-@@ -53,15 +53,13 @@ ssize_t netfs_extract_iter(struct iov_iter *orig, size_t max_len, size_t max_pag
- 	if (max_len > orig->count)
- 		max_len = orig->count;
- 	if (WARN_ON_ONCE(!max_len || !max_pages))
--		return 0;
-+		goto alloc_empty;
- 
- 	max_pages = iov_iter_npages(orig, max_pages);
- 	if (!max_pages)
--		return 0;
-+		goto alloc_empty;
- 
- 	do {
--		struct bvecq *bq;
--
- 		bq = bvecq_alloc_one(max_pages, GFP_NOFS);
- 		if (!bq) {
- 			ret = -ENOMEM;
-@@ -142,10 +140,18 @@ ssize_t netfs_extract_iter(struct iov_iter *orig, size_t max_len, size_t max_pag
- 	} while (max_len > 0 && max_pages > 0);
- 
- out:
--	if (extracted)
-+	if (extracted || ret == 0)
- 		return extracted;
- 	bvecq_put(*_bvecq_head);
- 	*_bvecq_head = NULL;
- 	return ret;
-+
-+alloc_empty:
-+	bq = bvecq_alloc_one(1, GFP_NOFS);
-+	if (!bq)
-+		return -ENOMEM;
-+	*_bvecq_head = bq;
-+	return 0;
-+
- }
- EXPORT_SYMBOL_GPL(netfs_extract_iter);
-diff --git a/fs/netfs/read_retry.c b/fs/netfs/read_retry.c
-index a5cd6e20cae1..0f8ff53fe703 100644
---- a/fs/netfs/read_retry.c
-+++ b/fs/netfs/read_retry.c
-@@ -79,11 +79,12 @@ static void netfs_retry_read_subrequests(struct netfs_io_request *rreq)
- 	if (rreq->netfs_ops->retry_request)
- 		rreq->netfs_ops->retry_request(rreq, NULL);
- 
-+	/* Read pointer to subreq before reading subreq state. */
-+	next = smp_load_acquire(&stream->subrequests.next);
-+
- 	/* Renegotiate all the download requests and flip any failed cache
- 	 * reads over to being download requests and negotiate those also.
- 	 */
--	next = stream->subrequests.next;
--
- 	do {
- 		struct netfs_io_subrequest *from, *to, *tmp;
- 		unsigned long long start;
-@@ -110,7 +111,12 @@ static void netfs_retry_read_subrequests(struct netfs_io_request *rreq)
- 			goto abandon;
- 		}
- 
--		list_for_each_continue(next, &stream->subrequests) {
-+		for (;;) {
-+			/* Read pointer to subreq before reading subreq state. */
-+			next = smp_load_acquire(&next->next);
-+			if (next == &stream->subrequests)
-+				break;
-+
- 			subreq = list_entry(next, struct netfs_io_subrequest, rreq_link);
- 			if (subreq->start != start + len ||
- 			    subreq->transferred > 0 ||
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index e2e35d619119..37e5b5ee1cea 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -722,6 +722,20 @@ static int netfs_queue_wb_folio(struct netfs_io_request *wreq,
- 	goto out;
- }
- 
-+static void writeback_iter_cancel(struct address_space *mapping,
-+				  struct writeback_control *wbc,
-+				  struct folio *folio, int *error,
-+				  bool unlocked)
-+{
-+	do {
-+		if (!unlocked) {
-+			folio_redirty_for_writepage(wbc, folio);
-+			folio_unlock(folio);
-+			unlocked = false;
-+		}
-+	} while ((folio = writeback_iter(mapping, wbc, folio, error)));
-+}
-+
- /*
-  * Write some of the pending data back to the server
-  */
-@@ -776,11 +790,15 @@ int netfs_writepages(struct address_space *mapping,
- 
- 		params.notes &= NOTES__KEEP_MASK;
- 		error = netfs_queue_wb_folio(wreq, wbc, folio, &params);
--		if (error < 0)
-+		if (error < 0) {
-+			writeback_iter_cancel(mapping, wbc, folio, &error, false);
- 			break;
-+		}
- 		error = netfs_issue_streams(wreq, &params);
--		if (error < 0)
-+		if (error < 0) {
-+			writeback_iter_cancel(mapping, wbc, folio, &error, true);
- 			break;
-+		}
- 
- 		bvecq_pos_step(&params.dispatch_cursor);
- 	} while ((folio = writeback_iter(mapping, wbc, folio, &error)));
-@@ -924,6 +942,7 @@ int netfs_advance_writethrough(struct netfs_writethrough *wthru,
- 	folio_put(wthru->in_progress);
- 	wthru->in_progress = NULL;
- 	wreq->submitted = wreq->len;
-+	bvecq_pos_step(&wthru->params.dispatch_cursor);
- 	return ret;
- }
- 
-@@ -945,6 +964,7 @@ ssize_t netfs_end_writethrough(struct netfs_writethrough *wthru,
- 		ret = netfs_queue_wb_folio(wreq, wbc, folio, &wthru->params);
- 		if (ret == 0)
- 			ret = netfs_issue_streams(wreq, &wthru->params);
-+		bvecq_pos_step(&wthru->params.dispatch_cursor);
- 		folio_put(folio);
- 		wthru->in_progress = NULL;
- 		wreq->submitted = wreq->len;
-diff --git a/fs/netfs/write_retry.c b/fs/netfs/write_retry.c
-index e7955cc707e0..d9cc49f21346 100644
---- a/fs/netfs/write_retry.c
-+++ b/fs/netfs/write_retry.c
-@@ -23,7 +23,6 @@ int netfs_prepare_write_retry_buffer(struct netfs_io_subrequest *subreq,
- 				     unsigned int max_segs)
- {
- 	struct netfs_io_request *wreq = subreq->rreq;
--	struct netfs_io_stream *stream = &wreq->io_streams[subreq->stream_nr];
- 	size_t len;
- 
- 	bvecq_pos_set(&subreq->dispatch_pos, &wreq->retry_cursor);
-@@ -35,9 +34,9 @@ int netfs_prepare_write_retry_buffer(struct netfs_io_subrequest *subreq,
- 		trace_netfs_sreq(subreq, netfs_sreq_trace_limited);
- 	}
- 
--	stream->issue_from += len;
--	stream->buffered   -= len;
--	if (stream->buffered == 0)
-+	wreq->retry_start += len;
-+	wreq->retry_buffered   -= len;
-+	if (wreq->retry_buffered == 0)
- 		bvecq_pos_unset(&wreq->retry_cursor);
- 	return 0;
- }
-@@ -63,7 +62,8 @@ static void netfs_retry_write_stream(struct netfs_io_request *wreq,
- 	if (unlikely(stream->failed))
- 		return;
- 
--	next = stream->subrequests.next;
-+	/* Read pointer to subreq before reading subreq state. */
-+	next = smp_load_acquire(&stream->subrequests.next);
- 
- 	do {
- 		struct netfs_io_subrequest *subreq = NULL, *from, *to, *tmp;
-@@ -84,7 +84,12 @@ static void netfs_retry_write_stream(struct netfs_io_request *wreq,
- 		    !test_bit(NETFS_SREQ_NEED_RETRY, &from->flags))
- 			goto out;
- 
--		list_for_each_continue(next, &stream->subrequests) {
-+		for (;;) {
-+			/* Read pointer to subreq before reading subreq state. */
-+			next = smp_load_acquire(&next->next);
-+			if (next == &stream->subrequests)
-+				break;
-+
- 			subreq = list_entry(next, struct netfs_io_subrequest, rreq_link);
- 			if (subreq->start != start + len ||
- 			    subreq->transferred > 0 ||
-@@ -135,7 +140,7 @@ static void netfs_retry_write_stream(struct netfs_io_request *wreq,
- 		/* If we managed to use fewer subreqs, we can discard the
- 		 * excess; if we used the same number, then we're done.
- 		 */
--		if (!len) {
-+		if (!wreq->retry_buffered) {
- 			if (subreq == to)
- 				continue;
- 			list_for_each_entry_safe_from(subreq, tmp,
-@@ -158,7 +163,7 @@ static void netfs_retry_write_stream(struct netfs_io_request *wreq,
- 			subreq = netfs_alloc_subrequest(wreq);
- 			subreq->source		= to->source;
- 			subreq->start		= start;
--			subreq->len		= len;
-+			subreq->len		= wreq->retry_buffered;
- 			subreq->stream_nr	= to->stream_nr;
- 			subreq->retry_count	= 1;
- 
-@@ -188,7 +193,7 @@ static void netfs_retry_write_stream(struct netfs_io_request *wreq,
- 
- 			trace_netfs_sreq(subreq, netfs_sreq_trace_retry);
- 			stream->issue_write(subreq);
--		} while (len);
-+		} while (wreq->retry_buffered > 0);
- 
- 	} while (!list_is_head(next, &stream->subrequests));
- 
-diff --git a/fs/nfs/fscache.c b/fs/nfs/fscache.c
-index cf750faaec6a..f39a351c566d 100644
---- a/fs/nfs/fscache.c
-+++ b/fs/nfs/fscache.c
-@@ -324,7 +324,7 @@ static void nfs_netfs_issue_read(struct netfs_io_subrequest *sreq)
- 
- 	netfs = nfs_netfs_alloc(sreq);
- 	if (!netfs) {
--		sreq->error = err;
-+		sreq->error = -ENOMEM;
- 		goto term;
- 	}
- 
-@@ -343,6 +343,7 @@ static void nfs_netfs_issue_read(struct netfs_io_subrequest *sreq)
- out:
- 	nfs_pageio_complete_read(&pgio);
- 	nfs_netfs_put(netfs);
-+	return;
- term:
- 	return netfs_read_subreq_terminated(sreq);
- }
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index d3a9041786ac..b770c349137a 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -222,7 +222,7 @@ static void cifs_issue_read(struct netfs_io_subrequest *subreq)
- 			rc = cifs_reopen_file(req->cfile, true);
- 		} while (rc == -EAGAIN);
- 		if (rc)
--			goto failed;
-+			goto fail_with_credits;
- 	}
- 
- 	if (subreq->rreq->origin != NETFS_UNBUFFERED_READ &&
+Really?  Not only are we in the merge window, but this is gigantic
+unreviewable series, which consequently has none of the relevant
+reviews.
+
+Please try to work like everyone else and split out useful parts.  E.g.
+if your new iter type is useful there must be smaller standalone
+candidates for it that can explain the use.  Having to wade through all
+of netfs to try to understand it is not really going to fly.
 
