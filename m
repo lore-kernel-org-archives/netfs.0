@@ -1,79 +1,88 @@
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805EE346FAE
-	for <netfs@lists.linux.dev>; Tue, 16 Jun 2026 12:48:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921E836A017
+	for <netfs@lists.linux.dev>; Tue, 16 Jun 2026 12:51:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781614126; cv=none; b=oNf0hSMQmHy8x2VE5uQ4oqnewroMBYZm62MGfTxE9c/G4pIoXo+cgnI7hennLhJ3r3rXG36eYpSdMF230O+VXVaGDRoGLEMTgJTNpdzCBz1p0KN5TCPTMIGeUeAjuInTgkvuEtbR7tJ7Y88zXPLl8CNhFMjka55ThoAYGvp5ics=
+	t=1781614303; cv=none; b=qK+Um9EbFMuxcCC6i3ueEg4EUFSZ9+DZGD+qKObEtsvEctpyeVcPeLDhfDj/Sv9IaikEq+FaYd8G48VibCFEy1gYzA1k4YpCLlZrcyCO/3EBv0qtfSEZgpcKOeT8sx6V69IipzEwiPpPcDrc5NNn18Svb5LbxESdAEoAmprMwFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781614126; c=relaxed/simple;
-	bh=+BRhsPWDpZjoK0HsveNG5UGVmQHqK2OhhoOq5wslwZg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ta0ztN9cSsnHN/218hESdmEo/ebukv9xGgOTzPzywtsSe3MqK1XDiGlXXEVKcOe4h4F/jblkgz6cWESPVC8TaOwO1WUG4znpOM+jRqAzfuKPS0qt4VWC+03bNwe/a9p6lOC0nhp6NJ9k5xxez7Kw+UWMHrq/D9Cf7GaFmH4BEw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chenxiaosong.com; spf=pass smtp.mailfrom=chenxiaosong.com; dkim=pass (2048-bit key) header.d=chenxiaosong.com header.i=@chenxiaosong.com header.b=DXl5YP4w; arc=none smtp.client-ip=95.215.58.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chenxiaosong.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chenxiaosong.com
+	s=arc-20240116; t=1781614303; c=relaxed/simple;
+	bh=X+SL3SCxfXjKReLDO6t/cz2Tg9ckhBXQW3tanUcnTZg=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
+	 Message-ID:Content-Type; b=GdNKvBncwiKs0IjKlIbn4a/IOe9FNVI5AHzQvQjn2zyFWkkAwmhbcLaoAQvEzAHDFqkPrGQpemncg4wGmCvGV9iyEZmZtY/NZaAxhrABpqG30TaOrq9wyPpeYBtVzOLsLBBOHkCw00/dfTRagUk6jdN1LT2eNuLx5uPGrnpoIeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PN8LTupw; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=chenxiaosong.com header.i=@chenxiaosong.com header.b="DXl5YP4w"
-Message-ID: <b6b19c84-7734-42ea-b2ec-9ace1f36ad08@chenxiaosong.com>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chenxiaosong.com;
-	s=key1; t=1781614119;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PN8LTupw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781614301;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wv0+MgqNRvRce0wQH8tzVOBI1JIX52tUPZ58AWe7J8U=;
-	b=DXl5YP4w2nX9zBF/auRW6duXvS9I+LFh6H72wP2z7tgKv4bVq1GepXsY8YwJgiuxk/3GYJ
-	utsvh8oA1hM5Kec1L2eqj7x9jLuM39MuNcqFVWCQlxcbVvJf5UuT7X6eGlgcHbnkR/32DA
-	5PNFdhWzOvpVWaJ/smJLv8N+zcFXXuBpa/tcwnDrn+6tX8vWPV0jrQwPKilpFVlwL6JsyU
-	NgC8RocoDRsvVJelCGWkydzsykPdIiiMd9+HKmhv/CAAb0NJhfq7tp8HQgIgsnKJEnb/FJ
-	zY3lj94Gbuc4hUnVoAKzBsLPkNkrQsg062VkaRzcyMkvx+Oemz6MzQHqkEjodQ==
-Date: Tue, 16 Jun 2026 20:47:29 +0800
+	bh=2f4COWRiqc1S5CKA80N1C8fgQscr8BG6DIsFW1ivm9s=;
+	b=PN8LTupwfVMIVWCFIgGMpPhzq+b8GU4nr53YR/FoY0o3skfHlgw9u5J+gKtkaX1VHGBuRM
+	vmzNfgcRLzDXQ+HN0YFvIjcX49GlipfZzpemGkoPotlJw6BBRFPbbeR/nzK+z8BEzwnPjS
+	3eC/cGy7LXFKNt3iiiLvZq00Fkouvl4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-681-Whce7UpKPGSqU5IuIZNo8g-1; Tue,
+ 16 Jun 2026 08:51:36 -0400
+X-MC-Unique: Whce7UpKPGSqU5IuIZNo8g-1
+X-Mimecast-MFC-AGG-ID: Whce7UpKPGSqU5IuIZNo8g_1781614293
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3E88D19560B3;
+	Tue, 16 Jun 2026 12:51:32 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.50.44])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8D8853008B3E;
+	Tue, 16 Jun 2026 12:51:24 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <b6b19c84-7734-42ea-b2ec-9ace1f36ad08@chenxiaosong.com>
+References: <b6b19c84-7734-42ea-b2ec-9ace1f36ad08@chenxiaosong.com> <20260616100821.2062304-1-dhowells@redhat.com> <20260616100821.2062304-31-dhowells@redhat.com>
+To: ChenXiaoSong <chenxiaosong@chenxiaosong.com>
+Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
+    Matthew Wilcox <willy@infradead.org>,
+    Christoph Hellwig <hch@infradead.org>,
+    Paulo Alcantara <pc@manguebit.org>, Jens Axboe <axboe@kernel.dk>,
+    Leon Romanovsky <leon@kernel.org>, Steve French <sfrench@samba.org>,
+    Marc Dionne <marc.dionne@auristor.com>,
+    Eric Van Hensbergen <ericvh@kernel.org>,
+    Dominique Martinet <asmadeus@codewreck.org>,
+    Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
+    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+    v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org,
+    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 30/30] CHANGES
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [PATCH v4 30/30] CHANGES
-To: David Howells <dhowells@redhat.com>,
- Christian Brauner <christian@brauner.io>,
- Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>
-Cc: Paulo Alcantara <pc@manguebit.org>, Jens Axboe <axboe@kernel.dk>,
- Leon Romanovsky <leon@kernel.org>, Steve French <sfrench@samba.org>,
- Marc Dionne <marc.dionne@auristor.com>,
- Eric Van Hensbergen <ericvh@kernel.org>,
- Dominique Martinet <asmadeus@codewreck.org>,
- Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
- linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
- linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
- linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260616100821.2062304-1-dhowells@redhat.com>
- <20260616100821.2062304-31-dhowells@redhat.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: ChenXiaoSong <chenxiaosong@chenxiaosong.com>
-In-Reply-To: <20260616100821.2062304-31-dhowells@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Date: Tue, 16 Jun 2026 13:51:23 +0100
+Message-ID: <2102921.1781614283@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: T1Ez4fBt56EPgXqRTZpgARlzoDc5-Y9v-acVIv-pVd8_1781614293
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2102920.1781614283.1@warthog.procyon.org.uk>
 
-Is this patch missing the subject and commit message?
+ChenXiaoSong <chenxiaosong@chenxiaosong.com> wrote:
 
-On 6/16/26 18:08, David Howells wrote:
-> ---
->   fs/netfs/iterator.c    | 22 ++++++++++++++--------
->   fs/netfs/read_retry.c  | 12 +++++++++---
->   fs/netfs/write_issue.c | 24 ++++++++++++++++++++++--
->   fs/netfs/write_retry.c | 23 ++++++++++++++---------
->   fs/nfs/fscache.c       |  3 ++-
->   fs/smb/client/file.c   |  2 +-
->   6 files changed, 62 insertions(+), 24 deletions(-)
+> Is this patch missing the subject and commit message?
 
--- 
-ChenXiaoSong <chenxiaosong@chenxiaosong.com>
-Chinese Homepage: https://chenxiaosong.com
-English Homepage: https://chenxiaosong.com/en
+No.  I got distracted and forgot to finish folding its contents down into
+earlier patches.
+
+David
 
