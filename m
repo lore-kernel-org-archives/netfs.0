@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C2B347532
-	for <netfs@lists.linux.dev>; Wed, 24 Jun 2026 11:58:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D973A9DA3
+	for <netfs@lists.linux.dev>; Wed, 24 Jun 2026 11:58:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782302330; cv=none; b=H6o2KZwP+lZKKMVnxZsUgT+3py1AQxQVrDXxrRkJMgC/2Gs26h1S2tUjpcgj8yUkXUK9xvE8jBTPVbpOwI9w+o9UOqZlXJydbBGS47Lxk9v8PyUK8LHhMKvYE0fQUx0U8d6Cqj8+uOxKG1HYmsRlC8cyLaLVSxKwU6Sh2mtA7hU=
+	t=1782302334; cv=none; b=D+PHaINPxg35qZ6u7d2Uhu1D5cEq1d+qk/NqFlzJ/VMUQE/G0o307Rg3GcRER/nwUZLIHbJ7gbQVB2pXopm0roc0pM1K+2hnB3Bj1SuoPK1eMQrEL4WwDd7useN5xQ5HjXqP7nGCwWGGJmUUK4yaVmSv9y46RIflSFLJwVExTFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782302330; c=relaxed/simple;
-	bh=SiDpiHDUcDGkcTTZaj5jmTTyyFYfCT7X71HEPxLTt5w=;
+	s=arc-20240116; t=1782302334; c=relaxed/simple;
+	bh=c24Yit3599uQLRElsJbGFusA/7JcG/6iJ0D3gBMzT4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=BrMHMBKfVsVj2LD+IOMWtjJPzhVMUXd3p8A7ZfHZ2fuIkocO8xnm20Rus8PbWafjndFk3g3F4iQIBPk/pA8sYU7J/kHPWcjUdka0wZ1jtBvzzpWienz2eGL6xHQvC83vgYjEV3q44FPS47yBhoMCsGB7LJhM2WipICO42lov6A8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HJuiHGBM; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:content-type; b=hKjx60wEkCt0wPytFqIWv7Zvgbw3MSOTzBYZfKF4VUoHBKwWaHR5XrqrtrIql5zwBa2VvbRaGtRatAvElr0hMYwIiekewXg28rmOushB3hhq262UumxU1kQ2y18ZkhtFFOzXQe+gantVz+LQ524dH/0IbjqGd8gOsr8Z1KyRlM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Q/zSQYDg; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HJuiHGBM"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q/zSQYDg"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782302327;
+	s=mimecast20190719; t=1782302332;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=F6dv38lkMbVidCMwZh3umBzwGuE5b7Ehwa5DFjmWEmE=;
-	b=HJuiHGBMIs13oEtaWbWqA2aBQYh13pIALCiDb7qE0mtpaRB0mQYkMCTibCDThriU1veV9J
-	2LCyJsM4mx+hh7wXRPj9IlUgSbmhBjmiGvY+A7PRUolKlv51Xu/gHZCwlY1fGbomFrkrC7
-	FYB6RRooexzX/Er12iOO97DliS3PujA=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=+j9T14/yKCuYIYjsdLnru9vHvjv9poR+Pk5ADqQQzV8=;
+	b=Q/zSQYDguJ5Eay9u5oMtw/5qMiAFFqfZhPZW1y6DISvqy4dhj+47QKDSkOeNvDEAj3K1rT
+	0n2PXnoImmKv+FmoStbtldM3XefZ0mWbgg/MfjSS3638F7xkDYZ7BcTKfjQrRQltpE6k1s
+	Y47vhBgSMJEzpn/Je+hdQNXPOnpzxm4=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-320--Y9tMmApOQaGymnlSd6siw-1; Wed,
- 24 Jun 2026 07:58:44 -0400
-X-MC-Unique: -Y9tMmApOQaGymnlSd6siw-1
-X-Mimecast-MFC-AGG-ID: -Y9tMmApOQaGymnlSd6siw_1782302323
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-79-L0sgAPIIMFiJlli9RKjw3g-1; Wed,
+ 24 Jun 2026 07:58:48 -0400
+X-MC-Unique: L0sgAPIIMFiJlli9RKjw3g-1
+X-Mimecast-MFC-AGG-ID: L0sgAPIIMFiJlli9RKjw3g_1782302327
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D7E0518005A9;
-	Wed, 24 Jun 2026 11:58:42 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4E943195608F;
+	Wed, 24 Jun 2026 11:58:47 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.44.49.152])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3E8731800351;
-	Wed, 24 Jun 2026 11:58:40 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 74F42195609E;
+	Wed, 24 Jun 2026 11:58:44 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>
 Cc: David Howells <dhowells@redhat.com>,
@@ -51,10 +51,11 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-cifs@vger.kernel.org,
 	ceph-devel@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 11/14] netfs: Fix writethrough to use collection offload
-Date: Wed, 24 Jun 2026 12:57:32 +0100
-Message-ID: <20260624115737.2964520-12-dhowells@redhat.com>
+	linux-kernel@vger.kernel.org,
+	Matthew Wilcox <willy@infradead.org>
+Subject: [PATCH v2 12/14] netfs: Fix writeback error handling
+Date: Wed, 24 Jun 2026 12:57:33 +0100
+Message-ID: <20260624115737.2964520-13-dhowells@redhat.com>
 In-Reply-To: <20260624115737.2964520-1-dhowells@redhat.com>
 References: <20260624115737.2964520-1-dhowells@redhat.com>
 Precedence: bulk
@@ -63,36 +64,49 @@ List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: cLT4Ce4aLaSILxwgM2UL_7B3esPmBPkAO1opAD9_J-E_1782302323
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: N8Ch6HuHF3-V_fvEVsZdv9d5mlrlMFl85HEMDeCXg0A_1782302327
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Fix writethrough write to set NETFS_RREQ_OFFLOAD_COLLECTION on the request
-so that collection is processed asynchronously rather than only right at
-the end - and also so that asynchronous O_SYNC writes get collected at all.
+Fix the error handling in writeback_iter() loop.  If an error occurs,
+writeback_iter() needs to be called again with *error set to the error so
+that it can clean up iteration state.  Further, the current folio needs
+unlocking and redirtying.
 
 Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
-Closes: https://sashiko.dev/#/patchset/20260616100821.2062304-1-dhowells%40redhat.com
+Link: https://sashiko.dev/#/patchset/20260619140646.2633762-1-dhowells%40redhat.com
 Signed-off-by: David Howells <dhowells@redhat.com>
 cc: Paulo Alcantara <pc@manguebit.org>
+cc: Matthew Wilcox <willy@infradead.org>
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
 ---
- fs/netfs/write_issue.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/netfs/write_issue.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index 437bb50ce175..e5d4f9ba3d6b 100644
+index e5d4f9ba3d6b..d1f98cca5d0f 100644
 --- a/fs/netfs/write_issue.c
 +++ b/fs/netfs/write_issue.c
-@@ -620,6 +620,7 @@ struct netfs_io_request *netfs_begin_writethrough(struct kiocb *iocb, size_t len
- 	}
+@@ -582,8 +582,6 @@ int netfs_writepages(struct address_space *mapping,
+ 		}
  
- 	wreq->io_streams[0].avail = true;
-+	__set_bit(NETFS_RREQ_OFFLOAD_COLLECTION, &wreq->flags);
- 	trace_netfs_write(wreq, netfs_write_trace_writethrough);
- 	return wreq;
- }
+ 		error = netfs_write_folio(wreq, wbc, folio);
+-		if (error < 0)
+-			break;
+ 	} while ((folio = writeback_iter(mapping, wbc, folio, &error)));
+ 
+ 	netfs_end_issue_write(wreq);
+@@ -594,6 +592,9 @@ int netfs_writepages(struct address_space *mapping,
+ 	return error;
+ 
+ couldnt_start:
++	folio_redirty_for_writepage(wbc, folio);
++	folio_unlock(folio);
++	writeback_iter(mapping, wbc, folio, &error);
+ 	netfs_kill_dirty_pages(mapping, wbc, folio);
+ out:
+ 	netfs_wb_end(ictx);
 
