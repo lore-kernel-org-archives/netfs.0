@@ -1,51 +1,52 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E078C39184B
-	for <netfs@lists.linux.dev>; Wed, 24 Jun 2026 07:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5965F2D876B
+	for <netfs@lists.linux.dev>; Wed, 24 Jun 2026 10:59:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782286612; cv=none; b=Wzk8nXFFYrnc3XZiqYT1pl6hQOvMAiDpjQtb1Yq2f1o/Dgc6jCZWNUk+tqkDVe8XeTRyMUm9Qq9pw0wOcq3uSMTr3CWxdhhCgv75Y1exI8sFIKFoJfBO5f5pz2WbHD/ekYexUDDZxI3eZBbbQa/ImRM+DT9wZuCxkVTxQBuC1jo=
+	t=1782298755; cv=none; b=s5ae7iB/Iv67EuKyypKd5jzgUgzMSiimHiL7EJRe1Ko8Yrvx3vL5TbJ7yV8kIsJ8eh9HTUyfVsHZAEIFySvIbkrMjV/msJ/y0O/7GIlGt2rFN1tlxrD5VC+kcOR45pCCDtpybuye0khYQMaLapSyDUUkPXngBNHsygZL46ZPesY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782286612; c=relaxed/simple;
-	bh=7egr5alyJJ52tRox2vuf+XUOA5rUyZXYakR9coH87T0=;
-	h=In-Reply-To:References:To:Cc:Subject:MIME-Version:From:Date:
-	 Message-ID:Content-Type; b=XcRhZ2ihVT8PyyqyA9rrdEnT3HvCPEynkwYKYJCjnCn7YJtNaREelBprG95IxPQPKJEB9WClLXoN8OfgKJ/6gJuR8VSEQtGPTCPQQ34+bK9F1qZfKxGFAgIvmAyG81OpjcA3srv8qhU0nKFzO5WbX5DELc1Vxg7zNAvlGqikmGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Sg6Gkh8I; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1782298755; c=relaxed/simple;
+	bh=tMEYHl427tclnx2PfXekXJip10McxW2w5X6mxxOLx8I=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
+	 Message-ID:Content-Type; b=Hmq8kvyAj5iV4IByRFwqJty4C06beVBJYlbECm8CAGWzCT2yxBwqFr6WqqDdIo7X/baT9L/v+CNqWwDqKTlR9Vqx5ObKMjuGXqKEoajDk+gTogXsGakwe/FECRyi/RuWwxo8OKSO7aAjYYCYG/7V58ShcC44+sftiVCA9sj4Nek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VWF+4yE6; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Sg6Gkh8I"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VWF+4yE6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782286608;
+	s=mimecast20190719; t=1782298753;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Kw0tzm4ODwPeGn7+DKX2w3Xuv2p0WyccWbyosHh4Zm0=;
-	b=Sg6Gkh8Ivt25UbFClRxKLdjfq2iNQWu3cYReuOzS7jjWOnnuxFeXZsGyOVcdHfBxCIjbR7
-	KNlB1TufG0LViii7xUKA6NYWPRpWJrGEoTNkpoNbvpoLEKc+O5TuY4qPpkOqmmxy7TW+oL
-	Vh/j3GxhnsyhkVgiFyvfCB48MFpba0o=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=dvez62hdpTBoQFR88eHgnXIJ3LLnZOz0wHEmjgqsS8E=;
+	b=VWF+4yE61EJVRpd/w9cssohYIgHkTZpB/nkJfCE4tJ7mkEyPhxmuxzyt4DxuQE8b2HJCSl
+	FRc5F/Ow+gePHcvkFFWBrRPHpqNc7qusZ6q3ENod0zVvbnHVMOQZv/n1abNg1eShjwWN19
+	qjY5ZhfupvdwiYujXtNGB8MNUTXU0kc=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-592-7Mtza7J_M7qMK-Ndaan5tg-1; Wed,
- 24 Jun 2026 03:36:45 -0400
-X-MC-Unique: 7Mtza7J_M7qMK-Ndaan5tg-1
-X-Mimecast-MFC-AGG-ID: 7Mtza7J_M7qMK-Ndaan5tg_1782286603
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-608-H4IlkNbCM0CR5UarK_yzqg-1; Wed,
+ 24 Jun 2026 06:59:10 -0400
+X-MC-Unique: H4IlkNbCM0CR5UarK_yzqg-1
+X-Mimecast-MFC-AGG-ID: H4IlkNbCM0CR5UarK_yzqg_1782298748
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 31FA31956052;
-	Wed, 24 Jun 2026 07:36:43 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 710961805C0A;
+	Wed, 24 Jun 2026 10:59:07 +0000 (UTC)
 Received: from warthog.procyon.org.uk (unknown [10.44.49.152])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 832551800591;
-	Wed, 24 Jun 2026 07:36:39 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1402B19560A0;
+	Wed, 24 Jun 2026 10:59:03 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
 	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
 	Kingdom.
 	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
 In-Reply-To: <498534d3-e82e-40ce-bc7d-230580b2fcae@chenxiaosong.com>
 References: <498534d3-e82e-40ce-bc7d-230580b2fcae@chenxiaosong.com> <33cc8eb4-8831-49b0-80d6-b06544a37920@chenxiaosong.com> <FA1EF9EEE4C1415E+20260530011403.1686344-1-hongao@uniontech.com> <2912807.1782231053@warthog.procyon.org.uk>
 To: ChenXiaoSong <chenxiaosong@chenxiaosong.com>
@@ -63,38 +64,39 @@ List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: David Howells <dhowells@redhat.com>
-Date: Wed, 24 Jun 2026 08:36:38 +0100
-Message-ID: <2939650.1782286598@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: 5TsEfP3Rww43ICTqml9ewCvH3jh4WHU1h1z_mOD6LZY_1782286603
+Date: Wed, 24 Jun 2026 11:59:02 +0100
+Message-ID: <2961243.1782298742@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: qrWhGIsoqpwbxeeIdyZAl1TZV048d9TkspCDLSsO1NM_1782298748
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2939568.1782286565.1@warthog.procyon.org.uk>
+Content-ID: <2961242.1782298742.1@warthog.procyon.org.uk>
 Content-Transfer-Encoding: quoted-printable
 
-This excerpt would seem to show how the problem comes about:
+Actually, this shows what happened:
 
-  a.out-717 : netfs_sreq: R=3D00000001[13] UPLD PREP  f=3D000 s=3D240000 0/=
-0 s=3D192 e=3D0
-  a.out-717 : netfs_sreq: R=3D00000001[13] UPLD SUBMT f=3D100 s=3D240000 0/=
-20000 s=3D192 e=3D0
-  a.out-717 : netfs_sreq: R=3D00000001[13] UPLD TERM  f=3D310 s=3D240000 1f=
-ac0/20000 s=3D160 e=3D0
-  a.out-717 : netfs_rreq: R=3D00000001 UW WAKE-Q  f=3D1801
-  a.out-717 : netfs_rreq: R=3D00000001 UW DONE-QUIESCE f=3D1801
-  a.out-717 : netfs_sreq: R=3D00000001[13] UPLD RETRY f=3D210 s=3D240000 1f=
-ac0/20000 s=3D160 e=3D-11
-  a.out-717 : netfs_sreq: R=3D00000001[13] UPLD SUBMT f=3D100 s=3D240000 0/=
-dbfac0 s=3D192 e=3D0
-  a.out-717 : netfs_failure: R=3D00000001[13] UPLD f=3D500 s=3D240000 0/dbf=
-ac0 write e=3D-5
+ a.out-717 : netfs_sreq: R=3D00000001[13] UPLD RETRY f=3D210 s=3D240000 1fa=
+c0/20000 s=3D160 e=3D-11
+ a.out-717 : netfs_sreq: R=3D00000001[13] UPLD SUBMT f=3D100 s=3D240000 0/d=
+bfac0 s=3D192 e=3D0
+ a.out-717 : netfs_failure: R=3D00000001[13] UPLD f=3D500 s=3D240000 0/dbfa=
+c0 write e=3D-5
+ a.out-717 : netfs_rreq: R=3D00000001 UW PAUSE   f=3D1801
+ a.out-717 : netfs_sreq: R=3D00000001[13] UPLD TERM  f=3D500 s=3D240000 0/d=
+bfac0 s=3D192 e=3D-5
+ a.out-717 : netfs_rreq: R=3D00000001 UW WAKE-Q  f=3D1805
+ a.out-717 : netfs_failure: R=3D00000001[13] UPLD f=3D400 s=3D240000 0/dbfa=
+c0 write e=3D-5
+ a.out-717 : netfs_rreq: R=3D00000001 UW PAUSE   f=3D1805
+ a.out-717 : netfs_sreq: R=3D00000001[13] UPLD TERM  f=3D400 s=3D240000 0/d=
+bfac0 s=3D192 e=3D-5
+ a.out-717 : netfs_rreq: R=3D00000001 UW WAKE-Q  f=3D1805
+ a.out-717 : netfs_sreq: R=3D00000001[13] UPLD FREE  f=3D400 s=3D240000 0/d=
+bfac0 s=3D192 e=3D-5
 
-It looks like there are two issues: firstly, why does the upload stop short=
-?
-Presumably that's forced by the test.  Secondly, I think it has miscalculat=
-ed
-the subreq size in the retry, hence the EIO.
+There are two calls to netfs_write_subrequest_terminated().  You can see th=
+e
+IN_PROGRESS bit has been cleared by the second one (f=3D500 -> f=3D400).
 
 David
 
