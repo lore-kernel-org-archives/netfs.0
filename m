@@ -1,106 +1,149 @@
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 212013C1085
-	for <netfs@lists.linux.dev>; Wed, 24 Jun 2026 14:22:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D443839A8
+	for <netfs@lists.linux.dev>; Wed, 24 Jun 2026 20:13:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782310935; cv=none; b=ZtjEYjyvikK5EDrb6B+aXfWSzotFwKGRfDciI3cWWzBhFazrVzowm6rB/StP9DIJKXrHIPsXRuWX2MUQGqvAFLYabPqwCRQCWPfDtnguco40/MGFF+hj4i4YILa2hMR/c8Tb52r2dQTTdxpl8jWXs0EnDIUCPwdEqVBPKwLC+lY=
+	t=1782332030; cv=none; b=dAQPLU8k2F5eFoUMq9IUZk7l99VrTEmmW+HQrmBvz5taiBexD4X0D9n96u0o+u4Oansnov9tMxmff8C0HAq1dtODkMfDM7CpOCPpAYKZCbmU4VClCQ3y5oYaEFqg+hjkhHXSpGr9/jdugPFCi0ODiPKKTbvVNK0QcM/v+TdHoCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782310935; c=relaxed/simple;
-	bh=y0WSRs6Vh+isvBOVaKjWmGYlW5InK7L0Oy01ck/WyV4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AlKQOssVQcmJ+eMQljPvFPYwh45SCQ/TPDOII/kWU2Dgd8EnOWAjtuiAN/cvkdBGYJU6ZmjaN0KTlb/fLOZIDdYIf/zJBZydB8g4g6HI6LaPK9PhdIZbD/gMCecibEuROQFTBE0cZRDXm2qnJzG60iZOtvigjwad4HV/yQUs48Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chenxiaosong.com; spf=pass smtp.mailfrom=chenxiaosong.com; dkim=pass (2048-bit key) header.d=chenxiaosong.com header.i=@chenxiaosong.com header.b=OwC9CVCg; arc=none smtp.client-ip=91.218.175.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=chenxiaosong.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chenxiaosong.com
+	s=arc-20240116; t=1782332030; c=relaxed/simple;
+	bh=xI5xcvp5mGEQ7XhRqOY4Tv6Va2uYix/X6g+VU8h4FpU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MSaLVgiSrwJ4DaYmGchkVjpN364XtHXCumJ85c3OvlZXZAzApgz+KPohRls9mGDbDZJVJIo9jOlIlVhZr/ZMq5w4g54+OSmkJbhk+AwA0XsVOPhoCFUN5sEDCIWTXsmpKRsiAdNMOENu3j+Aq+XQVmSt18vO1gY56hA442X4xJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T2TXPF1D; arc=none smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=chenxiaosong.com header.i=@chenxiaosong.com header.b="OwC9CVCg"
-Message-ID: <d9b48d39-21ba-4aaf-b9f0-bcc6db4c3088@chenxiaosong.com>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chenxiaosong.com;
-	s=key1; t=1782310920;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=X245tY1zwiXnNIdJCiKRYM3XjdPZBSqBqKOMlxQZ5pk=;
-	b=OwC9CVCgHcLToeXHcQhSsamSOuZtMZlgWNH4swYuXPIyq7nJhDM2pF08l0FE9ppJb0LrOq
-	VIVA3/+V5UpfGwyijI8wAoKkmvi5bKg0h/vvUoN2x89AwvfeNCvw1BZKxm2/dMwChdZWa/
-	o9VMBtZoI5Lh/JmGRGwjGasAne9aPhuOMg8QbPMMeQGAv4/hZPvbQhYxMp6hsmFUeg6CTz
-	o2l1LlYjxieTzmWivDHjKktdk7uqvqLIyvUxlhq+vuSKE3AKhwknsILlCONN6YQCBmQ+a4
-	j7qZGKqHPOtSfgJKB6bpFisXyWXAEXhZ4AUGilMq7UHSzOI/3PHtr9KQY8XZXA==
-Date: Wed, 24 Jun 2026 22:21:45 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T2TXPF1D"
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-c887ad05211so39076a12.3
+        for <netfs@lists.linux.dev>; Wed, 24 Jun 2026 13:13:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782332028; x=1782936828; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=tqqyVxYSR69pT9ofMMz2pm4tMEW2deyHKj8QeIUn/cY=;
+        b=T2TXPF1DIRuipEXAoiwU5P1iM/MT1bBDAxfbvDX7XBx4vhzTNOl2TMVwYqyLPSFj3l
+         EluMd2SH/6RK7u4m1Xgfl+9O4fCvzjBV1Rp9h6MiFb5KPJTQjynmBmKPEuDsYS0peL6q
+         ckrT2tVZXj3cvHsQ8vAwAkEhn0/qDvNlWiUA+5r0Prv0T7fapK8ac4GquQ3xLQoLr1if
+         9VP4WZ/9GkE2M/mDabxPnMKnGfd4O2pn/jxCR4rz/pGjpl3gxOxa/gWNi09GUgMo4xql
+         oYL8TVF5Jy1irujlfXC5G2/lpIlqAVWB+IasgK2T2B7TlifyzOhIhHvK6FM0BuzmlmQ8
+         GseQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782332028; x=1782936828;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=tqqyVxYSR69pT9ofMMz2pm4tMEW2deyHKj8QeIUn/cY=;
+        b=fG72HXKNJ+XTtxOjWQsvVLCTIWO8eqBC9kHwR5xt8T0bw6febArblSgQomcWWqIqLx
+         kFOD2lPPogs/OAx17ewbnm7R0WI3Vk8xfFVHos4l3A55EZwyAXj8LHyn6VtBrj/wJDMP
+         65K0tegyna7zkOCKTiUSvXDP3zPhpycffcb5Bu0COhu9pwSmxCFgYZTyDTSP1Iya/7u7
+         QboHfTZCvFocoQnd+fEKiV5q3zuHM6IHYag8O9QmcwydA9zX6x7f8fOMKOeQzXr7ORlt
+         N4ENIl3HhTTcN6J1M6slqp+g/DNU2Si5TEdwgk4Jfy3PRoijYQAuBur4XHl8sW+64gmP
+         l9PQ==
+X-Gm-Message-State: AOJu0YyBH9mvJE0biZqKVz08p8hLtWoP/JweX8GDnYIGHw9RoapyLzSW
+	R3RhmpGUDkNQ0ibVyZofBhphVT31zJtFEfwaDszgy4NqoC2Ptjpq92Fu
+X-Gm-Gg: AfdE7ckOx8n8P6e9UAaYuFgZW0deXVOEjatBfdNdweRTzF6h2zA9hpEfw0SoZ34DDDu
+	8xgWOVYixRqDAywMcON2M5cVQBd7bg6bzQkwI3lUJP1vVz2tp+bkkM6YVpcrVOj0BXscHU4i7rv
+	C91qf0dVkRvgFTcOdjeF6e8h1W6TrVzzBr8d6SHWasDB+MDoTS9ECih8B6S5OhnXIQKnUFhNWPd
+	34oYEdLR6XSPWuS4Tiz5TcJ7Dyftto6FdvoyKps3lsd5HZMeIq5MwhD+zqw1cn7ibLqyaNnmocu
+	GAdVM4Fq9qz0dW2LLhg4VfTrI0XG3Y+qIDsI7YVZ85TtsaSvhoU2YuE56XOjd8joEDj14S0DTgn
+	t3TkUAPyy+l5AKVtXsIb5WHTGJrwigBitCMjI6usuCcIddmltbE3SxZEyS63DI81PzrdlfcpvfE
+	7CUsQ7F6AgubTm
+X-Received: by 2002:a17:902:d4d0:b0:2c0:b359:99c1 with SMTP id d9443c01a7336-2c7bf10e092mr50660025ad.2.1782332028375;
+        Wed, 24 Jun 2026 13:13:48 -0700 (PDT)
+Received: from pop-os.. ([114.4.214.149])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7f63d245asm4777925ad.58.2026.06.24.13.13.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Jun 2026 13:13:47 -0700 (PDT)
+From: Yudistira Putra <pyudistira519@gmail.com>
+To: David Howells <dhowells@redhat.com>
+Cc: netfs@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Yudistira Putra <pyudistira519@gmail.com>
+Subject: [PATCH] cachefiles: reject copen before OPEN delivery completes
+Date: Wed, 24 Jun 2026 16:11:24 -0400
+Message-ID: <20260624201124.120004-1-pyudistira519@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 14/14] netfs: Fix DIO write retry for filesystems
- without a ->prepare_write()
-To: David Howells <dhowells@redhat.com>,
- Christian Brauner <christian@brauner.io>
-Cc: Paulo Alcantara <pc@manguebit.org>, netfs@lists.linux.dev,
- linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
- ceph-devel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- syzbot+3c74b1f0c372e98efc32@syzkaller.appspotmail.com,
- hongao <hongao@uniontech.com>, Steve French <smfrench@gmail.com>,
- Namjae Jeon <linkinjeon@kernel.org>
-References: <20260624115737.2964520-1-dhowells@redhat.com>
- <20260624115737.2964520-15-dhowells@redhat.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: ChenXiaoSong <chenxiaosong@chenxiaosong.com>
-In-Reply-To: <20260624115737.2964520-15-dhowells@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-Looks good. Feel free to add:
+cachefiles_ondemand_daemon_read() creates an anonymous fd for
+CACHEFILES_OP_OPEN before copying the OPEN message to userspace.
 
-Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Tested-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+If copy_to_user() fails after a partial copy, userspace may already
+have observed the OPEN message id.  A racing copen can then complete
+the OPEN request before the failed-read cleanup finishes.  This allows
+the OPEN waiter to observe success even though daemon-side OPEN message
+delivery failed.
 
-在 2026/6/24 19:57, David Howells 写道:
-> Fix netfs_unbuffered_write() so that it doesn't re-issue a write twice when
-> the filesystem doesn't have a ->prepare_write().  The bit of code that does
-> the first issue should just be removed as everything it does is done again
-> when the loop it's in goes back to the top.
-> 
-> Reported-by: syzbot+3c74b1f0c372e98efc32@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=3c74b1f0c372e98efc32
-> Tested-by: syzbot+3c74b1f0c372e98efc32@syzkaller.appspotmail.com
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> cc: Paulo Alcantara <pc@manguebit.org>
-> cc: hongao <hongao@uniontech.com>
-> cc: ChenXiaoSong <chenxiaosong@chenxiaosong.com>
-> cc: netfs@lists.linux.dev
-> cc: linux-fsdevel@vger.kernel.org
-> ---
->   fs/netfs/direct_write.c | 6 ------
->   1 file changed, 6 deletions(-)
-> 
-> diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
-> index 25f8ceb15fad..1ff1789016b8 100644
-> --- a/fs/netfs/direct_write.c
-> +++ b/fs/netfs/direct_write.c
-> @@ -190,12 +190,6 @@ static int netfs_unbuffered_write(struct netfs_io_request *wreq)
->   			stream->prepare_write(subreq);
->   			__set_bit(NETFS_SREQ_IN_PROGRESS, &subreq->flags);
->   			netfs_stat(&netfs_n_wh_retry_write_subreq);
-> -		} else {
-> -			struct iov_iter source;
-> -
-> -			netfs_reset_iter(subreq);
-> -			source = subreq->io_iter;
-> -			netfs_reissue_write(stream, subreq, &source);
->   		}
->   	}
->   
-> 
+Record when the OPEN message has actually been delivered and the
+anonymous fd has been installed.  Reject copen before that point, so a
+partially copied failed read cannot complete the OPEN request
+successfully.
 
+A local reproducer that faults the daemon read buffer previously showed
+COPEN_FAST ok=1.  With this change, the same reproducer reaches the
+failed OPEN delivery path but copen is rejected consistently:
+
+    Trials: 10
+    READ EFAULT: 10
+    COPEN_FAST ok=0: 10
+    COPEN_FAST ok=1: 0
+    WATCHDOG_TIMEOUT: 0
+
+Signed-off-by: Yudistira Putra <pyudistira519@gmail.com>
+---
+ fs/cachefiles/internal.h |  1 +
+ fs/cachefiles/ondemand.c | 12 ++++++++++++
+ 2 files changed, 13 insertions(+)
+
+diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
+index b62cd3e..72fa413 100644
+--- a/fs/cachefiles/internal.h
++++ b/fs/cachefiles/internal.h
+@@ -143,6 +143,7 @@ struct cachefiles_req {
+ 	struct completion done;
+ 	refcount_t ref;
+ 	int error;
++	bool open_msg_delivered;
+ 	struct cachefiles_msg msg;
+ };
+ 
+diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
+index 0849eaf..16136ff 100644
+--- a/fs/cachefiles/ondemand.c
++++ b/fs/cachefiles/ondemand.c
+@@ -196,6 +196,17 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
+ 		xa_unlock(&cache->reqs);
+ 		return -EINVAL;
+ 	}
++
++	/*
++	 * The OPEN request must not be completed by copen until the
++	 * daemon_read side has successfully delivered the OPEN message and
++	 * installed the anonymous fd.  Otherwise a daemon can use a partially
++	 * copied message from a failed read to complete the request.
++	 */
++	if (!READ_ONCE(req->open_msg_delivered)) {
++		xa_unlock(&cache->reqs);
++		return -EAGAIN;
++	}
+ 	xas_store(&xas, NULL);
+ 	xa_unlock(&cache->reqs);
+ 
+@@ -469,6 +480,7 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ 			goto out;
+ 		}
+ 		fd_install(anon_file.fd, anon_file.file);
++		WRITE_ONCE(req->open_msg_delivered, true);
+ 	}
+ out:
+ 	cachefiles_put_object(req->object, cachefiles_obj_put_read_req);
 -- 
-ChenXiaoSong <chenxiaosong@chenxiaosong.com>
-Chinese Homepage: https://chenxiaosong.com
-English Homepage: https://chenxiaosong.com/en
+2.43.0
 
