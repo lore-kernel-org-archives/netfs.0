@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18D333A9C1
-	for <netfs@lists.linux.dev>; Thu, 25 Jun 2026 14:07:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8BC733A9C1
+	for <netfs@lists.linux.dev>; Thu, 25 Jun 2026 14:07:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782396451; cv=none; b=o2s8ac0BBjIjcSXQu1GjAkbfHe8Wht5oo11cy8A0LZKRH8AFKahsVGWIEWQVQRotFi1V2KbvlWbTRFbvEA7ckJPm2bbcEK+1GqNFqo6VGhQHpO7M3NVjoCPdwR3JL26X0IDV2dbNs657n1gLee7kU5XevKDCWwQnt6fVUajYhTo=
+	t=1782396457; cv=none; b=TGAUR3gd5I+jVDQ25NoGzv0WmKoSYNNUcGtE/aH66gcX4NDGe8aOd/i9cM7175+o6irg1er7Gc3Y1lpLIYeadMs+e3OZNh9HU8inuAst3BXzbhkG10hUnoyeVR6K8PhFtxdsTsC5u2vhDJX32Gs7OglK7KLK/2gRojD/Y+8LMxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782396451; c=relaxed/simple;
-	bh=RdvGg5oUDGJEEdfGJGQ/pnwBlwSc3oIQFuXQ0iNSvAc=;
+	s=arc-20240116; t=1782396457; c=relaxed/simple;
+	bh=4YO0schpHrytBbCwQ3FkwrvdrFR4G2LcBxtQ244E8Ms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=QvwWYSsXAQrTd6ymlyoW5gcMbL/SB8uChoXk/Z4mdnTSG+ft4rGsiwMjzTFZpBhbLG90CQoY85G2ozNGPRxM+OSG/qobjLo0fJlsjM9tLlvCPp851y5rFv3x3bVF/k9yHbXYKiU1kvFxR2TmqGXJj/cMv6HPfANeyj66GKbSvDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JBoRb5q3; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:content-type; b=kvkXGh3QuxA/cz8ExnlHFHt/kdWxHDZ/+ywp/43gFV2cXXdyc6AX2qW0oUkxPTZzGBP246EUGkFFHoa5SwFm1E0VRF0GQIhEoB40DpnXj8FFKAsPY0t9QFqac/YX0j1JwzAIxa1xdrOKuFOauRI4ZGxLXuFydsOuk4/CHtlXZb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NkRZO2G4; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JBoRb5q3"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NkRZO2G4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782396449;
+	s=mimecast20190719; t=1782396454;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UCH9AytniZX5CSjSRd/+qJL1T4JneHVxw5zGHZC2I1o=;
-	b=JBoRb5q3t7qIzCM1mzpL4MuNXUXUlpc3VKi+UQ637P7QotmBLtj9lC0idrPYmibermUpO+
-	aJ6+E2MgK3CqCBeSCjb2tvf/U8B3mAAJ/nHUFFYlAtr78ZWt41VzLaRlz7/lEeZGtn8g//
-	OwrLjLyhzpqVYBLJEQ9w56pVj7VIxb0=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=ci/Uz32uQ+cQbDj0d+4HQoRx3PoMzfw96v2ECR7IWxY=;
+	b=NkRZO2G4HdYbwR5n4BURNpIQQccvVa/Svem+3B+xr1YKRGAGO1ynTXn51iTwj5ZwYWPv74
+	lodFerf+UuZ4+qDPQuJnoNrnFaHzTHNq8NLgzjf33GjCFjJxcuQGcCUp3dPKUHgpRjPFVQ
+	KOzzgwKR/JClIejiRNN02suyRYVkwp4=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-641--_iwJPnPMy2RDNCptzyHUQ-1; Thu,
- 25 Jun 2026 10:07:24 -0400
-X-MC-Unique: -_iwJPnPMy2RDNCptzyHUQ-1
-X-Mimecast-MFC-AGG-ID: -_iwJPnPMy2RDNCptzyHUQ_1782396436
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-546-7AmamCDjOd6K7lyN0TYIlQ-1; Thu,
+ 25 Jun 2026 10:07:29 -0400
+X-MC-Unique: 7AmamCDjOd6K7lyN0TYIlQ-1
+X-Mimecast-MFC-AGG-ID: 7AmamCDjOd6K7lyN0TYIlQ_1782396448
 Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E45DA19560A6;
-	Thu, 25 Jun 2026 14:07:15 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 555ED180AD7B;
+	Thu, 25 Jun 2026 14:07:27 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.44.49.152])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5B41A36916;
-	Thu, 25 Jun 2026 14:07:12 +0000 (UTC)
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3978E3189;
+	Thu, 25 Jun 2026 14:07:23 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>
 Cc: David Howells <dhowells@redhat.com>,
@@ -53,10 +53,12 @@ Cc: David Howells <dhowells@redhat.com>,
 	ceph-devel@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	NeilBrown <neil@brown.name>
-Subject: [PATCH v3 04/15] cachefiles: Fix file burial to take lock when unsetting S_KERNEL_FILE
-Date: Thu, 25 Jun 2026 15:06:22 +0100
-Message-ID: <20260625140640.3116900-5-dhowells@redhat.com>
+	Ming Lei <ming.lei@redhat.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH v3 06/15] iov_iter: Fix missing alloc fail check in iov_iter_extract_bvec_pages()
+Date: Thu, 25 Jun 2026 15:06:24 +0100
+Message-ID: <20260625140640.3116900-7-dhowells@redhat.com>
 In-Reply-To: <20260625140640.3116900-1-dhowells@redhat.com>
 References: <20260625140640.3116900-1-dhowells@redhat.com>
 Precedence: bulk
@@ -66,36 +68,39 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
-X-Mimecast-MFC-PROC-ID: cVcxdMg4FTKKiqjp4PJLxnyOQ60nYEPMIH_tGjgrIKo_1782396436
+X-Mimecast-MFC-PROC-ID: BTMzvsr9eXsQaFyZRjnMUeytYFZLwmVEVvSWQsqaZiQ_1782396448
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Fix cachefiles_bury_object() to lock the inode of the file being buried
-whilst it unsets the S_KERNEL_FILE flag.
+Fix iov_iter_extract_bvec_pages() to check if want_pages_array() fails and,
+if so, return -ENOMEM appropriately.
 
-Fixes: 07a90e97400c ("cachefiles: Implement culling daemon commands")
-Closes: https://sashiko.dev/#/patchset/20260616100821.2062304-1-dhowells%40redhat.com
+Fixes: e4e535bff2bc ("iov_iter: don't require contiguous pages in iov_iter_extract_bvec_pages")
+Link: https://sashiko.dev/#/patchset/20260608145432.681865-1-dhowells%40redhat.com
 Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Ming Lei <ming.lei@redhat.com>
 cc: Paulo Alcantara <pc@manguebit.org>
-cc: NeilBrown <neil@brown.name>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: Christoph Hellwig <hch@infradead.org>
+cc: Jens Axboe <axboe@kernel.dk>
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
 ---
- fs/cachefiles/namei.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/iov_iter.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/cachefiles/namei.c b/fs/cachefiles/namei.c
-index a464c4646c04..d4309dfb55df 100644
---- a/fs/cachefiles/namei.c
-+++ b/fs/cachefiles/namei.c
-@@ -375,7 +375,7 @@ int cachefiles_bury_object(struct cachefiles_cache *cache,
- 					    "Rename failed with error %d", ret);
- 	}
+diff --git a/lib/iov_iter.c b/lib/iov_iter.c
+index 5f60733f3280..1661c237b643 100644
+--- a/lib/iov_iter.c
++++ b/lib/iov_iter.c
+@@ -1637,6 +1637,8 @@ static ssize_t iov_iter_extract_bvec_pages(struct iov_iter *i,
+ 	bi.bi_bvec_done = skip;
  
--	__cachefiles_unmark_inode_in_use(object, d_inode(rep));
-+	cachefiles_do_unmark_inode_in_use(object, d_inode(rep));
- 	end_renaming(&rd);
- 	_leave(" = 0");
- 	return 0;
+ 	maxpages = want_pages_array(pages, maxsize, skip, maxpages);
++	if (!maxpages)
++		return -ENOMEM;
+ 
+ 	while (bi.bi_size && bi.bi_idx < i->nr_segs) {
+ 		struct bio_vec bv = bvec_iter_bvec(i->bvec, bi);
 
