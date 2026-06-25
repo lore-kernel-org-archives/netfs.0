@@ -1,120 +1,71 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com [209.85.210.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B5D1862A
-	for <netfs@lists.linux.dev>; Thu, 25 Jun 2026 12:51:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00542571B8
+	for <netfs@lists.linux.dev>; Thu, 25 Jun 2026 13:16:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782391867; cv=none; b=T4adtxlzd0Or20OQDjDq7RMYzvkrR8SUg/TyTMAwsEZCw9brrdWRe0WIuNmg9wUJtOdHwZofZuZNfJ5HzRIPuYo/iLjwx/kiUZBx2zEHrehDCg25UNYDwMUlGGPqxEKpJau+gquBK4jkFX6X/jb1WYIVMTfCiJr2VFCHvJoK+2Y=
+	t=1782393364; cv=none; b=NlncM0FMM6RRYT7dlzyYo5tK/7ypO6aa5oQU5N0UJnI82zj9h0KSVjw2maA7o5KpWLNdcW91LIY+wPtEMxaMEqfzbnvoOhr2xREQrsUXc2R+9cYJifk863qplCa4mZaUCGqw9wj5D5SJi94W4tHC00ZhVn/ixMjPP0JUE1tVFaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782391867; c=relaxed/simple;
-	bh=SLe6ITWkSKggy2pJnGTLo+fMLFIZ9tcBt8yhO1F8vP0=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
-	 Message-ID:Content-Type; b=R808nfPaSS1lnrGCvetDzJkOk2mdNaUx1GkjVysh7GPe+TOQknZU6B1sIfHrUpog5CAO0Yqj/ppS5LDCblL9fjfN3dR4GCzclL0nJA/ogC1jbBrEA8i9KCdoosAjEIAufEdXEqk0Bguxum1e5HdBaULSn1OVfiIVJijpgAGt0g0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Mi05vTZY; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Mi05vTZY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782391865;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZRb6dNCyRNoOHzPlpU+yg1ty+63V/bnvuyT4bjQNu7o=;
-	b=Mi05vTZYupz26d/3cBnxwHW2wCe5BV6wZGR9MMAsiypcteg7yatw2ZaYuuMRFg/hWjPVtR
-	DWANPRiXsGslexI2T/H0YcmeRrDpdBgoj9nNrF0wEo9Gpran9L0JZ8ddzOlNOljGx89Mh0
-	stFrPkTxJ8Nl4D2D9ijTeFzIHv+QaBs=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-660-5XCf2NW8MF-owCZnTcNd3A-1; Thu,
- 25 Jun 2026 08:51:01 -0400
-X-MC-Unique: 5XCf2NW8MF-owCZnTcNd3A-1
-X-Mimecast-MFC-AGG-ID: 5XCf2NW8MF-owCZnTcNd3A_1782391860
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4367A1977316;
-	Thu, 25 Jun 2026 12:51:00 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.44.49.152])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3FFCD1956088;
-	Thu, 25 Jun 2026 12:50:58 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <6a19f098.abb04025.19af7b.0003.GAE@google.com>
-References: <6a19f098.abb04025.19af7b.0003.GAE@google.com>
-To: syzbot <syzbot+3c74b1f0c372e98efc32@syzkaller.appspotmail.com>
-Cc: dhowells@redhat.com, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org, netfs@lists.linux.dev,
-    pc@manguebit.org, syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [netfs?] KASAN: slab-use-after-free Read in netfs_unbuffered_write
+	s=arc-20240116; t=1782393364; c=relaxed/simple;
+	bh=Av1nEaZBmzPeHVFU/YbHp35FNcszR6QBo3/rp5SvLaQ=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=EF64moB8tWHyrBefGYLsFRHTDmzLLmqZHecoOeOlmrZlQR7EPoj0Yd5JOGY5AOGZQroNOSkWyKfT0QkPdjheTYK2uIZ/ln0t/hhLn8jR7JeY5FwsLTe6B3mz+0VEJT3ILGMBtxEQEGf4NLj1mmS1lK2yC+s9xfWhjzWgW4OYrUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f69.google.com with SMTP id 46e09a7af769-7e74781faaaso2840082a34.2
+        for <netfs@lists.linux.dev>; Thu, 25 Jun 2026 06:16:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782393362; x=1782998162;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=y7VMIbtiM5CsO8L6BOnyEVirILtl8EPmlTi0MLNnwpc=;
+        b=EO/gmg4B9n7W5/D32XT/aZKSjvArjrFZ6deCsqEU+uvU+27xKCFH87RzhcY9s9Tgr5
+         odG6LyyZozRUUc/V8OQwI36dAtNFw2jn+nBJjeFJfBeY8TF34kk0JGbi6xOdCevJweaj
+         vLRHxauRDVT4Ii3B08jXm25BY7uFEPQJvA/meEPUWYd/hZwWomGGB/AXQZ8qbgHSZ3xy
+         f0Pj3baxYJQYJmNzBzyPE0DJa3NylKRlerOostOW3zIP+mVFO+31LTPAW0+c+UkyeGxr
+         OTWTAP4W7UJlaxGpdba5GTroEptAov2lM6dRUUMG3qnoPXPGIOfcL+PSt8N5dh0tIDp7
+         FdBg==
+X-Forwarded-Encrypted: i=1; AFNElJ/FD4Jrynb0WRzH+Aw3AD1iJ0WNvTbiexEd7Yz6/SDiHzJSHhtlwARE6AcEO2RUNDi3nnTMEQ==@lists.linux.dev
+X-Gm-Message-State: AOJu0YwVINd0aJ4DYUHfkj3N+BBYYiPQJhOUqyABf54GoM81lBiWdf3f
+	ThuVRbiICV58XZFpqVSAGecm6xbs7aiHH16Joa2ZUw/QcmILhJi+0tOQWLYWbfYSQjbec4mVKaT
+	puBoEnzeB7zXZ8U1WeYjw30PCgNnlb/7zFcZltHHVscMerl/42f2ijjsVO1M=
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Thu, 25 Jun 2026 13:50:57 +0100
-Message-ID: <3106406.1782391857@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-MFC-PROC-ID: jJh_Vf29cEhMmt1Vow-NczHC7J1akdK26ldklpbM4pc_1782391860
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3106405.1782391857.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
+X-Received: by 2002:a05:6830:4c07:b0:7e7:bf0:d84e with SMTP id
+ 46e09a7af769-7e99c18978emr2870405a34.11.1782393361857; Thu, 25 Jun 2026
+ 06:16:01 -0700 (PDT)
+Date: Thu, 25 Jun 2026 06:16:01 -0700
+In-Reply-To: <3106406.1782391857@warthog.procyon.org.uk>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a3d2a11.cf1c467f.2941c6.0006.GAE@google.com>
+Subject: Re: [syzbot] [netfs?] KASAN: slab-use-after-free Read in netfs_unbuffered_write
+From: syzbot <syzbot+3c74b1f0c372e98efc32@syzkaller.appspotmail.com>
+To: dhowells@redhat.com, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netfs@lists.linux.dev, pc@manguebit.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git=
- 8fde5d1d47f6
+Hello,
 
-diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
-index 25f8ceb15fad..c16fbad286a1 100644
---- a/fs/netfs/direct_write.c
-+++ b/fs/netfs/direct_write.c
-@@ -166,13 +166,16 @@ static int netfs_unbuffered_write(struct netfs_io_req=
-uest *wreq)
- =09=09 */
- =09=09subreq->error =3D -EAGAIN;
- =09=09trace_netfs_sreq(subreq, netfs_sreq_trace_retry);
--=09=09if (subreq->transferred > 0)
-+=09=09if (subreq->transferred > 0) {
- =09=09=09iov_iter_advance(&wreq->buffer.iter, subreq->transferred);
-+=09=09=09wreq->transferred +=3D subreq->transferred;
-+=09=09}
-=20
- =09=09if (stream->source =3D=3D NETFS_UPLOAD_TO_SERVER &&
- =09=09    wreq->netfs_ops->retry_request)
- =09=09=09wreq->netfs_ops->retry_request(wreq, stream);
-=20
-+=09=09__clear_bit(NETFS_SREQ_MADE_PROGRESS, &subreq->flags);
- =09=09__clear_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags);
- =09=09__clear_bit(NETFS_SREQ_BOUNDARY, &subreq->flags);
- =09=09__clear_bit(NETFS_SREQ_FAILED, &subreq->flags);
-@@ -186,17 +189,10 @@ static int netfs_unbuffered_write(struct netfs_io_req=
-uest *wreq)
-=20
- =09=09netfs_get_subrequest(subreq, netfs_sreq_trace_get_resubmit);
-=20
--=09=09if (stream->prepare_write) {
-+=09=09if (stream->prepare_write)
- =09=09=09stream->prepare_write(subreq);
--=09=09=09__set_bit(NETFS_SREQ_IN_PROGRESS, &subreq->flags);
--=09=09=09netfs_stat(&netfs_n_wh_retry_write_subreq);
--=09=09} else {
--=09=09=09struct iov_iter source;
--
--=09=09=09netfs_reset_iter(subreq);
--=09=09=09source =3D subreq->io_iter;
--=09=09=09netfs_reissue_write(stream, subreq, &source);
--=09=09}
-+=09=09__set_bit(NETFS_SREQ_IN_PROGRESS, &subreq->flags);
-+=09=09netfs_stat(&netfs_n_wh_retry_write_subreq);
- =09}
-=20
- =09netfs_unbuffered_write_done(wreq);
+syzbot has tested the proposed patch but the reproducer is still triggering an issue:
+lost connection to test machine
+
+
+
+Tested on:
+
+commit:         8fde5d1d Merge tag 'acpi-7.1-rc6' of git://git.kernel...
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+console output: https://syzkaller.appspot.com/x/log.txt?x=1553eb41580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=8118209836970b54
+dashboard link: https://syzkaller.appspot.com/bug?extid=3c74b1f0c372e98efc32
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=1654601c580000
 
