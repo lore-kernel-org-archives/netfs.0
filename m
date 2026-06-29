@@ -1,34 +1,84 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.75.44.102])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E48D6374A10
-	for <netfs@lists.linux.dev>; Sun, 28 Jun 2026 11:28:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.75.44.102
+Received: from flow-a7-smtp.messagingengine.com (flow-a7-smtp.messagingengine.com [103.168.172.142])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BEFA395AD9
+	for <netfs@lists.linux.dev>; Mon, 29 Jun 2026 06:59:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782646123; cv=none; b=Tz9DowvH3eygD8Bhpq6ykm0q9Sc/tQLk6HeLCTm67Ryy09laFyj5qZ9xLFI7Cddx2lRI0wj+jG/MtSSCzwdZDbOov0Lps+g8/7BU2qwyUu+oQ/znWzRbQNJvTJWjZo7G8sE3CzIdpovIWQmAO/jG/53vetzdgekxalIu9msWocE=
+	t=1782716396; cv=none; b=je9ibIkr9xZeErLY8Nv8dpGYxWY0eZFz6QjbpZtLz1mjt66X/eNb6Dmu6w9Kf/A8e751vTbqcdN99ohmG5D3k2qqiqWplRMqzJ5ka9WjfCt4+LP8h5qQmerQ1H+343EV/n6F+YsI/NpUo4h9S1zCWcruL4sGumDYph0qu0+7OBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782646123; c=relaxed/simple;
-	bh=mBhSjl+wsg+TRCvuEDdaiAqjgOOgkw+0MyFfxLMN7Lo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JuAlCPOhSsVOZaHFLaAEbx9LQx0E/cwRS9FxJFxLc8JJjl9eW5OogsqYn6AfkEaiE4Xeo/27y31JTJl5913GXrIRR7RQ6EXE82+toTpmf68AoCcQO53Biln90ksdroZZAQZHzFJRUvs1XTnT4/8TqEB62w8e3kB+apBg2DakMYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=13.75.44.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
-Received: from enjou-Legion-Y7000P-2019 (unknown [172.23.56.36])
-	by app1 (Coremail) with SMTP id ygmowAAXOsRbBUFqh_e+AA--.35973S3;
-	Sun, 28 Jun 2026 19:28:31 +0800 (CST)
-From: Ren Wei <n05ec@lzu.edu.cn>
-To: netfs@lists.linux.dev
-Cc: dhowells@redhat.com,
-	brauner@kernel.org,
-	yuantan098@gmail.com,
-	bird@lzu.edu.cn,
-	xizh2024@lzu.edu.cn,
-	n05ec@lzu.edu.cn
-Subject: [PATCH 1/1] cachefiles: avoid slab out-of-bounds read when tracing short aux data
-Date: Sun, 28 Jun 2026 19:28:16 +0800
-Message-ID: <82edfddccd38dc1ba67bc614f24e8248bab447a1.1782637741.git.xizh2024@lzu.edu.cn>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1782637741.git.xizh2024@lzu.edu.cn>
-References: <cover.1782637741.git.xizh2024@lzu.edu.cn>
+	s=arc-20240116; t=1782716396; c=relaxed/simple;
+	bh=tYsHBzQ2vOQXcrOetqIt8QTpdhuvILhgntCm0fGFWQo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EgFMKj/nDrp67eWgtTR9+JErgk/+2C2+3HFRJ0qgitr/geefJpdX+k4d1T14ZihFrS9mb+LlLi0fH0R2vAvL78vKZhMgpt70A1Z2F3aiWCAEQrIFZc46IpazmiCL4tG25TLra2efkq9yOVr6D4AzR5kcZWCGLsfCuTvrkGwdYnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=Obsidian.Systems; spf=fail smtp.mailfrom=Obsidian.Systems; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=BHZdM1h7; arc=none smtp.client-ip=103.168.172.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=Obsidian.Systems
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=Obsidian.Systems
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="BHZdM1h7"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.phl.internal (Postfix) with ESMTP id 6597A1380199;
+	Mon, 29 Jun 2026 02:59:53 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Mon, 29 Jun 2026 02:59:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1782716393; x=1782723593; bh=yKchnWIun08ZH/dza01bJYYLCZ3CGuAhcKX
+	8fKBHQq8=; b=BHZdM1h7EBPAVqQBkpLLAi88Pyo+X2kqC/LnqsFSTk3glr2jqWg
+	GqIkvvSznKPZoOrGWEmpsPD+Qbgg5lsnCbHKVk3q2FhKFRtzjZdGOo2JU8dyGG7y
+	66JRkl6NBPsLCWuIvGesQYahTV/B+0qhYsm1v/seClIaXdV1+o8A0yp9yThUC1CB
+	LBy31wo6FfVKma1jxxFqYgs+mUwp71WtsshK8nRB+VbqSkVpYbOhRReK9L+IfoZX
+	TNkdJuxdIksn2I8zoYarC1OzwqSJ1FIt6DF7kG9baR7tBV2bB/TcZPqyUHbf33vq
+	iEu/PGySY+4QnMgzKzsrWUEuQhmDuIs9h6A==
+X-ME-Sender: <xms:5xdCagzsFueOF7noMHyCTf4kiChlI-8KLFnZC9PCmfZxogdqmoa4CA>
+    <xme:5xdCam6I2pNTfoa1gUQDRC714pNU_7quuJ37nYBcVDyZDE2KYrazFpoRn363dX9ZO
+    I7W5g7nyAzNub6VC9LtPSlAeYmemmNJu5O99F0f-NjXX3dlceQOcnw>
+X-ME-Received: <xmr:5xdCah2ZIM5rY3dhehEJP-78RbE591i5ZZA2tfQwjYBiWGQrk5xCX8L7vZLz8isWFXvgwz5lfdKqYM8WlfSNOhA7hF6sHSZAd7ofmw>
+X-ME-Proxy-Cause: dmFkZTG1MzZNIK/9LeMFIaDGsEfvFNo5AvCYGQDHW+g20Nu9ip4TV3nJ7p59RrHd/M78Hu
+    Tp0tmf0jRIUShBiZMlJYf1knZYI21dsvCzMUUkvMby4qr5+GyT4SrKsaT7Au0nty91uRZo
+    +0N0Od7YjXaw1Ge3foZofxXn5LVncJbLeoxaqP6M9RQsfpyke9fd6wdzqtzyygbsVzCNgU
+    FkqSO5gWpGFZ7zkIBEZzol7+2F8f+lnnSm9E96SpcfsZYHrEYIyBWXWrKffH727ICfhi2e
+    exm19riPEN6Sq4uUFYYA1BHaHccnvLVIZOT3aoVUoQcDZ6zCfm+1C1D29P9b6OkzVl1mKx
+    YtGDyDyBMsqn9DlqQS8o3FOKpSed+ky+G+N4VqSlWkdCKSn7ol/cAUydRn1SbmgZFXVv5/
+    xlRyu0nIKJ32bblV4W80J0qrB8mcIx06ZsaFginCPIop4dl+rhV7faHKHCDm3WzMk5YzBo
+    RH1tZXKRWd4E0jMvz49bY80paH9WkV0dmV8eN8JoDFPg0RYii2W0p16wd4iMIXWgiQprfG
+    fVBVqHQqQTMwJ0mDpewZC07EFG/WTVjZ+ePCpSdDlMGTSW29EFmL7zg1bTOmeJGF4Rlr6Z
+    TbCY7jI7h9ay+yJPKsC3e0NctMPkxhPnstNr4surhjdc58oitBvM6OV6JoBA
+X-ME-Proxy: <xmx:5xdCav0yswmb9mhUmQWj5jG9tuFFQYt73H1Lz3jW2Saujb7zHcvqyw>
+    <xmx:5xdCagcqymsI4lnM6qRbvXTbr7ToZMTVfj96h_q5ut7osQczYFcB4w>
+    <xmx:5xdCapIw3VAmdhYyGINTcxjJeqsP-6WE3TMeB6qaca7RwJckj2eYsg>
+    <xmx:5xdCan-FKRbHRVqantc7u6i9lippIRP9-wb4cZgkoE1NWL8cXf0LSg>
+    <xmx:6RdCal7ITYN3Qzl8b69T3cgnmcXrTimMkfzW3JrfsPjg8ll8zdVpofwL>
+Feedback-ID: i91b946ab:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 29 Jun 2026 02:59:51 -0400 (EDT)
+From: John Ericson <John.Ericson@Obsidian.Systems>
+To: "Andy Lutomirski" <luto@kernel.org>,	"Al Viro" <viro@zeniv.linux.org.uk>,
+	"Christian Brauner" <brauner@kernel.org>,	"Jan Kara" <jack@suse.cz>,
+	"David Howells" <dhowells@redhat.com>,	"Chuck Lever" <cel@kernel.org>,
+	"Jeff Layton" <jlayton@kernel.org>,
+	"Shuah Khan" <skhan@linuxfoundation.org>,
+	"David Laight" <david.laight.linux@gmail.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,	"Li Chen" <me@linux.beauty>,
+	"Cong Wang" <cwang@multikernel.io>,	"Arnd Bergmann" <arnd@arndb.de>,
+	"Thomas Gleixner" <tglx@kernel.org>,	"Ingo Molnar" <mingo@redhat.com>,
+	"Borislav Petkov" <bp@alien8.de>,
+	"Dave Hansen" <dave.hansen@linux.intel.com>,
+	"Jonathan Corbet" <corbet@lwn.net>,	"Kees Cook" <kees@kernel.org>,
+	"Sergei Zimmerman" <sergei@zimmerman.foo>,
+	"Farid Zakaria" <farid.m.zakaria@gmail.com>,
+	linux-arch <linux-arch@vger.kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+	linux-api <linux-api@vger.kernel.org>,	netfs <netfs@lists.linux.dev>,
+	linux-nfs <linux-nfs@vger.kernel.org>
+Cc: John Ericson <mail@JohnEricson.me>
+Subject: [RFC PATCH 0/3] fs: support tasks with a null root or cwd
+Date: Mon, 29 Jun 2026 02:58:19 -0400
+Message-ID: <20260629065934.1425479-1-John.Ericson@Obsidian.Systems>
+X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -36,103 +86,75 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:ygmowAAXOsRbBUFqh_e+AA--.35973S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxuF47tr4UXF48JrWDJw15CFg_yoW5AF15pF
-	Wav3WjyFy8Wr48Cr4kAFs0kw1rG345GFnFg39rWwn5AF95XryrXFy7tr9YvF1Yyry8KrZI
-	yw1jkFy7Xr98A3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvG1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
-	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
-	IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2
-	jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52
-	x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWU
-	GwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
-	8JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWUAVWUtwCY02Avz4vE-syl
-	42xK82IYc2Ij64vIr41l42xK82IY6x8ErcxFaVAv8VW8GwCFx2IqxVCFs4IE7xkEbVWUJV
-	W8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF
-	1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6x
-	IIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvE
-	x4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa
-	73UjIFyTuYvjfUYCJmUUUUU
-X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQsMCWpA2VUB1AAAs8
 
-From: Zihan Xi <xizh2024@lzu.edu.cn>
+From: John Ericson <mail@JohnEricson.me>
 
-trace_cachefiles_coherency() logs disk-side auxiliary data passed from
-cachefiles_set_object_xattr() and cachefiles_check_auxdata(). Both call
-sites always used be64_to_cpup(buf->data), reading eight bytes even when
-the xattr tail only contains cookie->aux_len bytes.
+This patch series allows processes to avoid having a root directory
+and/or a working directory. The actual implementation is in the second
+patch. The first patch just prepares some documentation. (Are struct
+fields documented like this? Would this be good regardless?) And the
+third patch adds unit tests.
 
-9p registers FS-Cache cookies with a four-byte qid.version aux payload.
-When the cachefiles coherency tracepoint is enabled, the extra read past
-the kmalloc() allocation triggers KASAN slab-out-of-bounds reports in
-fscache_cookie_worker.
+I have tested these patches by `kunit.py run`-ing my new test suite.
 
-Read at most aux_len bytes into a u64 before passing the value to the
-tracepoint.
+The motivation is discussed at length in the thread starting with [1].
+This patch would be the first in a series trying to allow for
+less-privileged and more cheaply less-privileged processes than we have
+today, by nulling out their namespace fields (or similar) so they do not
+belong to any namespaces. This specific change is a prelude (in spirit,
+it might actually be orthogonal in practice) to nulling out the mount
+namespace, so that the process does not "belong" to any mount namespace.
 
-Fixes: 229105e5cfd9 ("cachefiles: Add auxiliary data trace")
-Cc: stable@vger.kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Cc: David Howells <dhowells@redhat.com>
-Cc: netfs@lists.linux.dev
-Assisted-by: Codex:gpt-5.4
-Signed-off-by: Zihan Xi <xizh2024@lzu.edu.cn>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
----
- fs/cachefiles/xattr.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+Nothing creates such a task yet; the new UAPIs that would take advantage
+of this feature are left as future work. It may not be appropriate to
+submit such a "dead-code" patch, but I wanted to demonstrate just how
+easy this change is (along with at least a unit test to exercise it),
+before getting into UAPI designs.
 
-diff --git a/fs/cachefiles/xattr.c b/fs/cachefiles/xattr.c
-index f8ae78b3f7b6..a11ea858c046 100644
---- a/fs/cachefiles/xattr.c
-+++ b/fs/cachefiles/xattr.c
-@@ -28,6 +28,18 @@ struct cachefiles_xattr {
- static const char cachefiles_xattr_cache[] =
- 	XATTR_USER_PREFIX "CacheFiles.cache";
- 
-+static u64 cachefiles_disk_aux_for_trace(const void *data, unsigned int len)
-+{
-+	u64 aux = 0;
-+
-+	if (len == 0)
-+		return 0;
-+	if (len >= sizeof(u64))
-+		return be64_to_cpup(data);
-+	memcpy(&aux, data, len);
-+	return aux;
-+}
-+
- struct cachefiles_vol_xattr {
- 	__be32	reserved;	/* Reserved, should be 0 */
- 	__u8	data[];		/* netfs volume coherency data */
-@@ -77,7 +89,7 @@ int cachefiles_set_object_xattr(struct cachefiles_object *object)
- 		trace_cachefiles_vfs_error(object, file_inode(file), ret,
- 					   cachefiles_trace_setxattr_error);
- 		trace_cachefiles_coherency(object, file_inode(file)->i_ino,
--					   be64_to_cpup((__be64 *)buf->data),
-+					   cachefiles_disk_aux_for_trace(buf->data, len),
- 					   buf->content,
- 					   cachefiles_coherency_set_fail);
- 		if (ret != -ENOMEM)
-@@ -86,7 +98,7 @@ int cachefiles_set_object_xattr(struct cachefiles_object *object)
- 				"Failed to set xattr with error %d", ret);
- 	} else {
- 		trace_cachefiles_coherency(object, file_inode(file)->i_ino,
--					   be64_to_cpup((__be64 *)buf->data),
-+					   cachefiles_disk_aux_for_trace(buf->data, len),
- 					   buf->content,
- 					   cachefiles_coherency_set_ok);
- 	}
-@@ -148,7 +160,7 @@ int cachefiles_check_auxdata(struct cachefiles_object *object, struct file *file
- 
- out:
- 	trace_cachefiles_coherency(object, file_inode(file)->i_ino,
--				   be64_to_cpup((__be64 *)buf->data),
-+				   cachefiles_disk_aux_for_trace(buf->data, len),
- 				   buf->content, why);
- 	kfree(buf);
- 	return ret;
+The marquee new UAPI around this would, I hope, be the new non-fork-exec
+process spawning API Li Chen started in [2]. The idea would be that,
+instead of doing process initialization in the child post-fork, it is
+done from the parent, against (my terminology) an "embryonic" (not yet
+runnable; withheld from the schedule) process. These null fields
+(`struct path` to directories in this patch, pointers to namespaces in
+the latter patches to be written) allow for lightweight and minimally
+privileged initial embryonic processes, allowing for good performance
+(don't preemptively allocate things the caller may not want) and abiding
+by the "principle of least privilege" (initialization should always
+grant, not take away, privileges and resources from the embryonic
+process).
+
+So far in the linked discussion, the alternative that best addresses my
+motivation is using the new "nullfs" for the root directory and cwd.
+Practically, that is almost as good -- reading and statting the
+directory will work, but it will reliably be and remain empty regardless
+of how privileged the caller is. The downside is simply that we would
+like those operations also to fail, to more readily signal to developers
+and users (human or agent, for that matter) that the working directory
+and root directory should be avoided, and paths should instead always be
+paired with a file descriptor and used with `*at` or other modern UAPIs.
+
+[1]: https://lore.kernel.org/all/a49ce818-f38d-41b0-bbf7-80b8aad998b1@app.fastmail.com/
+
+[2]: https://lore.kernel.org/all/20260528095235.2491226-1-me@linux.beauty/
+
+John Ericson (3):
+  fs: Add documentation to some `struct fs_struct` fields
+  fs: support tasks with a null root or cwd
+  fs: add KUnit tests for tasks with a null root or cwd
+
+ fs/Kconfig                     |  11 +++
+ fs/cachefiles/daemon.c         |   6 +-
+ fs/d_path.c                    |   6 +-
+ fs/fhandle.c                   |   3 +
+ fs/fs_struct.c                 |   4 +
+ fs/namei.c                     |  22 ++++-
+ fs/proc/base.c                 |   8 +-
+ fs/tests/null_root_cwd_kunit.c | 147 +++++++++++++++++++++++++++++++++
+ include/linux/fs_struct.h      |  29 ++++++-
+ 9 files changed, 228 insertions(+), 8 deletions(-)
+ create mode 100644 fs/tests/null_root_cwd_kunit.c
+
 -- 
-2.43.0
+2.51.2
 
