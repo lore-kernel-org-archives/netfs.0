@@ -1,31 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F51253B42;
-	Mon, 29 Jun 2026 09:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7902BE63F;
+	Tue, 30 Jun 2026 08:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782724766; cv=none; b=FQb8vHP4WbwuGzMR/+jYmm5jXMoe21RvhQ8gTIqXjhaOzium6ANjKGfZD5/jeK0tJ/IqIXAhHZzRHGGUGYNPnQeJQGJZnhn/yb9M7ggJCIlWcFeSyq+3AH91xFg15OacA2Z8j5A5opaYUoDikd3gzdlujVBUCvrUTjn2vwavxTA=
+	t=1782808741; cv=none; b=skGzcUEmHuPZ3JX1Ad2NxB8v812hMe41ZrP2VeyVIvxfr1rJ0IXIW78tFtSxeGhaeslS/QJrpuqvpNOyXw5WzeaVZKm3tFRT4PXykT6YLW6GxcpghIFe9Nc23JF44tJFVqjDPkzPY/VSg8w7oC1PBf+3+tNI7cHrflYc7eBPEwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782724766; c=relaxed/simple;
-	bh=uR8HO3H1zUPtr8G0Zp6+Ktn5lJGREnqvWcuZOYXRlPU=;
-	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=dgXfhKyZBgG/lYd0fSU8v5+PvGUsWMCyF28zNFmFI1JhNe6NsecIXPv6GEP49Q2X3WEu5LkXzIXf2usMhFQhkWKkbRlW9aovqr8CgBv/zF6FPmy7tcQNB7ZnsbgtEwQcPBtQ4ZrBnmglAkSkyHtBsEhLAzCep9p4jGZnJy6WNdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DlT8vxH5; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782808741; c=relaxed/simple;
+	bh=p7NcjLTCHAU4XGeKVdGFtERbLu1j9f6AIJejEQVyaXg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=ZtvEsabn3piBBpv30pGPFn1ZeYPLdjxnpZ0MUvDrXpB6WCTY3tn2GoGTEEmG6bZzTi6bu/jqf0QcdnQMq6XUZU4J5HJp//1aoIKwA0sqaUOLJRHvEX46fa7NeozNykjm9PamTdiPbCwvv4JPyHDDdOHCYLnxePLvDeHDr3hjbx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EdtT64cN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DlT8vxH5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65A001F000E9;
-	Mon, 29 Jun 2026 09:19:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EdtT64cN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D77E01F000E9;
+	Tue, 30 Jun 2026 08:38:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782724765;
-	bh=VQkmJ6O0KdU+araY9cEcdEV3lY4ZmztKgNlix5k27sE=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=DlT8vxH5utORFwzr7vxs+1ZC5b8cxQsTqXOya1AQqsce5YpoKelp2QpHlKA+nkhWr
-	 7GteQ5CCSkyd6M4WMmbss+2aU0e7CTZBjtyjalrXpN7xoqYsfmQ4YcjkOkkrNlMZsj
-	 aHUPmsQMrOP8L+mvilChS1rcJupw+08A7A2GMjHi2QbXp6JKC0fXQrr8wk/Li1RPLm
-	 qWhJpFAPQbPJJdW7ennikm1IF8S60n6fbWDjGGlLwbeFdllm4IkkixKHY3cBn4AA+O
-	 KULJr9DbVfZhjJfd4kLHKCccrfrrIri+zo1kBioSQjDpj9A9QKvwf6ng4eIjLmo07F
-	 wZjGFw8eu9+4w==
+	s=k20260515; t=1782808740;
+	bh=JO7K29wF3xs9lZKgiCQ4LKYyHpt69w1WzAX+Sb4mevU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=EdtT64cN1QWmxC5MRlpo3ue31LOo4IMbvc2tKJzYDbxZzfAX3cHq4BSsk+W/VPpZq
+	 TmeY+OPVVJu86LetbhkOwcDtgTkMvAeAzlqlxH+/2MZq1pMWoB7ZjuQ+W6RhHGWfcs
+	 ZYwY0vJLltEPVeInjxbUc2idMu6GLFiKO5RF+KfiSPemxWt1TnC29WvVdJWSoBSaX3
+	 9osdn41VDsk142mzcvfCssPWq6RpuowoAYntBA/8VSuZa5KZ4VMfP7GMw4pF3IlJMb
+	 PxZwNa/Fl6X2yN7wEaewl3K83i7BpzOBwf/W2SPZ3h4KZ5DqOOaUOwd5x9FgrX/hL4
+	 s0Kpqizorm+sw==
+From: Christian Brauner <brauner@kernel.org>
+To: David Howells <dhowells@redhat.com>, Paulo Alcantara <pc@manguebit.org>, 
+ Prashant Rahul <prashantrahul23@gmail.com>
+Cc: Shuah Khan <shuah@kernel.org>, netfs@lists.linux.dev, 
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260624-netfs-doc-fix-v1-1-d826fc570a2c@gmail.com>
+References: <20260624-netfs-doc-fix-v1-1-d826fc570a2c@gmail.com>
+Subject: Re: [PATCH] netfs: Fix kernel-doc parameter name for
+ netfs_resize_file()
+Message-Id: <20260630-hissen-lesebrille-zieren-7cde341435fc@brauner>
+Date: Tue, 30 Jun 2026 10:38:40 +0200
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -34,51 +45,34 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [RFC PATCH 2/3] fs: support tasks with a null root or cwd
-From: Christian Brauner <brauner@kernel.org>
-To: John Ericson <John.Ericson@Obsidian.Systems>
-Cc: Andy Lutomirski <luto@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
- David Howells <dhowells@redhat.com>, Chuck Lever <cel@kernel.org>, 
- Jeff Layton <jlayton@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>, 
- David Laight <david.laight.linux@gmail.com>, 
- "H. Peter Anvin" <hpa@zytor.com>, Li Chen <me@linux.beauty>, 
- Cong Wang <cwang@multikernel.io>, Arnd Bergmann <arnd@arndb.de>, 
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
- Jonathan Corbet <corbet@lwn.net>, Kees Cook <kees@kernel.org>, 
- Sergei Zimmerman <sergei@zimmerman.foo>, 
- Farid Zakaria <farid.m.zakaria@gmail.com>, 
- linux-arch <linux-arch@vger.kernel.org>, 
- LKML <linux-kernel@vger.kernel.org>, 
- linux-fsdevel <linux-fsdevel@vger.kernel.org>, 
- linux-api <linux-api@vger.kernel.org>, netfs <netfs@lists.linux.dev>, 
- linux-nfs <linux-nfs@vger.kernel.org>, John Ericson <mail@JohnEricson.me>
-In-Reply-To: <20260629065934.1425479-3-John.Ericson@Obsidian.Systems>
-References: <20260629065934.1425479-1-John.Ericson@Obsidian.Systems>
- <20260629065934.1425479-3-John.Ericson@Obsidian.Systems>
-Date: Mon, 29 Jun 2026 11:19:15 +0200
-Message-Id: <20260629-defizit-typisch-maulkorb-53953a5a8510@brauner>
 X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=671; i=brauner@kernel.org;
- h=from:subject:message-id; bh=uR8HO3H1zUPtr8G0Zp6+Ktn5lJGREnqvWcuZOYXRlPU=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ5WUwXTTaTvvSu4GfWn46fsm+2i02PPX5V3fPyPSuXV
- Um/VI4t7ShlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZiIHgsjw9vuM9WOryfL1B8p
- EdhZaip++9T67xH3L3D9DL2+57k1iwkjw6I6jRv3djYmpZ9h/3HlgfilKdZNPNODDkZzHUh5lL3
- +KhMA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=910; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=p7NcjLTCHAU4XGeKVdGFtERbLu1j9f6AIJejEQVyaXg=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ5NyxS9Tg5z/9q7dnmLZ6e9S86bV5W/ea58ixWhT9Xf
+ 4F5FztvRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwET2Tmb4n61sWCIREzK1v/LW
+ OrX9LizBMZ4iBdtOiWiz11ouEg73ZfgrvPFM9Z6fuWzL95xRkPvW1iY1Z5aOyORanh83g/d0PFj
+ FCQA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-> A task's root directory (`fs->root`) and current working directory
-> (`fs->pwd`) are normally established by `chroot(2)`/`pivot_root(2)` and
-> `chdir(2)`/`fchdir(2)` (or inherited across `fork(2)`). Allow either to
-> instead be the null path, as documented in `struct fs_struct`. The two
-> are independent: a task may opt out of one, the other, or both.
+On Wed, 24 Jun 2026 18:59:29 +0530, Prashant Rahul wrote:
+> netfs: Fix kernel-doc parameter name for netfs_resize_file()
 
-No, absolutely we're not going to have tasks with struct path's in their
-struct fs_struct that have NULL members in them. struct path is used
-insanely widely in the kernel this is just an an open invitation for a
-slew of security bugs. Not going to happen.
+Applied to the vfs-7.3.netfs branch of the vfs/vfs.git tree.
+Patches in the vfs-7.3.netfs branch should appear in linux-next soon.
 
--- 
-Christian Brauner <brauner@kernel.org>
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
+
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs-7.3.netfs
+
+[1/1] netfs: Fix kernel-doc parameter name for netfs_resize_file()
+      https://git.kernel.org/vfs/vfs/c/fcaf5da60beb
+
