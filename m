@@ -1,115 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E73140D580;
-	Tue, 30 Jun 2026 09:01:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69945426410
+	for <netfs@lists.linux.dev>; Thu,  2 Jul 2026 08:23:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782810093; cv=none; b=GjWtqglEtU72LCAOHloDZv/dv1F2iSJvqYbZtPkZXJSE2mWN720WtJ+KZX0ZKpug2DHMZzDXisM7OiySRsp8HPDLflProeQFK9jm9LZBRr6sfObvWHF0rmDfSS5O5/gKnM4MxTUYYgeFK9AfHEGYxGlGmEHVxmAsUWePF7D4SmM=
+	t=1782980592; cv=none; b=J1EhqvLMtMqDMGjfLdfq9wlOhHCUlzPBf34j33fYjQmWez2kTrH2Qx6MeFI7eL1FSRrUqHSmpEio1VDJAQnr3jL8fb8izGbg4M+tr3zRCyfXlsQ3Rr0JKWbUu1PdA3C2LFNmcdA/Ek7wAAWpLb61CkTOb8/Y1iZnrI5N/ZAKLX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782810093; c=relaxed/simple;
-	bh=x6N9r4hpID2SJXcF8H5ekm/xAhkIsEfdhtqQU8KStqg=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=KJzCZjk1oytz/GjL36fo/bnUa6doLHOmwALpC33720DztIVtGk3y9eTy6INLEm7DBzmn+nypFF8Qlv+iSgIqxvieoPqiQkN/Y/S8wDFnHJkz3E3AOnXtcXRGc9BCeucb6+iKbD6rjLHj3xZPXGsUwk5UWsUi0aSpkoCh5il4wYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nrkbnWVw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782980592; c=relaxed/simple;
+	bh=NKCI1UqXMAwJi+0x0PStUNIAhEaUz19pwkI2LAYMGQU=;
+	h=From:To:cc:Subject:MIME-Version:Date:Message-ID:Content-Type; b=nkc+dVOWNpT/6VmJdgNc64NaMbUrg43BaIH/eBFHgfOFb3U01BR6DEpL6m+vFC6cKFGaCwLBxzh26jJAGT8BkycZsExkfRYFmDY7Vf42IOMtLT6Ou3/71bPoljzzJcz0zntEbV5y0IWlF3BEYYuzKD5jwNtuLNj7BBVCDhtl5Os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YuADUkeR; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nrkbnWVw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A683F1F000E9;
-	Tue, 30 Jun 2026 09:01:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782810091;
-	bh=Q5aVqG1ipIItOhc6JxQQpp1/Z+pIgYL49qEtUS/ClnM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=nrkbnWVwznNfPveYDwBpblXkK6ugse6XsElE/1emGBXlVDiiBC2I5oBB7lhnD38M1
-	 ls7FUPmfXBrLlhevSsS/PkLpwt2LZOyxyY6Axdc0pEfuYL5MtHi1BakksJ4a7S6uhl
-	 TAGkH+XC5lktvRfrpZZezw6RHtRJOjt+8fl2tTJ1u83lumNGMBJpX7L3hD290/XzZK
-	 D15GHXNsUn9/svVQQOQPF8NMry7KdvtFHgsrRzFVbQv2c///pNmMNzqlIEYfkj7okI
-	 1XbpYPLfBvyQ+dZS2H21kUdcJGVtC0pPvNngCZ3/IFYJOxMFmk7BoRQvWhU0DIXhi8
-	 0kx36hP/TUx+Q==
-From: Christian Brauner <brauner@kernel.org>
-To: Christian Brauner <brauner@kernel.org>, 
- David Howells <dhowells@redhat.com>
-Cc: Paulo Alcantara <pc@manguebit.org>, 
- Christoph Hellwig <hch@infradead.org>, netfs@lists.linux.dev, 
- linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org, 
- ceph-devel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260625140640.3116900-1-dhowells@redhat.com>
-References: <20260625140640.3116900-1-dhowells@redhat.com>
-Subject: Re: [PATCH v3 00/15] netfs: Miscellaneous fixes
-Message-Id: <20260630-exzellent-liege-kommen-59a9e0e7e2a2@brauner>
-Date: Tue, 30 Jun 2026 11:01:23 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YuADUkeR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782980590;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=1ndsjDpEQEfuXlbs4t0WFCCO1AZ2gSEQTgbkViFoVd4=;
+	b=YuADUkeREele7TrbajxKLDMIDFITi1eBP+rjqlofR6d/6At9EpRMbHFTqIG+hsOhw1kmb3
+	q52e+j6HD7Dco/ZqKQVkG1mXr2H3bx7g5JOk9wmsLMq8RBOmY2t+40XI52YP0OyMqvs1t4
+	c7Mb8LGthICqyl25GQKnJd2uZWAYS3E=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-584-5KyXlEVEMMixFGHRK1eZAg-1; Thu,
+ 02 Jul 2026 04:23:07 -0400
+X-MC-Unique: 5KyXlEVEMMixFGHRK1eZAg-1
+X-Mimecast-MFC-AGG-ID: 5KyXlEVEMMixFGHRK1eZAg_1782980586
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 20EA71833388;
+	Thu,  2 Jul 2026 08:23:06 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.33.159])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1E7811971E67;
+	Thu,  2 Jul 2026 08:23:03 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <brauner@kernel.org>
+cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.org>,
+    netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: [PATCH] netfs: Fix barriering when walking subrequest list
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2770; i=brauner@kernel.org;
- h=from:subject:message-id; bh=x6N9r4hpID2SJXcF8H5ekm/xAhkIsEfdhtqQU8KStqg=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ5t77c0+ZTxXw+bY1B9jmpx+n27o2z2Q/scKp8ezT3E
- WODy6kvHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABNh82Rk2DCJV+dfS/sy62cd
- zFPfhtbdcd5bYjjr4o19f1p67/gxJzMyvH+lxM1w47B619RZnY/WTIo+6OfzfOWs9Po3c6+dMnA
- qZwcA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Date: Thu, 02 Jul 2026 09:23:02 +0100
+Message-ID: <138807.1782980582@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-MFC-PROC-ID: tVZI0s7EtFwsBtw5p_uF3V3Yqu6qf-XBc9gITJ2GLN8_1782980586
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <138806.1782980582.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 25 Jun 2026 15:06:18 +0100, David Howells wrote:
-> netfs: Miscellaneous fixes
-> 
-> Hi Christian,
-> 
-> Here are some miscellaneous fixes for netfslib.  I separated them from my
-> netfs-next branch.  Various Sashiko review comments[1][2][3] are addressed:
-> 
-> [...]
+Fix the barriering used when walking the subrequest list in retry as
+there's a possibility of seeing a subreq that's just been added by the
+application thread.
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
+Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
+Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
+Link: https://sashiko.dev/#/patchset/20260608145432.681865-1-dhowells%40red=
+hat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+---
+ fs/netfs/read_retry.c  |    7 ++++++-
+ fs/netfs/write_retry.c |    7 ++++++-
+ 2 files changed, 12 insertions(+), 2 deletions(-)
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
-
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
-
-[01/15] netfs: Fix decision whether to disallow write-streaming due to fscache use
-        https://git.kernel.org/vfs/vfs/c/61c79e2cac37
-[02/15] netfs: Fix netfs_create_write_req() to handle async cache object creation
-        https://git.kernel.org/vfs/vfs/c/f43e809738d8
-[03/15] cachefiles: Fix double fput
-        https://git.kernel.org/vfs/vfs/c/4c6fe3b4ba06
-[04/15] cachefiles: Fix file burial to take lock when unsetting S_KERNEL_FILE
-        https://git.kernel.org/vfs/vfs/c/f1ef918f8183
-[05/15] iov_iter: Fix potential underflow in iov_iter_extract_xarray_pages()
-        https://git.kernel.org/vfs/vfs/c/72c00e84e611
-[06/15] iov_iter: Fix missing alloc fail check in iov_iter_extract_bvec_pages()
-        https://git.kernel.org/vfs/vfs/c/eea815a087cd
-[07/15] iov_iter: Fix a memory leak in iov_iter_extract_user_pages()
-        https://git.kernel.org/vfs/vfs/c/11cf15dacff6
-[08/15] iov_iter: Remove unused variable in kunit_iov_iter.c
-        https://git.kernel.org/vfs/vfs/c/8cb836bfb87d
-[09/15] scatterlist: Fix offset in folio calc in extract_xarray_to_sg()
-        https://git.kernel.org/vfs/vfs/c/132e70406412
-[10/15] netfs: Fix kdoc warning
-        https://git.kernel.org/vfs/vfs/c/46163ade2426
-[11/15] netfs: Replace wb_lock with a bit lock for asynchronicity
-        https://git.kernel.org/vfs/vfs/c/1b157b933689
-[12/15] netfs: Fix writethrough to use collection offload
-        https://git.kernel.org/vfs/vfs/c/6ed47a3ca47e
-[13/15] netfs: Fix writeback error handling
-        https://git.kernel.org/vfs/vfs/c/70d669edd0bb
-[14/15] netfs: Fix folio state after ENOMEM whilst under writeback iteration
-        https://git.kernel.org/vfs/vfs/c/a009d3cfb306
-[15/15] netfs: Fix DIO write retry for filesystems without a ->prepare_write()
-        https://git.kernel.org/vfs/vfs/c/b43370a12abb
+diff --git a/fs/netfs/read_retry.c b/fs/netfs/read_retry.c
+index f59a70f3a086..2b42758e01ec 100644
+--- a/fs/netfs/read_retry.c
++++ b/fs/netfs/read_retry.c
+@@ -98,7 +98,12 @@ static void netfs_retry_read_subrequests(struct netfs_io=
+_request *rreq)
+ =09=09=09goto abandon;
+ =09=09}
+=20
+-=09=09list_for_each_continue(next, &stream->subrequests) {
++=09=09for (;;) {
++=09=09=09/* Read pointer to subreq before reading subreq state. */
++=09=09=09next =3D smp_load_acquire(&next->next);
++=09=09=09if (next =3D=3D &stream->subrequests)
++=09=09=09=09break;
++
+ =09=09=09subreq =3D list_entry(next, struct netfs_io_subrequest, rreq_link=
+);
+ =09=09=09if (subreq->start + subreq->transferred !=3D start + len ||
+ =09=09=09    test_bit(NETFS_SREQ_BOUNDARY, &subreq->flags) ||
+diff --git a/fs/netfs/write_retry.c b/fs/netfs/write_retry.c
+index 32735abfa03f..058bc7a166a5 100644
+--- a/fs/netfs/write_retry.c
++++ b/fs/netfs/write_retry.c
+@@ -72,7 +72,12 @@ static void netfs_retry_write_stream(struct netfs_io_req=
+uest *wreq,
+ =09=09    !test_bit(NETFS_SREQ_NEED_RETRY, &from->flags))
+ =09=09=09return;
+=20
+-=09=09list_for_each_continue(next, &stream->subrequests) {
++=09=09for (;;) {
++=09=09=09/* Read pointer to subreq before reading subreq state. */
++=09=09=09next =3D smp_load_acquire(&next->next);
++=09=09=09if (next =3D=3D &stream->subrequests)
++=09=09=09=09break;
++
+ =09=09=09subreq =3D list_entry(next, struct netfs_io_subrequest, rreq_link=
+);
+ =09=09=09if (subreq->start + subreq->transferred !=3D start + len ||
+ =09=09=09    test_bit(NETFS_SREQ_BOUNDARY, &subreq->flags) ||
 
