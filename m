@@ -1,45 +1,43 @@
 Received: from mx1.manguebit.org (mx1.manguebit.org [143.255.12.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6400948AE32;
-	Thu,  2 Jul 2026 12:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC8347ECC3;
+	Thu,  2 Jul 2026 12:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=143.255.12.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782996803; cv=none; b=kKhgdSDLClYljloHUgSjx9zBOBDZn24erJVKnSHjA7t5KP4jLr7ZwoZIF2S2JVhesneLxC5VLx1QZYInG88Cg5xxZiEVb5ISvq1Mx9+ld0cXTryhPVMnFqoqkp+XRu99x5XRVRF6zZ86AakbLGMgGwCRTMWQB5v/u/YtLm5339g=
+	t=1782997180; cv=none; b=cY8E09auNm97jCIwrxCHiEBC4RRwlt0/Gkq8FPTY71YdABezWHBIpI5T/7TcotclNeqDYlGjB9s/XpWNLPSdBV9ceWyKhELrwgf4ExQV25ypZ4jmRvCCZWGyEA/BD9ExqEeYpa6V+kLd1JM7aG4wSJhiMJvD8Lg+Cz1QiaGz814=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782996803; c=relaxed/simple;
-	bh=0uZBVMgQh6gHpmyDZZViUHEzR/wUaCj6WKFrEkYZDck=;
+	s=arc-20240116; t=1782997180; c=relaxed/simple;
+	bh=2CKrVTAOkTbPnCp/F1aLjYU4Edx1SXe/AJHS7vEokS8=;
 	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Date:
-	 MIME-Version:Content-Type; b=YWe6Tn3yqEE4rpMSfw9yKh6c2De0r02FaFQmlWuNpg8SZjzoZrZQQChnO5yJ2OEQk4KAj5dZuQIs0zsRayV+lC2vXqzw/6fQIzlRuq4hDM23ka6jDq8QwnAgSS0E2YOYBwmXr5pZQcaKqq8f1nDIv7G/o5HHgV8E7sefrEQ2Yl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org; spf=pass smtp.mailfrom=manguebit.org; dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b=nWOgm/Ah; arc=none smtp.client-ip=143.255.12.172
+	 MIME-Version:Content-Type; b=lN9+gEIq0MfqisIJubFhLWU+DqG1tOKM933gAhJPEbZzfqHe0dojQHu68zR6V9+O2AOSIicUPBaOsXhU5zLyEF/Y4BHrf/fHR7ih1wahL8wWkFZp25K2xhzCvTm2McOuqZ3Pa0r44+i6l/lfbKyDPx1mvFpoLpfTqe7fMccLfNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org; spf=pass smtp.mailfrom=manguebit.org; dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b=spMMO2JO; arc=none smtp.client-ip=143.255.12.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b="nWOgm/Ah"
+	dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b="spMMO2JO"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=manguebit.org; s=dkim; h=Content-Type:MIME-Version:Date:References:
 	In-Reply-To:Subject:Cc:To:From:Message-ID:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=wMP9LvoVkQyinpAE6ybVbenCMfvP4LaFOSzXmru6z3U=; b=nWOgm/AhASE6AuwFmLcWffF41+
-	nekd5M1fv4QEiUMD4Q4nZAlOs/YjrZQWL/SNpbsF1X3ndZwv5ge8Mx/9FOj9GxPRGWwZ/wOC9+O8u
-	JpyiDft+pXWRoDhknTfPN8F2OSViOi0Vkyvo86zJz5a7QIu3dR3VUWuwGO14ew9tMDfrf2X8g9uik
-	0IfX0nRrMLOE7izMPPdpDkJVa+MywDzmeWkvAyaMWHBh26sKe+WOP2T99DWp0P/L8O0rfwms425IY
-	wA5LpU660Y51Tko2r61ULMfcebDQYedcdRfUmPY/65LZYfy2/5mTIPdbxamxdUriiUoEHoyP7JLTI
-	rHKUJc1A==;
+	bh=7tem6lvKLeyjhDcNo6Ng4g9CzbOH/+ygr0I/5scJB6A=; b=spMMO2JOdjwXMGa5Q/yQQJBRYW
+	hZyKsXZZWyL+r/vltyzaXSegzBf44JjnIat/Z6JihPt49d3Xip8ooBOk50ufjvy44oluG5i8C9Utw
+	zaSOrKn8iunBQKaMK+eTDuOoo8KLSaNW/t24Rd+XTtWhUngUK0pluFx5uNJUYh4h/IY9yASO4vRPZ
+	4fkt4Dt0jv4PNoq42RJ1EwTyDII7U5zfoCKXyjEU2YqTGA39yhDOg/MOCBmYHj+UBeRFOY/s7fetC
+	pDoamnYFJZpgju1EoJUf30EGr1Xux90kvNL9IDTyWbIgyBJl3fH0xvINVBfhjSo+oEK47Ib56w7Rr
+	8wGOaHiA==;
 Received: from pc by mx1.manguebit.org with local (Exim 4.99.2)
-	id 1wfGul-00000002Z6m-1Tbz;
-	Thu, 02 Jul 2026 09:53:11 -0300
-Message-ID: <cfbb3e301d90d034922b945c522813df@manguebit.org>
+	id 1wfH0z-00000002Z8a-0TiU;
+	Thu, 02 Jul 2026 09:59:37 -0300
+Message-ID: <4941c0d1bb3092af2a379de75fbe2908@manguebit.org>
 From: Paulo Alcantara <pc@manguebit.org>
-To: David Howells <dhowells@redhat.com>, Steve French <sfrench@samba.org>
-Cc: dhowells@redhat.com, Christian Brauner <brauner@kernel.org>,
- linux-cifs@vger.kernel.org, netfs@lists.linux.dev,
+To: David Howells <dhowells@redhat.com>, Christian Brauner <brauner@kernel.org>
+Cc: dhowells@redhat.com, netfs@lists.linux.dev,
  linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] cifs: Fix missing credit release on failure in
- cifs_issue_read()
-In-Reply-To: <138902.1782980700@warthog.procyon.org.uk>
-References: <138902.1782980700@warthog.procyon.org.uk>
-Date: Thu, 02 Jul 2026 09:53:11 -0300
+Subject: Re: [PATCH] netfs: Fix barriering when walking subrequest list
+In-Reply-To: <138807.1782980582@warthog.procyon.org.uk>
+References: <138807.1782980582@warthog.procyon.org.uk>
+Date: Thu, 02 Jul 2026 09:59:36 -0300
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -50,19 +48,20 @@ Content-Type: text/plain
 
 David Howells <dhowells@redhat.com> writes:
 
-> Fix missing release of credits in the failure path in cifs_issue_read()
-> lest retrying the subreq just overwrites the credits value.
+> Fix the barriering used when walking the subrequest list in retry as
+> there's a possibility of seeing a subreq that's just been added by the
+> application thread.
 >
-> Fixes: 69c3c023af25 ("cifs: Implement netfslib hooks")
+> Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
+> Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
 > Link: https://sashiko.dev/#/patchset/20260608145432.681865-1-dhowells%40redhat.com
 > Signed-off-by: David Howells <dhowells@redhat.com>
-> cc: Steve French <sfrench@samba.org>
 > cc: Paulo Alcantara <pc@manguebit.org>
-> cc: linux-cifs@vger.kernel.org
 > cc: netfs@lists.linux.dev
 > cc: linux-fsdevel@vger.kernel.org
 > ---
->  fs/smb/client/file.c |    1 +
->  1 file changed, 1 insertion(+)
+>  fs/netfs/read_retry.c  |    7 ++++++-
+>  fs/netfs/write_retry.c |    7 ++++++-
+>  2 files changed, 12 insertions(+), 2 deletions(-)
 
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
