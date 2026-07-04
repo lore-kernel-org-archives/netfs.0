@@ -1,35 +1,35 @@
-Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
+Received: from smtpbg150.qq.com (smtpbg150.qq.com [18.132.163.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015F730566A
-	for <netfs@lists.linux.dev>; Sat,  4 Jul 2026 05:12:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95570B672
+	for <netfs@lists.linux.dev>; Sat,  4 Jul 2026 05:22:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.132.163.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783141945; cv=none; b=Gl7PLLuSICEWOnGEA4T914rdYAwytDDyN6jH+psYDTckfPbsxSoBpEDt+IxlgoCV5Y0258YUibnMHINyprCSkAOs+6c0el8m4+Fol9gncOLyqK2hZ8o0zcELaW4X8VKyfpdC0i5F8W7D3tL4OhVZd3UFsiqsasFT6PGtpFVgDUI=
+	t=1783142534; cv=none; b=ANycm0EFeD4F4UKtVAWQYKvOnM73yDq64TS9bKIEyiD6LWEyVm4xBdn8d6Q25GZsWvHaPLO0clRTF8fwUxYcm1dLThhaaX+a/mpxJnBpI9Y4EVvPiRDIAUjhoUV++IgxC7PaGiC8pvnr0gLVP29XOmdQKQZOjwqGjB+MRzgmPPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783141945; c=relaxed/simple;
-	bh=eMzXFzE5Dq1CX/rs6bFeeym1XJwpk6U5tGkYcRut1hc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XVbqltrXAlZ2H5d7sS0u86y5LQ4uF7TYXVB5MapDZeJMtnFrEHUPkBMpqfzw5Ae6nv96SnKC14TsqujR2NLLHSrBfX1fcCsZc7vf+2I9I6Vt/fhprnjGw/A80bLlXFGAmK6Waflujcvgt8kgqPik84oydSBSiwgrXFTPjdYYJpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=gbn7uij0; arc=none smtp.client-ip=54.92.39.34
+	s=arc-20240116; t=1783142534; c=relaxed/simple;
+	bh=iIQl7IlCbnKA2hSRRo/KxIBEBmqTOQOA9PPH+NxHrBE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=n5CH0QJ4AazxI6DiTFs3cM8lGbh1OexGQG2AEV43itOOJ8BF0T34l7GkDMwj/q2uHlzoLa/ezB/MOtQKwccJ5xWxQJYxu7cXhYgAFWaAlHuimwf4FVKHEQYped9E0mT4nsWo+sQmEAGLZvJJ9jLYsISVwnMb1K9f0l6GBQNJ4Yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=V5N9mq5V; arc=none smtp.client-ip=18.132.163.193
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="gbn7uij0"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="V5N9mq5V"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1783141938;
-	bh=rK4k/uJJdHEjLSPAnJx6bTU83jF1eke6Ge9DZNozr4c=;
+	s=onoh2408; t=1783142521;
+	bh=Cl58ajfQyoKTpZ+XesofDhGeY0hWv811aO6QMaFFebo=;
 	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=gbn7uij0SDFcyNZEjLNMjMpci9lIIsiv0Un+o5owTIDhHHTweTOnGBa5g2a6WRzM8
-	 aWRb3ybdlNVqAEKrOJrukMAYTQ4JI+sc5Tq0YhrSOrwkhypNIjxDtnLOoIXfmLUxWN
-	 Y+WN7S4XigtI0neizkQAivzjbe4TqfCEmn7oWu1U=
-X-QQ-mid: zesmtpgz9t1783141934t739b81a9
-X-QQ-Originating-IP: PXOjkhpnIgk/RMFt+tThRTMBBC8+KkOQePwRjjewJnU=
+	b=V5N9mq5VR9oqZcJtnd5kGexP6wGecvyG4VCfsiAUMsOQHr8AxIltkzT9502JbQkOE
+	 HYYex2kJ3bq1hdeC7Jc3XG4F5C5FzTqHGWMsUKJCgpg1e76ZwL9j2dUbF4B/L/js05
+	 dk4KapKFS35nlxKRUPypYZrwfWUccil55wLnQZzQ=
+X-QQ-mid: zesmtpsz6t1783142516t5a24f366
+X-QQ-Originating-IP: raDJIHWEUcdG2o9c1hVKah+gUahS5I9vjDKkGXOLy+8=
 Received: from uniontech.com ( [113.57.152.160])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sat, 04 Jul 2026 13:12:12 +0800 (CST)
+	id ; Sat, 04 Jul 2026 13:21:54 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 15165425779059928051
+X-BIZMAIL-ID: 14185401001973905956
 EX-QQ-RecipientCnt: 6
 From: Yichong Chen <chenyichong@uniontech.com>
 To: David Howells <dhowells@redhat.com>,
@@ -38,9 +38,9 @@ Cc: netfs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yichong Chen <chenyichong@uniontech.com>
-Subject: [PATCH] netfs: handle single writeback rolling buffer allocation failure
-Date: Sat,  4 Jul 2026 13:12:11 +0800
-Message-Id: <20260704051211.427768-1-chenyichong@uniontech.com>
+Subject: [PATCH] netfs: release readahead folios on iterator preparation failure
+Date: Sat,  4 Jul 2026 13:21:52 +0800
+Message-Id: <20260704052152.428240-1-chenyichong@uniontech.com>
 X-Mailer: git-send-email 2.20.1
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
@@ -50,63 +50,55 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: NyPaQtJYQgeohIzv7DkEP8k/PiTg1zBs7Mx7I19voAcefWbDuR04KiWY
-	hy9nL/5xGo2f0ZMmLQBxozimpJ7jMDe8SN+7EguQNgTb0Yl5xnl2+p3+6f7Cc9KPYmKwDWc
-	xJ3MvaBsBSqv7CV8WDd/nkDlsSO+l5M30BgXc/zNR2oi0BFrGNjmgrolDH2R8EGeSyZySBX
-	rhyyOuQMeJpLwtqkEtD0xPJrAYlzdK2tJo6xNwgqeJLmYpJxpk6JHQikplpFKFaZ8PL73X7
-	k6R+61ymy5ga/6rIQnO5QoPD/JN4N33L9U/8pOdTqhjlSQU8aViZVoobvXD5abrmDlOudjT
-	kGtYiFDrtal44pdrvAatHPt1eKvEPgVct/nHdKULIPFVhT0JSgfWXddI0GOkmmVx2GPIDGN
-	N1Kl/YkCeumMA/WdzWZPhNmmtwpb+4HU4qYaFFDzr2SOW/f7yxcPmwVnsPAd2O666F74Jr+
-	jI6HNQMXB+SCLqx42UD7gISwYPnDiVx5B1KFdMCZGcRB2oGmJow4tUc0mVdCv+2DiMV/E9P
-	jb/nb4wXXak4T4Dsc5QgMdEwal84RKAuOaIXUnCw2V8KLbNn7kyCCP90EepOD8Vk06Uou32
-	Q7lx6orNNoYzpe8HglfW0WycZucgNjUReyaH3znPhEB/06gZyqsF2w4HFxdltBXfkSIXU6J
-	GuaWQdS0yxr/+6iwHLntEgIpUiYfllwMYvS46Pkhv4r63vGVOoX0w0BhMN7UU208PatpN/9
-	21oF4pWlyP76pHFHzFyJpEJTd1+2HiDEqu932YSmQUkEO7Jh84orZTFdT5w3lCdSyeH0smZ
-	Nu19J3sRMHYIydaI9rsxrViMS8zNEpOOsWswuKutG7sWs2EMPiJ77J7C5/yf0qfIumwewkS
-	3yehASD8XPyXsk/zPpcbasVwfOTVuEYWwS/cA9YU8bAP0T4qthSosJhqrDsYIjC7DCUgC59
-	UHqbFNIrsf3yimwidPOtFTNRrCQ5PlzzyifXc46H2KB44QC3+u0CALkLxND0X1tkwd7qwTg
-	7XomWu1p8PoQHQo3YhmjjjlTSM6VX4h45LTyZxA/3mrXvcW2+a
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: NNCgUTg3ctKTVkWMMleBohrV6aZJbnd1rgFV6ilLTgKjq1cFhzg/6bH2
+	M3fazzlSJdOYLWUituQm4rq4PT/u+kSxT2mCSv7VrL9YdAcsjS62YLxDCmbPaXbrqvuVBx4
+	KjgRTsDPonNk5FkJoxpWnMSY1obhM0yCwp1M9aMKRM1ENNwlq4MyebsGHPgjwezNEZEhkbP
+	wDtlGl3Q65TyTaZVEU1WvG8ygJ1DOL7b+sshqfnbYFLbczabrrPYyaKABxbt2OnJPsoHLTV
+	mSRXYOSzCJs4g2imx11z6UCQwgUrAgrjN8TbuJWY645ad2SAFdOcWNTiNU7q/baU7ZD0oaL
+	EoOpaApheUNxDn3rrO6nvyvcDxgY0Sf+J55Idlt8vYPZ6lU4BPlWoQVtZL13SO7LITkd9mI
+	X3AJ5kP7zXZnY2Xv18s/LpURyvJtdxqnLSAM4pjqaCshNTkYUACa2Y7KLfc0PdzPs0LmvLm
+	7a/Q4IR94IlDLbflpQvis19l5wgTWRqNeSyZ0wNcTt/2HShbefqHoL3/Uuf3StFczR9H5Nd
+	SGi1bkzO1QvusdxWao75CfOKTKesCsKy8eikB5rMxa5R5V2/+lbr9cGZtPgszymwzVrROhQ
+	B9OJBz1b8BgY89/Go9ghJWekhGSB9bNe3yJl7TejswvUWAPH7kGDeLbdx2r88N9AsRi3cO0
+	tp6Djf0Qp422jhAaeFg+A7ZPP4njD+hVYDBGIqaOGA1b1JLauRPGLU1ghkyd/nkuLmrHtKv
+	pOxaHvuSA7mGaf0d1p+oStcRps0Rn/GA+THWRjGMT3eZe5PfSvpq1PElm9C2w3UL7kYMonY
+	hL3HCcdZ8wuhErjdZfCbDY5CXIu8oWUCQalRj4hk9FWiMl36A1GJqqEdihqRB9oxSWJK9Sj
+	AbAj3p6gg5+5chb77IVIdqozSZ240kPKOcByyTUi45acB4lU+lw7JWBz+s0B4R3IvPe/8JT
+	SQMHl8q8ORuUKN9l0UH44NBSI3b6L9LdhSO0WxzXCNSXy33ymo7e00UKaarPvn6WvHtJZ8X
+	1+Yf5EJ89cQEzyJk0g2gqnVelZjIJeEUKH2QUOHOIk/pSA7xLs
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
 X-QQ-RECHKSPAM: 0
 
-netfs_write_folio_single() takes an extra folio reference before
-appending the folio to the rolling buffer.
+netfs_prepare_read_iterator() batches readahead folios in put_batch so that
+the folio references can be dropped after the I/O iterator has been
+prepared.
 
-rolling_buffer_append() can fail if it cannot allocate another
-folio_queue. Check the return value and drop the extra folio reference
-before returning the error.
+If rolling_buffer_load_from_ra() fails after earlier folios have been
+batched, the function returns immediately and leaves those references held.
+Release the batch before returning the error.
 
 Signed-off-by: Yichong Chen <chenyichong@uniontech.com>
 ---
- fs/netfs/write_issue.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/netfs/buffered_read.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index c03c7cc45e47..7ceb1ac3c8be 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -721,6 +721,7 @@ static int netfs_write_folio_single(struct netfs_io_request *wreq,
- 	size_t iter_off = 0;
- 	size_t fsize = folio_size(folio), flen;
- 	loff_t fpos = folio_pos(folio);
-+	ssize_t ret;
- 	bool to_eof = false;
- 	bool no_debug = false;
+diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
+index 76d0f6a29aba..68534cef37cd 100644
+--- a/fs/netfs/buffered_read.c
++++ b/fs/netfs/buffered_read.c
+@@ -102,8 +102,10 @@ static ssize_t netfs_prepare_read_iterator(struct netfs_io_subrequest *subreq,
  
-@@ -749,7 +750,11 @@ static int netfs_write_folio_single(struct netfs_io_request *wreq,
- 
- 	/* Attach the folio to the rolling buffer. */
- 	folio_get(folio);
--	rolling_buffer_append(&wreq->buffer, folio, NETFS_ROLLBUF_PUT_MARK);
-+	ret = rolling_buffer_append(&wreq->buffer, folio, NETFS_ROLLBUF_PUT_MARK);
-+	if (ret < 0) {
-+		folio_put(folio);
-+		return ret;
-+	}
- 
- 	/* Move the submission point forward to allow for write-streaming data
- 	 * not starting at the front of the page.  We don't do write-streaming
+ 			added = rolling_buffer_load_from_ra(&rreq->buffer, ractl,
+ 							    &put_batch);
+-			if (added < 0)
++			if (added < 0) {
++				folio_batch_release(&put_batch);
+ 				return added;
++			}
+ 			rreq->submitted += added;
+ 		}
+ 		folio_batch_release(&put_batch);
 -- 
 2.51.0
 
