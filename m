@@ -1,1352 +1,493 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808773ACA7A;
-	Mon,  6 Jul 2026 03:05:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67908395D8F
+	for <netfs@lists.linux.dev>; Mon,  6 Jul 2026 15:28:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783307106; cv=none; b=jOyKQN6OvakN6fsuDAui0d2lCpErEg6j8WAZixO779m8ZGpFsmINAOlsb0LKTotDKBVH2c57kTbtXISvMYiNUvFvvVs0cSNGbVrb7J+Tm1ufkuaEanpWTUzgUXWaDxaaAuQU41KXWELm9dsIoz7w7OYDH8yWtjbxFTU3D+m2m+c=
+	t=1783351690; cv=none; b=oAIsZb+WJfnv67KhiRoxtn9YYmg1iPrsnOVZy2iYd7AlV3R+4I4pRjpWBWVQw6RiUfUEWUQTsxmiCSDEmMjSE/LWj9s5tWB60kQaoJgnhrKkYPqJ/lfs1tj4KcxyrS43TtsxGj/y8Q0bTSGzB0yAl067SPKDtG2Pr3A7J6Q5B8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783307106; c=relaxed/simple;
-	bh=lmHorh5fys6wGYCXK8qGoMcQ5Zc3JXkI9puvAg8BBog=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=beAd7iU52mlF7PF3DHa7+qDQElWZa03ttCwKl0lSglfgZYnVDRc8yWLcXoOdExpOyB46SPGeGYuOI7yIG/8FTmvhrEY++ift4aO6L+dYdMsrqrRnZvIaPczyzMmxQVq7cP1r7813H9DXhMsGrgMYKS1SGO6/AmW0H3RcUMg3pmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CnNRcJVr; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783351690; c=relaxed/simple;
+	bh=YMYMvTJqPQ4Fbs+w7z6WLF+d+XmNDtWZbfC0Bw3opCU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=QvMww3a2ZB205F+SAeuDztevFY/ojL4bDgSSl5yt5iHkmUparkMJdwtKFX3NAtVDKlhk2HriDw1TvwsCmkUmAzmqgqmwStJfixHnaq+4Czea68DIDutgHT7zOip3OnerHrAvTIT8lWXag58jlR3oR9mZbLN31mjqhBnN6JOobi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XQZ/Y/hg; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CnNRcJVr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 547FA1F00A3A;
-	Mon,  6 Jul 2026 03:04:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783307099;
-	bh=pPMoTjqR2K9JwA5etlOAOoNl7FP5vo4k0VKhDzSOEb4=;
-	h=From:To:Cc:Subject:Date;
-	b=CnNRcJVrdPwaeW75mgNUcXUHLbSiF1wYcJJasZxbY1QCC3IaO7JhIHGiQeLUoTolJ
-	 QX58ynpLAsWYtJ+pRq0cky8+M4GZU7wC50+qmRc7DnLcPY3JpY3A97UUJgNuJ98T1r
-	 U3fUf0He+wWK+MtIuFJSK4uBuQkfe77JquUL5TxcfsDPewya3fFKvuI2ApnzJvzhlb
-	 QatH7f/BU77bNQ41Rvlp8JtvMLaAQGBKH7ihEGlVTA7mPw7bPwBCDH9R7e9kzHaXph
-	 3jWDTTp+0P/OHMSy6/RNHXTOZ4fq7d/w1q/ggpy47M0YtWZEs+syfRhsrw/SaSVEXT
-	 XHSqyLN33haIQ==
-From: Gao Xiang <xiang@kernel.org>
-To: David Howells <dhowells@redhat.com>,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XQZ/Y/hg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783351687;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=fJgudNbA+jqSC6IQkevTiVxycA2ilRQtfmBrSyeMALc=;
+	b=XQZ/Y/hgN8EtXpAMktsV2PQ5Vo9CkvjY/KPGb+79PJRE5PITLHINW27brtK9YacXRGW6ME
+	hAMIfZQ4NH3r0IoUrue5BBIIDJA10QWYrWso0qML82HLimA17c3rKSYEEWcYHx5Hk81fbe
+	WSHPWkNCOn4Rld5J9sY6fTU5Zu2D10E=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-689-YRAe3HkUOwmkBnBwBxH6Pw-1; Mon,
+ 06 Jul 2026 11:28:01 -0400
+X-MC-Unique: YRAe3HkUOwmkBnBwBxH6Pw-1
+X-Mimecast-MFC-AGG-ID: YRAe3HkUOwmkBnBwBxH6Pw_1783351679
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0A0A91955DC0;
+	Mon,  6 Jul 2026 15:27:56 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.44.33.159])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CB32D18005B7;
+	Mon,  6 Jul 2026 15:27:46 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>,
+	Matthew Wilcox <willy@infradead.org>,
+	Christoph Hellwig <hch@infradead.org>
+Cc: David Howells <dhowells@redhat.com>,
 	Paulo Alcantara <pc@manguebit.org>,
-	Christian Brauner <brauner@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
+	Jens Axboe <axboe@kernel.dk>,
+	Leon Romanovsky <leon@kernel.org>,
+	Steve French <sfrench@samba.org>,
+	ChenXiaoSong <chenxiaosong@chenxiaosong.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Stefan Metzmacher <metze@samba.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
 	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-erofs@lists.ozlabs.org,
 	linux-fsdevel@vger.kernel.org,
-	Jingbo Xu <jefflexu@linux.alibaba.com>,
-	Gao Xiang <xiang@kernel.org>
-Subject: [PATCH] cachefiles,netfs: sunset ondemand mode
-Date: Mon,  6 Jul 2026 11:04:39 +0800
-Message-ID: <20260706030439.14212-1-xiang@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v5 00/21] netfs: Keep track of folios in a segmented bio_vec[] chain
+Date: Mon,  6 Jul 2026 16:27:15 +0100
+Message-ID: <20260706152737.1231312-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-MFC-PROC-ID: yzcNaeDx9Z1CAfxCpywAhM0S6XZBzffTcwzgoYT2gIE_1783351679
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-It was an effort to enhance fscache as a kernel cache for lazy
-pulling (at least according to previous Incremental FS discussion [1])
-and EROFS over fscache was the in-tree user of this mode.
+Hi Christian,
 
-fscache has since evolved to be netfslib-oriented, serving network
-filesystem inodes via the netfs library, but EROFS never acts as a
-network filesystem and we need to cache golden filesystem images rather
-than individual EROFS inodes.
+Could you add these patches to the VFS tree for next?
 
-Since EROFS over fscache is now removed, clean up netfs/fscache/
-cachefiles upstream too.
+The patches get rid of folio_queue, rolling_buffer and ITER_FOLIOQ,
+replacing the folio queue construct used to manage buffers in netfslib with
+one based around a segmented chain of bio_vec arrays instead.  There are
+three main aims here:
 
-[1] https://lore.kernel.org/r/CAOQ4uxi4dzxArY24YO=+kBCK2gGoq3Ptb8WkzCqSogPgU_R3dQ@mail.gmail.com
+ (1) The kernel file I/O subsystem seems to be moving towards consolidating
+     on the use of bio_vec arrays, so embrace this by moving netfslib to
+     keep track of its buffers for buffered I/O in bio_vec[] form.
 
-Signed-off-by: Gao Xiang <xiang@kernel.org>
----
- fs/cachefiles/Kconfig     |  12 -
- fs/cachefiles/Makefile    |   1 -
- fs/cachefiles/daemon.c    |  76 +---
- fs/cachefiles/interface.c |   8 -
- fs/cachefiles/internal.h  | 128 -------
- fs/cachefiles/io.c        |  25 --
- fs/cachefiles/namei.c     |   8 -
- fs/cachefiles/ondemand.c  | 761 --------------------------------------
- include/linux/netfs.h     |   9 -
- 9 files changed, 4 insertions(+), 1024 deletions(-)
- delete mode 100644 fs/cachefiles/ondemand.c
+ (2) Netfslib already uses a bio_vec[] to handle unbuffered/DIO, so the
+     number of different buffering schemes used can be reduced to just a
+     single one.
 
-diff --git a/fs/cachefiles/Kconfig b/fs/cachefiles/Kconfig
-index c5a070550ee3..afb25b6af5aa 100644
---- a/fs/cachefiles/Kconfig
-+++ b/fs/cachefiles/Kconfig
-@@ -26,15 +26,3 @@ config CACHEFILES_ERROR_INJECTION
- 	help
- 	  This permits error injection to be enabled in cachefiles whilst a
- 	  cache is in service.
--
--config CACHEFILES_ONDEMAND
--	bool "Support for on-demand read"
--	depends on CACHEFILES
--	default n
--	help
--	  This permits userspace to enable the cachefiles on-demand read mode.
--	  In this mode, when a cache miss occurs, responsibility for fetching
--	  the data lies with the cachefiles backend instead of with the netfs
--	  and is delegated to userspace.
--
--	  If unsure, say N.
-diff --git a/fs/cachefiles/Makefile b/fs/cachefiles/Makefile
-index c37a7a9af10b..16d811f1a2fa 100644
---- a/fs/cachefiles/Makefile
-+++ b/fs/cachefiles/Makefile
-@@ -16,6 +16,5 @@ cachefiles-y := \
- 	xattr.o
- 
- cachefiles-$(CONFIG_CACHEFILES_ERROR_INJECTION) += error_inject.o
--cachefiles-$(CONFIG_CACHEFILES_ONDEMAND) += ondemand.o
- 
- obj-$(CONFIG_CACHEFILES) := cachefiles.o
-diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
-index 4117b145ac94..6e0248a62c13 100644
---- a/fs/cachefiles/daemon.c
-+++ b/fs/cachefiles/daemon.c
-@@ -76,10 +76,6 @@ static const struct cachefiles_daemon_cmd cachefiles_daemon_cmds[] = {
- 	{ "inuse",	cachefiles_daemon_inuse		},
- 	{ "secctx",	cachefiles_daemon_secctx	},
- 	{ "tag",	cachefiles_daemon_tag		},
--#ifdef CONFIG_CACHEFILES_ONDEMAND
--	{ "copen",	cachefiles_ondemand_copen	},
--	{ "restore",	cachefiles_ondemand_restore	},
--#endif
- 	{ "",		NULL				}
- };
- 
-@@ -114,8 +110,6 @@ static int cachefiles_daemon_open(struct inode *inode, struct file *file)
- 	INIT_LIST_HEAD(&cache->object_list);
- 	spin_lock_init(&cache->object_list_lock);
- 	refcount_set(&cache->unbind_pincount, 1);
--	xa_init_flags(&cache->reqs, XA_FLAGS_ALLOC);
--	xa_init_flags(&cache->ondemand_ids, XA_FLAGS_ALLOC1);
- 
- 	/* set default caching limits
- 	 * - limit at 1% free space and/or free files
-@@ -134,40 +128,6 @@ static int cachefiles_daemon_open(struct inode *inode, struct file *file)
- 	return 0;
- }
- 
--void cachefiles_flush_reqs(struct cachefiles_cache *cache)
--{
--	struct xarray *xa = &cache->reqs;
--	struct cachefiles_req *req;
--	unsigned long index;
--
--	/*
--	 * Make sure the following two operations won't be reordered.
--	 *   1) set CACHEFILES_DEAD bit
--	 *   2) flush requests in the xarray
--	 * Otherwise the request may be enqueued after xarray has been
--	 * flushed, leaving the orphan request never being completed.
--	 *
--	 * CPU 1			CPU 2
--	 * =====			=====
--	 * flush requests in the xarray
--	 *				test CACHEFILES_DEAD bit
--	 *				enqueue the request
--	 * set CACHEFILES_DEAD bit
--	 */
--	smp_mb();
--
--	xa_lock(xa);
--	xa_for_each(xa, index, req) {
--		req->error = -EIO;
--		complete(&req->done);
--		__xa_erase(xa, index);
--	}
--	xa_unlock(xa);
--
--	xa_destroy(&cache->reqs);
--	xa_destroy(&cache->ondemand_ids);
--}
--
- void cachefiles_put_unbind_pincount(struct cachefiles_cache *cache)
- {
- 	if (refcount_dec_and_test(&cache->unbind_pincount)) {
-@@ -195,9 +155,6 @@ static int cachefiles_daemon_release(struct inode *inode, struct file *file)
- 
- 	set_bit(CACHEFILES_DEAD, &cache->flags);
- 
--	if (cachefiles_in_ondemand_mode(cache))
--		cachefiles_flush_reqs(cache);
--
- 	/* clean up the control file interface */
- 	cache->cachefilesd = NULL;
- 	file->private_data = NULL;
-@@ -266,10 +223,7 @@ static ssize_t cachefiles_daemon_read(struct file *file, char __user *_buffer,
- 	if (!test_bit(CACHEFILES_READY, &cache->flags))
- 		return 0;
- 
--	if (cachefiles_in_ondemand_mode(cache))
--		return cachefiles_ondemand_daemon_read(cache, _buffer, buflen);
--	else
--		return cachefiles_do_daemon_read(cache, _buffer, buflen);
-+	return cachefiles_do_daemon_read(cache, _buffer, buflen);
- }
- 
- /*
-@@ -358,28 +312,13 @@ static __poll_t cachefiles_daemon_poll(struct file *file,
- 					   struct poll_table_struct *poll)
- {
- 	struct cachefiles_cache *cache = file->private_data;
--	XA_STATE(xas, &cache->reqs, 0);
--	struct cachefiles_req *req;
- 	__poll_t mask;
- 
- 	poll_wait(file, &cache->daemon_pollwq, poll);
- 	mask = 0;
- 
--	if (cachefiles_in_ondemand_mode(cache)) {
--		if (!xa_empty(&cache->reqs)) {
--			xas_lock(&xas);
--			xas_for_each_marked(&xas, req, ULONG_MAX, CACHEFILES_REQ_NEW) {
--				if (!cachefiles_ondemand_is_reopening_read(req)) {
--					mask |= EPOLLIN;
--					break;
--				}
--			}
--			xas_unlock(&xas);
--		}
--	} else {
--		if (test_bit(CACHEFILES_STATE_CHANGED, &cache->flags))
--			mask |= EPOLLIN;
--	}
-+	if (test_bit(CACHEFILES_STATE_CHANGED, &cache->flags))
-+		mask |= EPOLLIN;
- 
- 	if (test_bit(CACHEFILES_CULLING, &cache->flags))
- 		mask |= EPOLLOUT;
-@@ -779,14 +718,7 @@ static int cachefiles_daemon_bind(struct cachefiles_cache *cache, char *args)
- 		return -EBUSY;
- 	}
- 
--	if (IS_ENABLED(CONFIG_CACHEFILES_ONDEMAND)) {
--		if (!strcmp(args, "ondemand")) {
--			set_bit(CACHEFILES_ONDEMAND_MODE, &cache->flags);
--		} else if (*args) {
--			pr_err("Invalid argument to the 'bind' command\n");
--			return -EINVAL;
--		}
--	} else if (*args) {
-+	if (*args) {
- 		pr_err("'bind' command doesn't take an argument\n");
- 		return -EINVAL;
- 	}
-diff --git a/fs/cachefiles/interface.c b/fs/cachefiles/interface.c
-index a08250d244ea..50a000310a8c 100644
---- a/fs/cachefiles/interface.c
-+++ b/fs/cachefiles/interface.c
-@@ -32,11 +32,6 @@ struct cachefiles_object *cachefiles_alloc_object(struct fscache_cookie *cookie)
- 	if (!object)
- 		return NULL;
- 
--	if (cachefiles_ondemand_init_obj_info(object, volume)) {
--		kmem_cache_free(cachefiles_object_jar, object);
--		return NULL;
--	}
--
- 	refcount_set(&object->ref, 1);
- 
- 	spin_lock_init(&object->lock);
-@@ -94,7 +89,6 @@ void cachefiles_put_object(struct cachefiles_object *object,
- 		ASSERTCMP(object->file, ==, NULL);
- 
- 		kfree(object->d_name);
--		cachefiles_ondemand_deinit_obj_info(object);
- 		cache = object->volume->cache->cache;
- 		fscache_put_cookie(object->cookie, fscache_cookie_put_object);
- 		object->cookie = NULL;
-@@ -374,8 +368,6 @@ static void cachefiles_withdraw_cookie(struct fscache_cookie *cookie)
- 		spin_unlock(&cache->object_list_lock);
- 	}
- 
--	cachefiles_ondemand_clean_object(object);
--
- 	if (object->file) {
- 		cachefiles_begin_secure(cache, &saved_cred);
- 		cachefiles_clean_up_object(object, cache);
-diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
-index b62cd3e9a18e..dcf5161d0bf7 100644
---- a/fs/cachefiles/internal.h
-+++ b/fs/cachefiles/internal.h
-@@ -15,7 +15,6 @@
- #include <linux/fscache-cache.h>
- #include <linux/cred.h>
- #include <linux/security.h>
--#include <linux/xarray.h>
- #include <linux/cachefiles.h>
- 
- #define CACHEFILES_DIO_BLOCK_SIZE 4096
-@@ -44,21 +43,6 @@ struct cachefiles_volume {
- 	struct dentry			*fanout[256];	/* Fanout subdirs */
- };
- 
--enum cachefiles_object_state {
--	CACHEFILES_ONDEMAND_OBJSTATE_CLOSE, /* Anonymous fd closed by daemon or initial state */
--	CACHEFILES_ONDEMAND_OBJSTATE_OPEN, /* Anonymous fd associated with object is available */
--	CACHEFILES_ONDEMAND_OBJSTATE_REOPENING, /* Object that was closed and is being reopened. */
--	CACHEFILES_ONDEMAND_OBJSTATE_DROPPING, /* Object is being dropped. */
--};
--
--struct cachefiles_ondemand_info {
--	struct work_struct		ondemand_work;
--	int				ondemand_id;
--	enum cachefiles_object_state	state;
--	struct cachefiles_object	*object;
--	spinlock_t			lock;
--};
--
- /*
-  * Backing file state.
-  */
-@@ -74,13 +58,8 @@ struct cachefiles_object {
- 	enum cachefiles_content		content_info:8;	/* Info about content presence */
- 	unsigned long			flags;
- #define CACHEFILES_OBJECT_USING_TMPFILE	0		/* Have an unlinked tmpfile */
--#ifdef CONFIG_CACHEFILES_ONDEMAND
--	struct cachefiles_ondemand_info	*ondemand;
--#endif
- };
- 
--#define CACHEFILES_ONDEMAND_ID_CLOSED	-1
--
- /*
-  * Cache files cache definition
-  */
-@@ -119,35 +98,14 @@ struct cachefiles_cache {
- #define CACHEFILES_DEAD			1	/* T if cache dead */
- #define CACHEFILES_CULLING		2	/* T if cull engaged */
- #define CACHEFILES_STATE_CHANGED	3	/* T if state changed (poll trigger) */
--#define CACHEFILES_ONDEMAND_MODE	4	/* T if in on-demand read mode */
- 	char				*rootdirname;	/* name of cache root directory */
- 	char				*tag;		/* cache binding tag */
- 	refcount_t			unbind_pincount;/* refcount to do daemon unbind */
--	struct xarray			reqs;		/* xarray of pending on-demand requests */
--	unsigned long			req_id_next;
--	struct xarray			ondemand_ids;	/* xarray for ondemand_id allocation */
--	u32				ondemand_id_next;
- 	u32				msg_id_next;
- 	u32				secid;		/* LSM security id */
- 	bool				have_secid;	/* whether "secid" was set */
- };
- 
--static inline bool cachefiles_in_ondemand_mode(struct cachefiles_cache *cache)
--{
--	return IS_ENABLED(CONFIG_CACHEFILES_ONDEMAND) &&
--		test_bit(CACHEFILES_ONDEMAND_MODE, &cache->flags);
--}
--
--struct cachefiles_req {
--	struct cachefiles_object *object;
--	struct completion done;
--	refcount_t ref;
--	int error;
--	struct cachefiles_msg msg;
--};
--
--#define CACHEFILES_REQ_NEW	XA_MARK_1
--
- #include <trace/events/cachefiles.h>
- 
- static inline
-@@ -298,90 +256,6 @@ extern struct file *cachefiles_create_tmpfile(struct cachefiles_object *object);
- extern bool cachefiles_commit_tmpfile(struct cachefiles_cache *cache,
- 				      struct cachefiles_object *object);
- 
--/*
-- * ondemand.c
-- */
--#ifdef CONFIG_CACHEFILES_ONDEMAND
--extern ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
--					char __user *_buffer, size_t buflen);
--
--extern int cachefiles_ondemand_copen(struct cachefiles_cache *cache,
--				     char *args);
--
--extern int cachefiles_ondemand_restore(struct cachefiles_cache *cache,
--					char *args);
--
--extern int cachefiles_ondemand_init_object(struct cachefiles_object *object);
--extern void cachefiles_ondemand_clean_object(struct cachefiles_object *object);
--
--extern int cachefiles_ondemand_read(struct cachefiles_object *object,
--				    loff_t pos, size_t len);
--
--extern int cachefiles_ondemand_init_obj_info(struct cachefiles_object *obj,
--					struct cachefiles_volume *volume);
--extern void cachefiles_ondemand_deinit_obj_info(struct cachefiles_object *obj);
--
--#define CACHEFILES_OBJECT_STATE_FUNCS(_state, _STATE)	\
--static inline bool								\
--cachefiles_ondemand_object_is_##_state(const struct cachefiles_object *object) \
--{												\
--	return object->ondemand->state == CACHEFILES_ONDEMAND_OBJSTATE_##_STATE; \
--}												\
--												\
--static inline void								\
--cachefiles_ondemand_set_object_##_state(struct cachefiles_object *object) \
--{												\
--	object->ondemand->state = CACHEFILES_ONDEMAND_OBJSTATE_##_STATE; \
--}
--
--CACHEFILES_OBJECT_STATE_FUNCS(open, OPEN);
--CACHEFILES_OBJECT_STATE_FUNCS(close, CLOSE);
--CACHEFILES_OBJECT_STATE_FUNCS(reopening, REOPENING);
--CACHEFILES_OBJECT_STATE_FUNCS(dropping, DROPPING);
--
--static inline bool cachefiles_ondemand_is_reopening_read(struct cachefiles_req *req)
--{
--	return cachefiles_ondemand_object_is_reopening(req->object) &&
--			req->msg.opcode == CACHEFILES_OP_READ;
--}
--
--#else
--static inline ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
--					char __user *_buffer, size_t buflen)
--{
--	return -EOPNOTSUPP;
--}
--
--static inline int cachefiles_ondemand_init_object(struct cachefiles_object *object)
--{
--	return 0;
--}
--
--static inline void cachefiles_ondemand_clean_object(struct cachefiles_object *object)
--{
--}
--
--static inline int cachefiles_ondemand_read(struct cachefiles_object *object,
--					   loff_t pos, size_t len)
--{
--	return -EOPNOTSUPP;
--}
--
--static inline int cachefiles_ondemand_init_obj_info(struct cachefiles_object *obj,
--						struct cachefiles_volume *volume)
--{
--	return 0;
--}
--static inline void cachefiles_ondemand_deinit_obj_info(struct cachefiles_object *obj)
--{
--}
--
--static inline bool cachefiles_ondemand_is_reopening_read(struct cachefiles_req *req)
--{
--	return false;
--}
--#endif
--
- /*
-  * security.c
-  */
-@@ -430,8 +304,6 @@ do {							\
- 	pr_err("I/O Error: " FMT"\n", ##__VA_ARGS__);	\
- 	fscache_io_error((___cache)->cache);		\
- 	set_bit(CACHEFILES_DEAD, &(___cache)->flags);	\
--	if (cachefiles_in_ondemand_mode(___cache))	\
--		cachefiles_flush_reqs(___cache);	\
- } while (0)
- 
- #define cachefiles_io_error_obj(object, FMT, ...)			\
-diff --git a/fs/cachefiles/io.c b/fs/cachefiles/io.c
-index d879b80a0bed..bc3a62595d10 100644
---- a/fs/cachefiles/io.c
-+++ b/fs/cachefiles/io.c
-@@ -390,7 +390,6 @@ cachefiles_do_prepare_read(struct netfs_cache_resources *cres,
- 	size_t len = *_len;
- 	loff_t off, to;
- 	ino_t ino = file ? file_inode(file)->i_ino : 0;
--	int rc;
- 
- 	_enter("%zx @%llx/%llx", len, start, i_size);
- 
-@@ -403,8 +402,6 @@ cachefiles_do_prepare_read(struct netfs_cache_resources *cres,
- 	if (test_bit(FSCACHE_COOKIE_NO_DATA_TO_READ, &cookie->flags)) {
- 		__set_bit(NETFS_SREQ_COPY_TO_CACHE, _flags);
- 		why = cachefiles_trace_read_no_data;
--		if (!test_bit(NETFS_SREQ_ONDEMAND, _flags))
--			goto out_no_object;
- 	}
- 
- 	/* The object and the file may be being created in the background. */
-@@ -421,7 +418,6 @@ cachefiles_do_prepare_read(struct netfs_cache_resources *cres,
- 	object = cachefiles_cres_object(cres);
- 	cache = object->volume->cache;
- 	cachefiles_begin_secure(cache, &saved_cred);
--retry:
- 	off = cachefiles_inject_read_error();
- 	if (off == 0)
- 		off = vfs_llseek(file, start, SEEK_DATA);
-@@ -474,14 +470,6 @@ cachefiles_do_prepare_read(struct netfs_cache_resources *cres,
- 
- download_and_store:
- 	__set_bit(NETFS_SREQ_COPY_TO_CACHE, _flags);
--	if (test_bit(NETFS_SREQ_ONDEMAND, _flags)) {
--		rc = cachefiles_ondemand_read(object, start, len);
--		if (!rc) {
--			__clear_bit(NETFS_SREQ_ONDEMAND, _flags);
--			goto retry;
--		}
--		ret = NETFS_INVALID_READ;
--	}
- out:
- 	cachefiles_end_secure(cache, saved_cred);
- out_no_object:
-@@ -501,18 +489,6 @@ static enum netfs_io_source cachefiles_prepare_read(struct netfs_io_subrequest *
- 					  &subreq->flags, subreq->rreq->inode->i_ino);
- }
- 
--/*
-- * Prepare an on-demand read operation, shortening it to a cached/uncached
-- * boundary as appropriate.
-- */
--static enum netfs_io_source
--cachefiles_prepare_ondemand_read(struct netfs_cache_resources *cres,
--				 loff_t start, size_t *_len, loff_t i_size,
--				 unsigned long *_flags, ino_t ino)
--{
--	return cachefiles_do_prepare_read(cres, start, _len, i_size, _flags, ino);
--}
--
- /*
-  * Prepare for a write to occur.
-  */
-@@ -731,7 +707,6 @@ static const struct netfs_cache_ops cachefiles_netfs_cache_ops = {
- 	.prepare_read		= cachefiles_prepare_read,
- 	.prepare_write		= cachefiles_prepare_write,
- 	.prepare_write_subreq	= cachefiles_prepare_write_subreq,
--	.prepare_ondemand_read	= cachefiles_prepare_ondemand_read,
- 	.query_occupancy	= cachefiles_query_occupancy,
- };
- 
-diff --git a/fs/cachefiles/namei.c b/fs/cachefiles/namei.c
-index 8a9f6be15828..88955249a1a6 100644
---- a/fs/cachefiles/namei.c
-+++ b/fs/cachefiles/namei.c
-@@ -442,10 +442,6 @@ struct file *cachefiles_create_tmpfile(struct cachefiles_object *object)
- 	if (!cachefiles_mark_inode_in_use(object, file_inode(file)))
- 		WARN_ON(1);
- 
--	ret = cachefiles_ondemand_init_object(object);
--	if (ret < 0)
--		goto err_unuse;
--
- 	ni_size = object->cookie->object_size;
- 	ni_size = round_up(ni_size, CACHEFILES_DIO_BLOCK_SIZE);
- 
-@@ -546,10 +542,6 @@ static bool cachefiles_open_file(struct cachefiles_object *object,
- 	}
- 	_debug("file -> %pd positive", dentry);
- 
--	ret = cachefiles_ondemand_init_object(object);
--	if (ret < 0)
--		goto error_fput;
--
- 	ret = cachefiles_check_auxdata(object, file);
- 	if (ret < 0)
- 		goto check_failed;
-diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-deleted file mode 100644
-index 0849eaf583cd..000000000000
---- a/fs/cachefiles/ondemand.c
-+++ /dev/null
-@@ -1,761 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-or-later
--#include <linux/anon_inodes.h>
--#include <linux/uio.h>
--#include "internal.h"
--
--struct ondemand_anon_file {
--	struct file *file;
--	int fd;
--};
--
--static inline void cachefiles_req_put(struct cachefiles_req *req)
--{
--	if (refcount_dec_and_test(&req->ref))
--		kfree(req);
--}
--
--static int cachefiles_ondemand_fd_release(struct inode *inode,
--					  struct file *file)
--{
--	struct cachefiles_object *object = file->private_data;
--	struct cachefiles_cache *cache;
--	struct cachefiles_ondemand_info *info;
--	int object_id;
--	struct cachefiles_req *req;
--	XA_STATE(xas, NULL, 0);
--
--	if (!object)
--		return 0;
--
--	info = object->ondemand;
--	cache = object->volume->cache;
--	xas.xa = &cache->reqs;
--
--	xa_lock(&cache->reqs);
--	spin_lock(&info->lock);
--	object_id = info->ondemand_id;
--	info->ondemand_id = CACHEFILES_ONDEMAND_ID_CLOSED;
--	cachefiles_ondemand_set_object_close(object);
--	spin_unlock(&info->lock);
--
--	/* Only flush CACHEFILES_REQ_NEW marked req to avoid race with daemon_read */
--	xas_for_each_marked(&xas, req, ULONG_MAX, CACHEFILES_REQ_NEW) {
--		if (req->msg.object_id == object_id &&
--		    req->msg.opcode == CACHEFILES_OP_CLOSE) {
--			complete(&req->done);
--			xas_store(&xas, NULL);
--		}
--	}
--	xa_unlock(&cache->reqs);
--
--	xa_erase(&cache->ondemand_ids, object_id);
--	trace_cachefiles_ondemand_fd_release(object, object_id);
--	cachefiles_put_object(object, cachefiles_obj_put_ondemand_fd);
--	cachefiles_put_unbind_pincount(cache);
--	return 0;
--}
--
--static ssize_t cachefiles_ondemand_fd_write_iter(struct kiocb *kiocb,
--						 struct iov_iter *iter)
--{
--	struct cachefiles_object *object = kiocb->ki_filp->private_data;
--	struct cachefiles_cache *cache = object->volume->cache;
--	struct file *file;
--	size_t len = iter->count, aligned_len = len;
--	loff_t pos = kiocb->ki_pos;
--	const struct cred *saved_cred;
--	int ret;
--
--	spin_lock(&object->lock);
--	file = object->file;
--	if (!file) {
--		spin_unlock(&object->lock);
--		return -ENOBUFS;
--	}
--	get_file(file);
--	spin_unlock(&object->lock);
--
--	cachefiles_begin_secure(cache, &saved_cred);
--	ret = __cachefiles_prepare_write(object, file, &pos, &aligned_len, len, true);
--	cachefiles_end_secure(cache, saved_cred);
--	if (ret < 0)
--		goto out;
--
--	trace_cachefiles_ondemand_fd_write(object, file_inode(file), pos, len);
--	ret = __cachefiles_write(object, file, pos, iter, NULL, NULL);
--	if (ret > 0)
--		kiocb->ki_pos += ret;
--
--out:
--	fput(file);
--	return ret;
--}
--
--static loff_t cachefiles_ondemand_fd_llseek(struct file *filp, loff_t pos,
--					    int whence)
--{
--	struct cachefiles_object *object = filp->private_data;
--	struct file *file;
--	loff_t ret;
--
--	spin_lock(&object->lock);
--	file = object->file;
--	if (!file) {
--		spin_unlock(&object->lock);
--		return -ENOBUFS;
--	}
--	get_file(file);
--	spin_unlock(&object->lock);
--
--	ret = vfs_llseek(file, pos, whence);
--	fput(file);
--
--	return ret;
--}
--
--static long cachefiles_ondemand_fd_ioctl(struct file *filp, unsigned int ioctl,
--					 unsigned long id)
--{
--	struct cachefiles_object *object = filp->private_data;
--	struct cachefiles_cache *cache = object->volume->cache;
--	struct cachefiles_req *req;
--	XA_STATE(xas, &cache->reqs, id);
--
--	if (ioctl != CACHEFILES_IOC_READ_COMPLETE)
--		return -EINVAL;
--
--	if (!test_bit(CACHEFILES_ONDEMAND_MODE, &cache->flags))
--		return -EOPNOTSUPP;
--
--	xa_lock(&cache->reqs);
--	req = xas_load(&xas);
--	if (!req || req->msg.opcode != CACHEFILES_OP_READ ||
--	    req->object != object) {
--		xa_unlock(&cache->reqs);
--		return -EINVAL;
--	}
--	xas_store(&xas, NULL);
--	xa_unlock(&cache->reqs);
--
--	trace_cachefiles_ondemand_cread(object, id);
--	complete(&req->done);
--	return 0;
--}
--
--static const struct file_operations cachefiles_ondemand_fd_fops = {
--	.owner		= THIS_MODULE,
--	.release	= cachefiles_ondemand_fd_release,
--	.write_iter	= cachefiles_ondemand_fd_write_iter,
--	.llseek		= cachefiles_ondemand_fd_llseek,
--	.unlocked_ioctl	= cachefiles_ondemand_fd_ioctl,
--};
--
--/*
-- * OPEN request Completion (copen)
-- * - command: "copen <id>,<cache_size>"
-- *   <cache_size> indicates the object size if >=0, error code if negative
-- */
--int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
--{
--	struct cachefiles_req *req;
--	struct fscache_cookie *cookie;
--	struct cachefiles_ondemand_info *info;
--	char *pid, *psize;
--	unsigned long id;
--	long size;
--	int ret;
--	XA_STATE(xas, &cache->reqs, 0);
--
--	if (!test_bit(CACHEFILES_ONDEMAND_MODE, &cache->flags))
--		return -EOPNOTSUPP;
--
--	if (!*args) {
--		pr_err("Empty id specified\n");
--		return -EINVAL;
--	}
--
--	pid = args;
--	psize = strchr(args, ',');
--	if (!psize) {
--		pr_err("Cache size is not specified\n");
--		return -EINVAL;
--	}
--
--	*psize = 0;
--	psize++;
--
--	ret = kstrtoul(pid, 0, &id);
--	if (ret)
--		return ret;
--
--	xa_lock(&cache->reqs);
--	xas.xa_index = id;
--	req = xas_load(&xas);
--	if (!req || req->msg.opcode != CACHEFILES_OP_OPEN ||
--	    !req->object->ondemand->ondemand_id) {
--		xa_unlock(&cache->reqs);
--		return -EINVAL;
--	}
--	xas_store(&xas, NULL);
--	xa_unlock(&cache->reqs);
--
--	info = req->object->ondemand;
--	/* fail OPEN request if copen format is invalid */
--	ret = kstrtol(psize, 0, &size);
--	if (ret) {
--		req->error = ret;
--		goto out;
--	}
--
--	/* fail OPEN request if daemon reports an error */
--	if (size < 0) {
--		if (!IS_ERR_VALUE(size)) {
--			req->error = -EINVAL;
--			ret = -EINVAL;
--		} else {
--			req->error = size;
--			ret = 0;
--		}
--		goto out;
--	}
--
--	spin_lock(&info->lock);
--	/*
--	 * The anonymous fd was closed before copen ? Fail the request.
--	 *
--	 *             t1             |             t2
--	 * ---------------------------------------------------------
--	 *                             cachefiles_ondemand_copen
--	 *                             req = xa_erase(&cache->reqs, id)
--	 * // Anon fd is maliciously closed.
--	 * cachefiles_ondemand_fd_release
--	 * xa_lock(&cache->reqs)
--	 * cachefiles_ondemand_set_object_close(object)
--	 * xa_unlock(&cache->reqs)
--	 *                             cachefiles_ondemand_set_object_open
--	 *                             // No one will ever close it again.
--	 * cachefiles_ondemand_daemon_read
--	 * cachefiles_ondemand_select_req
--	 *
--	 * Get a read req but its fd is already closed. The daemon can't
--	 * issue a cread ioctl with an closed fd, then hung.
--	 */
--	if (info->ondemand_id == CACHEFILES_ONDEMAND_ID_CLOSED) {
--		spin_unlock(&info->lock);
--		req->error = -EBADFD;
--		goto out;
--	}
--	cookie = req->object->cookie;
--	cookie->object_size = size;
--	if (size)
--		clear_bit(FSCACHE_COOKIE_NO_DATA_TO_READ, &cookie->flags);
--	else
--		set_bit(FSCACHE_COOKIE_NO_DATA_TO_READ, &cookie->flags);
--	trace_cachefiles_ondemand_copen(req->object, id, size);
--
--	cachefiles_ondemand_set_object_open(req->object);
--	spin_unlock(&info->lock);
--	wake_up_all(&cache->daemon_pollwq);
--
--out:
--	spin_lock(&info->lock);
--	/* Need to set object close to avoid reopen status continuing */
--	if (info->ondemand_id == CACHEFILES_ONDEMAND_ID_CLOSED)
--		cachefiles_ondemand_set_object_close(req->object);
--	spin_unlock(&info->lock);
--	complete(&req->done);
--	return ret;
--}
--
--int cachefiles_ondemand_restore(struct cachefiles_cache *cache, char *args)
--{
--	struct cachefiles_req *req;
--
--	XA_STATE(xas, &cache->reqs, 0);
--
--	if (!test_bit(CACHEFILES_ONDEMAND_MODE, &cache->flags))
--		return -EOPNOTSUPP;
--
--	/*
--	 * Reset the requests to CACHEFILES_REQ_NEW state, so that the
--	 * requests have been processed halfway before the crash of the
--	 * user daemon could be reprocessed after the recovery.
--	 */
--	xas_lock(&xas);
--	xas_for_each(&xas, req, ULONG_MAX)
--		xas_set_mark(&xas, CACHEFILES_REQ_NEW);
--	xas_unlock(&xas);
--
--	wake_up_all(&cache->daemon_pollwq);
--	return 0;
--}
--
--static int cachefiles_ondemand_get_fd(struct cachefiles_req *req,
--				      struct ondemand_anon_file *anon_file)
--{
--	struct cachefiles_object *object;
--	struct cachefiles_cache *cache;
--	struct cachefiles_open *load;
--	u32 object_id;
--	int ret;
--
--	object = cachefiles_grab_object(req->object,
--			cachefiles_obj_get_ondemand_fd);
--	cache = object->volume->cache;
--
--	ret = xa_alloc_cyclic(&cache->ondemand_ids, &object_id, NULL,
--			      XA_LIMIT(1, INT_MAX),
--			      &cache->ondemand_id_next, GFP_KERNEL);
--	if (ret < 0)
--		goto err;
--
--	anon_file->fd = get_unused_fd_flags(O_WRONLY);
--	if (anon_file->fd < 0) {
--		ret = anon_file->fd;
--		goto err_free_id;
--	}
--
--	anon_file->file = anon_inode_getfile_fmode("[cachefiles]",
--				&cachefiles_ondemand_fd_fops, object,
--				O_WRONLY, FMODE_PWRITE | FMODE_LSEEK);
--	if (IS_ERR(anon_file->file)) {
--		ret = PTR_ERR(anon_file->file);
--		goto err_put_fd;
--	}
--
--	spin_lock(&object->ondemand->lock);
--	if (object->ondemand->ondemand_id > 0) {
--		spin_unlock(&object->ondemand->lock);
--		/* Pair with check in cachefiles_ondemand_fd_release(). */
--		anon_file->file->private_data = NULL;
--		ret = -EEXIST;
--		goto err_put_file;
--	}
--
--	load = (void *)req->msg.data;
--	load->fd = anon_file->fd;
--	object->ondemand->ondemand_id = object_id;
--	spin_unlock(&object->ondemand->lock);
--
--	cachefiles_get_unbind_pincount(cache);
--	trace_cachefiles_ondemand_open(object, &req->msg, load);
--	return 0;
--
--err_put_file:
--	fput(anon_file->file);
--	anon_file->file = NULL;
--err_put_fd:
--	put_unused_fd(anon_file->fd);
--	anon_file->fd = ret;
--err_free_id:
--	xa_erase(&cache->ondemand_ids, object_id);
--err:
--	spin_lock(&object->ondemand->lock);
--	/* Avoid marking an opened object as closed. */
--	if (object->ondemand->ondemand_id <= 0)
--		cachefiles_ondemand_set_object_close(object);
--	spin_unlock(&object->ondemand->lock);
--	cachefiles_put_object(object, cachefiles_obj_put_ondemand_fd);
--	return ret;
--}
--
--static void ondemand_object_worker(struct work_struct *work)
--{
--	struct cachefiles_ondemand_info *info =
--		container_of(work, struct cachefiles_ondemand_info, ondemand_work);
--
--	cachefiles_ondemand_init_object(info->object);
--}
--
--/*
-- * If there are any inflight or subsequent READ requests on the
-- * closed object, reopen it.
-- * Skip read requests whose related object is reopening.
-- */
--static struct cachefiles_req *cachefiles_ondemand_select_req(struct xa_state *xas,
--							      unsigned long xa_max)
--{
--	struct cachefiles_req *req;
--	struct cachefiles_object *object;
--	struct cachefiles_ondemand_info *info;
--
--	xas_for_each_marked(xas, req, xa_max, CACHEFILES_REQ_NEW) {
--		if (req->msg.opcode != CACHEFILES_OP_READ)
--			return req;
--		object = req->object;
--		info = object->ondemand;
--		if (cachefiles_ondemand_object_is_close(object)) {
--			cachefiles_ondemand_set_object_reopening(object);
--			queue_work(fscache_wq, &info->ondemand_work);
--			continue;
--		}
--		if (cachefiles_ondemand_object_is_reopening(object))
--			continue;
--		return req;
--	}
--	return NULL;
--}
--
--static inline bool cachefiles_ondemand_finish_req(struct cachefiles_req *req,
--						  struct xa_state *xas, int err)
--{
--	if (unlikely(!xas || !req))
--		return false;
--
--	if (xa_cmpxchg(xas->xa, xas->xa_index, req, NULL, 0) != req)
--		return false;
--
--	req->error = err;
--	complete(&req->done);
--	return true;
--}
--
--ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
--					char __user *_buffer, size_t buflen)
--{
--	struct cachefiles_req *req;
--	struct cachefiles_msg *msg;
--	size_t n;
--	int ret = 0;
--	struct ondemand_anon_file anon_file;
--	XA_STATE(xas, &cache->reqs, cache->req_id_next);
--
--	xa_lock(&cache->reqs);
--	/*
--	 * Cyclically search for a request that has not ever been processed,
--	 * to prevent requests from being processed repeatedly, and make
--	 * request distribution fair.
--	 */
--	req = cachefiles_ondemand_select_req(&xas, ULONG_MAX);
--	if (!req && cache->req_id_next > 0) {
--		xas_set(&xas, 0);
--		req = cachefiles_ondemand_select_req(&xas, cache->req_id_next - 1);
--	}
--	if (!req) {
--		xa_unlock(&cache->reqs);
--		return 0;
--	}
--
--	msg = &req->msg;
--	n = msg->len;
--
--	if (n > buflen) {
--		xa_unlock(&cache->reqs);
--		return -EMSGSIZE;
--	}
--
--	xas_clear_mark(&xas, CACHEFILES_REQ_NEW);
--	cache->req_id_next = xas.xa_index + 1;
--	refcount_inc(&req->ref);
--	cachefiles_grab_object(req->object, cachefiles_obj_get_read_req);
--	xa_unlock(&cache->reqs);
--
--	if (msg->opcode == CACHEFILES_OP_OPEN) {
--		ret = cachefiles_ondemand_get_fd(req, &anon_file);
--		if (ret)
--			goto out;
--	}
--
--	msg->msg_id = xas.xa_index;
--	msg->object_id = req->object->ondemand->ondemand_id;
--
--	if (copy_to_user(_buffer, msg, n) != 0)
--		ret = -EFAULT;
--
--	if (msg->opcode == CACHEFILES_OP_OPEN) {
--		if (ret < 0) {
--			fput(anon_file.file);
--			put_unused_fd(anon_file.fd);
--			goto out;
--		}
--		fd_install(anon_file.fd, anon_file.file);
--	}
--out:
--	cachefiles_put_object(req->object, cachefiles_obj_put_read_req);
--	/* Remove error request and CLOSE request has no reply */
--	if (ret || msg->opcode == CACHEFILES_OP_CLOSE)
--		cachefiles_ondemand_finish_req(req, &xas, ret);
--	cachefiles_req_put(req);
--	return ret ? ret : n;
--}
--
--typedef int (*init_req_fn)(struct cachefiles_req *req, void *private);
--
--static int cachefiles_ondemand_send_req(struct cachefiles_object *object,
--					enum cachefiles_opcode opcode,
--					size_t data_len,
--					init_req_fn init_req,
--					void *private)
--{
--	struct cachefiles_cache *cache = object->volume->cache;
--	struct cachefiles_req *req = NULL;
--	XA_STATE(xas, &cache->reqs, 0);
--	int ret;
--
--	if (!test_bit(CACHEFILES_ONDEMAND_MODE, &cache->flags))
--		return 0;
--
--	if (test_bit(CACHEFILES_DEAD, &cache->flags)) {
--		ret = -EIO;
--		goto out;
--	}
--
--	req = kzalloc(sizeof(*req) + data_len, GFP_KERNEL);
--	if (!req) {
--		ret = -ENOMEM;
--		goto out;
--	}
--
--	refcount_set(&req->ref, 1);
--	req->object = object;
--	init_completion(&req->done);
--	req->msg.opcode = opcode;
--	req->msg.len = sizeof(struct cachefiles_msg) + data_len;
--
--	ret = init_req(req, private);
--	if (ret)
--		goto out;
--
--	do {
--		/*
--		 * Stop enqueuing the request when daemon is dying. The
--		 * following two operations need to be atomic as a whole.
--		 *   1) check cache state, and
--		 *   2) enqueue request if cache is alive.
--		 * Otherwise the request may be enqueued after xarray has been
--		 * flushed, leaving the orphan request never being completed.
--		 *
--		 * CPU 1			CPU 2
--		 * =====			=====
--		 *				test CACHEFILES_DEAD bit
--		 * set CACHEFILES_DEAD bit
--		 * flush requests in the xarray
--		 *				enqueue the request
--		 */
--		xas_lock(&xas);
--
--		if (test_bit(CACHEFILES_DEAD, &cache->flags) ||
--		    cachefiles_ondemand_object_is_dropping(object)) {
--			xas_unlock(&xas);
--			ret = -EIO;
--			goto out;
--		}
--
--		/* coupled with the barrier in cachefiles_flush_reqs() */
--		smp_mb();
--
--		if (opcode == CACHEFILES_OP_CLOSE &&
--		    !cachefiles_ondemand_object_is_open(object)) {
--			WARN_ON_ONCE(object->ondemand->ondemand_id == 0);
--			xas_unlock(&xas);
--			ret = -EIO;
--			goto out;
--		}
--
--		/*
--		 * Cyclically find a free xas to avoid msg_id reuse that would
--		 * cause the daemon to successfully copen a stale msg_id.
--		 */
--		xas.xa_index = cache->msg_id_next;
--		xas_find_marked(&xas, UINT_MAX, XA_FREE_MARK);
--		if (xas.xa_node == XAS_RESTART) {
--			xas.xa_index = 0;
--			xas_find_marked(&xas, cache->msg_id_next - 1, XA_FREE_MARK);
--		}
--		if (xas.xa_node == XAS_RESTART)
--			xas_set_err(&xas, -EBUSY);
--
--		xas_store(&xas, req);
--		if (xas_valid(&xas)) {
--			cache->msg_id_next = xas.xa_index + 1;
--			xas_clear_mark(&xas, XA_FREE_MARK);
--			xas_set_mark(&xas, CACHEFILES_REQ_NEW);
--		}
--		xas_unlock(&xas);
--	} while (xas_nomem(&xas, GFP_KERNEL));
--
--	ret = xas_error(&xas);
--	if (ret)
--		goto out;
--
--	wake_up_all(&cache->daemon_pollwq);
--wait:
--	ret = wait_for_completion_killable(&req->done);
--	if (!ret) {
--		ret = req->error;
--	} else {
--		ret = -EINTR;
--		if (!cachefiles_ondemand_finish_req(req, &xas, ret)) {
--			/* Someone will complete it soon. */
--			cpu_relax();
--			goto wait;
--		}
--	}
--	cachefiles_req_put(req);
--	return ret;
--out:
--	/* Reset the object to close state in error handling path.
--	 * If error occurs after creating the anonymous fd,
--	 * cachefiles_ondemand_fd_release() will set object to close.
--	 */
--	if (opcode == CACHEFILES_OP_OPEN &&
--	    !cachefiles_ondemand_object_is_dropping(object))
--		cachefiles_ondemand_set_object_close(object);
--	kfree(req);
--	return ret;
--}
--
--static int cachefiles_ondemand_init_open_req(struct cachefiles_req *req,
--					     void *private)
--{
--	struct cachefiles_object *object = req->object;
--	struct fscache_cookie *cookie = object->cookie;
--	struct fscache_volume *volume = object->volume->vcookie;
--	struct cachefiles_open *load = (void *)req->msg.data;
--	size_t volume_key_size, cookie_key_size;
--	void *volume_key, *cookie_key;
--
--	/*
--	 * Volume key is a NUL-terminated string. key[0] stores strlen() of the
--	 * string, followed by the content of the string (excluding '\0').
--	 */
--	volume_key_size = volume->key[0] + 1;
--	volume_key = volume->key + 1;
--
--	/* Cookie key is binary data, which is netfs specific. */
--	cookie_key_size = cookie->key_len;
--	cookie_key = fscache_get_key(cookie);
--
--	if (!(object->cookie->advice & FSCACHE_ADV_WANT_CACHE_SIZE)) {
--		pr_err("WANT_CACHE_SIZE is needed for on-demand mode\n");
--		return -EINVAL;
--	}
--
--	load->volume_key_size = volume_key_size;
--	load->cookie_key_size = cookie_key_size;
--	memcpy(load->data, volume_key, volume_key_size);
--	memcpy(load->data + volume_key_size, cookie_key, cookie_key_size);
--
--	return 0;
--}
--
--static int cachefiles_ondemand_init_close_req(struct cachefiles_req *req,
--					      void *private)
--{
--	struct cachefiles_object *object = req->object;
--
--	if (!cachefiles_ondemand_object_is_open(object))
--		return -ENOENT;
--
--	trace_cachefiles_ondemand_close(object, &req->msg);
--	return 0;
--}
--
--struct cachefiles_read_ctx {
--	loff_t off;
--	size_t len;
--};
--
--static int cachefiles_ondemand_init_read_req(struct cachefiles_req *req,
--					     void *private)
--{
--	struct cachefiles_object *object = req->object;
--	struct cachefiles_read *load = (void *)req->msg.data;
--	struct cachefiles_read_ctx *read_ctx = private;
--
--	load->off = read_ctx->off;
--	load->len = read_ctx->len;
--	trace_cachefiles_ondemand_read(object, &req->msg, load);
--	return 0;
--}
--
--int cachefiles_ondemand_init_object(struct cachefiles_object *object)
--{
--	struct fscache_cookie *cookie = object->cookie;
--	struct fscache_volume *volume = object->volume->vcookie;
--	size_t volume_key_size, cookie_key_size, data_len;
--
--	if (!object->ondemand)
--		return 0;
--
--	/*
--	 * CacheFiles will firstly check the cache file under the root cache
--	 * directory. If the coherency check failed, it will fallback to
--	 * creating a new tmpfile as the cache file. Reuse the previously
--	 * allocated object ID if any.
--	 */
--	if (cachefiles_ondemand_object_is_open(object))
--		return 0;
--
--	volume_key_size = volume->key[0] + 1;
--	cookie_key_size = cookie->key_len;
--	data_len = sizeof(struct cachefiles_open) +
--		   volume_key_size + cookie_key_size;
--
--	return cachefiles_ondemand_send_req(object, CACHEFILES_OP_OPEN,
--			data_len, cachefiles_ondemand_init_open_req, NULL);
--}
--
--void cachefiles_ondemand_clean_object(struct cachefiles_object *object)
--{
--	unsigned long index;
--	struct cachefiles_req *req;
--	struct cachefiles_cache *cache;
--
--	if (!object->ondemand)
--		return;
--
--	cachefiles_ondemand_send_req(object, CACHEFILES_OP_CLOSE, 0,
--			cachefiles_ondemand_init_close_req, NULL);
--
--	if (!object->ondemand->ondemand_id)
--		return;
--
--	/* Cancel all requests for the object that is being dropped. */
--	cache = object->volume->cache;
--	xa_lock(&cache->reqs);
--	cachefiles_ondemand_set_object_dropping(object);
--	xa_for_each(&cache->reqs, index, req) {
--		if (req->object == object) {
--			req->error = -EIO;
--			complete(&req->done);
--			__xa_erase(&cache->reqs, index);
--		}
--	}
--	xa_unlock(&cache->reqs);
--
--	/* Wait for ondemand_object_worker() to finish to avoid UAF. */
--	cancel_work_sync(&object->ondemand->ondemand_work);
--}
--
--int cachefiles_ondemand_init_obj_info(struct cachefiles_object *object,
--				struct cachefiles_volume *volume)
--{
--	if (!cachefiles_in_ondemand_mode(volume->cache))
--		return 0;
--
--	object->ondemand = kzalloc_obj(struct cachefiles_ondemand_info);
--	if (!object->ondemand)
--		return -ENOMEM;
--
--	object->ondemand->object = object;
--	spin_lock_init(&object->ondemand->lock);
--	INIT_WORK(&object->ondemand->ondemand_work, ondemand_object_worker);
--	return 0;
--}
--
--void cachefiles_ondemand_deinit_obj_info(struct cachefiles_object *object)
--{
--	kfree(object->ondemand);
--	object->ondemand = NULL;
--}
--
--int cachefiles_ondemand_read(struct cachefiles_object *object,
--			     loff_t pos, size_t len)
--{
--	struct cachefiles_read_ctx read_ctx = {pos, len};
--
--	return cachefiles_ondemand_send_req(object, CACHEFILES_OP_READ,
--			sizeof(struct cachefiles_read),
--			cachefiles_ondemand_init_read_req, &read_ctx);
--}
-diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-index 1bc120d61c5b..297638ad9abf 100644
---- a/include/linux/netfs.h
-+++ b/include/linux/netfs.h
-@@ -191,7 +191,6 @@ struct netfs_io_subrequest {
- #define NETFS_SREQ_COPY_TO_CACHE	0	/* Set if should copy the data to the cache */
- #define NETFS_SREQ_CLEAR_TAIL		1	/* Set if the rest of the read should be cleared */
- #define NETFS_SREQ_MADE_PROGRESS	4	/* Set if we transferred at least some data */
--#define NETFS_SREQ_ONDEMAND		5	/* Set if it's from on-demand read mode */
- #define NETFS_SREQ_BOUNDARY		6	/* Set if ends on hard boundary (eg. ceph object) */
- #define NETFS_SREQ_HIT_EOF		7	/* Set if short due to EOF */
- #define NETFS_SREQ_IN_PROGRESS		8	/* Unlocked when the subrequest completes */
-@@ -373,14 +372,6 @@ struct netfs_cache_ops {
- 			     loff_t *_start, size_t *_len, size_t upper_len,
- 			     loff_t i_size, bool no_space_allocated_yet);
- 
--	/* Prepare an on-demand read operation, shortening it to a cached/uncached
--	 * boundary as appropriate.
--	 */
--	enum netfs_io_source (*prepare_ondemand_read)(struct netfs_cache_resources *cres,
--						      loff_t start, size_t *_len,
--						      loff_t i_size,
--						      unsigned long *_flags, ino_t ino);
--
- 	/* Query the occupancy of the cache in a region, returning where the
- 	 * next chunk of data starts and how long it is.
- 	 */
--- 
-2.47.3
+ (3) Always send an entire filesystem RPC request message to a TCP socket
+     with single kernel_sendmsg() call as this is faster, more efficient
+     and doesn't require the use of corking as it puts the entire
+     transmission loop inside of a single tcp_sendmsg().
+
+For the replacement of folio_queue, a segmented chain of bio_vec arrays
+rather than a single monolithic array is provided:
+
+	struct bvecq {
+		struct bvecq		*next;
+		struct bvecq		*prev;
+		unsigned long long	fpos;
+		refcount_t		ref;
+		u32			priv;
+		u16			nr_slots;
+		u16			max_slots;
+		enum bvecq_mem		mem_type:2;
+		bool			inline_bv:1;
+		bool			discontig:1;
+		struct bio_vec		*bv;
+		struct bio_vec		__bv[];
+	};
+
+The fields are:
+
+ (1) next, prev - Link segments together in a list.  I want this to be
+     NULL-terminated linear rather than circular to make it possible to
+     arbitrarily glue bits on the front.
+
+ (2) fpos, discontig - Note the current file position of the first byte of
+     the segment and whether this bvecq is discontiguous with the previous.
+     When accessing the pagecache to clear flags/locks, the fpos can be
+     used to look up folios by file position rather than by finding those
+     folios from the info stored in the bio_vecs.
+
+     When the file position is relevant, the model I'm working with is that
+     all the segments pointed to by a single bvecq must represent
+     contiguous data, but adjacent bvecqs within a chain need not be
+     contiguous.  This allows a bvecq chain to be used to provide bufferage
+     for a sparse read or write RPC such as can be done with Ceph.
+
+     If a bvecq segment is not contiguous with the previous one,
+     ->discontig should be set (this is technically redundant if one keeps
+     track of the fpos as a bvecq chain is processed).
+
+     Note that the beginning and end file positions in a segment need not
+     be aligned to any filesystem block size.
+
+ (3) ref - Refcount.  Each bvecq keeps a ref on the next.  I'm not sure
+     this is entirely necessary, but it makes sharing slices easier.
+
+ (4) priv - Private data for the owner.  Dispensible; currently only used
+     for storing a debug ID for tracing in a patch not included here.
+
+ (5) max_slots, nr_slots.  The size of bv[] and the number of slots used.
+     I've assumed a maximum of 65535 bio_vecs in the array (which would
+     represent a ~1MiB allocation).
+
+ (6) bv, __bv, inline_bv.  bv points to the bio_vec[] array handled by
+     this segment.  This may begin at __bv and if it does inline_bv should
+     be set (otherwise it's impossible to distinguish a separately
+     allocated bio_vec[] that follows immediately by coincidence).
+
+ (7) mem_type.  Indicates how the memory attached to the bio_vecs should be
+     disposed of when the bvecq is destroyed.  It can be one of:
+
+	BVECQ_MEM_EXTERNAL	- Externally tracked ref; don't put
+	BVECQ_MEM_PAGECACHE	- Pagecache; must be put
+	BVECQ_MEM_GUP		- Pinned by from GUP; needs unpin
+	BVECQ_MEM_ALLOCED	- Plain alloc'd pages; can be mempooled
+
+     [!] I'm not sure that this is a good name for this member or for the
+     	 enum values.
+
+I've also defined an iov_iter iterator type ITER_BVECQ to walk this sort of
+construct so that it can be passed directly to sendmsg() or block-based DIO
+(as cachefiles does).
+
+
+This series makes the following changes to netfslib:
+
+ (1) The folio_queue chain used to hold folios for buffered I/O is replaced
+     with a bvecq chain.  Each bio_vec then holds (a portion of) one folio.
+     Each bvecq holds a contiguous sequence of folios, but adjacent bvecqs
+     in a chain may be discontiguous.
+
+ (2) For unbuffered/DIO, the source iov_iter is extracted into a bvecq
+     chain.
+
+ (3) An abstract position representation ('bvecq_pos') is created that can
+     used to hold a position in a bvecq chain.  For the moment, this takes
+     a ref on the bvecq it points to, but that may be excessive.
+
+ (4) Buffer tracking is managed with three cursors:  The load_cursor, at
+     which new folios are added as we go; the dispatch_cursor, at which new
+     subrequests' buffers start when they're created; and the
+     collect_cursor, the point at which folios are being unlocked.
+
+     Not all cursors are necessarily needed in all situations and during
+     buffered writeback, we need a dispatch cursor per stream (one for the
+     network filesystem and one for the cache).
+
+ (5) ->prepare_read(), buffer setting up and ->issue_read() are merged, as
+     are the write variants, with the filesystem calling back up to
+     netfslib to prepare its buffer.  This simplifies the process of
+     setting up a subrequest.  It may even make sense to have the
+     filesystem allocate the subrequest.
+
+ (6) Retry dispatch tracking is added to netfs_io_request so that the
+     buffer preparation functions can find it.  Retry requires an
+     additional buffer cursor.
+
+ (7) Netfslib dispatches I/O by accumulating enough bufferage to dispatch
+     at least one subrequest, then looping to generate as many as the
+     filesystem wants to (they may be limited by other constraints,
+     e.g. max RDMA segment count or negotiated max size).  This loop could
+     be moved down into the filesystem.  A new method is provided by which
+     netfslib can ask the filesystem to provide an estimate of the data
+     that should be accumulated before dispatch begins.
+
+ (8) Reading from the cache is now managed by querying the cache to provide
+     a list of the next two data extents within the cache.
+
+ (9) AFS directories are switched to using a bvecq rather than a
+     folio_queue to hold their contents.
+
+(10) CIFS is switch to using a bvecq rather than a folio_queue for holding
+     a temporary encryption buffer.
+
+(11) CIFS RDMA is given the ability to extract ITER_BVECQ and support for
+     extracting ITER_FOLIOQ is removed.
+
+(12) All the folio_queue and rolling_buffer code is removed.
+
+Cachefiles is also modified:
+
+ (1) The object type in the cachefiles file xattr is now correctly set to
+     CACHEFILES_CONTENT_{SINGLE,ALL,BACKFS_MAP} rather than just being 0,
+     to indicate whether we have a single monolithic blob, all the data up
+     to cache i_size with no holes or a sparse file with the data mapped by
+     the backing file system (as currently upstream).
+
+ (2) For "ALL" type files, the cache's i_size is used to track how much
+     data is saved in the cache and no longer bears any relation to the
+     netfs i_size.  The actual object size is stored in the xattr.
+
+ (3) For most typical files which are contiguous and written progressively,
+     the object type is now set to "ALL".  For anything else, cachefiles
+     uses SEEK_DATA/HOLE to find extent outlines at before (this is the
+     current behaviour and needs to be fixed, but in a separate set of
+     patches as it's not trivial).
+
+Two further things that I'm working on (but not in this branch) are:
+
+ (1) Make it so that a filesystem can be given a copy of a subchain which
+     it can then tack header and trailer protocol elements upon to form a
+     single message (I have this working for cifs) and even join copies
+     together with intervening protocol elements to form compounds.
+
+ (2) Make it so that a filesystem can 'splice' out the contents of the TCP
+     receive queue into a bvecq chain.  This allows the socket lock to be
+     dropped much more quickly and the copying of data read to the
+     destination buffers to happen without the lock.  I have this working
+     for cifs too.  Kernel recvmsg() doesn't then block kernel sendmsg()
+     for anywhere near as long.
+
+There are also some things I want to consider for the future:
+
+ (1) Create one or more batched iteration functions to 'unlock' all the
+     folios in a bio_vec[], where 'unlock' is the appropriate action for
+     ending a read or a write.  Batching should hopefully also improve the
+     efficiency of wrangling the marks on the xarray.  Very often these
+     marks are going to be represented by contiguous bits, so there may be
+     a way to change them in bulk.
+
+ (2) Rather than walking the bvecq chain to get each individual folio out
+     via bv_page, use the file position stored on the bvecq and the sum of
+     bv_len to iterate over the appropriate range in i_pages.
+
+ (3) Change iov_iter to store the initial starting point and for
+     iov_iter_revert() to reset to that and advance.  This would (a) help
+     prevent over-reversion and (b) dispense with the need for a prev
+     pointer.
+
+ (4) Use bvecq to replace scatterlist.  One problem with replacing
+     scatterlist is that crypto drivers like to glue bits on the front of
+     the scatterlists they're given (something trivial with that API) - and
+     this is one way to achieve it.
+
+The patches can also be found here:
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-next
+
+Thanks,
+David
+
+Changes
+=======
+ver #5)
+- Rebase on v7.2-rc2 as that has a bunch of outstanding netfs and afs
+  bugfixes included.
+
+ver #4)
+- Fixed a number of bugs reported by Sashiko[3].
+  - Added a patch to fix an underflow in iov_iter_extract_xarray_pages().
+  - Added a patch to fix alloc failure in iov_iter_extract_bvec_pages().
+  - Added a patch to remove an unused var in kunit code.
+  - Added a patch to fix the folio offset in extract_xarray_to_sg().
+  - Added a patch to fix the exclusion over writeback to make it cover
+    collection too.
+  - Fixed double fput() in cachefiles.
+  - Fixed the collection of cache writes to handle cancellation better.
+  - Fixed iterate_bvecq() to skip bvecq structs with nr_slots==0.
+  - Add a comment into iterate_bvecq() that a slot with bv_len>0 must have a
+    valid bv_page.
+  - Fixed iov_iter_bvecq_advance(), iov_iter_bvecq_revert(),
+    iter_count_bvecq_pages(), iov_iter_extract_bvecq_pages() and
+    extract_bvecq_to_sg() to correctly handle empty bvecqs.
+  - Fixed extract_bvecq_to_sg() to be limited by iter->count.
+  - Fixed bvecq_expand_buffer() to take an unsigned size param.
+  - Fixed bvecq_expand_buffer() to not mix memory types in alloc'd bvecqs.
+  - Fixed bvecq_shorten_buffer() occasional retention of zero-length slots.
+  - Fixed slot validity check polarity in bvecq_pos_advance(); also don't use
+    inner loop otherwise break then exits the wrong loop.
+  - Fixed bvecq_zero(), bvecq_slice() and bvecq_extract to use a barrier when
+    checking bq->nr_slots.
+  - Restructured bvecq_zero() to be similar to bvecq_pos_advance().
+  - Fixed an off-by-one error in bvecq_pos_step() and added a missing slot
+    reset.
+  - Fixed a break in netfs_extract_iter() that should have been a goto.
+  - Fixed netfs_extract_iter() to limit number of pages extracted to remnant
+    of max_pages.
+  - Fixed an uninit var in afs_do_read_symlink().
+  - Fixed netfs_read_gaps() to fill a multipart bvecq chain correctly.
+  - Fixed netfs_dispatch_unbuffered_reads() to initialise collect_cursor as
+    netfs_rreq_assess_dio() uses it to flush the data read.
+  - Fixed netfs_extract_iter() to init the slot counter outside the extract
+    loop to avoid overwriting already loaded slots.
+  - Fixed callers of bvecq_delete_spent() to update bvecq_pos::slot before
+    calling.
+  - Fixed netfs_reissue_write() to make sure subreq->content is unset before
+    setting.
+  - Altered netfs_extract_iter() to free any allocated bvecq chain if no pages
+    were extracted and an error occurred  (and to initialise the return
+    pointer to NULL).  Also, made it return an empty bvecq if nothing was
+    extracted, but no error occurred.
+  - Fixed ceph_netfs_issue_read() to just return if
+    ceph_netfs_issue_op_inline() returns anything other than 1 to avoid a
+    double termination.
+  - Fixed ceph_netfs_issue_read() to do the size calculation in the right
+    order to avoid the op expanding to larger than the buffer.
+  - Fixed netfs_issue_read(), in the NETFS_FILL_WITH_ZEROES case, to deduct
+    subreq->len from stream->buffered rather than just setting it to 0.
+  - Fixed netfs_perform_write() to put the folio if netfs_advance_writethrough()
+    fails.
+  - Restored the old ->prepare_write op specifically for
+    fscache_write_to_cache() which is still used by Ceph.
+  - Fixed undefined return in netfs_pgpriv2_issue_stream().
+  - Fixed netfs_collect_write_results() to try to make sure a request isn't
+    left paused if there are no further server-bound subreqs.
+  - Fixed netfs_queue_wb_folio() to redirty the folio before unlocking it if
+    it can't allocate a bvecq.
+  - Fixed netfs_writepages() to cancel the pagecache iteration after ENOMEM.
+  - Fixed netfs_advance/end_writethrough() to advance the dispatch cursor.
+  - Fixed netfs_retry_read_subrequests() to use barriers when walking
+    stream->subrequests as the app may add another subreq before pausing.
+  - Fixed netfs_prepare_write_retry_buffer() to use ->retry_start and
+    ->retry_buffered rather than ->issue_from and ->buffered.
+  - Fixed netfs_retry_write_stream() to use barriers when walking
+    stream->subrequests as the app may add another subreq before pausing.
+  - Fixed netfs_retry_write_stream() to check the correct length when adding
+    additional subreqs.
+  - Fixed nfs_netfs_issue_read() to set -ENOMEM, not 0, on alloc failure.
+  - Fixed nfs_netfs_issue_read() to only terminate the subreq once.
+  - Fixed cifs_issue_read() to release the credits if cifs_reopen_file()
+    fails.
+- Rebased on v7.1.
+
+ver #3)
+- Rebased to -rc7 as the patches wouldn't apply for Christian.
+- Prepended a fix for a warning from generic/464 (the problem also exists
+  upstream, just not the warning).
+- Renamed kmap_local_bvec() to bvec_kmap_partial() as requested by
+  Christoph.
+- Adjusted smbdirect patch descriptions as requested by Stefan Metzmacher.
+
+ver #2)
+- Fixed a number of bugs reported by Sashiko[1].
+- Split a bunch of fixes out and posted them separately[2].
+
+[1] https://sashiko.dev/#/patchset/20260326104544.509518-1-dhowells%40redhat.com
+[2] https://lore.kernel.org/linux-fsdevel/20260512-infozentrum-becher-7f86c47c96c8@brauner/T/#t
+[3] https://sashiko.dev/#/patchset/20260608145432.681865-1-dhowells%40redhat.com
+
+David Howells (21):
+  mm: Make readahead store folio count in readahead_control
+  netfs: Bulk load the readahead-provided folios up front
+  Add a function to kmap one page of a multipage bio_vec
+  iov_iter: Make iov_iter_get_pages*() wrap iov_iter_extract_pages()
+  iov_iter: Add a segmented queue of bio_vec[]
+  netfs: Add some tools for managing bvecq chains
+  netfs: Add a function to extract from an iter into a bvecq
+  afs: Use a bvecq to hold dir content rather than folioq
+  cifs: Use a bvecq for buffering instead of a folioq
+  smbdirect: Support ITER_BVECQ in smbdirect_map_sges_from_iter()
+  cachefiles: Don't rely on backing fs storage map for most use cases
+  netfs: Add the cache object ID to netfs_read/write tracepoints
+  netfs: Switch to using bvecq rather than folio_queue and
+    rolling_buffer
+  smbdirect: Remove support for ITER_FOLIOQ from
+    smbdirect_map_sges_from_iter()
+  netfs: Remove netfs_alloc/free_folioq_buffer()
+  netfs: Remove netfs_extract_user_iter()
+  iov_iter: Remove ITER_FOLIOQ
+  netfs: Remove folio_queue and rolling_buffer
+  netfs: Check for too much data being read
+  netfs: Limit the minimum trigger for progress reporting
+  netfs: Combine prepare and issue ops and grab the buffers on request
+
+ Documentation/core-api/folio_queue.rst      |  209 ----
+ Documentation/core-api/index.rst            |    1 -
+ Documentation/filesystems/netfs_library.rst |    2 +-
+ fs/9p/vfs_addr.c                            |   59 +-
+ fs/afs/dir.c                                |   40 +-
+ fs/afs/dir_edit.c                           |   43 +-
+ fs/afs/dir_search.c                         |   33 +-
+ fs/afs/file.c                               |   28 +-
+ fs/afs/fsclient.c                           |    8 +-
+ fs/afs/inode.c                              |    2 +-
+ fs/afs/internal.h                           |   12 +-
+ fs/afs/symlink.c                            |   35 +-
+ fs/afs/write.c                              |   32 +-
+ fs/afs/yfsclient.c                          |    6 +-
+ fs/cachefiles/interface.c                   |   82 +-
+ fs/cachefiles/internal.h                    |   13 +-
+ fs/cachefiles/io.c                          |  523 +++++++---
+ fs/cachefiles/namei.c                       |   19 +-
+ fs/cachefiles/xattr.c                       |   24 +-
+ fs/ceph/Kconfig                             |    1 +
+ fs/ceph/addr.c                              |  125 ++-
+ fs/netfs/Kconfig                            |    3 +
+ fs/netfs/Makefile                           |    4 +-
+ fs/netfs/buffered_read.c                    |  514 +++++----
+ fs/netfs/buffered_write.c                   |   31 +-
+ fs/netfs/bvecq.c                            |  763 ++++++++++++++
+ fs/netfs/direct_read.c                      |  108 +-
+ fs/netfs/direct_write.c                     |  157 +--
+ fs/netfs/fscache_io.c                       |    4 +-
+ fs/netfs/internal.h                         |  112 +-
+ fs/netfs/iterator.c                         |  391 +++----
+ fs/netfs/misc.c                             |  168 +--
+ fs/netfs/objects.c                          |   22 +-
+ fs/netfs/read_collect.c                     |  160 +--
+ fs/netfs/read_pgpriv2.c                     |  187 ++--
+ fs/netfs/read_retry.c                       |  246 +++--
+ fs/netfs/read_single.c                      |  169 +--
+ fs/netfs/rolling_buffer.c                   |  222 ----
+ fs/netfs/stats.c                            |    6 +-
+ fs/netfs/write_collect.c                    |  240 +++--
+ fs/netfs/write_issue.c                      | 1042 +++++++++++--------
+ fs/netfs/write_retry.c                      |  150 +--
+ fs/nfs/Kconfig                              |    1 +
+ fs/nfs/fscache.c                            |   17 +-
+ fs/smb/client/cifsglob.h                    |    2 +-
+ fs/smb/client/cifssmb.c                     |   13 +-
+ fs/smb/client/file.c                        |  139 +--
+ fs/smb/client/smb2ops.c                     |   82 +-
+ fs/smb/client/smb2pdu.c                     |   28 +-
+ fs/smb/client/transport.c                   |   15 +-
+ fs/smb/smbdirect/connection.c               |  134 ++-
+ include/linux/bvec.h                        |   18 +
+ include/linux/bvecq.h                       |  326 ++++++
+ include/linux/folio_queue.h                 |  282 -----
+ include/linux/fscache.h                     |   17 +
+ include/linux/iov_iter.h                    |   87 +-
+ include/linux/netfs.h                       |  165 +--
+ include/linux/pagemap.h                     |   10 +
+ include/linux/rolling_buffer.h              |   61 --
+ include/linux/uio.h                         |   17 +-
+ include/trace/events/cachefiles.h           |   17 +-
+ include/trace/events/netfs.h                |  155 ++-
+ kernel/bpf/btf.c                            |    2 -
+ lib/iov_iter.c                              |  547 +++++-----
+ lib/scatterlist.c                           |   82 +-
+ lib/tests/kunit_iov_iter.c                  |  135 ++-
+ mm/readahead.c                              |    5 +
+ net/9p/client.c                             |    8 +-
+ 68 files changed, 4764 insertions(+), 3597 deletions(-)
+ delete mode 100644 Documentation/core-api/folio_queue.rst
+ create mode 100644 fs/netfs/bvecq.c
+ delete mode 100644 fs/netfs/rolling_buffer.c
+ create mode 100644 include/linux/bvecq.h
+ delete mode 100644 include/linux/folio_queue.h
+ delete mode 100644 include/linux/rolling_buffer.h
 
