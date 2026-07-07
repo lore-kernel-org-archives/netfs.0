@@ -1,148 +1,130 @@
-Received: from mail-oo1-f77.google.com (mail-oo1-f77.google.com [209.85.161.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F7B47DD4E
-	for <netfs@lists.linux.dev>; Mon,  6 Jul 2026 21:44:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5428384258
+	for <netfs@lists.linux.dev>; Tue,  7 Jul 2026 05:26:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783374261; cv=none; b=P7HrlBCedKNEB+Dlp2Ce66kh6wen4rG7VGnxtoNtip0KTSyMnYq2UOFAf61DRgb43zAiq7j7c/YpDz58eonvZDwm97qDXlzMob549y98ONQfSD1yMFJXVteJ9oPKQx6MXdnHElWdjXlX/K/XcF58l/qJ0iLRFsZsiBsUBL2HC9Q=
+	t=1783401964; cv=none; b=i34+xjDz0j4ZQl2DIkIpN9DFvliVKpmx5YvrRRVOlZ71x4jHbx8SU9iRRqX6Kv/1/tX9dOouaSAO47ZjB2YX2sJbcUC080jqdwzWNMIlZtpq6W+YSn/TFh3MeUA4GKvt9EOEvotrqfuRYs1wUy9g0QP/bf5SEi6iCagjl94Njzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783374261; c=relaxed/simple;
-	bh=e1SF7iWuEYA7wT1vRotUpCtzMz+9DM8Fel8wN4Y9PmI=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=UC8Iwszq/O9Z0MUB3sGJWCxFScuFdc0uLr83lXnQLW/v1ILprDwFHnmgmkET5wVAckOEgdPFC3MN6mg7nI6d82Os6u/IvOyWrRrMEG9YeEun8ZR/evrPONlEN/YmDh01pybl57UJj2W0IaNJJnIue/SpgWMZHGdbKVnM0hTzlKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f77.google.com with SMTP id 006d021491bc7-6a0e3320c53so4127205eaf.0
-        for <netfs@lists.linux.dev>; Mon, 06 Jul 2026 14:44:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783374259; x=1783979059;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DvmabBm/M9qkJJFMc6B6+g0RDsgWnVpyxWpzSORwHSo=;
-        b=Rrc23W1CCKg9VWaAxQXI4RZbI24UoSVS6ogZksoqvwC0e/ckvKFwkTGLu+6i3JOLBa
-         AF68hqn03nSxpq6R3epWBXbNnr3vVqjcNPtxtQ8/YKhz5hmlHnjX2J7SbcneXRiam2Sf
-         9qcBLy0FoTWHtSEXKYioeNNhW3i8LNRx9x9c09KqdjoD4c7zSIpCf/aFb9L6t/Ohikjz
-         ok847frHwfTE0EpPNPDh2sCKt8fRM+u467SqXhLHPafpS5Z9z8JzveNmi2ciYlsccjq/
-         T4Y7Q9KpYtjqeZ025G7CF9cijvZ5MzHg7Zz/YoQnmstdzicoHQfdQPr9p9mQ3NcOj4bH
-         zAaQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8mHBLgGU/NGngk5BoybcW8sZQO7uBej4gqPQp25IyZJT+NpsJ69/Vcq/ZdazCqquib544Qhw==@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyo0bdcLKRIb3BIw+k5rF2rbjGTUzGEJO8W0m0g6TVSy+jaM5SM
-	BYMRGAyzDmnebS+SAiUJ61BNsM8kfn9PxrO9z/ZF8fCSawWbsZXcR4ec4jh+isGhgj032pvYGet
-	Cyv7H1CfPbin0Ovy07Klz+Wl5yoWFGlMnE+V1uzlwv09MkBSpRXL7Bky89dM=
+	s=arc-20240116; t=1783401964; c=relaxed/simple;
+	bh=kUqmcmTzZF8uuq0pGRJ/4unGGIVrRmkBhK8+ARKAUtg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KxUg9IUZ90Gp+p4G96D8fRLEhdkkKNUeS5JFiGgXVAAeKwBSVyCuZkBGDKwrpnDFFE2Efiq8K3K3SozCgsVEICliPB01evhxc/5XxoIPZCQJoGQYAQv52JE1MITrS7IYQOEViNwQ6EAoxlxxvQqesiP2ZS/Z1a8PRncZy5hk6Vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=aNKQFf/Y; arc=none smtp.client-ip=205.220.178.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="aNKQFf/Y"
+Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6674Zgql752030;
+	Tue, 7 Jul 2026 05:26:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
+	 h=cc:content-transfer-encoding:content-type:date:from
+	:message-id:mime-version:subject:to; s=PPS06212021; bh=aNz4gKpYS
+	qXRXAPUS1NE8QU/u06dew90+lMuycO6SNI=; b=aNKQFf/Y0JUsczn05bhqzMQH6
+	B9u7CCfgsWlSd12bVFyW8VPlfE9cLpJBFwfLys7mSzT95FXC8ucPsimGOVebFazH
+	6DKay/1RUPQGsUEg+XvmRvELvPFGCI2WDmA6TXPA4VjMb14PAginbiM+u/9kVFaW
+	DYpC/nC+0kqI0FZrpTzXaPOMHHC1GsvL56lwMzIhmYcoUYSNPSRrAXrv2sf9U4eN
+	YCwNZgay4pWDFT7OQhYaJB+FxjHrS7EONWhsLdGKMz4ebfmTzE4mCYtTLoT+0bXK
+	2+b8bHdez23LG2dKpQVWnTaZV6pwxejI0ogQJrafkfmVCI0s0tQmyIr49UrHw==
+Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [128.224.246.37])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4f6qcwbn2r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Tue, 07 Jul 2026 05:26:00 +0000 (GMT)
+Received: from ala-exchng01.corp.ad.wrs.com (10.11.224.121) by
+ ALA-EXCHNG02.corp.ad.wrs.com (10.11.224.122) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.61; Mon, 6 Jul 2026 22:25:58 -0700
+Received: from pek-yzhou-d3.wrs.com (10.11.232.110) by
+ ala-exchng01.corp.ad.wrs.com (10.11.224.121) with Microsoft SMTP Server id
+ 15.1.2507.61 via Frontend Transport; Mon, 6 Jul 2026 22:25:56 -0700
+From: Yun Zhou <yun.zhou@windriver.com>
+To: <dhowells@redhat.com>, <pc@manguebit.org>
+CC: <netfs@lists.linux.dev>, <linux-fsdevel@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <yun.zhou@windriver.com>
+Subject: [PATCH] netfs: fix ENOMEM handling in netfs_writepages() to drain all dirty folios
+Date: Tue, 7 Jul 2026 13:25:55 +0800
+Message-ID: <20260707052555.2055002-1-yun.zhou@windriver.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:1797:b0:6a1:50e9:d586 with SMTP id
- 006d021491bc7-6a35556394fmr1504720eaf.67.1783374259504; Mon, 06 Jul 2026
- 14:44:19 -0700 (PDT)
-Date: Mon, 06 Jul 2026 14:44:19 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a4c21b3.c76b52dc.34afef.0002.GAE@google.com>
-Subject: [syzbot] [netfs?] WARNING in netfs_writepages (3)
-From: syzbot <syzbot+0da43efa72f88bd3a8af@syzkaller.appspotmail.com>
-To: dhowells@redhat.com, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netfs@lists.linux.dev, pc@manguebit.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Authority-Analysis: v=2.4 cv=D4537PRj c=1 sm=1 tr=0 ts=6a4c8de8 cx=c_pps
+ a=Lg6ja3A245NiLSnFpY5YKQ==:117 a=Lg6ja3A245NiLSnFpY5YKQ==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=bi6dqmuHe4P4UrxVR6um:22
+ a=klDOsUkWDRETUCZYPvoE:22 a=edf1wS77AAAA:8 a=hSkVLCK3AAAA:8 a=t7CeM3EgAAAA:8
+ a=ftnr9pgPjLezqOHR4ikA:9 a=DcSpbTIhAlouE1Uv7lRv:22 a=cQPPKAXgyycSBL8etih5:22
+ a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-ORIG-GUID: b8d67MFjPKxaeVsr9-W2uXMSJL7dUjX0
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA3MDA0OSBTYWx0ZWRfX3D6xQX71Nuq4
+ Z5XxdmYzJggiH7JJIGx+CvJO7ud2BSGvE/BTVvtvgoJQL8KD7CMmgsLqSGv34gSC01UzC+mikYZ
+ mY8M/3NcF+4t4fRzhLXw3aK/KMBIGHVIRooNHRIPSxQpYea2vVX9
+X-Proofpoint-GUID: b8d67MFjPKxaeVsr9-W2uXMSJL7dUjX0
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA3MDA0OSBTYWx0ZWRfXy0AzbPQne88M
+ MD39zpvgsHY5qy1ZfnyoAN3LEDEBaVY/PPB5sQ9i0h38kJDhPhamiry8yA4L07CqsGh6noKYrcg
+ qRnB1iQAFTWlmoFpvX4+wslL3PJ2QATySy6z2cZ9G/nG0oPgqVkTeyzIKZSR0azK/XBhkN8A3Gk
+ 1Qmxg5PCCY3wYU6j6kTBEkph4+YFzVcrlgRJK6oKH/cvxEeRv6YUlK7F3n/Ra0RuqnXPmubgZJP
+ +89guxJq+I7WlRJg18vTa+koPNq6KozAGhyCg7H+Csxqk/c5W+v+HYcsM6gLmc0CT8lcCsASKyp
+ wLBf32UurJsBuYOJmjyQfpHZ5WzJQKqgTN3QFYm8BI6JY95XYnXH6zIWyuHSeRrqGfG5Oef4n6v
+ nw/VdGfXAhpJnFONqQn8su1MIlEGY6bzInihz12egt4M7vCop5Cw4lSmcJ9GarNseQq01nNbivZ
+ oZIAnfLtBhVnjb0FTQA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-07_01,2026-07-06_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 malwarescore=0 bulkscore=0 suspectscore=0 lowpriorityscore=0
+ adultscore=0 priorityscore=1501 spamscore=0 phishscore=0 clxscore=1011
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607070049
 
-Hello,
+When netfs_create_write_req() fails with -ENOMEM in netfs_writepages(),
+the couldnt_start error path redirties and unlocks the first folio, then
+calls writeback_iter() expecting it to return NULL. However, if the
+mapping contains multiple dirty folios, writeback_iter() returns the
+next one, triggering WARN_ON_ONCE(folio != NULL).
 
-syzbot found the following issue on:
+This can be reproduced via 9p (cache=loose) with shared mmap writes and
+fault injection (fail_nth), where v9fs_mmap_vm_close() triggers
+writeback on a mapping with multiple dirty folios during mmap overlap.
 
-HEAD commit:    7404ce516372 Merge tag 's390-7.2-3' of git://git.kernel.or..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=119f1661580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=48ef5c5c0f192153
-dashboard link: https://syzkaller.appspot.com/bug?extid=0da43efa72f88bd3a8af
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1727ebde580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=172dbec1580000
+Fix this by looping over all remaining dirty folios in the ENOMEM path,
+redirtying and unlocking each one. This ensures all folios taken by the
+writeback iterator are properly released, and they will be retried on
+the next writeback cycle when memory is available.
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-7404ce51.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/e63433d84892/vmlinux-7404ce51.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/7542fae0615e/bzImage-7404ce51.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
 Reported-by: syzbot+0da43efa72f88bd3a8af@syzkaller.appspotmail.com
-
-R10: 0000000000028011 R11: 0000000000000246 R12: 0000000000000001
-R13: 00007fe029a25fac R14: 00007fe029a25fa0 R15: 00007fe029a25fa0
- </TASK>
-------------[ cut here ]------------
-folio != NULL
-WARNING: fs/netfs/write_issue.c:603 at netfs_writepages+0x883/0xa10 fs/netfs/write_issue.c:603, CPU#3: syz.0.17/5919
-Modules linked in:
-CPU: 3 UID: 0 PID: 5919 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:netfs_writepages+0x883/0xa10 fs/netfs/write_issue.c:603
-Code: 48 89 df e8 3f 8b 7b ff 48 8b 4c 24 08 48 89 da 4c 89 e6 4c 89 f7 e8 ec 34 7f ff 48 85 c0 0f 84 c1 fe ff ff e8 0e c7 3d ff 90 <0f> 0b 90 e9 b3 fe ff ff e8 00 c7 3d ff 48 b8 00 00 00 00 00 fc ff
-RSP: 0018:ffffc9000415f178 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffffea00014f2580 RCX: ffffffff824b4bda
-RDX: ffff88802bcea540 RSI: ffffffff82cc0992 RDI: ffff88802bcea540
-RBP: fffffffffffffff4 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: ffffc9000415f348
-R13: ffff888046848bc0 R14: ffff888046848dd8 R15: dffffc0000000000
-FS:  0000555567857500(0000) GS:ffff8880d60ec000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000200000002901 CR3: 0000000025ac6000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- do_writepages+0x278/0x600 mm/page-writeback.c:2571
- filemap_writeback+0x22d/0x2e0 mm/filemap.c:387
- v9fs_mmap_vm_close fs/9p/vfs_file.c:496 [inline]
- v9fs_mmap_vm_close+0x137/0x1e0 fs/9p/vfs_file.c:489
- vma_close mm/internal.h:190 [inline]
- vms_clean_up_area mm/vma.c:1318 [inline]
- __mmap_setup mm/vma.c:2476 [inline]
- __mmap_region+0x890/0x2db0 mm/vma.c:2756
- mmap_region+0x527/0x620 mm/vma.c:2860
- do_mmap+0xc63/0x12f0 mm/mmap.c:560
- vm_mmap_pgoff+0x29e/0x470 mm/util.c:581
- ksys_mmap_pgoff+0x3cb/0x610 mm/mmap.c:606
- __do_sys_mmap arch/x86/kernel/sys_x86_64.c:89 [inline]
- __se_sys_mmap arch/x86/kernel/sys_x86_64.c:82 [inline]
- __x64_sys_mmap+0x125/0x190 arch/x86/kernel/sys_x86_64.c:82
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fe02979de59
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fff3ad0a858 EFLAGS: 00000246 ORIG_RAX: 0000000000000009
-RAX: ffffffffffffffda RBX: 00007fe029a25fa0 RCX: 00007fe02979de59
-RDX: 0000000000000002 RSI: 0000000000b36000 RDI: 0000200000000000
-RBP: 00007fff3ad0a8c0 R08: 0000000000000004 R09: 0000000000000000
-R10: 0000000000028011 R11: 0000000000000246 R12: 0000000000000001
-R13: 00007fe029a25fac R14: 00007fe029a25fa0 R15: 00007fe029a25fa0
- </TASK>
-
-
+Closes: https://syzkaller.appspot.com/bug?extid=0da43efa72f88bd3a8af
+Fixes: ac5f95ac5d6d ("netfs: Fix writeback error handling")
+Signed-off-by: Yun Zhou <yun.zhou@windriver.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ fs/netfs/write_issue.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
+index f2761c99795a..5aa47128f7e7 100644
+--- a/fs/netfs/write_issue.c
++++ b/fs/netfs/write_issue.c
+@@ -597,10 +597,11 @@ int netfs_writepages(struct address_space *mapping,
+ 
+ couldnt_start:
+ 	if (error == -ENOMEM) {
+-		folio_redirty_for_writepage(wbc, folio);
+-		folio_unlock(folio);
+-		folio = writeback_iter(mapping, wbc, folio, &error);
+-		WARN_ON_ONCE(folio != NULL);
++		/* Redirty all dirty folios and let writeback retry later. */
++		do {
++			folio_redirty_for_writepage(wbc, folio);
++			folio_unlock(folio);
++		} while ((folio = writeback_iter(mapping, wbc, folio, &error)));
+ 	} else {
+ 		netfs_kill_dirty_pages(mapping, wbc, folio);
+ 	}
+-- 
+2.43.0
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
