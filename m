@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA9A3D9027;
-	Tue, 21 Jul 2026 17:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95AB401A21;
+	Tue, 21 Jul 2026 17:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784653622; cv=none; b=YNcGN3s/xn/ji9K8FpnaiwxkW+qjb8gXE43Pg3UA1rorQ5d/Eh/th1HY1yyyrh6olNIccc0i3SoicG5IabRo5p3OxrLYBQdYhIkvLPPSl9l81UdmJ/s0qZEqW5KOyQFtJxebLh0JyzUnfLu3hLOPcTDVJts6vZZvm7TZj1pMUus=
+	t=1784653653; cv=none; b=oWHQP4/XPYSdZIzzgREpniaLUYl1833OxSeu6WOWAGx4ndGLOwR7dtmqG17gLuOxiTkQZeh32gdmIvROndp2PwIVu7i6ReA7TMdJGtKSxd5TF4XQ134ubGxz88UYjwm+2pdRvh+YcF5d7DDgeUGRUW53U323hIGEzk2yTQBZqlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784653622; c=relaxed/simple;
-	bh=p+09jr1C5TBg3ArItH+5teXh/XyN6JvD68QPy4dwxXM=;
+	s=arc-20240116; t=1784653653; c=relaxed/simple;
+	bh=eUaQy1A4kLD/ZBMzXw1WBJgxeUz4AxYBvCAUJNiUz/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BBcfAeNYJnoaMeRx5kTIkf9uGFHwbnX4dipL0kDwxCRN8R3akj1WHnwpkSKVgqOP9gYjWpYBDJam5KxABSmQDWYNPI+m4H6miTcak26OaJeGkyWmH+75EI4F8zNzmZtjhIt2VCOwIamuDvMpctGz9V1hPRHN/Ws62Eh3zYhQmZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=icWRlR+F; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=SwjLRkZXfYKCKzdpAHxVZSKKHR7cfliEiigW+JZ2r7DhAPZwQ79dBKGfuJy2oZiaMkCOS7tTU1Q2Jn0phbbtsNIQlH8if/194S+AThvp2zw2ve8OwN0fiyxuPm3PN2DMzr3N/60VrPsm40PgLlDGuVeGQLA4OGDOrwxPjSYWOVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y2NnIXKq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="icWRlR+F"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA9C01F000E9;
-	Tue, 21 Jul 2026 17:07:00 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y2NnIXKq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43CB21F000E9;
+	Tue, 21 Jul 2026 17:07:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1784653621;
-	bh=kgTwMwaR0A8Rvbc7xBwJ0Bsu54lZgL8w1+cA9mnS1Wc=;
+	s=korg; t=1784653652;
+	bh=V2j5vBMDdoK2PmU807+C8WyWDwicIDkYparZUF6f/1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=icWRlR+FforhwPVc42n+LaTw+d4pL0drzTpwwSjQvajUPupOkNVlECaKZ4mO+UuUv
-	 qIv5dlVmcfIP6EeewXnD/H3+0Q50BrHdird/OlH+9AP1eRUbU/Gh1i+BSfr140M82r
-	 TFnGNgVbwdEVoBW0ZbWxonGYRognzS5JoVHC3pOA=
+	b=y2NnIXKqzuCgU0U18KnSta58DEzvXsX7oBFRL6hEvV3MOgqj5cVSxgQMMF/ybRfpa
+	 HgZT2EEH5g7byWtcfVrJTI/x9bfuptrw97H6LShQN8rt/3I94WqFoJAi4b33gJpSNM
+	 K+YaAO23Do0sD1FXX/M86cVeDYYW40HSX5jZzQas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Matthew Wilcox <willy@infradead.org>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	linux-cifs@vger.kernel.org,
 	netfs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
-	"Christian Brauner (Amutable)" <brauner@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.1 1397/2077] netfs: Fix folio state after ENOMEM whilst under writeback iteration
-Date: Tue, 21 Jul 2026 17:17:50 +0200
-Message-ID: <20260721152625.762323937@linuxfoundation.org>
+Subject: [PATCH 7.1 1408/2077] cifs: Fix missing credit release on failure in cifs_issue_read()
+Date: Tue, 21 Jul 2026 17:18:01 +0200
+Message-ID: <20260721152626.016389328@linuxfoundation.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260721152552.646164743@linuxfoundation.org>
 References: <20260721152552.646164743@linuxfoundation.org>
@@ -57,41 +57,36 @@ Content-Transfer-Encoding: 8bit
 
 From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit b6a713fd34b9498ee2164d5d3e8460732a392efc ]
+[ Upstream commit c16b8c4cfb4fe2244cc33e469a93c1ab8684146b ]
 
-Fix the state of the current folio when ENOMEM occurs during writeback
-iteration.  The folio needs to be redirtied and unlocked before the
-terminal writeback_iter() is invoked.
+Fix missing release of credits in the failure path in cifs_issue_read()
+lest retrying the subreq just overwrites the credits value.
 
-Fixes: 06fa229ceb36 ("netfs: Abstract out a rolling folio buffer implementation")
-Link: https://sashiko.dev/#/patchset/20260619140646.2633762-1-dhowells%40redhat.com
+Fixes: 69c3c023af25 ("cifs: Implement netfslib hooks")
+Link: https://sashiko.dev/#/patchset/20260608145432.681865-1-dhowells%40redhat.com
 Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260625140640.3116900-15-dhowells@redhat.com
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: Matthew Wilcox <willy@infradead.org>
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+cc: linux-cifs@vger.kernel.org
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/write_issue.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/smb/client/file.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index cd0c8b3297ee0a..d0d884731dc5d7 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -588,6 +588,10 @@ int netfs_writepages(struct address_space *mapping,
- 		}
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index e536e424b9b750..b5a61a4a43b85b 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -241,6 +241,7 @@ static void cifs_issue_read(struct netfs_io_subrequest *subreq)
+ 	return;
  
- 		error = netfs_write_folio(wreq, wbc, folio);
-+		if (error == -ENOMEM) {
-+			folio_redirty_for_writepage(wbc, folio);
-+			folio_unlock(folio);
-+		}
- 	} while ((folio = writeback_iter(mapping, wbc, folio, &error)));
- 
- 	netfs_end_issue_write(wreq);
+ failed:
++	add_credits_and_wake_if(rdata->server, &rdata->credits, 0);
+ 	subreq->error = rc;
+ 	netfs_read_subreq_terminated(subreq);
+ }
 -- 
 2.53.0
 
