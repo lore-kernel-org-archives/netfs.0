@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D8C2F7F19
-	for <netfs@lists.linux.dev>; Wed, 22 Jul 2026 13:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001C433D6FD
+	for <netfs@lists.linux.dev>; Wed, 22 Jul 2026 13:03:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784725392; cv=none; b=rPDHWbmukLZWOrnUJRzH7NiFFDnthf4QiHMH+w/CHNjwPR/W5rk78SpOgOv94+weaYn7D52urBHchSkiMldq4sgMBo0ZW4pAZi57nEsGw7bt9mKdgIbLFfrebMluQUKzFbKG5FeZkB7XmT4+kplWOgmo9RXt3s4cULaDIjpI9NE=
+	t=1784725400; cv=none; b=iv6GDgLM9/FLPZqoVx7/O4B1O5hvGSDm8odGJyzXcm/0z936iXwFB9QLgLNaxi9yhxI4CI6MykCfUIVmryNQktbXO6lZaGfln1t9itXEHO5HMBrND6DRVYFTtazxse8ItqwuDeCTVEqHXNYRvpX1Gb79AXFWR2mxhA1dwHTAiFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784725392; c=relaxed/simple;
-	bh=w23b0JbOxNEGjzuU1PXY3kc0xOYVWl30OQdDnETC6eM=;
+	s=arc-20240116; t=1784725400; c=relaxed/simple;
+	bh=NhQmeJ7xXtC2qhhuZdlM1pf4BctUAxpJW0Z9jOz1lXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=rK57j/Lmhtp5vMQLS8kZlTPE6c1RaQMK6RnOZHspGXN9gNQSzvDf3NISuwS+27+unr0UFDKcL7bVbIQ4IbQdTJ9gFFqRP9ZCHJ32rhISZtVJlfmLtLSq5RRCUn1caN1HPYRW0mX3AydUhJEaxsBi91avk/aO4bzKpcdfg0Ew92c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QOLCmpvg; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:content-type; b=LrVTWlHCGFGdLJ3zZUL28zAvpl8ka21aTu1Krf7ugmugviIS3fKq+n1F9i0vvwPJSCbkDpklvoTjH80I0BFiJ3fvwsY/EjdxsYBfajuy41ceuur5k5JRxR7dS1bHdIYkInTyBTCu+GwFslHMtsTKmDFFe8qLM7IVxCxZ1fHHhOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VmqyGIhh; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QOLCmpvg"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VmqyGIhh"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784725386;
+	s=mimecast20190719; t=1784725396;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=a8oEAiWjd86z1Gi65KRoWCtZfHjQ+oKK2jcEq+W4JMo=;
-	b=QOLCmpvgzA7s4CyHjRH1ngBqK3fy3NjidBVaxySaI5uJLlY5mxntY/uFHLKfvamwm+cgak
-	lrLxFbhpylpbtm1Q8aEdPjlCmkDSrgIf02BrKa5g8LBiAaTOD/IrmIsLStCf2uyfg0dBsy
-	Pz7vYmQzfpd+mZkf1DkPtiTiUbLOzjw=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=NQ4xYgPisX1eloJMBrUIHWw1g1geoI0YKTxulh3uSC0=;
+	b=VmqyGIhhza8RjswGw6YBAhj5uLpuSs6eJwQbeD46Wz8Eg0RT41+gcGb6dAywtfrPgL8Al2
+	DaldZGR8XN0TsTBguk+26oQ/OmzvmnX80tY4kNg2OqSHHEoDe3w5uzdtYyQ2kL9O5BVik6
+	XkY7b/rNNsjG0umqc0YA1NojmAxb6Ro=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-92-nSB2rKYjPaaYEeeNPRZZVw-1; Wed,
- 22 Jul 2026 09:03:02 -0400
-X-MC-Unique: nSB2rKYjPaaYEeeNPRZZVw-1
-X-Mimecast-MFC-AGG-ID: nSB2rKYjPaaYEeeNPRZZVw_1784725379
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-562-kcdqLBnDM5yJsC5CRwEuYQ-1; Wed,
+ 22 Jul 2026 09:03:12 -0400
+X-MC-Unique: kcdqLBnDM5yJsC5CRwEuYQ-1
+X-Mimecast-MFC-AGG-ID: kcdqLBnDM5yJsC5CRwEuYQ_1784725387
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E22091800772;
-	Wed, 22 Jul 2026 13:02:58 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 67382195D001;
+	Wed, 22 Jul 2026 13:03:07 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.44.33.159])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 999CA180034C;
-	Wed, 22 Jul 2026 13:02:52 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 892761956042;
+	Wed, 22 Jul 2026 13:03:00 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>,
 	Matthew Wilcox <willy@infradead.org>,
@@ -66,10 +66,10 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-erofs@lists.ozlabs.org,
 	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Yichong Chen <chenyichong@uniontech.com>
-Subject: [PATCH v7 03/29] netfs: release readahead folios on iterator preparation failure
-Date: Wed, 22 Jul 2026 14:01:50 +0100
-Message-ID: <20260722130218.78958-4-dhowells@redhat.com>
+	stable@vger.kernel.org
+Subject: [PATCH v7 04/29] afs: Fix missing kunmap in afs_dir_search_bucket()
+Date: Wed, 22 Jul 2026 14:01:51 +0100
+Message-ID: <20260722130218.78958-5-dhowells@redhat.com>
 In-Reply-To: <20260722130218.78958-1-dhowells@redhat.com>
 References: <20260722130218.78958-1-dhowells@redhat.com>
 Precedence: bulk
@@ -78,46 +78,42 @@ List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: OGqKgfCYIDpUJ7nk25lST9Fpm2l_2m8bjPYjEPasVuo_1784725379
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: UAkq-sug88SMytxAbmNgY8ucYN0Px2hG-qEC1apwTmw_1784725387
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-From: Yichong Chen <chenyichong@uniontech.com>
+Fix afs_dir_search_bucket() to kunmap the block it's using in the "bad:"
+path.
 
-netfs_prepare_read_iterator() batches readahead folios in put_batch so that
-the folio references can be dropped after the I/O iterator has been
-prepared.
-
-If rolling_buffer_load_from_ra() fails after earlier folios have been
-batched, the function returns immediately and leaves those references held.
-Release the batch before returning the error.
-
-Fixes: 06fa229ceb36 ("netfs: Abstract out a rolling folio buffer implementation")
-Signed-off-by: Yichong Chen <chenyichong@uniontech.com>
+Fixes: a5b5beebcf96 ("afs: Use the contained hashtable to search a directory")
+Closes: https://sashiko.dev/#/patchset/20260716103030.3065561-1-dhowells%40redhat.com
 Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: netfs@lists.linux.dev
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
 cc: linux-fsdevel@vger.kernel.org
+cc: stable@vger.kernel.org
 ---
- fs/netfs/buffered_read.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/afs/dir_search.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index 24a8a5418e31..3d86414ee40f 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -102,8 +102,10 @@ static ssize_t netfs_prepare_read_iterator(struct netfs_io_subrequest *subreq,
+diff --git a/fs/afs/dir_search.c b/fs/afs/dir_search.c
+index 104411c0692f..4977ad81fa82 100644
+--- a/fs/afs/dir_search.c
++++ b/fs/afs/dir_search.c
+@@ -173,12 +173,11 @@ int afs_dir_search_bucket(struct afs_dir_iter *iter, const struct qstr *name,
  
- 			added = rolling_buffer_load_from_ra(&rreq->buffer, ractl,
- 							    &put_batch);
--			if (added < 0)
-+			if (added < 0) {
-+				folio_batch_release(&put_batch);
- 				return added;
-+			}
- 			rreq->submitted += added;
- 		}
- 		folio_batch_release(&put_batch);
+ 	ret = -ENOENT;
+ found:
++bad:
+ 	if (iter->block) {
+ 		kunmap_local(iter->block);
+ 		iter->block = NULL;
+ 	}
+-
+-bad:
+ 	if (ret == -ESTALE)
+ 		afs_invalidate_dir(iter->dvnode, afs_dir_invalid_iter_stale);
+ 	_leave(" = %d", ret);
 
