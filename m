@@ -1,45 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B92231C91
-	for <netfs@lists.linux.dev>; Mon, 27 Jul 2026 13:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A9A40A92F
+	for <netfs@lists.linux.dev>; Mon, 27 Jul 2026 13:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785157680; cv=none; b=Miyw9pt189cXojL7zIa9F+zEW7jG4jsQnCGEAPELXYAMBuaOwD5hniCS4RPWVoHvgYkiEHCL5Q1/62lJQ90vaTAf3aigfcMxwfgHijRYcqJ7vla265TG5HTjVrpreVt2sptrkZr2+6o1NfX9U98MTYiZcKWpcEBW9c4cJPK9Ecs=
+	t=1785157685; cv=none; b=jkH2XntfNLkY5fRyZXAeo9lKqPms9t09pfOeoRe9vrMkBpfq133Am3eBNXayXNHy+lqyM5+9RmYKFK8ZK6z3RTSkjlY5X/K3TE1ICi3eH5qKg+uBSEKI9u9ycVcETX4N/X8T2A1YstHisxnxDyPG9bnvQ9WQ4QqgZBhmGyH9MrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785157680; c=relaxed/simple;
-	bh=PixeBS1hh3BZX0SkZZcTCfrASeyD4fHEVusdBAlcel0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=bBJd0I6LugrRNu5HqMX6WfUnCvh9QsQJ3EtUVmicXIwhJpIFWGaq5EO8TktKCMDatE2fClCyZ4nQ2XMn3p2XZfuIsLfBeqGlP53bOI3zc3s/F9kt/+rl6/XC1uFEXi4Isk78p3WxoUdyMeypWU4VAh4NOGdxveOAs5ada/Zkz4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=i7SBWGAd; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1785157685; c=relaxed/simple;
+	bh=9QSB2VcYohSkUGe3vsdtMud4lVx7Qo+LdiRdtpNDZYs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:content-type; b=llTVwJP9GygJ8n+knCS4XDQeEEcF/W3m+4ly7oVWmDyYgEo39xKndWxOk4C9vNUBJI88jWIVnsOQjHlRgau0rxdCycbOGtGcFhOlk2wKra1TRQNXjhaIZizOxFpDKQoWfqvs4rxASLIu9mYcrjuz2eAc0xDXpMqlBZY7H7btfe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=frcmjLqX; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="i7SBWGAd"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="frcmjLqX"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785157676;
+	s=mimecast20190719; t=1785157683;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=3EKPzNHczmFLavrL8Aq2DDXkrcGDtNuGqWVxKjxzUYU=;
-	b=i7SBWGAd4k1Hqt7R90iBEP9Stkx9ozvhrlpyZkGv8LVqR4NsU1ghkrMJNnu51NJgg5NDmE
-	H2yZe56Eevgl/Rxn4EVXf/8DMde29b94sYuefTCNQ/S5IusmUFPBc4TgTf9h9sL05VaYu4
-	B2nPrOpfv7gJh9E6sOQI1oobv3LVjPo=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vprsViKY72rawZWltum/UMfZGzgPWXZ8iTQuEYnb2yU=;
+	b=frcmjLqXpf3Jeed7QL+ttlFOmuYqFLdCfCM3ml9MlKt07+gkKAyj4zZXa/t1J+CKz5IZcT
+	YDQLgffWRNTJvW6nYP3KZzXkwe4QT5BiYd2k5QvMIj3ZkG+KqrdZoYT2DROXNQbT8iR0F6
+	vUlE7QQ05G9o9NWJI4YVSgrE8AtKflo=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-310-Ar4alRKcPJii6Czk98UdMQ-1; Mon,
- 27 Jul 2026 09:07:52 -0400
-X-MC-Unique: Ar4alRKcPJii6Czk98UdMQ-1
-X-Mimecast-MFC-AGG-ID: Ar4alRKcPJii6Czk98UdMQ_1785157671
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-428-CpTEvGhyPqi8Vjrf-rRg9Q-1; Mon,
+ 27 Jul 2026 09:07:58 -0400
+X-MC-Unique: CpTEvGhyPqi8Vjrf-rRg9Q-1
+X-Mimecast-MFC-AGG-ID: CpTEvGhyPqi8Vjrf-rRg9Q_1785157677
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CA786180136C;
-	Mon, 27 Jul 2026 13:07:50 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 48EBF1955EB7;
+	Mon, 27 Jul 2026 13:07:56 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.44.33.159])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CF63519560A3;
-	Mon, 27 Jul 2026 13:07:46 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7EAB219560A3;
+	Mon, 27 Jul 2026 13:07:52 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>
 Cc: David Howells <dhowells@redhat.com>,
@@ -50,10 +52,13 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-cifs@vger.kernel.org,
 	ceph-devel@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/4] netfs: Miscellaneous fixes
-Date: Mon, 27 Jul 2026 14:07:11 +0100
-Message-ID: <20260727130716.1099906-1-dhowells@redhat.com>
+	linux-kernel@vger.kernel.org,
+	Yichong Chen <chenyichong@uniontech.com>
+Subject: [PATCH 1/4] netfs: clear PG_private_2 on copy-to-cache append failure
+Date: Mon, 27 Jul 2026 14:07:12 +0100
+Message-ID: <20260727130716.1099906-2-dhowells@redhat.com>
+In-Reply-To: <20260727130716.1099906-1-dhowells@redhat.com>
+References: <20260727130716.1099906-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -61,49 +66,40 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-MFC-PROC-ID: CzpDZtRbzhvMEheLUiBB4Wdb4-c6rpCvC7uwKMITOnM_1785157671
+X-Mimecast-MFC-PROC-ID: to7QKKnnmIaU6GCpENAX_5os4kdGEvAz6JSAVmY2SXE_1785157677
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Hi Christian,
+From: Yichong Chen <chenyichong@uniontech.com>
 
-Here are some miscellaneous fixes for netfslib.
+netfs_pgpriv2_copy_to_cache() marks the folio with PG_private_2 before
+netfs_pgpriv2_copy_folio() appends it to the copy-to-cache rolling
+buffer.
 
- (1) Clear PG_private_2 on copy-to-cache append failure.
+If the append fails, the folio is not queued for cache writeback, so
+the PG_private_2 state and its reference must be released immediately.
 
- (2) Fix handling of rolling buffer allocation failure in single-object
-     writeback.  This is probably unnecessary with (4), but if we're only
-     writing to the cache, we can skip the write.
+Fixes: e2d46f2ec332 ("netfs: Change the read result collector to only use one work item")
+Signed-off-by: Yichong Chen <chenyichong@uniontech.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+---
+ fs/netfs/read_pgpriv2.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- (3) Fix cleanup of readeahead folios if iterator preparation fails.
-
- (4) Fix folio_queue allocation failure in writeback by adding a mempool.
-     This also improves request and subrequest allocation.
-
-The patches can also be found here:
-
-	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-fixes
-
-Thanks,
-David
-
-David Howells (1):
-  netfs: Fix folio_queue ENOMEM in writeback by adding a mempool
-
-Yichong Chen (3):
-  netfs: clear PG_private_2 on copy-to-cache append failure
-  netfs: handle single writeback rolling buffer allocation failure
-  netfs: release readahead folios on iterator preparation failure
-
- fs/netfs/buffered_read.c       | 10 ++++++----
- fs/netfs/internal.h            |  1 +
- fs/netfs/main.c                |  7 +++++++
- fs/netfs/objects.c             | 31 +++++++++++++++++++------------
- fs/netfs/read_pgpriv2.c        |  3 ++-
- fs/netfs/rolling_buffer.c      | 21 ++++++++++++---------
- fs/netfs/write_issue.c         | 15 ++++++++++-----
- include/linux/netfs.h          |  1 +
- include/linux/rolling_buffer.h |  6 +++---
- 9 files changed, 61 insertions(+), 34 deletions(-)
+diff --git a/fs/netfs/read_pgpriv2.c b/fs/netfs/read_pgpriv2.c
+index a1489aa29f78..7eacc58abadb 100644
+--- a/fs/netfs/read_pgpriv2.c
++++ b/fs/netfs/read_pgpriv2.c
+@@ -54,6 +54,7 @@ static void netfs_pgpriv2_copy_folio(struct netfs_io_request *creq, struct folio
+ 
+ 	/* Attach the folio to the rolling buffer. */
+ 	if (rolling_buffer_append(&creq->buffer, folio, 0) < 0) {
++		folio_end_private_2(folio);
+ 		clear_bit(NETFS_RREQ_FOLIO_COPY_TO_CACHE, &creq->flags);
+ 		return;
+ 	}
 
