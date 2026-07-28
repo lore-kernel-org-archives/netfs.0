@@ -1,425 +1,225 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 422EA411FA0
-	for <netfs@lists.linux.dev>; Mon, 27 Jul 2026 13:08:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785157703; cv=none; b=tbvK20n+1XIVW4DlHhI7Edn/aLWO6bHxIH7lj2567BFNeK8/cFQqUoUZ7H75NKSw6VMzgxUFsap6TBrgYia1ot8nd/nshHvllCpEJUOpX3aG5foqlOCwEOJ9dNQOX5ZWfTsVeZI4bTkuH4UNZNq1aPVjnr4kjPBOdnHQsotCUTo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785157703; c=relaxed/simple;
-	bh=2wnQl3dDQRldsvBPML7JtFnhEAD1rjFdBRvGQQvPI30=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=ClFCW6OX4oHdoi1DWOvC0Y5FxM0nn3qiGbsuexgIF4tGK295EEt6v1i4EvN0VRA7kSbd9KRFSiKygxVhMJVBch7y71vOz5w6I00NduNTZMp/iWOHcYreYTa0NSBK/maJfUZF0v9cyw9NhQTMS9wQOLv4u5StMtvuiNjCjNcq2sM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Bd4Mgd/f; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FD13B14C0
+	for <netfs@lists.linux.dev>; Tue, 28 Jul 2026 08:37:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.238
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785227844; cv=fail; b=Izoqa+H35/VkbFKdYo8Fz4qBS23Kxj1mAWQUmNOS8dr7n8ghDFtk5NEJmCiW25oe5iVqzDime/61/lTDye++0SvM5B+vQiScwSUYwpc/qkarbNhhAuYHSoyrkoYe46X/SwEw/onS3UNw/sxUTvJUKOryiaSyhCJariGGZXKzfqQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785227844; c=relaxed/simple;
+	bh=P09eGN6hpRCInWRo4Qh+yh2XLVvLlhRVYWeZ3veXGKc=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=rqxUmuq7fr+ODcSnA9EMnSbaOyfT6kKZWE7YcbVQBK2jhSpRwpfuO/n9Z9nMlOjr5KTwplzVDX7jgsrDzkEo/4V4I3gFypR0LVTC2voBTizHyKBKxfIEPWhdxCr5B6dqUVnVmFd2Vx5QnAVPYMMXn18Tyx19JAwLd/RILu0PnAs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=unknown smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=rgk5nBPJ; arc=fail smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=tempfail smtp.mailfrom=windriver.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Bd4Mgd/f"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785157700;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JEjFOgu+/acrb321tynAnZZWtqfZT79BXOE4gL4kLO0=;
-	b=Bd4Mgd/feuMz3Ab8qRO7nrWlpH7/EhNFJBCMESqc1x1hR8HIX8UdDymhpQJhd+3PNwFrBj
-	Y0yVv4KxWDN1eAFf4opjaWmYjtALT9GcTb1VpJCX9fSzSliS+YUO8TehZ9/T+omKS2su5+
-	XjcHnilvtMHmuUESApItFa8NQLXjkuI=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-656-XvklwJSBPeKNTHthq13cuQ-1; Mon,
- 27 Jul 2026 09:08:14 -0400
-X-MC-Unique: XvklwJSBPeKNTHthq13cuQ-1
-X-Mimecast-MFC-AGG-ID: XvklwJSBPeKNTHthq13cuQ_1785157693
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ADB1E1801A0E;
-	Mon, 27 Jul 2026 13:08:12 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.44.33.159])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E39EA30010C8;
-	Mon, 27 Jul 2026 13:08:08 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>
-Cc: David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Christoph Hellwig <hch@infradead.org>,
-	netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+0da43efa72f88bd3a8af@syzkaller.appspotmail.com,
-	Yun Zhou <yun.zhou@windriver.com>,
-	Matthew Wilcox <willy@infradead.org>
-Subject: [PATCH 4/4] netfs: Fix folio_queue ENOMEM in writeback by adding a mempool
-Date: Mon, 27 Jul 2026 14:07:15 +0100
-Message-ID: <20260727130716.1099906-5-dhowells@redhat.com>
-In-Reply-To: <20260727130716.1099906-1-dhowells@redhat.com>
+	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="rgk5nBPJ"
+Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66S82Wr02760522;
+	Tue, 28 Jul 2026 01:36:45 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
+	 h=cc:content-transfer-encoding:content-type:date:from
+	:in-reply-to:message-id:mime-version:references:subject:to; s=
+	PPS06212021; bh=P8i3gXXsaDsoG68/7mX4pXpTw2hD+PLUJspIKegi508=; b=
+	rgk5nBPJWGQZ0ECWIreVMF2RCBwu5g+bvqXBbDYAlgWlah9y1R683hVdPEnnttx5
+	dPaEE2aurcVQG8gdXGmNh6veNYESS9Qxd4TVr+gmr3kCVcRR9R7Z5I0bwJQKSQiM
+	HeQk9gvhbp5TsFJEEi4WMvDrIY+sjdBum+XtT58nn1onpoKJ7F8U/wdACMGemstb
+	QWGD2t7Ps1/O+SauthVLkqbWtMd5SvzMT9xOhlRC/LQJ7TzULnjq3s5uYzcJb7bA
+	krJ4YNrIHVk8efPFdl1xQkkAhVJT0HE2q3kEUpi+wjlCwBKrjE3agEYDrjt+XUzW
+	F1lf0kEA9y5tqK+ymSoRfg==
+Received: from ch5pr02cu005.outbound.protection.outlook.com (mail-northcentralusazon11012037.outbound.protection.outlook.com [40.107.200.37])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4fmre03mwb-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 28 Jul 2026 01:36:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yQqsLObNsLupTBiIpbP072Sh1n4an8NwHyzkRY9MAG6IPZGKqLv31N2oy50sSJcoq/F/BxkTyKUZ4yGAyOxA+ZMr18xqA6rHBeeUxwKWsgyYZO+GiJ9hkUiRh01XhM0kgLGtxVoztsPIkSPL2QY8DCsrudz7/xcFZeRDC3NeMUKGDWtkbuFZS5tkzUadrvDwj80nA96YbqB+plixglO3lmQ/wKNe/3aXkADWDLQ3UBmRTN07bvSbaOyIrP6Cq2UxcK3qVPYeHMzd1kZw5r1vY0JH+PQBHLvYVc+mpY/rEFwYCNmLWNVWYTMvyS4AO5DUxpWrCy2kiuR6ckmgbSiFAQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=P8i3gXXsaDsoG68/7mX4pXpTw2hD+PLUJspIKegi508=;
+ b=jSuLNCrV34UrF8XIcq6MMWr5ZWY3T/oKreb5CeV4yzdb93xIPuIExBFgKhLTHqKo8QDwUAHIRd1fuyrm/WtJaePs7gmeYhdV6e6ov5Zbhcg+w19enST1fr707pyIXaUMYCCowXYvewqFw7Z9r2BC37byM0fq+5VsihxhA632tbya0tTOEcKkx7zFcge9zHZMEdv8pdKI0Fhd/hgszbqjFyEG/SckDfSlBRtrfKOd0X0hYb87sRUpOLq5norXltx2w1QabZV10FRjdM3IsQQQCo143T5tXpxZXXQsznj00HV66FBnws+sOYDddTnHwUWt9nU2QEu6j/QKcPtt4/Y9XQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
+Received: from CH0PR11MB5332.namprd11.prod.outlook.com (2603:10b6:610:bf::17)
+ by SA1PR11MB8351.namprd11.prod.outlook.com (2603:10b6:806:384::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Tue, 28 Jul
+ 2026 08:36:42 +0000
+Received: from CH0PR11MB5332.namprd11.prod.outlook.com
+ ([fe80::8f86:8d08:45bf:ec13]) by CH0PR11MB5332.namprd11.prod.outlook.com
+ ([fe80::8f86:8d08:45bf:ec13%6]) with mapi id 15.21.0245.012; Tue, 28 Jul 2026
+ 08:36:41 +0000
+Message-ID: <51275778-eec9-4c87-8ee6-97e4c4e6d884@windriver.com>
+Date: Tue, 28 Jul 2026 16:36:30 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/4] netfs: Fix folio_queue ENOMEM in writeback by adding
+ a mempool
+To: David Howells <dhowells@redhat.com>,
+        Christian Brauner <christian@brauner.io>
+Cc: Paulo Alcantara <pc@manguebit.org>, Christoph Hellwig
+ <hch@infradead.org>,
+        netfs@lists.linux.dev, linux-afs@lists.infradead.org,
+        linux-cifs@vger.kernel.org, ceph-devel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        syzbot+0da43efa72f88bd3a8af@syzkaller.appspotmail.com,
+        Matthew Wilcox <willy@infradead.org>
 References: <20260727130716.1099906-1-dhowells@redhat.com>
+ <20260727130716.1099906-5-dhowells@redhat.com>
+Content-Language: en-US
+From: "Zhou, Yun" <yun.zhou@windriver.com>
+In-Reply-To: <20260727130716.1099906-5-dhowells@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TP0P295CA0058.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:910:3::17) To CH0PR11MB5332.namprd11.prod.outlook.com
+ (2603:10b6:610:bf::17)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: w47kbhP4IGkzMMJQkHwO4gB2agFhpfCWEw9OMccJHEk_1785157693
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH0PR11MB5332:EE_|SA1PR11MB8351:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2c6beaee-4bc9-4b15-b8d2-08deec835938
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|23010399003|366016|1800799024|6133799003|56012099006|4143699003|11063799006|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	mTxvuxhm+H6Xdl1EGbuiQ7idSZHatqhXSH1yE1OAxB/W8cd+tB4bn7um5gyiVVvrMnist7Pdpp1JBpFN8FxjcXVQLBZj43mAavt85FKawBy0FwFuqj2vWNVOTvzlhPn3T/Sf/DGXQi/QtrIcPElzHiL9uI6DaLxkquJG/o0Hvgz6wVxNignfoyuoEvBl001XXaOYIaKsxzlL3ZTJRqZap47GZNAa7ao2/MPXTd/c2WyK9Tjjk3I8RpflCYf+ZxfkayUAmgOLs4Zjfb7YHfVhXB1hiMFYqmWU6QtLu0rGM4wxiOFsMa88EVIFsDR4jAGw73qqfYWZ0OaXCoGKeHw15wyilH4D8a64sJCifLcBdoVE+JIUZxA07GRo5bjz9yPD3zT+XnkRpuuk5xFAhtIgcC9xV+LJRVL7UHUsBJSxtSWbLMqtbJn7sqMJGWp2WJ6t1Na9LrTFsft0OQYXjzpyMzYljSxt5t/C7SQuXZtcsPWe0Ph02s/cAKhY/GlEYKFTQ2aIdv8DUdV9U57yzMAJUBmcslrXLJWZSz0ke2+O0CBC35Et/snjePc/qbLoCK/TUsQpjftzjfgRd5WRDmaAx8E7zeSeQ5QPnljeOUuO4a10Hs4Rg++3zXn/4Ybe1ANIwkaNi0a/5tDbWIp+v6y6t2hJ4aCERWw3s3RItCFA6tM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR11MB5332.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(366016)(1800799024)(6133799003)(56012099006)(4143699003)(11063799006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dWFIMlhYaTByVWtIUG10SDd2UmlEckxPZzZsN0Q2YjAwVy9kNGhaVlJlcHZL?=
+ =?utf-8?B?em9ydGphNklSOHY0OVVYeGZ4RUY4YlpBZVgvMGVzeldvTzNVa1hrN2g2SHMz?=
+ =?utf-8?B?RFJzMXVXMU4rclRQQ3k5Ukd6b2YwZSt0Vm53akk0ODZOTW9TaGtsNEIzUmVV?=
+ =?utf-8?B?dWFXMkplcW85S2ZhMXcvMk85TDN1bmZtWkp5MXZiaEcrTDNHRUhYVjZUUjhW?=
+ =?utf-8?B?UkN3UGU4N2xta05UeFl2SnRmT1dhQWFhWWwxRWJEcFdNejQ5cmtNaUxhZm5V?=
+ =?utf-8?B?RzlndXE1dGcrZ284aFFDSy8wSTRVbjNxdTNMSnZiQ0gzL0t6RlJMSEVvV3Fz?=
+ =?utf-8?B?ZnVyUHEzdVhKVXVPKzkzQ2o2Q3VVSWhKVGI3M0ptWU1aT3VlNVVHZkFMMHpQ?=
+ =?utf-8?B?T2dZcENtTGI3a3AzQmZxbkVZUGNLN1MrWU83dk5aZzFRb2NRUHhTRmhEdTRH?=
+ =?utf-8?B?Z09JUnR5M29rYUJMcDNYTkJIVHdGYS9HU0JXcG51eFJ6YmRGaDhuUXNlRzA3?=
+ =?utf-8?B?emx1cTZablROcm52dHVlMHJuaXhyTGJEWCtrbkhRQlo0dy9xcWhNVmJUMmFX?=
+ =?utf-8?B?aXhlc2pOMlZkK0dPazhVTStKU011eGZRcUZlejJkc2M2WDMvMmwydzRmRi8r?=
+ =?utf-8?B?V085OVR0R2VvWksra0FxUnoxLzkzdXdFL0I1VEw5WkpROVZUWk5sYVE5ZGth?=
+ =?utf-8?B?MlROb2N2Nnp0VGRlOWNJaFJ6Z05oRkc2MGpad1BtN3FNT0szczRVUVhXdGZD?=
+ =?utf-8?B?NW9yWi96UE9TaklKQi9ZM0dxQU1aWGJiamZHMENwVi9razMxL3VLTVhWc0FY?=
+ =?utf-8?B?ZEwzUHNPK0dKcEdUNEdxcDVrTE9wNHFqd05aVlcxcitoZWlmNUZIN0g0a3dv?=
+ =?utf-8?B?L3lWaUNBRFl2ck9INWZqdjdqcmNFcW1TeWlJTEljQW16dS92S2pUVGgrOXox?=
+ =?utf-8?B?VUhmRFRKTTZBZ0RkRnNNMzlkR1IwR09QbWpxbFd3VDRqb0R0aWdWb2h2R2VE?=
+ =?utf-8?B?TE0yV09HQ1dUcVpmSzVTYldVNm4xS0hPS25qejBrSGRrWThWU0hJQW93SWVo?=
+ =?utf-8?B?SFh4TGpWdUZYSStTRVBqTklKQzM1bkpNWHNLTUVqbXoyVlRFRldDRTJxaFRC?=
+ =?utf-8?B?cGVuejJsMzNMY2duMDBLTE90Q25oK1JueDBrOS9remRqbFlycEhUeTM4c0k2?=
+ =?utf-8?B?L2REMmtNNUFCNHd5Y3l5MW1rZ0E2NWdWVXhGbks1dCt5d1I5Zk9xVzZmNFdo?=
+ =?utf-8?B?WDhFNTVMWTF4VzZNZk16WFlRSjU5eUc5MCtBYkZyUnJ3dFlPZm0vK0l3UjQw?=
+ =?utf-8?B?Rkg2Z2dYcDljYUZVMFA3cWtObTZCZkVHVmFUeDZVRVpVUnZYOGRLSUg2SXZD?=
+ =?utf-8?B?Slo2Q3Btc2hqYjZDR09RZitaRVhnSWloVWVPaHpEcVMrRlBVUitZVXRzUzZ1?=
+ =?utf-8?B?dHVtZzBSM1V3RWpDaFlCeUFCSWxFcHcvRkNsQWJmMXRRb2pUai9HRGg0eUli?=
+ =?utf-8?B?V0t0SDlFUDFEa0pKb3FEN1pSSHpwWWRnQnExd2p0WjR5bnZjTU1LS05Rckww?=
+ =?utf-8?B?cW0wTDJOMlljWkl5aHhHUVYyK25kZDgxK1RlWTBwSjRzVjI2MnFteWs0aGhI?=
+ =?utf-8?B?b21ZejlJNU5QNVMxVVVrTi9sMTVQOUs5RC9DUUZDaEhzdTdEcERLY1oxRzBi?=
+ =?utf-8?B?TGdzaVdhSmE4emVPaTFuRnVSN3FtTHBHdEVXUHBockNBUExQcndsbGNoN3Nn?=
+ =?utf-8?B?THVnbWdQc0NDWjRZdXB4b1BPTk1Ubk56d3VQdmhORWxOMkowTHVXODJhMW9Z?=
+ =?utf-8?B?ZlFueUJUL2phaUkxZFhJbFF1cEYwY2xwT3ovellTaDI5am90THlxaysxTUVq?=
+ =?utf-8?B?OGRQVnFkZGZkb1Z5aGJ3Ym1vcVREaEg0d3dYZkVXZkt2K09KcitQWGlDNkhy?=
+ =?utf-8?B?d2FsdWgwWHJRMWUyVGZsaFh6R281NFVLQmZrRVl5bzRacisvb2xVa0s3bExI?=
+ =?utf-8?B?QXBsMUppdmtSOWFHNkJBQkVQOGJoSTIwTStYMWtYdXdNZWpoeTZ3MytWOFdS?=
+ =?utf-8?B?bUNsdmc5bm92WEtib25VTkxiZktHVi9vcXZZcHErSHlsTzBJRlZvVzNteDZE?=
+ =?utf-8?B?dEQ2dS9td29QSkh3RmQ0TUxDZGdxU0tMQ01zT2swRWQ3V2YyWU9xaHZGekNI?=
+ =?utf-8?B?WlhDRVVqam82MDRDeUgrWExzMStNYk43M0FqTWZEQ0ljTG9OR3Z4Q2NtNU1u?=
+ =?utf-8?B?TUlsV294WlhJNHNZcmFZNFowbUplUm4yWWptNXpTS0xwL05uR0MrLzQralFZ?=
+ =?utf-8?B?WW5ibFZXNHRjU0M0ejhrRmo2R3BFSDNIdkhMOWxxakdrSWU2dUZqUT09?=
+X-Exchange-RoutingPolicyChecked:
+	kM2cvGk4dPZUMJ8002TpVEjykphyUBH/zXx2rrlQRRdJ7PSQBAoLV5KwrxHaRw1dvyWZjpC+WbhQ15Vnzs4HmoaJdMP/5dFp0YchSCnWcomStynYUmXi9wS0TeM809Ju05cgzAMMDluwn7JcDmlUO02qHpjP0zN1sbTYMcHa9fHYpApoBANfeKroDf92O2w1TucZYIyGxUIxHH7btj52NlUe4KORtpYXZKN1HTuS19w21+4zIIA8NCQ3b1wgGN4P6U/uV35Kvpa0lBqWgtvF5CYnjgfTf6Me7VoV1G0GaP9Yyq+/d3qHOOTd65J9PtUOcXpqlxmgiwv78YFw/wXYYQ==
+X-OriginatorOrg: windriver.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2c6beaee-4bc9-4b15-b8d2-08deec835938
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5332.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 08:36:41.9002
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: U/mHizSMvVb3qLG7ld3LfNZpe1w40q2WDbkkqfjmEc9OYVFblsKnbjpO4ROdvq+zvU48aqMHc9zD3n0U6YWESQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8351
+X-Proofpoint-GUID: piuJbqgpemVdcx0AcSIevkbnlpd7C9ve
+X-Authority-Analysis: v=2.4 cv=E6z9Y6dl c=1 sm=1 tr=0 ts=6a686a1c cx=c_pps
+ a=TuEuCTxUJaX1tclN0RLokw==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=bi6dqmuHe4P4UrxVR6um:22 a=HK-ge7EqtdluswH-FwHe:22
+ a=dOTxMrXMixf5RNlDy38A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI4MDA3MyBTYWx0ZWRfX2SdwKOr9CcEM
+ 0hevdBGJjbCLCqxqacBEPIhdiS7RQA1utPSM1re7XvNNzjjEXrggsaKzIfMqUa50YvHrOOKwK2p
+ IX4tIi8RQJWmshAmLoVGiQwF7MrJWVPx/7/IBx2bbwjS8W60UeGB
+X-Proofpoint-ORIG-GUID: piuJbqgpemVdcx0AcSIevkbnlpd7C9ve
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI4MDA3MyBTYWx0ZWRfX21WgLOxD8g1p
+ h3xMuj3OajnyUqFW9fcdgX7WpYRetCFqAz2TxYNeB46voFcNJAIuZiq5Vua5YlEZxhK56QgLJrE
+ gkQ7MMqsiklp1HOOilh9eNw14rZ8z3z7uR+BXFWdTa7goFrg0rovz3ImkkSij+FSZX2aD2V+tN/
+ ZuuKiy9NAvoGqflhxgwdP3ofgZDZgnhQx3fr17vygM6ZAh8GG2CkFiuEEsJIGhvumtVcCTDeGH2
+ VaqRbAQ0BkB+TqWdK1B9Mo9Tf/55LspFY0wkIh2Gg+1SV2TN0xzWtEVvk6uEda2xWxPaA12nsBz
+ fR0oBQkK/vfurh+RvsE3b15qoJvnXPhMj7VoP0xRaYS1+bJK4d7utYHCB32uDJAVI0a2WBEoXqV
+ cnho34U1/biqIxk74AvCK4lZZSycAmnZmo4kGmbCuzPAt6dCLYltc2Q84ncTY0PolgJhqUI2lcV
+ RZWNRE4XcsrQ7k8TPHQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-28_02,2026-07-27_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 lowpriorityscore=0 bulkscore=0 adultscore=0 clxscore=1011
+ priorityscore=1501 malwarescore=0 impostorscore=0 spamscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607280073
 
-Fix the handling of folio_queue allocation failure in writeback by adding a
-mempool and passing in gfp_t flags to the rolling buffer functions that
-allocate memory, using the mempool if gfp != GFP_KERNEL.
+On 7/27/2026 9:07 PM, David Howells wrote:
+> Fix the handling of folio_queue allocation failure in writeback by adding a
+> mempool and passing in gfp_t flags to the rolling buffer functions that
+> allocate memory, using the mempool if gfp != GFP_KERNEL.
+> 
+> This is then extended upwards and the gfp to be used for a request is stored
+> in the netfs_io_request struct and is then used for both requests and
+> subrequests, eliminating the sleeping loops there.
+> 
 
-This is then extended upwards and the gfp to be used for a request is stored
-in the netfs_io_request struct and is then used for both requests and
-subrequests, eliminating the sleeping loops there.
+Have you considered splitting this into multiple patches based on 
+different functionalities?
 
-The failure caused:
+> @@ -200,12 +205,14 @@ struct netfs_io_subrequest *netfs_alloc_subrequest(struct netfs_io_request *rreq
+>          mempool_t *mempool = rreq->netfs_ops->subrequest_pool ?: &netfs_subrequest_pool;
+>          struct kmem_cache *cache = mempool->pool_data;
+> 
+> -       for (;;) {
+> -               subreq = mempool_alloc(rreq->netfs_ops->subrequest_pool ?: &netfs_subrequest_pool,
+> -                                      GFP_KERNEL);
+> -               if (subreq)
+> -                       break;
+> -               msleep(10);
+> +       if (rreq->gfp == GFP_KERNEL) {
 
-    folio != NULL
-    WARNING: fs/netfs/write_issue.c:603 at netfs_writepages+0x883/0xa10 fs/netfs/write_issue.c:603, CPU#3: syz.0.17/5919
+Direct equality checks are not reliable; using !(rreq->gfp & GFP_NOFS) 
+for the check is more robust.
 
-Fixes: cd0277ed0c18 ("netfs: Use new folio_queue data type and iterator instead of xarray iter")
-Reported-by: syzbot+0da43efa72f88bd3a8af@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0da43efa72f88bd3a8af
-Signed-off-by: David Howells <dhowells@redhat.com>
-Tested-by: syzbot+0da43efa72f88bd3a8af@syzkaller.appspotmail.com
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: Yun Zhou <yun.zhou@windriver.com>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: Christoph Hellwig <hch@infradead.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
----
- fs/netfs/buffered_read.c       |  6 +++---
- fs/netfs/internal.h            |  1 +
- fs/netfs/main.c                |  7 +++++++
- fs/netfs/objects.c             | 31 +++++++++++++++++++------------
- fs/netfs/read_pgpriv2.c        |  2 +-
- fs/netfs/rolling_buffer.c      | 21 ++++++++++++---------
- fs/netfs/write_issue.c         | 10 +++++-----
- include/linux/netfs.h          |  1 +
- include/linux/rolling_buffer.h |  6 +++---
- 9 files changed, 52 insertions(+), 33 deletions(-)
+> +               subreq = mempool->alloc(rreq->gfp, mempool->pool_data);
+> +               if (!subreq)
+> +                       return ERR_PTR(-ENOMEM);
 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index 3d86414ee40f..7fdfa4f27e34 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -361,7 +361,7 @@ void netfs_readahead(struct readahead_control *ractl)
- 	netfs_rreq_expand(rreq, ractl);
- 
- 	rreq->submitted = rreq->start;
--	if (rolling_buffer_init(&rreq->buffer, rreq->debug_id, ITER_DEST) < 0)
-+	if (rolling_buffer_init(&rreq->buffer, rreq->debug_id, ITER_DEST, rreq->gfp) < 0)
- 		goto cleanup_free;
- 	netfs_read_to_pagecache(rreq, ractl);
- 
-@@ -380,10 +380,10 @@ static int netfs_create_singular_buffer(struct netfs_io_request *rreq, struct fo
- {
- 	ssize_t added;
- 
--	if (rolling_buffer_init(&rreq->buffer, rreq->debug_id, ITER_DEST) < 0)
-+	if (rolling_buffer_init(&rreq->buffer, rreq->debug_id, ITER_DEST, rreq->gfp) < 0)
- 		return -ENOMEM;
- 
--	added = rolling_buffer_append(&rreq->buffer, folio, rollbuf_flags);
-+	added = rolling_buffer_append(&rreq->buffer, folio, rollbuf_flags, rreq->gfp);
- 	if (added < 0)
- 		return added;
- 	rreq->submitted = rreq->start + added;
-diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
-index d889caa401dc..420ee7b26580 100644
---- a/fs/netfs/internal.h
-+++ b/fs/netfs/internal.h
-@@ -43,6 +43,7 @@ extern struct list_head netfs_io_requests;
- extern spinlock_t netfs_proc_lock;
- extern mempool_t netfs_request_pool;
- extern mempool_t netfs_subrequest_pool;
-+extern mempool_t netfs_folioq_pool;
- 
- #ifdef CONFIG_PROC_FS
- static inline void netfs_proc_add_rreq(struct netfs_io_request *rreq)
-diff --git a/fs/netfs/main.c b/fs/netfs/main.c
-index 73da6c9f5777..927badf3989d 100644
---- a/fs/netfs/main.c
-+++ b/fs/netfs/main.c
-@@ -28,6 +28,7 @@ static struct kmem_cache *netfs_request_slab;
- static struct kmem_cache *netfs_subrequest_slab;
- mempool_t netfs_request_pool;
- mempool_t netfs_subrequest_pool;
-+mempool_t netfs_folioq_pool;
- 
- #ifdef CONFIG_PROC_FS
- LIST_HEAD(netfs_io_requests);
-@@ -108,6 +109,9 @@ static int __init netfs_init(void)
- {
- 	int ret = -ENOMEM;
- 
-+	if (mempool_init_kmalloc_pool(&netfs_folioq_pool, 100, sizeof(struct folio_queue)) < 0)
-+		goto error_folioq_pool;
-+
- 	netfs_request_slab = kmem_cache_create("netfs_request",
- 					       sizeof(struct netfs_io_request), 0,
- 					       SLAB_HWCACHE_ALIGN | SLAB_ACCOUNT,
-@@ -160,6 +164,8 @@ static int __init netfs_init(void)
- error_reqpool:
- 	kmem_cache_destroy(netfs_request_slab);
- error_req:
-+	mempool_exit(&netfs_folioq_pool);
-+error_folioq_pool:
- 	return ret;
- }
- fs_initcall(netfs_init);
-@@ -172,5 +178,6 @@ static void __exit netfs_exit(void)
- 	kmem_cache_destroy(netfs_subrequest_slab);
- 	mempool_exit(&netfs_request_pool);
- 	kmem_cache_destroy(netfs_request_slab);
-+	mempool_exit(&netfs_folioq_pool);
- }
- module_exit(netfs_exit);
-diff --git a/fs/netfs/objects.c b/fs/netfs/objects.c
-index b8c4918d3dcd..29d8eab06dec 100644
---- a/fs/netfs/objects.c
-+++ b/fs/netfs/objects.c
-@@ -7,7 +7,6 @@
- 
- #include <linux/slab.h>
- #include <linux/mempool.h>
--#include <linux/delay.h>
- #include "internal.h"
- 
- static void netfs_free_request(struct work_struct *work);
-@@ -26,17 +25,23 @@ struct netfs_io_request *netfs_alloc_request(struct address_space *mapping,
- 	struct netfs_io_request *rreq;
- 	mempool_t *mempool = ctx->ops->request_pool ?: &netfs_request_pool;
- 	struct kmem_cache *cache = mempool->pool_data;
-+	gfp_t gfp = GFP_KERNEL;
- 	int ret;
- 
--	for (;;) {
--		rreq = mempool_alloc(mempool, GFP_KERNEL);
--		if (rreq)
--			break;
--		msleep(10);
-+	/* Writeback is part of memory reclaim and must not fail due to ENOMEM. */
-+	if (origin == NETFS_WRITEBACK || origin == NETFS_WRITEBACK_SINGLE) {
-+		gfp = GFP_NOFS; /* Allows use of mempools. */
-+
-+		rreq = mempool_alloc(mempool, gfp);
-+	} else {
-+		rreq = mempool->alloc(gfp, mempool->pool_data);
-+		if (!rreq)
-+			return ERR_PTR(-ENOMEM);
- 	}
- 
- 	memset(rreq, 0, kmem_cache_size(cache));
- 	INIT_WORK(&rreq->cleanup_work, netfs_free_request);
-+	rreq->gfp	= gfp;
- 	rreq->start	= start;
- 	rreq->len	= len;
- 	rreq->origin	= origin;
-@@ -200,12 +205,14 @@ struct netfs_io_subrequest *netfs_alloc_subrequest(struct netfs_io_request *rreq
- 	mempool_t *mempool = rreq->netfs_ops->subrequest_pool ?: &netfs_subrequest_pool;
- 	struct kmem_cache *cache = mempool->pool_data;
- 
--	for (;;) {
--		subreq = mempool_alloc(rreq->netfs_ops->subrequest_pool ?: &netfs_subrequest_pool,
--				       GFP_KERNEL);
--		if (subreq)
--			break;
--		msleep(10);
-+	if (rreq->gfp == GFP_KERNEL) {
-+		subreq = mempool->alloc(rreq->gfp, mempool->pool_data);
-+		if (!subreq)
-+			return ERR_PTR(-ENOMEM);
-+	} else {
-+		subreq = mempool_alloc(mempool, rreq->gfp);
-+		if (!subreq)
-+			return NULL;
- 	}
- 
- 	memset(subreq, 0, kmem_cache_size(cache));
-diff --git a/fs/netfs/read_pgpriv2.c b/fs/netfs/read_pgpriv2.c
-index 7eacc58abadb..c31190993b76 100644
---- a/fs/netfs/read_pgpriv2.c
-+++ b/fs/netfs/read_pgpriv2.c
-@@ -53,7 +53,7 @@ static void netfs_pgpriv2_copy_folio(struct netfs_io_request *creq, struct folio
- 	trace_netfs_folio(folio, netfs_folio_trace_store_copy);
- 
- 	/* Attach the folio to the rolling buffer. */
--	if (rolling_buffer_append(&creq->buffer, folio, 0) < 0) {
-+	if (rolling_buffer_append(&creq->buffer, folio, 0, creq->gfp) < 0) {
- 		folio_end_private_2(folio);
- 		clear_bit(NETFS_RREQ_FOLIO_COPY_TO_CACHE, &creq->flags);
- 		return;
-diff --git a/fs/netfs/rolling_buffer.c b/fs/netfs/rolling_buffer.c
-index a17fbf9853a4..c7f107764bda 100644
---- a/fs/netfs/rolling_buffer.c
-+++ b/fs/netfs/rolling_buffer.c
-@@ -27,7 +27,10 @@ struct folio_queue *netfs_folioq_alloc(unsigned int rreq_id, gfp_t gfp,
- {
- 	struct folio_queue *fq;
- 
--	fq = kmalloc_obj(*fq, gfp);
-+	if (gfp == GFP_KERNEL)
-+		fq = netfs_folioq_pool.alloc(gfp, netfs_folioq_pool.pool_data);
-+	else
-+		fq = mempool_alloc(&netfs_folioq_pool, gfp);
- 	if (fq) {
- 		netfs_stat(&netfs_n_folioq);
- 		folioq_init(fq, rreq_id);
-@@ -50,7 +53,7 @@ void netfs_folioq_free(struct folio_queue *folioq,
- {
- 	trace_netfs_folioq(folioq, trace);
- 	netfs_stat_d(&netfs_n_folioq);
--	kfree(folioq);
-+	mempool_free(folioq, &netfs_folioq_pool);
- }
- EXPORT_SYMBOL(netfs_folioq_free);
- 
-@@ -60,11 +63,11 @@ EXPORT_SYMBOL(netfs_folioq_free);
-  * consumer.
-  */
- int rolling_buffer_init(struct rolling_buffer *roll, unsigned int rreq_id,
--			unsigned int direction)
-+			unsigned int direction, gfp_t gfp)
- {
- 	struct folio_queue *fq;
- 
--	fq = netfs_folioq_alloc(rreq_id, GFP_NOFS, netfs_trace_folioq_rollbuf_init);
-+	fq = netfs_folioq_alloc(rreq_id, gfp, netfs_trace_folioq_rollbuf_init);
- 	if (!fq)
- 		return -ENOMEM;
- 
-@@ -77,14 +80,14 @@ int rolling_buffer_init(struct rolling_buffer *roll, unsigned int rreq_id,
- /*
-  * Add another folio_queue to a rolling buffer if there's no space left.
-  */
--int rolling_buffer_make_space(struct rolling_buffer *roll)
-+int rolling_buffer_make_space(struct rolling_buffer *roll, gfp_t gfp)
- {
- 	struct folio_queue *fq, *head = roll->head;
- 
- 	if (!folioq_full(head))
- 		return 0;
- 
--	fq = netfs_folioq_alloc(head->rreq_id, GFP_NOFS, netfs_trace_folioq_make_space);
-+	fq = netfs_folioq_alloc(head->rreq_id, gfp, netfs_trace_folioq_make_space);
- 	if (!fq)
- 		return -ENOMEM;
- 	fq->prev = head;
-@@ -122,7 +125,7 @@ ssize_t rolling_buffer_load_from_ra(struct rolling_buffer *roll,
- 	int nr, ix, to;
- 	ssize_t size = 0;
- 
--	if (rolling_buffer_make_space(roll) < 0)
-+	if (rolling_buffer_make_space(roll, GFP_KERNEL) < 0)
- 		return -ENOMEM;
- 
- 	fq = roll->head;
-@@ -153,12 +156,12 @@ ssize_t rolling_buffer_load_from_ra(struct rolling_buffer *roll,
-  * Append a folio to the rolling buffer.
-  */
- ssize_t rolling_buffer_append(struct rolling_buffer *roll, struct folio *folio,
--			      unsigned int flags)
-+			      unsigned int flags, gfp_t gfp)
- {
- 	ssize_t size = folio_size(folio);
- 	int slot;
- 
--	if (rolling_buffer_make_space(roll) < 0)
-+	if (rolling_buffer_make_space(roll, gfp) < 0)
- 		return -ENOMEM;
- 
- 	slot = folioq_append(roll->head, folio);
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index 14efe4cb9393..2d9cfcd43658 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -108,7 +108,7 @@ struct netfs_io_request *netfs_create_write_req(struct address_space *mapping,
- 	ictx = netfs_inode(wreq->inode);
- 	if (is_cacheable)
- 		fscache_begin_write_operation(&wreq->cache_resources, netfs_i_cookie(ictx));
--	if (rolling_buffer_init(&wreq->buffer, wreq->debug_id, ITER_SOURCE) < 0)
-+	if (rolling_buffer_init(&wreq->buffer, wreq->debug_id, ITER_SOURCE, wreq->gfp) < 0)
- 		goto nomem;
- 
- 	wreq->cleaned_to = wreq->start;
-@@ -167,7 +167,7 @@ void netfs_prepare_write(struct netfs_io_request *wreq,
- 	 */
- 	if (iov_iter_is_folioq(wreq_iter) &&
- 	    wreq_iter->folioq_slot >= folioq_nr_slots(wreq_iter->folioq))
--		rolling_buffer_make_space(&wreq->buffer);
-+		rolling_buffer_make_space(&wreq->buffer, wreq->gfp);
- 
- 	subreq = netfs_alloc_subrequest(wreq);
- 	subreq->source		= stream->source;
-@@ -334,7 +334,7 @@ static int netfs_write_folio(struct netfs_io_request *wreq,
- 
- 	_enter("");
- 
--	if (rolling_buffer_make_space(&wreq->buffer) < 0)
-+	if (rolling_buffer_make_space(&wreq->buffer, wreq->gfp) < 0)
- 		return -ENOMEM;
- 
- 	/* netfs_perform_write() may shift i_size around the page or from out
-@@ -436,7 +436,7 @@ static int netfs_write_folio(struct netfs_io_request *wreq,
- 	}
- 
- 	/* Attach the folio to the rolling buffer. */
--	rolling_buffer_append(&wreq->buffer, folio, 0);
-+	rolling_buffer_append(&wreq->buffer, folio, 0, wreq->gfp);
- 
- 	/* Move the submission point forward to allow for write-streaming data
- 	 * not starting at the front of the page.  We don't do write-streaming
-@@ -749,7 +749,7 @@ static int netfs_write_folio_single(struct netfs_io_request *wreq,
- 
- 	/* Attach the folio to the rolling buffer. */
- 	folio_get(folio);
--	ret = rolling_buffer_append(&wreq->buffer, folio, NETFS_ROLLBUF_PUT_MARK);
-+	ret = rolling_buffer_append(&wreq->buffer, folio, NETFS_ROLLBUF_PUT_MARK, wreq->gfp);
- 	if (ret < 0) {
- 		folio_put(folio);
- 		return ret;
-diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-index 1bc120d61c5b..d0b62d53eea9 100644
---- a/include/linux/netfs.h
-+++ b/include/linux/netfs.h
-@@ -255,6 +255,7 @@ struct netfs_io_request {
- 	unsigned long long	cleaned_to;	/* Position we've cleaned folios to */
- 	unsigned long long	abandon_to;	/* Position to abandon folios to */
- 	const struct folio	*no_unlock_folio; /* Don't unlock this folio after read */
-+	gfp_t			gfp;		/* GFP flags to use */
- 	unsigned int		direct_bv_count; /* Number of elements in direct_bv[] */
- 	unsigned int		debug_id;
- 	unsigned int		rsize;		/* Maximum read size (0 for none) */
-diff --git a/include/linux/rolling_buffer.h b/include/linux/rolling_buffer.h
-index ac15b1ffdd83..9e5dad29669c 100644
---- a/include/linux/rolling_buffer.h
-+++ b/include/linux/rolling_buffer.h
-@@ -43,13 +43,13 @@ struct rolling_buffer_snapshot {
- #define ROLLBUF_MARK_2	BIT(1)
- 
- int rolling_buffer_init(struct rolling_buffer *roll, unsigned int rreq_id,
--			unsigned int direction);
--int rolling_buffer_make_space(struct rolling_buffer *roll);
-+			unsigned int direction, gfp_t gfp);
-+int rolling_buffer_make_space(struct rolling_buffer *roll, gfp_t gfp);
- ssize_t rolling_buffer_load_from_ra(struct rolling_buffer *roll,
- 				    struct readahead_control *ractl,
- 				    struct folio_batch *put_batch);
- ssize_t rolling_buffer_append(struct rolling_buffer *roll, struct folio *folio,
--			      unsigned int flags);
-+			      unsigned int flags, gfp_t gfp);
- struct folio_queue *rolling_buffer_delete_spent(struct rolling_buffer *roll);
- void rolling_buffer_clear(struct rolling_buffer *roll);
- 
+Since some callers check for success by testing !NULL, we cannot return 
+ENOMEM.
 
+221         subreq = netfs_alloc_subrequest(rreq);
+222         if (!subreq) {
+223             ret = -ENOMEM;
+224             break;
+
+> +       } else {
+> +               subreq = mempool_alloc(mempool, rreq->gfp);
+> +               if (!subreq)
+> +                       return NULL;
+
+Redundant check. If it is added to mirror the GFP_KERNEL path above, 
+returning the same error code would be better for the caller to handle. 
+Or perhaps this is an intentional design?
