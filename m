@@ -1,118 +1,144 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1184A3FAE02
-	for <netfs@lists.linux.dev>; Sat,  8 Aug 2026 12:35:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05ADA3C2775;
+	Mon, 10 Aug 2026 13:12:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786192563; cv=none; b=W7KaIoM/x3SHl6w3/NJ8p99lZdJnPy2PiKMqLMtOa6mOadbQVt91/OeWNVYIrCwLNXLkSOSWLWSkx40exw8Ozk9814VwHTNUu4WfU1lPDgS05w3lns8MY3QQkOkdrx/hRg3x/5ucCRUPNO5bcJzkiMYYnlXNnxiQIj6/XFz34Gc=
+	t=1786367555; cv=none; b=TBCiwlaWkdiE5NDckuag8ZSXj/84oPiOUTZ2jnwI6u0SYjf1ZWvdbQDiwqs2lsKAnkIJsuXm5/fdf8pXZcdpTPd6ijaZya5vkz5kk22BCnKtBcS3JRr3L4qucFeB+/WcSHKu8Yqdo7g4i3fyLgwRfPKwsGNxmwtWNIiSZfFzDMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786192563; c=relaxed/simple;
-	bh=vSaaDCCuVmF2ar8FmCnssqQGcR+EygdT9BnSZy6oW+k=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=A/9mwapzgsdcrE9IF0Usam1adeA3dJNQOw7Bv0ygjdzzCr/cklv3RPluNOYgJZKLxeK4j++I4Jj57TFG3eO2oZG0Xq449H/U31rOCkfMfvJaK2+U51/mSwx/+pdsTJ5QYcNnze/vO7/RCi8LW+mxcqgR0Yx7FC6ihPQKkn+TS8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VoPcbveh; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786367555; c=relaxed/simple;
+	bh=H4bkzjyn5PYFF1fjCINLDBhQNmdAHkuGSmghaii28ks=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GHHTYLnCjo3LXs2p6f3xXaDdmCjgY1/cTkPZjPm7YW69lhd6STRnEga5eGkXE21cCkTtHNm64VPohS1X70g/Esi6pu9IHF1yoZZvrCGgxBnpYmezW83VU0uXoeQicVaq/GZYYH8PLJdsJKooCwWgRo152BEurVUXDUu1ktuCJiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gD7tKxwY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VoPcbveh"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-496bb7cdf51so5415915e9.2
-        for <netfs@lists.linux.dev>; Sat, 08 Aug 2026 05:35:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786192554; x=1786797354; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jRYshfP9Ina/Q+U65sHRZbbE3Lz3C2G7D9AgZHh97hk=;
-        b=VoPcbvehwIUNTEnLDlIF0mqeJiD+2lX6vWk/TMfY71saIQbTJqVkBPk7/wFDJk5zT7
-         9saGl5y8MMZKgYrSYKXHz/28prU5dDQw61WFPASLJeOmBl6Mri+K/Un6meQqShA/bVgU
-         lgwYno8O5Ko5hGRWTL2JiqLrRbKY9EKoJxG7huPExLunzyMuRshHHLcfQZBsx2dN1Ii4
-         HIcikIJjiRiiGJHkaLb52MuBTLu5bRvP9yUWly6YJz9LPt4eRsRAhiV29Zd9vcB5Z+GB
-         Akb9Gv3Y03uFfXXutMqxzCBGfNawzyIQRR5cg98o+sPC1I49And3NyxqucA9vxS/MHLm
-         Dzsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786192554; x=1786797354;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jRYshfP9Ina/Q+U65sHRZbbE3Lz3C2G7D9AgZHh97hk=;
-        b=D7l5baFj9S1bymZJww5Gi9liTY6YHmeYe07JihN4Ze03bmRY4Ro8Q3Dh+VkI3bpf0g
-         Y7TRE6s8uVsRapL+tLgqglvOln13WJjHOnPSjIS2EF3L3lizOv8Uii6RhnDh4gWeex9L
-         qlfJ2iR7Y0tGX0MESWgSlgFBwAs7LBVgAckm6k740lsCVWlBpE++vlbbmJA3tohYip5h
-         AYCPQSxbjO948EpuRTiIndgPvy3woPcnZsi1OTcz6v2ovDTxXqenjoy5dCmlJotAOGHx
-         dSoLdKHelBCJodDO5kRrj+4hjari838AHw4tvXPoJT3WT7tXkuwZQkdE3WYSWEmfpzUK
-         Sw6g==
-X-Forwarded-Encrypted: i=1; AHgh+RpkHoigXzUPH162i64N/AsC1G2ymUDY0Mhmi0QdI4FrKu5CYaSY57GhW7OxN965Euw/66Tilw==@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz8TBIAQVNnt7NWA962jvT9XKNIqvQ8BLARb+XCl+WyxFe2huNd
-	UTFzGYb5QC8Cww3rqOHJ0Iv/jJxs1az5vQGYv2u5Bw3SKSnUUMSq6buq
-X-Gm-Gg: AR+sD11mxyV0kyTuco3m+4QqIDcuEX0z7dOS7aq3DBd81zRaX2iVxFPAILv+OQOhQKv
-	MS10wG+VkZm5AwroPXz3Q4B9oDy+NsawzVvopI4aQbvbvfbXzowEFBKl4aBj1ddSZ1RR7uyjhmc
-	pT6mM4Vt9wdnR2IZU+8r4MvNyoZkNNb0AltN6LT0jxdAWdcwS8/zZPzHH7TxHJx9cJMmH5pAZm4
-	vJethXTI46jKI3QvU5QnvQwQ1UOXgxelCiQ96/0gW8b1X036dQtBCr9CeNxL9zRZSLprxqcR8Sy
-	FiwLHv7JRhqSrT2xARfyK7wJ0TE3lhvzQxkBZZ6CQJtaeDSGwSB2tz1PucJ49QIxdlrK97jqPOM
-	HfPyBbepCjMLFDdwNJDFA9ksxr99K6wpD1/gx9jLgg/p5F+5/N7kkOjCFxMGLbHFRBHMOTnWyUw
-	dEwbytGzz6bQQt26U9LmtpY/mg8N9zVYh9fKF2vLP/Kar1uqz8um4vQwAnYGmy3zDMxPzmWRoAk
-	kgNrMXrhOvgChbQVqO5epDMGmJLgrksXHCyD0COJb7eQe09Ik3pRUexKPGKBY6GpMT03SfdY+KR
-	+2XK6ikrPxVXWU+XKiKY
-X-Received: by 2002:a05:600c:3ba6:b0:499:48be:3189 with SMTP id 5b1f17b1804b1-4994e6c065fmr360149945e9.0.1786192553857;
-        Sat, 08 Aug 2026 05:35:53 -0700 (PDT)
-Received: from localhost.localdomain (dynamic-077-007-004-134.77.7.pool.telefonica.de. [77.7.4.134])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499542858b2sm257587555e9.14.2026.08.08.05.35.52
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 08 Aug 2026 05:35:52 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: David Howells <dhowells@redhat.com>
-Cc: Karl Mehltretter <kmehltretter@gmail.com>,
-	Paulo Alcantara <pc@manguebit.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gD7tKxwY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4B801F000E9;
+	Mon, 10 Aug 2026 13:12:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786367553;
+	bh=gzwFhtE0Ek2LlVIsTwETJaTv5SvMI/8Bx08qLe2Vxtc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=gD7tKxwYhcI7DHlrAioW2qhKgIAABui+x7xOWM4yNge/+pxISG8Prmuy7Nw1PWEo8
+	 h0IXKke3j8f3JhEchHd2VYAiFknegfIvqbj3fZvne9Z4HdzC/03nUZtBJ3AOBDzi81
+	 hmRrKeUHFkWBTJtgJ0EWBy5jiJS6xIgAOu56flgrDCUqxAJJ5fc0PbJZSysDPVWS2s
+	 kMoQfcWZGyQuL/xvmYbiBn3teBRTbCUUa9+nLUu3qTZQke/zsjObGWHu7PyyAjg6TY
+	 XPEotAtFQm884B2uRvPVe+xj3Qo8xDW3CUdlrdupZzS2yqdcUNZodAqzXiW3qvf52C
+	 AbGgrCKjIgvcw==
+From: Christian Brauner <brauner@kernel.org>
+To: Matthew Wilcox <willy@infradead.org>,
+	Christoph Hellwig <hch@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
+	David Howells <dhowells@redhat.com>
+Cc: Paulo Alcantara <pc@manguebit.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Leon Romanovsky <leon@kernel.org>,
+	Steve French <sfrench@samba.org>,
+	ChenXiaoSong <chenxiaosong@chenxiaosong.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Stefan Metzmacher <metze@samba.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
 	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-erofs@lists.ozlabs.org,
 	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] netfs: Fix uninitialized return value in netfs_unbuffered_write()
-Date: Sat,  8 Aug 2026 14:34:31 +0200
-Message-Id: <20260808123431.73554-1-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v8 00/25] netfs: Keep track of folios in a segmented bio_vec[] chain
+Date: Mon, 10 Aug 2026 15:12:23 +0200
+Message-ID: <20260810-luftdicht-popmusik-hypen-61dd8d9e3c06@brauner>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260804100224.2748935-1-dhowells@redhat.com>
+References: <20260804100224.2748935-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3993; i=brauner@kernel.org; h=from:subject:message-id; bh=H4bkzjyn5PYFF1fjCINLDBhQNmdAHkuGSmghaii28ks=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRVnrN4Erc35H3fhn/clms7GJ4uEZWeJhcuUrNrW+arA JGQ3SaJHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABfhYPinGptzyGzilt/72nwE E3ab2vZrKqdG7hRYYeuScWP2gbQTjAwHlysWdRuZxNts5j2tfWFGkW/arCzbN+KvBaYoVvILruU DAA==
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-If preparation of the first subrequest fails,
-netfs_unbuffered_write() exits its loop before ret is initialized. The
-empty-iterator check can do the same.
+On Tue, 04 Aug 2026 11:01:55 +0100, David Howells wrote:
+> Could you add these patches to the VFS tree for next?
+> 
+> The patches get rid of folio_queue, rolling_buffer and ITER_FOLIOQ,
+> replacing the folio queue construct used to manage buffers in netfslib with
+> one based around a segmented chain of bio_vec arrays instead.  There are
+> three main aims here:
+> 
+> [...]
 
-For synchronous writes, netfs_unbuffered_write_iter_locked() may then
-return an unrelated error instead of wreq->error. This is reachable
-through CIFS if cifs_prepare_write() fails to reopen the file or obtain
-credits.
+Applied to the vfs-7.3.netfs branch of the vfs/vfs.git tree.
+Patches in the vfs-7.3.netfs branch should appear in linux-next soon.
 
-Initialize ret to 0 so the caller returns wreq->error if no data was
-written, or the number of bytes already written otherwise.
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-Found with Clang's -Wconditional-uninitialized.
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-Fixes: a0b4c7a49137e ("netfs: Fix unbuffered/DIO writes to dispatch subrequests in strict sequence")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-fable-5
-Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
----
- fs/netfs/direct_write.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
-diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
-index c16fbad286a17..b04019097ab8d 100644
---- a/fs/netfs/direct_write.c
-+++ b/fs/netfs/direct_write.c
-@@ -95,7 +95,7 @@ static int netfs_unbuffered_write(struct netfs_io_request *wreq)
- {
- 	struct netfs_io_subrequest *subreq = NULL;
- 	struct netfs_io_stream *stream = &wreq->io_streams[0];
--	int ret;
-+	int ret = 0;
- 
- 	_enter("%llx", wreq->len);
- 
--- 
-2.53.0
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs-7.3.netfs
 
+[01/25] mm: Make readahead store folio count in readahead_control
+        https://git.kernel.org/vfs/vfs/c/bb16bd52f872
+[02/25] netfs: Bulk load the readahead-provided folios up front
+        https://git.kernel.org/vfs/vfs/c/49fe2955409b
+[03/25] Add a function to kmap one page of a multipage bio_vec
+        https://git.kernel.org/vfs/vfs/c/71947db0b6b2
+[04/25] iov_iter: Make iov_iter_get_pages*() wrap iov_iter_extract_pages()
+        https://git.kernel.org/vfs/vfs/c/fc0f8aa28cb0
+[05/25] iov_iter: Add a segmented queue of bio_vec[]
+        https://git.kernel.org/vfs/vfs/c/b7eab1a852c3
+[06/25] netfs: Add some tools for managing bvecq chains
+        https://git.kernel.org/vfs/vfs/c/a8e973126d3f
+[07/25] netfs: Make mempool available for bvecq
+        https://git.kernel.org/vfs/vfs/c/c95787e047bf
+[08/25] netfs: Add a function to extract from an iter into a bvecq
+        https://git.kernel.org/vfs/vfs/c/8854b625d977
+[09/25] afs: Use a bvecq to hold dir content rather than folioq
+        https://git.kernel.org/vfs/vfs/c/acb8eed74013
+[10/25] cifs: Use a bvecq for buffering instead of a folioq
+        https://git.kernel.org/vfs/vfs/c/b0d72aea6001
+[11/25] smbdirect: Support ITER_BVECQ in smbdirect_map_sges_from_iter()
+        https://git.kernel.org/vfs/vfs/c/27a6832d7b93
+[12/25] netfs: Remove the writethrough code
+        https://git.kernel.org/vfs/vfs/c/de4a0d855ae3
+[13/25] cachefiles,netfs: sunset ondemand mode
+        https://git.kernel.org/vfs/vfs/c/3b09163b7bed
+[14/25] cachefiles: Don't rely on backing fs storage map for most use cases
+        https://git.kernel.org/vfs/vfs/c/f3ac229c89a0
+[15/25] netfs: Add the cache object ID to netfs_read/write tracepoints
+        https://git.kernel.org/vfs/vfs/c/592472ff5a77
+[16/25] netfs: Switch to using bvecq rather than folio_queue and rolling_buffer
+        https://git.kernel.org/vfs/vfs/c/4c9ea0ae64f9
+[17/25] smbdirect: Remove support for ITER_FOLIOQ from smbdirect_map_sges_from_iter()
+        https://git.kernel.org/vfs/vfs/c/c9529300bd22
+[18/25] netfs: Remove netfs_alloc/free_folioq_buffer()
+        https://git.kernel.org/vfs/vfs/c/bc89b7f32adb
+[19/25] netfs: Remove netfs_extract_user_iter()
+        https://git.kernel.org/vfs/vfs/c/e533d0d598c4
+[20/25] iov_iter: Remove ITER_FOLIOQ
+        https://git.kernel.org/vfs/vfs/c/ca929d6a6044
+[21/25] netfs: Remove folio_queue and rolling_buffer
+        https://git.kernel.org/vfs/vfs/c/6440cb5fd08b
+[22/25] netfs: Check for too much data being read
+        https://git.kernel.org/vfs/vfs/c/353f336ead13
+[23/25] netfs: Limit the minimum trigger for progress reporting
+        https://git.kernel.org/vfs/vfs/c/0150b23b0a63
+[24/25] netfs: Combine prepare and issue ops and grab the buffers on request
+        https://git.kernel.org/vfs/vfs/c/473527604b71
+[25/25] cachefiles: Preset the state xattr when creating a new file
+        https://git.kernel.org/vfs/vfs/c/9476c221814c
