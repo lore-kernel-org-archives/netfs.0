@@ -1,118 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA0142C512;
-	Wed, 12 Aug 2026 15:10:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8873420463
+	for <netfs@lists.linux.dev>; Thu, 13 Aug 2026 13:45:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786547458; cv=none; b=LIhijpqrLTwh58xE5DNWGx7ISXJRDTfKyauoExpto4dOg+x4PqXhMdMh9WQ3MiUdhUACAyf9K8j3lIamBtBipba9pSPWqtuw+5sHF7310KWXtdQan++yg0FYKDfUthftlR+Z3ShC9IiWTjDvi5NRaR85jx82290Ople98NiNk6w=
+	t=1786628748; cv=none; b=N0ZVgAv6Tr+DUtKkO1d8nOTHCDo55R2fcNc9qGQyGj5P0e8tfLQV3cG1GigZun72Q3cD7dGDutKBqbUS/9GQiaTAQ2pzNZBcugasFGYtY4jkZi9l6UhA7pxfQ6WrdC1Zs8z36vawOCNGDBenpcUEW+QMgjvBURbo60SB8ADFm2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786547458; c=relaxed/simple;
-	bh=rKtIjDSag7GLITybbuC5btvTBEH7EgZpyhvkP2+nQLI=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=DfAKac98VlVuj5JnUxYzCBHwtJt1xd8G7HajO5aopBRrtfGfcbz+u3nxLPiTRIFBOIf6gARxfL3pV3TmkO2RktUTzPeWceIL5jjR/SUbjGacMiSWnb5DB7NU0orRotrvlFwwsGS5IBs9mb1WokcIDH6IrKsD7Oj6vPXJ6qkSqkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZEyUEHJP; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786628748; c=relaxed/simple;
+	bh=0wHkEqHRypv5tkP9LlfNdRWNsV3WKRx0iw3qb2GlJpw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=Vz9Vl+5kyJ9FBSf7keQOEzTLynEQSdYN3kL2/RjYJXso5UGaCQZHXH1A8eWpsJ3pM9BT+VObfXRkQtZm79qOqMfONwXXvVikuvFz5mVGAwwWTGgjAs1+p46TSvFUSO9Vh+oWeHPA2b/R4idBKmFQwTwjdTCUMr9lgLXT0ukhn7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DPgwqXtJ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZEyUEHJP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72D101F000E9;
-	Wed, 12 Aug 2026 15:10:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786547454;
-	bh=/ZWJRa1Kujc46wtuDW1TyqEzOM49Ci676ogxQ8t5URg=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=ZEyUEHJPAe+/dDY48z30dEzn47bZYkxIs8J6/nAnvhQXBdO9A/3yNIpJLvNBm659o
-	 pKQ+JDd/wXb8k/3N4fJya43ZaTrRCb4ifRL37JGFib2Tdu3nkivoWOA/4x95g0IAhc
-	 iXG9W0fOl9d3l+FoWRmhkiDFu12S5GmDhOGg3WQsb3jmJMbBBUZq1VO2mafeq+dNG6
-	 e6AgirlOvSUeLIGINVBLNULnh8vorfNUDVahsyinf1wUj4mW2AYw4jh7mEKIiJbNhT
-	 GVGjQZ+GnH+bZBPXdAVh2icl6+07S8agUQSmFrDqwbX3Kb4NIhv6RvdE7YlAnMIUE+
-	 RhFaTmSMRYEmw==
-Content-Type: multipart/mixed; boundary="===============8306528015998865884=="
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DPgwqXtJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1786628745;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=qxcNqxDJHo6P7G7Xe79Ps0EZY26r/2eNZf8D3pRE4FQ=;
+	b=DPgwqXtJw7to3tIglIIse+wRmHFL98o9su/SM1OAbk7GhC/LOXCyo3u25r1Mpnai8PvKUx
+	QlPcAX50rYVxGCIkLZ6LhFedqFdm5V/I2YTGDaxraV4W4lk17io6Her5vEg0dUkM/V9AFV
+	yPwdi743lC0aoS/A7O8V5edIE+0Qa/s=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-610-mswweZnAMKSRFLaag0XENw-1; Thu,
+ 13 Aug 2026 09:45:41 -0400
+X-MC-Unique: mswweZnAMKSRFLaag0XENw-1
+X-Mimecast-MFC-AGG-ID: mswweZnAMKSRFLaag0XENw_1786628740
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8B76818002C8;
+	Thu, 13 Aug 2026 13:45:39 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.44.32.44])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 90DB31977033;
+	Thu, 13 Aug 2026 13:45:36 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>
+Cc: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] netfs: Miscellaneous fixes
+Date: Thu, 13 Aug 2026 14:45:30 +0100
+Message-ID: <20260813134533.1174132-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Message-Id: <94a7b419d2b1294cf953554e3a9c45f20de6d453bbda75569fae1a4b7e28df2b@mail.kernel.org>
-In-Reply-To: <1046393.1786544127@warthog.procyon.org.uk>
-References: <1046393.1786544127@warthog.procyon.org.uk>
-Subject: Re: [PATCH] cachefiles,netfs: sunset ondemand mode
-From: bot+bpf-ci@kernel.org
-To: dhowells@redhat.com,brauner@kernel.org
-Cc: dhowells@redhat.com,xiang@kernel.org,pc@manguebit.org,netfs@lists.linux.dev,linux-erofs@lists.ozlabs.org,bpf@vger.kernel.org,linux-fsdevel@vger.kernel.org,linux-kernel@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Wed, 12 Aug 2026 15:10:53 +0000 (UTC)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-MFC-PROC-ID: W5bHjGDeqgRW0cmegT1ggRWzX79bwKCQCNQbvW73xng_1786628740
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
---===============8306528015998865884==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Christian,
 
-> commit 3d2befc6d8d7e85b20d92f4baab590a997635d81
-> Author: Gao Xiang <xiang@kernel.org>
->
-> cachefiles,netfs: sunset ondemand mode
->
-> It was an effort to enhance fscache as a kernel cache for lazy
-> pulling (at least according to previous Incremental FS discussion [1])
-> and EROFS over fscache was the in-tree user of this mode.
->
-> fscache has since evolved to be netfslib-oriented, serving network
-> filesystem inodes via the netfs library, but EROFS never acts as a
-> network filesystem and we need to cache golden filesystem images rather
-> than individual EROFS inodes.
->
-> Since EROFS over fscache is now removed, clean up netfs/fscache/
-> cachefiles upstream too.
->
-> [1] https://lore.kernel.org/r/CAOQ4uxi4dzxArY24YO=+kBCK2gGoq3Ptb8WkzCqSogPgU_R3dQ@mail.gmail.com
->
-> [dh] Fixed up comments on:
-> https://sashiko.dev/#/patchset/20260716103030.3065561-1-dhowells%40redhat.com
-> https://sashiko.dev/#/patchset/20260722130218.78958-1-dhowells%40redhat.com
+Here are a couple of miscellaneous fixes for netfslib.
 
-This isn't a bug, but would it be worth turning those two review tool
-URLs into Link: tags with lore message-ids instead, or dropping the note
-before it lands?  The rest of the message follows the usual format, so
-this block reads as leftover process metadata.
+ (1) Fix an uninitialised return value from netfs_unbuffered_write().
 
-[ ... ]
+ (2) Fix read progress reporting to avoid 64-bit tearing on a 32-bit
+     machine.  This has been modified from the previous submission as part
+     of a different series to take account of a sashiko reported issue[1].
 
-> diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
-> index b62cd3e9a18e..c93324e0f98c 100644
-> --- a/fs/cachefiles/internal.h
-> +++ b/fs/cachefiles/internal.h
+The patches can also be found here:
 
-[ ... ]
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-fixes
 
-> @@ -298,90 +250,6 @@ extern struct file *cachefiles_create_tmpfile(struct cachefiles_object *object);
->  extern bool cachefiles_commit_tmpfile(struct cachefiles_cache *cache,
->  				      struct cachefiles_object *object);
->
-> -/*
-> - * ondemand.c
-> - */
-> -#ifdef CONFIG_CACHEFILES_ONDEMAND
-> -extern ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
-> -					char __user *_buffer, size_t buflen);
-> -
-> -extern int cachefiles_ondemand_copen(struct cachefiles_cache *cache,
-> -				     char *args);
+Thanks,
+David
 
-[ ... ]
+[1] https://sashiko.dev/#/patchset/20260810144746.574036-1-dhowells%40redhat.com
 
-> -extern int cachefiles_ondemand_read(struct cachefiles_object *object,
-> -				    loff_t pos, size_t len);
+David Howells (1):
+  netfs: Fix read progress reporting
 
-[ ... ondemand section removed ... ]
+Karl Mehltretter (1):
+  netfs: Fix uninitialized return value in netfs_unbuffered_write()
 
-This isn't a bug, but now that ondemand.c is gone, io.c is the only user
-of __cachefiles_prepare_write() and __cachefiles_write().  Would it be
-worth making them static and dropping their declarations from internal.h?
+ fs/netfs/buffered_read.c     |  4 +++
+ fs/netfs/direct_write.c      |  2 +-
+ fs/netfs/internal.h          |  1 +
+ fs/netfs/objects.c           | 32 ++++++++++++--------
+ fs/netfs/read_collect.c      | 58 +++++++++++++++++++++++++++---------
+ fs/netfs/read_single.c       |  2 ++
+ include/linux/netfs.h        |  2 +-
+ include/trace/events/netfs.h | 21 +++++++++++++
+ 8 files changed, 94 insertions(+), 28 deletions(-)
 
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/31607781274
---===============8306528015998865884==--
