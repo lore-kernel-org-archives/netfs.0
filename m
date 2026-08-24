@@ -1,65 +1,106 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5585638735D
-	for <netfs@lists.linux.dev>; Mon, 24 Aug 2026 19:27:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB743815F9
+	for <netfs@lists.linux.dev>; Mon, 24 Aug 2026 19:47:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787599628; cv=none; b=e1AfNPDVYUb8gP61MVbtqIrpFLczDrkGoA7USUNikT6vkBVuweR2M0n82KUjJhiIel+R0hUGQC/2TfcKhrRjusDKeXmZa3RzGIp2eD15IJEB+Po6SS/kW2jrrb4xKO+MZRgMNW+FGomYEAAf7g5sKKl3G2Xg0Tvtm9OKPR/kSTw=
+	t=1787600871; cv=none; b=rWegS/PMLqFZCJBYq7LXpsGBdymUWh3svHT0H2WKtW35z15jFiA6HOy7j03PspTbWg1PUiIsiKWG64OBqRhCRha3j0aw7o42cX/O/984zm2Qt+q/PRVrgqAWKPR16S/DsxoqqO5zVNxoLnVnMgD4OwmrYnOk6g+owkGmqoXesMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787599628; c=relaxed/simple;
-	bh=6hZ6bgXsRUd/APqTrkyJzfEZrhzRTJE6Erb4+74BbVM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FJKPfH5Ku0f4x8V9fHzAMoyeynbBMPmcg/1MSRWX2LShkUA7HVv21BR/jQFAfgEabMN7TQsLiU5u4HoEIH+unihrcrQNuRDIxJ12P8N1o2QFemqpqOWyPKRx2slLW/4MLSW4UMtu7d9kYSfPEW31szca7d6R8JmVoWPPAD4h0Js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=efmCouGZ; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1787600871; c=relaxed/simple;
+	bh=FOanywWJLH1vJk/XnFKvHh4Z+cJY9CVeC96eTSsFN9Y=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
+	 Message-ID:Content-Type; b=dc3jRLVwbv4i/ytXORavwr2JqsSADPBtVmCTI107DXAq1cgiqQqRIBiyFe71Zmg7SG2G1xxZ1v3gTcBFlIVJWkz50zMufZB+QvHYTIjUQDp43EveIja//F9KdrscLTEWsy/wSBgMK6erfA6VZobZ9NzPlGf2FXHvfxSfzr1+PRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HYDH28Wv; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="efmCouGZ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=P7JiHPphnHdKutiOJ17fK92xzeLchKFPVvv2MdA/7R4=; b=efmCouGZ/HSKyZ/h3+EQ+qVD7b
-	q9Bp1qkatbfUegomEJm85QDk1teZ2kyPyqRtCjyJ0t4pA14Anfn5a8mcsjItATMs5KLhnD5oVIp9j
-	3UPWO5evib41/iL8IyO6um6ENlUM1ebOBJj4m2qx/3U86Q4jAwMbYClxyXUSVVmMMgGZruPuMtJJb
-	UXwmxO2NlgKDufX9RxcNSZChEY9OlCz/i+KvzFrmhrzERbcIzLkIfdPKpP5g0TxYDBOhKOyP71E0+
-	ApZETpBhLviD+n47Uw3D2jp/cIkqXiOOCMGnrh1mjBvGGYP2oGVYhTNkK5qzNfBGWJZXcIXPx7SZU
-	6jWe0Yrw==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyaJy-00000007hsy-2Mhv;
-	Mon, 24 Aug 2026 19:27:02 +0000
-Date: Mon, 24 Aug 2026 20:27:02 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Paulo Alcantara <pc@manguebit.org>, netfs@lists.linux.dev
-Subject: Re: Function to do end-writeback in bulk
-Message-ID: <aoybBhYB7Km3y0qG@casper.infradead.org>
-References: <aoxueo-kIy1Hkmc-@casper.infradead.org>
- <aoxidVrUtl3F0QUi@casper.infradead.org>
- <761202.1787584160@warthog.procyon.org.uk>
- <762789.1787586428@warthog.procyon.org.uk>
- <770270.1787598865@warthog.procyon.org.uk>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HYDH28Wv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787600869;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8qU5H5HsiL1oxbfqE/+7Bg2lwE3XezcgSQ9LHhL9wLs=;
+	b=HYDH28WvTlI4RFmfOx1s9GWsNIzeKAL/CP/1G+bO8n41RU1CxJVTwam75uIlBrpQoR9HCq
+	vm6mOJbG2+Kk9P+e41cLyF4Bs8Bhadc8l/yhXWujbJhoHzTTgC+6c6wufyHHx8yzFm1KF8
+	S22NNacPEpcIl4GK2aosngCflGd4A30=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-635-9XFVDZNVN-aHPcQHKQgWyA-1; Mon,
+ 24 Aug 2026 15:47:45 -0400
+X-MC-Unique: 9XFVDZNVN-aHPcQHKQgWyA-1
+X-Mimecast-MFC-AGG-ID: 9XFVDZNVN-aHPcQHKQgWyA_1787600862
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5D45F184B396;
+	Mon, 24 Aug 2026 19:47:40 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.32.15])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C8E871944B2A;
+	Mon, 24 Aug 2026 19:47:31 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <CA+1jF5qPZUhCevwbu7zQDEVWss6gMdoDMhqKqH3k7v=WStRtEA@mail.gmail.com>
+References: <CA+1jF5qPZUhCevwbu7zQDEVWss6gMdoDMhqKqH3k7v=WStRtEA@mail.gmail.com> <20260824144130.759997-1-dhowells@redhat.com> <20260824144130.759997-31-dhowells@redhat.com>
+To: =?us-ascii?Q?=3D=3FUTF-8=3FQ=3FAur=3DC3=3DA9lien=5FCouderc=3F=3D?= <aurelien.couderc2002@gmail.com>
+Cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.org>,
+    Christian Brauner <christian@brauner.io>,
+    Matthew Wilcox <willy@infradead.org>,
+    Christoph Hellwig <hch@infradead.org>, Jens Axboe <axboe@kernel.dk>,
+    Leon Romanovsky <leon@kernel.org>,
+    Namjae Jeon <linkinjeon@kernel.org>,
+    ChenXiaoSong <chenxiaosong@chenxiaosong.com>,
+    Marc Dionne <marc.dionne@auristor.com>,
+    Stefan Metzmacher <metze@samba.org>,
+    Eric Van Hensbergen <ericvh@kernel.org>,
+    Dominique Martinet <asmadeus@codewreck.org>,
+    Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
+    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+    Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
+    ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
+    linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: Re: READ_PLUS in NetFS? Re: [PATCH v10 30/35] netfs: Simplify read abandonment
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <770270.1787598865@warthog.procyon.org.uk>
+Date: Mon, 24 Aug 2026 20:47:30 +0100
+Message-ID: <771538.1787600850@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-MFC-PROC-ID: FJltEygwxOe1IaONpzbQH_ySEXFjuttp0-1mGd4MK2w_1787600862
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 24, 2026 at 08:14:25PM +0100, David Howells wrote:
-> Matthew Wilcox <willy@infradead.org> wrote:
-> 
-> > Jan's more of an expert on the writeback path than I am, but once we've
-> > cleared the PG_writeback flag on the folio, there's nothing preventing
-> > us from removing the folio from the pagecache, right?  So the inode could
-> > then be evicted, and then doing mapping->host would be a UAF.
-> 
-> netfs inode cleanup waits for all outstanding requests to complete, which
-> would include writeback.
+Aur=C3=A9lien Couderc <aurelien.couderc2002@gmail.com> wrote:
 
-I don't think core kernel code can depend on that behaviour from all
-filesystems that do writeback though.
+> What about READ_PLUS, i.e. sparse file reads? If you do this kind of
+> work of handling partial abandonment, can such a work also benefit
+> READ_PLUS?
+
+READ_PLUS is NFS, right?
+
+I'm not sure it would particularly help or hinder.
+
+The VFS/VM only asks to read contiguous regions and netfslib breaks that up
+into subrequests, but currently netfslib doesn't know anything about sparse
+reads.  What I'm looking at with Ceph, for example, is that Ceph knows wher=
+e
+the gaps are and will clear them before terminating the subrequest.
+
+Partial abandonment is for when some sort of fatal error occurs and we cann=
+ot
+finish the request.
+
+David
+
