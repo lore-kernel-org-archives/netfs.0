@@ -1,139 +1,102 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B0343F4B4
-	for <netfs@lists.linux.dev>; Mon, 24 Aug 2026 15:39:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787586000; cv=pass; b=QgjV14332s2zQj5stes06N0dFmkwKtZN+2x59E9gjGWZs7p3YxfcqRtLPUkVLihCDv6yiJkB/YWp1lmQsz1ZJv9XyqdOZsxEKe8HOQFn8eQoDtwdVlMuMQPTraXuNOREA/TawUDVEXAc8jNAhhhgouDFJWS/L39PiKImm9JoE7Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787586000; c=relaxed/simple;
-	bh=TKa+7Rt0HMct/L3Y9OQKcWqR+kqwOl5wJxjs0oMkUU4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OWxr0g7aPnJa7eStHAvJVJmXoX1jwIdWYC8zVH+O/xjPLVTybRaeymtiL8RpwbKGmUv2+taB8xeeW2qvqvwBymnDGy+wPh1bUPmbax9Qb+H78/rxbFkiKLeFV5S9n6NgBkLNSrITlGtTLKw4irMzpI5zSxd7ekaJwU+v7RXtPow=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EF9exY83; arc=pass smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C6A3F1AB9
+	for <netfs@lists.linux.dev>; Mon, 24 Aug 2026 15:47:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787586447; cv=none; b=j069ikvoqj8vb57sDrh/wNhboQ1+Lphs3W2YfAP8diBQ6vTL9h32Z/dlYa2zlLNR3+8ExlHTiSL+rJXgXLiud/rnDKbHYe+/As8EngS2SEAo2kqC9GmGWfk3nFM5x0r8NNwSBjjSQEbPaud/f88lxQbI243EDCCe9hlU8zG9Bgw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787586447; c=relaxed/simple;
+	bh=PZT33+ibftQlwuOaaMiHEkIF1aY2uOf1QRnWrW1klE4=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
+	 Message-ID:Content-Type; b=UZToIKGZVoLhHNe9/VqQXP3S2T2xmmWRKOtGzRL3BZzOveVWYW7ennhbnlPJBdgRKZ/T5/zrGdjVWJuP8OfwhYH1iTZ+cnYtUbXVZFzxdNnpD79r5F/a//ktEvk5S0TYIupzoosDm/Hhyh9wjyTezUYRgjhGjH+J2yy7Dx/10rM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IdSgDG4O; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EF9exY83"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6a17cb94b26so6893276a12.3
-        for <netfs@lists.linux.dev>; Mon, 24 Aug 2026 08:39:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787585997; cv=none;
-        d=google.com; s=arc-20260327;
-        b=OHYssQS3Vj33srO9eAlJSzDZci0Qop26f3reTLuckclFl7n05giOf8yPA4tUNvVUtS
-         xHW4HJppnozWPSdsxUKzxO9jt9sZ1tHg7rgMDg5F1XWOY39yii3xLkD2PFGqMfcInuLG
-         BgWYB6k9GO8WPer+jofl848alKtnZm/aWyZ6TBLNwA1S+ZXpiy33fuW/00hfupg8Dk1P
-         VwkUYTZWgMtDJCpDMOZNGTRklkSaCiumtQeNIJ5scC55YOsBqHhn9WyWj2021u2ZVzZh
-         gVKep/xTnSnNZTd/07Und7nUuS5Q5psU/86rHsvKNzbujV8jkTQZ9e0yCkaCLdr7oZS7
-         epBQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=wJCHcWH/H7HoSqeQAsfWyCv2ylIhs9AEwOmpHAgZ6Mo=;
-        fh=5cehit4jum4ie2TJPGOgBiwIRWIVMxa6JbRUsQETkUo=;
-        b=mLAfGlY3J4LffaJeOZ/EmsE8xaonyy0BQc+5YvcQImikVCCeI3KXl2jWZ2Ad6hY8AA
-         BX7TB2KO6SRPvdN1j+1MIw0X9PAX0cJJe3u5JohpLdc/7hzraqb+ZlXTV5RnO54d2lEk
-         GUoUt8fbJhdyi/LA2HPjIBWF7c8TsZJtcZ9XHs4vfTzwES+bf8ds31BcLSYGsLRhzdD2
-         JVD3KsAcvXS+/U3VGdERm4IEh0K7pVJd6N6QifPm6qmvOPLyiE9VXsjcyedQBMAwIrTL
-         ZM2xyQG77AqRZB0EL2WJnY4Edh+QLUtpmcCjSowkhAG8i2yl6dQRwJBJXE7KhNasqqU/
-         z16g==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787585997; x=1788190797; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=wJCHcWH/H7HoSqeQAsfWyCv2ylIhs9AEwOmpHAgZ6Mo=;
-        b=EF9exY83GnmnKwCFq+MyF0bTN9FWR8NixMvJc/KGu3u+fgbfvYnYhxKiDOW5vXx20v
-         6bfH0iWj3zwv0eWN3hEES4Bhs2NyBF6zdd5vpBuqFwAk9wtLpb1XN0tkA7GBFBcaBNv4
-         iWbt1+UU6nHQQuMuLNozvqW1Vb3WW4d5sKUBD+zDfeSGNkh4cZvgYG3ERDSWmu67PdFq
-         rn1byrrLSgVTjodqyxAVjhd3WcIEqrrjeTrVJeCB0E05fkBohsNnuTRaVyCUls4NOWwy
-         dMR8zmeF95RuVW/pgGplSjnZ5DfzUALk7qIk0+GO7z7UeIADWKnkF9At/zoVcjBjbVTv
-         +f6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787585997; x=1788190797;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wJCHcWH/H7HoSqeQAsfWyCv2ylIhs9AEwOmpHAgZ6Mo=;
-        b=W0w5TkWN4oBIL7OoBUL/T0nAYB58op0viMvpnG4y2FxAonr9LIckAzzJbApOV3Q97j
-         7H1TDp5WNNqsPn17hD+OZcWBiwNMkTYc9TXKOdkTs5QUDqhccWBesuZA+zT9ciTKHweR
-         3Qeg7be4W8GWRi0gYfwvYicCQIENAXJbVdKOniTuQk2Go27T/ZRWjSPqnyo68RP5jNMj
-         C+n6MyneQhlgIfPOgzjbedI27p6RJW8cYtrF2KHBPPMrP5TQSyR3/2m6MjS7Owvkg5LQ
-         +MJmK4N6ysTYHfsdn3KAFghJqUS36n2aCREvKw3gQOR66AEgPApqQvULSzZ7R3+i7Ar2
-         RZCQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rqm1galR2RGn72cjp7Ct/ZeO9J45144U5qcIEi5KHpcvVnOXYcugef5pXvSKIGxp4rV4kwOKg==@lists.linux.dev
-X-Gm-Message-State: AFuF++nG+JRJpOojrQX/n5Yx+HJOMpin4soSzM21on5e1j0vWZszDuJU
-	7gQxR1GUCBZ6+H1wOg5I1In6UdYhht8GPBfpIXrUfZpgsGI0RbV7AjOfmeeAqxC4/96vm/1reFx
-	vl2YelTKvT0mVUtPmazEXQHcHzcJy4JU=
-X-Gm-Gg: AR+sD10CWCLmZeuEZfPhmJc6EsTXObhi1ug5nmSK1jfmryWkO+ALb/PaoX6SIbXkood
-	EWNC/m6LIKNByTWNyGUoqN8QcIFwJdAA0NYxri4HrBU+W3hc1n+9LaYfRoDumK+riqkSEdlVTOg
-	DZk37cxA0JX8sPn+lkXqcbBuPUX8AEWN/RuTihS5BrmGtYnn1mIUl8fvUvvsivor7KHH0PXDGd2
-	7mNPd9vUNHyf+c1UYybSFWfL7GJHS9LAETkTtwbMmq8Ps3uQPvgfBzq3qe+vMPBLCSyoCpwptsL
-	jU+Te2KfWA0J4xrxilj8cqDUaVcxW46v0isaF8iM++lM6YJpyl0p7O9jz54LHx5N3bf7Lsd4Vpi
-	X
-X-Received: by 2002:a05:6402:1ecb:b0:6a0:dda3:83db with SMTP id
- 4fb4d7f45d1cf-6a42eec0421mr29612154a12.0.1787585996720; Mon, 24 Aug 2026
- 08:39:56 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IdSgDG4O"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787586436;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8Il8N7nbO1mkjntgx2+Ot5JQ5xla6YwgaEYuxmPUGsA=;
+	b=IdSgDG4OjziaLp/gFLca2biRSO3+siVqvWtwbhE/2Uhu9yxFdvT1ctvm/gu4cJFV+oeXJX
+	gLUkVDp/KHYGVu4giNhY6i8T9ahpukiV+M0Lt88ACTE1Y7UcDVb0x7x/ZEyxla3yG83LYT
+	guYBpu5pK0HTZ85OVwzPvRy0IWuU8ts=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-684-qqXq3d1DMEqhc8ZuvMiiZQ-1; Mon,
+ 24 Aug 2026 11:47:13 -0400
+X-MC-Unique: qqXq3d1DMEqhc8ZuvMiiZQ-1
+X-Mimecast-MFC-AGG-ID: qqXq3d1DMEqhc8ZuvMiiZQ_1787586432
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 492B71945CAC;
+	Mon, 24 Aug 2026 15:47:12 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.32.15])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 73E8B1955F0F;
+	Mon, 24 Aug 2026 15:47:10 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <aoxidVrUtl3F0QUi@casper.infradead.org>
+References: <aoxidVrUtl3F0QUi@casper.infradead.org> <761202.1787584160@warthog.procyon.org.uk>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.org>,
+    netfs@lists.linux.dev
+Subject: Re: Function to do end-writeback in bulk
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260824144130.759997-1-dhowells@redhat.com> <20260824144130.759997-31-dhowells@redhat.com>
-In-Reply-To: <20260824144130.759997-31-dhowells@redhat.com>
-From: =?UTF-8?Q?Aur=C3=A9lien_Couderc?= <aurelien.couderc2002@gmail.com>
-Date: Mon, 24 Aug 2026 17:39:20 +0200
-X-Gm-Features: AcwNN1UVhOm3jvQyZ6QNY0YG-DuDugP0zSGCGTU-9BV_0e1-yGju4sTdJrlUq5g
-Message-ID: <CA+1jF5qPZUhCevwbu7zQDEVWss6gMdoDMhqKqH3k7v=WStRtEA@mail.gmail.com>
-Subject: READ_PLUS in NetFS? Re: [PATCH v10 30/35] netfs: Simplify read abandonment
-To: David Howells <dhowells@redhat.com>
-Cc: Paulo Alcantara <pc@manguebit.org>, Christian Brauner <christian@brauner.io>, 
-	Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>, Jens Axboe <axboe@kernel.dk>, 
-	Leon Romanovsky <leon@kernel.org>, Namjae Jeon <linkinjeon@kernel.org>, 
-	ChenXiaoSong <chenxiaosong@chenxiaosong.com>, Marc Dionne <marc.dionne@auristor.com>, 
-	Stefan Metzmacher <metze@samba.org>, Eric Van Hensbergen <ericvh@kernel.org>, 
-	Dominique Martinet <asmadeus@codewreck.org>, Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev, 
-	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org, 
-	Linux NFS Mailing List <linux-nfs@vger.kernel.org>, ceph-devel@vger.kernel.org, 
-	v9fs@lists.linux.dev, linux-erofs@lists.ozlabs.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Date: Mon, 24 Aug 2026 16:47:08 +0100
+Message-ID: <762789.1787586428@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 7aGWxoJi_5D10205dYy6twFIXWaTRDxLCTrSssBOZK4_1787586432
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <762788.1787586428.1@warthog.procyon.org.uk>
 
-On Mon, Aug 24, 2026 at 5:04=E2=80=AFPM David Howells <dhowells@redhat.com>=
- wrote:
->
-> Currently, if one or more of the subrequests in a read request fails, the
-> read collection algorithm will attempt to salvage folios that are fully
-> downloaded but that span multiple subreqs, provided all of the contributo=
-ry
-> subreqs succeeded, but this makes the algorithm quite complicated as a
-> subreq can contribute to multiple folios and a folio can be contributed t=
-o
-> by multiple subreqs.
->
-> Simplify this by just abandoning the rest of a read request once a
-> permanently failed subreq is hit.  This is what read_folio, DIO/unbuffere=
-d
-> read, gap filling, RMW and write preload all need to do; readahead is the
-> odd one out as it doesn't have any return other than unlocking folios.
->
-> With this change, even for readahead, the rest of the read is simply
-> abandoned; read() and suchlike will call ->read_folio() on each
-> non-uptodate folio to retry and retrieve the error.
->
-> Note that retryable failures still get retried by netfslib as part of the
-> request as before.
+Matthew Wilcox <willy@infradead.org> wrote:
 
-What about READ_PLUS, i.e. sparse file reads? If you do this kind of
-work of handling partial abandonment, can such a work also benefit
-READ_PLUS?
+> I hate this API.  I much prefer the _iter() style:
 
-Aur=C3=A9lien
---=20
-Aur=C3=A9lien Couderc <aurelien.couderc2002@gmail.com>
-Big Data/Data mining expert, chess enthusiast
+I'm not that keen on the _iter() style, but whatever.
+
+However, does that make it harder to do the stats manipulation in bulk in
+future?
+
+I was looking at __folio_end_writeback(), and I see:
+
+	....
+			wb = inode_to_wb(inode);
+			wb_stat_mod(wb, WB_WRITEBACK, -nr);
+			__wb_writeout_add(wb, nr);
+			if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK)) {
+				wb_inode_writeback_end(wb);
+				if (mapping->host)
+					sb_clear_inode_writeback(mapping->host);
+			}
+	...
+		lruvec_stat_mod_folio(folio, NR_WRITEBACK, -nr);
+		zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, -nr);
+		node_stat_mod_folio(folio, NR_WRITTEN, nr);
+	...
+
+And I was thinking those could be done in bulk... but there seems to be an IRQ
+disablement requirement around them.  Does the folio_xor_flags_has_waiters()
+have to be done inside?  I presume this is to prevent a set/clear race on the
+master WRITEBACK tag.
+
+David
+
