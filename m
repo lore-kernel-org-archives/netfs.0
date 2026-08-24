@@ -1,156 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B8A3A7F50;
-	Mon, 24 Aug 2026 09:06:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C04E3546DF
+	for <netfs@lists.linux.dev>; Mon, 24 Aug 2026 12:02:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787562403; cv=none; b=DG5Drwa+IhL6UKgbwEp7xVYBuAs+7V85ZiPCn6S9Dushj71s2fGqYxfRm/JglP2iwXb4v+d5GvZ9lzoXvPeCHV2l2aDSNBcROOBaM7D55Z5ZTAeA0bb9aZX8/64a95aizhrcbpkHHjXi+Us2ReJCd73y2lCXxSy5RhXX+J2FtvM=
+	t=1787572958; cv=none; b=fgLADcJbGLW9bXd33nFr/HKRYTUetrBSYWWF2pGZNoc0E+qy3ltCO7EGLKoea/4+AuIDcHrEBvwbjU9ASrrsP9hyyGiS061Gq7K3bbRQ7E9XgcvBLKwHQvMlgNu9HZbNBFPPb2lsfCYBQOi+8IMzat7awMpB+SAT1q2mq58/TpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787562403; c=relaxed/simple;
-	bh=+ZSZbkJdsImETUGuTtio86WDsSfsd+pwQXtG8mGMv/k=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QEiNOs9SunGfXHZWs6RCTHKC1PdvlF7mRUhWo39vFL8O1jVsFTrcSzOgs+3YnOfS1JVNzw9sD/p3XSEC8Vt7sOXvRJWumNWJa0Rn1kHMMQZp/md/S3qn67rpA9gtdUCBOd3+7dzJpeyjGWbFPKX8OafqUN7+bz8mDDJk8SsdbUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LdtjZU66; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787572958; c=relaxed/simple;
+	bh=A4NhaUz0PFgkxGsOQggbmrHpH8MhWSAoy5EKuQCcgtU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=hYBy/2hwU/m74r2GWfTE1VW4YkqbwcsApmz9k0n24BjQcC6Xy3+e6xiUi+xmrkX0/Rd1BkQu2ZNpiqcLJim3tY7gWN2b7ZSUhpRmbsKoIoB9ortkXl4ovugIn9o7STQj3AaPSiNYhYBju2u2QAL5HaZO2xgFv6/CRzDDc/+Rt9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TNQbOFN5; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LdtjZU66"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF8521F000E9;
-	Mon, 24 Aug 2026 09:06:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1787562402;
-	bh=KJKUYHjcJzfcom8okmtFp+hkII8rJzalq3Rzztwhfhk=;
-	h=Subject:To:Cc:From:Date;
-	b=LdtjZU66UQx3eyw8rGGPftlPc9is/hPgRTalVWMJFJQaqE+WXY4Pzo6W9xkFAamQj
-	 G7XQKrpQFg9FBd0RRT5W5MoJLsQJdbsUUQC+c3kxB7Iqk/WhXtaElMhSBxsZjuY/bV
-	 a0NoCUFUyf8TAmcI2znbPllawr1HaHHP2NFQpwXI=
-Subject: Patch "netfs: Fix potential UAF in netfs_unlock_abandoned_read_pages()" has been added to the 6.12-stable tree
-To: Slava.Dubeyko@ibm.com,brauner@kernel.org,demonaxsh@gmail.com,dhowells@redhat.com,gregkh@linuxfoundation.org,netfs@lists.linux.dev,pc@manguebit.org,willy@infradead.org
-Cc: <stable-commits@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 24 Aug 2026 11:06:21 +0200
-Message-ID: <2026082421-agility-reusable-88f1@gregkh>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TNQbOFN5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787572956;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=dm6eVdzu1lSXF3tT287Ob1G0/L65ulpkOnLX+ANQp8A=;
+	b=TNQbOFN536qtVwpOAdIZCzp0AnrGGaDDqfjK14hG65doC59hMh2oCmoiHr3j65MxhUsgAk
+	gYDFBFNPPttRmQOzWVtj0pmdm4jCPw5zzvE17d5CgW3Ni36jUitJAMeS3aqEZDcb23i2iK
+	70kcuaK54/feMP7Zwbe6h6VH6N8lKwI=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-259-3u4ezehPMn2u7Sv8Dqarwg-1; Mon,
+ 24 Aug 2026 08:02:34 -0400
+X-MC-Unique: 3u4ezehPMn2u7Sv8Dqarwg-1
+X-Mimecast-MFC-AGG-ID: 3u4ezehPMn2u7Sv8Dqarwg_1787572951
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AA256197751A;
+	Mon, 24 Aug 2026 12:02:30 +0000 (UTC)
+Received: from warthog.com (unknown [10.44.32.15])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5254A434;
+	Mon, 24 Aug 2026 12:02:26 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>
+Cc: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/3] netfs, cachefiles: Miscellaneous fixes
+Date: Mon, 24 Aug 2026 13:02:19 +0100
+Message-ID: <20260824120224.504575-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+X-Mimecast-MFC-PROC-ID: 9vuZNmUM8dqPsGLxiV0Pubm3uaS_yC1Kq_toritb9p4_1787572951
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-X-stable: commit
-X-Patchwork-Hint: ignore 
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
+Hi Christian,
 
-This is a note to let you know that I've just added the patch titled
+Here are a couple of miscellaneous fixes for netfslib and one for cachefiles,
+if you could pick them up?
 
-    netfs: Fix potential UAF in netfs_unlock_abandoned_read_pages()
+ (1) Fix an uninitialised return value from netfs_unbuffered_write().
 
-to the 6.12-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+ (2) Fix read progress reporting to avoid 64-bit tearing on a 32-bit
+     machine.  This has been modified from the previous submission as part
+     of a different series to take account of a sashiko reported issue[1].
 
-The filename of the patch is:
-     netfs-fix-potential-uaf-in-netfs_unlock_abandoned_read_pages.patch
-and it can be found in the queue-6.12 subdirectory.
+ (3) Fix a potential UAF/KASAN warning reported by sashiko[1] in cachefiles in
+     which the coherency data buffer is cast to a __be64* and dereferenced in
+     a tracepoint - even though it might not be at least that large (or
+     aligned).
 
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+The patches can also be found here:
 
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-fixes
 
-From dbe556972100fabb8e5a1b3d2163831ff07b1e8e Mon Sep 17 00:00:00 2001
-From: David Howells <dhowells@redhat.com>
-Date: Tue, 12 May 2026 13:33:56 +0100
-Subject: netfs: Fix potential UAF in netfs_unlock_abandoned_read_pages()
+Thanks,
+David
 
-From: David Howells <dhowells@redhat.com>
+[1] https://sashiko.dev/#/patchset/20260810144746.574036-1-dhowells%40redhat.com
 
-commit dbe556972100fabb8e5a1b3d2163831ff07b1e8e upstream.
+David Howells (2):
+  netfs: Fix read progress reporting
+  cachefiles: Fix potential UAF/KASAN warning
 
-netfs_unlock_abandoned_read_pages(rreq) accesses the index of the folios it
-is wanting to unlock and compares that to rreq->no_unlock_folio so that it
-doesn't unlock a folio being read for netfs_perform_write() or
-netfs_write_begin().
+Karl Mehltretter (1):
+  netfs: Fix uninitialized return value in netfs_unbuffered_write()
 
-However, given that netfs_unlock_abandoned_read_pages() is called _after_
-NETFS_RREQ_IN_PROGRESS is cleared, the one folio that it's not allowed to
-dereference is the one specified by ->no_unlock_folio as ownership
-immediately reverts to the caller.
+ fs/cachefiles/xattr.c             | 16 ++++-----
+ fs/netfs/buffered_read.c          |  4 +++
+ fs/netfs/direct_write.c           |  2 +-
+ fs/netfs/internal.h               |  1 +
+ fs/netfs/objects.c                | 32 ++++++++++-------
+ fs/netfs/read_collect.c           | 58 +++++++++++++++++++++++--------
+ fs/netfs/read_single.c            |  2 ++
+ include/linux/netfs.h             |  2 +-
+ include/trace/events/cachefiles.h | 19 ++++++++--
+ include/trace/events/netfs.h      | 21 +++++++++++
+ 10 files changed, 119 insertions(+), 38 deletions(-)
 
-Fix this by storing the folio pointer instead and using that rather than
-the index.  Also fix netfs_unlock_read_folio() where the same applies.
-
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-Closes: https://sashiko.dev/#/patchset/20260414082004.3756080-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-20-dhowells@redhat.com
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Shishkin Aleksey <demonaxsh@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- fs/netfs/buffered_read.c |    4 ++--
- fs/netfs/read_collect.c  |    2 +-
- fs/netfs/read_retry.c    |    2 +-
- include/linux/netfs.h    |    2 +-
- 4 files changed, 5 insertions(+), 5 deletions(-)
-
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -734,7 +734,7 @@ retry:
- 		ret = PTR_ERR(rreq);
- 		goto error;
- 	}
--	rreq->no_unlock_folio	= folio->index;
-+	rreq->no_unlock_folio	= folio;
- 	__set_bit(NETFS_RREQ_NO_UNLOCK_FOLIO, &rreq->flags);
- 
- 	ret = netfs_begin_cache_read(rreq, ctx);
-@@ -800,7 +800,7 @@ int netfs_prefetch_for_write(struct file
- 		goto error;
- 	}
- 
--	rreq->no_unlock_folio = folio->index;
-+	rreq->no_unlock_folio = folio;
- 	__set_bit(NETFS_RREQ_NO_UNLOCK_FOLIO, &rreq->flags);
- 	ret = netfs_begin_cache_read(rreq, ctx);
- 	if (ret == -ENOMEM || ret == -EINTR || ret == -ERESTARTSYS)
---- a/fs/netfs/read_collect.c
-+++ b/fs/netfs/read_collect.c
-@@ -73,7 +73,7 @@ static void netfs_unlock_read_folio(stru
- 	}
- 
- 	if (!test_bit(NETFS_RREQ_DONT_UNLOCK_FOLIOS, &rreq->flags)) {
--		if (folio->index == rreq->no_unlock_folio &&
-+		if (folio == rreq->no_unlock_folio &&
- 		    test_bit(NETFS_RREQ_NO_UNLOCK_FOLIO, &rreq->flags)) {
- 			_debug("no unlock");
- 		} else {
---- a/fs/netfs/read_retry.c
-+++ b/fs/netfs/read_retry.c
-@@ -249,7 +249,7 @@ void netfs_unlock_abandoned_read_pages(s
- 			struct folio *folio = folioq_folio(p, slot);
- 
- 			if (folio && !folioq_is_marked2(p, slot)) {
--				if (folio->index == rreq->no_unlock_folio &&
-+				if (folio == rreq->no_unlock_folio &&
- 				    test_bit(NETFS_RREQ_NO_UNLOCK_FOLIO,
- 					     &rreq->flags)) {
- 					_debug("no unlock");
---- a/include/linux/netfs.h
-+++ b/include/linux/netfs.h
-@@ -266,7 +266,7 @@ struct netfs_io_request {
- 	atomic64_t		issued_to;	/* Write issuer folio cursor */
- 	unsigned long long	collected_to;	/* Point we've collected to */
- 	unsigned long long	cleaned_to;	/* Position we've cleaned folios to */
--	pgoff_t			no_unlock_folio; /* Don't unlock this folio after read */
-+	const struct folio	*no_unlock_folio; /* Don't unlock this folio after read */
- 	size_t			prev_donated;	/* Fallback for subreq->prev_donated */
- 	refcount_t		ref;
- 	unsigned long		flags;
-
-
-Patches currently in stable-queue which might be from dhowells@redhat.com are
-
-queue-6.12/netfs-fix-potential-uaf-in-netfs_unlock_abandoned_read_pages.patch
