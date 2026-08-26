@@ -1,89 +1,138 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F8148382E
-	for <netfs@lists.linux.dev>; Wed, 26 Aug 2026 20:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5803B059C
+	for <netfs@lists.linux.dev>; Wed, 26 Aug 2026 20:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787775821; cv=none; b=uZF4bV6RmKk65jkeXdyBS+KhcJTrNMKwKxC9h8pCrF9w4b9mSs64+1OQwtc5eCEFpoIEDbOb+dMxfajJAKbCmP//L83gZTdkA4me+YyM7PHoQLgHbX/bLySEfeSLcGwhrmCXOnPQP/S218Wwr0ZQO8LNHrapLh/BvdAsRi0OALI=
+	t=1787777205; cv=none; b=GEl/Pi5kHOD4rwno56vdgfzhswIusqIW5jwolFO09GpdwqV3zL/fccw6oK6MNgXilwLi/VsFYQI5EOjsiUY6ed/pDqaJepd1j4nh3dD5HgNZ4uffQv1gCtkMEwWsitWfnesr8E1QD8ARQd0riftpTAXb7SrByUvqHMCjO+ImJoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787775821; c=relaxed/simple;
-	bh=hKNdcb4O36pMXXUw78XWvmtZ8Cm6SzYmwBSdUVVWCko=;
+	s=arc-20240116; t=1787777205; c=relaxed/simple;
+	bh=8Hnlvge0UEJR/HcoEhnz6FEN08xBBGp9VfaPF4oVN0A=;
 	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
-	 Message-ID:Content-Type; b=STZET3hfiC9n4mflfIm/0Rw5D2fKBRpXTUR0UTFJKIrz1KgQqBvHE+tph0fX2WDLlf63t0YMHSNPf6mOBUi6CgopFyEoTUTgi5IaKOwkyzdI+/+S99nEo/FvNIlrDupHUkzQER2Z5YFh2x5aCpZOcbGoxda+KbBPyEqhdeBey+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CiJWlD2b; arc=none smtp.client-ip=170.10.133.124
+	 Message-ID:Content-Type; b=uTrGK18GoSlWERokt52CTfmtUPM5ED1BIRegdK+1h9lK5C05odD08uVP9AHsyyulSr6Uzwww+7L7veZjSjyv7xQ96T3CQF5fv0LyPEaufAtj7Vw3Eu62ZaHoZeKbt3LZ/N9ZGw6ynx4l1i0sunBO97MtBibkYqr1793YflC39MI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YogafezJ; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CiJWlD2b"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YogafezJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787775819;
+	s=mimecast20190719; t=1787777201;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=m9qT7qssYQfRq6O+ZWVrZCYJE2b1eCy9Sb45AALyhFQ=;
-	b=CiJWlD2bo9FfmzMR8jFL66/WLGEltsw5eY4saSxhhJ24te/CAkPC2yegRmhQhzYkEOWOsD
-	tdw/znr1mIhhakHItKlvvIUUCzUMBjI06jwIwig8hgsaoPwmKGbqRc3IwAwIRcvXL94Se2
-	F2geC4V5pWbCuLvmdwLDMMJVG3EoWeg=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=Uk+813ZDpTNBXGU+SOkA6FTaaX794b+j3yqJF9uA3KY=;
+	b=YogafezJcYJvf/jggb8vfhuJeJH3WNWLS5gdp6LvhC1oryVBMHjlJt5v9Orsao7bS6vbys
+	w0asS64EkBaqv46jldMWoJm+vN6gKH42YHyrKfpu/XIHYy/mk+vjud3B2OeHRLEuU9/s2k
+	dg0vZ+l7AMn7bNoYkEuBqPHMKrdUuQU=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-480-Ez1R0MTmOw2r8ezdmlwTyA-1; Wed,
- 26 Aug 2026 16:23:36 -0400
-X-MC-Unique: Ez1R0MTmOw2r8ezdmlwTyA-1
-X-Mimecast-MFC-AGG-ID: Ez1R0MTmOw2r8ezdmlwTyA_1787775814
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-412-xNS7lx1SPmKIlckEKETYBg-1; Wed,
+ 26 Aug 2026 16:46:38 -0400
+X-MC-Unique: xNS7lx1SPmKIlckEKETYBg-1
+X-Mimecast-MFC-AGG-ID: xNS7lx1SPmKIlckEKETYBg_1787777196
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 75D6C1862D53;
-	Wed, 26 Aug 2026 20:23:34 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 696B41955BDD;
+	Wed, 26 Aug 2026 20:46:36 +0000 (UTC)
 Received: from warthog.procyon.org.uk (unknown [10.22.88.47])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D4D8E195608A;
-	Wed, 26 Aug 2026 20:23:31 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DC8681955F0B;
+	Wed, 26 Aug 2026 20:46:33 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
 	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
 	Kingdom.
 	Registered in England and Wales under Company Registration No. 3798903
 From: David Howells <dhowells@redhat.com>
-In-Reply-To: <ao9CvZDRChrrxyCj@kbusch-mbp>
-References: <ao9CvZDRChrrxyCj@kbusch-mbp> <ao8xqMXoCfj4AWUw@kbusch-mbp> <1819786.1787768317@warthog.procyon.org.uk> <1853652.1787772245@warthog.procyon.org.uk>
-To: Keith Busch <kbusch@kernel.org>
-Cc: dhowells@redhat.com, Jens Axboe <axboe@kernel.dk>,
+In-Reply-To: <1819786.1787768317@warthog.procyon.org.uk>
+References: <1819786.1787768317@warthog.procyon.org.uk>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: dhowells@redhat.com, Keith Busch <kbusch@kernel.org>,
     Hannes Reinecke <hare@kernel.org>, Christoph Hellwig <hch@lst.de>,
     Alexander Viro <viro@zeniv.linux.org.uk>,
     Paulo Alcantara <pc@manguebit.org>, netfs@lists.linux.dev,
     linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
     linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] block: Fix start and length check added to iov_iter_extract_bvecs()
+Subject: [PATCH v2] block: Fix start and length check added to iov_iter_extract_bvecs()
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Wed, 26 Aug 2026 21:23:30 +0100
-Message-ID: <1885163.1787775810@warthog.procyon.org.uk>
+Date: Wed, 26 Aug 2026 21:46:32 +0100
+Message-ID: <1895550.1787777192@warthog.procyon.org.uk>
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-MFC-PROC-ID: TfqZqa5H4igTJA9oWsKju0uh6awHUYUVlzAlo3_3wlg_1787775814
+X-Mimecast-MFC-PROC-ID: lUFIuC9ghQUndhH34seLqRjKreFv7kE9vVLBtPkyhG4_1787777196
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1885162.1787775810.1@warthog.procyon.org.uk>
+Content-ID: <1895549.1787777192.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
 
-Keith Busch <kbusch@kernel.org> wrote:
+Commit 14b007e17881 added an address check using iter_iov_addr() and a
+length check using iter_iov_len() to iov_iter_extract_bvecs(), but these
+cannot be used so and are unsafe in this circumstance as the functions have
+hardwired assumptions about the iterator type.  They should only be used
+with ITER_UBUF or ITER_IOVEC-type iterators and work with ITER_KVEC; they
+should not be used with ITER_BVEC, ITER_FOLIOQ, ITER_XARRAY or ITER_DISCARD
+iterators.
 
-> +	if (likely(iter_is_ubuf(iter) ||
-> +		   iter_is_iovec(iter) ||
-> +		   iov_iter_is_kvec(iter))) {
+This change proved to be a problem for cachefiles as an iterator of type
+ITER_FOLIOQ is passed and iter_iov_addr() and iter_iov_len() both
+malfunction because iter->__iov in iter_iov() is not pointing to an iovec
+array.
 
-I wonder if it's worth making an exception for ITER_KVEC.  I know the structs
-align, as it were, but do we use ITER_KVEC often enough?
+Fix this by using iov_iter_alignment() instead for anything other than
+ITER_UBUF, ITER_IOVEC or ITER_KVEC.
 
-Anyway, it seems to work, so you can add:
+Fixes: 14b007e17881 ("block: validate user space vectors during extraction"=
+)
+Suggested-by: Keith Busch <kbusch@kernel.org>
+cc: Keith Busch <kbusch@kernel.org>
+cc: Jens Axboe <axboe@kernel.dk>
+cc: Hannes Reinecke <hare@kernel.org>
+cc: Christoph Hellwig <hch@lst.de>
+cc: Alexander Viro <viro@zeniv.linux.org.uk>
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: netfs@lists.linux.dev
+cc: linux-block@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
+---
+ lib/iov_iter.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-	Reviewed-by: David Howells <dhowells@redhat.com>
-
-if you want to submit the patch yourself.
-
-David
+diff --git a/lib/iov_iter.c b/lib/iov_iter.c
+index 6665372ecf71..c489569a5815 100644
+--- a/lib/iov_iter.c
++++ b/lib/iov_iter.c
+@@ -1921,15 +1921,22 @@ ssize_t iov_iter_extract_bvecs(struct iov_iter *ite=
+r, struct bio_vec *bv,
+ =09=09unsigned short max_vecs, unsigned mem_align_mask,
+ =09=09iov_iter_extraction_t extraction_flags)
+ {
+-=09unsigned long start =3D (unsigned long)iter_iov_addr(iter);
+ =09unsigned short entries_left =3D max_vecs - *nr_vecs;
+ =09unsigned short nr_pages, i =3D 0;
+ =09size_t left, offset, len;
+ =09struct page **pages;
+ =09ssize_t size;
+=20
+-=09if ((start | iter_iov_len(iter)) & mem_align_mask)
++=09if (likely(iter_is_ubuf(iter) ||
++=09=09   iter_is_iovec(iter) ||
++=09=09   iov_iter_is_kvec(iter))) {
++=09=09unsigned long start =3D (unsigned long)iter_iov_addr(iter);
++
++=09=09if ((start | iter_iov_len(iter)) & mem_align_mask)
++=09=09=09return -EINVAL;
++=09} else if (iov_iter_alignment(iter) & mem_align_mask) {
+ =09=09return -EINVAL;
++=09}
+=20
+ =09/*
+ =09 * Move page array up in the allocated memory for the bio vecs as far a=
+s
 
