@@ -1,149 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1377148094F;
-	Tue, 25 Aug 2026 13:43:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57A0D399342
+	for <netfs@lists.linux.dev>; Wed, 26 Aug 2026 18:19:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787665412; cv=none; b=jttrgasRDDoY/xA/TeIbOZElOLeiolcwv7Owut6kbV98AjDpEuC/ekwv3D+5QkXF6S/g03z5N5dk/IhTq2pLQl3yUgqvX77Z95QskA09GoM0+sGHmKujs/9OiSQeBgp1qWBN3ni2u8iD4jPC4glLlPwl5h/lHaPiJ8c3piaLVfQ=
+	t=1787768348; cv=none; b=gFIpJMRpheL4LV9VkrxIMqtB3tbuZpBWEd0418wOpFKY8ZCgpSsVjZ/gTQYDLC5z7CUX8i65OWCwy9D9a0bcO6JYoJZGC6cOmtUQzbtYm6KpcvCcOIxsFgq9vns5fXubCSCbK7UVLJdTXLtxQxbx8UUaRs1aRfyxxuyzdYmVJiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787665412; c=relaxed/simple;
-	bh=U5Yi9mjH/C5027DAriD3cS4tVRGGXDxJQw5fYNEo0ek=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fIOALbUCGngE3gz0M++ioNEKXaiYpOD/fQLq4P3K9l4MZxxJxI4JZHz7R2EgIXHpX+nZ+XmtzypVvIebgEvKQCIJOjYOkF3MjlizJgZW28ufzwGVOZ+dqaQeUgeYgwQwYfTPfTqafp8UKcRVTHcDBrRAEuVYkMdO+19Kk9CrNhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2A/wCbuZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787768348; c=relaxed/simple;
+	bh=dyCNTsbr+3zHrvausn0SltBKG/4t7Sicrg0gVtZLVMo=;
+	h=From:To:cc:Subject:MIME-Version:Date:Message-ID:Content-Type; b=GeJgMMhcw4X6egb/9gu0Eldxnv9UvATwYtRXondxHl7Khcg9DRwgVhvov4bwdxN9khCS4PrTrAnBcFjpAvSszUkAbVNx7OdnvjV5p0pq0IKVlIsfoOfUwiHiVtOTORo4gvSWALqTaZNL5GGKsjkHKMQSFi1X1o6RhoO0Km8rABM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dC9nxLFp; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2A/wCbuZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 736321F000E9;
-	Tue, 25 Aug 2026 13:43:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1787665411;
-	bh=rmJtCMVBjay2n/U0dxbsYTKZJ0f4XUSNvJQ5PRNR1XQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2A/wCbuZgyhu833XfxLJKVD2y30NKHcg5Ox0fFnE+UmVez0uZp+xjWi9ZfGsgKIHP
-	 36lSt/UV73XpCAcbc6AeIn+YvioTFbusftWkwAOP7uEm9HPbwbFhhuNDx7JzGghX3G
-	 kTIcRgLuIUhpAo4TxvjMve34N85eXKfnOqvuGCss=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
-	Shishkin Aleksey <demonaxsh@gmail.com>
-Subject: [PATCH 6.12 08/77] netfs: Fix potential UAF in netfs_unlock_abandoned_read_pages()
-Date: Tue, 25 Aug 2026 15:25:30 +0200
-Message-ID: <20260825132541.880648723@linuxfoundation.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260825132541.580275153@linuxfoundation.org>
-References: <20260825132541.580275153@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dC9nxLFp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787768330;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=MrjAM3Ub0GRusrNoNmZPjX4fsQ5Bn2FsvWOzOeJjTKE=;
+	b=dC9nxLFpxI4no7Z+9VtUwCdfM1XEokTTWAnLluBr1uthWYR9ZjOAjLyvxhjdZLR0cgkTzX
+	J8L1JiZFzn21IY+SLJEAc4WpBKUMSjlAYsVRKiyB2IPv0p0mUB2Sl8asjuY7kxDg3iSPMC
+	GcgLvi/ImqtkFR5cIFhlvCnJKHYTGRQ=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-99-MU81NohkMrC9ScSVlfdo7A-1; Wed,
+ 26 Aug 2026 14:18:44 -0400
+X-MC-Unique: MU81NohkMrC9ScSVlfdo7A-1
+X-Mimecast-MFC-AGG-ID: MU81NohkMrC9ScSVlfdo7A_1787768322
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5AB521955E97;
+	Wed, 26 Aug 2026 18:18:41 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.22.88.47])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 330271955F0B;
+	Wed, 26 Aug 2026 18:18:38 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: Jens Axboe <axboe@kernel.dk>
+cc: dhowells@redhat.com, Keith Busch <kbusch@kernel.org>,
+    Hannes Reinecke <hare@kernel.org>, Christoph Hellwig <hch@lst.de>,
+    Alexander Viro <viro@zeniv.linux.org.uk>,
+    Paulo Alcantara <pc@manguebit.org>, netfs@lists.linux.dev,
+    linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: [PATCH] block: Fix start and length check added to iov_iter_extract_bvecs()
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Wed, 26 Aug 2026 19:18:37 +0100
+Message-ID: <1819786.1787768317@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: Ux30-VBhQKktzxNB_jAEv0IZBXLlYtFTenl-gzZ1vaw_1787768322
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1819785.1787768317.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+Commit 14b007e17881 added an address check using iter_iov_addr() and a
+length check using iter_iov_len() to iov_iter_extract_bvecs(), but these
+cannot be used so and are unsafe in this circumstance as the functions have
+hardwired assumptions about the iterator type.  They should only be used
+with ITER_UBUF or ITER_IOVEC-type iterators; they should not be used with
+ITER_BVEC, ITER_KVEC, ITER_FOLIOQ, ITER_XARRAY or ITER_DISCARD iterators.
 
-------------------
+This change proved to be a problem for cachefiles as an iterator of type
+ITER_FOLIOQ is passed and iter_iov_addr() and iter_iov_len() both
+malfunction because iter->__iov in iter_iov() is not pointing to an iovec
+array.
 
-From: David Howells <dhowells@redhat.com>
+Fix this by using iov_iter_alignment() instead.
 
-commit dbe556972100fabb8e5a1b3d2163831ff07b1e8e upstream.
-
-netfs_unlock_abandoned_read_pages(rreq) accesses the index of the folios it
-is wanting to unlock and compares that to rreq->no_unlock_folio so that it
-doesn't unlock a folio being read for netfs_perform_write() or
-netfs_write_begin().
-
-However, given that netfs_unlock_abandoned_read_pages() is called _after_
-NETFS_RREQ_IN_PROGRESS is cleared, the one folio that it's not allowed to
-dereference is the one specified by ->no_unlock_folio as ownership
-immediately reverts to the caller.
-
-Fix this by storing the folio pointer instead and using that rather than
-the index.  Also fix netfs_unlock_read_folio() where the same applies.
-
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-Closes: https://sashiko.dev/#/patchset/20260414082004.3756080-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-20-dhowells@redhat.com
+Fixes: 14b007e17881 ("block: validate user space vectors during extraction"=
+)
+cc: Keith Busch <kbusch@kernel.org>
+cc: Jens Axboe <axboe@kernel.dk>
+cc: Hannes Reinecke <hare@kernel.org>
+cc: Christoph Hellwig <hch@lst.de>
+cc: Alexander Viro <viro@zeniv.linux.org.uk>
 cc: Paulo Alcantara <pc@manguebit.org>
-cc: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-cc: Matthew Wilcox <willy@infradead.org>
 cc: netfs@lists.linux.dev
+cc: linux-block@vger.kernel.org
 cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Shishkin Aleksey <demonaxsh@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/netfs/buffered_read.c |    4 ++--
- fs/netfs/read_collect.c  |    2 +-
- fs/netfs/read_retry.c    |    2 +-
- include/linux/netfs.h    |    2 +-
- 4 files changed, 5 insertions(+), 5 deletions(-)
 
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -734,7 +734,7 @@ retry:
- 		ret = PTR_ERR(rreq);
- 		goto error;
- 	}
--	rreq->no_unlock_folio	= folio->index;
-+	rreq->no_unlock_folio	= folio;
- 	__set_bit(NETFS_RREQ_NO_UNLOCK_FOLIO, &rreq->flags);
- 
- 	ret = netfs_begin_cache_read(rreq, ctx);
-@@ -800,7 +800,7 @@ int netfs_prefetch_for_write(struct file
- 		goto error;
- 	}
- 
--	rreq->no_unlock_folio = folio->index;
-+	rreq->no_unlock_folio = folio;
- 	__set_bit(NETFS_RREQ_NO_UNLOCK_FOLIO, &rreq->flags);
- 	ret = netfs_begin_cache_read(rreq, ctx);
- 	if (ret == -ENOMEM || ret == -EINTR || ret == -ERESTARTSYS)
---- a/fs/netfs/read_collect.c
-+++ b/fs/netfs/read_collect.c
-@@ -73,7 +73,7 @@ static void netfs_unlock_read_folio(stru
- 	}
- 
- 	if (!test_bit(NETFS_RREQ_DONT_UNLOCK_FOLIOS, &rreq->flags)) {
--		if (folio->index == rreq->no_unlock_folio &&
-+		if (folio == rreq->no_unlock_folio &&
- 		    test_bit(NETFS_RREQ_NO_UNLOCK_FOLIO, &rreq->flags)) {
- 			_debug("no unlock");
- 		} else {
---- a/fs/netfs/read_retry.c
-+++ b/fs/netfs/read_retry.c
-@@ -249,7 +249,7 @@ void netfs_unlock_abandoned_read_pages(s
- 			struct folio *folio = folioq_folio(p, slot);
- 
- 			if (folio && !folioq_is_marked2(p, slot)) {
--				if (folio->index == rreq->no_unlock_folio &&
-+				if (folio == rreq->no_unlock_folio &&
- 				    test_bit(NETFS_RREQ_NO_UNLOCK_FOLIO,
- 					     &rreq->flags)) {
- 					_debug("no unlock");
---- a/include/linux/netfs.h
-+++ b/include/linux/netfs.h
-@@ -266,7 +266,7 @@ struct netfs_io_request {
- 	atomic64_t		issued_to;	/* Write issuer folio cursor */
- 	unsigned long long	collected_to;	/* Point we've collected to */
- 	unsigned long long	cleaned_to;	/* Position we've cleaned folios to */
--	pgoff_t			no_unlock_folio; /* Don't unlock this folio after read */
-+	const struct folio	*no_unlock_folio; /* Don't unlock this folio after read */
- 	size_t			prev_donated;	/* Fallback for subreq->prev_donated */
- 	refcount_t		ref;
- 	unsigned long		flags;
-
+diff --git a/lib/iov_iter.c b/lib/iov_iter.c
+index 6665372ecf71..6df716e19247 100644
+--- a/lib/iov_iter.c
++++ b/lib/iov_iter.c
+@@ -1921,15 +1921,19 @@ ssize_t iov_iter_extract_bvecs(struct iov_iter *ite=
+r, struct bio_vec *bv,
+ =09=09unsigned short max_vecs, unsigned mem_align_mask,
+ =09=09iov_iter_extraction_t extraction_flags)
+ {
+-=09unsigned long start =3D (unsigned long)iter_iov_addr(iter);
+ =09unsigned short entries_left =3D max_vecs - *nr_vecs;
+ =09unsigned short nr_pages, i =3D 0;
+ =09size_t left, offset, len;
+ =09struct page **pages;
+ =09ssize_t size;
+=20
+-=09if ((start | iter_iov_len(iter)) & mem_align_mask)
++=09if (iov_iter_alignment(iter) & mem_align_mask) {
++=09=09pr_warn("%u %zx %x\n",
++=09=09=09iter->iter_type,
++=09=09=09iov_iter_alignment(iter),
++=09=09=09mem_align_mask);
+ =09=09return -EINVAL;
++=09}
+=20
+ =09/*
+ =09 * Move page array up in the allocated memory for the bio vecs as far a=
+s
 
