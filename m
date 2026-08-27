@@ -1,85 +1,95 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073EF3655C0
-	for <netfs@lists.linux.dev>; Thu, 27 Aug 2026 07:31:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C369B3B8130
+	for <netfs@lists.linux.dev>; Thu, 27 Aug 2026 08:05:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787815886; cv=none; b=NbHRGbyS9oo11n6dW6uRk//sDPhXq+wGctJyCWCKRL8TLB46PVRF0L/Rf6T9LmRtYvZWEXorI0y9KmZjLB6W8mhiaYkWGfgldqhKi6/L3m7bSXiXLbOmcfeU8skXpDGF4w9RuvsLGgXQG5+cadpb3J1DOZrBPFn58CzDT/6bR8s=
+	t=1787817944; cv=none; b=qbGc+jDI/9Gy486XelTkzKeKJGAtmrL+mJsfLlEg2nCJV1paP/2YFIzVkLgSndY+cYStx4HcbZKq88zHvdAg9nU0tzoJ80rEGRt7aWN9GnZhykBzxFZpJyCnfnHEFaH1VI6A/XKdQqVp5qsHjm9Pgp9dVGuE7CQANnesncjxxpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787815886; c=relaxed/simple;
-	bh=OX+9OYS8ReByP/94EupI0N5Xpt6Kz9ER6xF2/yoHhnk=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
-	 Message-ID:Content-Type; b=X4Xb7y+uRQb5vH/q1VJNrP4wbSJBi+T9mV8isEExvXVkFOGTX3zDqPn6boHi0d8sZKEnoaXjLnZhqvp8b48kqod9OQKTT10u5szB/DFFKo8w0kUiaGkyELmgKPndh2SyQP8YaI32XScwdHUIRjQIDXB6TeOSwNF5QlyFDa7Ybx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Nn0l/LzT; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1787817944; c=relaxed/simple;
+	bh=9CVWleTaSrdVhxxRUhw4ZUJyn3Jg9XY0R1skItqGr00=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=djC4IX4U3VvimQAqwdYslPextCIYN5/+63ylZwMh9XPYMQpGqA7BnrZQ4nXA1si9kzecNBreMUH9pCaAWvA1BRh3BJtGpZKk+TS4gCtgzK0p9uDb7TKy097D0e/pEFHx3DaVswXfg5b51kPVerE7Rh3j9XkMyI78XLFiJE49aic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=n+NVd3oQ; arc=none smtp.client-ip=54.204.34.129
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Nn0l/LzT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787815883;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IfoMUYax+Ia10lp9LMOjRZATKtFivECVEX6/+plOxWQ=;
-	b=Nn0l/LzTFJNC4HgOn2erm0xuuxLbV1NsTHbLuTbjDO1gvyDJomX6H4qL6CReDqGUm9J+BZ
-	bl0Ah3h1yIGFBoqluccJOJwNDT1K7+lR/TlX4mLbnc10VhvIfly1QDXoqZPzEkzDkNAyPA
-	QRSUIKj+BqLt5oY+C0S+Wes64xl78/0=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-652-HjkHOimGM2i-eShqLCE8JQ-1; Thu,
- 27 Aug 2026 03:31:21 -0400
-X-MC-Unique: HjkHOimGM2i-eShqLCE8JQ-1
-X-Mimecast-MFC-AGG-ID: HjkHOimGM2i-eShqLCE8JQ_1787815881
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 815F91835AEB;
-	Thu, 27 Aug 2026 07:31:20 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.22.88.47])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 498B71800641;
-	Thu, 27 Aug 2026 07:31:19 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20260827061444.2404961-1-chenyichong@uniontech.com>
-References: <20260827061444.2404961-1-chenyichong@uniontech.com>
-To: Yichong Chen <chenyichong@uniontech.com>
-Cc: dhowells@redhat.com, netfs@lists.linux.dev,
-    linux-kernel@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="n+NVd3oQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1787817928;
+	bh=QoH1s/dQqMRnerLRulBMAWipEN11a7O5ilwtRmrJkUc=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=n+NVd3oQvZOwC8G3DpOMhkkwycbp4CFzffgq/6jMZjZXvo5C1xGurOMe3IlbLBmPP
+	 yG3Ds1ou4UaxCnD4fMIXDjTBc35qXt9PWEYw7cIJ0Q7s+XYZn0zn6a2x7p6fxcnscI
+	 FAhDmwXBkmqAJ6dRmoHWG84F1nO7xOJVhELU3amw=
+X-QQ-mid: zesmtpgz5t1787817922te8c9b670
+X-QQ-Originating-IP: mOk7kULihjnbT2BpzspnOIplwfDxYHLmryj7MxW7dqU=
+Received: from uniontech.com ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 27 Aug 2026 16:05:20 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 11851014657286288873
+From: Yichong Chen <chenyichong@uniontech.com>
+To: dhowells@redhat.com
+Cc: netfs@lists.linux.dev,
+	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] cachefiles: fix out-of-bounds read in coherency trace
+Date: Thu, 27 Aug 2026 16:05:20 +0800
+Message-Id: <20260827080520.2410207-1-chenyichong@uniontech.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <1924988.1787815878@warthog.procyon.org.uk>
+References: <1924988.1787815878@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Thu, 27 Aug 2026 08:31:18 +0100
-Message-ID: <1924988.1787815878@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: A1agrjRUZvGPvNvCwKCMl45hKRWrfJ8xToOLSpFccWg_1787815881
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1924987.1787815878.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: METBPFwEUDZ+UD7wuFRW848CLi3z1KE5VwH+3z1cLr+sdd1MLKsmeRSf
+	jsg7pG+94fGF0g9KuWADsaUfsYAwlja77dtBP9wjKvSlPu+VP0G/7gstdZr+tE8okNsGvDt
+	7ghUpKFoZj1aXCCkJGlGPOnjxkoSskIabr2shJh5v3d9tszLP84RIQj9M+FC82Vsn7rujoG
+	PbdR3eSYM7puZr+TU9dV0TYQI2yAB3puFfWJcvqZ1bLNPg4180o/AeCMxYBpW/WjUSotZMT
+	3ux6ISTlP66lKlWcGdUxcIx2LTqR3YjSVYElNgO90Gf2sNue2zZRwZoq44Z3uEuHIW8L1aN
+	e9N9aXSzdPJO1Tc+vR+CTzIsAfPgSry2c64vqRdE9FuUQCTQNZ9gmjsOfvMz2kjfOhjMdW9
+	W/P29whPCUWonxfnOw8iEvV4nFOMZKFIJ+2720LKLTeNBe9bxBHk0/24tJ5PEUd5GdhJDSd
+	j3iBc3o98WMD6aL5z1Gl7+5usM+0E1vB4bIOiYsRIqqrqYn+Ru0kEk1xJQNM9bzZLFWZkq+
+	MZRN/4Pf0xNhQ2aHD+TeVl5O7H6KwB5Cp/LDSwaNqMbGmsJaBPTnSoiK5M28j7C9gbsRV2f
+	TCMV/5wgllUvXMse0PnsGbRTSKtVIgW3zYunHLp3bLORPICh3+KPmXM1Krk+kst3C+Y0E2G
+	ZIphXnTrQYj2QDwz+5IgDMgMWlzCuSTxbvBy5iVNh3s+DfCZln9tM+tZX78Akzo4yTvymxU
+	OpV04LxNeJQHvzI9u4XXQf/itGeTCsKVYDw9fiCIy0A5hWzrLnMP5tEUBi0g+MQ8vcaIuDN
+	BSGtpbyETxxFnPa5SeHYElxsL/uqoGHbGNP8W3+Wlcc60ITJCTVAmuuW+SioWl1YiF0UJ7k
+	w8TBtjrqZK8mNTvNCTO7njYY9rmhKmyH4lEqv1WiQgEvUnc9BZ1OB7/GKgjB3yXdNoHovTi
+	xu5ZNWeDaEw0ESMSwVmJPj5lQvWMjhaWpjyzzaVaJVsoT7U1zrCDQFSeb5dTXzoX2e1cJSD
+	NCvLCtIg+jqLNMi8rI6gFch0amW/j1Pu8v0bFsuXqTTXBSw7BktnDy1/4kswtp1KWVoUYJp
+	aKrs2qrcrom
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
+X-QQ-RECHKSPAM: 0
 
-Thanks, but I have a patch for this.  See patch 9 here:
+On Thu, Aug 27, 2026 at 08:31:18AM +0100, David Howells wrote:
+> Thanks, but I have a patch for this.  See patch 9 here:
+>
+> https://lore.kernel.org/linux-fsdevel/20260825132045.1000787-1-dhowells@redhat.com/
+>
+> I don't want to call memcpy() like this just for the purposes of a tracepoint
+> that is almost certainly not actually be active.
+>
+> You're also moving buf->content into a variable rather than using it directly
+> - is there a reason for that?
 
-https://lore.kernel.org/linux-fsdevel/20260825132045.1000787-1-dhowells@red=
-hat.com/
+Thanks for pointing me to your patch.
 
-I don't want to call memcpy() like this just for the purposes of a tracepoi=
-nt
-that is almost certainly not actually be active.
+The local content variable was intended to avoid reading fields from the
+xattr buffer on the getxattr failure path, where the buffer contents may
+not be valid.
 
-You're also moving buf->content into a variable rather than using it direct=
-ly
-- is there a reason for that?
+Your patch already handles the short auxiliary data case by making room for
+the traced bytes and pre-clearing them, so please ignore my patch.  I'll
+drop it on my side.
 
-David
-
+Thanks,
+Yichong
