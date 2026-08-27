@@ -1,95 +1,180 @@
-Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C369B3B8130
-	for <netfs@lists.linux.dev>; Thu, 27 Aug 2026 08:05:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001413C5DA1
+	for <netfs@lists.linux.dev>; Thu, 27 Aug 2026 09:38:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787817944; cv=none; b=qbGc+jDI/9Gy486XelTkzKeKJGAtmrL+mJsfLlEg2nCJV1paP/2YFIzVkLgSndY+cYStx4HcbZKq88zHvdAg9nU0tzoJ80rEGRt7aWN9GnZhykBzxFZpJyCnfnHEFaH1VI6A/XKdQqVp5qsHjm9Pgp9dVGuE7CQANnesncjxxpY=
+	t=1787823533; cv=none; b=DZMb5lwrHOeCITS63Yn0kNLMfBZw7pHbGCe2uJQaLc8jZmmaw4ndNmTtIDJ09nTcifjbDl4JU0ZoyMkP8Um1e4lVlam1rPa9JwKZ7pW//SNhSScCfg6UKqjc6xwdnYFfh0tJbF5+lj0w1bOLicmSK4ux3zk8lVZnpKfxOAi22T8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787817944; c=relaxed/simple;
-	bh=9CVWleTaSrdVhxxRUhw4ZUJyn3Jg9XY0R1skItqGr00=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=djC4IX4U3VvimQAqwdYslPextCIYN5/+63ylZwMh9XPYMQpGqA7BnrZQ4nXA1si9kzecNBreMUH9pCaAWvA1BRh3BJtGpZKk+TS4gCtgzK0p9uDb7TKy097D0e/pEFHx3DaVswXfg5b51kPVerE7Rh3j9XkMyI78XLFiJE49aic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=n+NVd3oQ; arc=none smtp.client-ip=54.204.34.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+	s=arc-20240116; t=1787823533; c=relaxed/simple;
+	bh=xjb5979/QIug4PmWxujJWqtP1uK1jBCSYMrRh2EIv5s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=pVPI5rGHpcHXhUxa3dRfbFgCAY5Tbv632ZdRokES4mR+u6MclBS+rh/m4apVI/adjcUFz80+fMXzNPZVXPUpE0XwUm9BG5uW12bM6Lddj5RW56P8AWNepylFZpRByknZIViA14r4htJdY/AYIWF5hd4398XLMP04PRhVKRwnklE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XctONjFl; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="n+NVd3oQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1787817928;
-	bh=QoH1s/dQqMRnerLRulBMAWipEN11a7O5ilwtRmrJkUc=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=n+NVd3oQvZOwC8G3DpOMhkkwycbp4CFzffgq/6jMZjZXvo5C1xGurOMe3IlbLBmPP
-	 yG3Ds1ou4UaxCnD4fMIXDjTBc35qXt9PWEYw7cIJ0Q7s+XYZn0zn6a2x7p6fxcnscI
-	 FAhDmwXBkmqAJ6dRmoHWG84F1nO7xOJVhELU3amw=
-X-QQ-mid: zesmtpgz5t1787817922te8c9b670
-X-QQ-Originating-IP: mOk7kULihjnbT2BpzspnOIplwfDxYHLmryj7MxW7dqU=
-Received: from uniontech.com ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 27 Aug 2026 16:05:20 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 11851014657286288873
-From: Yichong Chen <chenyichong@uniontech.com>
-To: dhowells@redhat.com
-Cc: netfs@lists.linux.dev,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XctONjFl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1787823527;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=kULfUyQq7EqkKb8DB+KYwFU87ezqhr1+/Exo1PKTlDQ=;
+	b=XctONjFljpvlrIqcTZPd/KBbgn3qv5uFGADE25EAXvhN50fZumOL1RmwkAV2qmR+dRElAA
+	YuOeFf4NLSuGs6XCu3R2wqNh2cEtKzo/FHzTrAoE0o5GmJDtzJfbA2vm4u77JN7Dd4WrjE
+	nSbAb/fHjw4Ii0Qov7nEH0VSZya7cWw=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-556-Jlguz078NyalceJlyShADQ-1; Thu,
+ 27 Aug 2026 05:38:43 -0400
+X-MC-Unique: Jlguz078NyalceJlyShADQ-1
+X-Mimecast-MFC-AGG-ID: Jlguz078NyalceJlyShADQ_1787823521
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9C3561801344;
+	Thu, 27 Aug 2026 09:38:41 +0000 (UTC)
+Received: from warthog.com (unknown [10.22.88.47])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 92B661955F04;
+	Thu, 27 Aug 2026 09:38:38 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>
+Cc: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] cachefiles: fix out-of-bounds read in coherency trace
-Date: Thu, 27 Aug 2026 16:05:20 +0800
-Message-Id: <20260827080520.2410207-1-chenyichong@uniontech.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <1924988.1787815878@warthog.procyon.org.uk>
-References: <1924988.1787815878@warthog.procyon.org.uk>
+Subject: [PATCH v3 00/10] netfs, cachefiles: Miscellaneous fixes
+Date: Thu, 27 Aug 2026 10:38:15 +0100
+Message-ID: <20260827093828.1956211-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: T3xtH2pVG9wMduVp0Y1VQF5vivHHvq70uMPVCvXPN3A_1787823521
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: METBPFwEUDZ+UD7wuFRW848CLi3z1KE5VwH+3z1cLr+sdd1MLKsmeRSf
-	jsg7pG+94fGF0g9KuWADsaUfsYAwlja77dtBP9wjKvSlPu+VP0G/7gstdZr+tE8okNsGvDt
-	7ghUpKFoZj1aXCCkJGlGPOnjxkoSskIabr2shJh5v3d9tszLP84RIQj9M+FC82Vsn7rujoG
-	PbdR3eSYM7puZr+TU9dV0TYQI2yAB3puFfWJcvqZ1bLNPg4180o/AeCMxYBpW/WjUSotZMT
-	3ux6ISTlP66lKlWcGdUxcIx2LTqR3YjSVYElNgO90Gf2sNue2zZRwZoq44Z3uEuHIW8L1aN
-	e9N9aXSzdPJO1Tc+vR+CTzIsAfPgSry2c64vqRdE9FuUQCTQNZ9gmjsOfvMz2kjfOhjMdW9
-	W/P29whPCUWonxfnOw8iEvV4nFOMZKFIJ+2720LKLTeNBe9bxBHk0/24tJ5PEUd5GdhJDSd
-	j3iBc3o98WMD6aL5z1Gl7+5usM+0E1vB4bIOiYsRIqqrqYn+Ru0kEk1xJQNM9bzZLFWZkq+
-	MZRN/4Pf0xNhQ2aHD+TeVl5O7H6KwB5Cp/LDSwaNqMbGmsJaBPTnSoiK5M28j7C9gbsRV2f
-	TCMV/5wgllUvXMse0PnsGbRTSKtVIgW3zYunHLp3bLORPICh3+KPmXM1Krk+kst3C+Y0E2G
-	ZIphXnTrQYj2QDwz+5IgDMgMWlzCuSTxbvBy5iVNh3s+DfCZln9tM+tZX78Akzo4yTvymxU
-	OpV04LxNeJQHvzI9u4XXQf/itGeTCsKVYDw9fiCIy0A5hWzrLnMP5tEUBi0g+MQ8vcaIuDN
-	BSGtpbyETxxFnPa5SeHYElxsL/uqoGHbGNP8W3+Wlcc60ITJCTVAmuuW+SioWl1YiF0UJ7k
-	w8TBtjrqZK8mNTvNCTO7njYY9rmhKmyH4lEqv1WiQgEvUnc9BZ1OB7/GKgjB3yXdNoHovTi
-	xu5ZNWeDaEw0ESMSwVmJPj5lQvWMjhaWpjyzzaVaJVsoT7U1zrCDQFSeb5dTXzoX2e1cJSD
-	NCvLCtIg+jqLNMi8rI6gFch0amW/j1Pu8v0bFsuXqTTXBSw7BktnDy1/4kswtp1KWVoUYJp
-	aKrs2qrcrom
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
-X-QQ-RECHKSPAM: 0
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-On Thu, Aug 27, 2026 at 08:31:18AM +0100, David Howells wrote:
-> Thanks, but I have a patch for this.  See patch 9 here:
->
-> https://lore.kernel.org/linux-fsdevel/20260825132045.1000787-1-dhowells@redhat.com/
->
-> I don't want to call memcpy() like this just for the purposes of a tracepoint
-> that is almost certainly not actually be active.
->
-> You're also moving buf->content into a variable rather than using it directly
-> - is there a reason for that?
+Hi Christian,
 
-Thanks for pointing me to your patch.
+Here are some miscellaneous fixes for netfslib and one for cachefiles, if
+you could pick them up?
 
-The local content variable was intended to avoid reading fields from the
-xattr buffer on the getxattr failure path, where the buffer contents may
-not be valid.
+The first six are all in unbuffered/DIO write:
 
-Your patch already handles the short auxiliary data case by making room for
-the traced bytes and pre-clearing them, so please ignore my patch.  I'll
-drop it on my side.
+ (1) Fix an uninitialised return value from netfs_unbuffered_write().
+
+ (2) Fix the normal error return, preferring partial transfer size over
+     request error over immediate error (e.g. EINTR).
+
+ (3) Fix the async error return, preferring partial transfer size over
+     error.
+
+ (4) Fix the update of i_size on partial transfer ending in an error.
+
+ (5) Fix a subrequest leak in an error path.
+
+ (6) Fix the code to handle subrequest allocation failure.
+
+Then there's:
+
+ (7) Fix synchronisation issues with using a progressive rolling buffer for
+     readahead by fetching everything into it upfront so that the issues
+     don't arise.  Dropping the refs so acquired is deferred until after
+     I/O is begun.
+
+ (8) Change the marking of folios to be copied to the cache to be done
+     whilst subreqs are being issued rather than at the time they're
+     collected.  Whilst this is not strictly a fix, it means that the
+     collector thread doesn't need to try and keep track of that, which
+     means that delayed progress reporting will not be a problem in patch
+     (9).
+
+ (9) Fix read progress reporting to avoid 64-bit tearing on a 32-bit
+     machine.  This has been modified from the previous submission as part
+     of a different series to take account of a sashiko reported issue[1].
+
+(10) Fix a potential UAF/KASAN warning reported by sashiko[1] in cachefiles
+     in which the coherency data buffer is cast to a __be64* and
+     dereferenced in a tracepoint - even though it might not be at least
+     that large (or aligned).
+
+The patches can also be found here:
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-fixes
 
 Thanks,
-Yichong
+David
+
+Changes
+=======
+ver #3)
+- Fixed a number of issues reported by Sashiko[3]:
+  - Fixed netfs_unbuffered_write() to return -ENOMEM to async writes too.
+  - Added a patch to preload the entire readahead folio collection up front
+    to avoid producer-consumer synchronisation issues.
+  - Added a patch to premark buffered read folios with whether or not
+    they're going to require caching so that the read-progress fix works
+    correctly.
+
+ver #2)
+- Imported a patch to add subreq alloc failure handling in unbuffered/DIO
+  write.
+- Fixed a number of issues reported by Sashiko[2]:
+  - Added four patches to fix bugs in unbuffered/DIO write.
+  - Added a patch to fix readahead rolling buffer issues.
+  - Fixed the cachefiles xattr stuff to use max() not min() when
+    allocating.
+  - Fixed the cachefiles trace comment with regard to alignment.
+  - Fixed netfs_read_set_unlock_at() to use folioq_count(), not
+    folio_nr_slots().
+
+[1] https://sashiko.dev/#/patchset/20260810144746.574036-1-dhowells%40redhat.com
+[2] https://sashiko.dev/#/patchset/20260824120224.504575-1-dhowells%40redhat.com
+[3] https://sashiko.dev/#/patchset/20260825132045.1000787-1-dhowells%40redhat.com
+
+David Howells (8):
+  netfs: Fix unbuffered/DIO write partial transfer error return
+  netfs: Fix error vs transferred passed to ->ki_complete()
+  netfs: Fix i_size update for partial transfer
+  netfs: Fix subreq ref leak
+  netfs: Fix readahead synchronisation issues by loading all folios
+    upfront
+  netfs: Mark folios with COPY_TO_CACHE whilst issuing subreqs
+  netfs: Fix read progress reporting
+  cachefiles: Fix potential UAF/KASAN warning
+
+Edward Adam Davis (1):
+  netfs: break unbuffered write when netfs_alloc_subrequest() fails
+
+Karl Mehltretter (1):
+  netfs: Fix uninitialized return value in netfs_unbuffered_write()
+
+ fs/cachefiles/xattr.c             |  16 +--
+ fs/netfs/buffered_read.c          | 165 ++++++++++++++++++++++--------
+ fs/netfs/direct_write.c           |  31 ++++--
+ fs/netfs/internal.h               |   2 +
+ fs/netfs/misc.c                   |  19 ++++
+ fs/netfs/objects.c                |  32 +++---
+ fs/netfs/read_collect.c           | 103 ++++++++++++-------
+ fs/netfs/read_pgpriv2.c           |  13 ++-
+ fs/netfs/read_retry.c             |   7 ++
+ fs/netfs/read_single.c            |   2 +
+ fs/netfs/rolling_buffer.c         |  81 +++++++++------
+ fs/netfs/write_issue.c            |   2 +
+ include/linux/netfs.h             |   5 +-
+ include/linux/rolling_buffer.h    |   6 +-
+ include/trace/events/cachefiles.h |  19 +++-
+ include/trace/events/netfs.h      |  30 +++++-
+ 16 files changed, 381 insertions(+), 152 deletions(-)
+
