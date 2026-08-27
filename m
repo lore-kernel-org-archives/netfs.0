@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE2843C05E
-	for <netfs@lists.linux.dev>; Thu, 27 Aug 2026 09:39:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB7543BDDD
+	for <netfs@lists.linux.dev>; Thu, 27 Aug 2026 09:39:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787823548; cv=none; b=XpimAE9ffJQdWvbCJAtvwI3aimeM65Qu8BgyfjYLNlvfRjyG1yaSDSv+rVdp2dTscBKgmQlc/WyNQLIIT97/9sxld/KCkMZeBd0BDji1kEsE6i+bydFXCJzJmcW5aQrnSo2fPeOmjStFlpPBsS+IENvkoQJf2nowXlm9c8VKQyU=
+	t=1787823549; cv=none; b=PmY3pjDNAm3iLKKhfgMoMurI6DLkRvbRMwWdtU+5/B8bGR+zMy2718ppazvUoFWniNJEqXqm8KbsJ6IsjVSlwiQdSNoWpAb3gkE/q5sFpW/5K24ud6IkSlzgnFIsw7DwRVUD1Q0Q2vwFdecV/MbaM3GllVvCgeH2bKsK9ojjHW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787823548; c=relaxed/simple;
-	bh=IizGxEfTjfhZJVkwhDscGC2P/a5HlqU4Kr8qrccX6z4=;
+	s=arc-20240116; t=1787823549; c=relaxed/simple;
+	bh=TbyvXkUkP/iFkWLvIM6Uiy2D1Zai+6kwljmDrYii1Qs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=VuVPE8wK7786xBVA/i/DVx+ssw2I8n3gLB5EF68vhZ6BRUpj493JBitp50ke68VhRrsq2TEcShCLqz6mHicGxmUlJT0Y6FFIUO+b6Cy12mnWg4qDFo6WpHTmmCMjz+wyEvBca4XyL7fPSlw3MtFOJ5IrHfsgUdWhTYmklGZyVyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XDzZrjQU; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:content-type; b=mM0R352a+kcSKhFjVckuLCXAyqrsyqoR30ldf0/gzxIgotwtlglNR+BYwSGWrMnwuSRwO0t7viaoDwHzRq4R4ptXW5VIgHJ3+H/PyPYQ5OSTQXPc4B+hjF5AnRCTDCIoJGSjOMFOQtYu5mo4e8miQx39/yrdXbbmGptN3LfOBK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NPnk2uNu; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XDzZrjQU"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NPnk2uNu"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1787823540;
+	s=mimecast20190719; t=1787823541;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bPPEzvtBLG/nC8I1Bmob/2jRQbbQ9nOnJ6K+0h7yLO8=;
-	b=XDzZrjQU/dfmtwc3ZeBcsEoj7t5gXJOCD299YjfRohy7q3tYsiQimsVNr7QxNCVpv1M51Y
-	rB5HKqHLzuGG4GOIOr0JQxxhBRha0lqVyLAkYjMuFgIiOe7VCeSC25Mi20myEVgTIWe70s
-	xYQN6Z6JWtfkZoVDikbCtrPNF+DFogQ=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=r3vRJq2sMz9APK4rZhV/g2MBBVrXWqzKAsYSWHku/NM=;
+	b=NPnk2uNudbWx3HkCu5BN+AkG+sXq/UlxFDyh4bwXp33nEFnktgWYCIHSb37v56eho7n193
+	MWQmXG8iJdnkZpnWNqZTsQ5HsyUPvQN8MSCOCW9A42Ea1TAxpxme+OX2+tYQDQfLfN+vtb
+	R+b/pfkBPCW3euL845EmoFLNmeGhuog=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-277-lZ5oMDmuM-yPijVqlPdCLA-1; Thu,
- 27 Aug 2026 05:38:55 -0400
-X-MC-Unique: lZ5oMDmuM-yPijVqlPdCLA-1
-X-Mimecast-MFC-AGG-ID: lZ5oMDmuM-yPijVqlPdCLA_1787823533
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-682-NSYaUZP2NiqDaqXLYIHHkg-1; Thu,
+ 27 Aug 2026 05:38:59 -0400
+X-MC-Unique: NSYaUZP2NiqDaqXLYIHHkg-1
+X-Mimecast-MFC-AGG-ID: NSYaUZP2NiqDaqXLYIHHkg_1787823538
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 63FB81954B1C;
-	Thu, 27 Aug 2026 09:38:53 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4879718052CA;
+	Thu, 27 Aug 2026 09:38:57 +0000 (UTC)
 Received: from warthog.com (unknown [10.22.88.47])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 42CAB1800346;
-	Thu, 27 Aug 2026 09:38:51 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BB0B71800346;
+	Thu, 27 Aug 2026 09:38:54 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>
 Cc: David Howells <dhowells@redhat.com>,
@@ -52,9 +52,9 @@ Cc: David Howells <dhowells@redhat.com>,
 	ceph-devel@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 03/10] netfs: Fix error vs transferred passed to ->ki_complete()
-Date: Thu, 27 Aug 2026 10:38:18 +0100
-Message-ID: <20260827093828.1956211-4-dhowells@redhat.com>
+Subject: [PATCH v3 04/10] netfs: Fix i_size update for partial transfer
+Date: Thu, 27 Aug 2026 10:38:19 +0100
+Message-ID: <20260827093828.1956211-5-dhowells@redhat.com>
 In-Reply-To: <20260827093828.1956211-1-dhowells@redhat.com>
 References: <20260827093828.1956211-1-dhowells@redhat.com>
 Precedence: bulk
@@ -64,14 +64,18 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: GUpBPSSJLoaW2Mntby4fAG6ogWKH8QjGULRfGN1OIgE_1787823533
+X-Mimecast-MFC-PROC-ID: nZKYUuIZH3nynLTS6CO7MkVJgy8JIryOq1jPOsCcAqw_1787823538
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
 Fix netfs_unbuffered_write_done() to pass the amount written to
-->ki_complete() rather than the error in the event of a partially complete
-transfer.
+netfs_update_i_size() in the event of a partial transfer that ends in an
+error.
+
+That said, it might be better for the filesystem to mark the inode data as
+invalid and recheck it in case something like a network error occurred that
+prevented the reply from the server from being received.
 
 Fixes: a0b4c7a49137e ("netfs: Fix unbuffered/DIO writes to dispatch subrequests in strict sequence")
 Link: https://sashiko.dev/#/patchset/20260824120224.504575-1-dhowells%40redhat.com
@@ -84,16 +88,16 @@ cc: linux-fsdevel@vger.kernel.org
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
-index 544a4243fc59..f7d7e1b54653 100644
+index f7d7e1b54653..f33ccddaa826 100644
 --- a/fs/netfs/direct_write.c
 +++ b/fs/netfs/direct_write.c
-@@ -51,7 +51,7 @@ static void netfs_unbuffered_write_done(struct netfs_io_request *wreq)
- 		wreq->iocb->ki_pos += written;
- 		if (wreq->iocb->ki_complete) {
- 			trace_netfs_rreq(wreq, netfs_rreq_trace_ki_complete);
--			wreq->iocb->ki_complete(wreq->iocb, wreq->error ?: written);
-+			wreq->iocb->ki_complete(wreq->iocb, written ?: wreq->error);
- 		}
- 		wreq->iocb = VFS_PTR_POISON;
- 	}
+@@ -21,7 +21,7 @@ static void netfs_unbuffered_write_done(struct netfs_io_request *wreq)
+ 	/* Okay, declare that all I/O is complete. */
+ 	trace_netfs_rreq(wreq, netfs_rreq_trace_write_done);
+ 
+-	if (!wreq->error)
++	if (wreq->transferred)
+ 		netfs_update_i_size(ictx, &ictx->inode, wreq->start, wreq->transferred);
+ 
+ 	if (wreq->origin == NETFS_DIO_WRITE &&
 
