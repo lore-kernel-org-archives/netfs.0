@@ -1,47 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB14D4A4419;
-	Mon, 31 Aug 2026 13:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D3353B5FE;
+	Mon, 31 Aug 2026 13:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788183789; cv=none; b=t5RVRQGvtJHaJayLLlGOHcQxpzuPLRNPRnjbOOGxFCoPbP27GJRGAZl2pVbf+361Z27Vm6ljJMQNOGDU0AbQbnb1qDmUCj8nTXeZrHUPmERDMh/6qJGt/HWFqBeVSxlYTPPSM5Tt1kpryGobm5bxhvxITPx8ovyvW381hw4qrRw=
+	t=1788183938; cv=none; b=fLrpkXL+5XqMSr2ykja8KLqHjdTSpq8yEOa7V6khDMnQDafE3PFZ3rK6UHEzBOVtcWWg+U/PZOlXkdawsxy/YdXA5IfSwbH5Iozg2QnoQcCr/0oekcDKCG/mZ0tSxuuDs8UGOpXU5GJTBezX/nx3tO6F9KvMg/vMrIvjSgMsFCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788183789; c=relaxed/simple;
-	bh=xstikX929/IDylXCPciXyPDe9vooOsgX0CTP/SkyteI=;
+	s=arc-20240116; t=1788183938; c=relaxed/simple;
+	bh=BWronw7LbUR+XzbnlxwneCzdZptZ7YifxLAIFekZ6h0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JdrD7zHx3Pn7fCZy432NEqhw0AZoLC0tIuqMdfmOJyzMJJJnuBKZrkrTn0yw3M7GeS6x1UXzfbW8/bs390uNN9fIVgSJ0Up/JJZpdhWLHet/QYy9l0VPPPWGkU32Z4wQLAIJkdwbV7DocvtolD94/VNtq0klK4R0vdlZO/fS5lU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=arpHFTzD; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=PAucpac3eMUskxjenHDp67yUwkpQlXzq1gqQGVrvBr9Idc1zDURIKf86OVKl43sU/YiaZp90aHrK9zg41yCK0fY4HWIu4YskrB06ajwwdZy4iRN2KdMxcVLOtHAI6Ac8zvUw+eMw2LsoVKb6INUcbarAjF8Iy7yZyxyf43LxC0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JVg88Wpx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="arpHFTzD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FFFC1F00A3D;
-	Mon, 31 Aug 2026 13:43:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JVg88Wpx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD041F00ACA;
+	Mon, 31 Aug 2026 13:45:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788183786;
-	bh=F57cKwWOyxk6wWEiBw0cUMp8iuu++NR1laMxD6Lax4s=;
+	s=k20260515; t=1788183935;
+	bh=nUjakMz7XCw/mM8U//7fZqVX+Mh5FMZMN57/lTdmwBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=arpHFTzDPX2CmFjYNzExp9yjKMtv2dF56Dl232pE+fqfmtPan6iABrFZ9gcbScShf
-	 Nzx4VUzJx7VjXyC9gv1BZ9oVrS6pv8L6aG08G9FVZkGb+oUmB5HpSLCZJcErZ0G0Bk
-	 SOqlbFoZuRfRM5+jEIPzZKCsasLutLqS6166lvPfhEQ5n5YCn24+QMTMoLXFbCtz0a
-	 /wYuwCWtvviVANpO+x57B1OaOE0pazxZdWdogmMkJy2g0NIO0K7ldbK4MoSkzVtmBJ
-	 L/QxEjuUIPZrJ9aLvEEP3sPfm9cZh1FAGok4MjEwWSKtpHWcE7ZtW0WpTe37TVWrd+
-	 5Inclc1MlOumw==
+	b=JVg88Wpx8v2sFH3iGgMTEuG0rftKS1DzSraoRRSNe2Hqxr4Z29+qGzZss57ujRwO2
+	 8XwLces+tJdaK2uvv6sBZzgTnf1lqMkGXlnDB7ZPTt+s7SpbAVOmLhu4kZ+N4RyRiZ
+	 RhINA8Zj1S9dT3jfWsx/qfty4INFbVamxWS2S1hBXmuKJjGYxcf9YihvfE5QGuDmwv
+	 TktCsSsbaSvVYdgMFSPHv5iLHwQCXNlnA5QTAt3bWQOq1U9bwSilwTwvaveatIIwgI
+	 UymCWgshCyGTlOGbFz5y+Q/A6I9nnAxqngnXkPPPRuwdSAA6HJ5ZmlrnvQcbu+2bUp
+	 ob6Chckp3rRSQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
 Cc: David Howells <dhowells@redhat.com>,
-	syzbot+3c74b1f0c372e98efc32@syzkaller.appspotmail.com,
+	Marc Dionne <marc.dionne@auristor.com>,
 	Paulo Alcantara <pc@manguebit.org>,
-	hongao <hongao@uniontech.com>,
-	ChenXiaoSong <chenxiaosong@chenxiaosong.com>,
 	netfs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18] netfs: Fix DIO write retry for filesystems without a ->prepare_write()
-Date: Mon, 31 Aug 2026 09:25:31 -0400
-Message-ID: <20260831133314.4125787-303-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-6.12] netfs: Fix decision whether to disallow write-streaming due to fscache use
+Date: Mon, 31 Aug 2026 09:26:58 -0400
+Message-ID: <20260831133314.4125787-390-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260831133314.4125787-1-sashal@kernel.org>
 References: <20260831133314.4125787-1-sashal@kernel.org>
@@ -59,27 +57,40 @@ Content-Transfer-Encoding: 8bit
 
 From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 64f04f9789237728be4e1836151848af350d1374 ]
+[ Upstream commit b61cbeadaa83a712afb2f759aa7e65d43cdef322 ]
 
-Fix netfs_unbuffered_write() so that it doesn't re-issue a write twice when
-the filesystem doesn't have a ->prepare_write().  The resetting of the
-iterator and the call to netfs_reissue_write() should just be removed as
-almost everything it does is done again when the loop it's in goes back to
-the top.
+netfs_perform_write() buffers data by writing it into the pagecache for
+later writeback.  If the folio it wants to write to isn't present, it uses
+"write streaming" in which is will store partial data in a non-uptodate,
+but dirty folio.
 
-It does, however, still need the IN_PROGRESS flag setting, so that (and the
-stat inc) are moved out of the if-statement.
+However, when fscache is in use, this is a potential problem as writes to
+the cache have to be aligned to the cache backend's DIO granularity, and so
+netfs_perform_write() attempts to suppress write-streaming in such a case,
+requiring the folio content to be fetched first unless the entire folio is
+going to be overwritten.  This allows the content to be written to the
+cache too.
 
-Further, the MADE_PROGRESS flags should be cleared and wreq->transferred
-should be updated, so fix those too.
+Unfortunately, the test netfs_perform_write() uses isn't correct because it
+doesn't take into account the fact that the object lookup is asynchronous
+and farmed off to a work queue, so there's a short window in which the
+cache is doing a lookup but the test fails because the answer is undefined.
 
-Reported-by: syzbot+3c74b1f0c372e98efc32@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=3c74b1f0c372e98efc32
+This can be triggered by the generic/464 xfstest, and causes a warning to
+be emitted in cachefiles (in code not yet upstream) because it sees a write
+that doesn't have its bounds rounded out to DIO alignment.
+
+Fix this by changing the condition to whether FSCACHE_COOKIE_IS_CACHING is
+set on a cookie rather than whether the cookie is marked enabled.  Note
+that this is really just a hint as to whether we allow write streaming or
+not and no other aspects of the cookie or cache object are accessed.
+
+Also apply the same fix to netfs_write_begin().
+
+Reported-by: Marc Dionne <marc.dionne@auristor.com>
 Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260625140640.3116900-16-dhowells@redhat.com
+Link: https://patch.msgid.link/20260625140640.3116900-2-dhowells@redhat.com
 cc: Paulo Alcantara <pc@manguebit.org>
-cc: hongao <hongao@uniontech.com>
-cc: ChenXiaoSong <chenxiaosong@chenxiaosong.com>
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
@@ -88,408 +99,424 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
 
 LLM Generated explanations, may be completely bogus:
 
-# Backport Analysis: `netfs: Fix DIO write retry for filesystems without
-a ->prepare_write()`
+## Phase 1: Commit Message Forensics
 
-**Local tree:** `v6.18.44` (6.18.y stable) — `VERSION = 6`, `PATCHLEVEL
-= 18`, `SUBLEVEL = 44`
+### Step 1.1: Subject Line
+**Record:** `[netfs] [fix] decision whether to disallow write-streaming
+due to fscache use` — subsystem is netfs (network filesystem library /
+fscache integration); action verb is "Fix"; intent is correcting the
+condition that decides when write-streaming must be suppressed for
+fscache DIO alignment.
+
+### Step 1.2: Commit Message Tags
+**Record:**
+- **Reported-by:** Marc Dionne `<marc.dionne@auristor.com>` — real-world
+  reporter (AuriStor/AFS ecosystem)
+- **Signed-off-by:** David Howells `<dhowells@redhat.com>` — author,
+  netfs/fscache maintainer
+- **Signed-off-by:** Christian Brauner (Amutable) `<brauner@kernel.org>`
+  — VFS maintainer merge
+- **Link:**
+  https://patch.msgid.link/20260625140640.3116900-2-dhowells@redhat.com
+- **cc:** Paulo Alcantara, netfs@lists.linux.dev, linux-
+  fsdevel@vger.kernel.org
+- No Fixes:, Cc: stable@vger.kernel.org, Tested-by:, Reviewed-by:, or
+  syzbot tags
+- Notable: single real-world reporter; patch is part of a June 2026
+  netfs fix series (sibling patches already in this tree)
+
+### Step 1.3: Commit Body Analysis
+**Record:**
+- **Bug:** `netfs_perform_write()` and `netfs_write_begin()` use
+  `netfs_is_cache_enabled()` to decide whether to suppress write-
+  streaming when fscache is active. That helper requires
+  `cookie->cache_priv`, but fscache object lookup is asynchronous
+  (queued to a worker). During the lookup window,
+  `FSCACHE_COOKIE_IS_CACHING` is already set but `cache_priv` is not yet
+  populated.
+- **Symptom:** Write-streaming proceeds when it should not; cachefiles
+  sees writes whose bounds are not rounded to DIO granularity.
+  Reproducible via xfstests `generic/464`; triggers a warning in
+  cachefiles (per commit message).
+- **Root cause:** Test checks "cache enabled" (needs `cache_priv`)
+  instead of "cache is being set up / caching"
+  (`FSCACHE_COOKIE_IS_CACHING`).
+- **Fix:** New `netfs_is_cache_maybe_enabled()` checks
+  `FSCACHE_COOKIE_IS_CACHING`; used in both write paths.
+
+### Step 1.4: Hidden Bug Fix Detection
+**Record:** Not disguised — this is an explicit correctness fix for a
+race between async fscache lookup and write-streaming policy. The commit
+message clearly describes mechanism, trigger, and failure mode.
 
 ---
 
-## PHASE 1: COMMIT MESSAGE FORENSICS
+## Phase 2: Diff Analysis
 
-### Step 1.1: Parse the subject line
-**Record:** `[netfs]` `[Fix]` — Correct DIO/unbuffered write retry when
-the filesystem has no `->prepare_write()` hook.
-
-### Step 1.2: Parse all commit message tags
+### Step 2.1: Change Inventory
 **Record:**
-| Tag | Value |
-|-----|-------|
-| Reported-by | syzbot+3c74b1f0c372e98efc32@syzkaller.appspotmail.com |
-| Closes | https://syzkaller.appspot.com/bug?extid=3c74b1f0c372e98efc32
-|
-| Signed-off-by | David Howells \<dhowells@redhat.com\> |
-| Link |
-https://patch.msgid.link/20260625140640.3116900-16-dhowells@redhat.com |
-| cc | Paulo Alcantara, hongao, ChenXiaoSong, netfs@lists.linux.dev,
-linux-fsdevel@vger.kernel.org |
-| Signed-off-by | Christian Brauner (Amutable) \<brauner@kernel.org\> |
+- `fs/netfs/internal.h`: +12 lines (new `netfs_is_cache_maybe_enabled()`
+  inline)
+- `fs/netfs/buffered_write.c`: 1 line changed (`netfs_is_cache_enabled`
+  → `netfs_is_cache_maybe_enabled`)
+- `fs/netfs/buffered_write.c` function: `netfs_perform_write()`
+- `fs/netfs/buffered_read.c`: 1 line changed; function:
+  `netfs_write_begin()`
+- **Scope:** Single-subsystem, surgical fix (~16 lines total)
 
-**Notable patterns:** syzbot report (strong YES signal). No `Fixes:` tag
-(expected for manual review). No `Cc: stable` tag (not a negative
-signal).
-
-### Step 1.3: Analyze commit body
+### Step 2.2: Code Flow Change
 **Record:**
-- **Bug:** On retry in `netfs_unbuffered_write()`, when
-  `stream->prepare_write` is NULL, the code calls
-  `netfs_reissue_write()` and then the loop iterates again and issues
-  the write a second time.
-- **Symptom:** Double write issuance, incorrect progress accounting
-  (`wreq->transferred` not updated on partial retry), stale
-  `NETFS_SREQ_MADE_PROGRESS` flag.
-- **Root cause:** The retry path incorrectly mirrored `write_retry.c`’s
-  `netfs_reissue_write()` pattern, but `netfs_unbuffered_write()`’s loop
-  already re-issues at the top on the next iteration.
-- **Version info:** None explicit; bug is tied to code introduced in
-  6.18.y backports.
+- **Hunk 1 (`buffered_write.c`):** Before: if `cookie->cache_priv` unset
+  during async lookup, streaming write allowed on non-uptodate folio.
+  After: if `FSCACHE_COOKIE_IS_CACHING` is set (set at lookup start in
+  `fscache_begin_lookup()`), prefetch path is taken instead of streaming
+  write.
+- **Hunk 2 (`buffered_read.c`):** Before: during lookup window,
+  `!netfs_is_cache_enabled()` is true, so `netfs_skip_folio_read()` may
+  skip required preload of cache granule. After:
+  `!netfs_is_cache_maybe_enabled()` is false during lookup, so
+  read/preload proceeds correctly.
+- **Hunk 3 (`internal.h`):** Adds helper using only
+  `fscache_cookie_valid()` + `FSCACHE_COOKIE_IS_CACHING` bit — no
+  `cache_priv` dereference.
 
-### Step 1.4: Detect hidden bug fixes
-**Record:** Yes — despite “fix retry logic” wording, this is a real
-memory-safety and correctness bug: syzbot reports KASAN slab-use-after-
-free in `netfs_unbuffered_write()`, reachable from userspace `write()`
-via 9p.
+### Step 2.3: Bug Mechanism
+**Record:** **Category:** Race condition / logic correctness bug in
+fscache integration.
+- `fscache_begin_lookup()` sets `FSCACHE_COOKIE_IS_CACHING` immediately
+  (line 560 of `fscache_cookie.c`)
+- `cookie->cache_priv` is set later in `cachefiles_lookup_cookie()`
+  worker (line 193 of `fs/cachefiles/interface.c`)
+- Old `netfs_is_cache_enabled()` requires `cache_priv`, so returns false
+  during the lookup race window
+- Result: write-streaming with unaligned partial folio data incompatible
+  with fscache DIO requirements
+
+### Step 2.4: Fix Quality
+**Record:** Fix is minimal and logically sound — uses the same
+`FSCACHE_COOKIE_IS_CACHING` flag that `fscache_begin_cookie_access()`
+relies on. Commit notes this is intentionally a "hint" with no other
+cookie state accessed. Low regression risk; aligns with already-
+backported sibling fix `8ab75e445c161` from the same series.
 
 ---
 
-## PHASE 2: DIFF ANALYSIS
+## Phase 3: Git History Investigation
 
-### Step 2.1: Inventory changes
-**Record:**
-- **Files:** `fs/netfs/direct_write.c` only (+6 / -10 lines, net −4)
-- **Function:** `netfs_unbuffered_write()`
-- **Scope:** Single-file surgical fix in retry path
+### Step 3.1: Blame
+**Record:** `netfs_is_cache_enabled()` and its use in
+`buffered_write.c`/`buffered_read.c` introduced in `5d324e5159d9e` (6.18
+merge, Nov 2025). The async lookup path setting
+`FSCACHE_COOKIE_IS_CACHING` before `cache_priv` is populated has been
+present since the fscache rewrite landed in 6.18. Bug present in this
+tree since 6.18.
 
-### Step 2.2: Code flow change per hunk
-**Record:**
+### Step 3.2: Fixes: Tag
+**Record:** No Fixes: tag present — N/A.
 
-| Hunk | Before → After |
-|------|----------------|
-| Partial transfer | `iov_iter_advance()` only → also `wreq->transferred
-+= subreq->transferred` |
-| Flag clearing | No `MADE_PROGRESS` clear →
-`__clear_bit(NETFS_SREQ_MADE_PROGRESS, ...)` added |
-| prepare_write branch | `if/else`: else calls `netfs_reset_iter()` +
-`netfs_reissue_write()` → unified path: optional `prepare_write()`,
-always set `IN_PROGRESS` + stat |
+### Step 3.3: Related File History
+**Record:** Recent netfs fixes in this tree include multiple stable
+backports from the same June 2026 series:
+- `8ab75e445c161` — async cache object creation in
+  `netfs_create_write_req()` (patch -3 of series)
+- `7838131e296df`, `1bb33d959aabc`, `a9b89752c2726` — writeback fixes
+  from same msgid thread
+- Target commit `046acff3d6cd0` (upstream `b61cbeadaa83`) is patch -2;
+  **not yet in this tree**
+- Standalone fix — no "patch X/Y" dependency; sibling -3 already present
 
-**Affected path:** Retry branch when `NETFS_SREQ_NEED_RETRY` is set
-(error recovery during unbuffered/DIO writes).
+### Step 3.4: Author Context
+**Record:** David Howells is the netfs/fscache subsystem
+author/maintainer. Multiple related netfs stable fixes from him are
+already in 6.18.44.
 
-### Step 2.3: Bug mechanism
-**Record:**
-- **Category:** Logic/correctness bug with memory safety consequences
-  (UAF); also reference-counting/lifecycle corruption from double issue.
-- **Mechanism:** `netfs_reissue_write()` calls `netfs_do_issue_write()`
-  → `stream->issue_write()`. The loop then continues with `subreq` still
-  non-NULL, skips `netfs_prepare_write()`, and calls
-  `stream->issue_write(subreq)` again at line 134. This corrupts
-  subrequest lifecycle and can free the subrequest while the loop still
-  holds a pointer to it (matching syzbot’s alloc/free/read pattern).
-
-### Step 2.4: Fix quality
-**Record:** Obviously correct. The `prepare_write` path already worked
-this way (set up state, loop back, issue once). The fix unifies the
-no-`prepare_write` path to match. Minimal regression risk; no new APIs
-or locking changes.
+### Step 3.5: Dependencies
+**Record:** No hard prerequisites beyond code already in 6.18.44.
+`FSCACHE_COOKIE_IS_CACHING` exists in `include/linux/fscache.h` (bit 2).
+`git apply --check` on the patch succeeds cleanly against HEAD.
 
 ---
 
-## PHASE 3: GIT HISTORY INVESTIGATION
+## Phase 4: Mailing List and External Research
 
-### Step 3.1: Blame changed lines
-**Record:**
-- Retry infrastructure: `72d08d2839649` (upstream `a0b4c7a49137`, Feb
-  2026) — “Fix unbuffered/DIO writes to dispatch subrequests in strict
-  sequence”
-- Buggy `else { netfs_reissue_write() }` branch: `a4d1b4ba9754b`
-  (upstream `e9075e420a1e`, Mar 2026) — “Fix NULL pointer dereference in
-  netfs_unbuffered_write() on retry”
-- Both commits are ancestors of HEAD in this tree.
-
-### Step 3.2: Follow Fixes: tag
-**Record:** N/A — no `Fixes:` tag in commit message. The bug was
-introduced by `a4d1b4ba9754b`, which attempted to fix an earlier NULL
-deref (syzbot `7227db0f`) but introduced the double-issue/UAF.
-
-### Step 3.3: File history for related changes
-**Record:** Recent `direct_write.c` history in this tree:
-- `f0035858dfb23` — stream->front removal
-- `a4d1b4ba9754b` — NULL deref fix (introduced this bug)
-- `72d08d2839649` — sequential DIO write dispatch
-
-Standalone fix; not part of a multi-commit dependency chain for this
-tree.
-
-### Step 3.4: Author's other commits
-**Record:** David Howells is the netfs subsystem author. He authored
-`72d08d2839649` (the retry loop) and this follow-up fix. Deepanshu
-Kartikey authored the incomplete `a4d1b4ba9754b` fix.
-
-### Step 3.5: Prerequisites
-**Record:**
-- **Required in tree:** `72d08d2839649` (retry loop) and `a4d1b4ba9754b`
-  (if/else structure) — both present.
-- **Fix commit `64f04f978923`:** NOT in HEAD.
-- **Standalone:** Yes — only modifies existing retry path; cherry-pick
-  applies cleanly.
-
----
-
-## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
-
-### Step 4.1: Original patch discussion
-**Record:**
-- `b4 dig -c 64f04f978923`: found at
-  https://patch.msgid.link/20260625140640.3116900-16-dhowells@redhat.com
-- Subject: `[PATCH v3 15/15] netfs: Fix DIO write retry for filesystems
-  without a ->prepare_write()`
-- Part of a 15-patch netfs series; this patch is self-contained in
-  `direct_write.c`.
-- Lore page blocked by bot protection; could not read thread body.
+### Step 4.1: Original Discussion
+**Record:** `b4 dig -c 046acff3d6cd0` →
+https://patch.msgid.link/20260625140640.3116900-2-dhowells@redhat.com.
+`b4 dig -a` returned only one revision (no multi-version history in
+cache). Lore fetch blocked by Anubis bot protection — full thread
+content UNVERIFIED.
 
 ### Step 4.2: Reviewers
-**Record:** `b4 dig -w` CC list includes David Howells, Christian
-Brauner, Paulo Alcantara, Christoph Hellwig, netfs@lists.linux.dev,
-linux-fsdevel@vger.kernel.org, syzbot address. Appropriate subsystem
-coverage.
+**Record:** `b4 dig -w` returned same URL only; detailed recipient list
+UNVERIFIED. Merged by Christian Brauner; CC'd netfs and linux-fsdevel
+lists.
 
-### Step 4.3: Bug report
-**Record:** https://syzkaller.appspot.com/bug?extid=3c74b1f0c372e98efc32
-- **Type:** KASAN: slab-use-after-free Read in `netfs_unbuffered_write`
-- **Status:** Fixed upstream 2026/07/29
-- **Priority:** high
-- **Trigger:** `ksys_write` → `v9fs_file_write_iter` →
-  `netfs_unbuffered_write_iter` → `netfs_unbuffered_write`
-- **AI assessment:** Exploitable, unprivileged, userspace-triggerable
-- **8 crashes** over ~75 days
+### Step 4.3: Bug Report
+**Record:** Reported-by Marc Dionne (AuriStor). Trigger: xfstests
+`generic/464`. Failure: cachefiles warning on non-DIO-aligned write
+bounds. No syzbot/bugzilla link.
 
-### Step 4.4: Related patches/series
-**Record:** Patch 15/15 of v3 netfs series. Other series patches (e.g.,
-“Fix oops in write-retry from mis-resetting the subreq iterator”) are
-NOT in this tree, but this patch does not depend on them — verified by
-clean cherry-pick.
+### Step 4.4: Related Patches
+**Record:** Same series (`20260625140640.3116900-*`): patches -3, -4,
+-5, -6 already backported to this tree; patch -2 (this commit) is the
+missing piece addressing write-streaming during async lookup.
 
-### Step 4.5: Stable mailing list
-**Record:** Could not search lore stable list (bot protection). No
-evidence against stable nomination.
+### Step 4.5: Stable List
+**Record:** UNVERIFIED — could not search lore stable list due to bot
+protection. Commit was committed to stable queue by Sasha Levin on a
+separate branch (`autosel~217`) but is NOT in current 6.18.44 HEAD.
 
 ---
 
-## PHASE 5: CODE SEMANTIC ANALYSIS
+## Phase 5: Code Semantic Analysis
 
-### Step 5.1: Key functions
-**Record:** `netfs_unbuffered_write()` (modified),
-`netfs_reissue_write()` (no longer called from here on retry)
+### Step 5.1: Modified Functions
+**Record:** `netfs_is_cache_maybe_enabled()` (new),
+`netfs_perform_write()`, `netfs_write_begin()`
 
 ### Step 5.2: Callers
 **Record:**
-- `netfs_unbuffered_write_iter_locked()` ←
-  `netfs_unbuffered_write_iter()`
-- Callers of `netfs_unbuffered_write_iter()`:
-  - `fs/9p/vfs_file.c` (no `prepare_write` — **affected**)
-  - `fs/smb/client/file.c` (has `cifs_prepare_write` — uses
-    `prepare_write` path, not affected by this specific bug)
-  - `fs/netfs/buffered_write.c` (fallback path)
+- `netfs_perform_write()` ← `netfs_buffered_write_iter_locked()` ←
+  `netfs_file_write_iter()`
+- `netfs_file_write_iter` used by AFS (`fs/afs/file.c`) and CIFS/SMB
+  (`fs/smb/client/cifsfs.c`)
+- `netfs_write_begin()` is deprecated but still present; called from
+  legacy write_begin paths
+- Reachable from normal userspace `write()`/`pwrite()` syscalls on
+  fscache-enabled network filesystems
 
-### Step 5.3: Callees in retry path
-**Record:** `iov_iter_advance`, `retry_request` op, flag bit ops,
-`netfs_get_subrequest`, optional `prepare_write`, then loop-top
-`stream->issue_write()`.
+### Step 5.3: Callees
+**Record:** In fixed path: `netfs_prefetch_for_write()`,
+`copy_folio_from_iter_atomic()`, `netfs_begin_cache_read()`,
+`netfs_alloc_request()` — standard buffered-write helpers.
 
-### Step 5.4: Call chain / reachability
-**Record:** `write(2)` → VFS → `v9fs_file_write_iter` →
-`netfs_unbuffered_write_iter` → `netfs_unbuffered_write`. **Userspace-
-reachable** on 9p mounts with O_DIRECT or unbuffered write paths.
+### Step 5.4: Reachability
+**Record:** Trigger requires CONFIG_FSCACHE + cachefiles backend + netfs
+client (AFS, CIFS with fscache, etc.) + write to non-uptodate folio
+during or just after first cookie lookup. Userspace writes are the
+trigger — realistic for fscache deployments.
 
-### Step 5.5: Similar patterns
-**Record:** `write_retry.c` correctly uses `netfs_reissue_write()`
-outside a re-issue loop. `netfs_unbuffered_write()` has its own issue-
-at-loop-top pattern — the bug was copying the wrong pattern.
-
----
-
-## PHASE 6: CROSS-REFERENCING AGAINST LOCAL TREE
-
-### Step 6.1: Does buggy code exist?
-**Record:** **YES.** Lines 189–199 in `fs/netfs/direct_write.c` contain
-the buggy `else { netfs_reissue_write(); }` branch. Introduced by
-`a4d1b4ba9754b`, which is in this tree.
-
-### Step 6.2: Backport complications
-**Record:** **Clean apply.** `git cherry-pick --no-commit 64f04f978923`
-succeeded with auto-merge on `fs/netfs/direct_write.c`.
-
-### Step 6.3: Related fixes already present?
-**Record:** `a4d1b4ba9754b` (incomplete NULL-deref fix) is present. Fix
-`64f04f978923` is NOT present (`git merge-base --is-ancestor` returns
-failure). No duplicate fix found.
+### Step 5.5: Similar Patterns
+**Record:** Same class of bug fixed in `8ab75e445c161` for
+`netfs_create_write_req()` — premature "cache not enabled" check before
+async lookup completes. Systematic issue in netfs/fscache integration.
 
 ---
 
-## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
+## Phase 6: Cross-Reference Against Local Tree (6.18.44)
 
-### Step 7.1: Subsystem criticality
-**Record:** `fs/netfs/` — IMPORTANT. Shared library for network
-filesystems (9p, CIFS, AFS, Ceph). Write path affects data integrity.
+### Step 6.1: Buggy Code Present?
+**Record:** **YES.** Local tree is `v6.18.44` (Makefile VERSION=6,
+PATCHLEVEL=18, SUBLEVEL=44). Current HEAD `2736c32da98b9` does NOT
+contain the fix (`git merge-base --is-ancestor 046acff3d6cd0 HEAD` → NOT
+IN TREE). Buggy `netfs_is_cache_enabled(ctx)` calls confirmed at
+`buffered_write.c:281` and `buffered_read.c:663`.
 
-### Step 7.2: Subsystem activity
-**Record:** Actively maintained in 6.18.y — multiple netfs fixes already
-backported (UAF, deadlock, writeback fixes visible in recent log).
+### Step 6.2: Backport Complications
+**Record:** Clean apply verified (`git apply --check` passes). No
+refactoring conflicts expected.
+
+### Step 6.3: Related Fixes Already Present?
+**Record:** Sibling fix `8ab75e445c161` (same series, async cache
+creation) already in tree. This commit is the complementary fix for
+write-streaming/write_begin paths — not redundant.
 
 ---
 
-## PHASE 8: IMPACT AND RISK ASSESSMENT
+## Phase 7: Subsystem Context
 
-### Step 8.1: Who is affected
-**Record:** Users of network filesystems without `prepare_write` on the
-upload stream — primarily **9p**. Config-dependent (9p + unbuffered/DIO
-write + write retry).
+### Step 7.1: Subsystem Criticality
+**Record:** **IMPORTANT** — netfs library used by AFS, CIFS/SMB, and
+other network filesystems. fscache/cachefiles provides local caching.
+Affects data path integrity for enterprise/embedded deployments using
+fscache.
 
-### Step 8.2: Trigger conditions
-**Record:** Write subrequest marked `NETFS_SREQ_NEED_RETRY` during
-unbuffered/DIO write when `stream->prepare_write == NULL`. Syzbot
-reproduces via `write()` syscall. Unprivileged users can trigger on
-accessible 9p mounts.
+### Step 7.2: Activity
+**Record:** Highly active — 20+ netfs stable fixes already in 6.18.44,
+indicating ongoing stabilization of the new fscache/netfs stack
+introduced in 6.18.
 
-### Step 8.3: Failure mode severity
+---
+
+## Phase 8: Impact and Risk Assessment
+
+### Step 8.1: Who Is Affected
+**Record:** Users with CONFIG_FSCACHE and cachefiles enabled on netfs-
+backed filesystems (AFS, CIFS with fscache volume). Not universal, but
+real production deployments (AuriStor reported).
+
+### Step 8.2: Trigger Conditions
+**Record:** Write to a file whose fscache cookie is in
+`FSCACHE_COOKIE_STATE_LOOKING_UP` (async lookup in progress). Timing-
+dependent but reproducible (`generic/464` xfstest). Unprivileged users
+can trigger via normal file writes.
+
+### Step 8.3: Failure Mode Severity
+**Record:** Misaligned partial writes to fscache backend; cachefiles
+WARN on DIO alignment violation. Risk of incorrect cache content / cache
+coherency issues. **Severity: MEDIUM-HIGH** (not a kernel panic, but
+cache data integrity issue with real test reproducer).
+
+### Step 8.4: Risk-Benefit
 **Record:**
-- KASAN slab-use-after-free (syzbot-confirmed) — **CRITICAL** (crash,
-  potential security)
-- Double write issuance — **CRITICAL** (data corruption risk)
-- Incorrect `wreq->transferred` — **HIGH** (wrong offsets, potential
-  corruption)
-
-### Step 8.4: Risk-benefit
-**Record:**
-- **Benefit:** HIGH — fixes syzbot UAF, prevents double-write and
-  progress accounting errors on a common netfs code path.
-- **Risk:** VERY LOW — ~10-line change, mirrors existing `prepare_write`
-  path behavior.
-- **Ratio:** Strongly favors backport.
+- **Benefit:** HIGH for fscache users — closes race that defeats write-
+  streaming suppression, complements already-backported series fixes
+- **Risk:** LOW — 16-line change, uses established flag, applies
+  cleanly, no API changes
+- **Ratio:** Strongly favors backport
 
 ---
 
-## PHASE 9: FINAL SYNTHESIS
+## Phase 9: Final Synthesis
 
-### Step 9.1: Evidence summary
+### Step 9.1: Evidence Summary
 
 **FOR backport:**
-- syzbot-reported, reproducible KASAN UAF
-- Userspace-triggerable via `write()` on 9p
-- High priority, assessed exploitable
+- Real bug with documented race (async lookup vs. `cache_priv` check)
+- Reproducible via xfstests `generic/464`
+- Reported by production fscache user (Marc Dionne / AuriStor)
+- Causes incorrect write-streaming → fscache DIO alignment violations
 - Small, surgical, obviously correct fix
-- Bug exists in this 6.18.44 tree (introduced by prior stable backport
-  `a4d1b4ba9754b`)
-- Applies cleanly
-- Fixes real data-integrity and crash bugs
+- Applies cleanly to 6.18.44
+- Sibling patches from same series already in this stable tree
+- David Howells (subsystem maintainer) authored fix
 
 **AGAINST backport:**
-- Part of a 15-patch series (but this patch is self-contained)
-- Only affects filesystems without `prepare_write` (primarily 9p, not
-  CIFS/AFS)
+- Only affects CONFIG_FSCACHE + cachefiles users (subset of users)
+- Primary visible symptom described as cachefiles WARN (not oops/panic)
+- Full mailing list review discussion UNVERIFIED
 
-**Unresolved:** Could not read full lore review thread (bot protection).
-Does not affect decision — syzbot evidence is sufficient.
+**UNRESOLVED:**
+- Full lore thread content (bot-blocked)
+- Whether stable list already discussed this specific patch
 
-### Step 9.2: Stable rules checklist
-| Criterion | Result |
-|-----------|--------|
-| 1. Obviously correct and tested? | **PASS** — syzbot tested prior
-NULL-deref fix; this is author's correction of that approach |
-| 2. Fixes real bug affecting users? | **PASS** — syzbot UAF, 8 crashes
-|
-| 3. Important issue? | **PASS** — CRITICAL (UAF, data corruption) |
-| 4. Small and contained? | **PASS** — single file, ~10 lines |
-| 5. No new features/APIs? | **PASS** |
-| 6. Can apply to local tree? | **PASS** — verified clean cherry-pick |
+### Step 9.2: Stable Rules Checklist
+1. Obviously correct and tested? **PASS** — logic verified against
+   `fscache_begin_lookup()` / `cachefiles_lookup_cookie()` code; xfstest
+   reproducer cited
+2. Fixes a real bug affecting users? **PASS** — Marc Dionne report +
+   xfstests
+3. Important issue? **PASS** — cache data integrity / incorrect fscache
+   writes (MEDIUM-HIGH)
+4. Small and contained? **PASS** — 3 files, ~16 lines
+5. No new features or APIs? **PASS** — internal helper only
+6. Can apply to local tree? **PASS** — verified clean apply
 
-### Step 9.3: Exception categories
-**Record:** N/A — standard bug fix, not a quirk/ID/DT/doc exception.
+### Step 9.3: Exception Categories
+**Record:** None (not device ID, quirk, DT, build fix, or docs).
+Standard bug fix.
 
-### Step 9.4: Decision rationale
-This 6.18.y tree contains the buggy retry path from `a4d1b4ba9754b` but
-not the corrective fix. The bug causes slab-use-after-free (syzbot-
-confirmed, high priority, userspace-triggerable on 9p) and double write
-issuance. The fix is minimal, applies cleanly, and corrects a regression
-introduced by a prior stable backport. This is exactly the kind of
-follow-up fix stable trees need.
+### Step 9.4: Decision Rationale
+
+For **linux-6.18.y** (this checkout at v6.18.44): the buggy code is
+present, the async fscache lookup race is real and verified in source,
+related fixes from the same patch series are already in this tree, and
+the fix is minimal with clear benefit for fscache users. This is
+appropriate stable material — a correctness fix for the 6.18
+fscache/netfs stack that prevents misaligned cache writes during the
+async cookie lookup window.
 
 ---
 
 ## Verification
 
-- **[Phase 1]** Parsed commit message and tags; confirmed syzbot
-  Reported-by and Closes link
-- **[Phase 2]** Read `fs/netfs/direct_write.c` lines 94–205; confirmed
-  retry loop double-issue path
-- **[Phase 2]** Read `netfs_reissue_write()` in
-  `fs/netfs/write_issue.c:240-257`; confirms it calls
-  `netfs_do_issue_write()`
-- **[Phase 3]** `git describe HEAD`: v6.18.44
-- **[Phase 3]** `git blame -L 163,200`: retry code from `72d08d2839649`,
-  buggy else from `a4d1b4ba9754b`
-- **[Phase 3]** `git show a4d1b4ba9754b`: introduced
-  `netfs_reissue_write()` in else branch
-- **[Phase 3]** `git show 72d08d2839649`: introduced sequential DIO
-  write retry loop
-- **[Phase 3]** `git merge-base --is-ancestor`: both prerequisites in
-  HEAD; fix `64f04f978923` NOT in HEAD
-- **[Phase 4]** `b4 dig -c 64f04f978923`: found lore URL, patch v3 15/15
-- **[Phase 4]** `b4 dig -w`: confirmed maintainer CC list
-- **[Phase 4]** WebFetch syzbot bug page: KASAN UAF, high priority,
-  exploitable, 8 crashes, v9p trigger via `ksys_write`
-- **[Phase 5]** `grep netfs_unbuffered_write_iter`: callers in 9p, SMB,
-  netfs buffered_write
-- **[Phase 5]** `grep prepare_write fs/9p`: no matches — 9p lacks
-  `prepare_write`
-- **[Phase 5]** `grep prepare_write fs/smb`, `fs/afs`: both have
-  `prepare_write` set
-- **[Phase 6]** Confirmed buggy else branch at `direct_write.c:189-199`
-- **[Phase 6]** `git cherry-pick --no-commit 64f04f978923`: clean apply
-  (exit 0)
-- **[Phase 8]** Syzbot stack trace: UAF at `netfs_unbuffered_write` via
-  `v9fs_file_write_iter` + `ksys_write`
+- [Phase 1] Parsed commit message from `git show 046acff3d6cd0`:
+  subject, tags, body
+- [Phase 2] Diff analysis: 3 files, 14 insertions/2 deletions; read
+  current `buffered_write.c:277-298`, `buffered_read.c:659-667`,
+  `internal.h:230-240`
+- [Phase 3] `git blame` on `internal.h:230-240` → introduced
+  `5d324e5159d9e` (6.18)
+- [Phase 3] `git log --oneline -30 -- fs/netfs/` → sibling fixes
+  present, target commit absent
+- [Phase 3] `git merge-base --is-ancestor 046acff3d6cd0 HEAD` → NOT IN
+  TREE
+- [Phase 3] `git log --oneline --grep="20260625140640"` → 4 related
+  series commits in tree, this one missing
+- [Phase 4] `b4 dig -c 046acff3d6cd0` → lore URL found
+- [Phase 4] `b4 dig -a` → single revision
+- [Phase 4] WebFetch lore URL → BLOCKED (Anubis)
+- [Phase 5] `grep netfs_file_write_iter` → AFS, CIFS callers confirmed
+- [Phase 5] Read `fscache_cookie.c:548-562` →
+  `FSCACHE_COOKIE_IS_CACHING` set before async lookup completes
+- [Phase 5] Read `cachefiles/interface.c:177-193` → `cache_priv` set in
+  worker
+- [Phase 6] `git describe HEAD` → v6.18.44; Makefile confirms 6.18.44
+- [Phase 6] `git apply --check` on patch → applies cleanly
+- [Phase 6] Grep confirms buggy `netfs_is_cache_enabled(ctx)` at lines
+  281 and 663
+- [Phase 7] `fs/netfs/Kconfig` confirms CONFIG_FSCACHE exists
+- [Phase 8] Assessed severity from commit message + code path analysis
+- UNVERIFIED: Full lore review thread content; stable@ mailing list
+  prior discussion
 
-**YES**
+**YES**Two background git commands timed out on this repo (`git branch
+-a --contains` and a broad `-S` pickaxe search). I killed them and got
+the same answers other ways:
 
- fs/netfs/direct_write.c | 18 +++++++-----------
- 1 file changed, 7 insertions(+), 11 deletions(-)
+- The fix commit resolves to `autosel~217` (not in current 6.18.44
+  HEAD).
+- `netfs_is_cache_enabled` landed with the 6.18 netfs/fscache work
+  (`5d324e5159d9e` / `8ab75e445c161`).
 
-diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
-index f9ab69de3e298..c2873ecbeceb6 100644
---- a/fs/netfs/direct_write.c
-+++ b/fs/netfs/direct_write.c
-@@ -166,13 +166,16 @@ static int netfs_unbuffered_write(struct netfs_io_request *wreq)
+That doesn’t change the earlier conclusion: backport **YES** for 6.18.y
+— small fix for an async fscache lookup race, applies cleanly, and
+sibling patches from the same series are already in the tree.
+
+ fs/netfs/buffered_read.c  |  2 +-
+ fs/netfs/buffered_write.c |  2 +-
+ fs/netfs/internal.h       | 12 ++++++++++++
+ 3 files changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
+index 221287f8925a9..cccc860893f0a 100644
+--- a/fs/netfs/buffered_read.c
++++ b/fs/netfs/buffered_read.c
+@@ -660,7 +660,7 @@ int netfs_write_begin(struct netfs_inode *ctx,
+ 	 * within the cache granule containing the EOF, in which case we need
+ 	 * to preload the granule.
+ 	 */
+-	if (!netfs_is_cache_enabled(ctx) &&
++	if (!netfs_is_cache_maybe_enabled(ctx) &&
+ 	    netfs_skip_folio_read(folio, pos, len, false)) {
+ 		netfs_stat(&netfs_n_rh_write_zskip);
+ 		goto have_folio_no_wait;
+diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
+index dd0ce7b769ce0..0f61746bee2ac 100644
+--- a/fs/netfs/buffered_write.c
++++ b/fs/netfs/buffered_write.c
+@@ -278,7 +278,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
+ 		 * caching service temporarily because the backing store got
+ 		 * culled.
  		 */
- 		subreq->error = -EAGAIN;
- 		trace_netfs_sreq(subreq, netfs_sreq_trace_retry);
--		if (subreq->transferred > 0)
-+		if (subreq->transferred > 0) {
- 			iov_iter_advance(&wreq->buffer.iter, subreq->transferred);
-+			wreq->transferred += subreq->transferred;
-+		}
+-		if (netfs_is_cache_enabled(ctx)) {
++		if (netfs_is_cache_maybe_enabled(ctx)) {
+ 			if (finfo) {
+ 				netfs_stat(&netfs_n_wh_wstream_conflict);
+ 				goto flush_content;
+diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
+index 645996ecfc803..d889caa401dc2 100644
+--- a/fs/netfs/internal.h
++++ b/fs/netfs/internal.h
+@@ -239,6 +239,18 @@ static inline bool netfs_is_cache_enabled(struct netfs_inode *ctx)
+ #endif
+ }
  
- 		if (stream->source == NETFS_UPLOAD_TO_SERVER &&
- 		    wreq->netfs_ops->retry_request)
- 			wreq->netfs_ops->retry_request(wreq, stream);
- 
-+		__clear_bit(NETFS_SREQ_MADE_PROGRESS, &subreq->flags);
- 		__clear_bit(NETFS_SREQ_NEED_RETRY, &subreq->flags);
- 		__clear_bit(NETFS_SREQ_BOUNDARY, &subreq->flags);
- 		__clear_bit(NETFS_SREQ_FAILED, &subreq->flags);
-@@ -186,17 +189,10 @@ static int netfs_unbuffered_write(struct netfs_io_request *wreq)
- 
- 		netfs_get_subrequest(subreq, netfs_sreq_trace_get_resubmit);
- 
--		if (stream->prepare_write) {
-+		if (stream->prepare_write)
- 			stream->prepare_write(subreq);
--			__set_bit(NETFS_SREQ_IN_PROGRESS, &subreq->flags);
--			netfs_stat(&netfs_n_wh_retry_write_subreq);
--		} else {
--			struct iov_iter source;
--
--			netfs_reset_iter(subreq);
--			source = subreq->io_iter;
--			netfs_reissue_write(stream, subreq, &source);
--		}
-+		__set_bit(NETFS_SREQ_IN_PROGRESS, &subreq->flags);
-+		netfs_stat(&netfs_n_wh_retry_write_subreq);
- 	}
- 
- 	netfs_unbuffered_write_done(wreq);
++static inline bool netfs_is_cache_maybe_enabled(struct netfs_inode *ctx)
++{
++#if IS_ENABLED(CONFIG_FSCACHE)
++	struct fscache_cookie *cookie = ctx->cache;
++
++	return fscache_cookie_valid(cookie) &&
++		test_bit(FSCACHE_COOKIE_IS_CACHING, &cookie->flags);
++#else
++	return false;
++#endif
++}
++
+ /*
+  * Get a ref on a netfs group attached to a dirty page (e.g. a ceph snap).
+  */
 -- 
 2.53.0
 
