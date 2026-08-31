@@ -1,267 +1,104 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E83842A785
-	for <netfs@lists.linux.dev>; Sat, 29 Aug 2026 22:45:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5E43C9EF6;
+	Mon, 31 Aug 2026 07:55:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788043506; cv=none; b=LMcBVRNHAwHj+jhXFSe5jYZ4VFi4sI/povV96bzRctTntACdfUefx9MCHHnJweqol4CKbREJ+0B+M/vV30SZ3V47WwO4hx+iXHNcp5idPKZCh0IB9vGoVWAbe6cdkU/zN8EtIDUGq2ibxTU1Y3vRkQh5pwXs49Xcpl4giYsPH/M=
+	t=1788162914; cv=none; b=A37A6TCCNIeBorCR4Csk++LcSc0i9aMSeER/34U1yNOjta7Ce/cyCo3bE7jMIT/juojQutxINcatyNgCK5TW9nSkhs51nOk3awfQTsKStV/10V+uFU2bbzMTS608gSKlz+8or0jo0hWFKm3chFMDAmBzkWi4vXxoavwSHyhbDAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788043506; c=relaxed/simple;
-	bh=gneipLsgqKEAyVQAZll6RiNG8vO7ec73+30d+3Gw2Nc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kfonCG0ApINEJoCEzUIu6KtT5iqUwRGItA6mZkMqMOwOK+qhmdDTm0tbPRzObIUA6108aw2yfhbAPbMadt3+xw2Ejsyu1LAAKoZVgjBG8kBaXDIiuZMQCJwiCb1ucnqPFhTLhQy70FABeqH2bl4PfurHLE8tjwUpXTOzjkULNZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l9NX+Xwf; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788162914; c=relaxed/simple;
+	bh=XS6MnXjdLgN+IYhhFCbdkHwuEbPjLdRgd8mBHzowrsA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=al6XHs5fVzKhLfnNCFkzoc+91KwDoRC8v/7s5+1q9ThnLHZv3JVny2tfo5TpMg1Vj4eCCXJZ6kcHmv7iehKcIw4sF8oNvQZ8wMSfSyJkKuXBvJjY8W7Jko7mBc2/4EnQIhAScIAel2SikHlQjzI0BiMCD0D6K074N4giQWOrvTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y4rqbM8Y; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l9NX+Xwf"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-49b392ccaacso28712575e9.2
-        for <netfs@lists.linux.dev>; Sat, 29 Aug 2026 15:45:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788043503; x=1788648303; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ppC8TRBPEanEndEB0ZLxZ/g+4/pJXzez/E6F6ayShus=;
-        b=l9NX+XwfPU8Qii9Rn6blOdLMYbvW25Kfr+gSBQX0miiQWwxN6mUqCqkNpBcnKjC/yT
-         9s0evPNA9IgPvfe6YcID5CdxHKXJwJQLiltIuSL28H4E3zjLJyyqNfosynzxCczxpIEl
-         aeMiFwTlBGXkILKvJW+YCYFZoYwQRChblhWUP28tYTDuud3j8WWzr/H7Y4wxvXXA2oBk
-         fhteWrTZeKK3sXWjrD63ozYdYfHSHF/KnBLT54i5aV4h4CNqIT9yRpoz2gtXjdMW96Bp
-         TZ1o7PlisW3cXGls8+oPWvMT86//DJwQhnJbXBWs1NoEQzmbLTPo9VU+guZaMa0hL95d
-         +H1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788043503; x=1788648303;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ppC8TRBPEanEndEB0ZLxZ/g+4/pJXzez/E6F6ayShus=;
-        b=CXqh3BfWSqsJmdBJQImZZd4ebNacLuZJ4goXhIUsMw+JbZPpRnnZnieGBhxlMm+wS9
-         g+lA5GW3PyROWivRdHyAt+5F5/H9TdoRjTzxMRWKBmwqigxwhx/kvCqwlTKznFr1d4d9
-         VRX4TKwpOuwLHyRZTn62doWNvY37CB+kE0mmErDEL2GR+bKqlTtUmRz/e+OaH4fJGit3
-         V0ayKcO0auUiqZbnsnqDFh2HBrAM1wwyF788u+m3xZ17BPDjkiYlMAOTarjLIJx2+9yG
-         KInG/2k8f9YCbz9tm5Iy3njO6LHwFwzFEaAVAjwts/EN/llR6izNXBK/GkHZ1p/0HXE2
-         p1OA==
-X-Gm-Message-State: AFuF++kTt6Wmi94rBrj1ArvTjLqfPJ5HYIPnwxqLstfHW1Z60ovCzrIb
-	jMetBYsPmm4PKzw0dmY2ZdFSjnKGDj/8KJhkUUPnfVVMItO7js09Y/qG
-X-Gm-Gg: AR+sD110GZHepKEqznP5/KdG1XPDEfziEk6t3X7Rkig7cLGNG9by+VA6GT0TS0qCtQk
-	O8l0i9MQgBTjKm68SeoklaGBc++wFNswatdR4X3DrnQXS8s9/wG3feH/X1mX5P/2uYpTXFSOSWI
-	bfATbCunelt9BnK78XocmGKhwMPiqZxSQFLCBAQXQzz14i4vL58fupduInVcDKMT9HrCE64970b
-	rF4TIBlsHj7WSmebB7r6u4t4qOgpMwnhVKz7LRPEJ/8U/ABW/WTO//bxI9uNBh144Gn2kdSpjTy
-	75lYC7nIytvSgtRGt+X62i0reGGsE8OX+j8nMlrHIIMo/fk2AJqBdoR6AhveAIxQadPGn/87Hgb
-	MKARgeD96wkTJdYDu/M0mUx1cO5jIrcp6FvWt1SvZjLV5ay6Dwkc4Bm6+siWdlzERD0zVcGPeL6
-	7Dbxyph/tIlPldq9+r+EZZnnkCWsxr+Z83apsMWxD+37w7DKCHNX2Z4aQknJQrU7SSYbdMsucE3
-	UHAdPy7/lJNQ6FCSiIAEAYp58dMajYsv7PxBA==
-X-Received: by 2002:a05:600c:3f10:b0:49c:d019:70c5 with SMTP id 5b1f17b1804b1-49cd01972c9mr43946365e9.0.1788043503066;
-        Sat, 29 Aug 2026 15:45:03 -0700 (PDT)
-Received: from DESKTOP-IR7J1S9.localdomain ([105.98.30.235])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ccae954f9sm97527475e9.13.2026.08.29.15.45.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 Aug 2026 15:45:02 -0700 (PDT)
-From: Drif Abdelmalek Mohamed Said <drifabdelmalekmohamedsaid@gmail.com>
-To: David Howells <dhowells@redhat.com>
-Cc: netfs@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Drif Abdelmalek Mohamed Said <drifabdelmalekmohamedsaid@gmail.com>
-Subject: [PATCH] cachefiles: convert deprecated simple_strtoul() to kstrtoul() in percentage command handlers
-Date: Sat, 29 Aug 2026 23:44:59 +0100
-Message-ID: <20260829224500.14278-1-drifabdelmalekmohamedsaid@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y4rqbM8Y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AF1F1F00ACF;
+	Mon, 31 Aug 2026 07:55:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788162912;
+	bh=1TPnEmDnniutV5HQvwxJTUXw2WVcmYP9OzXkFa4bSgg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=Y4rqbM8YB6nCBdyUlbKEcz83EeJavjEKEBBRMR2B+C7ErWntMg+z3CmM322SjjLSn
+	 DA8fDWEBQ5wYwCThDMMDt+DosdzIyDSaQwR1+zDBvzj9XfmagYUW3/985rBoOWMRyq
+	 /qz+ESZitATPcdEaOcKx1vBaQoEDu7W4ZHeYe5YE0T/qmHANVxTft7pvBEwkWXo7X7
+	 /xf59VmTdPhh6QJymzMjgdliilE7+9yuIHtS+WH3sGRrJskpEEssyBSwAVOigzXjwN
+	 rSiXLMeexpgirZhC6AfqEUQ+V6nP4wmCPjBl/TJNVZFR/wsWPHI7Zu0aAwosaLjh6R
+	 SEJkbZ53rtGJw==
+From: Christian Brauner <brauner@kernel.org>
+To: Christian Brauner <brauner@kernel.org>, 
+ David Howells <dhowells@redhat.com>
+Cc: Paulo Alcantara <pc@manguebit.org>, netfs@lists.linux.dev, 
+ linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org, 
+ ceph-devel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260827134304.2075713-1-dhowells@redhat.com>
+References: <20260827134304.2075713-1-dhowells@redhat.com>
+Subject: Re: [PATCH v4 00/10] netfs, cachefiles: Miscellaneous fixes
+Message-Id: <20260831-tabuisieren-flugobjekt-stangen-0dd7cf160bd3@brauner>
+Date: Mon, 31 Aug 2026 09:55:06 +0200
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev-362b8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2075; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=XS6MnXjdLgN+IYhhFCbdkHwuEbPjLdRgd8mBHzowrsA=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRNNY7bJpSvk1b096VIscV85iNXdwV7cIjfrRLo2b5mh
+ 7Dtlv3MHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABPZbcnwV1DnULdcyBTnjear
+ eq4EzVRZsu6R4v8+e5PLq6YWz9/V/Yfhr7im1gm/vukeSR1ZJ+1ry1+dvTTtd8iq0L2bshba9a5
+ NYQYA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-Convert the six <N>% percentage command handlers -
-cachefiles_daemon_frun(), _fcull(), _fstop(), _brun(), _bcull(), and
-_bstop() - from the deprecated simple_strtoul() to kstrtoul(). These
-are the only handlers in this file that take a trailing '%' after
-the number; other nearby commands take plain values and are
-unaffected.
+On Thu, 27 Aug 2026 14:42:53 +0100, David Howells wrote:
+> netfs, cachefiles: Miscellaneous fixes
+> 
+> Hi Christian,
+> 
+> Here are some miscellaneous fixes for netfslib and one for cachefiles, if
+> you could pick them up?
+> 
+> [...]
 
-Since kstrtoul() requires the whole input to be a valid number, each
-handler now walks the digit run itself, checks it's followed by '%'
-and NUL, and temporarily null-terminates at the '%' to isolate the
-number for kstrtoul(), restoring it afterwards.
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-Signed-off-by: Drif Abdelmalek Mohamed Said <drifabdelmalekmohamedsaid@gmail.com>
----
- fs/cachefiles/daemon.c | 78 +++++++++++++++++++++++++++++++++++-------
- 1 file changed, 66 insertions(+), 12 deletions(-)
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
-index 1a66e0af2837..12c38b366881 100644
---- a/fs/cachefiles/daemon.c
-+++ b/fs/cachefiles/daemon.c
-@@ -331,16 +331,25 @@ static int cachefiles_daemon_range_error(struct cachefiles_cache *cache,
- static int cachefiles_daemon_frun(struct cachefiles_cache *cache, char *args)
- {
- 	unsigned long frun;
-+	char *end = args;
-+	int ret;
- 
- 	_enter(",%s", args);
- 
- 	if (!*args)
- 		return -EINVAL;
- 
--	frun = simple_strtoul(args, &args, 10);
--	if (args[0] != '%' || args[1] != '\0')
-+	while (isdigit(*end))
-+		end++;
-+	if (end == args || *end != '%' || end[1] != '\0')
- 		return -EINVAL;
- 
-+	*end = '\0';
-+	ret = kstrtoul(args, 10, &frun);
-+	*end = '%';
-+	if (ret)
-+		return ret;
-+
- 	if (frun <= cache->fcull_percent || frun >= 100)
- 		return cachefiles_daemon_range_error(cache, args);
- 
-@@ -355,16 +364,25 @@ static int cachefiles_daemon_frun(struct cachefiles_cache *cache, char *args)
- static int cachefiles_daemon_fcull(struct cachefiles_cache *cache, char *args)
- {
- 	unsigned long fcull;
-+	char *end = args;
-+	int ret;
- 
- 	_enter(",%s", args);
- 
- 	if (!*args)
- 		return -EINVAL;
- 
--	fcull = simple_strtoul(args, &args, 10);
--	if (args[0] != '%' || args[1] != '\0')
-+	while (isdigit(*end))
-+		end++;
-+	if (end == args || *end != '%' || end[1] != '\0')
- 		return -EINVAL;
- 
-+	*end = '\0';
-+	ret = kstrtoul(args, 10, &fcull);
-+	*end = '%';
-+	if (ret)
-+		return ret;
-+
- 	if (fcull <= cache->fstop_percent || fcull >= cache->frun_percent)
- 		return cachefiles_daemon_range_error(cache, args);
- 
-@@ -379,16 +397,25 @@ static int cachefiles_daemon_fcull(struct cachefiles_cache *cache, char *args)
- static int cachefiles_daemon_fstop(struct cachefiles_cache *cache, char *args)
- {
- 	unsigned long fstop;
-+	char *end = args;
-+	int ret;
- 
- 	_enter(",%s", args);
- 
- 	if (!*args)
- 		return -EINVAL;
- 
--	fstop = simple_strtoul(args, &args, 10);
--	if (args[0] != '%' || args[1] != '\0')
-+	while (isdigit(*end))
-+		end++;
-+	if (end == args || *end != '%' || end[1] != '\0')
- 		return -EINVAL;
- 
-+	*end = '\0';
-+	ret = kstrtoul(args, 10, &fstop);
-+	*end = '%';
-+	if (ret)
-+		return ret;
-+
- 	if (fstop >= cache->fcull_percent)
- 		return cachefiles_daemon_range_error(cache, args);
- 
-@@ -403,16 +430,25 @@ static int cachefiles_daemon_fstop(struct cachefiles_cache *cache, char *args)
- static int cachefiles_daemon_brun(struct cachefiles_cache *cache, char *args)
- {
- 	unsigned long brun;
-+	char *end = args;
-+	int ret;
- 
- 	_enter(",%s", args);
- 
- 	if (!*args)
- 		return -EINVAL;
- 
--	brun = simple_strtoul(args, &args, 10);
--	if (args[0] != '%' || args[1] != '\0')
-+	while (isdigit(*end))
-+		end++;
-+	if (end == args || *end != '%' || end[1] != '\0')
- 		return -EINVAL;
- 
-+	*end = '\0';
-+	ret = kstrtoul(args, 10, &brun);
-+	*end = '%';
-+	if (ret)
-+		return ret;
-+
- 	if (brun <= cache->bcull_percent || brun >= 100)
- 		return cachefiles_daemon_range_error(cache, args);
- 
-@@ -427,16 +463,25 @@ static int cachefiles_daemon_brun(struct cachefiles_cache *cache, char *args)
- static int cachefiles_daemon_bcull(struct cachefiles_cache *cache, char *args)
- {
- 	unsigned long bcull;
-+	char *end = args;
-+	int ret;
- 
- 	_enter(",%s", args);
- 
- 	if (!*args)
- 		return -EINVAL;
- 
--	bcull = simple_strtoul(args, &args, 10);
--	if (args[0] != '%' || args[1] != '\0')
-+	while (isdigit(*end))
-+		end++;
-+	if (end == args || *end != '%' || end[1] != '\0')
- 		return -EINVAL;
- 
-+	*end = '\0';
-+	ret = kstrtoul(args, 10, &bcull);
-+	*end = '%';
-+	if (ret)
-+		return ret;
-+
- 	if (bcull <= cache->bstop_percent || bcull >= cache->brun_percent)
- 		return cachefiles_daemon_range_error(cache, args);
- 
-@@ -451,16 +496,25 @@ static int cachefiles_daemon_bcull(struct cachefiles_cache *cache, char *args)
- static int cachefiles_daemon_bstop(struct cachefiles_cache *cache, char *args)
- {
- 	unsigned long bstop;
-+	char *end = args;
-+	int ret;
- 
- 	_enter(",%s", args);
- 
- 	if (!*args)
- 		return -EINVAL;
- 
--	bstop = simple_strtoul(args, &args, 10);
--	if (args[0] != '%' || args[1] != '\0')
-+	while (isdigit(*end))
-+		end++;
-+	if (end == args || *end != '%' || end[1] != '\0')
- 		return -EINVAL;
- 
-+	*end = '\0';
-+	ret = kstrtoul(args, 10, &bstop);
-+	*end = '%';
-+	if (ret)
-+		return ret;
-+
- 	if (bstop >= cache->bcull_percent)
- 		return cachefiles_daemon_range_error(cache, args);
- 
--- 
-2.43.0
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[01/10] netfs: Fix uninitialized return value in netfs_unbuffered_write()
+        https://git.kernel.org/vfs/vfs/c/f18e8774f4d3
+[02/10] netfs: Fix unbuffered/DIO write partial transfer error return
+        https://git.kernel.org/vfs/vfs/c/c753a33664e4
+[03/10] netfs: Fix error vs transferred passed to ->ki_complete()
+        https://git.kernel.org/vfs/vfs/c/0bfe2571a6af
+[04/10] netfs: Fix i_size update for partial transfer
+        https://git.kernel.org/vfs/vfs/c/741416a8003b
+[05/10] netfs: Fix subreq ref leak
+        https://git.kernel.org/vfs/vfs/c/3c30087e2759
+[06/10] netfs: break unbuffered write when netfs_alloc_subrequest() fails
+        https://git.kernel.org/vfs/vfs/c/8fb45a934661
+[07/10] netfs: Fix readahead synchronisation issues by loading all folios upfront
+        https://git.kernel.org/vfs/vfs/c/fed0b33e6c58
+[08/10] netfs: Mark folios with COPY_TO_CACHE whilst issuing subreqs
+        https://git.kernel.org/vfs/vfs/c/533203c41831
+[09/10] netfs: Fix read progress reporting
+        https://git.kernel.org/vfs/vfs/c/e00827a4d0cf
+[10/10] cachefiles: Fix potential UAF/KASAN warning
+        https://git.kernel.org/vfs/vfs/c/a67632c8c268
 
