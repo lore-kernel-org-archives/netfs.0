@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590D449CF58
-	for <netfs@lists.linux.dev>; Wed,  2 Sep 2026 17:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4504F4A64CD
+	for <netfs@lists.linux.dev>; Wed,  2 Sep 2026 17:35:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788370533; cv=none; b=E4sT1OjPmUjYj4tHP40d05jJZeK+cskS1xRvUuM9nb8Wd9Vt6J7iUA7lLkFC8oC/Wq5cHo3FOYaoWDBelQW7Ld5/E9czfVToIiB0OkKN5vUZNf/lh68vbjPmkAljYwrDre57vjoI73SiJDqdxPLd66TGGrjC45BQlPiQlUCvnJE=
+	t=1788370540; cv=none; b=aF26TdSaIe7L2FO7IOBV+ZCrZKrra3X0lv58CZ2tNjMrcrv4Yk7y4sGR2Xipky8Z8xv+ObdAbFMJZoeZiJUpFmzQN52KldqMYoFjkU593XLj7BheaHZWPvJW7BQ02/HU0Z7lZxPbotC0Ls/CfGtqHPA48xUu3Rkmhi2RZDgcxUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788370533; c=relaxed/simple;
-	bh=9pYp6kLpCaTlW/semM7hDUQf5J5kbzqiSxyWt0SHbSg=;
+	s=arc-20240116; t=1788370540; c=relaxed/simple;
+	bh=0T6QdaCKy6lSw2KYaCQyVN1se+krJkudt2E60wv2za4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=kKfxl6V0180ec8GoicBNMH/ifkQT9k7dlD2kslJ1mp9vAp9pYzfMXgmBSDSe+eVml1TOm9GsW3bvFnhrUyWg1DszJowipvnMQDJ5d4tpQJqVEDkLIKwqb3LwLu99d0Pg7FqLHb1KalLhLJUKKQ8zayTt+HeVuUEbCTlizH9aGow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Da36LHSR; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:content-type; b=o/UeAD5A9m1JkWJP34paB8cNeR2vH+uGe5hX8bg8YVmAWb/+nKSkKoUzR2/CtRXMp9mYWMX6+Urb9V+in7uZ4mH/c6xJKkGmxMHM7g91m3Qu5j/LYXheobreNV/w3ve7oF4quXBx+ar7lXNS7A9/flYoQlPx8+KAE2LNRvcBFo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HiRbVHTW; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Da36LHSR"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HiRbVHTW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788370530;
+	s=mimecast20190719; t=1788370536;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3V3OD3nT0V6U72OmpSYHtRK3iKHj2x5V79xiNQUQCgQ=;
-	b=Da36LHSRRdDZQEhUCspmwCkAPZRoLpNYqKb1kbRCZ6ozo0jKfAqPDKCzbJdZPlm99FKjdH
-	4ALiGacQ73E5xR/D42rG7D+B4k77xnf6zZHr+JcUxJ80V/MxlAWajsai/M2x8VirV/qa6k
-	e36xHO5ijROj7iPVtRWTHXkLiMs3Qg0=
+	bh=xBjRNgvxeo3s2GLJnocpTVDhF8YzY9NYWap6eDCwu3o=;
+	b=HiRbVHTWnlWIPajF8lN1jBOcGJRIGSpvGw5lYMb4khrsOTLkKMHxVovFSXJc9qf5H37tGq
+	WwhJDN6MiUEUKBPymRGfrssgiHzcMoITTlQTQDKc5dj1v1HGzh0v/IMiM9q8bPqdv+Iq79
+	N7d+eed8uczofwWrfb91XL0lun80vtA=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-671-9e5O7xjaN3ySDs1lrB8c3g-1; Wed,
- 02 Sep 2026 13:35:23 -0400
-X-MC-Unique: 9e5O7xjaN3ySDs1lrB8c3g-1
-X-Mimecast-MFC-AGG-ID: 9e5O7xjaN3ySDs1lrB8c3g_1788370520
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-427-SWrDWA4bN4ed-n6ooXr9Wg-1; Wed,
+ 02 Sep 2026 13:35:31 -0400
+X-MC-Unique: SWrDWA4bN4ed-n6ooXr9Wg-1
+X-Mimecast-MFC-AGG-ID: SWrDWA4bN4ed-n6ooXr9Wg_1788370528
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 29DD0192DD6D;
-	Wed,  2 Sep 2026 17:35:20 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AE2DC19373DF;
+	Wed,  2 Sep 2026 17:35:27 +0000 (UTC)
 Received: from warthog.com (unknown [10.44.32.158])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EF17B1800643;
-	Wed,  2 Sep 2026 17:35:13 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C617F1800643;
+	Wed,  2 Sep 2026 17:35:21 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Paulo Alcantara <pc@manguebit.org>
 Cc: David Howells <dhowells@redhat.com>,
@@ -66,9 +66,9 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-erofs@lists.ozlabs.org,
 	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v11 09/36] netfs: Make mempool available for bvecq
-Date: Wed,  2 Sep 2026 18:33:21 +0100
-Message-ID: <20260902173350.3468672-10-dhowells@redhat.com>
+Subject: [PATCH v11 10/36] netfs: Add a function to extract from an iter into a bvecq
+Date: Wed,  2 Sep 2026 18:33:22 +0100
+Message-ID: <20260902173350.3468672-11-dhowells@redhat.com>
 In-Reply-To: <20260902173350.3468672-1-dhowells@redhat.com>
 References: <20260902173350.3468672-1-dhowells@redhat.com>
 Precedence: bulk
@@ -78,19 +78,13 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: DXYkM3FgYAfY2H_DjSQ-7TdMvqS1ScI_Z6_JoeehFy8_1788370520
+X-Mimecast-MFC-PROC-ID: OarJlGPq4KEnknv9BkPMpviFQZUXZzymdpDp-zGI_vs_1788370528
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Make a mempool available for allocating bvecq structs.  Use it
-automatically if anything other than GFP_KERNEL (with GFP_ZONEMASK flags
-masked off) is specified.  Reading from a file can use GFP_KERNEL as the
-failure mode is straightforward and the same for DIO reads and writes.
-When it comes to writeback, however, the writeback_iter() API does not
-permit temporary failure, including ENOMEM, if WB_SYNC_ALL is set and the
-caller must process all folios to completion.  (I'm not sure if EINTR
-constitutes an acceptable failure).
+Add a function to extract a slice of data from an iterator of any type into
+a bvec queue chain.
 
 Signed-off-by: David Howells <dhowells@redhat.com>
 cc: Paulo Alcantara <pc@manguebit.org>
@@ -99,155 +93,176 @@ cc: Christoph Hellwig <hch@infradead.org>
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
 ---
- fs/netfs/bvecq.c      | 39 +++++++++++++++++++++++++++++++++------
- fs/netfs/internal.h   |  1 +
- fs/netfs/main.c       |  7 +++++++
- include/linux/bvecq.h |  3 +++
- 4 files changed, 44 insertions(+), 6 deletions(-)
+ fs/netfs/iterator.c   | 143 ++++++++++++++++++++++++++++++++++++++++++
+ include/linux/netfs.h |   3 +
+ 2 files changed, 146 insertions(+)
 
-diff --git a/fs/netfs/bvecq.c b/fs/netfs/bvecq.c
-index 6905c84ea351..7b0aedafeda9 100644
---- a/fs/netfs/bvecq.c
-+++ b/fs/netfs/bvecq.c
-@@ -44,8 +44,9 @@ EXPORT_SYMBOL(bvecq_dump);
-  *
-  * Allocate a single bvecq node and initialise the header.  A number of inline
-  * slots are also allocated, rounded up to fit after the header in a power-of-2
-- * slab object of up to 512 bytes (up to 29 slots on a 64-bit cpu).  The slot
-- * array is not initialised.
-+ * slab object of up to 512 bytes (up to 29 slots on a 64-bit cpu).  The caller
-+ * should be aware that the number of slots allocated may be more or less than
-+ * the number requested.  The slot array is not initialised.
-  *
-  * Return: The node pointer or NULL on allocation failure.
-  */
-@@ -56,16 +57,39 @@ struct bvecq *bvecq_alloc_one(size_t nr_slots, gfp_t gfp, bool for_writeback)
- 	const size_t max_slots = (max_size - sizeof(*bq)) / sizeof(bq->__bv[0]);
- 	size_t part = min(nr_slots, max_slots);
- 	size_t size = roundup_pow_of_two(struct_size(bq, __bv, part));
-+	bool from_pool = false;
+diff --git a/fs/netfs/iterator.c b/fs/netfs/iterator.c
+index eb1efb17f53a..840707a3aafc 100644
+--- a/fs/netfs/iterator.c
++++ b/fs/netfs/iterator.c
+@@ -13,6 +13,149 @@
+ #include <linux/netfs.h>
+ #include "internal.h"
  
--	bq = kmalloc(size, gfp & ~GFP_ZONEMASK);
--	if (!bq)
--		return bq;
-+	gfp &= ~(GFP_ZONEMASK | __GFP_THISNODE);
++/**
++ * netfs_extract_iter - Extract virtually contiguous pages from an iterator into a bvecq
++ * @orig: The original iterator
++ * @max_len: Maximum number of bytes to extract
++ * @max_pages: Maximum number of pages to extract
++ * @_bvecq_head: Where to cache the bvec queue
++ * @extraction_flags: Flags to qualify the request
++ * @gfp: Allocation mode for bvecq structs.
++ *
++ * Extract virtually contiguous page fragments from the source iterator up to
++ * the given maxima and build bvec queue that refers to all of those bits.
++ * This allows the original iterator to disposed of.
++ *
++ * @extraction_flags can have ITER_ALLOW_P2PDMA set to request peer-to-peer DMA
++ * be allowed on the pages extracted.
++ *
++ * On success or partial success, the amount of data in the bvec is returned,
++ * the original iterator will have been advanced by the amount extracted.
++ *
++ * If an error occurs and no pages are extracted, an error will be returned and
++ * any allocated bvecq will be freed.  If there is no data to be extracted (or
++ * @max_len or @max_pages are zero), a single empty bvecq will be returned.
++ *
++ * The bvecq segments are marked with indications on how to get clean up the
++ * extracted fragments.
++ */
++ssize_t netfs_extract_iter(struct iov_iter *orig, size_t max_len, size_t max_pages,
++			   struct bvecq **_bvecq_head,
++			   iov_iter_extraction_t extraction_flags, gfp_t gfp)
++{
++	struct bvecq *bq_tail = NULL, *bq;
++	ssize_t ret = 0;
++	size_t extracted = 0;
 +
-+	if (for_writeback) {
-+		if (size != BVECQ_STD_SIZE) {
-+			gfp_t gfp_temp = gfp;
- 
-+			gfp_temp |= __GFP_NOMEMALLOC | __GFP_NORETRY | __GFP_NOWARN;
-+			gfp_temp &= ~(__GFP_DIRECT_RECLAIM | __GFP_IO);
-+			bq = kmalloc(size, gfp_temp);
-+			if (bq)
-+				goto success;
++	_enter("{%u,%zx},%zx", orig->iter_type, orig->count, max_len);
++
++	*_bvecq_head = NULL;
++	if (max_len > orig->count)
++		max_len = orig->count;
++	if (!max_len || !max_pages)
++		goto alloc_empty;
++	if (WARN_ON_ONCE(max_pages > INT_MAX))
++		max_pages = INT_MAX; /* Protect iov_iter_npages(). */
++
++	max_pages = iov_iter_npages(orig, max_pages);
++	if (!max_pages)
++		goto alloc_empty;
++
++	do {
++		bq = bvecq_alloc_one(max_pages, gfp, false);
++		if (!bq) {
++			ret = -ENOMEM;
++			break;
 +		}
++		if (user_backed_iter(orig))
++			bq->mem_type = iov_iter_extract_will_pin(orig) ?
++				BVECQ_MEM_GUP : BVECQ_MEM_PAGECACHE;
 +
-+		bq = mempool_alloc(&netfs_bvecq_pool, gfp);
-+		if (!bq)
-+			return bq;
-+		from_pool = true;
-+		size = BVECQ_STD_SIZE;
-+	} else {
-+		bq = kmalloc(size, gfp);
-+		if (!bq)
-+			return bq;
-+	}
-+
-+success:
- 	*bq = (struct bvecq) {
- 		.ref		= REFCOUNT_INIT(1),
- 		.bv		= bq->__bv,
- 		.inline_bv	= true,
- 		.max_slots	= (size - sizeof(*bq)) / sizeof(bq->__bv[0]),
-+		.from_pool	= from_pool,
- 	};
- 	netfs_stat(&netfs_n_bvecq);
- 	return bq;
-@@ -245,7 +269,10 @@ void bvecq_put(struct bvecq *bq)
- 			bvecq_free_slot(bq, slot);
- 		next = bq->next;
- 		netfs_stat_d(&netfs_n_bvecq);
--		kfree(bq);
-+		if (bq->from_pool)
-+			mempool_free(bq, &netfs_bvecq_pool);
++		if (bq_tail)
++			bvecq_append(bq_tail, bq);
 +		else
-+			kfree(bq);
- 	}
- }
- EXPORT_SYMBOL(bvecq_put);
-diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
-index ef08f0096192..6d40a69e032f 100644
---- a/fs/netfs/internal.h
-+++ b/fs/netfs/internal.h
-@@ -43,6 +43,7 @@ extern struct list_head netfs_io_requests;
- extern spinlock_t netfs_proc_lock;
- extern mempool_t netfs_request_pool;
- extern mempool_t netfs_subrequest_pool;
-+extern mempool_t netfs_bvecq_pool;
- extern mempool_t netfs_folioq_pool;
- 
- #ifdef CONFIG_PROC_FS
-diff --git a/fs/netfs/main.c b/fs/netfs/main.c
-index 927badf3989d..9f72e5054aff 100644
---- a/fs/netfs/main.c
-+++ b/fs/netfs/main.c
-@@ -28,6 +28,7 @@ static struct kmem_cache *netfs_request_slab;
- static struct kmem_cache *netfs_subrequest_slab;
- mempool_t netfs_request_pool;
- mempool_t netfs_subrequest_pool;
-+mempool_t netfs_bvecq_pool;
- mempool_t netfs_folioq_pool;
- 
- #ifdef CONFIG_PROC_FS
-@@ -112,6 +113,9 @@ static int __init netfs_init(void)
- 	if (mempool_init_kmalloc_pool(&netfs_folioq_pool, 100, sizeof(struct folio_queue)) < 0)
- 		goto error_folioq_pool;
- 
-+	if (mempool_init_kmalloc_pool(&netfs_bvecq_pool, 100, BVECQ_STD_SIZE) < 0)
-+		goto error_bvecq_pool;
++			*_bvecq_head = bq;
++		bq_tail = bq;
 +
- 	netfs_request_slab = kmem_cache_create("netfs_request",
- 					       sizeof(struct netfs_io_request), 0,
- 					       SLAB_HWCACHE_ALIGN | SLAB_ACCOUNT,
-@@ -164,6 +168,8 @@ static int __init netfs_init(void)
- error_reqpool:
- 	kmem_cache_destroy(netfs_request_slab);
- error_req:
-+	mempool_exit(&netfs_bvecq_pool);
-+error_bvecq_pool:
- 	mempool_exit(&netfs_folioq_pool);
- error_folioq_pool:
- 	return ret;
-@@ -178,6 +184,7 @@ static void __exit netfs_exit(void)
- 	kmem_cache_destroy(netfs_subrequest_slab);
- 	mempool_exit(&netfs_request_pool);
- 	kmem_cache_destroy(netfs_request_slab);
-+	mempool_exit(&netfs_bvecq_pool);
- 	mempool_exit(&netfs_folioq_pool);
- }
- module_exit(netfs_exit);
-diff --git a/include/linux/bvecq.h b/include/linux/bvecq.h
-index 22fc7995f3ee..8adfdd43b865 100644
---- a/include/linux/bvecq.h
-+++ b/include/linux/bvecq.h
-@@ -43,15 +43,18 @@ struct bvecq {
- 	u16		max_slots;	/* Number of elements allocated in bv[] */
- 	enum bvecq_mem	mem_type:3;	/* What sort of memory and how to free it */
- 	bool		inline_bv:1;	/* T if __bv[] is being used */
-+	bool		from_pool:1;	/* T if bvecq from mempool */
- 	struct bio_vec	*bv;		/* Pointer to array of page fragments */
- 	struct bio_vec	__bv[];		/* Default array (if ->inline_bv) */
- };
- 
- #if BITS_PER_LONG == 64
- /* Number of slots in __bv[] for a bvecq in a 512-byte kmalloc block. */
-+#define BVECQ_STD_SIZE		512
- #define BVECQ_STD_SLOTS		29	/* 2 words/slot; 32 slots; bvecq is 6 words (3 slots) */
- #elif  BITS_PER_LONG == 32
- /* Number of slots in __bv[] for a bvecq in a 256-byte kmalloc block. */
-+#define BVECQ_STD_SIZE		256
- #define BVECQ_STD_SLOTS		18	/* 3 words/slot; 21 slots; bvecq is 9 words (3 slots) */
- #else
- #error BVECQ_STD_SLOTS undetermined
++		if (max_len == 0)
++			break;
++
++		struct bio_vec *bv = bq->bv;
++		unsigned int slot = 0;
++		do {
++			struct page **pages;
++			ssize_t got;
++			size_t offset;
++			size_t space = bq->max_slots - slot;
++			size_t bv_size = array_size(bq->max_slots, sizeof(*bv));
++			size_t pg_size = array_size(space, sizeof(*pages));
++
++			/* Put the page list at the end of the bvec list
++			 * storage.  bvec elements are larger than page
++			 * pointers, so as long as we work 0->last, we should
++			 * be fine.
++			 */
++			pages = (void *)bv + bv_size - pg_size;
++
++			got = iov_iter_extract_pages(orig, &pages, max_len,
++						     min(space, max_pages),
++						     extraction_flags, &offset);
++			if (got < 0) {
++				ret = got;
++				goto out;
++			}
++
++			if (got == 0) {
++				pr_err("extract_pages gave nothing from %zx, %zx\n",
++				       extracted, max_len);
++				ret = -EIO;
++				goto out;
++			}
++
++			if (WARN(got > max_len,
++				 "%s: extract_pages overrun %zx > %zx bytes\n",
++				 __func__, got, max_len)) {
++				ret = -EIO;
++				goto out;
++			}
++
++			extracted += got;
++			max_len -= got;
++
++			do {
++				size_t len = umin(got, PAGE_SIZE - offset);
++
++				BUG_ON(slot >= bq->max_slots);
++
++				bvec_set_page(&bq->bv[slot], *pages++, len, offset);
++				slot++;
++				max_pages--;
++				got -= len;
++				offset = 0;
++			} while (got > 0);
++
++			bvecq_filled_to(bq, slot);
++		} while (max_len > 0 && max_pages > 0 && !bvecq_is_full(bq));
++
++	} while (max_len > 0 && max_pages > 0);
++
++out:
++	if (extracted || ret == 0)
++		return extracted;
++	bvecq_put(*_bvecq_head);
++	*_bvecq_head = NULL;
++	return ret;
++
++alloc_empty:
++	bq = bvecq_alloc_one(1, gfp, false);
++	if (!bq)
++		return -ENOMEM;
++	*_bvecq_head = bq;
++	return 0;
++
++}
++EXPORT_SYMBOL_GPL(netfs_extract_iter);
++
+ /**
+  * netfs_extract_user_iter - Extract the pages from a user iterator into a bvec
+  * @orig: The original iterator
+diff --git a/include/linux/netfs.h b/include/linux/netfs.h
+index 0ca9a06a6388..7d8a08baf093 100644
+--- a/include/linux/netfs.h
++++ b/include/linux/netfs.h
+@@ -431,6 +431,9 @@ void netfs_get_subrequest(struct netfs_io_subrequest *subreq,
+ 			  enum netfs_sreq_ref_trace what);
+ void netfs_put_subrequest(struct netfs_io_subrequest *subreq,
+ 			  enum netfs_sreq_ref_trace what);
++ssize_t netfs_extract_iter(struct iov_iter *orig, size_t max_len, size_t max_pages,
++			   struct bvecq **_bvecq_head,
++			   iov_iter_extraction_t extraction_flags, gfp_t gfp);
+ ssize_t netfs_extract_user_iter(struct iov_iter *orig, size_t orig_len,
+ 				struct iov_iter *new,
+ 				iov_iter_extraction_t extraction_flags);
 
