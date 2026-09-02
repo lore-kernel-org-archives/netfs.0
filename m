@@ -1,75 +1,45 @@
-Received: from mta1.migadu.com (out-15.mta1.migadu.com [95.215.58.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E154CCDD7
-	for <netfs@lists.linux.dev>; Wed,  2 Sep 2026 07:53:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95170476CCC
+	for <netfs@lists.linux.dev>; Wed,  2 Sep 2026 11:27:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788335584; cv=none; b=iltmONC4ze8LJeMaIeB7ypOu/x1AG9Odez1y5Si0hp/UniLfHblzFIbvyjClNOvVioEuAsHEGDpnrxOGgeLStbC5TodJ5SqdW5bd7R9DidBidvU8EuWNcY/7FllJ7ERU++uG1RzJq9IU6IOwed2VnTI6GYfMOv55dLgt3OoNMDA=
+	t=1788348470; cv=none; b=GpeNkwEdAk1BTxlNBxH5uxaji+sQLt7BQvbptlo15d6HlvJ++AAZAo21Q5ZEcOtsiHSvawtmDmDJfY0v/2XlzVQWo/naXflUep3daPV0OGjAB1rG8VZprtSRR7RrFsScMf4odTFKi1O0AImcxsF6pJLJGyFMINmNJTYDCBYbIRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788335584; c=relaxed/simple;
-	bh=0hHJnYnmmxdQnBE62IYdnAJ07bnulKayv319f4QreN8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kCosDGgjAa2zUl+abcBZfKZnfcy9qEoJmuVjKUPpPSWLoDI85SYsFyI5mgFqoM1iEw7ONCJLQlthpBjHsMDdQY1Dr3bnrzWVQeoa/qYWfyU+4vOwU3SBfwpukFM2OtZQuxEIDmrIEIl3flgc2tv6KiQQurUFhz422jzDhPpK9ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=h5C88ewj; arc=none smtp.client-ip=95.215.58.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="h5C88ewj"
-X-Envelope-To: netfs@lists.linux.dev
-DKIM-Signature: a=rsa-sha256; bh=0hHJnYnmmxdQnBE62IYdnAJ07bnulKayv319f4QreN8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788335580; v=1; x=1788940380;
- b=h5C88ewjebrJQ0/5pVDc1dLFW+XBCB0TsoGdQLRvhE2TQML95IzWJGOi1eWO9+DjbR3dmhtK
- bQEklHB1Xj1y3GQk1nFulbOwsC8Jt/d144UoqBD40yVJxA2Yz9XrEzaHNem6h9i96xQjV7Kx28B
- bLmwKErP6VOw/ZQDso8gFnBs=
-X-Envelope-To: netfs@lists.linux.dev
-Received: by smtp.migadu.com with ESMTPS id 711dfb84e95fb698;
-	Wed, 02 Sep 2026 07:53:00 +0000
-X-Mizu-Trace-ID: 711dfb84e95fb698
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <a4c0f3b9-4df0-4538-903e-b7af4fb0e32f@linux.dev>
-Date: Wed, 2 Sep 2026 15:52:54 +0800
+	s=arc-20240116; t=1788348470; c=relaxed/simple;
+	bh=ifwkK6d/nXU95teqUaSVecGp9lkR6XJkhLT98uUhlHQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rCtZIuqXZEztP0HAmgwiqM8932o7RkTCKTlfyQ8cA5+EjqpCAc4j0bl486mWilOvyNU4xPjpZkQXtRQKC3TQ+kah8nR100sxlmxVzsnBZIFr+x79AfS0dZ5Gj8mZbAYQ6ypsdAJiSjuZBCEal7BauR+Q8Ri6m/2eRX/Ka5YodBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 0A2076732A; Wed,  2 Sep 2026 13:27:44 +0200 (CEST)
+Date: Wed, 2 Sep 2026 13:27:43 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: David Howells <dhowells@redhat.com>
+Cc: Jens Axboe <axboe@kernel.dk>, Keith Busch <kbusch@kernel.org>,
+	Hannes Reinecke <hare@kernel.org>, Christoph Hellwig <hch@lst.de>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Paulo Alcantara <pc@manguebit.org>, netfs@lists.linux.dev,
+	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] block: Fix start and length check added to
+ iov_iter_extract_bvecs()
+Message-ID: <20260902112743.GA11999@lst.de>
+References: <1819786.1787768317@warthog.procyon.org.uk> <1895550.1787777192@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] cachefiles: Fix path of the "debug" module parameter in
- help paragraph
-To: netfs@lists.linux.dev, linux-kernel@vger.kernel.org
-Cc: dhowells@redhat.com, brauner@kernel.org
-References: <20260620131425.8210-1-zenghui.yu@linux.dev>
-Content-Language: en-US
-From: Zenghui Yu <zenghui.yu@linux.dev>
-In-Reply-To: <20260620131425.8210-1-zenghui.yu@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1895550.1787777192@warthog.procyon.org.uk>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 
-On 6/20/26 9:14 PM, Zenghui Yu wrote:
-> The correct path of the "debug" module parameter should be
-> /sys/module/cachefiles/parameters/debug. Fix it.
-> 
-> Signed-off-by: Zenghui Yu <zenghui.yu@linux.dev>
-> ---
->  fs/cachefiles/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/fs/cachefiles/Kconfig b/fs/cachefiles/Kconfig
-> index c5a070550ee3..1f0ec7d287b9 100644
-> --- a/fs/cachefiles/Kconfig
-> +++ b/fs/cachefiles/Kconfig
-> @@ -17,7 +17,7 @@ config CACHEFILES_DEBUG
->  	help
->  	  This permits debugging to be dynamically enabled in the filesystem
->  	  caching on files module.  If this is set, the debugging output may be
-> -	  enabled by setting bits in /sys/modules/cachefiles/parameter/debug or
-> +	  enabled by setting bits in /sys/module/cachefiles/parameters/debug or
->  	  by including a debugging specifier in /etc/cachefilesd.conf.
->  
->  config CACHEFILES_ERROR_INJECTION
-
-ping?
+Should this grow a comment explaining why for non-iov/kvec/ubuf
+we check the alignment of every sector instead of just the
+start alignment?
