@@ -1,136 +1,70 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F22A30C160;
-	Fri,  4 Sep 2026 05:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524B23D7D7E;
+	Fri,  4 Sep 2026 07:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788500306; cv=none; b=gKGCFxdfJq1l+HoMv9Edu/cPz559MjLz5bn7tr/b0tQD1VHQAkRSlqZeYLw/nI+7x2aTZBY76d7G3Y/VR0V1sI3YNEe0FNTtH8LV7+3ThU0RBzJJ7s5WGfYxNVIn2kDIzqCmVDLE/XK7Om7ZqE4skwCRxJ0JaweJDxyNY5bVDoo=
+	t=1788508353; cv=none; b=DFWHRjNE9P+CSAlHWiH7EYdbQ5liddj5+bVeOtwKjS68rdEjS6NlE266Wca8IJ87Gp61k4m/dV/eokDot8RDJScDBoW8OP0dKK7DS1kbAdWqlzBUvxssGBIsdi092/LmB4aY2Pp+qeu/n9iaQJaXijk1Uq/fGbLcpgQxkN9nxEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788500306; c=relaxed/simple;
-	bh=V7iAnjydT+RZLfOqFkvZdqZVspOvnaEkqa3yDXyxCbg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MHMG+rYZ2ar6ZIt3PWh0vPciU3Vp0HC9TT94Rz+cH9Cv4/AaqkxqxhOQymHdVkh8SZNBDFeYJSe/4+Ib+HQV7w36KH1TAI8bQ/KkQTZjFRN+nyNrwIvQAmkTheg36rN3dK/IjsA6RCq3/vyo5a6EmTEEvSSiwdKDD/uJ6tHMdgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B2/zithV; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788508353; c=relaxed/simple;
+	bh=jEAl2HVmOXBTfZRdguPW6L2Wf/n3WoEsLeLQH+D/imY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=uQ6K6he1Rlitbg8Nj8K+IQHOpZuxzXy9Ng4k3lQEH4PiYGk8nC1FYDtYSNOFoS2XGG6X9+xmnyd51F5Lg7tW3E9nJX3DOAFvY5lCmNG26DGnhljrNWAy418MaXQhXaN0axLYKZ5BgArxKpBl8ra51Sv6ejWtwzZDscJ+WiDdlHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e8FJX0/1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B2/zithV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62E501F00A3D;
-	Fri,  4 Sep 2026 05:38:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1788500303;
-	bh=8Ac7s5Y7ESMuYnc2kU2sO2uWep0CDQglL4JejGtl8hU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=B2/zithVo2YXqwh/wCEp4WYdt9JmzrR1m+AWa6GPIRM/SOjd7ct9GyAkz7btUr8vi
-	 xLq4OwtRbGFWJvZnSPU3gRyKI51lb7szFugxBxyjnq57IH1Zz8dFp2pXH2GVPgds/i
-	 UtKhl8JjB0DBTnmkd+bAps06UDwn4oaHv6X2b93U=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 010/552] netfs: Fix missing locking around retry adding new subreqs
-Date: Fri,  4 Sep 2026 06:52:47 +0200
-Message-ID: <20260904045748.059394246@linuxfoundation.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260904045747.813364717@linuxfoundation.org>
-References: <20260904045747.813364717@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e8FJX0/1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 206D21F00A3D;
+	Fri,  4 Sep 2026 07:52:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788508352;
+	bh=ZivGdNQ3WNPzqFX/awBPwifUwaOW7ieSdZtEVQOV0vI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=e8FJX0/1oHuwQ0VlxZ4KlL2PIFs8ErbOMZgBbexGOg0z9bh6ws6TUvm91m1t55AWr
+	 wpoWNeqNBPe4J47m+WQauNMeH9FqoCA6qqhAq9Huvuxf1MD82ngwKTAGh3K4rYZN8P
+	 CL2XKflNOGNO9/jt6jm06CnbreSEkQVHLgJ7SJ0Gv158dV914wTp4JMi//dTdhzV2y
+	 uj969Xb30Epg7G5SFAF3CGDeFxW7BjQjT7UGjnuwtlqaggUeyDefIlLP9TWR79kIWY
+	 Zh8u7OqrTIw/cMrdlxUFnksnUfr8eQNGgbpMEsoMQBvsdH2NmDmfSt80z62AA7g68/
+	 p+eltDXX5MvYA==
+From: Christian Brauner <brauner@kernel.org>
+To: netfs@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ Zenghui Yu <zenghui.yu@linux.dev>
+Cc: dhowells@redhat.com
+In-Reply-To: <20260620131425.8210-1-zenghui.yu@linux.dev>
+References: <20260620131425.8210-1-zenghui.yu@linux.dev>
+Subject: Re: [PATCH] cachefiles: Fix path of the "debug" module parameter
+ in help paragraph
+Message-Id: <20260904-dahin-zeitfaktor-deckname-e614210965bc@brauner>
+Date: Fri, 04 Sep 2026 09:52:29 +0200
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev-db0b7
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+On Sat, 20 Jun 2026 21:14:25 +0800, Zenghui Yu wrote:
+> The correct path of the "debug" module parameter should be
+> /sys/module/cachefiles/parameters/debug. Fix it.
 
-------------------
+Applied to the vfs-7.4.netfs branch of the vfs/vfs.git tree.
+Patches in the vfs-7.4.netfs branch should appear in linux-next soon.
 
-From: David Howells <dhowells@redhat.com>
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-[ Upstream commit cce18c263e9623872327ba3c956012f73c1179cc ]
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-Fix netfs_retry_read_subrequests() and netfs_retry_write_stream() to take
-the appropriate lock when adding extra subrequests into
-stream->subrequests.
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
-Fixes: e2d46f2ec332 ("netfs: Change the read result collector to only use one work item")
-Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
-Closes: https://sashiko.dev/#/patchset/20260425125426.3855807-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-3-dhowells@redhat.com
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/netfs/read_retry.c  | 6 +++++-
- fs/netfs/write_retry.c | 6 +++++-
- 2 files changed, 10 insertions(+), 2 deletions(-)
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs-7.4.netfs
 
-diff --git a/fs/netfs/read_retry.c b/fs/netfs/read_retry.c
-index 999177426141a..f59a70f3a086b 100644
---- a/fs/netfs/read_retry.c
-+++ b/fs/netfs/read_retry.c
-@@ -175,7 +175,9 @@ static void netfs_retry_read_subrequests(struct netfs_io_request *rreq)
- 			list_for_each_entry_safe_from(subreq, tmp,
- 						      &stream->subrequests, rreq_link) {
- 				trace_netfs_sreq(subreq, netfs_sreq_trace_superfluous);
-+				spin_lock(&rreq->lock);
- 				list_del(&subreq->rreq_link);
-+				spin_unlock(&rreq->lock);
- 				netfs_put_subrequest(subreq, netfs_sreq_trace_put_done);
- 				if (subreq == to)
- 					break;
-@@ -203,8 +205,10 @@ static void netfs_retry_read_subrequests(struct netfs_io_request *rreq)
- 					     refcount_read(&subreq->ref),
- 					     netfs_sreq_trace_new);
- 
-+			spin_lock(&rreq->lock);
- 			list_add(&subreq->rreq_link, &to->rreq_link);
--			to = list_next_entry(to, rreq_link);
-+			spin_unlock(&rreq->lock);
-+			to = subreq;
- 			trace_netfs_sreq(subreq, netfs_sreq_trace_retry);
- 
- 			stream->sreq_max_len	= umin(len, rreq->rsize);
-diff --git a/fs/netfs/write_retry.c b/fs/netfs/write_retry.c
-index 29489a23a2209..32735abfa03f0 100644
---- a/fs/netfs/write_retry.c
-+++ b/fs/netfs/write_retry.c
-@@ -130,7 +130,9 @@ static void netfs_retry_write_stream(struct netfs_io_request *wreq,
- 			list_for_each_entry_safe_from(subreq, tmp,
- 						      &stream->subrequests, rreq_link) {
- 				trace_netfs_sreq(subreq, netfs_sreq_trace_discard);
-+				spin_lock(&wreq->lock);
- 				list_del(&subreq->rreq_link);
-+				spin_unlock(&wreq->lock);
- 				netfs_put_subrequest(subreq, netfs_sreq_trace_put_done);
- 				if (subreq == to)
- 					break;
-@@ -153,8 +155,10 @@ static void netfs_retry_write_stream(struct netfs_io_request *wreq,
- 					     netfs_sreq_trace_new);
- 			trace_netfs_sreq(subreq, netfs_sreq_trace_split);
- 
-+			spin_lock(&wreq->lock);
- 			list_add(&subreq->rreq_link, &to->rreq_link);
--			to = list_next_entry(to, rreq_link);
-+			spin_unlock(&wreq->lock);
-+			to = subreq;
- 			trace_netfs_sreq(subreq, netfs_sreq_trace_retry);
- 
- 			stream->sreq_max_len	= len;
--- 
-2.53.0
-
-
+[1/1] cachefiles: Fix path of the "debug" module parameter in help paragraph
+      https://git.kernel.org/vfs/vfs/c/880a32f0a6e6
 
