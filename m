@@ -1,94 +1,65 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2B336B910
-	for <netfs@lists.linux.dev>; Sat,  5 Sep 2026 16:26:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B8F3D45F7;
+	Sun,  6 Sep 2026 13:33:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788625614; cv=none; b=FpIzlDUwIpXRKt91f/qnGXhuZNijBiAqcfW91ysPc/ZJXo9yvjb1iCa0mj4jZq7ljTAXqKbaHyglrv5AvSu9uWGCDl8WieTdNIn9jTyrcniqB23+LnwMe6YAtpwbNHn2cOMe1TX9PBoi09nXVa3tibPlojLm8exm4xFiHMMj+vo=
+	t=1788701634; cv=none; b=uyWbAPAqhQ317GAhpqyuvTIPUb7VFOB8va+2/3k2/EHiZpuBLQnHnWBRcqMpd2u5coN9DJs44Ql1BF3lhCtnMLYW6WAuVNecC4RWGbKH9eJ1xnoLWBml41cCaeFTXlcLYPBrJLha0VqnC2dOOqrsR3RHNeD3jbKw2paXc0Of1rE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788625614; c=relaxed/simple;
-	bh=3SS2H5X7fEPe/WUlOi2ijPcY3Sm5sDXvvcBImIaTxig=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
-	 Message-ID:Content-Type; b=ojwLWTyJ7oa9e8gnpsaiduDzmNA2wDq3Nwo1AWiEZ5rlRn+fkhpuPTUdsEg5XfQCiurJkJieaz3KbkQP1updKb8mhXeUrJ1dlcPC9kCNGjdXe+s3VxpE9qLHmnromLjmGnnizCoAor0NMwT9QmwASYabQ7oIeL1C03bvl7spL/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CDXSc0hP; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1788701634; c=relaxed/simple;
+	bh=UfLbliUjGMqZPvkbXWCKig00JebTw6JnB9yc1LS/e7o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hjNahy/sQE7vn1+CTUyUdgQxMetud2pR6YqYtlyxwDbIMvqav2NV80rfNKgRw/cVkkNb2choWgZKERdExRpVi6+s7GwPO5hUqB9NHgvhB93Dak5pJh3rHj3Qk6zsv1ntS4ZJFwLjIXiW5bXLjPqaI7iSde9n80hQw4qEcJJmWSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BLXlZzqM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CDXSc0hP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788625612;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jxdp3KRdBVi8QQnCMsuF6AtR6CEzxy4cd18pQFv2r+o=;
-	b=CDXSc0hPoaxdw2OZdktcaNvuzSdpxswphh7k2qM43DBoQxnAW9rpTiU8zePDYZWlmOx2je
-	RjtfvFjb5Dsa17iw2Np2QdDrITuwhyn6XZqL26uSEL+GGP4W7wOeT4j2ZU5CRwaJy3cYgH
-	0Xt+FOkuikWecHtSWoEOUS1iayCasUM=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-231-XC2ypVG4MOqDjyQSHPGeXg-1; Sat,
- 05 Sep 2026 12:26:48 -0400
-X-MC-Unique: XC2ypVG4MOqDjyQSHPGeXg-1
-X-Mimecast-MFC-AGG-ID: XC2ypVG4MOqDjyQSHPGeXg_1788625607
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D26C01801363;
-	Sat,  5 Sep 2026 16:26:45 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.44.32.158])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D41F55B1;
-	Sat,  5 Sep 2026 16:26:41 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <apsP3Hvlw-fpd6uF@kbusch-mbp>
-References: <apsP3Hvlw-fpd6uF@kbusch-mbp> <20260902112743.GA11999@lst.de> <1819786.1787768317@warthog.procyon.org.uk> <1895550.1787777192@warthog.procyon.org.uk> <350212.1788514937@warthog.procyon.org.uk>
-To: Keith Busch <kbusch@kernel.org>
-Cc: dhowells@redhat.com, Christoph Hellwig <hch@lst.de>,
-    Jens Axboe <axboe@kernel.dk>, Hannes Reinecke <hare@kernel.org>,
-    Alexander Viro <viro@zeniv.linux.org.uk>,
-    Paulo Alcantara <pc@manguebit.org>, netfs@lists.linux.dev,
-    linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] block: Fix start and length check added to iov_iter_extract_bvecs()
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BLXlZzqM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D6451F00A3A;
+	Sun,  6 Sep 2026 13:33:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788701630;
+	bh=8pkOYVrwVHXhCkpMG8il5L9EtCTiCPfCzAOHfsLxM7M=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=BLXlZzqMCLRzJEZhucW71l0ImZMFGZ1wl2KJ7lP8FN0ordvZ/26WNTIP5O5mTYtZ+
+	 0EHx2ii2W7gZP9Y7yY5xajLIRcKB31AUIOP7x72fyHts9VgF4vME6ptpDHDKYTDhfB
+	 hKuhL7xcwKKYJHDoxDsq/ma+ooYUCZ7s1mNSr/pkZrD5j6xNW+h2kl9fABzveXI1Zs
+	 kRD/t57hB6jO2lm3fX9o7NL+TUi9cDUnmFkvtIPBHnHN+3HlAEBISVK+L4LUwh5LDL
+	 pbFNXKHvsqRP24sS0bwqbXmOe6wbEIDrn5Qe1oXRtwZGqMIIDm5ApNWebwK2rjkJnG
+	 3e4L0p0Ko8N2Q==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Paulo Alcantara <pc@manguebit.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Suraj Jitindar Singh <surajjs@amazon.com>
+Subject: Re: [PATCH 6.12.y] netfs: Fix netfs_read_folio() to wait on writeback
+Date: Sun,  6 Sep 2026 09:32:55 -0400
+Message-ID: <2026-09-05-daily-reply-0025-netfs-read-folio-writeback-6-12@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260903223438.2312-1-surajjs@amazon.com>
+References: <20260903223438.2312-1-surajjs@amazon.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Sat, 05 Sep 2026 17:26:40 +0100
-Message-ID: <1183138.1788625600@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
-X-Mimecast-MFC-PROC-ID: N3s8CkkHhWoCac8_3GhkQ0QcaEOKbbtagtZKEdjcOg4_1788625607
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1183137.1788625600.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: 8bit
 
-Keith Busch <kbusch@kernel.org> wrote:
+> Fix netfs_read_folio() to wait for an ongoing writeback to complete so that
+> it can trust the dirty flag and whatever is attached to folio->private
+> (folio->private may get cleaned up by the collector before it clears the
+> writeback flag).
+>
+> Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
 
-> If a block device behind an RDMA NIC really wants to DMA a single byte
-> at a time, we can't describe that capability today. That would require a
-> 0 mask, which is currently treated as "unset" and overridden with a
-> default 512b mask.
+Queued for 6.12, thanks.
 
-The thing is, Christoph said:
-
-    Massage __bio_iov_iter_get_pages so that it doesn't need the bio, and
-    move it to lib/iov_iter.c so that it can be used by block code for
-    other things than filling a bio and by other subsystems like netfs.
-
-but unless it can have a 1-byte alignment, it's not actually much use for
-netfslib (I have to be able to support "unbuffered writes", which are almost
-exactly like DIO writes but without alignment restrictions).
-
-Do block devices really need an aligned "start memory address" or just an
-aligned "start file position" (whatever that means for a blockdev).
-
-David
-
+-- 
+Thanks,
+Sasha
