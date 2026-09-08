@@ -1,239 +1,223 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81AD552ED4A
-	for <netfs@lists.linux.dev>; Tue,  8 Sep 2026 09:11:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B8843E484;
+	Tue,  8 Sep 2026 12:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788858712; cv=none; b=Gyh+i0PcJhTI9bxAYKlToZVnwIem8w4dZ42/UcNhPdYVYm9Lg5JHglc+j0zicJaqUdyoA6Q7wCjVV9MX4GO8ll5PGgdfo0CuTqrA4z88NX3BaH2nFhomU/zq41fcjt+1S49tbpsXUR2t6VKp271L+eAw/seUMbA1DcZnWgT2ZvA=
+	t=1788870009; cv=none; b=pXvJyqmJxzxyBw68/RvOs0uXum+Fnh/3T+L2EcQAK1jDJR4XUDDKuBPQFCuwylMhyVGALv2U/4ucz4PHDSS7dfeXG63+xk6Q1YniXwEJZS3P0/fUgZ4yZSrVjAyI+1DQ0c0C0zzjBht9iYB8eX9IP/g0U6TcqkYS+cL2bPG+q7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788858712; c=relaxed/simple;
-	bh=AfC6AN0+oRv9f00/2dtlwIkW+5nMtEfQM9UmhCLa+bE=;
+	s=arc-20240116; t=1788870009; c=relaxed/simple;
+	bh=hdJUekzK3kPk4CLUTMphYuHEIA25YLEi6hHFybm2DUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=BxB3HSXUwnschCLDMpK4Q2+xKYVraDdHsE7EXTbZXAV4a6gQMD/gxOTNyXqH+ifg2+gPPr/1dc06/OGaD7q5fcg3EaRvZJQImp+x7T5rnrXEI3/Vt64nC5JCHI3QVdjV/FjhYu1FRl8PBQy0qoZf/JWGs2Tvvhc2Ss4pp4FVElA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DAEzWGuK; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DAEzWGuK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788858709;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sxO7FEkCCz/20KjVrg30v5ozCynNyOtWLTOKJ0S48jc=;
-	b=DAEzWGuKGLv+L3Lthph3fSSVp89Vi16fkVUewedd041jZDGMNbo8aCG+vUOoYCZ+EPT2Ua
-	PYAbqR5B45tsuvk3DcDVgy5jYAiP4yewIB3ynqyuDK31hcLaBMpBSJ8esDe7q0Lo1RqrGw
-	xNd7gXgCZfoTJNQvDXAOfBNa3cUZ72U=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-622-8YNJsXH9MtiWIpWsQgpP2g-1; Tue,
- 08 Sep 2026 05:11:47 -0400
-X-MC-Unique: 8YNJsXH9MtiWIpWsQgpP2g-1
-X-Mimecast-MFC-AGG-ID: 8YNJsXH9MtiWIpWsQgpP2g_1788858705
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 017AC195DB9B;
-	Tue,  8 Sep 2026 09:11:45 +0000 (UTC)
-Received: from warthog.com (unknown [10.44.32.158])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 260CF1800605;
-	Tue,  8 Sep 2026 09:11:38 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Paulo Alcantara <pc@manguebit.org>
+	 MIME-Version; b=gp7AXhrJonMCC8sx3931WV+0xXkRpzAeY4/kWlF0qRRYh5YEJDaLbBy6bHB5kv4l6mULYlpHmv3JhPZKlF1EgQQiL8O4XlCGjXgBOw0eTd1HmYK2Xk+Z6ABN5qOtNcQKlV87esQG/kE8o4hPG3VVO+8IcLZoYbqaMXP/gwVB0ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCBD81F00AC4;
+	Tue,  8 Sep 2026 12:20:01 +0000 (UTC)
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
 Cc: David Howells <dhowells@redhat.com>,
-	Christian Brauner <christian@brauner.io>,
-	Matthew Wilcox <willy@infradead.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Stefan Metzmacher <metze@samba.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Tom Talpey <tom@talpey.com>,
 	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	v9fs@lists.linux.dev,
-	linux-erofs@lists.ozlabs.org,
+	netfs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v12 8/8] netfs: Set subrequest->source at alloc before trace emission
-Date: Tue,  8 Sep 2026 10:10:29 +0100
-Message-ID: <20260908091031.1506798-9-dhowells@redhat.com>
-In-Reply-To: <20260908091031.1506798-1-dhowells@redhat.com>
-References: <20260908091031.1506798-1-dhowells@redhat.com>
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y 1/3] cifs: Remove the server pointer from smb_message
+Date: Tue,  8 Sep 2026 08:19:58 -0400
+Message-ID: <20260908122000.2049341-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026090305-henchman-snipping-25aa@gregkh>
+References: <2026090305-henchman-snipping-25aa@gregkh>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: VF4-YIDod8Ju9CKf3JfzXt6nrLc87uTJV1TQVVFRx0s_1788858705
-X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Set subrequest->source in netfs_alloc_subrequest() before we emit the trace
-line indicating we allocated the subrequest.  Note that this requires the
-allocation of the subreq in netfs_read_to_pagecache() to be pushed to after
-the decision about what sort of subreq it should be.
+From: David Howells <dhowells@redhat.com>
+
+[ Upstream commit 87fba18abbb8433a47045c785f2edc027e4d2bc5 ]
+
+Remove the server pointer from smb_message and instead pass it down to all
+the things that access it.
 
 Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Paulo Alcantara <pc@manguebit.org>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+cc: Shyam Prasad N <sprasad@microsoft.com>
+cc: Tom Talpey <tom@talpey.com> (RDMA, smbdirect)
+cc: linux-cifs@vger.kernel.org
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
-cc: linux-mm@kvack.org
----
- fs/netfs/buffered_read.c | 4 ++--
- fs/netfs/direct_read.c   | 3 +--
- fs/netfs/internal.h      | 3 ++-
- fs/netfs/objects.c       | 4 +++-
- fs/netfs/read_retry.c    | 3 +--
- fs/netfs/read_single.c   | 2 +-
- fs/netfs/write_issue.c   | 3 +--
- fs/netfs/write_retry.c   | 3 +--
- 8 files changed, 12 insertions(+), 13 deletions(-)
+Signed-off-by: Steve French <stfrench@microsoft.com>
 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index e7fa30376862..f88b87c8303e 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -276,10 +276,10 @@ static void netfs_read_to_pagecache(struct netfs_io_request *rreq)
+[ sashal: Reduced backport -- upstream 87fba18abbb84 touches 12 file(s), this
+  backport carries 5. Not backported here:
+  fs/smb/client/cifsfs.c
+  fs/smb/client/cifsglob.h
+  fs/smb/client/cifsproto.h
+  fs/smb/client/cifssmb.c
+  fs/smb/client/cifstransport.c
+  fs/smb/client/connect.c
+  fs/smb/client/netmisc.c
+  fs/smb/client/smb1ops.c
+  ... and 4 more
+  This note is generated from the file lists only; see the resolution record
+  for the reasoning. ]
+
+Stable-dep-of: 730d0bb19507 ("smb: client: fix UAF and buffer leak in cifs_check_trans2() for malformed secondary T2")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/cifs/cifsproto.h |  3 ++-
+ fs/cifs/cifssmb.c   |  4 ++--
+ fs/cifs/connect.c   |  5 +++--
+ fs/cifs/smb1ops.c   |  2 +-
+ fs/cifs/smb2ops.c   | 14 +++++++-------
+ 5 files changed, 15 insertions(+), 13 deletions(-)
+
+diff --git a/fs/cifs/cifsproto.h b/fs/cifs/cifsproto.h
+index d43e8c331df95..f99cc6f0c5d9c 100644
+--- a/fs/cifs/cifsproto.h
++++ b/fs/cifs/cifsproto.h
+@@ -227,7 +227,8 @@ extern unsigned int setup_authusers_ACE(struct cifs_ace *pace);
+ extern unsigned int setup_special_mode_ACE(struct cifs_ace *pace, __u64 nmode);
+ extern unsigned int setup_special_user_owner_ACE(struct cifs_ace *pace);
  
- 	do {
- 		struct netfs_io_subrequest *subreq;
--		enum netfs_io_source source = NETFS_SOURCE_UNKNOWN;
-+		enum netfs_io_source source;
- 		ssize_t slice;
+-extern void dequeue_mid(struct mid_q_entry *mid, bool malformed);
++extern void dequeue_mid(struct TCP_Server_Info *server,
++			struct mid_q_entry *mid, bool malformed);
+ extern int cifs_read_from_socket(struct TCP_Server_Info *server, char *buf,
+ 			         unsigned int to_read);
+ extern ssize_t cifs_discard_from_socket(struct TCP_Server_Info *server,
+diff --git a/fs/cifs/cifssmb.c b/fs/cifs/cifssmb.c
+index 67ff1669cab2a..94d08d439cb47 100644
+--- a/fs/cifs/cifssmb.c
++++ b/fs/cifs/cifssmb.c
+@@ -1470,7 +1470,7 @@ __cifs_readv_discard(struct TCP_Server_Info *server, struct mid_q_entry *mid,
+ 	int length;
  
--		subreq = netfs_alloc_subrequest(rreq);
-+		subreq = netfs_alloc_subrequest(rreq, NETFS_SOURCE_UNKNOWN);
- 		if (!subreq) {
- 			ret = -ENOMEM;
- 			break;
-diff --git a/fs/netfs/direct_read.c b/fs/netfs/direct_read.c
-index 5405e108b7a3..8c15f3079723 100644
---- a/fs/netfs/direct_read.c
-+++ b/fs/netfs/direct_read.c
-@@ -55,7 +55,7 @@ static void netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
- 		struct netfs_io_subrequest *subreq;
- 		ssize_t slice;
+ 	length = cifs_discard_remaining_data(server);
+-	dequeue_mid(mid, malformed);
++	dequeue_mid(server, mid, malformed);
+ 	mid->resp_buf = server->smallbuf;
+ 	server->smallbuf = NULL;
+ 	return length;
+@@ -1609,7 +1609,7 @@ cifs_readv_receive(struct TCP_Server_Info *server, struct mid_q_entry *mid)
+ 	if (server->total_read < buflen)
+ 		return cifs_readv_discard(server, mid);
  
--		subreq = netfs_alloc_subrequest(rreq);
-+		subreq = netfs_alloc_subrequest(rreq, NETFS_DOWNLOAD_FROM_SERVER);
- 		if (!subreq) {
- 			/* Stash the error in the request if there's not
- 			 * already an error set.
-@@ -64,7 +64,6 @@ static void netfs_dispatch_unbuffered_reads(struct netfs_io_request *rreq)
- 			break;
+-	dequeue_mid(mid, false);
++	dequeue_mid(server, mid, false);
+ 	mid->resp_buf = server->smallbuf;
+ 	server->smallbuf = NULL;
+ 	return length;
+diff --git a/fs/cifs/connect.c b/fs/cifs/connect.c
+index a95b9d2318fa2..6f5d42fac9644 100644
+--- a/fs/cifs/connect.c
++++ b/fs/cifs/connect.c
+@@ -822,7 +822,8 @@ is_smb_response(struct TCP_Server_Info *server, unsigned char type)
+ }
+ 
+ void
+-dequeue_mid(struct mid_q_entry *mid, bool malformed)
++dequeue_mid(struct TCP_Server_Info *server, struct mid_q_entry *mid,
++	    bool malformed)
+ {
+ #ifdef CONFIG_CIFS_STATS2
+ 	mid->when_received = jiffies;
+@@ -877,7 +878,7 @@ handle_mid(struct mid_q_entry *mid, struct TCP_Server_Info *server,
+ 		else
+ 			server->smallbuf = NULL;
+ 	}
+-	dequeue_mid(mid, malformed);
++	dequeue_mid(server, mid, malformed);
+ }
+ 
+ static void clean_demultiplex_info(struct TCP_Server_Info *server)
+diff --git a/fs/cifs/smb1ops.c b/fs/cifs/smb1ops.c
+index 80287c26cfac0..f4247e9536a9d 100644
+--- a/fs/cifs/smb1ops.c
++++ b/fs/cifs/smb1ops.c
+@@ -391,7 +391,7 @@ cifs_check_trans2(struct mid_q_entry *mid, struct TCP_Server_Info *server,
+ 			return true;
+ 		/* All parts received or packet is malformed. */
+ 		mid->multiEnd = true;
+-		dequeue_mid(mid, malformed);
++		dequeue_mid(server, mid, malformed);
+ 		return true;
+ 	}
+ 	if (!server->large_buf) {
+diff --git a/fs/cifs/smb2ops.c b/fs/cifs/smb2ops.c
+index 51f8ea0c89065..cb4253b621d3b 100644
+--- a/fs/cifs/smb2ops.c
++++ b/fs/cifs/smb2ops.c
+@@ -4662,7 +4662,7 @@ handle_read_data(struct TCP_Server_Info *server, struct mid_q_entry *mid,
+ 		if (is_offloaded)
+ 			mid->mid_state = MID_RESPONSE_RECEIVED;
+ 		else
+-			dequeue_mid(mid, false);
++			dequeue_mid(server, mid, false);
+ 		return 0;
+ 	}
+ 
+@@ -4689,7 +4689,7 @@ handle_read_data(struct TCP_Server_Info *server, struct mid_q_entry *mid,
+ 		if (is_offloaded)
+ 			mid->mid_state = MID_RESPONSE_MALFORMED;
+ 		else
+-			dequeue_mid(mid, rdata->result);
++			dequeue_mid(server, mid, rdata->result);
+ 		return 0;
+ 	}
+ 
+@@ -4708,7 +4708,7 @@ handle_read_data(struct TCP_Server_Info *server, struct mid_q_entry *mid,
+ 			if (is_offloaded)
+ 				mid->mid_state = MID_RESPONSE_MALFORMED;
+ 			else
+-				dequeue_mid(mid, rdata->result);
++				dequeue_mid(server, mid, rdata->result);
+ 			return 0;
  		}
  
--		subreq->source	= NETFS_DOWNLOAD_FROM_SERVER;
- 		subreq->start	= start;
- 		subreq->len	= size;
+@@ -4718,7 +4718,7 @@ handle_read_data(struct TCP_Server_Info *server, struct mid_q_entry *mid,
+ 			if (is_offloaded)
+ 				mid->mid_state = MID_RESPONSE_MALFORMED;
+ 			else
+-				dequeue_mid(mid, rdata->result);
++				dequeue_mid(server, mid, rdata->result);
+ 			return 0;
+ 		}
  
-diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
-index e0aa0ea510e9..ec520c948420 100644
---- a/fs/netfs/internal.h
-+++ b/fs/netfs/internal.h
-@@ -92,7 +92,8 @@ void netfs_get_request(struct netfs_io_request *rreq, enum netfs_rreq_ref_trace
- void netfs_clear_subrequests(struct netfs_io_request *rreq);
- void netfs_put_request(struct netfs_io_request *rreq, enum netfs_rreq_ref_trace what);
- void netfs_put_failed_request(struct netfs_io_request *rreq);
--struct netfs_io_subrequest *netfs_alloc_subrequest(struct netfs_io_request *rreq);
-+struct netfs_io_subrequest *netfs_alloc_subrequest(struct netfs_io_request *rreq,
-+						   enum netfs_io_source source);
+@@ -4728,7 +4728,7 @@ handle_read_data(struct TCP_Server_Info *server, struct mid_q_entry *mid,
+ 			if (is_offloaded)
+ 				mid->mid_state = MID_RESPONSE_MALFORMED;
+ 			else
+-				dequeue_mid(mid, rdata->result);
++				dequeue_mid(server, mid, rdata->result);
+ 			return 0;
+ 		}
  
- static inline void netfs_see_request(struct netfs_io_request *rreq,
- 				     enum netfs_rreq_ref_trace what)
-diff --git a/fs/netfs/objects.c b/fs/netfs/objects.c
-index 3460aa1c4af1..9c6ea718692a 100644
---- a/fs/netfs/objects.c
-+++ b/fs/netfs/objects.c
-@@ -207,7 +207,8 @@ void netfs_put_failed_request(struct netfs_io_request *rreq)
- /*
-  * Allocate and partially initialise an I/O request structure.
-  */
--struct netfs_io_subrequest *netfs_alloc_subrequest(struct netfs_io_request *rreq)
-+struct netfs_io_subrequest *netfs_alloc_subrequest(struct netfs_io_request *rreq,
-+						   enum netfs_io_source source)
- {
- 	struct netfs_io_subrequest *subreq;
- 	mempool_t *mempool = rreq->netfs_ops->subrequest_pool ?: &netfs_subrequest_pool;
-@@ -224,6 +225,7 @@ struct netfs_io_subrequest *netfs_alloc_subrequest(struct netfs_io_request *rreq
- 	INIT_WORK(&subreq->work, NULL);
- 	INIT_LIST_HEAD(&subreq->rreq_link);
- 	refcount_set(&subreq->ref, 2);
-+	subreq->source = source;
- 	subreq->rreq = rreq;
- 	subreq->debug_index = atomic_inc_return(&rreq->subreq_counter);
- 	netfs_get_request(rreq, netfs_rreq_trace_get_subreq);
-diff --git a/fs/netfs/read_retry.c b/fs/netfs/read_retry.c
-index 46810d29f0c0..396a05432a7e 100644
---- a/fs/netfs/read_retry.c
-+++ b/fs/netfs/read_retry.c
-@@ -195,12 +195,11 @@ static void netfs_retry_read_subrequests(struct netfs_io_request *rreq)
- 		 * and insert them after.
- 		 */
- 		do {
--			subreq = netfs_alloc_subrequest(rreq);
-+			subreq = netfs_alloc_subrequest(rreq, NETFS_DOWNLOAD_FROM_SERVER);
- 			if (!subreq) {
- 				subreq = to;
- 				goto abandon_after;
- 			}
--			subreq->source		= NETFS_DOWNLOAD_FROM_SERVER;
- 			subreq->start		= start;
- 			subreq->len		= len;
- 			subreq->stream_nr	= stream->stream_nr;
-diff --git a/fs/netfs/read_single.c b/fs/netfs/read_single.c
-index ccb5fc809d99..50775370d13d 100644
---- a/fs/netfs/read_single.c
-+++ b/fs/netfs/read_single.c
-@@ -92,7 +92,7 @@ static int netfs_single_dispatch_read(struct netfs_io_request *rreq)
- 	struct netfs_io_subrequest *subreq;
- 	int ret = 0;
+@@ -4746,7 +4746,7 @@ handle_read_data(struct TCP_Server_Info *server, struct mid_q_entry *mid,
+ 		if (is_offloaded)
+ 			mid->mid_state = MID_RESPONSE_MALFORMED;
+ 		else
+-			dequeue_mid(mid, rdata->result);
++			dequeue_mid(server, mid, rdata->result);
+ 		return 0;
+ 	}
  
--	subreq = netfs_alloc_subrequest(rreq);
-+	subreq = netfs_alloc_subrequest(rreq, NETFS_DOWNLOAD_FROM_SERVER);
- 	if (!subreq)
- 		return -ENOMEM;
+@@ -4760,7 +4760,7 @@ handle_read_data(struct TCP_Server_Info *server, struct mid_q_entry *mid,
+ 	if (is_offloaded)
+ 		mid->mid_state = MID_RESPONSE_RECEIVED;
+ 	else
+-		dequeue_mid(mid, false);
++		dequeue_mid(server, mid, false);
+ 	return length;
+ }
  
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index 9a528da4bf9f..e7cb496f6324 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -168,10 +168,9 @@ void netfs_prepare_write(struct netfs_io_request *wreq,
- 	    wreq_iter->folioq_slot >= folioq_nr_slots(wreq_iter->folioq))
- 		rolling_buffer_make_space(&wreq->buffer, wreq->gfp);
- 
--	subreq = netfs_alloc_subrequest(wreq);
-+	subreq = netfs_alloc_subrequest(wreq, stream->source);
- 	if (!subreq)
- 		return;
--	subreq->source		= stream->source;
- 	subreq->start		= start;
- 	subreq->stream_nr	= stream->stream_nr;
- 	subreq->io_iter		= *wreq_iter;
-diff --git a/fs/netfs/write_retry.c b/fs/netfs/write_retry.c
-index 6cd584242af2..d7d5348496fc 100644
---- a/fs/netfs/write_retry.c
-+++ b/fs/netfs/write_retry.c
-@@ -149,8 +149,7 @@ static void netfs_retry_write_stream(struct netfs_io_request *wreq,
- 		 * and insert them after.
- 		 */
- 		do {
--			subreq = netfs_alloc_subrequest(wreq);
--			subreq->source		= to->source;
-+			subreq = netfs_alloc_subrequest(wreq, stream->source);
- 			subreq->start		= start;
- 			subreq->stream_nr	= to->stream_nr;
- 			subreq->retry_count	= 1;
+-- 
+2.53.0
 
