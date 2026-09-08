@@ -1,270 +1,170 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549AA23F40D;
-	Mon,  7 Sep 2026 22:45:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825F24FDE64
+	for <netfs@lists.linux.dev>; Tue,  8 Sep 2026 09:10:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788821159; cv=none; b=svR/pgRhLAliTPQ2oyCIpzVQ+QAwMx7re1h0d5/45H7Bw/OpCW01xtPcLN81U1iAtT6mLe4DWUgKs3S8obevFhBuEjEAOMNSoJsIKPKpAvuhnGsOExGV8eUN/q0P14aZMHzDEB1O7L6gpdSt4aPVU0G+0Sdh0KF6vzQ0weyAXTw=
+	t=1788858653; cv=none; b=RuhXdBEm2QrPlkSVdZqLxHGfqm4bbGQNPXmRlVjHCUviWvwdQF+w1XyrLKHJVAu74bIOhZ/Gcybom5eLyKZsq3zaH671KCG5Wx2VEBO6JAqtIJYhgadFa3VhAV7OIdiGl9Wkj7HSgJL/lE3Ov2rPsSRuM7J3ILYFJZzdJNnZQ+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788821159; c=relaxed/simple;
-	bh=To6O7+9s6WuJkH3K2xcsbC/xSZF+hPmAI9Yj/DgVdXs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kLOAi7Z57bemAjE0fWha4VIF0FAX6zWmz5EsOjh+jHFtwdCSbSTe9WqjoqJXEFulp+zlQSu+SmhT4wmNLgSLyT+rin6lFI8IBNgig5qqkHyJJoHoczxrsySyliepwGnNb/cSbIx1UF6Eqg2CBxY38KE4Bk5J2POJW4b/Ta8pLxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NBb70cVO; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788858653; c=relaxed/simple;
+	bh=8tSqHlLIXJuWsBQYydJqqwZT5KxUO6DtIPiXjOTGxhs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=SiaPXE+F0Z4KJgwCcHbrJrSbmXndzQxqI+Cb560xqmbSJO1sPRlM0I3dnvU2kCSEKrEOFNO4Phaw1/0WHEi1qMPyWdX3WSXzXbHgqWkIn6MiLn5NIDbI1ouZLLpHR08kmMM+FHAuEz/j8MX7PYzGFwoogzlBQRp8a2z9IxAtoQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=e3gb+JbB; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NBb70cVO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC0F51F00A3A;
-	Mon,  7 Sep 2026 22:45:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788821157;
-	bh=asBK7FBZsUqayKX20rCC4/+fVUpQUaAsV6GRxgmH5bA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NBb70cVOBMjwutsuQLASxMFqQFKFhGp2mcbXOKfAArkk053fZ/T88m2sEES960j22
-	 CVhf1qAu5080bEwrPYnWmMMe6kCv9KTl/rM7BuRNLp2zbGAby2v31696g5VGZDBp5N
-	 yG0xgPoX/6ASqxEnWmezxkh5O3zb8YnnGQcuSD0d7OyHqifTWAIfjAM3EtSkv6a6Hb
-	 e2IXwLZ/4lA0LMSbzOxx8DuBjEKYXtNsWQyl1hsieBzSvSdjn4/3Gp2TsFWQYxFCQ8
-	 iIrKq0ySKkqMQP+5dx095bWMiBIbDp86mvfpOIkVzz8vADIW78qE0Nb7Te0YlD3rYN
-	 4ogbN+U7zVf9A==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="e3gb+JbB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788858650;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=C0xiqVZ1UP4oD+0sq73SGDSnEeFESxAGnTexw/YKrQk=;
+	b=e3gb+JbBysRTevPqWBDhYZaUEQjRuaqCdmb1XqN5uJnRDT3/DgAa9LU2lHC1CGs8/AnNrV
+	zqd8w8/OJyxmuLjY4wm6zB0oMNLEcESHGK4QT1wcFjC+yP6SmUIQmNpWgZtWxbkbTfWGpb
+	Ht2z1VT3Af5KbnwDz/LhlAgPtvo/fXs=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-522-Z9G_OryfNLuOMVNfyLh3Ag-1; Tue,
+ 08 Sep 2026 05:10:46 -0400
+X-MC-Unique: Z9G_OryfNLuOMVNfyLh3Ag-1
+X-Mimecast-MFC-AGG-ID: Z9G_OryfNLuOMVNfyLh3Ag_1788858644
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4B2B31834595;
+	Tue,  8 Sep 2026 09:10:43 +0000 (UTC)
+Received: from warthog.com (unknown [10.44.32.158])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3AA8430001A2;
+	Tue,  8 Sep 2026 09:10:34 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Paulo Alcantara <pc@manguebit.org>
 Cc: David Howells <dhowells@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
+	Christian Brauner <christian@brauner.io>,
+	Matthew Wilcox <willy@infradead.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Stefan Metzmacher <metze@samba.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
 	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-erofs@lists.ozlabs.org,
 	linux-fsdevel@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 1/4] cifs: Remove the server pointer from smb_message
-Date: Mon,  7 Sep 2026 18:45:52 -0400
-Message-ID: <20260907224555.689206-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026090304-drowsily-unread-e280@gregkh>
-References: <2026090304-drowsily-unread-e280@gregkh>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v12 0/8] netfs: Miscellaneous preparatory changes
+Date: Tue,  8 Sep 2026 10:10:21 +0100
+Message-ID: <20260908091031.1506798-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: C50CDM0kBI8YgE8oqP-Q86jbHUPGylZGHlMzz5cXC8A_1788858644
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-From: David Howells <dhowells@redhat.com>
+Hi Christian,
 
-[ Upstream commit 87fba18abbb8433a47045c785f2edc027e4d2bc5 ]
+Could you pull these patches please for -next?  This is the first of four
+batches.  This is based on your vfs.fixes as there are some prerequisite
+patches there.  This was split from v11 of a larger series[1].
 
-Remove the server pointer from smb_message and instead pass it down to all
-the things that access it.
+This a collection of miscellaneous modifications to netfslib that I want to
+make ahead of bigger changes, including:
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-cc: Shyam Prasad N <sprasad@microsoft.com>
-cc: Tom Talpey <tom@talpey.com> (RDMA, smbdirect)
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+ (1) Convert "unsigned long long" to "uoff_t".  This makes it a little more
+     obvious as to the meaning of the value.  Also convert some "loff_t" to
+     "uoff_t" as most of the time it's used the value really should never
+     be negative.
 
-[ sashal: Reduced backport -- upstream 87fba18abbb84 touches 12 file(s), this
-  backport carries 6. Not backported here:
-  fs/smb/client/cifsfs.c
-  fs/smb/client/cifsglob.h
-  fs/smb/client/cifssmb.c
-  fs/smb/client/cifstransport.c
-  fs/smb/client/netmisc.c
-  fs/smb/client/smb1ops.c
-  fs/smb/client/smb2pdu.c
-  fs/smb/client/smb2transport.c
-  This note is generated from the file lists only; see the resolution record
-  for the reasoning. ]
+ (2) Remove the writethrough code as the locking is really tricky to get
+     right and it looks like it could deadlock with Ceph if snapshots are
+     used.
 
-Stable-dep-of: 730d0bb19507 ("smb: client: fix UAF and buffer leak in cifs_check_trans2() for malformed secondary T2")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/smb/client/Makefile                       |  2 +-
- fs/smb/client/cifsproto.h                    |  3 ++-
- fs/smb/client/connect.c                      | 11 ++++++-----
- fs/smb/client/{smb1ops.c => smb1transport.c} |  2 +-
- fs/smb/client/smb2ops.c                      | 14 +++++++-------
- fs/smb/client/transport.c                    |  4 ++--
- 6 files changed, 19 insertions(+), 17 deletions(-)
- rename fs/smb/client/{smb1ops.c => smb1transport.c} (99%)
+ (3) Adjust some tracepoints, including adding the cache object ID to
+     certain tracepoinits.
 
-diff --git a/fs/smb/client/Makefile b/fs/smb/client/Makefile
-index 7c9785973f496..ee5ed556d91f9 100644
---- a/fs/smb/client/Makefile
-+++ b/fs/smb/client/Makefile
-@@ -31,4 +31,4 @@ cifs-$(CONFIG_CIFS_SMB_DIRECT) += smbdirect.o
- 
- cifs-$(CONFIG_CIFS_ROOT) += cifsroot.o
- 
--cifs-$(CONFIG_CIFS_ALLOW_INSECURE_LEGACY) += smb1ops.o cifssmb.o
-+cifs-$(CONFIG_CIFS_ALLOW_INSECURE_LEGACY) += smb1transport.o cifssmb.o
-diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
-index 8cfa504e6bd83..e23a3dcf96af4 100644
---- a/fs/smb/client/cifsproto.h
-+++ b/fs/smb/client/cifsproto.h
-@@ -257,7 +257,8 @@ extern unsigned int setup_authusers_ACE(struct cifs_ace *pace);
- extern unsigned int setup_special_mode_ACE(struct cifs_ace *pace, __u64 nmode);
- extern unsigned int setup_special_user_owner_ACE(struct cifs_ace *pace);
- 
--extern void dequeue_mid(struct mid_q_entry *mid, bool malformed);
-+extern void dequeue_mid(struct TCP_Server_Info *server,
-+			struct mid_q_entry *mid, bool malformed);
- extern int cifs_read_from_socket(struct TCP_Server_Info *server, char *buf,
- 			         unsigned int to_read);
- extern ssize_t cifs_discard_from_socket(struct TCP_Server_Info *server,
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index 096e69c591722..0bdd19854902b 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -892,12 +892,13 @@ is_smb_response(struct TCP_Server_Info *server, unsigned char type)
- }
- 
- void
--dequeue_mid(struct mid_q_entry *mid, bool malformed)
-+dequeue_mid(struct TCP_Server_Info *server, struct mid_q_entry *mid,
-+	    bool malformed)
- {
- #ifdef CONFIG_CIFS_STATS2
- 	mid->when_received = jiffies;
- #endif
--	spin_lock(&mid->server->mid_lock);
-+	spin_lock(&server->mid_lock);
- 	if (!malformed)
- 		mid->mid_state = MID_RESPONSE_RECEIVED;
- 	else
-@@ -907,12 +908,12 @@ dequeue_mid(struct mid_q_entry *mid, bool malformed)
- 	 * function has finished processing it is a bug.
- 	 */
- 	if (mid->mid_flags & MID_DELETED) {
--		spin_unlock(&mid->server->mid_lock);
-+		spin_unlock(&server->mid_lock);
- 		pr_warn_once("trying to dequeue a deleted mid\n");
- 	} else {
- 		list_del_init(&mid->qhead);
- 		mid->mid_flags |= MID_DELETED;
--		spin_unlock(&mid->server->mid_lock);
-+		spin_unlock(&server->mid_lock);
- 	}
- }
- 
-@@ -948,7 +949,7 @@ handle_mid(struct mid_q_entry *mid, struct TCP_Server_Info *server,
- 		else
- 			server->smallbuf = NULL;
- 	}
--	dequeue_mid(mid, malformed);
-+	dequeue_mid(server, mid, malformed);
- }
- 
- int
-diff --git a/fs/smb/client/smb1ops.c b/fs/smb/client/smb1transport.c
-similarity index 99%
-rename from fs/smb/client/smb1ops.c
-rename to fs/smb/client/smb1transport.c
-index 1489b9d21b609..a27206cb1fc89 100644
---- a/fs/smb/client/smb1ops.c
-+++ b/fs/smb/client/smb1transport.c
-@@ -398,7 +398,7 @@ cifs_check_trans2(struct mid_q_entry *mid, struct TCP_Server_Info *server,
- 			return true;
- 		/* All parts received or packet is malformed. */
- 		mid->multiEnd = true;
--		dequeue_mid(mid, malformed);
-+		dequeue_mid(server, mid, malformed);
- 		return true;
- 	}
- 	if (!server->large_buf) {
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 2b38e8e7efd4e..b6334bf047e4b 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -4881,7 +4881,7 @@ handle_read_data(struct TCP_Server_Info *server, struct mid_q_entry *mid,
- 		if (is_offloaded)
- 			mid->mid_state = MID_RESPONSE_RECEIVED;
- 		else
--			dequeue_mid(mid, false);
-+			dequeue_mid(server, mid, false);
- 		return 0;
- 	}
- 
-@@ -4908,7 +4908,7 @@ handle_read_data(struct TCP_Server_Info *server, struct mid_q_entry *mid,
- 		if (is_offloaded)
- 			mid->mid_state = MID_RESPONSE_MALFORMED;
- 		else
--			dequeue_mid(mid, rdata->result);
-+			dequeue_mid(server, mid, rdata->result);
- 		return 0;
- 	}
- 
-@@ -4927,7 +4927,7 @@ handle_read_data(struct TCP_Server_Info *server, struct mid_q_entry *mid,
- 			if (is_offloaded)
- 				mid->mid_state = MID_RESPONSE_MALFORMED;
- 			else
--				dequeue_mid(mid, rdata->result);
-+				dequeue_mid(server, mid, rdata->result);
- 			return 0;
- 		}
- 
-@@ -4937,7 +4937,7 @@ handle_read_data(struct TCP_Server_Info *server, struct mid_q_entry *mid,
- 			if (is_offloaded)
- 				mid->mid_state = MID_RESPONSE_MALFORMED;
- 			else
--				dequeue_mid(mid, rdata->result);
-+				dequeue_mid(server, mid, rdata->result);
- 			return 0;
- 		}
- 
-@@ -4947,7 +4947,7 @@ handle_read_data(struct TCP_Server_Info *server, struct mid_q_entry *mid,
- 			if (is_offloaded)
- 				mid->mid_state = MID_RESPONSE_MALFORMED;
- 			else
--				dequeue_mid(mid, rdata->result);
-+				dequeue_mid(server, mid, rdata->result);
- 			return 0;
- 		}
- 
-@@ -4965,7 +4965,7 @@ handle_read_data(struct TCP_Server_Info *server, struct mid_q_entry *mid,
- 		if (is_offloaded)
- 			mid->mid_state = MID_RESPONSE_MALFORMED;
- 		else
--			dequeue_mid(mid, rdata->result);
-+			dequeue_mid(server, mid, rdata->result);
- 		return 0;
- 	}
- 
-@@ -4979,7 +4979,7 @@ handle_read_data(struct TCP_Server_Info *server, struct mid_q_entry *mid,
- 	if (is_offloaded)
- 		mid->mid_state = MID_RESPONSE_RECEIVED;
- 	else
--		dequeue_mid(mid, false);
-+		dequeue_mid(server, mid, false);
- 	return length;
- }
- 
-diff --git a/fs/smb/client/transport.c b/fs/smb/client/transport.c
-index b72d12a24056c..506f1e38bb2d7 100644
---- a/fs/smb/client/transport.c
-+++ b/fs/smb/client/transport.c
-@@ -1710,7 +1710,7 @@ __cifs_readv_discard(struct TCP_Server_Info *server, struct mid_q_entry *mid,
- 	int length;
- 
- 	length = cifs_discard_remaining_data(server);
--	dequeue_mid(mid, malformed);
-+	dequeue_mid(server, mid, malformed);
- 	mid->resp_buf = server->smallbuf;
- 	server->smallbuf = NULL;
- 	return length;
-@@ -1848,7 +1848,7 @@ cifs_readv_receive(struct TCP_Server_Info *server, struct mid_q_entry *mid)
- 	if (server->total_read < buflen)
- 		return cifs_readv_discard(server, mid);
- 
--	dequeue_mid(mid, false);
-+	dequeue_mid(server, mid, false);
- 	mid->resp_buf = server->smallbuf;
- 	server->smallbuf = NULL;
- 	return length;
--- 
-2.53.0
+ (4) Make use of PG_private_2 opt-in.  Use of PG_private_2 is deprecated
+     and the MM people would like their page bit back, so we need to stop
+     using it soon.
+
+ (5) Add some helper functions to handle the barriering needed for the
+     NETFS_RREQ_ALL_QUEUED flag.
+
+ (6) Set the subrequest type at allocation time so that the allocation
+     trace records the proposed type.
+
+The patches can also be found here:
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-next-1
+
+Thanks,
+David
+
+Changes
+=======
+ver #12)
+- Split from v11 of "netfs: Keep track of folios in a segmented bio_vec[]
+  chain"[1]
+
+[1] https://lore.kernel.org/r/20260902173350.3468672-1-dhowells@redhat.com/
+
+David Howells (8):
+  netfs: Use uoff_t instead of unsigned long long and loff_t
+  netfs: Remove the writethrough code
+  netfs: trace: Change the "clear" folio traces to "endwb"
+  netfs: trace: Rejig a couple of the tracepoints
+  netfs: Add the cache object ID to netfs_read/write tracepoints
+  netfs: Make deprecated PG_private_2 support opt-in
+  netfs: Add some functions to wrap the all-queued handling
+  netfs: Set subrequest->source at alloc before trace emission
+
+ fs/9p/vfs_addr.c                  |   1 -
+ fs/afs/file.c                     |   5 +-
+ fs/cachefiles/interface.c         |  10 +--
+ fs/cachefiles/internal.h          |   4 +-
+ fs/cachefiles/io.c                |  25 +++---
+ fs/ceph/Kconfig                   |   1 +
+ fs/ceph/addr.c                    |   4 +-
+ fs/netfs/Kconfig                  |   3 +
+ fs/netfs/Makefile                 |   2 +-
+ fs/netfs/buffered_read.c          |  35 ++++----
+ fs/netfs/buffered_write.c         |  66 +++------------
+ fs/netfs/direct_read.c            |  14 ++--
+ fs/netfs/direct_write.c           |   8 +-
+ fs/netfs/fscache_cookie.c         |   8 +-
+ fs/netfs/fscache_io.c             |  10 +--
+ fs/netfs/internal.h               |  67 ++++++++++++---
+ fs/netfs/iterator.c               |   2 +-
+ fs/netfs/main.c                   |   1 -
+ fs/netfs/misc.c                   |  10 +--
+ fs/netfs/objects.c                |   6 +-
+ fs/netfs/read_collect.c           |  14 ++--
+ fs/netfs/read_pgpriv2.c           |  13 ++-
+ fs/netfs/read_retry.c             |   5 +-
+ fs/netfs/read_single.c            |  11 +--
+ fs/netfs/stats.c                  |   4 +-
+ fs/netfs/write_collect.c          |  25 +++---
+ fs/netfs/write_issue.c            | 123 ++-------------------------
+ fs/netfs/write_retry.c            |   5 +-
+ fs/nfs/Kconfig                    |   1 +
+ include/linux/fscache-cache.h     |   2 +-
+ include/linux/fscache.h           |  36 ++++----
+ include/linux/netfs.h             |  80 +++++++++---------
+ include/trace/events/cachefiles.h |  30 +++----
+ include/trace/events/fscache.h    |  10 +--
+ include/trace/events/netfs.h      | 134 +++++++++++++++---------------
+ 35 files changed, 324 insertions(+), 451 deletions(-)
 
