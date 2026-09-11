@@ -1,46 +1,46 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A8D43B3F7
-	for <netfs@lists.linux.dev>; Fri, 11 Sep 2026 07:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 493B9411FA1
+	for <netfs@lists.linux.dev>; Fri, 11 Sep 2026 08:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789111029; cv=none; b=ae4H2j2hDHHuCS1LnNcaDj/7aJ5g7QmWXATol/MMUTd1z1+7pfMwDHkvIvJW1mT0DlzzXBzkLB0HpxTZk6CKxZegZWSyFSNcPI8zRycoH7rincCzqaVodx9p3PvEjsSIHYaleF9leRPKmp9KlSObh6aXpeT+su1QHJTyNFwu9O4=
+	t=1789114272; cv=none; b=oe12CiMT6W/bLdHrSkz1CzWaOr1MBQkAA0+svteuxAngDfvTKrxTEAlW6CW+x5PPeY/6y+OCyp6A0Q7qvqhnlVo9X3KYnI4Xe2AU5ZyzXSxW+PC8EzC89cOkFrfXv2sfjKlxZAYkGR5D5IgRsATUm5S+tvUNg2A5TyJdTasoNUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789111029; c=relaxed/simple;
-	bh=6sM511Yghy0FHDLvevziRdPvpQEZD+8AKouYt7mgOik=;
+	s=arc-20240116; t=1789114272; c=relaxed/simple;
+	bh=9EWyKxpvwDuyXTv1d+2e/EeTIXfhXvw4dndst9H/9BE=;
 	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
-	 Message-ID:Content-Type; b=uxudQ+rocMboSg0CKVlHdLiEOn33lbUoz0vTDGClg5pfkO4TLGQR9Wd137K1yduZ0ZEHNMgLM36Lt1OU7nklmCiBOiejmth8F10gO6aO6QAVSXJW1mWsDHKAgEr7NLfClQVX3F2ihVoEx9dr6Dt7dQwxMqYlhdIbwS9mebtdLkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Cn3leOXi; arc=none smtp.client-ip=170.10.133.124
+	 Message-ID:Content-Type; b=Qd+onUg/2lwUwngZyIjFvta3nmcIRR0UCYSDbEeRsBbp9XrqnEmAfma0PAz+BA0ymb5hySZNDVRRIonQsDv8NMxY03TfhtahrMS79odQ9I2/bEeIM838PTbzLsyVAJUfWVjrFiyHrEuoV8eyuG2OR1Car9eeaBytcLi79COTiKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cX+3Brqi; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Cn3leOXi"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cX+3Brqi"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789111021;
+	s=mimecast20190719; t=1789114270;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VuQgHOd1pJjLYwSa9FuLfTu/u2Cf9iOR7RKv6iApg+w=;
-	b=Cn3leOXi/l0VGMBcY3ACfLVkqSnYOdMF7lr2GVVVAcCVM4jdHSG4fBReMuF2wq9K+7SQ30
-	iCdmu1gc/q3SoVLpfm9aVEI3OLDdEdkiM6diSSHTlHfGPNLIgUkgdPuoZKaAlE2IGB2gHu
-	G7Crfox7EvpsCSCLDxVkqFfh1wanlSI=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=KM7H7X1d32hwES9HmLQ+a3yj4IwaejBWYAwsQEvzy9Y=;
+	b=cX+3BrqicfU/qzHopEyJDrNVkeNqmoB3/wLFb8S18ea+5RJqLFDjTa6NdJBpOeP7cBSB8x
+	rhBwrNlWbJxDkB/CQ5Vjs+YPEek/oklG8G92IR0ydXqx6JEdDtLi6rx8rsOFbJGt/lg7TY
+	765G2qO7D85D8XFTD5jY4xd9ytM5ixg=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-612-7tEUIbcYPEuyro1qP9-SsA-1; Fri,
- 11 Sep 2026 03:16:55 -0400
-X-MC-Unique: 7tEUIbcYPEuyro1qP9-SsA-1
-X-Mimecast-MFC-AGG-ID: 7tEUIbcYPEuyro1qP9-SsA_1789111013
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-222-tPEIzxiRNvWbEVqVnvybBw-1; Fri,
+ 11 Sep 2026 04:11:04 -0400
+X-MC-Unique: tPEIzxiRNvWbEVqVnvybBw-1
+X-Mimecast-MFC-AGG-ID: tPEIzxiRNvWbEVqVnvybBw_1789114262
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C92F218005B2;
-	Fri, 11 Sep 2026 07:16:52 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BB9AF1956072;
+	Fri, 11 Sep 2026 08:11:01 +0000 (UTC)
 Received: from warthog.procyon.org.uk (unknown [10.44.32.54])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 038F618004D4;
-	Fri, 11 Sep 2026 07:16:47 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 758071956088;
+	Fri, 11 Sep 2026 08:10:57 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
 	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
 	Kingdom.
@@ -60,23 +60,33 @@ List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Fri, 11 Sep 2026 08:16:46 +0100
-Message-ID: <2208516.1789111006@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: Cysr1OSl2BVGYzsADsPpraaVzMDJyq1t3yP8wPl38Ic_1789111013
+Date: Fri, 11 Sep 2026 09:10:55 +0100
+Message-ID: <2217384.1789114255@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: tF_w1Qghp0gv1Wx8qQiod5CxLjoVXLnjxz65zySaCJo_1789114262
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2208515.1789111006.1@warthog.procyon.org.uk>
+Content-ID: <2217383.1789114255.1@warthog.procyon.org.uk>
 
 Michael Mulqueen <mike@method-b.uk> wrote:
 
-> A 9p mount returns NULs in place of file contents the server holds, and can
-> write those NULs back over the server's copy. Nothing reports an error - the
-> read succeeds and the file is the correct length. Affects CACHE_WRITEBACK 
-> modes - mmap, loose and fscache - but not none or readahead.
+>       cache=none       read   0/20  write   0/20  [cache=0x0]
+>       cache=readahead  read   0/20  write   0/20  [cache=0x1]
+>       cache=mmap       read  20/20  write  20/20  [cache=0x5]
+>       cache=loose      read  20/20  write  20/20  [cache=0xf]
+>       cache=fscache    read  20/20  write  20/20  [cache=0x8f]
 
-Are you actually using this with a cache?  Or just enabling the "use a cache"
-options?
+I presume these should all be 0/20?  When I have a cachefiles cache active, I
+see:
+
+  cache=none       read   0/20  write   0/20  [cache=0x0]
+  cache=readahead  read   0/20  write   0/20  [cache=0x1]
+  cache=mmap       read  20/20  write  20/20  [cache=0x5]
+  cache=loose      read  20/20  write  20/20  [cache=0xf]
+  cache=fscache    read   0/20  write  20/20  [cache=0x8f]
+
+so I suspect on the last one, the data is drawn from fscache, not from the
+server.
 
 David
 
