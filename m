@@ -1,87 +1,69 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx1.manguebit.org (mx1.manguebit.org [143.255.12.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7339D477988
-	for <netfs@lists.linux.dev>; Fri, 11 Sep 2026 13:13:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20041387345;
+	Fri, 11 Sep 2026 20:19:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=143.255.12.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789132412; cv=none; b=KxrhV2U6uLTn28KD9pi+qUCeVBZxSDaJU6Mw7HPY74DP4RRqyxQ+5HcuWLR2kBTCP8XrRKU91eQnkwMhUK8DoKQKRBuaQCWoZy2/SKLQDlBxBiQFVatRfzxsk3Dj8ynjr73UBrI2T4mtrVZqbGZXTOfq5NW3CJP8HBP8QpX8MqA=
+	t=1789157963; cv=none; b=HPkvpE00G4NuVk9aNmg6f3g040ImlJCgAJMwgqMDU6YYDo1gym+/LJQhsablAlFgYQ16nKp/Jvar9wnt0SA7RSWCGhDLKXbIVO8uV6efMWGdSJM4zRwaBlIW8KrCEPPFJJnG3Z+R+i9rpHZHhlJNy0uzODMKRCbVyUfCbkdDzRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789132412; c=relaxed/simple;
-	bh=Tkr+JCbshi+MikFXz8lA+ivAi0uvu17bCSYP5N06Nl0=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
-	 Message-ID:Content-Type; b=VbICQA21hFSGq1isQXVH3uF6Jv8XgLVooKTVFX3KsxUPvoTjA6iw/YkXem5hrf6H8QUkgrU+vSMfuujs0UAqW1Mc9FnlXqLoKeaa2jRRrEPhF6JIh6TCjkMVRGScIrmUtB7l3e7JHoL7zUantvaLqnvPHV+GqZEv4l7Rnt4lqTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T25uE3XS; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789157963; c=relaxed/simple;
+	bh=2OyA4o0jAjZ8oNAFVmQygbD74kvzMiw03VE9SDZIK6Q=;
+	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Date:
+	 MIME-Version:Content-Type; b=SOJuLr2ceiXUwA7eTlpos9eKaQYpb9y2XiGnmYpoIMegw0P7CoDDzTQT7LhVa1QrTKqOWtsZFXqVEkLiYUdEpOw4CYD+x70H43SEfGGwyvx26ZiXNdlCxGifOZgm34xfLyC8gl92rEMUPTP18ALiEfgRdjlcf4s6gax6DXLCnLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org; spf=pass smtp.mailfrom=manguebit.org; dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b=E868JctP; arc=none smtp.client-ip=143.255.12.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T25uE3XS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789132410;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HjxTnG9+IOVo/iqAqVa63V6GPAWyKsYUAzyVdTc8b5Q=;
-	b=T25uE3XSIOF9BhAj7I1wU5VQ1iIF1EYK/ezNJ7Tlu3baN7TdV1WMX+XMWq49lwJyqqrYgb
-	FA9bLLVS9VAkMv66egXEq/kkM+P5yGLgmPDjmrOCLW519wq41yNtA8au6rCptELa1zvw/Q
-	lwaHM06ueM/aO8Ge7RbmsQWLoVvyoVk=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-486-bUcwOhp6PdSxf_wSkglX0w-1; Fri,
- 11 Sep 2026 09:13:27 -0400
-X-MC-Unique: bUcwOhp6PdSxf_wSkglX0w-1
-X-Mimecast-MFC-AGG-ID: bUcwOhp6PdSxf_wSkglX0w_1789132405
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1BF92180135F;
-	Fri, 11 Sep 2026 13:13:25 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.44.32.54])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 819F941B;
-	Fri, 11 Sep 2026 13:13:20 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <3faab0c3-29be-44af-9569-1e12e8ed6a74@method-b.uk>
-References: <3faab0c3-29be-44af-9569-1e12e8ed6a74@method-b.uk> <fbb9e395-1e07-4212-8f70-23f3cd498074@method-b.uk> <2226525.1789118704@warthog.procyon.org.uk>
-To: Michael Mulqueen <mike@method-b.uk>
-Cc: dhowells@redhat.com, ericvh@kernel.org, lucho@ionkov.net,
-    asmadeus@codewreck.org, pc@manguebit.org, linux_oss@crudebyte.com,
-    v9fs@lists.linux.dev, netfs@lists.linux.dev,
-    linux-fsdevel@vger.kernel.org, regressions@lists.linux.dev
-Subject: Re: PROBLEM: [REGRESSION 7.1-rc4 -> 7.1-rc5] 9p: silent NUL corruption of file data on cache modes with CACHE_WRITEBACK
+	dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b="E868JctP"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=manguebit.org; s=dkim; h=Content-Type:MIME-Version:Date:References:
+	In-Reply-To:Subject:Cc:To:From:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=2OyA4o0jAjZ8oNAFVmQygbD74kvzMiw03VE9SDZIK6Q=; b=E868JctPP9chcOT+eUCd49cS0l
+	o/3fa7aaO0pLYwUJWRQZrfNHPGUI2YuxLltHwpfIUO65zai2Gv5lQMTq8Eswbmnp/yhWlgTaNotD+
+	SS4i21XRwa+zheFQoVyBeWfUd6idA+sfk8GDgcgedkgY9swLxDC2FdBmdMqCePHJsBAc2SRw18+N7
+	vXTS0PSFiba1rvhnYGOorLQRb57ixFiBvhrVD2zgDEgaa+MLk+F/vLo4yA/5Q1uXPq5GOrbXwUoU4
+	MqnoC1Dk8eLQUoSmGLjJMcoJQIjCiMrLJvlJMTObMPY5UDyg0NkODsZVF6neff3R3eFcg2paEWS0a
+	CzSIj/zA==;
+Received: from pc by mx1.manguebit.org with local (Exim 4.99.5)
+	id 1x57iK-00000001EwB-2foz;
+	Fri, 11 Sep 2026 17:19:12 -0300
+Message-ID: <4b3b1cd3937e3ee589c10db656b496b9@manguebit.org>
+From: Paulo Alcantara <pc@manguebit.org>
+To: David Howells <dhowells@redhat.com>, Christian Brauner
+ <christian@brauner.io>
+Cc: David Howells <dhowells@redhat.com>, Matthew Wilcox
+ <willy@infradead.org>, Namjae Jeon <linkinjeon@kernel.org>, Marc Dionne
+ <marc.dionne@auristor.com>, Stefan Metzmacher <metze@samba.org>, Eric Van
+ Hensbergen <ericvh@kernel.org>, Dominique Martinet
+ <asmadeus@codewreck.org>, Ilya Dryomov <idryomov@gmail.com>,
+ netfs@lists.linux.dev, linux-afs@lists.infradead.org,
+ linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
+ ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v12 1/5] cachefiles: Clean up cachefiles_do_prepare_read()
+In-Reply-To: <20260910220242.2165023-2-dhowells@redhat.com>
+References: <20260910220242.2165023-1-dhowells@redhat.com>
+ <20260910220242.2165023-2-dhowells@redhat.com>
+Date: Fri, 11 Sep 2026 17:19:12 -0300
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Fri, 11 Sep 2026 14:13:19 +0100
-Message-ID: <2319644.1789132399@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
-X-Mimecast-MFC-PROC-ID: E6U8NFSlEwdd5c_EnSQ4oZwXf5WtxueWbIbqPz8lCa8_1789132405
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2319643.1789132399.1@warthog.procyon.org.uk>
+Content-Type: text/plain
 
-Michael Mulqueen <mike@method-b.uk> wrote:
+David Howells <dhowells@redhat.com> writes:
 
-> It appears that cachefiles isn't actually storing anything on 7.3.
+> Clean up cachefiles_do_prepare_read() by merging it into
+> cachefiles_prepare_read() now that the ondemand mode stuff has been removed.
+>
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> cc: Marc Dionne <marc.dionne@auristor.com>
+> cc: Paulo Alcantara <pc@manguebit.org>
+> cc: netfs@lists.linux.dev
+> cc: linux-fsdevel@vger.kernel.org
 
-Yeah.  There was a bug introduced into the iov iterator in the kernel.  The
-fix is here:
-
-https://lore.kernel.org/linux-block/1667275.1788941191@warthog.procyon.org.uk/
-
-> > Does the attached work for you?
-> 
-> Yes, thanks, I get this on patched 7.2 and on patched 7.3-rc2:
-
-Great, thanks!
-
-David
-
+Reviewed-by: Paulo Alcantara <pc@manguebit.org>
