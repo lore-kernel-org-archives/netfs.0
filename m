@@ -1,99 +1,132 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5BF29992B;
-	Sat, 12 Sep 2026 01:43:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0342536404D
+	for <netfs@lists.linux.dev>; Sat, 12 Sep 2026 07:34:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789177427; cv=none; b=NXEQbcpbEuP5urQZQ/l4DbFeO/Fb9lweW6JN78B+qfhoIFr/QMbIQYMCBLyHXZ1d6FfvDC+Sw7j1zzvox3I88XLPzoA1/4NvEGqIrpLLBts9m6yIdMvEFbybfIfmA3mEaLlAsk6r7bEA3ZzcBuSrk+K2dkaUh67yrtULGp8MtDQ=
+	t=1789198490; cv=none; b=blrqqolqi55xm5HfzN0aIPp3I6oirW/wfXtj8B9b285Nvd8rf8/Az/rcHc6wQVt6p0/2vlezHJ4dnPF8cmwXjmUyImMVY7TnOTdyJ5muOmGG1VNi8I67FazqF1wiS8V9RNPCV4swXkxMo27fu0U3Olw7yeBsFtCITTU5y+9PVlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789177427; c=relaxed/simple;
-	bh=dwNEotiBX9ImSwU9tAK5FGyfJw8Hi5gCTBa5mUMt7mY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l1FY+SP/i7lvZR0ENeTRnip7obv6mxuaOJlQqV632+gqrX/+KsqimyaFwBxCv5PEJ0fyEY2NMi2QfE/kdc/jyurBViOVxf0yYgonL+npy1LVx9xqNUy+bpmgPsAaVwA78ci25ArWRCtuqcST9t2o0yMLZeFDsGAwsn/qboEzqyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=nxpQWAqs; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1789198490; c=relaxed/simple;
+	bh=FuiOWbW64EkXmhSCCZESWu46wUZGuIbP+topqzKMfsE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HHh8s+uGGRktTwRZXcNsjrSPW3mLJECutEbo9VKDGEA1X2jiiOfDM/GaGMDnI2LJFi3p8HtO5jJSNAWIKVYYJjpea4JoeE4p6z8U0wIhTf/q2Rr+Ph3kDkZ8K14s00SeeYCrC0QRw19RCIYfW39Oydt4zlOfv7jEG2gcJRApvII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O5YsFj/7; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="nxpQWAqs"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id C899114C2D6;
-	Sat, 12 Sep 2026 03:43:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1789177414;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4fEQSP8Q+z1w18nBkqi4X6Q13reJFv7eEeGjCxF9GH4=;
-	b=nxpQWAqsfmi2S4Ku5PzdyGKXFNgqQBvy0EgYANycGA9WvnyAVVzjiPnfd22WgKgIg24tDl
-	fZOu2JNtLx9f3mBHvtkIbAYo4crLMnqbKO0pS/XNvOloT+uWxogIRRWgD7xICM36Fq/a5A
-	u7Zibu61lX6QRZH2d5HxpBj2D0XRIAngUZORiA1+GtmMtQ+1mkbo4Aez4NSesBsryEi7Om
-	VUSIgrm2hEzzw8/7TpZC2nb/fDNEQeX7yvanhy94GHtHbAhJGx9mbbMNoQB3aqANWkkJaP
-	KeqP+byCQCwq0Rc4I7o7KeyPZ1uZ0+Tx7lx4YwZwd7NJLAQvMYA6s0wejgSaQw==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id fa89e7f4;
-	Sat, 12 Sep 2026 01:43:30 +0000 (UTC)
-Date: Sat, 12 Sep 2026 10:43:15 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: ericvh@kernel.org, lucho@ionkov.net, dhowells@redhat.com,
-	pc@manguebit.org, Michael Mulqueen <mike@method-b.uk>,
-	v9fs@lists.linux.dev, netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org, regressions@lists.linux.dev
-Subject: Re: PROBLEM: [REGRESSION 7.1-rc4 -> 7.1-rc5] 9p: silent NUL
- corruption of file data on cache modes with CACHE_WRITEBACK
-Message-ID: <aqSuM7ILn8g4ElC8@codewreck.org>
-References: <fbb9e395-1e07-4212-8f70-23f3cd498074@method-b.uk>
- <10911959.nUPlyArG6x@weasel>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O5YsFj/7"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ccff31419so2462085e9.3
+        for <netfs@lists.linux.dev>; Sat, 12 Sep 2026 00:34:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789198487; x=1789803287; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=KKzOKf39vUQCKlSSJr14iXhgJoohToEd5zg/sTn5zfI=;
+        b=O5YsFj/7LgfJwisUETYkfmKOreF6DGV8K4HV3mfKtltyTLaRRbIjnUUgEd8WnJMaZg
+         Ze1EJ8rBAPQZ3Vmn/llaP2fxs/MTMsCaRqVdMrUsIPA+O3fyr+MtxQeyVHWxTnsqnWt/
+         8ZH+fLlF/ZeVL7AmPJI6sqRZn4hT9Y2H+RhViUYb+c0EDnhDWp5Hvjn9lKuNjXSu/ipI
+         AoqtO5zrd1TiV2p3jeFxYZ2z7ziLkZLuJbPWlWm/237ok8HcTq5LwdUKLG7tKEuh6vwT
+         znuJnd5oEKvZM3A9cHU6z/3DieeI46D1zXpIAOs/wt1h5Bnyctatway1uwUvCcDcebOZ
+         0vCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789198487; x=1789803287;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=KKzOKf39vUQCKlSSJr14iXhgJoohToEd5zg/sTn5zfI=;
+        b=UWvT/Icdl4fMtR9Wm5gM52JI6v/C3SkOWSmNoZCymMzJi3PYjj/0elEniY34Ej3jZH
+         rx1ClwjKck8c20jgPkIxWHDsgORjjihrswtcQEkIXcvyriyzHF0KmoM9EkUB36KR5zH6
+         69DHdBm9CbN/SVGwKa60GRx9oMstvrz/9tMIJ06xeVwpncusu1WoRKq/ocWHXumLViJk
+         hHDyrmbGoRUOEoWmmk94xohkLvvj0GGkYs75HBtFhFYA+N0pPW++6AnptnlLMZpjgdbq
+         6ZTdRDfhXrw7peZOKOBvtnk7J6ZSaPHEaga8eAAS87c+sTrzQk2GR1DPJTHrq9wH2JA0
+         +cgQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzt/yzfNLyemnPxHNQxQQSoIj7ICgsBEJYCPjHk7wSRRza0Feu5idNgkS+8xzAhBaODqOC72g==@lists.linux.dev
+X-Gm-Message-State: AFuF++m9NN60yP6eNJzz34zd6ipNXMKxxnLPSXsgjr6qWtbCh7ruaarV
+	/tL/1Sgx4tqrq7mrpBukG7qNfJrvO8Q4Q8F2xifAD5oy1430dXR76TAy
+X-Gm-Gg: AYBFou2Qn8c/tp6sXTtBVo93AdyQzKiBEHdwSDT81nTzGwsuPL0d80uoy5v+CXP+yuw
+	kKvfVtS4E+9lnnF1vPwsqkS7qmLsTR3PGsbjVeQiWufLLSf8JLO0KS1nU5bk6FBksgbiPuWqoJX
+	O3YoqMWOQvGYi7K5xxQoX0QYnt3U2LfwsY1D7lLdFGU26FCzvzvRQu5dgStk+sTed2cPryWU/Ua
+	pkFs7uvGw+IjIDg1FpVpehcx3R0NW1j4/aCOqOlWp9kTT/qcA9TcaQrueeB/SxYq7W0YFte9mwJ
+	3p/wMiUDa2QSVW/zLgcUEwmNbxE3DCgZtSMxd1KoyLXE83Y1IIFm7qcwThNkOQZnjX4uhVxHpP1
+	FDK0kx9C8l9m+Inip6qe2ZbdA4zrGHWmggJ8vs5jj+cFmWDLpQzLOeAzrhlA1LKf8w7GihIBQBd
+	Kt7yvp9nbrGpzrxTkNuEca8pdegVO0PBATC1C3zP6XyBOla3jjA2qYP7eLIcdAqqr643ZG9LfVR
+	PV2rU9SmXNM0g6u4zVlFVTdf2H5odXn0sxLaBRnVsMUrk2En+FZGlfHpfIfJEtyRjjBnaF0kGBw
+	5q31AIGbVxnT1pXBlcGZ/p+67GvFBxH3HXaWMojUOMXnswAssJ6JRpdoItV9XnUJQFvCNIRmXao
+	tnyDDw2Y=
+X-Received: by 2002:a05:600c:37c6:b0:49c:fa21:1c8b with SMTP id 5b1f17b1804b1-49e6cc1a4d0mr15498325e9.32.1789198487091;
+        Sat, 12 Sep 2026 00:34:47 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-2a02-3100-b260-f201-9983-e8c4-aff5-7a36.310.pool.telefonica.de. [2a02:3100:b260:f201:9983:e8c4:aff5:7a36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e60ad0614sm147509485e9.10.2026.09.12.00.34.46
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 12 Sep 2026 00:34:46 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] netfs: Document the remote size member and its accessors
+Date: Sat, 12 Sep 2026 09:34:44 +0200
+Message-Id: <20260912073444.51152-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <10911959.nUPlyArG6x@weasel>
+Content-Transfer-Encoding: 8bit
 
-Christian Schoenebeck wrote on Thu, Sep 10, 2026 at 04:06:51PM +0200:
-> > I searched the v9fs and netfs public-inbox archives and did not find this
-> > reported - apologies if I have missed a thread.
-> > 
-> > The nearest existing thread is Pierre Barre's "[BUG] 9p: data corruption
-> > with cache=mmap under concurrent stat/write" (24 Dec 2025). I believe that
-> > is a different bug: it needs stat racing against writes and manifests as a
-> > wrong i_size. What I have here is single-threaded, deterministic, and
-> > destroys data rather than mis-sizing the file. It is also absent on v6.18,
-> > the release that report was made against.
-> 
-> Even though unrelated, that's not fixed yet either, is it?
+netfs_inode.remote_i_size was renamed to _remote_i_size and accessors
+were added to prevent torn accesses. The netfs library documentation
+still shows the old member name.
 
-Right, David sent a patch in [1], but that patch is much too complicated
-(should be split/sent as proper patches/now I've actually started
-looking no longer applies) and I haven't had time to look at it much
-(... OTOH given the patch he sent just now I believe it would also have
-fixed this new regression as well, so we might just as well have been
-better served picking that up...)
+Update the struct excerpt and member description. Direct readers to
+netfs_read_remote_i_size() and netfs_write_remote_i_size(), and state
+that writes require inode->i_lock.
 
-[1] https://lore.kernel.org/r/1667424.1771432276@warthog.procyon.org.uk
+Fixes: 2c8f4742bb76 ("netfs: Fix potential for tearing in ->remote_i_size and ->zero_point")
+Assisted-by: LLM
+Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+---
+ Documentation/filesystems/netfs_library.rst | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-
-More importantly this new regression is much bigger and should have been
-caught somewhere, but I ran my "9p-for-7.2-rc1" tests on top of 7.0 and
-not on top of the merged state as of 7.1 so I didn't hit it (that's easy
-enough to fix going forward), and I haven't had any time to look at 9p
-stuff since then (... despite the dozen of patches sent during the 7.3
-cycle that I didn't get to look at either...);
-I can't fault anyone else but myself at this point but the 9p client
-really is in a poor shape right now :/
-
-
-Anyway, getting back on topic instead of lamenting: things can't be
-worse with David's patch so I'll try to find time to pick it up/run
-quick checks/send to Linus over the weekend, thank you both.
-
-
-Long term I'd like to say I want to spend some time sorting out the
-older patch better but I'm afraid I'm going to need help...
+diff --git a/Documentation/filesystems/netfs_library.rst b/Documentation/filesystems/netfs_library.rst
+index ddd799df6ce363d9c348b4f1e82d66b1b54bf4fd..0c9786ffe19240233ea0d8b725dd8300b9f57759 100644
+--- a/Documentation/filesystems/netfs_library.rst
++++ b/Documentation/filesystems/netfs_library.rst
+@@ -195,7 +195,7 @@ structure is defined::
+ 		struct inode inode;
+ 		const struct netfs_request_ops *ops;
+ 		struct fscache_cookie * cache;
+-		loff_t remote_i_size;
++		loff_t _remote_i_size;
+ 		unsigned long flags;
+ 		...
+ 	};
+@@ -229,11 +229,14 @@ filesystem:
+    Local caching cookie, or NULL if no caching is enabled.  This field does not
+    exist if fscache is disabled.
+ 
+- * ``remote_i_size``
++ * ``_remote_i_size``
+ 
+    The size of the file on the server.  This differs from inode->i_size if
+    local modifications have been made but not yet written back.
+ 
++   Use netfs_read_remote_i_size() and netfs_write_remote_i_size() to access
++   this field.  Hold inode->i_lock when writing it.
++
+  * ``flags``
+ 
+    A set of flags, some of which the filesystem might be interested in:
 -- 
-Dominique Martinet | Asmadeus
+2.39.5 (Apple Git-154)
+
