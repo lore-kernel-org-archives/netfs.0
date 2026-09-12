@@ -1,138 +1,99 @@
-Received: from mx1.manguebit.org (mx1.manguebit.org [143.255.12.172])
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA0459E35D;
-	Fri, 11 Sep 2026 20:21:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=143.255.12.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5BF29992B;
+	Sat, 12 Sep 2026 01:43:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789158113; cv=none; b=VtyMnC5xDEb39UrZawTfV5AO5HBQrfmeOULD5kEtQ9oLhceoHRwc6XRKbx7ZpgVyUatnGy3di9CF3clGcKcv9fNQP6vV/wLYjt1FqS5QC7tqoIU4B2KTa1FNo46QzMOs+CQ23WeGDPw1THmb/H4z8bidQ2jt/8c0wBF+dub5DR8=
+	t=1789177427; cv=none; b=NXEQbcpbEuP5urQZQ/l4DbFeO/Fb9lweW6JN78B+qfhoIFr/QMbIQYMCBLyHXZ1d6FfvDC+Sw7j1zzvox3I88XLPzoA1/4NvEGqIrpLLBts9m6yIdMvEFbybfIfmA3mEaLlAsk6r7bEA3ZzcBuSrk+K2dkaUh67yrtULGp8MtDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789158113; c=relaxed/simple;
-	bh=Gda/p45mn0eDZ98/49FQRJN55Cd0HHPAXWHYrDruXPk=;
-	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Date:
-	 MIME-Version:Content-Type; b=eV+G2U8O9/uQXeKW8gVCKQlSXZCiC57rtpQ4zwwLy4Lnxpv1dtC8xnGa8Ecepy5rkLhXbGZXLsq7Y+R/w3LXP7qsVD6H3+udUsviAOYUY7M637wL1aWwWXxCmy+MdGqAcQ0/1SJPirdQi9ffUx7OGpARD13XrvVHX2lppZ0vfag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org; spf=pass smtp.mailfrom=manguebit.org; dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b=Ul0TTLRS; arc=none smtp.client-ip=143.255.12.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.org
+	s=arc-20240116; t=1789177427; c=relaxed/simple;
+	bh=dwNEotiBX9ImSwU9tAK5FGyfJw8Hi5gCTBa5mUMt7mY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l1FY+SP/i7lvZR0ENeTRnip7obv6mxuaOJlQqV632+gqrX/+KsqimyaFwBxCv5PEJ0fyEY2NMi2QfE/kdc/jyurBViOVxf0yYgonL+npy1LVx9xqNUy+bpmgPsAaVwA78ci25ArWRCtuqcST9t2o0yMLZeFDsGAwsn/qboEzqyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=nxpQWAqs; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b="Ul0TTLRS"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=manguebit.org; s=dkim; h=Content-Type:MIME-Version:Date:References:
-	In-Reply-To:Subject:Cc:To:From:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=tdC+eeHQ2/y5B3/a3WDCCd1iGftUlGNNEOZKxfjw6Y8=; b=Ul0TTLRSppbnaeKmw4fCK2ft1x
-	F34mxzOMJUI0cVF9k/fXLnBWQgRO3UeJzWuhRYtK1KaZ8BnrVVFf6IZ8pWFPGAfyyz3lKhFN1UBsv
-	AhadtmlzpndrOPRm6lPyp0tyHYNEmMYUcq/tuyKNB5uS91toVwMIoiqZKtDHBnxt3vSHyfL0K+PCw
-	+SjgtXfNotNqhkNOwgjOzxOPKMftYOcwjSPDk3IaYWoAKYXMQXM9OA8ZrYyfpk6n1C6EwR3TZ6QKM
-	scYOL0wrM48BLSc4OLEb6vcHRx6dsk0wX5A40eNqhsDsU/oDu3KS8Ihsemii5xwg19/ZlnAwO9sdP
-	xO+iBfJA==;
-Received: from pc by mx1.manguebit.org with local (Exim 4.99.5)
-	id 1x57kh-00000001Exp-194l;
-	Fri, 11 Sep 2026 17:21:39 -0300
-Message-ID: <920f0b50480231f1af8a9c8e7f118f5c@manguebit.org>
-From: Paulo Alcantara <pc@manguebit.org>
-To: David Howells <dhowells@redhat.com>, Christian Brauner
- <christian@brauner.io>
-Cc: David Howells <dhowells@redhat.com>, Matthew Wilcox
- <willy@infradead.org>, Namjae Jeon <linkinjeon@kernel.org>, Marc Dionne
- <marc.dionne@auristor.com>, Stefan Metzmacher <metze@samba.org>, Eric Van
- Hensbergen <ericvh@kernel.org>, Dominique Martinet
- <asmadeus@codewreck.org>, Ilya Dryomov <idryomov@gmail.com>,
- netfs@lists.linux.dev, linux-afs@lists.infradead.org,
- linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
- ceph-devel@vger.kernel.org, v9fs@lists.linux.dev,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v12 5/5] cachefiles: Preset the state xattr when
- creating a new file
-In-Reply-To: <20260910220242.2165023-6-dhowells@redhat.com>
-References: <20260910220242.2165023-1-dhowells@redhat.com>
- <20260910220242.2165023-6-dhowells@redhat.com>
-Date: Fri, 11 Sep 2026 17:21:38 -0300
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="nxpQWAqs"
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id C899114C2D6;
+	Sat, 12 Sep 2026 03:43:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1789177414;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4fEQSP8Q+z1w18nBkqi4X6Q13reJFv7eEeGjCxF9GH4=;
+	b=nxpQWAqsfmi2S4Ku5PzdyGKXFNgqQBvy0EgYANycGA9WvnyAVVzjiPnfd22WgKgIg24tDl
+	fZOu2JNtLx9f3mBHvtkIbAYo4crLMnqbKO0pS/XNvOloT+uWxogIRRWgD7xICM36Fq/a5A
+	u7Zibu61lX6QRZH2d5HxpBj2D0XRIAngUZORiA1+GtmMtQ+1mkbo4Aez4NSesBsryEi7Om
+	VUSIgrm2hEzzw8/7TpZC2nb/fDNEQeX7yvanhy94GHtHbAhJGx9mbbMNoQB3aqANWkkJaP
+	KeqP+byCQCwq0Rc4I7o7KeyPZ1uZ0+Tx7lx4YwZwd7NJLAQvMYA6s0wejgSaQw==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id fa89e7f4;
+	Sat, 12 Sep 2026 01:43:30 +0000 (UTC)
+Date: Sat, 12 Sep 2026 10:43:15 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: ericvh@kernel.org, lucho@ionkov.net, dhowells@redhat.com,
+	pc@manguebit.org, Michael Mulqueen <mike@method-b.uk>,
+	v9fs@lists.linux.dev, netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org, regressions@lists.linux.dev
+Subject: Re: PROBLEM: [REGRESSION 7.1-rc4 -> 7.1-rc5] 9p: silent NUL
+ corruption of file data on cache modes with CACHE_WRITEBACK
+Message-ID: <aqSuM7ILn8g4ElC8@codewreck.org>
+References: <fbb9e395-1e07-4212-8f70-23f3cd498074@method-b.uk>
+ <10911959.nUPlyArG6x@weasel>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <10911959.nUPlyArG6x@weasel>
 
-David Howells <dhowells@redhat.com> writes:
+Christian Schoenebeck wrote on Thu, Sep 10, 2026 at 04:06:51PM +0200:
+> > I searched the v9fs and netfs public-inbox archives and did not find this
+> > reported - apologies if I have missed a thread.
+> > 
+> > The nearest existing thread is Pierre Barre's "[BUG] 9p: data corruption
+> > with cache=mmap under concurrent stat/write" (24 Dec 2025). I believe that
+> > is a different bug: it needs stat racing against writes and manifests as a
+> > wrong i_size. What I have here is single-threaded, deterministic, and
+> > destroys data rather than mis-sizing the file. It is also absent on v6.18,
+> > the release that report was made against.
+> 
+> Even though unrelated, that's not fixed yet either, is it?
 
-> With a really small cache, cachefiles is likely to see a lot of writes
-> hitting ENOSPC - and this can include setxattr that sets the state xattr on
-> a cachefile - but we don't really want to successfully fill a cache file
-> only to have to scrap it because we can't set the xattr.
->
-> Instead, preset the xattr when we create the tmpfile we're going to use,
-> and scrap the file at that point if we get ENOSPC.  Only if setxattr
-> succeeds do we allow data to be written to the file.
->
-> Note that there is a potential performance loss in that writes to the cache
-> have to be delayed until this is completed - but we do the tmpfile/setxattr
-> in parallel, starting when the file is opened and only have to wait once
-> writeback occurs.
->
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> cc: Marc Dionne <marc.dionne@auristor.com>
-> cc: Paulo Alcantara <pc@manguebit.org>
-> cc: netfs@lists.linux.dev
-> cc: linux-fsdevel@vger.kernel.org
-> ---
->  fs/cachefiles/internal.h |  1 +
->  fs/cachefiles/namei.c    |  5 ++++
->  fs/cachefiles/xattr.c    | 59 +++++++++++++++++++++++++++++++++++++++-
->  3 files changed, 64 insertions(+), 1 deletion(-)
->
-> diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
-> index b2605111fd56..664be64ab538 100644
-> --- a/fs/cachefiles/internal.h
-> +++ b/fs/cachefiles/internal.h
-> @@ -283,6 +283,7 @@ void cachefiles_withdraw_volume(struct cachefiles_volume *volume);
->  /*
->   * xattr.c
->   */
-> +int cachefiles_preset_object_xattr(struct cachefiles_object *object, struct file *file);
->  extern int cachefiles_set_object_xattr(struct cachefiles_object *object);
->  extern int cachefiles_check_auxdata(struct cachefiles_object *object,
->  				    struct file *file);
-> diff --git a/fs/cachefiles/namei.c b/fs/cachefiles/namei.c
-> index ca093840e577..ef656a319ede 100644
-> --- a/fs/cachefiles/namei.c
-> +++ b/fs/cachefiles/namei.c
-> @@ -450,6 +450,11 @@ struct file *cachefiles_create_tmpfile(struct cachefiles_object *object)
->  		pr_notice("Cache does not support read_iter and write_iter\n");
->  		goto err_unuse;
->  	}
-> +
-> +	/* Preallocate space for the xattr. */
-> +	ret = cachefiles_preset_object_xattr(object, file);
-> +	if (ret < 0)
-> +		goto err_unuse;
->  out:
->  	cachefiles_end_secure(cache, saved_cred);
->  	object->content_info = CACHEFILES_CONTENT_ALL;
-> diff --git a/fs/cachefiles/xattr.c b/fs/cachefiles/xattr.c
-> index 551a3b0069c2..8ebb713482e3 100644
-> --- a/fs/cachefiles/xattr.c
-> +++ b/fs/cachefiles/xattr.c
-> @@ -34,6 +34,57 @@ struct cachefiles_vol_xattr {
->  	__u8	data[];		/* netfs volume coherency data */
->  } __packed;
->  
-> +/*
-> + * Preset the state xattr on a cache file to allocate space for it.
-> + */
-> +int cachefiles_preset_object_xattr(struct cachefiles_object *object, struct file *file)
-> +{
-> +	struct cachefiles_xattr *buf;
-> +	struct dentry *dentry = file->f_path.dentry;
-> +	unsigned int len = object->cookie->aux_len;
-> +	int ret;
-> +
-> +	buf = kzalloc(sizeof(struct cachefiles_xattr) + min(len, sizeof(__be64)), GFP_KERNEL);
+Right, David sent a patch in [1], but that patch is much too complicated
+(should be split/sent as proper patches/now I've actually started
+looking no longer applies) and I haven't had time to look at it much
+(... OTOH given the patch he sent just now I believe it would also have
+fixed this new regression as well, so we might just as well have been
+better served picking that up...)
 
-You should use max() here.
+[1] https://lore.kernel.org/r/1667424.1771432276@warthog.procyon.org.uk
 
-Otherwise looks good,
 
-Reviewed-by: Paulo Alcantara <pc@manguebit.org>
+More importantly this new regression is much bigger and should have been
+caught somewhere, but I ran my "9p-for-7.2-rc1" tests on top of 7.0 and
+not on top of the merged state as of 7.1 so I didn't hit it (that's easy
+enough to fix going forward), and I haven't had any time to look at 9p
+stuff since then (... despite the dozen of patches sent during the 7.3
+cycle that I didn't get to look at either...);
+I can't fault anyone else but myself at this point but the 9p client
+really is in a poor shape right now :/
+
+
+Anyway, getting back on topic instead of lamenting: things can't be
+worse with David's patch so I'll try to find time to pick it up/run
+quick checks/send to Linus over the weekend, thank you both.
+
+
+Long term I'd like to say I want to spend some time sorting out the
+older patch better but I'm afraid I'm going to need help...
+-- 
+Dominique Martinet | Asmadeus
