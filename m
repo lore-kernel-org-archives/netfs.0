@@ -1,69 +1,104 @@
-Received: from mx1.manguebit.org (mx1.manguebit.org [143.255.12.172])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2599480342;
-	Mon, 14 Sep 2026 15:35:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=143.255.12.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC0042901E
+	for <netfs@lists.linux.dev>; Tue, 15 Sep 2026 16:22:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789400117; cv=none; b=ssTKrLa+EvBFNhY+bl7rGCuab2C0UU32QfunpsspDLR8uXw3DwC11C6D8GcZCWCRnLSeHConqcMHXMIQpTcAjHCMb2tphr+ucCeXdveUkDSenK9s0r9H8L3z/3+HmoKBSj3lqlbrCKK37ALko8G8El0NdWGav1K56YMGQPWEDdA=
+	t=1789489334; cv=none; b=fqbBjI5lvObe1JyHoqGSS/n1fQM3Eop7PBmyHPYUDB2QUZj5T1F9Ozbneunur5puy7QB21AvmaiuugqoqRIURNApD8bGo2bJxTpopqetNLLZ4yKIZ5JpZLTKvIVJ4tyTuywVCYiblSesfCVCHQsxhaI75Y+yc+I1hJ9CvWt8dbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789400117; c=relaxed/simple;
-	bh=QEwTrQOBdzKdxZGNZMMX8FKVxlRuYQfyokl0gvnP9cs=;
-	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Date:
-	 MIME-Version:Content-Type; b=AiD5454kM92m4jVBxitnaAnX1VojZ6z+i2dIzTzIg8vUAL/L/POpKX5MBqgAvYDT8VhPao6pplJa2nimu67/qhc1zoZGvYoveuOvm+5Vzllo3yW4myV7xySoGmN3YAype+ohhjVJ8nf4oyqcxTZ0wx7j/DOQ3scbWjyrBoJqo3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org; spf=pass smtp.mailfrom=manguebit.org; dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b=GvPcpyW7; arc=none smtp.client-ip=143.255.12.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.org
+	s=arc-20240116; t=1789489334; c=relaxed/simple;
+	bh=qs7r3c4qG8QZ7uspMTVvik46QVMO5gWuV8LTPPYyA/8=;
+	h=From:To:cc:Subject:MIME-Version:Date:Message-ID:Content-Type; b=jKhDCVoeapmMcaXLX9ApyUL3DqKeuW3D3CsRbLLyG8cv0/N6c8Kkm77lTMFmF1dPWxkOrC4N+HdnJLxoBPs3Xo3D+ZvtbeGhZ61mxyJ2k8e99rUhicNMqq94CkwbhdcUtAf+yCHa+Q+ODnhccmWT3UnqDvyJ4z1vX7Qm+bpfGv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ARnyHdu8; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b="GvPcpyW7"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=manguebit.org; s=dkim; h=Content-Type:MIME-Version:Date:References:
-	In-Reply-To:Subject:Cc:To:From:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=4J6QASSGNg3Ko0M2ZupQEjGTnNDRPX7fYEgsr98nOrE=; b=GvPcpyW7IKjfQ5Kp6/1v4UWP1f
-	XmcJCtUiir+C6KVOA/XcDgavxWjwQjxu4q/jDCShra5GTeR9ri9aIKh9rnxv+y3negs99POmxPyBR
-	lf7tK8zOrp0wI6njzNzyvrmRf/YMYanJ1ojIcwq4BsBSVWt36XvLC+S2AsJlp7Y+2bIPS9hMvZamj
-	MgW7RurPTkhyfi1qIkNUXuWuATPFH6vcLfFYsnDUWARi5aO2FPqs1M63V4OxoZWRLJS5hM377+WyW
-	uHtlI0UpdAqa9MD8SnK1TS/kzE5F/JO0fAlhGItjgrPTTRBWYvK0B+vhBeK7ljFYHy0ZgWIsWQ4xY
-	RPQ1phdQ==;
-Received: from pc by mx1.manguebit.org with local (Exim 4.99.5)
-	id 1x68i8-00000001PA2-0s92;
-	Mon, 14 Sep 2026 12:35:12 -0300
-Message-ID: <cb00f905be2ff39e1fbb91d78686b1c4@manguebit.org>
-From: Paulo Alcantara <pc@manguebit.org>
-To: David Howells <dhowells@redhat.com>, Christian Brauner <brauner@kernel.org>
-Cc: dhowells@redhat.com, Frank Sorenson <sorenson@redhat.com>, Namjae Jeon
- <linkinjeon@kernel.org>, netfs@lists.linux.dev,
- linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] netfs: Fix netfs_read_gaps() to use separate sink folios
-In-Reply-To: <3228134.1789399227@warthog.procyon.org.uk>
-References: <3228134.1789399227@warthog.procyon.org.uk>
-Date: Mon, 14 Sep 2026 12:35:11 -0300
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ARnyHdu8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789489331;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=2vRkeuwBNCLZr/EQqg2vm2jkY2929hMQeFDq8eV2UEo=;
+	b=ARnyHdu83BwJ41XT0v0ekoMEfqVJsvEMC0eEbG85GMg+239sY7VALCxt3DANeHKt37Mi0A
+	GMh2wDzM1OjtxgFyCiQz9gFjDxmwUCQgwh+r7QBA0TGzBif/v/uPEOZ6ACI8+1WCWgl9eI
+	Tg/O/USuiIHNrEab36fEzJs26EIjZ5g=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-81-u3xgUX1QNwmOEvKVb1IIaQ-1; Tue,
+ 15 Sep 2026 12:22:05 -0400
+X-MC-Unique: u3xgUX1QNwmOEvKVb1IIaQ-1
+X-Mimecast-MFC-AGG-ID: u3xgUX1QNwmOEvKVb1IIaQ_1789489324
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 282DB195605E;
+	Tue, 15 Sep 2026 16:22:04 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.32.54])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9E1263003EFB;
+	Tue, 15 Sep 2026 16:22:00 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>
+cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.org>,
+    Marc Dionne <marc.dionne@auristor.com>,
+    linux-afs@lists.infradead.org, netfs@lists.linux.dev,
+    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] netfs, afs: Fix symlink reading
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Date: Tue, 15 Sep 2026 17:21:59 +0100
+Message-ID: <3912795.1789489319@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: MvVI3tgIbLzjEPnRN0tEVt4f9Aap0cQlhHhz514olHo_1789489324
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <3912794.1789489319.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
 
-David Howells <dhowells@redhat.com> writes:
+Fix the reading of symlinks from the cache in afs by making netfslib trim
+the amount read down to i_size.  The problem is that afs sets the size of
+the iterator to the size of the buffer (PAGE_SIZE) so that the cache can
+round the read size up to the cache's DIO size.
 
->     
-> Fix netfs_read_gaps() to use separate folios rather than re-using a single
-> sink folio to discard the unwanted data so that cifs checksum checking sees
-> all the data that was fetched.
->
-> Fixes: 7f84a7b9892d ("netfs: Make netfs_read_folio() handle streaming-write pages")
-> Reported-by: Frank Sorenson <sorenson@redhat.com>
-> Closes: https://lore.kernel.org/r/a385053c-1c4a-4060-a3bb-befa007ddb33@redhat.com/
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> Tested-by: Frank Sorenson <sorenson@redhat.com>
-> cc: Paulo Alcantara <pc@manguebit.org>
-> cc: Namjae Jeon <linkinjeon@kernel.org>
-> cc: netfs@lists.linux.dev
-> cc: linux-cifs@vger.kernel.org
-> cc: linux-fsdevel@vger.kernel.org
+Note that this also impacts the reading of AFS mountpoints as they're just
+stored as symlinks with an odd file mode.
 
-Reviewed-by: Paulo Alcantara <pc@manguebit.org>
+Fixes: c0410adf3da6 ("afs: Fix the locking used by afs_get_link()")
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+---
+ fs/netfs/read_collect.c |    5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
+index 5cf22087d243..a94197ef0181 100644
+--- a/fs/netfs/read_collect.c
++++ b/fs/netfs/read_collect.c
+@@ -435,6 +435,11 @@ static void netfs_rreq_assess_single(struct netfs_io_r=
+equest *rreq)
+ =09=09netfs_single_mark_inode_dirty(rreq->inode);
+ =09}
+=20
++=09/* To do DIO, the cache has to round the size up, so we need to undo
++=09 * the rounding.
++=09 */
++=09rreq->transferred =3D min(rreq->transferred, rreq->i_size);
++
+ =09if (rreq->iocb) {
+ =09=09rreq->iocb->ki_pos +=3D rreq->transferred;
+ =09=09if (rreq->iocb->ki_complete) {
+
