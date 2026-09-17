@@ -1,160 +1,78 @@
-Received: from mta0.migadu.com (out-90.mta0.migadu.com [91.218.175.90])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF69B4A8FE5
-	for <netfs@lists.linux.dev>; Wed, 16 Sep 2026 09:41:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.90
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3525F4582F3;
+	Thu, 17 Sep 2026 09:24:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789551697; cv=none; b=jByRAGXM9uWNLP47mOWjY5pTg888jbF+PvN3CrgCl4lFTzERuE5B+FPVFDl3OwGKPelTf7pnGHflrQ457r/DHgwA51g3vPzGPchlUsN1+FwyzTdjcWv3ahbxS1zvD/uU5llwPejKV04F+xhIfi00qop646CxCB6zMKqbFkS23P8=
+	t=1789637074; cv=none; b=OXT3aLmrPUnoDSBSHVtmdQ7ays8yV6IXurjczdI6I21myQMlnA728GYwp0v9ishKC+pjSGGWEp1nC41qqbSSG2mOp0C2UNBpt3pBHXzd96Ik8Rbg17sDxELJS0U9WiX1Bz7X7xusT4S8ecwRab9X9wOeJUpGP1EQAfyiBeoP0HY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789551697; c=relaxed/simple;
-	bh=/O66kM1XqK/k+1+V8AfJSc2H9zVFlAnRkccenBDJgnQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OO8Spf51qT/fp8gPsnwh1mbzu/sInwI1anW1y9th1ZpAsiuaqsehqg5yzkUJzORHBt9lq+m3/Y6H8kRJE7Mt/Eb1oTFWPin+aqZCnx60JQl3upZD2S8EBpAqHp/pfjiCW/3OFKakyCzPuB1z3r0ZIJtKhFUSkuCE6MPa+zXHgXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=kxr+j67c; arc=none smtp.client-ip=91.218.175.90
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1789637074; c=relaxed/simple;
+	bh=IeZdclOlcVa3lbSfPCK+9kOIB7jPAeSe6KelOoaITz4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=khs8lwpd2G1Hnbgd28780+arXXOjK3eDgb4wdF1TaRj/PG31rpjTOk+VdfQYg11iZb2nEXfyBlpOUwlAjvsiVeY7h9kHDniEBhDx9MEOnKTQLgMVBgB4T/rhsf3MqouiKZ/TCypbYY9/aM1RZESgRCUX/SStVte9Ma8XnRmEZiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A7nTL6wc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="kxr+j67c"
-X-Envelope-To: netfs@lists.linux.dev
-DKIM-Signature: a=rsa-sha256; bh=/O66kM1XqK/k+1+V8AfJSc2H9zVFlAnRkccenBDJgnQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789551688; v=1; x=1790156488;
- b=kxr+j67cWvfl9niH+dahQfwtlUZACE/1mJVRa3Yqi3zANF7wEEIVAUbPaoXV3B1TJBXrJoJa
- +nZv4SStHF2SzrN2vop29oJkHnIP50DpWcEp79i58lWZMVkjRnJGKcl5VRGpFpQLOmaKkqr58fV
- 0OKFsToDHCC2aR5eniPB6bYs=
-X-Envelope-To: netfs@lists.linux.dev
-Received: by smtp.migadu.com with ESMTPS id 6bb14bcd9a7238ed;
-	Wed, 16 Sep 2026 09:41:28 +0000
-X-Mizu-Trace-ID: 6bb14bcd9a7238ed
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <cfcba100-609a-4016-9b47-186346709634@linux.dev>
-Date: Wed, 16 Sep 2026 17:42:08 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A7nTL6wc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 068291F000FF;
+	Thu, 17 Sep 2026 09:24:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789637071;
+	bh=db+J/eRafWaa5Opoxh0rMyEWvwLPAsRb9zxs1a/2IX0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=A7nTL6wcRzYXqhqEG/+xy8On5u4zPxqx9DlF9EAwwrOUEF0KWpIIzYKJpXhAoWKMI
+	 qBQ8bvokZnrxS6cGZm4kES+K2AStiw5K0us2xS2g/NW2FwkqsJd5em3ZPzjv7UwMkD
+	 mza2XpCfTSfkBJOxPmWmPs8vfOjYZfTZjkZbd4kS124DvvySgUEn5Z82YO0yxHnhaT
+	 6CpPLz1E22uUUr6yLoq6nKEkwuQ3RL2jKEqDSXcPjEjyThPQ5qvSXtAi2k2MR2FbpL
+	 pHz5EOuKGXA54yKHEIZxXDs9CUE7kLS4Oo8jsrv09GB6eE0Fg5hll2uodOX1AIlT47
+	 wbsYnbrQ9HZQQ==
+From: Christian Brauner <brauner@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Frank Sorenson <sorenson@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	netfs@lists.linux.dev,
+	linux-cifs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] netfs: Fix netfs_read_gaps() to use separate sink folios
+Date: Thu, 17 Sep 2026 11:24:21 +0200
+Message-ID: <20260917-klinke-pulsadern-kehrseite-da39a9e5b6b9@brauner>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <3228134.1789399227@warthog.procyon.org.uk>
+References: <3228134.1789399227@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: client side "current->alloc_tag not set WARNING:
- ./include/linux/alloc_tag.h:161" at accessing CIFS share
-To: Paulo Alcantara <pc@manguebit.org>, Erhard Furtner <erhard_f@mailbox.org>
-Cc: linux-cifs@vger.kernel.org, David Howells <dhowells@redhat.com>,
- netfs@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <0b004319-9ef7-437c-a4dd-174d6a9a83db@mailbox.org>
- <0e8961201179ba88038de511c587ddc7@manguebit.org>
-Content-Language: en-US
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <0e8961201179ba88038de511c587ddc7@manguebit.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1024; i=brauner@kernel.org; h=from:subject:message-id; bh=IeZdclOlcVa3lbSfPCK+9kOIB7jPAeSe6KelOoaITz4=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSt3njye+aB1rfhjBemO4TxV8WIWd878zMuc/NKE+6Vt q92Ha9+2FHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCRC4mMDBtFuaTMJiYL8Msm 73JLnL65cKlSlvGmPb3CNkLdFjUpnowMb4OfXt+bz23F1uWwq932yWrmKftmtl49J2YUpaBxu3I tFwA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-Hi Paulo
-
-
-Sorry to jump in.
-
-On 2026/9/2 07:19, Paulo Alcantara wrote:
-> Erhard Furtner <erhard_f@mailbox.org> writes:
+On Mon, 14 Sep 2026 16:20:27 +0100, David Howells wrote:
 > 
->> Getting this "current->alloc_tag not set WARNING:" every time on my 
->> client PC when I open files on the CIFS share (exported via KSMBD) from 
->> my host PC:
-> 
-> The warning is triggered by running the following in
-> netfs_alloc_request() with CONFIG_MEM_ALLOC_PROFILING_DEBUG=y kernels:
-> 
->         rreq = mempool->alloc(gfp, mempool->pool_data);
-> 
-> for the non-writeback path.
-> 
-> @mempool->alloc is set to mempool_alloc_slab(), which calls
-> kmem_cache_alloc_noprof() directly and expects the caller to have
-> already set current->alloc_tag.
-> 
-> It doesn't occur in the writeback path, however, because we call
-> mempool_alloc() macro that wraps to
-> 
->         alloc_hooks(mempool_alloc_noprof(...))
-> 
-> and it sets current->alloc_tag before the allocation.
->
+> Fix netfs_read_gaps() to use separate folios rather than re-using a single
+> sink folio to discard the unwanted data so that cifs checksum checking sees
+> all the data that was fetched.
 
-Right - and there's one more instance of the same pattern.
-Erhard's second warning (alloc_tag was not set on free) comes from
-netfs_folioq_alloc(), which does the same for the folio_queue:
-	
-	fq = netfs_folioq_pool.alloc(gfp, netfs_folioq_pool.pool_data);
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-When I first saw the report I wondered why no other mempool user trips over this,
-so I had a look around the tree:
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-Everyone else gets their elements through the mempool_alloc() macro, so the tag is
-set at their callsite and the callbacks see a valid current->alloc_tag.
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-I went back to the commit that introduced the raw call, 1d78d56c43ef ("netfs: Fix folio_queue ENOMEM in
-writeback by adding a mempool") and OK, I think I roughly understand the story now.
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
-Here is my proposed fix patch. I don't have a test environment handy though. What do you think?
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
 
-diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
-index 420ee7b26580..373be970ec31 100644
---- a/fs/netfs/internal.h
-+++ b/fs/netfs/internal.h
-@@ -45,6 +45,9 @@ extern mempool_t netfs_request_pool;
- extern mempool_t netfs_subrequest_pool;
- extern mempool_t netfs_folioq_pool;
- 
-+#define mempool_alloc_element(_pool, _gfp)				\
-+	alloc_hooks((_pool)->alloc(_gfp, (_pool)->pool_data))
-+
- #ifdef CONFIG_PROC_FS
- static inline void netfs_proc_add_rreq(struct netfs_io_request *rreq)
- {
-diff --git a/fs/netfs/objects.c b/fs/netfs/objects.c
-index 01461a74642d..18f5c64d404e 100644
---- a/fs/netfs/objects.c
-+++ b/fs/netfs/objects.c
-@@ -34,7 +34,7 @@ struct netfs_io_request *netfs_alloc_request(struct address_space *mapping,
- 
- 		rreq = mempool_alloc(mempool, gfp);
- 	} else {
--		rreq = mempool->alloc(gfp, mempool->pool_data);
-+		rreq = mempool_alloc_element(mempool, gfp);
- 		if (!rreq)
- 			return ERR_PTR(-ENOMEM);
- 	}
-@@ -206,7 +206,7 @@ struct netfs_io_subrequest *netfs_alloc_subrequest(struct netfs_io_request *rreq
- 	struct kmem_cache *cache = mempool->pool_data;
- 
- 	if (rreq->gfp == GFP_KERNEL)
--		subreq = mempool->alloc(rreq->gfp, mempool->pool_data);
-+		subreq = mempool_alloc_element(mempool, rreq->gfp);
- 	else
- 		subreq = mempool_alloc(mempool, rreq->gfp);
- 	if (!subreq)
-diff --git a/fs/netfs/rolling_buffer.c b/fs/netfs/rolling_buffer.c
-index 8c0026836f9c..d1ae6e081664 100644
---- a/fs/netfs/rolling_buffer.c
-+++ b/fs/netfs/rolling_buffer.c
-@@ -29,7 +29,7 @@ struct folio_queue *netfs_folioq_alloc(unsigned int rreq_id, gfp_t gfp,
- 	struct folio_queue *fq;
- 
- 	if (gfp == GFP_KERNEL)
--		fq = netfs_folioq_pool.alloc(gfp, netfs_folioq_pool.pool_data);
-+		fq = mempool_alloc_element(&netfs_folioq_pool, gfp);
- 	else
- 		fq = mempool_alloc(&netfs_folioq_pool, gfp);
- 	if (fq) {
--- 
-2.25.1
-
-Thanks
-Best Regards
-Hao
-
-> I'll look for a possible solution and then let you know.
-> 
-> Thanks for the report.
+[1/1] netfs: Fix netfs_read_gaps() to use separate sink folios
+      https://git.kernel.org/vfs/vfs/c/fc3ae66514ca
