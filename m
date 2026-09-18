@@ -1,48 +1,72 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f4.google.com (mail-pj2-f4.google.com [74.125.227.132])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272AA547076;
-	Thu, 17 Sep 2026 18:05:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65263CBE84
+	for <netfs@lists.linux.dev>; Fri, 18 Sep 2026 02:40:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789668310; cv=none; b=gDFlzqKEL/MwE8/I4t5Uy7LLSuCxNAhAlfNGlBG+zmxOe2mMCPy8LpQT+5v+bQlqd8aeYEbR77tVCrTroQ3ZqHxdeHGwkl48fO62/ttloqOJBwuVsFCWGmX5bOmhBe856qWa8Sjde1ITBlBFFNMtGTMbyBmmDQhC8UKmRNc/JmY=
+	t=1789699259; cv=none; b=tzUsYRP9byyr64OuG4ArPqYzUvHCUs26JoH+OeU6uGTczmBLnHH8/Rh/LOEDZ3PFivjvo4Wnoqq6xvo7jxg6eYe0aCav+omnOGF6yFOG2KsutgTfDkoVo0D3wveMYxl9J3Lw1a0vYsKG1VnS4phGi9sXpXyL5xvak9mOox8u41Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789668310; c=relaxed/simple;
-	bh=4Xsns80ie6XqJSY98zy3zsWu+nsQF/0+C6h2XoGVjIg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kiBqnnIYBiASdwh3Btm8Yi1sYyzzHS8sh1b4yu3m/uf+/1Q3YJqbCK+hye65W35wNX1fF7NkucWX9luKqICrbeUao5Z6XL1+8s807wMWK4ZD4B4lc3quJPRxWdKtlHAt2Ls9Xs6CKEgw6/Mw9ObcCHwInS7JhLAA8ItXNswS1wQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=loZJct08; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789699259; c=relaxed/simple;
+	bh=4RtBTcAG3ZyoV+Wuhgih7ZMjV1Rc/AqLjGt6M9kijLI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GmPz8SORp9fRMlCbamFPTD4xn/WhFD/R4VmVBhv0RZn0L02FsYceR23zUJc4N0ZbKYX1cmgydQb0dZY9uqq3bkx0WGe1JgHnq4doJHC1xKXFkx7u4n989IAPSV4L1xd+TrILbE+/XxFLuLLSKtEzcxuSThW7NvOMyDeIv/3Tobw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=niupPDp4; arc=none smtp.client-ip=74.125.227.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="loZJct08"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF891F000FF;
-	Thu, 17 Sep 2026 18:05:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1789668309;
-	bh=rc0P/2XM8t3+XU+FVSBNR6N7dwqR4R11lIDpwLvBT7I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=loZJct083i24Gb+dQkmurhbrIcUd4K2dzgyEVmihlU6yQGbXiwY0UPpl+iWl1zrpw
-	 Sjsf4HCe0dtKixHvwdxtThOW/PfZwZl98fQGy6TkLxClGCoac9aUZcri9CaOodhI7X
-	 hb+PP61QacKBtIT6mGJ0acEWOkoMw7aXG+QrmXEU=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Marc Dionne <marc.dionne@auristor.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="niupPDp4"
+Received: by mail-pj2-f4.google.com with SMTP id 98e67ed59e1d1-3896ccc93b5so70121a91.1
+        for <netfs@lists.linux.dev>; Thu, 17 Sep 2026 19:40:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789699246; x=1790304046; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=XcNnKNj86Fl8cPyJbGiSdq718Tdcgp6e3IuiJ+1OzoA=;
+        b=niupPDp4gYzNuCnLFf+3pC6FjEMcHKNCMFguNPJhJdsrJsBFq5V9Xvi3cdp6gLmr45
+         AsbYHKMG8pJ1Rsu8uphXyjFvz4NWvvkCpr4cb9XVJjpz/vSxK+i1wYaGxU/xpMBU2MkR
+         hbDEIsBUiQhRhwqkySCr2ja0BJ01SHH2822cWhCOM+RpSiJWXGBz/b8RFns7RpmbOquS
+         083ZOMAyejSmEcCcl62eB+Dg6U+nXjG2D20oJtN1WHFHNX5jYzR3o6L+wzB1Dj4L2aPm
+         OjwjN1Q4STyzyYnwImimmqL2kUOitmbEdFgqT6N5Z3Rb4uL579NRlwb9xTavPS8hcLEt
+         V1qA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789699246; x=1790304046;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=XcNnKNj86Fl8cPyJbGiSdq718Tdcgp6e3IuiJ+1OzoA=;
+        b=WUBb2oVkzsWMGVNbw0VBWpimNLPZ07sjd+oiFWvGBmUkV7iOLSY+p7bFqWPOaABIaP
+         kWg62wYvCs9mMOxrtYWf0sUkWo8qSj81UF+Y8Iy4ObqKLKWxvVGUeucWy8s2C/KN0xQL
+         cE4Tmos19/UzecSAyYkgCFLhWamSMxmYORc04Up6ZdrdZ5I2p2Gs6n6rOFWTI3663NyJ
+         GQgvLktfl3YYBVWhQcQf0JgDVVzEY/lRuupFQgc8wpvb3vU0+Yn2iuX6fevNGopwjiqY
+         CiVPRanOfs9UgTgtaILwhLCAgevElZ+gKDZvoZ2JDi1A6eKGu+sKaHJnNg1rFbYMCrTg
+         Aoiw==
+X-Gm-Message-State: AFuF++mAy3li1i35RI0KfP1418+WUIjij5x9bcKoK+C0ErmewM+qTSQm
+	sWSzQzAMcq0hviNr290V8HLvi+uCxJSHpcefCcBKcrKCM452z2uB10P4CD3YmhKKTcI=
+X-Gm-Gg: AYBFou0FEhGYCPElbFakHm2Kx38lMZZ+QsGSSjPYxCxq0uCRz3qWPqITFHu8zS+8Xzz
+	2aMiEhparS3gglAXjtVrIXYGH4vMGOpn0IfKqbalukzQU9/XDMKOR9C6ItESPfcP7UmsQWRiTvm
+	am1GlIulprc01wcdQ75zKPbGjMnQoiJRaSQ2tAJuJkLnpDM+01B6dFeclDi9fjyNWVybYCNC6Uq
+	H5cpVL4raSHcfH1eVz9vqNMkQrnLTcl+Vj0RKsj8cGp+TXlSwixllVRlt0DBy+LqWc4FcJgD0ok
+	m6EqF/lWeOyxioP7+0ZZPrms2NAwbqa7Efqw4qnYjdIofzRdOyJuTb82CKpwgU7W7KF9iSzBWqo
+	CG41izgTgOZVEGlBpZR83V6FFWUsFMUlFQDq1jV2LMpdTan3X53gIjQTMD+kzIe+E+sRh2YSj++
+	W4GNEu4eqbWglWGtJR6NsTkRwtUTOuIM9u06nY2D0niu90QXWyAm8Sf3ekYSsn3nW5UDZed+rjm
+	E2SuW+Jmi5LSmGUNzoDwumyUdQiROFHBvc/4eO27LZmyiDf3J+hcrbOR4YYkg78s/50FKQubQ1j
+	Osc9hE+lTKS4NuBc9+DtXAaAlGntRlAsM2XLhfjTDGar7nDRtuUSZ0j1TUHOpZWHcw==
+X-Received: by 2002:a17:90b:52cf:b0:398:9c39:520f with SMTP id 98e67ed59e1d1-39e54bd0941mr2438544a91.15.1789699246338;
+        Thu, 17 Sep 2026 19:40:46 -0700 (PDT)
+Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33c287aab5fsm316111eec.22.2026.09.17.19.40.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Sep 2026 19:40:46 -0700 (PDT)
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+To: netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org
+Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
 	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	"Christian Brauner (Amutable)" <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 0383/1102] netfs: Fix decision whether to disallow write-streaming due to fscache use
-Date: Thu, 17 Sep 2026 16:05:26 +0100
-Message-ID: <20260917151549.271467220@linuxfoundation.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260917151539.408551884@linuxfoundation.org>
-References: <20260917151539.408551884@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+	Paulo Alcantara <pc@manguebit.org>
+Subject: [PATCH] netfs: remove unused fscache_internal.h header
+Date: Thu, 17 Sep 2026 19:40:37 -0700
+Message-ID: <20260918024040.338737-1-enelsonmoore@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -51,107 +75,35 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+fs/netfs/fscache_internal.h has been unused since commit 915cd30cdea8
+("netfs, fscache: Combine fscache with netfs"). Remove it.
 
-------------------
-
-From: David Howells <dhowells@redhat.com>
-
-[ Upstream commit b61cbeadaa83a712afb2f759aa7e65d43cdef322 ]
-
-netfs_perform_write() buffers data by writing it into the pagecache for
-later writeback.  If the folio it wants to write to isn't present, it uses
-"write streaming" in which is will store partial data in a non-uptodate,
-but dirty folio.
-
-However, when fscache is in use, this is a potential problem as writes to
-the cache have to be aligned to the cache backend's DIO granularity, and so
-netfs_perform_write() attempts to suppress write-streaming in such a case,
-requiring the folio content to be fetched first unless the entire folio is
-going to be overwritten.  This allows the content to be written to the
-cache too.
-
-Unfortunately, the test netfs_perform_write() uses isn't correct because it
-doesn't take into account the fact that the object lookup is asynchronous
-and farmed off to a work queue, so there's a short window in which the
-cache is doing a lookup but the test fails because the answer is undefined.
-
-This can be triggered by the generic/464 xfstest, and causes a warning to
-be emitted in cachefiles (in code not yet upstream) because it sees a write
-that doesn't have its bounds rounded out to DIO alignment.
-
-Fix this by changing the condition to whether FSCACHE_COOKIE_IS_CACHING is
-set on a cookie rather than whether the cookie is marked enabled.  Note
-that this is really just a hint as to whether we allow write streaming or
-not and no other aspects of the cookie or cache object are accessed.
-
-Also apply the same fix to netfs_write_begin().
-
-Reported-by: Marc Dionne <marc.dionne@auristor.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260625140640.3116900-2-dhowells@redhat.com
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
 ---
- fs/netfs/buffered_read.c  |  2 +-
- fs/netfs/buffered_write.c |  2 +-
- fs/netfs/internal.h       | 12 ++++++++++++
- 3 files changed, 14 insertions(+), 2 deletions(-)
+ fs/netfs/fscache_internal.h | 14 --------------
+ 1 file changed, 14 deletions(-)
+ delete mode 100644 fs/netfs/fscache_internal.h
 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index fd41e38aedb75..562c59f421334 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -723,7 +723,7 @@ int netfs_write_begin(struct netfs_inode *ctx,
- 	 * within the cache granule containing the EOF, in which case we need
- 	 * to preload the granule.
- 	 */
--	if (!netfs_is_cache_enabled(ctx) &&
-+	if (!netfs_is_cache_maybe_enabled(ctx) &&
- 	    netfs_skip_folio_read(folio, pos, len, false)) {
- 		netfs_stat(&netfs_n_rh_write_zskip);
- 		goto have_folio_no_wait;
-diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
-index f4e9d88a0a7bf..2ce4c6ac52e21 100644
---- a/fs/netfs/buffered_write.c
-+++ b/fs/netfs/buffered_write.c
-@@ -271,7 +271,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 		 * caching service temporarily because the backing store got
- 		 * culled.
- 		 */
--		if (netfs_is_cache_enabled(ctx)) {
-+		if (netfs_is_cache_maybe_enabled(ctx)) {
- 			if (finfo) {
- 				netfs_stat(&netfs_n_wh_wstream_conflict);
- 				goto flush_content;
-diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
-index c562aec3b483f..8bc461fc671e5 100644
---- a/fs/netfs/internal.h
-+++ b/fs/netfs/internal.h
-@@ -207,6 +207,18 @@ static inline bool netfs_is_cache_enabled(struct netfs_inode *ctx)
- #endif
- }
- 
-+static inline bool netfs_is_cache_maybe_enabled(struct netfs_inode *ctx)
-+{
-+#if IS_ENABLED(CONFIG_FSCACHE)
-+	struct fscache_cookie *cookie = ctx->cache;
-+
-+	return fscache_cookie_valid(cookie) &&
-+		test_bit(FSCACHE_COOKIE_IS_CACHING, &cookie->flags);
-+#else
-+	return false;
-+#endif
-+}
-+
- /*
-  * Get a ref on a netfs group attached to a dirty page (e.g. a ceph snap).
-  */
+diff --git a/fs/netfs/fscache_internal.h b/fs/netfs/fscache_internal.h
+deleted file mode 100644
+index a09b948fcef2..000000000000
+--- a/fs/netfs/fscache_internal.h
++++ /dev/null
+@@ -1,14 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-or-later */
+-/* Internal definitions for FS-Cache
+- *
+- * Copyright (C) 2021 Red Hat, Inc. All Rights Reserved.
+- * Written by David Howells (dhowells@redhat.com)
+- */
+-
+-#include "internal.h"
+-
+-#ifdef pr_fmt
+-#undef pr_fmt
+-#endif
+-
+-#define pr_fmt(fmt) "FS-Cache: " fmt
 -- 
-2.53.0
-
-
+2.43.0
 
