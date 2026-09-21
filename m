@@ -1,34 +1,33 @@
 Received: from mx1.manguebit.org (mx1.manguebit.org [143.255.12.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E4D4B487D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D994B486E;
 	Mon, 21 Sep 2026 15:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=143.255.12.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790005813; cv=none; b=M1EREP/FUtcI9isqfblqmG7ImKPmkjYEPMl5SqlGuTaKKUzRsgoT9Z0K7sITfxNERiBNjpeLnH7+370KA7BukVlFM+y31upoMrkzsxEC3hJ4MPv56oeGt9CALAqGTwoU1zt4EI+upC89bNNPjFI6z2QgG2TJXZelWrtLjloiUdo=
+	t=1790005814; cv=none; b=RVRT2hgdVTwq7543pCjDIfZRjzoMKG5ZY/GKAlb3UJDArK/MJiUJSVZWaRt7F34VXiW5/kAWr+vOTLh2556mUsfdC5/Z6vNElNaqTMO59BGJfVcJzGY8oHZQZPcJg1NAQRJseMlSRct3j/CblGJyCbIOcXvZSTv6iOWz/e1N2XM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790005813; c=relaxed/simple;
-	bh=PRbAzBr8GDExZ/uK3wzEWr92TsZMQPffoP2R79OrMpc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VBKEsSOjO/kjJmHQ5vts3LPClu4My5XiPjOEBTpZwhneZXA/eX+REe7kdTxoIpc9PCIBYoqHBSNowKBJn/LsTbXUGOwqJ6shjt9WbR2kgMDzy+1IY555waLuJVEJw75HS54sioE8vvRb0hTEUwouG1oYDI29h+5zIBHWh3IyX9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org; spf=pass smtp.mailfrom=manguebit.org; dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b=k8Vly8NM; arc=none smtp.client-ip=143.255.12.172
+	s=arc-20240116; t=1790005814; c=relaxed/simple;
+	bh=h/DQbfjTtfFTSbNwOwyU0D7XWZhOG5qEFV7cZ907rAs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TZFPcePAykKaxaVgs+DPF19PJzGSh9efIJrkJ7wpxDOlTuu4OygZpUzLkowxz/95IXmHrIdzYH8SR4+P2AMmvCu7iN2ASQW7JmSYrDXUjgwZFYGuq7nfZmXIqBI66pEMsIoho711gaYNstNDmP9YZLCKfRUcTqS8gZ3chaM3rS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org; spf=pass smtp.mailfrom=manguebit.org; dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b=eXHU707t; arc=none smtp.client-ip=143.255.12.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b="k8Vly8NM"
+	dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b="eXHU707t"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=manguebit.org; s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Content-Type:Reply-To:
-	Content-ID:Content-Description;
-	bh=qQ/AAEyMjOzO/VHuplu/nzyZcEXtt7b889yubhsKacA=; b=k8Vly8NMjGzCBQRihievR/7k/V
-	3Bvkkmg4o25c8wfVldguw0efy3FPq6mdRMKac8j6rdI240P0YXzT1CL1b2GQc+6YWptbHYnUHWVUF
-	r6HYUD5sqFu2ZGHjsxJ2Za+IjZjoeLR82UeVbsHzJ84HA882V27Cpstbp9TyeQAtKQtJ9+AHyFXYi
-	girEwL+p/MraBi9LVjFk8UkJqa8T8UsD0p9TcGDOoPiQOmHrFJc8Jfd5R/EjiBbbN3qdkx5sizcv+
-	fIk4CNjkLr5yw57W6J4kzrv1mhxIvE/mEZam5rStXLUAhx/hA3Y2YZK1nBcl/BQHmL0Zt406XPyVb
-	NdUaURuw==;
+	d=manguebit.org; s=dkim; h=Content-Transfer-Encoding:MIME-Version:Message-ID:
+	Date:Subject:Cc:To:From:Sender:Content-Type:Reply-To:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=suLhaDLFIjE//W0ohz+Wzhj3ikVrx3mM1jMVGoLq60A=; b=eXHU707t+ExtQlIS8Zt530VkA6
+	v2DIBtrJQZVQE92jIxDE5CzbSUnKLA3cPudzH9Tki5gO3jJ1AkQuL/9SmzDqBclVZQzNRGWmlysIR
+	0qeug//CU0+RicImiD05Ip697UNjR5ZJFX4BTKWFYwacwE5HRFXcyW85GQ0prX3WGlchGosOi3D54
+	7Yc/m42E28z2UpLbwbBGkssNeSuzdeE48DaeSqgveoWt//blBDwC/n+8Bx6nbSJ3nWJJQ8n2uKQZk
+	4Y0p/oxxB953N2bbvdEh7TccTU/fGg0na1SQTpDp7f+x12CT+2uVKmp0l7WOdeIfea4U6FspDAxgX
+	DGUksyYQ==;
 Received: from pc by mx1.manguebit.org with local (Exim 4.99.5)
-	id 1x8gHH-00000001wCD-0vdI;
-	Mon, 21 Sep 2026 12:49:59 -0300
+	id 1x8gHG-00000001wC1-2EM8;
+	Mon, 21 Sep 2026 12:49:58 -0300
 From: Paulo Alcantara <pc@manguebit.org>
 To: linux-cifs@vger.kernel.org,
 	netfs@lists.linux.dev
@@ -40,12 +39,10 @@ Cc: David Howells <dhowells@redhat.com>,
 	Tom Talpey <tom@talpey.com>,
 	Bharath SM <bharathsm@microsoft.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 3/5] smb: client: discard post-EOF pagecache when extending a file via zero range
-Date: Mon, 21 Sep 2026 12:49:55 -0300
-Message-ID: <20260921154957.903891-3-pc@manguebit.org>
+Subject: [PATCH 1/5] netfs: discard post-EOF pagecache when extending a file via write
+Date: Mon, 21 Sep 2026 12:49:53 -0300
+Message-ID: <20260921154957.903891-1-pc@manguebit.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260921154957.903891-1-pc@manguebit.org>
-References: <20260921154957.903891-1-pc@manguebit.org>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -54,15 +51,17 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-smb3_zero_range() removed the pagecache only for the range being zeroed,
-so when it extends the file the folio straddling the old EOF - which may
-hold data dirtied past EOF through an mmap - was never dropped and became
-visible as file content once the file was extended.
+Fix netfs to erase the contents of a hole created after the EOF by an
+ordinary write if dirty data has been previously left there by writes
+through an mmapped region.  Neither the buffered nor the
+unbuffered/DIO write path drops that stale pagecache.
 
-Lower the discard boundary to the smaller of the zero-range offset and the
-old EOF.
+Discard it with truncate_pagecache() before an extending write, which
+zeroes the folio straddling the EOF and drops the folios beyond it
+while preserving the data below.
 
-Fixes: 72c419d9b073 ("cifs: fix smb3_zero_range so it can expand the file-size when required")
+Fixes: 938e13a73b24 ("netfs: Implement buffered write API")
+Fixes: 153a9961b551 ("netfs: Implement unbuffered/DIO write support")
 Reviewed-by: David Howells <dhowells@redhat.com>
 Signed-off-by: Paulo Alcantara <pc@manguebit.org>
 Cc: Christian Brauner <brauner@kernel.org>
@@ -73,26 +72,47 @@ Cc: Tom Talpey <tom@talpey.com>
 Cc: Bharath SM <bharathsm@microsoft.com>
 Cc: stable@vger.kernel.org
 ---
- fs/smb/client/smb2ops.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/netfs/buffered_write.c | 4 ++++
+ fs/netfs/direct_write.c   | 4 ++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 3464470d3297..7282ed916470 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -3558,8 +3558,11 @@ static long smb3_zero_range(struct file *file, struct cifs_tcon *tcon,
- 	/*
- 	 * We zero the range through ioctl, so we need remove the page caches
- 	 * first, otherwise the data may be inconsistent with the server.
-+	 *
-+	 * Start at the old EOF when extending so the folio straddling it, which
-+	 * may hold data written past EOF through an mmap, is dropped too.
- 	 */
--	truncate_pagecache_range(inode, offset, offset + len - 1);
-+	truncate_pagecache_range(inode, min(offset, i_size), offset + len - 1);
- 	netfs_wait_for_outstanding_io(inode);
+diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
+index 2cdb68e6b16f..62849fd44313 100644
+--- a/fs/netfs/buffered_write.c
++++ b/fs/netfs/buffered_write.c
+@@ -469,6 +469,7 @@ ssize_t netfs_buffered_write_iter_locked(struct kiocb *iocb, struct iov_iter *fr
+ 					 struct netfs_group *netfs_group)
+ {
+ 	struct file *file = iocb->ki_filp;
++	struct inode *inode = file_inode(file);
+ 	ssize_t ret;
  
- 	/* if file not oplocked can't be sure whether asking to extend size */
+ 	trace_netfs_write_iter(iocb, from);
+@@ -481,6 +482,9 @@ ssize_t netfs_buffered_write_iter_locked(struct kiocb *iocb, struct iov_iter *fr
+ 	if (ret)
+ 		return ret;
+ 
++	if (iocb->ki_pos > i_size_read(inode))
++		truncate_pagecache(inode, i_size_read(inode));
++
+ 	return netfs_perform_write(iocb, from, netfs_group);
+ }
+ EXPORT_SYMBOL(netfs_buffered_write_iter_locked);
+diff --git a/fs/netfs/direct_write.c b/fs/netfs/direct_write.c
+index 2361277416c7..4268a4ee376a 100644
+--- a/fs/netfs/direct_write.c
++++ b/fs/netfs/direct_write.c
+@@ -359,6 +359,10 @@ ssize_t netfs_unbuffered_write_iter(struct kiocb *iocb, struct iov_iter *from)
+ 	ret = file_update_time(file);
+ 	if (ret < 0)
+ 		goto out;
++
++	if (iocb->ki_pos > i_size_read(inode))
++		truncate_pagecache(inode, i_size_read(inode));
++
+ 	if (iocb->ki_flags & IOCB_NOWAIT) {
+ 		/* We could block if there are any pages in the range. */
+ 		ret = -EAGAIN;
 -- 
 2.55.0
 
