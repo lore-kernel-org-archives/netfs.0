@@ -1,168 +1,90 @@
-Received: from mta1.migadu.com (out-92.mta1.migadu.com [95.215.58.92])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E63C6414A17
-	for <netfs@lists.linux.dev>; Wed, 23 Sep 2026 06:37:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594D7563298
+	for <netfs@lists.linux.dev>; Wed, 23 Sep 2026 19:20:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790145433; cv=none; b=BTPcy3XGWy9nnV/wc6gUC1cfTpW0WQhntnerQE3xAo+6iZhDaQTFj7U6y7h4nXeLsIP4+GJeTlWOCqRfKajSQ1xok/RtoLEsobvWzQc4KzKEDKnNvbHI1ba9Qj5cX9d3f3IPr4kYULGoYtUOctzdQ2zhnEC2DmQxXFLgR1ayggQ=
+	t=1790191219; cv=none; b=qYOM2yRj7c42h5J58xwKDHrJeq+T42cFYsE4zKHqw4zs7xMzgR5d4lh2Sqr9c4PnvbO8ijxsObAzOfNWaRei2SenapdBpIJ/J7L7+PXajnCxlFpjfzqFGDDNr5A/iI2T3cEkjGveuumdokEsV73w8GiTtem9FZu0PkzkKYlArMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790145433; c=relaxed/simple;
-	bh=q6FUjfAvrde7ObIfU3V3bTgB9v/JDqJhh9doDVfzOdI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VXzNfUR0S0dEDrESCBRWyFwmdRH6OAa3x9RcGLi5FbIyX/GGmLIpI6/Xwi5LdT+0vNOgr0OEokTe5YEyQ8Fz+WZJ/8xuIiQNvDhYpW7MroCGRfT2j2GmeW3QB/CVsA7VYARPKkjLJ1HhoXlOwe0tCfsID54vwRzhHCqQlUuFD7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=lPOko7L3; arc=none smtp.client-ip=95.215.58.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1790191219; c=relaxed/simple;
+	bh=ioXyjOuwdYpfZ5HIcs5nTUee+G201iBJg1fwducGZEQ=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
+	 Message-ID:Content-Type; b=lP3H6me9ft5CfljQLgTA1I+ughFxVQESDg0wqGh4FrTxV7MHqd2UI87mvFC6jxLASCj35sLYPs8J3oLx0DKgXV3EDXBtRLZo4zGM5jykpc68IdJnrc2y8XfTVfG96r9fpUwNrmDIDw4sg5TcqxywR+4k5OObWJfwmHhlVd4UWHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Vn/rtzNq; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="lPOko7L3"
-X-Envelope-To: netfs@lists.linux.dev
-DKIM-Signature: a=rsa-sha256; bh=q6FUjfAvrde7ObIfU3V3bTgB9v/JDqJhh9doDVfzOdI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790145426; v=1; x=1790750226;
- b=lPOko7L3HRQ+66LrIUKlseXf/vK/WFfo+PhcRL9lFQf5El1+YxyM/suH5dHou0sq8GNH6Hte
- gJ5gXN7nkv7RXaUzQzaLDlpZnSRxzzK6lvRZCu0QCDUj9VmrnLwE2FbH338EVj8ymyLRDKeoLuH
- IG5IOWcyUM5WLNRRizBzMX1s=
-X-Envelope-To: netfs@lists.linux.dev
-Received: by smtp.migadu.com with ESMTPS id 7a7d515496bbdaf5;
-	Wed, 23 Sep 2026 06:37:02 +0000
-X-Mizu-Trace-ID: 7a7d515496bbdaf5
-X-Migadu-Flow: FLOW_OUT
-From: Hao Ge <hao.ge@linux.dev>
-To: David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	"Christian Brauner (Amutable)" <brauner@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>
-Cc: netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Hao Ge <hao.ge@linux.dev>,
-	Erhard Furtner <erhard_f@mailbox.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] netfs: Fix missing alloc tagging of direct mempool allocations
-Date: Wed, 23 Sep 2026 14:37:59 +0800
-Message-Id: <20260923063759.34667-1-hao.ge@linux.dev>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Vn/rtzNq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790191217;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1bI6mvEFelfZiMWn4pvpeSAKBQZjhfAcDhVuRr7N/WE=;
+	b=Vn/rtzNqhTgUezfnyeboi6LqVyff5hSPzKpKvyJ3nzhJ8ZIzBYKih6YG6wGbrfv7GUArSh
+	LTL52KJwTj5Fp/ORLtJsDGbA+GUJAON4rve42J8eYLsRg50L6AGutVfv2FlnGpVOvsjyPE
+	IoIoUEEkuhtFBz8uSI4luf17rWXiJ7o=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-527-WomQRXq2MxOaulsagakdEQ-1; Wed,
+ 23 Sep 2026 15:20:12 -0400
+X-MC-Unique: WomQRXq2MxOaulsagakdEQ-1
+X-Mimecast-MFC-AGG-ID: WomQRXq2MxOaulsagakdEQ_1790191210
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 36FB5195DE5A;
+	Wed, 23 Sep 2026 19:20:10 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.32.54])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id ABCCF18005B8;
+	Wed, 23 Sep 2026 19:20:06 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <arHVJ0ihdqmNETMw@casper.infradead.org>
+References: <arHVJ0ihdqmNETMw@casper.infradead.org> <20260921230755.1133425-1-pc@manguebit.org>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.org>,
+    linux-cifs@vger.kernel.org, netfs@lists.linux.dev,
+    Christian Brauner <brauner@kernel.org>,
+    Namjae Jeon <linkinjeon@kernel.org>,
+    Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+    Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+    Bharath SM <bharathsm@microsoft.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/5] netfs: clear post-EOF pagecache when extending a file via write
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Wed, 23 Sep 2026 20:20:05 +0100
+Message-ID: <1519834.1790191205@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-MFC-PROC-ID: _3KG9Fsvf9nKezvZOq3eqrpnhfSBeFP_pDji8lV5N1I_1790191210
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1519833.1790191205.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
 
-Commit 1d78d56c43ef ("netfs: Fix folio_queue ENOMEM in writeback by
-adding a mempool") added a mempool for the folio_queues and made the
-request, subrequest and folio_queue allocations distinguish between
-writeback and everything else.  Writeback is part of memory reclaim
-and must not fail due to ENOMEM, so it allocates under GFP_NOFS
-through mempool_alloc(), which may dip into the pool's reserve and,
-if that runs empty, wait for elements to be returned.  The
-GFP_KERNEL paths, which can return -ENOMEM to their callers, invoke
-the pool's ->alloc() callback directly instead.
+Matthew Wilcox <willy@infradead.org> wrote:
 
-The direct call, however, skips the alloc_hooks() wrapper that the
-mempool_alloc() macro provides.  The pool callbacks, mempool_alloc_slab()
-and mempool_kmalloc(), call kmem_cache_alloc_noprof() and kmalloc_noprof()
-and rely on current->alloc_tag having been set by the caller.  With
-CONFIG_MEM_ALLOC_PROFILING_DEBUG=y this leads to
+> > +=09int netfs_clear_stale_post_eof(struct inode *inode, unsigned long l=
+ong from,
+> > +=09=09=09=09       unsigned long long to, bool nowait);
+>=20
+> Should this be uoff_t?  Or even loff_t?
 
-    current->alloc_tag not set
-    WARNING: ./include/linux/alloc_tag.h:161 at __alloc_tagging_slab_alloc_hook
-    alloc_tag was not set
-    WARNING: ./include/linux/alloc_tag.h:166 at __alloc_tagging_slab_free_hook
+uoff_t please.  There's no reason to have a signed value there.  Also, I ha=
+ve
+a patch queued with Christian for next to convert netfs generally to use
+uoff_t where it can.  It's a lot shorter than unsigned long long.
 
-at allocation and free time respectively, as reported when reading
-files on a CIFS mount.  The allocations are also missing from
-/proc/allocinfo.
-
-Wrap the direct ->alloc() invocations in alloc_hooks() with a new
-mempool_alloc_noreserve() helper in include/linux/mempool.h, next to
-the other alloc_hooks()-wrapped macros such as mempool_alloc().  The
-GFP_KERNEL paths keep their failable allocation semantics, they just
-get tagged now.
-
-Fixes: 1d78d56c43ef ("netfs: Fix folio_queue ENOMEM in writeback by adding a mempool")
-Reported-by: Erhard Furtner <erhard_f@mailbox.org>
-Closes: https://lore.kernel.org/all/0b004319-9ef7-437c-a4dd-174d6a9a83db@mailbox.org/
-Tested-by: Erhard Furtner <erhard_f@mailbox.org>
-Suggested-by: Suren Baghdasaryan <surenb@google.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Hao Ge <hao.ge@linux.dev>
----
-Changes in v2:
-- Move the alloc_hooks() wrapper from fs/netfs/internal.h into
-  include/linux/mempool.h as mempool_alloc_noreserve(), per Suren's
-  suggestion, so it is not netfs-specific.
-
-v1 Link: https://lore.kernel.org/all/20260922023541.51532-1-hao.ge@linux.dev/
----
- fs/netfs/objects.c        | 4 ++--
- fs/netfs/rolling_buffer.c | 2 +-
- include/linux/mempool.h   | 7 +++++++
- 3 files changed, 10 insertions(+), 3 deletions(-)
-
-diff --git a/fs/netfs/objects.c b/fs/netfs/objects.c
-index 7f6a3e912602..ad549daa9c79 100644
---- a/fs/netfs/objects.c
-+++ b/fs/netfs/objects.c
-@@ -34,7 +34,7 @@ struct netfs_io_request *netfs_alloc_request(struct address_space *mapping,
- 
- 		rreq = mempool_alloc(mempool, gfp);
- 	} else {
--		rreq = mempool->alloc(gfp, mempool->pool_data);
-+		rreq = mempool_alloc_noreserve(mempool, gfp);
- 		if (!rreq)
- 			return ERR_PTR(-ENOMEM);
- 	}
-@@ -214,7 +214,7 @@ struct netfs_io_subrequest *netfs_alloc_subrequest(struct netfs_io_request *rreq
- 	struct kmem_cache *cache = mempool->pool_data;
- 
- 	if (rreq->gfp == GFP_KERNEL)
--		subreq = mempool->alloc(rreq->gfp, mempool->pool_data);
-+		subreq = mempool_alloc_noreserve(mempool, rreq->gfp);
- 	else
- 		subreq = mempool_alloc(mempool, rreq->gfp);
- 	if (!subreq)
-diff --git a/fs/netfs/rolling_buffer.c b/fs/netfs/rolling_buffer.c
-index 424e77a9a109..d30d5ef6d86e 100644
---- a/fs/netfs/rolling_buffer.c
-+++ b/fs/netfs/rolling_buffer.c
-@@ -29,7 +29,7 @@ struct folio_queue *netfs_folioq_alloc(unsigned int rreq_id, gfp_t gfp,
- 	struct folio_queue *fq;
- 
- 	if (gfp == GFP_KERNEL)
--		fq = netfs_folioq_pool.alloc(gfp, netfs_folioq_pool.pool_data);
-+		fq = mempool_alloc_noreserve(&netfs_folioq_pool, gfp);
- 	else
- 		fq = mempool_alloc(&netfs_folioq_pool, gfp);
- 	if (fq) {
-diff --git a/include/linux/mempool.h b/include/linux/mempool.h
-index a0fa6d43e0dc..6da502aef2f7 100644
---- a/include/linux/mempool.h
-+++ b/include/linux/mempool.h
-@@ -70,6 +70,13 @@ int mempool_alloc_bulk_noprof(struct mempool *pool, void **elem,
- #define mempool_alloc_bulk(...)						\
- 	alloc_hooks(mempool_alloc_bulk_noprof(__VA_ARGS__))
- 
-+/*
-+ * Allocate a new element without dipping into the pool's reserves or
-+ * waiting.  Returns NULL on failure.
-+ */
-+#define mempool_alloc_noreserve(_pool, _gfp)				\
-+	alloc_hooks((_pool)->alloc(_gfp, (_pool)->pool_data))
-+
- void *mempool_alloc_preallocated(struct mempool *pool) __malloc;
- void mempool_free(void *element, struct mempool *pool);
- unsigned int mempool_free_bulk(struct mempool *pool, void **elem,
--- 
-2.25.1
+David
 
