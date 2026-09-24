@@ -1,216 +1,218 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FBF2D8DBB;
-	Thu, 24 Sep 2026 09:36:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EDC74749F3;
+	Thu, 24 Sep 2026 10:22:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790242586; cv=none; b=lIVwrLmf6BIqahlrtEVTj1h0MN35q5qXdlV8RX0Em17wKgW+/4WtqPRqShHzKTjohgZFidTqBRBHgnvG0DQbzJhLOXBruYfcKKKdfPyGh9M7t7JE/laCU72rEhJCHFkIdYQkDe+PW6qMDpZo+2kI6PSO1kfYm8LV4uBjHMov0Y4=
+	t=1790245349; cv=none; b=DmeXEwj3u/j4FypJ4BwhAhL87kP4KOb/CHtfOpwvVm4CvjZEpXSvBZIMQVgJNQ1GtHJcoif3i/2cULEEG1GKVgeNHl7cz4TdhrCe8xY2nQoVhwBcBxIweVFI+6jyfLs89aErGewtoV/6V/y7GWr5zNeFbrP34R/XSinAcs4m2os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790242586; c=relaxed/simple;
-	bh=i3pt1H9qNRC/nyv8uVo4NsVAFMXIpMQd9zhfUIBZLK8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ssksYsnKST1BZE5mjMvolPGt1kUADDs4UN7Wht0uGhvdvwr3/3YjfP0f6XubOnJICBDtEB5DeDygERe9vYBX1neYj5er6juHQtyPGcQteLIFs4GQr1+yM/fh8vxkZul3l3nnqey9wOLIlqH0ctPXweM9VJbIEnMC6n2jKBc2B4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i62KZs0V; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790245349; c=relaxed/simple;
+	bh=JD32s8eD5JSHh277X1R2SZ0l+uvehg9HATseGnbtzJs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sryAPB1rELBDZA5+S9wmG7TvgJiQHXGa3AgvB1rmh82t09jDr1Dz5BuC2+sqz1TLkBolWDB7bJ7CUjUnvKskUnb8YLZT79crZeRrrHfbgGBKxq3hlcLhusvnkPisVRjUzuKDZiRidNFK2p6lLpbIiCn9ud/fOdOuCtzNdc0ZWrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=xrjONZAS; arc=none smtp.client-ip=113.46.200.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i62KZs0V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50C551F000FF;
-	Thu, 24 Sep 2026 09:36:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790242584;
-	bh=ZiYfP3OJ/9LAMpeByACJ22Dt1rNk0pU/miAnrdFKvlc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=i62KZs0VBwe+7WBncDD2NIaGeytnxoCGW4Vafmq0m9+p38DyxbtEY9F5+z7w8RKUI
-	 at2jPMAUdLGsOUedUT/Qs/GhkYLvX5xwWmLR4E093NhOY2B5AsPmLMTIYd0n1b3eLE
-	 jhIHPNz/x+Rp64R6tyhnplcsec22FnQ4SrGhtQLsrwH0+Cm/NeU3z9pg0VBt9ToLhj
-	 Q7Zrc9xaStAscYiuWDpsqw2oUJ1Li0YUXbw7+rGS3g7rIksABijDxpbfG4K9ZwVYCC
-	 Z7i6jmG/FLBm6CXdF95+gRQYlDQL6tw6t5Wz5xcqudIbdlZZ1BYUfP78+H/98o7l4l
-	 QLY5FdGww5brQ==
-Message-ID: <0d798541-6486-44ff-ae57-f631d1465688@kernel.org>
-Date: Thu, 24 Sep 2026 11:36:19 +0200
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="xrjONZAS"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=yg/c5dnmZTi6xyPOZ86hk74blfRQhWYpuq7fF3Kbs7A=;
+	b=xrjONZASgZH2dB4W12aPwAUjOwKHhuoT3i4U1FLpQsZw+cPLUW1gCi4qySKYwWAnY/2fa/nMH
+	2Ic97JDw8b/I36cpUZTVgECBEPpkkhCD2kgT43L9L8RjG93PnEkKKNXn8tuIFP5pJjIu1GAV6CL
+	P/HreNo6hafJvlYVPC1YGdY=
+Received: from mail.maildlp.com (unknown [172.19.163.15])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4hr8j419d9znTVd;
+	Thu, 24 Sep 2026 18:10:16 +0800 (CST)
+Received: from whupemk100010.china.huawei.com (unknown [7.152.184.41])
+	by mail.maildlp.com (Postfix) with ESMTPS id EA04D40578;
+	Thu, 24 Sep 2026 18:22:19 +0800 (CST)
+Received: from octopus.huawei.com (10.67.174.191) by
+ whupemk100010.china.huawei.com (7.152.184.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Thu, 24 Sep 2026 18:22:15 +0800
+From: Cai Xinchen <caixinchen1@huawei.com>
+To: <mic@digikod.net>, <gnoack@google.com>, <paul@paul-moore.com>,
+	<jmorris@namei.org>, <serge@hallyn.com>, <corbet@lwn.net>,
+	<skhan@linuxfoundation.org>
+CC: <rdunlap@infradead.org>, <gregkh@linuxfoundation.org>,
+	<rafael@kernel.org>, <dakr@kernel.org>, <dlemoal@kernel.org>, <hch@lst.de>,
+	<axboe@kernel.dk>, <viro@zeniv.linux.org.uk>, <brauner@kernel.org>,
+	<jack@suse.cz>, <dhowells@redhat.com>, <code@tyhicks.com>,
+	<linkinjeon@kernel.org>, <sj1557.seo@samsung.com>, <yuezhang.mo@sony.com>,
+	<hirofumi@mail.parknet.co.jp>, <cel@kernel.org>, <jlayton@kernel.org>,
+	<neil@brown.name>, <okorniev@redhat.com>, <Dai.Ngo@oracle.com>,
+	<tom@talpey.com>, <miklos@szeredi.hu>, <amir73il@gmail.com>,
+	<senozhatsky@chromium.org>, <chenxiaosong@chenxiaosong.com>,
+	<zohar@linux.ibm.com>, <roberto.sassu@huawei.com>,
+	<dmitry.kasatkin@gmail.com>, <eric.snowberg@oracle.com>,
+	<stephen.smalley.work@gmail.com>, <omosnacek@gmail.com>,
+	<casey@schaufler-ca.com>, <nanx95726@gmail.com>, <djwong@kernel.org>,
+	<daniel@iogearbox.net>, <linux-security-module@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<driver-core@lists.linux.dev>, <linux-block@vger.kernel.org>,
+	<linux-fsdevel@vger.kernel.org>, <netfs@lists.linux.dev>,
+	<ecryptfs@vger.kernel.org>, <exfat@lists.linux.dev>,
+	<linux-nfs@vger.kernel.org>, <linux-unionfs@vger.kernel.org>,
+	<linux-cifs@vger.kernel.org>, <linux-integrity@vger.kernel.org>,
+	<selinux@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<xiujianfeng@huawei.com>, <caixinchen1@huawei.com>, <lujialin4@huawei.com>
+Subject: [PATCH RFC -next 00/12] landlock: Add READ_METADATA and WRITE_METADATA access rights
+Date: Thu, 24 Sep 2026 18:48:19 +0800
+Message-ID: <20260924104831.1081137-1-caixinchen1@huawei.com>
+X-Mailer: git-send-email 2.18.0.huawei.25
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] netfs: Fix missing alloc tagging of direct mempool
- allocations
-Content-Language: en-US
-To: Hao Ge <hao.ge@linux.dev>, David Howells <dhowells@redhat.com>,
- Paulo Alcantara <pc@manguebit.org>, Harry Yoo <harry@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- "Christian Brauner (Amutable)" <brauner@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Christoph Hellwig <hch@infradead.org>
-Cc: netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Erhard Furtner <erhard_f@mailbox.org>, stable@vger.kernel.org
-References: <20260923063759.34667-1-hao.ge@linux.dev>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260923063759.34667-1-hao.ge@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ whupemk100010.china.huawei.com (7.152.184.41)
 
-+Cc Christoph
+This series adds two new Landlock filesystem access rights,
+LANDLOCK_ACCESS_FS_READ_METADATA and LANDLOCK_ACCESS_FS_WRITE_METADATA,
+which control access to file and directory metadata such as inode
+attributes (mode, ownership, timestamps), extended attributes and POSIX
+ACLs.  It picks up the work from the "landlock: add chmod and chown
+support" series [1] and follows the coarse-grained grouping discussed in
+that thread [2]: instead of separate chmod/chown rights, metadata
+operations are grouped into one read and one write right.
 
-On 9/23/26 08:37, Hao Ge wrote:
-> Commit 1d78d56c43ef ("netfs: Fix folio_queue ENOMEM in writeback by
-> adding a mempool") added a mempool for the folio_queues and made the
-> request, subrequest and folio_queue allocations distinguish between
-> writeback and everything else.  Writeback is part of memory reclaim
-> and must not fail due to ENOMEM, so it allocates under GFP_NOFS
-> through mempool_alloc(), which may dip into the pool's reserve and,
-> if that runs empty, wait for elements to be returned.  The
-> GFP_KERNEL paths, which can return -ENOMEM to their callers, invoke
-> the pool's ->alloc() callback directly instead.
-> 
-> The direct call, however, skips the alloc_hooks() wrapper that the
-> mempool_alloc() macro provides.  The pool callbacks, mempool_alloc_slab()
-> and mempool_kmalloc(), call kmem_cache_alloc_noprof() and kmalloc_noprof()
-> and rely on current->alloc_tag having been set by the caller.  With
-> CONFIG_MEM_ALLOC_PROFILING_DEBUG=y this leads to
-> 
->     current->alloc_tag not set
->     WARNING: ./include/linux/alloc_tag.h:161 at __alloc_tagging_slab_alloc_hook
->     alloc_tag was not set
->     WARNING: ./include/linux/alloc_tag.h:166 at __alloc_tagging_slab_free_hook
-> 
-> at allocation and free time respectively, as reported when reading
-> files on a CIFS mount.  The allocations are also missing from
-> /proc/allocinfo.
-> 
-> Wrap the direct ->alloc() invocations in alloc_hooks() with a new
-> mempool_alloc_noreserve() helper in include/linux/mempool.h, next to
-> the other alloc_hooks()-wrapped macros such as mempool_alloc().  The
-> GFP_KERNEL paths keep their failable allocation semantics, they just
-> get tagged now.
-> 
-> Fixes: 1d78d56c43ef ("netfs: Fix folio_queue ENOMEM in writeback by adding a mempool")
-> Reported-by: Erhard Furtner <erhard_f@mailbox.org>
-> Closes: https://lore.kernel.org/all/0b004319-9ef7-437c-a4dd-174d6a9a83db@mailbox.org/
-> Tested-by: Erhard Furtner <erhard_f@mailbox.org>
-> Suggested-by: Suren Baghdasaryan <surenb@google.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+Landlock evaluates access rights on a per-path basis, but the metadata
+related LSM hooks (inode_getattr, inode_setattr, inode_setxattr,
+inode_getxattr, inode_listxattr, inode_removexattr, inode_set_acl,
+inode_get_acl, inode_remove_acl) only receive the dentry of the accessed
+object.  Patches 1-7 therefore first pass struct path instead of dentry
+through the metadata-related VFS helpers and LSM hooks.  This is a pure
+refactoring with no behavior change, split so that every patch builds
+and works on its own:
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+  1: notify_change() and its callers
+  2: inode_setsecctx hook (must come before 3: the SELinux and Smack
+     implementations call __vfs_setxattr_locked internally)
+  3: xattr helpers, which also drops a redundant EVM xattr size sanity
+     check whose vfs_getxattr() call only has a dentry and therefore
+     cannot be migrated to the new path-based signature
+  4: POSIX ACL helpers
+  5: inode_setattr hook
+  6: inode xattr hooks
+  7: inode POSIX ACL hooks
 
-Seems ok enough as a hotfix. The naming perhaps isn't ideal, we have
-mempool_alloc_preallocated() already for the opposite case. Maybe
-mempool_alloc_no_preallocated() to complement it? Rather long though.
+Two deliberate scoping decisions for this refactor:
 
-I guess long-term it would be neater to have a mempool_alloc() variant with
-extra parameter that says if preallocated pool is allowed or not. The "gfp
-== GFP_KERNEL" check is probably not an universal one. mempool_alloc() is
-actually rather aggressive in getting objects from the pool before even
-attempting reclaim. Makes sense for I/O usecases but maybe not for this one?
+- The hooks consistently take struct path rather than struct file.  The
+  VFS call sites involved (chmod(2), chown(2), utimensat(2), xattr(2)
+  and ACL syscalls) operate on paths, and several of them (lstat(2),
+  lchown(2), llistxattr(2), ...) have no struct file to begin with.
 
-> ---
-> Changes in v2:
-> - Move the alloc_hooks() wrapper from fs/netfs/internal.h into
->   include/linux/mempool.h as mempool_alloc_noreserve(), per Suren's
->   suggestion, so it is not netfs-specific.
-> 
-> v1 Link: https://lore.kernel.org/all/20260922023541.51532-1-hao.ge@linux.dev/
-> ---
->  fs/netfs/objects.c        | 4 ++--
->  fs/netfs/rolling_buffer.c | 2 +-
->  include/linux/mempool.h   | 7 +++++++
->  3 files changed, 10 insertions(+), 3 deletions(-)
-> 
-> diff --git a/fs/netfs/objects.c b/fs/netfs/objects.c
-> index 7f6a3e912602..ad549daa9c79 100644
-> --- a/fs/netfs/objects.c
-> +++ b/fs/netfs/objects.c
-> @@ -34,7 +34,7 @@ struct netfs_io_request *netfs_alloc_request(struct address_space *mapping,
->  
->  		rreq = mempool_alloc(mempool, gfp);
->  	} else {
-> -		rreq = mempool->alloc(gfp, mempool->pool_data);
-> +		rreq = mempool_alloc_noreserve(mempool, gfp);
->  		if (!rreq)
->  			return ERR_PTR(-ENOMEM);
->  	}
-> @@ -214,7 +214,7 @@ struct netfs_io_subrequest *netfs_alloc_subrequest(struct netfs_io_request *rreq
->  	struct kmem_cache *cache = mempool->pool_data;
->  
->  	if (rreq->gfp == GFP_KERNEL)
-> -		subreq = mempool->alloc(rreq->gfp, mempool->pool_data);
-> +		subreq = mempool_alloc_noreserve(mempool, rreq->gfp);
->  	else
->  		subreq = mempool_alloc(mempool, rreq->gfp);
->  	if (!subreq)
-> diff --git a/fs/netfs/rolling_buffer.c b/fs/netfs/rolling_buffer.c
-> index 424e77a9a109..d30d5ef6d86e 100644
-> --- a/fs/netfs/rolling_buffer.c
-> +++ b/fs/netfs/rolling_buffer.c
-> @@ -29,7 +29,7 @@ struct folio_queue *netfs_folioq_alloc(unsigned int rreq_id, gfp_t gfp,
->  	struct folio_queue *fq;
->  
->  	if (gfp == GFP_KERNEL)
-> -		fq = netfs_folioq_pool.alloc(gfp, netfs_folioq_pool.pool_data);
-> +		fq = mempool_alloc_noreserve(&netfs_folioq_pool, gfp);
->  	else
->  		fq = mempool_alloc(&netfs_folioq_pool, gfp);
->  	if (fq) {
-> diff --git a/include/linux/mempool.h b/include/linux/mempool.h
-> index a0fa6d43e0dc..6da502aef2f7 100644
-> --- a/include/linux/mempool.h
-> +++ b/include/linux/mempool.h
-> @@ -70,6 +70,13 @@ int mempool_alloc_bulk_noprof(struct mempool *pool, void **elem,
->  #define mempool_alloc_bulk(...)						\
->  	alloc_hooks(mempool_alloc_bulk_noprof(__VA_ARGS__))
->  
-> +/*
-> + * Allocate a new element without dipping into the pool's reserves or
-> + * waiting.  Returns NULL on failure.
-> + */
-> +#define mempool_alloc_noreserve(_pool, _gfp)				\
-> +	alloc_hooks((_pool)->alloc(_gfp, (_pool)->pool_data))
-> +
->  void *mempool_alloc_preallocated(struct mempool *pool) __malloc;
->  void mempool_free(void *element, struct mempool *pool);
->  unsigned int mempool_free_bulk(struct mempool *pool, void **elem,
+- struct inode_operations->setattr still receives (idmap, dentry, attr).
+  Only the VFS boundary (notify_change()) and the LSM hook layer see the
+  path, which keeps the refactor contained to fs/attr.c and the LSM
+  infrastructure instead of touching every filesystem.
+
+Patches 8-12 then implement the new rights, their tests, the sandboxer
+sample and the documentation.  Semantics:
+
+- READ_METADATA covers stat(2) and friends, getxattr(2) and friends,
+  listxattr(2) and friends, and POSIX ACL reads.
+- WRITE_METADATA covers chmod(2), chown(2), utimensat(2), setxattr(2),
+  removexattr(2) and friends, and POSIX ACL set and remove.
+- Only explicit metadata changes requested by user space are restricted.
+  Implicit changes performed by the kernel (e.g. timestamp updates on
+  write(2), size changes on truncate(2)) are not, and neither are
+  chmod(2)/chown(2) calls that change nothing (e.g. chown(2) with
+  (-1, -1), which never reaches the hook), matching the SELinux
+  inode_setattr behavior.
+- Kernel-internal accesses performed with override_creds() (e.g.
+  overlayfs, cachefiles) and kernel threads without a Landlock domain
+  (e.g. nfsd, ksmbd) are not restricted.
+
+The Landlock ABI version is incremented from 11 to 12.
+
+The series is based on linux-next commit 5c4d4169604b ("Add linux-next
+specific files for 20260921").
+
+Testing: each patch has been built for aarch64 (gcc, -Werror) and the
+landlock selftests (445 tests, including the new ones) pass in QEMU on
+aarch64; base_test reports ABI v12.
+
+[1] https://lore.kernel.org/all/20220827111215.131442-1-xiujianfeng@huawei.com/
+[2] https://lore.kernel.org/all/abc960a1-e66e-792e-6869-cfd201c29dbe@digikod.net/
+
+Assisted-by: opencode: glm-5.3
+
+Cai Xinchen (12):
+  fs: pass struct path to notify_change()
+  LSM: pass struct path to the inode_setsecctx hook
+  fs: pass struct path to xattr helpers
+  fs: pass struct path to POSIX ACL helpers
+  LSM: pass struct path to the inode_setattr hook
+  LSM: pass struct path to the inode xattr hooks
+  LSM: pass struct path to the inode posix acl hooks
+  landlock: Add READ_METADATA and WRITE_METADATA access rights
+  landlock: Implement metadata access hooks
+  selftests/landlock: Add tests for metadata access rights
+  samples/landlock: Add metadata rights to sandboxer
+  Documentation: Update landlock doc for metadata rights
+
+ Documentation/userspace-api/landlock.rst     |  11 +-
+ drivers/base/devtmpfs.c                      |   6 +-
+ drivers/block/zloop.c                        |   4 +-
+ fs/attr.c                                    |  20 +-
+ fs/cachefiles/interface.c                    |   6 +-
+ fs/cachefiles/xattr.c                        |  32 +-
+ fs/coredump.c                                |   2 +-
+ fs/ecryptfs/inode.c                          |  34 +-
+ fs/exfat/file.c                              |   3 +-
+ fs/fat/file.c                                |   3 +-
+ fs/inode.c                                   |   7 +-
+ fs/internal.h                                |  17 +-
+ fs/namei.c                                   |   7 +-
+ fs/nfsd/nfs4ctl.h                            |   4 +-
+ fs/nfsd/nfs4state.c                          |  14 +-
+ fs/nfsd/nfs4xdr.c                            |   2 +-
+ fs/nfsd/state.h                              |   2 +-
+ fs/nfsd/vfs.c                                |  73 +++--
+ fs/open.c                                    |  18 +-
+ fs/overlayfs/copy_up.c                       |   4 +-
+ fs/overlayfs/inode.c                         |   4 +-
+ fs/overlayfs/overlayfs.h                     |  39 ++-
+ fs/overlayfs/xattrs.c                        |  13 +-
+ fs/posix_acl.c                               |  46 +--
+ fs/smb/server/smb2pdu.c                      |  77 ++---
+ fs/smb/server/smb_common.c                   |   2 -
+ fs/smb/server/smbacl.c                       |  21 +-
+ fs/smb/server/tests/smbacl_kunit.c           |   6 +-
+ fs/smb/server/vfs.c                          | 111 +++----
+ fs/smb/server/vfs.h                          |  39 +--
+ fs/smb/server/vfs_cache.c                    |   3 +-
+ fs/utimes.c                                  |   3 +-
+ fs/xattr.c                                   |  96 +++---
+ include/linux/fs.h                           |   6 +-
+ include/linux/landlock.h                     |   4 +-
+ include/linux/lsm_hook_defs.h                |  29 +-
+ include/linux/posix_acl.h                    |  21 +-
+ include/linux/security.h                     |  65 ++--
+ include/linux/xattr.h                        |  22 +-
+ include/uapi/linux/landlock.h                |  26 +-
+ samples/landlock/sandboxer.c                 |  17 +-
+ security/commoncap.c                         |  22 +-
+ security/integrity/evm/evm_crypto.c          |   8 +-
+ security/integrity/evm/evm_main.c            |  36 ++-
+ security/integrity/ima/ima_appraise.c        |  17 +-
+ security/landlock/fs.c                       |  86 ++++++
+ security/landlock/limits.h                   |   2 +-
+ security/landlock/syscalls.c                 |   2 +-
+ security/security.c                          |  99 +++---
+ security/selinux/hooks.c                     |  49 +--
+ security/smack/smack_lsm.c                   |  62 ++--
+ tools/testing/selftests/landlock/base_test.c |   2 +-
+ tools/testing/selftests/landlock/fs_test.c   | 309 ++++++++++++++++++-
+ 53 files changed, 999 insertions(+), 614 deletions(-)
+
+-- 
+2.18.0.huawei.25
 
