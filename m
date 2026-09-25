@@ -1,75 +1,76 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92CED2E7394;
-	Fri, 25 Sep 2026 15:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676593939D7;
+	Fri, 25 Sep 2026 16:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790350399; cv=none; b=OmosOmyB+EacXZLbU5q0h8E/mfRoiZXChjAvFN1wFPg4DAKbqcIDyLZ75dYfhAFduGR+xzeXIVGGBCz5dMzm5SwqxxWRxT83BNzmmO5hxlAEmnFdQjY6d3OOc2Q7unyHms97BrVIBSiv5LlRrAfyvBZ/Gqom4D8zW5G7Z7rMW6k=
+	t=1790352483; cv=none; b=Kf+Bm/lvL1LB7en3KgGBy4dQRP7EFmB30TP86IkeSiXNS2+9hJGINe/Fg6hCfFkdpOxt1KLXvkRyqVlqyow0ohZ2VRdogYmYyntNZqdqVsHHIHF0958MV4Kg9r210Jh0PC535pNoT0xm7hbcANc29nlhFiBXHAgdKHHOG5DeMds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790350399; c=relaxed/simple;
-	bh=2QtlFg1TQBLFoWLLR+xnMLhwaH/oGyTYdOxAvK0TVDI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rVMEKKJId9nhkQRg1YfVpkjD2iivCBM28SW2RG1O0rUjip1VghFAumynSBg7c6UhjdWgPCwJqORCZfdaO9A1EDU95OfA227+EwP2sALvs8rZT2RyQGWQBQB8cNgvNxeDf7rMsYY8aVX87TuCCtjH0G5tW7UXlYBps9DZJSWNugw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PlJNduoW; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790352483; c=relaxed/simple;
+	bh=nS3b7hquJGdw8h3vzq7afMXon8vQNmcTkIRwXL4eGls=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=d6f1zxQHwII+cN+sIjgXlIt6z+/IR9rE4fakMXbT3FOb3rlaTQu92jkpoWPBQqM8pn7MFrUtzCp1ZWMqSyXmb09w3F3+6ohU0oW4YtSDPBn285souCnQW1FSk3wSqmtcElubskhw3CqauWFFrK/fDx/fRRjIlxy62/dHpsP+8O4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o2NK4vA8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PlJNduoW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EFB11F000FF;
-	Fri, 25 Sep 2026 15:33:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o2NK4vA8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCFF61F000FF;
+	Fri, 25 Sep 2026 16:08:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790350398;
-	bh=nM7l79drUPilYt35VeJ3ygXZ+22Hcj/BVqiTPeeQn04=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=PlJNduoW1gaAsBwzDG24uVvzEEqhy3uQuCIDvpwyLa9NDQxiTTKO33Kxmdrmh19rt
-	 oBLewGSVUqt6LSczA2CWf0wIrCuS1ZSioEnyd+7sC5yuA3bl12xzGtF2GcMInIpJWD
-	 BYilMI4hge5yVPYHJsg+yVpB7+l/1Zz0xfp2S4XUfHXDv45xL2ns2oqGbWjyd8cX8H
-	 Kel44pOx+Stw1fKK98CWoUX6LK5issBOuk5pwvaqBUAU2wsCb0BNp39dYgvfDBiYHQ
-	 dY1DFDMOUpJwHx1ysd7Uo/QTBKV0Qfu88fSqbSsMsCpcwLeKxOTdsyh1NiW+y5WcKj
-	 BKGOoABoJp74A==
-Date: Fri, 25 Sep 2026 17:33:03 +0200
+	s=k20260515; t=1790352482;
+	bh=qJMPwoHXFGpzjeH31/tvqLRcRcV7lfXRywlEzGMftj0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=o2NK4vA8XlB52zrMJ449a3qTLw8kqrdC0C6NyDo8MpfhpkL7OSZ7aa5cFfJv9ww3K
+	 cNHwuE6/8idDUcObGVXVygiytzEQBono2ITV/0+riDLzL5uDCM3SjHGP87mRQXHRMF
+	 U9ssvXlZLNesggoI6XreLhfdJAZvdJxnofJjfE3JjdCaa//HaKBATvv8DdgFDzriGC
+	 1//GTDq6vvxzMFxgA+YgTtMZbOKn07tMIWkmyEBSHRz/4rIeqg9ZIIQtFhSSot6E2m
+	 udxIcnJbVt/9n/u5zYDr4IIoGd6NoR+UIifwN6nqaUCagf/HZhhrIBrwmuL1aJSIRf
+	 qB+sYOrL+EvWw==
 From: Christian Brauner <brauner@kernel.org>
-To: Cai Xinchen <caixinchen1@huawei.com>, mic@digikod.net
-Cc: gnoack@google.com, paul@paul-moore.com, jmorris@namei.org, 
-	serge@hallyn.com, corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org, 
-	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org, dlemoal@kernel.org, 
-	hch@lst.de, axboe@kernel.dk, viro@zeniv.linux.org.uk, jack@suse.cz, 
-	dhowells@redhat.com, code@tyhicks.com, linkinjeon@kernel.org, sj1557.seo@samsung.com, 
-	yuezhang.mo@sony.com, hirofumi@mail.parknet.co.jp, cel@kernel.org, jlayton@kernel.org, 
-	neil@brown.name, okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com, 
-	miklos@szeredi.hu, amir73il@gmail.com, senozhatsky@chromium.org, 
-	chenxiaosong@chenxiaosong.com, zohar@linux.ibm.com, roberto.sassu@huawei.com, 
-	dmitry.kasatkin@gmail.com, eric.snowberg@oracle.com, stephen.smalley.work@gmail.com, 
-	omosnacek@gmail.com, casey@schaufler-ca.com, nanx95726@gmail.com, djwong@kernel.org, 
-	daniel@iogearbox.net, linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev, linux-block@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, netfs@lists.linux.dev, ecryptfs@vger.kernel.org, 
-	exfat@lists.linux.dev, linux-nfs@vger.kernel.org, linux-unionfs@vger.kernel.org, 
-	linux-cifs@vger.kernel.org, linux-integrity@vger.kernel.org, selinux@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, xiujianfeng@huawei.com, lujialin4@huawei.com
-Subject: Re: [PATCH RFC -next 00/12] landlock: Add READ_METADATA and
- WRITE_METADATA access rights
-Message-ID: <20260925-zahnersatz-hielt-lerche-141893658522@brauner>
-References: <20260924104831.1081137-1-caixinchen1@huawei.com>
+To: netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+ Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Cc: David Howells <dhowells@redhat.com>, Paulo Alcantara <pc@manguebit.org>
+In-Reply-To: <20260918024040.338737-1-enelsonmoore@gmail.com>
+References: <20260918024040.338737-1-enelsonmoore@gmail.com>
+Subject: Re: [PATCH] netfs: remove unused fscache_internal.h header
+Message-Id: <20260925-klima-revision-verwoben-67d88abc1af3@brauner>
+Date: Fri, 25 Sep 2026 18:07:57 +0200
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260924104831.1081137-1-caixinchen1@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev-db0b7
+X-Developer-Signature: v=1; a=openpgp-sha256; l=886; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=nS3b7hquJGdw8h3vzq7afMXon8vQNmcTkIRwXL4eGls=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRtmxN3NWVa9d7stwEHroY3eFt9ZLdbmzJh+9btHN33f
+ YTLZsbZd5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzkkQ4jw80Psfs+Opf6VhRY
+ 3HCY+siQR+X4vFLelIn73Yqem0xkcWT4zTJFyZHjn/Fa/ZUZLzU+7p9puiA23lPfZcnS/euyGTQ
+ 7mAE=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-On Thu, Sep 24, 2026 at 06:48:19PM +0800, Cai Xinchen wrote:
-> This series adds two new Landlock filesystem access rights,
-> LANDLOCK_ACCESS_FS_READ_METADATA and LANDLOCK_ACCESS_FS_WRITE_METADATA,
-> which control access to file and directory metadata such as inode
-> attributes (mode, ownership, timestamps), extended attributes and POSIX
-> ACLs.  It picks up the work from the "landlock: add chmod and chown
-> support" series [1] and follows the coarse-grained grouping discussed in
-> that thread [2]: instead of separate chmod/chown rights, metadata
-> operations are grouped into one read and one write right.
+On Thu, 17 Sep 2026 19:40:37 -0700, Ethan Nelson-Moore wrote:
+> netfs: remove unused fscache_internal.h header
 
-This is mostly fine for me. @Michael, for the fs side of things I would
-give you a stable branch vfs-7.*.shared.landlock.path that you can pull
-once this is ready.
+Applied to the vfs-7.4.netfs branch of the vfs/vfs.git tree.
+Patches in the vfs-7.4.netfs branch should appear in linux-next soon.
+
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
+
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs-7.4.netfs
+
+[1/1] netfs: remove unused fscache_internal.h header
+      https://git.kernel.org/vfs/vfs/c/d439f95953ab
+
