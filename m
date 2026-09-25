@@ -1,33 +1,33 @@
 Received: from mx1.manguebit.org (mx1.manguebit.org [143.255.12.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6DF4BEE4A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1E54B8278;
 	Fri, 25 Sep 2026 14:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=143.255.12.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790347058; cv=none; b=JvKpX0ws+cJXKe27n9xjpAgd62OmYZZZz/gQUYEyE7V94HG7z79Y4qbplaG3HNbWZ3vW4jR48xYlqxEWHUwVlNlzqXEs3WIUh03X8I6b3YkMyJd2Zc2JNykuEyn+MkhQxmkqUW2trAMuO3RPA7Lcp/inlWEL5/R3/JZ3ggJiAk4=
+	t=1790347062; cv=none; b=uB5FdeWhM68CHHPl0yyYBMOgCMqqJMtGVoL16SwkPkagwLJsgbwSQPZ//HXLL5lVLZiQu8F+wUNpg70dtXcS8QtFb1ggYzdpFpuvUGC9bA20zoUh2OgX+S5rNyboBfFtwT4IuS/1Tk8WCJgXd7gV+XRwnxNRA0kFo4PLS27sPWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790347058; c=relaxed/simple;
-	bh=ew78zaNyP56x+pkuoc101SRLge9BZJxUTpFPQpoLJ1M=;
+	s=arc-20240116; t=1790347062; c=relaxed/simple;
+	bh=sbwEr3XKOC9C8D70fy3UJ/R9aHpSbmfswqBO3dgI8rU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xx3EYHviqQPR2wyPu6vT6DQZQgeBhdMVjCpeOF8BnOivbQvcrbZZJ5Yf1Cl+rUf2GYga3xB96OxVNRtK+SXdXRSrd77Mt+4LdebFq68FmDyO4Uopjxf6hmTNOvTXQrmEXCS6bqESufC+R3WbyyJRzbGbPiChvZKVDrIIm6YFkRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org; spf=pass smtp.mailfrom=manguebit.org; dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b=U3Nnjgky; arc=none smtp.client-ip=143.255.12.172
+	 MIME-Version; b=dWVxcJ4zizPvbpNFfx5Af5nGBtlYpG2nVCyCKj1NwkbF88PuYju0nPVL+WvCCrX6Q9klXkq6mKl7CKcrCRlgZkG3ilGA5X3UpLbStY7xxVWf3QG4xZE5B9p+Nz9bKrECk/RThy7HSc3iNC9OAdh5yjCYzR8hTgoEgQjrFjDkRQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org; spf=pass smtp.mailfrom=manguebit.org; dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b=8nuW6EdT; arc=none smtp.client-ip=143.255.12.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b="U3Nnjgky"
+	dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b="8nuW6EdT"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=manguebit.org; s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Content-Type:Reply-To:
 	Content-ID:Content-Description;
-	bh=Rvurhxniq0PoIct8iMYqYpxfD7GQEhsvQofN8jToenk=; b=U3NnjgkyyI0XJfe/FY8cE8KuO2
-	TbLs/Phe+qVQ/z7We1ypB+FkwC57KhJFLnrKKiEreHxi7/IVB4yAg4WDn9Wn5rFVXe3spLTzcqRiV
-	VTF+5zAbSPOUuw2inc2az3nUrHGGgZQO2orgn5TXaDnA6sdmUtxj7uRFapL+HTnZat4nAQ9h47wK5
-	5NzdfP4ZveXf/4PqUdSQegqpF8fJe0BcchNWZXVk2GygPCuEcV6yWIyE4DIm2uphnB35of+3znAdY
-	YcrmOM+/hw5HTS9v+Cg7vFPfJdVqi+jE8fS791/oLckS23lLBJrRyNBO1MPdm2XkOhqE+tTsnqzZH
-	eNJEaK1g==;
+	bh=pcWcAlZ9E4EFhlUfnMAyRKjXoxwDs6duAlO6EdTG+m0=; b=8nuW6EdTHjVf3S9cECTQ1LkPqu
+	26z34Ub1m/HW9HiyMvWjIOW3vhobJAASxB30GreXdv87O83pKwKNAk/0+NSr3Rf1SRfiZxRJazynA
+	LHZQ6CI+Qgpjs/mTTebj64dWyCreasWQetK+bGMfiE32E76JkK8pp0U5xa1aXkUFjnnEkfiriSQyw
+	9jWk4KHJqPJTM0uoVbXKvHnsSZLMH2+yMLDoYtIAz4suAVsgZWOng65sBaq0ad91Ugerfq+ttkDNf
+	AdF6pMm7UGtp9scYSxZpP1O39Ygfp+LFLsxoHYStXt15SCiCaue7ptviXTX2nHVrNQZL3rdJaCQ6P
+	iQSVwSTg==;
 Received: from pc by mx1.manguebit.org with local (Exim 4.99.5)
-	id 1xA73A-00000002GxV-2emz;
+	id 1xA73A-00000002Gxa-47q7;
 	Fri, 25 Sep 2026 11:37:20 -0300
 From: Paulo Alcantara <pc@manguebit.org>
 To: linux-cifs@vger.kernel.org,
@@ -41,9 +41,9 @@ Cc: David Howells <dhowells@redhat.com>,
 	Tom Talpey <tom@talpey.com>,
 	Bharath SM <bharathsm@microsoft.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v3 4/5] smb: client: discard post-EOF pagecache when extending a file via copy range
-Date: Fri, 25 Sep 2026 11:37:18 -0300
-Message-ID: <20260925143719.2889518-4-pc@manguebit.org>
+Subject: [PATCH v3 5/5] smb: client: discard post-EOF pagecache when extending a file via clone range
+Date: Fri, 25 Sep 2026 11:37:19 -0300
+Message-ID: <20260925143719.2889518-5-pc@manguebit.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260925143719.2889518-1-pc@manguebit.org>
 References: <20260925143719.2889518-1-pc@manguebit.org>
@@ -55,18 +55,16 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-cifs_file_copychunk_range() invalidated the pagecache only for the
-destination region, so when a copy extends the file the folio straddling
-the old EOF - which may hold data dirtied past EOF through an mmap - was
-never dropped and became visible as file content once the file was
-extended.
+cifs_remap_file_range() discarded the pagecache only for the folios
+overlapping the destination region, so when a clone extends the file the
+folio straddling the old EOF - which may hold data dirtied past EOF
+through an mmap - was never dropped and became visible as file content
+once the file was extended.
 
-Start the invalidation at the smaller of the destination offset and the
-old EOF.  filemap_invalidate_inode() writes back before invalidating
-while i_size is still old, so nothing past the old EOF is flushed to the
-server.
+Start the discard at the smaller of fstart and the old EOF.  i_size is
+still old here, so nothing past the old EOF is flushed to the server.
 
-Fixes: 8101d6e112e2 ("cifs: Fix copy offload to flush destination region")
+Fixes: c54fc3a4f375 ("cifs: Fix flushing, invalidation and file size with FICLONE")
 Reviewed-by: David Howells <dhowells@redhat.com>
 Signed-off-by: Paulo Alcantara <pc@manguebit.org>
 Cc: Christian Brauner <brauner@kernel.org>
@@ -82,27 +80,29 @@ Cc: stable@vger.kernel.org
 v1 -> v2: no changes
 v2 -> v3: no changes
 
- fs/smb/client/cifsfs.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/smb/client/cifsfs.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
-index 7ecd70efdfea..f1fb4b7b7b7c 100644
+index f1fb4b7b7b7c..6410249f529a 100644
 --- a/fs/smb/client/cifsfs.c
 +++ b/fs/smb/client/cifsfs.c
-@@ -1581,8 +1581,13 @@ ssize_t cifs_file_copychunk_range(unsigned int xid,
- 	/* Flush and invalidate all the folios in the destination region.  If
- 	 * the copy was successful, then some of the flush is extra overhead,
- 	 * but we need to allow for the copy failing in some way (eg. ENOSPC).
-+	 *
-+	 * Start at the old EOF when extending so the folio straddling it, which
-+	 * may hold data written past EOF through an mmap, is dropped too.
- 	 */
--	rc = filemap_invalidate_inode(target_inode, true, destoff, destoff + len - 1);
-+	rc = filemap_invalidate_inode(target_inode, true,
-+				      min(destoff, i_size_read(target_inode)),
-+				      destoff + len - 1);
- 	if (rc)
- 		goto unlock;
+@@ -1467,9 +1467,14 @@ static loff_t cifs_remap_file_range(struct file *src_file, loff_t off,
+ 	i_size = target_inode->i_size;
+ 	spin_unlock(&target_inode->i_lock);
+ 
+-	/* Discard all the folios that overlap the destination region. */
++	/*
++	 * Discard all the folios that overlap the destination region.  Start at
++	 * the old EOF when extending so the folio straddling it, which may hold
++	 * data written past EOF through an mmap, is dropped too.
++	 */
+ 	cifs_dbg(FYI, "about to discard pages %llx-%llx\n", fstart, fend);
+-	truncate_inode_pages_range(&target_inode->i_data, fstart, fend);
++	truncate_inode_pages_range(&target_inode->i_data,
++				   min(fstart, i_size), fend);
+ 
+ 	fscache_invalidate(cifs_inode_cookie(target_inode), NULL, i_size, 0);
  
 -- 
 2.55.0
