@@ -1,280 +1,111 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+Received: from mail-ua2-f12.google.com (mail-ua2-f12.google.com [74.125.226.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3626038A72B
-	for <netfs@lists.linux.dev>; Sat, 26 Sep 2026 08:38:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790411911; cv=none; b=pWGrrLk5B3tPI1lm8nP1TCalAixMMIPqeoenVJopTSVkE6acJYJiwAJ2kIdntsmQweL3sbzXiYvLd1JD5M2HNUAx/jGE6E+3rLSPwkO3XpaahVZlLmlKQLn2aQVonHsL/IMYBqZN6LzQ6FjzWZjJc8/hH2SYJNKTeVvfOj9RIts=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790411911; c=relaxed/simple;
-	bh=dg1L5YWtdAyboMbKumSCH8z23MTRvvFyqARphfS6bXE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GCtBMOFOa0/HPfhDMsPs1L7iUtMfxSOT97lLfYWPL5UC8t1KUUyNHgosaDX9rtT17Qr/IXmnaWpGDW75HOz2Goj4qFvmrv5LJRfjkgHp/1ObWfzAzVkcMgf/VnvX10jdQnDf+axSdfc540fu6ESN+OqGW8Y1Gp3aclk+5GAYsWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aszNx6Ui; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519E4359A66
+	for <netfs@lists.linux.dev>; Mon, 28 Sep 2026 03:16:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.226.204
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790565392; cv=pass; b=NkGg+WDGvAjGYUDoAVPQEZFN7O1QYD68EKsCHPeNKgk9UCj4vBLJutAehNVtgj4ys1WzEzDBhbNp7zRecn9LoUdBWsNUrFnzC412h6zsIvAzC0FBN7S15DdzeUe6KS1SOcAkhReHJoFKU5yN3XXo0KnUDJrrOX3nJEthRMFYeCs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790565392; c=relaxed/simple;
+	bh=irNG+DoNMCWFLV1hw/t2FuuwOuA5DzeUKeYzGMNo+C4=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=O0YzW+sgJcPgPWGZfqYit22KjjEDGQVPb5L6zY4n2pBNgrJ5E9FwjepZjHT7fRMtGLta3B4Zf7PoB5tlYL9PHEIMMe0bREfVM15Dd9PFM95GMOiw8zgUhOCnfwu4VPdEXKvLc3N33oHGqzEiL9RAZ7LgzMbsBvfeJe9jMPz9yhA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DiSanyd9; arc=pass smtp.client-ip=74.125.226.204
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aszNx6Ui"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ff9621c5dso2769925e9.0
-        for <netfs@lists.linux.dev>; Sat, 26 Sep 2026 01:38:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DiSanyd9"
+Received: by mail-ua2-f12.google.com with SMTP id a1e0cc1a2514c-982db8d3ab8so1319361241.1
+        for <netfs@lists.linux.dev>; Sun, 27 Sep 2026 20:16:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790565390; cv=none;
+        d=google.com; s=arc-20260327;
+        b=gHxFxHCGrRXI3BJJ0LBtGLEkltvt7dAKmkGWOsrCynBf9tMpcXAM1kvwdM9GZIKKNk
+         XlU9y59n38rJJBU8YVLLn6O8/rEYvBH8xOjWsNHDN8PZg9SWI6e2WtDUED5JLBzHt2XD
+         /uMpmPYuLCquLgM+8zGn0IVfeHVpj6JAxyzROutLfkOc4C3lvttbs42BDT5A7J12qUtv
+         PERoNExajrtWENvBMYFE2li8gXhPIPUQfi6UwTw6rDXNnh1I+kLDaw358fZqdwlJoUss
+         vYRrNbqhoyiydL6Esjhh54Hl3zrZANB4mtAfY7H1k9l6cwiSiiO5+IIe7iZrPXGNOnXs
+         CLNw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=SX5Ye7MtdrUJ2FauXGucUbRpX1moQo3Ho9RVhKOtv5M=;
+        fh=8Dhqai7EjFm1DPjzi5UvQYw7eIiMiQoJWMtsHGPm210=;
+        b=FbZcbn52u30TVOoCZC0XFARDNyMrbm97YAytLZ0TMTGNAqiplhW2TxzhJ0sl62uOz+
+         pSH5bLXqNHB4oCAlbGl4cTHpiLa3hxAsJ68/+J3e80hMqCqdJJY1DX9koHP+JNuPH32v
+         7Z/vadrHpwMQUqPMVN6+KXCVH4bqcN3XvzHtQqImrGj/Fw5XfzaSWTRlGccZaNtfa1LT
+         ybjKVSnAwxvLSC+TO5Nwy2zrkcY+4Lhnrz603JfuniBlF/G7VMHb+sA1BEp3NAw1x3ys
+         6qwrkaEOubvHhLSBP5pXH91mtB0rzxh7Mw28sCAn1DyF89G0VNiWJ7GfSVOCQ+v1FxQD
+         2t4Q==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790411906; x=1791016706; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=c9e9Ohjh62jjpKVoXb3eLlcbg9rHFeTPk+yn3uYWypA=;
-        b=aszNx6UiflGIgBTS2f1z2zZ3uU/lX5c/WgvL3DgAohqdVICLJfVb3Dtnh+cykkPTSX
-         oCcJWP7+JywOXeUVKLeXG48oWXOgvKzzy3gqhIQM9z7HEqiQdV0jRvxg2hBy0IuTrJQ2
-         vMRTYx2qndqYZL96sU6o55BkSUbW4noUlR+BQmqjVCPSeYJVoiWwRXfMGqy2aBwgSGWL
-         RWJlVdnt8ii/iWKB22ap3T5yoXLZEF1XvpvwTvjso2AFnIE9baaaOpRphT0uRZJnvwUy
-         TaghvrCmldoYYJqaJpUdVeC4Uf7WfOKzYoVBiiReOAUMqTQd2Qny6X2uhBbHiFPgwss5
-         FkVQ==
+        d=gmail.com; s=20251104; t=1790565390; x=1791170190; darn=lists.linux.dev;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=SX5Ye7MtdrUJ2FauXGucUbRpX1moQo3Ho9RVhKOtv5M=;
+        b=DiSanyd9Uj8IHVcxlXizf3itfmHG2E+ZX1M4E/uBSOBfriDXM35gScLb/a/ADsNoCH
+         AR3m0iip0D6FYVqC2YSFo1YTkmIIctd78rrqZOX5MLaBUP3KEWEb9ojL4KecU89FS8BA
+         E+otjvy93vkvYnDrVdA4dCJL6CQackQzZcHUv1V6cOtBQRIYt3YhCvvmLPuSEh3pVsJk
+         Ew3okY+y+y2EEDPqKoChVvBz/GuPtT6neHP1goWmC7H6qTT/IZeviDRtMX/zzzx0Fr/S
+         npaLq0MfA1vrQ5zTRFWifW6WCiSxBSr0q8NjsJGJItSMEjVrvQj8JA4xucDRMVRisorq
+         JXPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790411906; x=1791016706;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20260707; t=1790565390; x=1791170190;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=c9e9Ohjh62jjpKVoXb3eLlcbg9rHFeTPk+yn3uYWypA=;
-        b=hf/cm7FY2utP0pDxBQadoKyImeqrN9JB327zLPTY2yKnQUQTaXxlTNE8H+2/QYzgF3
-         ke5JKCPUb3RTR5Lp9KKUBpG1PERpcQ9UAxXRIYNFEG9Zp9AK5xGg1AjWuRTk8hO+BEnK
-         ktovnsLwo5SfFSjwdx7ZUsn3YLQarkbbU08O7XCXunCt93anbsr1qJ5b5hF35VGr7B0a
-         Zg6APYWtAT+kEYY1MC1z1/5N6ehCw8RGPq6BShixUkUcchXHJ5W1yEocTVmlKSyE5/Ho
-         gZtbMqBX+TXApyyry1fDD9q0hw9ptKRPEl37QOf7TPNCIFYCDs9fZaDaCBheeBf2NubU
-         1BiQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzDaVt/oYuhL7Ime93AIlj+Ui4yTQNm5LFrEHjDinNxJ2uWTbsyLb73nwpZrEpnGwf2DAxHlw==@lists.linux.dev
-X-Gm-Message-State: AFuF++k4kSbwfA+9W6q0WZm06j/yR6paHtzvptv68WKB38z9QRtTs+Wr
-	h76sizuYx8LNeOicF7fUOh5MnpZfTuEiAgXVW2u9yala6PkH7Fjog4qs
-X-Gm-Gg: AYBFou1ryS44yyqlZMzs6oXqU2m02A0thJgnnSbc9Cz4LDgS2Ydud5AnAF37VWydy8W
-	10RxGsU7ztS/mDB37YFT0w84Fn16hJkOX+ZLqEkNkojmDJ79Nzq4oHovvKb74JrlrrWU3Xx+DOC
-	NbspigTs5vu0jh0fYVa63NT1sdDG9tUfZDnsRvGksZmVaFtCzIYjVoZ0BSZzqJcyQhWH3wZ6eka
-	R8Pi9JFNOjYSu9JBzE2yssDs8PtG1Xo7XKr6ERLxevuxGT3VXHB4V6BG8EpXmgQH/uhiSKZG52a
-	QijxbQ9/YIPtFeOcWYVBzHwEyFH/j0AhbLJ9sFmWT35gLrBp38+NCjH4+oVdUMiBiV98iQAvJxZ
-	tTcmwU6LGk1aSkDDUhy+Fm8Nqk+RWcTFgyC7r2o5zWGaon3KB/AOxwhNFuQPSGd1gkVOitkMc6i
-	AcTppyFx1ZgmC6y81FCIrLoE8Q2AVEjp0oAsdPPxN9lOxbQr1EcwAlmewyoxWx9ARVjodfgf1Ud
-	YpAKVsj0XtUsWm00uHCYDk=
-X-Received: by 2002:a05:600c:1d02:b0:49f:fd66:5fe0 with SMTP id 5b1f17b1804b1-49ffd6661a7mr12811255e9.9.1790411906263;
-        Sat, 26 Sep 2026 01:38:26 -0700 (PDT)
-Received: from localhost (ip87-106-108-193.pbiaas.com. [87.106.108.193])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fe5de4de4sm215396785e9.8.2026.09.26.01.38.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 01:38:25 -0700 (PDT)
-Date: Sat, 26 Sep 2026 10:38:24 +0200
-From: =?iso-8859-1?Q?G=FCnther?= Noack <gnoack3000@gmail.com>
-To: Cai Xinchen <caixinchen1@huawei.com>
-Cc: mic@digikod.net, gnoack@google.com, paul@paul-moore.com,
-	jmorris@namei.org, serge@hallyn.com, corbet@lwn.net,
-	skhan@linuxfoundation.org, rdunlap@infradead.org,
-	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
-	dlemoal@kernel.org, hch@lst.de, axboe@kernel.dk,
-	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
-	dhowells@redhat.com, code@tyhicks.com, linkinjeon@kernel.org,
-	sj1557.seo@samsung.com, yuezhang.mo@sony.com,
-	hirofumi@mail.parknet.co.jp, cel@kernel.org, jlayton@kernel.org,
-	neil@brown.name, okorniev@redhat.com, Dai.Ngo@oracle.com,
-	tom@talpey.com, miklos@szeredi.hu, amir73il@gmail.com,
-	senozhatsky@chromium.org, chenxiaosong@chenxiaosong.com,
-	zohar@linux.ibm.com, roberto.sassu@huawei.com,
-	dmitry.kasatkin@gmail.com, eric.snowberg@oracle.com,
-	stephen.smalley.work@gmail.com, omosnacek@gmail.com,
-	casey@schaufler-ca.com, nanx95726@gmail.com, djwong@kernel.org,
-	daniel@iogearbox.net, linux-security-module@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	driver-core@lists.linux.dev, linux-block@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, netfs@lists.linux.dev,
-	ecryptfs@vger.kernel.org, exfat@lists.linux.dev,
-	linux-nfs@vger.kernel.org, linux-unionfs@vger.kernel.org,
-	linux-cifs@vger.kernel.org, linux-integrity@vger.kernel.org,
-	selinux@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	xiujianfeng@huawei.com, lujialin4@huawei.com
-Subject: Re: [PATCH RFC -next 09/12] landlock: Implement metadata access hooks
-Message-ID: <20260926.a96402fcbd4b@gnoack.org>
-References: <20260924104831.1081137-1-caixinchen1@huawei.com>
- <20260924104831.1081137-10-caixinchen1@huawei.com>
+        bh=SX5Ye7MtdrUJ2FauXGucUbRpX1moQo3Ho9RVhKOtv5M=;
+        b=z+Rvmi5ebfpKM4EvMDmOk0Jx1xdgIaCUbCHG3ZhLVJ6qVA9NzUOfE7DEq0wYgZh7fv
+         Csh3qOREmWwgZJKNKh9+1SQgijavmVFO5teNyTsu5go32OoR+i7hkeTmSRc3k4I9KqVi
+         fWteBTOFC4bz1vLNXXlrOdpNc3yPpp24gg4tWxccbkJtjFb35eDGt7nBfwa8pae/awno
+         lzhR6MO5tPp3dfeZdGdNDklkveGasf6G0gmISb5NciDJPtYpDhA6DN3pfT79N0V8DDgF
+         6Svh/FCIr7jfJ91XdajS47rzZlZ93kadMDxpQfJ89SmS6ZhypvNE/n95AYVJ9jHWkOgQ
+         FD1Q==
+X-Gm-Message-State: AFq9FYLiXS5XYqg0NkwQPqfbhM/uYZhg78lpbQgb/tMSyO3lgVA/tP6q
+	ID1DzNUVPi39bCGvTBk5teKAmuYtxj3OUkFoTGNP2M7bdWvb9LQ8VNpBpQVSCfPorlqwZkO+rEp
+	uUHrB6lGj5Ub4wRGY01dsGncNGrUDCdM=
+X-Gm-Gg: AYBFou3NQFoUOjxjQjRkaEwuP9be5m9xSt2s9ZT8LiXT/JZIFwghcyhUrBPZ2e83v4z
+	AgTp3eLa7ZCEaNRB+y623FXER4hq7yqNEBCVoGB+IVhUzojiVuhqmJy+RIu34id0ezpvWFiKDtt
+	4Rr8iJ8wzU61UsEyzEPU9/h+yiJu+eklXQqTpnZ2rxum5W0Nmu9InBlDm6ZjPxLuw2dOdedDKFt
+	iDZOhuT1emj4Yv/5si7brZqBf7SWLnNAR6UPIn2IRYnQ0PyZ7QqjwUaGZvZWXYPSgO94KwAahKq
+	dOUFtfUeytYrwkiIsGe7e0VBDQ4p21A2ZRvzR6NVjBBll+0H1K5wOyjY1qZAuJ8X8taAFhlP
+X-Received: by 2002:a05:6102:4188:b0:7a6:dfec:3643 with SMTP id
+ ada2fe7eead31-7af1ebf3435mr5061365137.27.1790565390040; Sun, 27 Sep 2026
+ 20:16:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260924104831.1081137-10-caixinchen1@huawei.com>
+From: Fredric Cover <fredric.cover.lkernel@gmail.com>
+Date: Sun, 27 Sep 2026 20:16:17 -0700
+X-Gm-Features: AclHuK_QlrFRSnX2NHJDocTnLS6-fnJMHzvoTbOUc7y5VT8oJ3Zx5QQENKWETGc
+Message-ID: <CAAk_H6GiVbRELEWOvxBT9UTCy9jo-NtO5zu7SZx_urkuSUbghw@mail.gmail.com>
+Subject: [QUESTION] Possible off-by-one boundary in netfs_page_mkwrite() using filemap_fdatawrite_range()?
+To: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.org>
+Cc: netfs@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Sep 24, 2026 at 06:48:28PM +0800, Cai Xinchen wrote:
-> Implement the LANDLOCK_ACCESS_FS_READ_METADATA and
-> LANDLOCK_ACCESS_FS_WRITE_METADATA access rights by hooking the
-> inode_getattr, inode_setattr, inode_setxattr, inode_getxattr,
-> inode_listxattr, inode_removexattr, inode_set_acl, inode_get_acl and
-> inode_remove_acl LSM hooks, which now receive a struct path thanks to
-> the preceding VFS and LSM refactoring.
-> 
-> The following system calls are now controlled:
-> 
-> - stat(2), fstat(2), lstat(2), newfstatat(2), getxattr(2) and
->   friends, listxattr(2) and friends, and POSIX ACL reads via
->   inode_getattr, inode_getxattr, inode_listxattr and inode_get_acl
->   (READ_METADATA)
-> - chmod(2), fchmod(2), fchmodat(2), fchmodat2(2), chown(2), fchown(2),
->   lchown(2), fchownat(2), chgrp(2), utimensat(2), futimens(2),
->   utime(2), setxattr(2) and friends, removexattr(2) and friends, and
->   POSIX ACL set and remove via inode_setattr, inode_setxattr,
->   inode_removexattr, inode_set_acl and inode_remove_acl
->   (WRITE_METADATA)
-> 
-> Both new rights are added to ACCESS_FILE as they apply to both files
-> and directories.
-> 
-> hook_inode_setattr only restricts explicit metadata changes, i.e. it
-> checks WRITE_METADATA only when the ia_valid mask contains
-> ATTR_MODE, ATTR_UID, ATTR_GID, ATTR_TIMES_SET or ATTR_TOUCH.
-> Metadata changes that the kernel performs implicitly, such as
-> timestamp updates on write(2) or size changes on truncate(2), are
-> therefore not restricted, and neither are chmod(2)/chown(2) calls
-> that do not change any attribute (e.g. chown(2) with -1/-1, which is
-> a no-op that never reaches the hook), matching the behavior of the
-> SELinux inode_setattr hook.
-> 
-> Kernel-internal accesses performed with override_creds() (e.g.
-> overlayfs and cachefiles) are not affected because Landlock domains
-> are attached to credentials, and kernel threads without a Landlock
-> domain (e.g. nfsd and ksmbd) are not restricted either.
-> 
-> Assisted-by: opencode: glm-5.3
-> Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
-> ---
->  security/landlock/fs.c | 86 ++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 86 insertions(+)
-> 
-> diff --git a/security/landlock/fs.c b/security/landlock/fs.c
-> index cab43892ec2f..e58b2aa0da65 100644
-> --- a/security/landlock/fs.c
-> +++ b/security/landlock/fs.c
-> @@ -318,6 +318,8 @@ static struct landlock_object *get_inode_object(struct inode *const inode)
->  	LANDLOCK_ACCESS_FS_EXECUTE | \
->  	LANDLOCK_ACCESS_FS_WRITE_FILE | \
->  	LANDLOCK_ACCESS_FS_READ_FILE | \
-> +	LANDLOCK_ACCESS_FS_READ_METADATA | \
-> +	LANDLOCK_ACCESS_FS_WRITE_METADATA | \
->  	LANDLOCK_ACCESS_FS_TRUNCATE | \
->  	LANDLOCK_ACCESS_FS_IOCTL_DEV | \
->  	LANDLOCK_ACCESS_FS_RESOLVE_UNIX)
-> @@ -1676,6 +1678,81 @@ static int hook_path_truncate(const struct path *const path)
->  	return current_check_access_path(path, LANDLOCK_ACCESS_FS_TRUNCATE);
->  }
->  
-> +static int hook_inode_getattr(const struct path *const path)
-> +{
-> +	return current_check_access_path(path,
-> +					LANDLOCK_ACCESS_FS_READ_METADATA);
-> +}
-> +
-> +static int hook_inode_setattr(const struct path *const path,
-> +			      struct iattr *const attr)
-> +{
-> +	/*
-> +	 * Explicit metadata changes (i.e. mode, ownership, and timestamps
-> +	 * set with utimes() and friends) require
-> +	 * LANDLOCK_ACCESS_FS_WRITE_METADATA.  Implicit timestamp updates
-> +	 * (e.g. ATTR_CTIME set for a write) and size changes (handled by
-> +	 * the truncate hooks) are not restricted.
+David and Paulo,
 
-Nit: It feels like this comment about implicit timestamp updates
-(especially the size change) should go in the top-level documentation
-for the WRITE_METADATA right?  setattr() can not result in a size
-change, after all, AFAIK?
+While hunting for bugs, I noticed a potential off-by-one range error at
+lines 571-573 in buffered_write.c:
 
-Remark on the side, apart from truncation, normal writes into the file
-can of course also change its size ;-) and ATTR_ATIME and ATTR_MTIME
-also come to mind as implicit metadata changes.
+err = filemap_fdatawrite_range(mapping,
+                                folio_pos(folio),
+                                folio_next_pos(folio));
 
-> +	 */
-> +	if (!(attr->ia_valid & (ATTR_MODE | ATTR_UID | ATTR_GID |
-> +				ATTR_TIMES_SET | ATTR_TOUCH)))
-> +		return 0;
-> +
-> +	return current_check_access_path(path,
-> +					LANDLOCK_ACCESS_FS_WRITE_METADATA);
-> +}
-> +
-> +static int hook_inode_setxattr(const struct path *const path,
-> +			       const char *const name,
-> +			       const void *const value, const size_t size,
-> +			       const int flags)
-> +{
-> +	return current_check_access_path(path,
-> +					LANDLOCK_ACCESS_FS_WRITE_METADATA);
-> +}
-> +
-> +static int hook_inode_getxattr(const struct path *const path,
-> +			       const char *const name)
-> +{
-> +	return current_check_access_path(path,
-> +					LANDLOCK_ACCESS_FS_READ_METADATA);
-> +}
-> +
-> +static int hook_inode_listxattr(const struct path *const path)
-> +{
-> +	return current_check_access_path(path,
-> +					LANDLOCK_ACCESS_FS_READ_METADATA);
-> +}
-> +
-> +static int hook_inode_removexattr(const struct path *const path,
-> +				  const char *const name)
-> +{
-> +	return current_check_access_path(path,
-> +					LANDLOCK_ACCESS_FS_WRITE_METADATA);
-> +}
-> +
-> +static int hook_inode_set_acl(const struct path *const path,
-> +			      const char *const acl_name,
-> +			      struct posix_acl *const kacl)
-> +{
-> +	return current_check_access_path(path,
-> +					LANDLOCK_ACCESS_FS_WRITE_METADATA);
-> +}
-> +
-> +static int hook_inode_get_acl(const struct path *const path,
-> +			      const char *const acl_name)
-> +{
-> +	return current_check_access_path(path,
-> +					LANDLOCK_ACCESS_FS_READ_METADATA);
-> +}
-> +
-> +static int hook_inode_remove_acl(const struct path *const path,
-> +				 const char *const acl_name)
-> +{
-> +	return current_check_access_path(path,
-> +					LANDLOCK_ACCESS_FS_WRITE_METADATA);
-> +}
-> +
->  /**
->   * unmask_scoped_access - Remove access right bits in @masks in all layers
->   *                        where @client and @server have the same domain
-> @@ -2100,6 +2177,15 @@ static struct security_hook_list landlock_hooks[] __ro_after_init = {
->  	LSM_HOOK_INIT(path_unlink, hook_path_unlink),
->  	LSM_HOOK_INIT(path_rmdir, hook_path_rmdir),
->  	LSM_HOOK_INIT(path_truncate, hook_path_truncate),
-> +	LSM_HOOK_INIT(inode_getattr, hook_inode_getattr),
-> +	LSM_HOOK_INIT(inode_setattr, hook_inode_setattr),
-> +	LSM_HOOK_INIT(inode_setxattr, hook_inode_setxattr),
-> +	LSM_HOOK_INIT(inode_getxattr, hook_inode_getxattr),
-> +	LSM_HOOK_INIT(inode_listxattr, hook_inode_listxattr),
-> +	LSM_HOOK_INIT(inode_removexattr, hook_inode_removexattr),
-> +	LSM_HOOK_INIT(inode_set_acl, hook_inode_set_acl),
-> +	LSM_HOOK_INIT(inode_get_acl, hook_inode_get_acl),
-> +	LSM_HOOK_INIT(inode_remove_acl, hook_inode_remove_acl),
->  	LSM_HOOK_INIT(unix_find, hook_unix_find),
->  
->  	LSM_HOOK_INIT(file_alloc_security, hook_file_alloc_security),
-> -- 
-> 2.18.0.huawei.25
-> 
+According to the documentation in mm/filemap.c,
+filemap_fdatawrite_range() expects an inclusive end offset:
+* @end:    offset in bytes where the range ends (inclusive)
 
-On the Landlock side, the implementation looks quite straightforward,
-without having double checked for missing hooks now.  This commit is
-probably fine as soon as we have agreement on the LSM hook changes.
+Since folio_next_pos() returns an exclusive boundary, passing it as-is
+forces the writeback to bleed one byte into the next folio.
 
-–Günther
+Should we simply append - 1 to folio_next_pos(folio) here to strictly
+bound the writeback to the current folio, or is there a specific reason
+the boundary was left unadjusted? Perhaps I am making this up? (I am
+new.) Advice appreciated.
+
+Thanks,
+Fredric
