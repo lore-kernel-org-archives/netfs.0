@@ -1,33 +1,34 @@
 Received: from mx1.manguebit.org (mx1.manguebit.org [143.255.12.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E3E3CE4B5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774FE4F7CB7;
 	Mon, 28 Sep 2026 20:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=143.255.12.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790626189; cv=none; b=e66tUP5pLMHYjURf43cHYQWa0Q8VZy7jECgz+FDatl08vJ6dBkTqD0www2PVkyWUOIIVHFmWXsXR3AxF8smZqYCnqVojgSEp7+juLB8OR6KJjzOZB5AtqH3iXeO8UceHv6NqPRSHdUYAiEzSR3TvtHfgWRaQfa81rUj2+Gv2Tso=
+	t=1790626190; cv=none; b=hFeba+SIylmR9BobrSlaoJBH/0wjY0KbbTst7lQkD2cH33gsw9qYwheUm+dg5Ee/kneHhGJK19N/crR6MkZCSfxSszGzMM2NWsOEJ2IM3iW/Wf5CPPxtrJUk4JGgmJ0Z+pENrVgtp4fKBEAYMfhXO9cnOs558MTmyth8DTP9O04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790626189; c=relaxed/simple;
-	bh=XQMsBMqLszkcUbZRRAZkipjWwIDWQ5kztILXmcdNqgw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qyV/tRu5zEe+tfEWNUWUs1NxNjV+zlFAgGkr05PlUIT9+a9lOFh6BFRbcAkHDZYdNWM6B+8deTFKoN75rJYCX+wh0uvUz8Nb/78aFekYe5xOCmstYhq12WqqhlH4oI7lfFB/uhC3/2PBbIcnxrX/OCJHgoDuaa5L8r+EuDf9lF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org; spf=pass smtp.mailfrom=manguebit.org; dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b=IQg0ZjqB; arc=none smtp.client-ip=143.255.12.172
+	s=arc-20240116; t=1790626190; c=relaxed/simple;
+	bh=B3s+WgDx02UPtvXc73jhmByRJcAirc8Vuvq8AfMvxLU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SGfsC37UWejJidiLVkvQxlIaOj8GE4k1NfCCkGhR602jP1j4kjqJnBVor5BiRgE4N/W+28W6NjEBvX/IsijiQQAGIGNzH84UFKtv99LUP4Wdv7v3xxBBRu5PN2OeKsD95L8av0eHpAqdyUs2rPVE9SeRRZj0FakpQwOEkkhmVBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org; spf=pass smtp.mailfrom=manguebit.org; dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b=4KKsU8sD; arc=none smtp.client-ip=143.255.12.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b="IQg0ZjqB"
+	dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b="4KKsU8sD"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=manguebit.org; s=dkim; h=Content-Transfer-Encoding:MIME-Version:Message-ID:
-	Date:Subject:Cc:To:From:Sender:Content-Type:Reply-To:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=vI9hnkyTXmIp3v3C49B0iA4VlEHobWDvjNpSEFmIUX0=; b=IQg0ZjqBT515fYp2aL6OeKQZJs
-	uMZ+IdLfqyK7SfzJpBBCLOlN7x83mEl+Rxce6rXIoDNbODlu1cXZVDog+3W9S7JSdApWI6vlTiNix
-	c6zTazdqgBUJXXqvpEAkkJC+vSj182qi3IalOK6wmRKjRw8kT9ETsifu1StaKHa7KdLnrAf4YEcNU
-	nIbYGR90qS2HAYaT4UaAqxd1tTZoiLU2rrrlqNab2SlHNDDxA+je/CwX/sImtN7kjaYtSARfyOzih
-	jOpK4HOn7JtYupPaIILZ9k372bDr3pr+UONqKy02Dty/xBlsHwSkM6p6Zoxca6/cfHa3W5rKBsXib
-	TwPxsdqg==;
+	d=manguebit.org; s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:
+	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Content-Type:Reply-To:
+	Content-ID:Content-Description;
+	bh=G8FxK4C8S9BI0IsaPf3E3gc0fflOw7hqGIK46yRd7A8=; b=4KKsU8sDpr6oPV9X4kveAkQELA
+	/oLlKmiJxmxEFcXkqjqt/xT4IumQioKWj8lBemkxEYl1C/Tcwz7sNVG8h37JdnlKxHOxtKb+37I7a
+	F9lezdp5TmjUWoQMKdYyaKXbDWcszSGyK/f0wFk1L0GQPWUkqBD3g8he/x11tHspkfhGcrnpbyNkO
+	+JeV1PLCqo4ORlgDNsnWQVqQRV1h8jl9YD9NwsqL2y2gXA1lpfGiv3ASm3lxZvdVK97OK1yOkvxJg
+	007zE4xBpD0dautrLiCgmB2DGpTNYm2bSfb3Aw/hTmfe7Dc1fSbf/mtSU288vP1QoAnDCYXU0cihs
+	dMfXSQvw==;
 Received: from pc by mx1.manguebit.org with local (Exim 4.99.5)
-	id 1xBHfK-00000002UIs-2UTu;
-	Mon, 28 Sep 2026 17:09:34 -0300
+	id 1xBHfN-00000002UJR-058t;
+	Mon, 28 Sep 2026 17:09:37 -0300
 From: Paulo Alcantara <pc@manguebit.org>
 To: linux-cifs@vger.kernel.org,
 	netfs@lists.linux.dev
@@ -38,11 +39,15 @@ Cc: Christian Brauner <brauner@kernel.org>,
 	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
 	Shyam Prasad N <sprasad@microsoft.com>,
 	Tom Talpey <tom@talpey.com>,
-	Bharath SM <bharathsm@microsoft.com>
-Subject: [PATCH 00/15] netfs, cifs: data corruption fixes
-Date: Mon, 28 Sep 2026 17:09:19 -0300
-Message-ID: <20260928200934.1040189-1-pc@manguebit.org>
+	Bharath SM <bharathsm@microsoft.com>,
+	Frank Sorenson <sorenson@redhat.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 07/15] smb: client: drain outstanding I/O before truncating on O_TRUNC open
+Date: Mon, 28 Sep 2026 17:09:26 -0300
+Message-ID: <20260928200934.1040189-8-pc@manguebit.org>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260928200934.1040189-1-pc@manguebit.org>
+References: <20260928200934.1040189-1-pc@manguebit.org>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -51,87 +56,43 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series fixes a number of data corruption and spurious I/O error
-bugs found by running generic/363 (fsx) in a loop against Windows
-Server 2022 and Samba 4.24 servers.
+cifs_do_truncate() flushes the pagecache with filemap_write_and_wait()
+before resetting the file size to zero, but that does not wait for
+direct/async I/O that was already in flight, which can complete after the
+truncate and reinstate stale data past the new EOF.
 
-* Post-EOF pagecache poisoning on extend (1-5)
+Drain outstanding netfs I/O with netfs_wait_for_outstanding_io()
+before resizing the file.
 
-  Data dirtied past EOF through an mmapped region was never discarded,
-  so it reappeared as file content once the file was extended by an
-  ordinary write, a truncate, a zero range, a copy range or a clone
-  range.  pagecache_isize_extended() doesn't help here: it's a no-op on
-  cifs because i_blkbits is 14.  Only the one folio straddling the old
-  EOF can hold such data, since pages wholly beyond EOF can't be
-  faulted in, so each extending path now zeroes or discards that folio.
+Reported-by: Frank Sorenson <sorenson@redhat.com>
+Fixes: a8603b52b39f ("smb: client: fix data corruption with concurrent writes and O_TRUNC")
+Reviewed-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Paulo Alcantara <pc@manguebit.org>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Ronnie Sahlberg <ronniesahlberg@gmail.com>
+Cc: Shyam Prasad N <sprasad@microsoft.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Bharath SM <bharathsm@microsoft.com>
+Cc: stable@vger.kernel.org
+---
+ fs/smb/client/file.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-* Missing flush or drain before trusting server or pagecache state (6-9)
-
-  FSCTL_QUERY_ALLOCATED_RANGES can report just-written data as a hole
-  unless it has been committed to disk first, and the O_TRUNC open,
-  interior zero range and server-side copy/clone paths did not flush
-  dirty data or drain in-flight I/O before an operation that assumes
-  the pagecache and the server agree on the file's contents.
-
-* fallocate refused without a read lease (10, 12)
-
-  smb3_zero_range() and smb3_simple_falloc() returned -EOPNOTSUPP for
-  any size-extending request whenever the inode wasn't read caching,
-  since the cached i_size couldn't be trusted.  Query the server's EOF
-  in that case instead of refusing the request outright.
-
-* Short reads leaving stale data behind (11, 13, 14)
-
-  The read-gaps path and the DIO/unbuffered read collector left the
-  untransferred tail of a short read untouched, and cifs could not
-  tell a genuine EOF from a stale cached remote_i_size after a lease
-  downgrade.  A read racing an extending write could come back short
-  and, in the read-gaps case, have that stale folio content written
-  back to the server.
-
-* Unstable pages during a signed write (15)
-
-  cifs signs the pagecache folios in place before handing them to the
-  socket.  A buffered write could modify a folio while a write
-  subrequest built from it was still in flight, so the signature no
-  longer matched the data that followed it; the server answered
-  STATUS_ACCESS_DENIED, which surfaced later as -EIO.
-
-Paulo Alcantara (15):
-  netfs: clear post-EOF pagecache when extending a file via write
-  smb: client: clear post-EOF pagecache when extending a file via
-    truncate
-  smb: client: discard post-EOF pagecache when extending a file via zero
-    range
-  smb: client: discard post-EOF pagecache when extending a file via copy
-    range
-  smb: client: discard post-EOF pagecache when extending a file via
-    clone range
-  smb: client: flush and commit data before querying allocated ranges
-  smb: client: drain outstanding I/O before truncating on O_TRUNC open
-  smb: client: flush dirty data before zeroing a range
-  smb: client: drain and invalidate before server-side copy/clone
-  smb: client: only require read lease for size-extending zero range
-  netfs: zero gaps in read-gaps folio to avoid writing back stale data
-  smb: client: only require read lease for size-extending preallocate
-  netfs: zero the tail of a short DIO/unbuffered read
-  smb: client: distinguish real EOF from a stale remote_i_size on read
-  smb: client: require stable pages for signed connections
-
- Documentation/filesystems/netfs_library.rst | 25 ++++++
- fs/netfs/buffered_read.c                    |  7 ++
- fs/netfs/buffered_write.c                   |  9 ++
- fs/netfs/direct_write.c                     |  9 ++
- fs/netfs/misc.c                             | 71 +++++++++++++++
- fs/netfs/read_collect.c                     | 24 +++++
- fs/smb/client/cifsfs.c                      | 25 +++++-
- fs/smb/client/file.c                        |  2 +
- fs/smb/client/inode.c                       | 19 ++--
- fs/smb/client/smb2ops.c                     | 97 ++++++++++++++++-----
- fs/smb/client/smb2pdu.c                     | 10 ++-
- include/linux/netfs.h                       |  2 +
- 12 files changed, 267 insertions(+), 33 deletions(-)
-
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index 0d428517f454..d3114cb7fbc5 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -1012,6 +1012,8 @@ static int cifs_do_truncate(const unsigned int xid, struct dentry *dentry)
+ 	}
+ 	mapping_set_error(inode->i_mapping, rc);
+ 
++	netfs_wait_for_outstanding_io(inode);
++
+ 	cfile = find_writable_file(cinode, FIND_FSUID_ONLY);
+ 	rc = cifs_file_flush(xid, inode, cfile);
+ 	if (!rc) {
 -- 
 2.55.0
 
