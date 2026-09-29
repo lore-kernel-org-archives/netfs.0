@@ -1,134 +1,131 @@
-Received: from mx1.manguebit.org (mx1.manguebit.org [143.255.12.172])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1351F3B9930;
-	Mon, 28 Sep 2026 20:09:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=143.255.12.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED5B2F8BEE
+	for <netfs@lists.linux.dev>; Tue, 29 Sep 2026 01:44:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790626200; cv=none; b=KRtRiUaDBGRBUOz96KY7OTphCv+PbTyCCLMWrSseC34nII80NkrNtj4a3oGyfgTlvGgVUmKFNQaOojyZdVxd4rHZEy6vBflyVkIX0YGJmsZ0ElqfFgEOgiPM2rmleteLPsAjOqcEuN9Nn6yqYRkbF/g/J/SJbCruzBvycrd6UFU=
+	t=1790646285; cv=none; b=oi2XI1+tRrNbDYdyyj5l9s7R3fWXSoSDJLI5vLR2Vu1eF3aO75cYUomMCip/XIqqcybK7zY7WZqHHiswW4rGA28y6nsrfgUFyvmYgU7EcjqMvsY+7smTZIbY/6SpdE9pXTxaBpXFSXODlbhHDMFz9bGr06RovDfxO89zIjt7V4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790626200; c=relaxed/simple;
-	bh=tPhx6NIaPQy7ys87IsfY+wBgTIDHdC6QTZtarcCMYao=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DJNqLZH4pixY3N1PW5NczdzI0B3jKTabtn4KCau9mnTVZCIbya0Oy6Z+wAe1TyPWCPEjwSa/ZSR4Z9DETdUj37CNQm2xra2GVXse34CROIuW3rMq7WQAGN2zgvdqkFUhTUJqwTf1zi9A+9HfImDJ6e4Rd6R8f8xJPgiLfUmYH/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org; spf=pass smtp.mailfrom=manguebit.org; dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b=10wCbwjU; arc=none smtp.client-ip=143.255.12.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.org
+	s=arc-20240116; t=1790646285; c=relaxed/simple;
+	bh=UpHWC+x2ex12/X/OsmxeQf8Izt53vagWkzbufxq+MwE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=llc/GELq+E3q60mXjgbLgzketmHHdsyXPYSUni5WqbJoGIB2gS25mcEWWjq51VUQGHmfiAbGeECoZduTu4oQVDA+C2h61UVn0QLYbdFs8iApR1FGoKhY4ONYMsTc9z6lxGpB0/3/cfmjlUVEUWR+t1J7VqPPbFWlRqeewo40VVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PPfaXg1i; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b="10wCbwjU"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=manguebit.org; s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Content-Type:Reply-To:
-	Content-ID:Content-Description;
-	bh=weYac4arN+e+Exglx88CO1TIeF/RTILfhffoN84p0LQ=; b=10wCbwjUVRiWjT+pjUCJFgweWl
-	iU4cY6hVgZxItZXDpZ2PRR//Gr3KYB7fQ0B1HBWcV/jYoAJ31wF8MuUyY1+bajtcbeobteXL6uYDx
-	0aEC131X9dxZJN942mAUl0ZIRIuqLDXfrta4Wmn/s77kukasCWGI4ROzeERDRrXu0Wu/GwC16vKkQ
-	jLWR2938Rst8iF/BS8yh3PXenJ43f/VUJko/JFFSu1SdkFOnPfZSt93YlNwu/MLmO3guZJDE4dsnh
-	1t6c0rr7CGW+n4vMWnNid8lWVL/FK/Oqpo8A4/R5ImP32uxjXV7XJnj1YTrSQMxIIOXJscO8kzqXn
-	lYdy/JEA==;
-Received: from pc by mx1.manguebit.org with local (Exim 4.99.5)
-	id 1xBHfP-00000002ULP-0EVj;
-	Mon, 28 Sep 2026 17:09:39 -0300
-From: Paulo Alcantara <pc@manguebit.org>
-To: linux-cifs@vger.kernel.org,
-	netfs@lists.linux.dev
-Cc: Christian Brauner <brauner@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 13/15] netfs: zero the tail of a short DIO/unbuffered read
-Date: Mon, 28 Sep 2026 17:09:32 -0300
-Message-ID: <20260928200934.1040189-14-pc@manguebit.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260928200934.1040189-1-pc@manguebit.org>
-References: <20260928200934.1040189-1-pc@manguebit.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PPfaXg1i"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9E571F0089C
+	for <netfs@lists.linux.dev>; Tue, 29 Sep 2026 01:44:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790646283;
+	bh=sp9uX2zFfpg5pK5KSRTvk8Ybpazr3ABIsJBvNYrYSqg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=PPfaXg1iHhAnM1g0d/pQwsmU636o37cfIBxL5rz1zlBC7OUFGLRGzfdoN8d5RickR
+	 HiogL24EWHMwbdKAJIIX0+Zv8goF0dzjbvplRKy3zHvTuEN7FEK4YPMgJVZLWDwRN7
+	 kVBH/VIin+hWf5Pe6KIyvkd/WLEjBv6zT11L9RLcft19ffrVqwLGOvnaO11dt5Q0ma
+	 PZvKi+MB5dS+VBaJF0aLsEvw4kvjlhHpU9Cyp8mNZO1rdQce58kYrUnqPC4oV0gq4t
+	 jdpkYjCT48L0tPWU65yEERSHteXkZp4tZaZkEmGPIO8OTNsqpKNtco3tNqod/bAd06
+	 luUo0y4zz2e1Q==
+Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c29d50b7cf9so538437466b.2
+        for <netfs@lists.linux.dev>; Mon, 28 Sep 2026 18:44:43 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwJ+VChaibH9/wlSpGB1pSicvJYXVxWrkDA0OF1WJNIr+SU8lbbxxs/3eUHqjdr3BYUJ9c8+g==@lists.linux.dev
+X-Gm-Message-State: AFq9FYLtxVXbOr9kEqIkHzAe3S1ASftSMILlzbWQOyxAottPPYf4kbWr
+	OyKH1xXf6gneypO1wZO2+m/ufGccsiehqTxUR7h6+7tNJDtMFdfRIjHSWy2a3Bk01+UiEC06lfZ
+	947I0hheUF33u6DZzF3jfVYj+QSL20jg=
+X-Received: by 2002:a17:907:e8f:b0:c29:63f2:99bb with SMTP id
+ a640c23a62f3a-c2ac26820b5mr1370695066b.47.1790646282381; Mon, 28 Sep 2026
+ 18:44:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260928200934.1040189-1-pc@manguebit.org>
+In-Reply-To: <20260928200934.1040189-1-pc@manguebit.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Tue, 29 Sep 2026 10:44:28 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd-mCkoFH-metAK+PbT2hb+sWmw4HJCCOP3XqOpjgKNorg@mail.gmail.com>
+X-Gm-Features: AclHuK9qRWv1LVqtZNcohTCvryiBwziuqL2w9TCldOIHHP97-2mRkDRLZ0kQiIA
+Message-ID: <CAKYAXd-mCkoFH-metAK+PbT2hb+sWmw4HJCCOP3XqOpjgKNorg@mail.gmail.com>
+Subject: Re: [PATCH 00/15] netfs, cifs: data corruption fixes
+To: Paulo Alcantara <pc@manguebit.org>
+Cc: linux-cifs@vger.kernel.org, netfs@lists.linux.dev, 
+	Christian Brauner <brauner@kernel.org>, David Howells <dhowells@redhat.com>, 
+	Matthew Wilcox <willy@infradead.org>, Ronnie Sahlberg <ronniesahlberg@gmail.com>, 
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>, 
+	Bharath SM <bharathsm@microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The buffered read collector zero-fills the tail of a short read that
-stops below the inode's i_size (netfs_clear_unread()), so a read that
-races an extending write still returns the expected number of bytes.
-The non-buffered collector path does no such thing: it just records
-how much was transferred.
-
-Add the same zero-fill for the non-buffered case, gated on
-NETFS_SREQ_CLEAR_TAIL: a subreq's source sets that flag when a short
-result from it is known to be safe to treat as a hole, as opposed to
-NETFS_SREQ_HIT_EOF, which means the read genuinely ran off the end of
-the file and should be reported short as-is. Only CLEAR_TAIL should
-zero-fill here; a real EOF must stay a real short read.
-
-No source currently sets CLEAR_TAIL on an unbuffered/DIO subrequest,
-so this is inert on its own -- a following change teaches cifs to set
-it in the one case that needs it.
-
-Fixes: e2d46f2ec332 ("netfs: Change the read result collector to only use one work item")
-Reviewed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Paulo Alcantara <pc@manguebit.org>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Ronnie Sahlberg <ronniesahlberg@gmail.com>
-Cc: Shyam Prasad N <sprasad@microsoft.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Bharath SM <bharathsm@microsoft.com>
-Cc: stable@vger.kernel.org
----
- fs/netfs/read_collect.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
-
-diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
-index a94197ef0181..c5bfaf2c6f25 100644
---- a/fs/netfs/read_collect.c
-+++ b/fs/netfs/read_collect.c
-@@ -33,6 +33,22 @@ static void netfs_clear_unread(struct netfs_io_subrequest *subreq)
- 		__set_bit(NETFS_SREQ_HIT_EOF, &subreq->flags);
- }
- 
-+static void netfs_clear_unread_dio(struct netfs_io_subrequest *subreq)
-+{
-+	uoff_t pos = subreq->start + subreq->transferred;
-+	struct netfs_io_request *rreq = subreq->rreq;
-+	size_t fill;
-+
-+	if (pos >= rreq->i_size)
-+		return;
-+
-+	fill = min_t(uoff_t, rreq->i_size - pos,
-+		     subreq->len - subreq->transferred);
-+
-+	netfs_reset_iter(subreq);
-+	subreq->transferred += iov_iter_zero(fill, &subreq->io_iter);
-+}
-+
- /*
-  * Cancel the copy-to-cache mark on a folio.
-  */
-@@ -311,6 +327,14 @@ static void netfs_collect_read_results(struct netfs_io_request *rreq)
- 			    test_bit(NETFS_SREQ_HIT_EOF, &front->flags))
- 				netfs_read_unlock_folios(rreq, &notes);
- 		} else {
-+			if (!(notes & HIT_PENDING) &&
-+			    front->error == 0 &&
-+			    transferred < front->len &&
-+			    test_bit(NETFS_SREQ_CLEAR_TAIL, &front->flags)) {
-+				netfs_clear_unread_dio(front);
-+				transferred = front->transferred;
-+				trace_netfs_sreq(front, netfs_sreq_trace_clear);
-+			}
- 			stream->collected_to = front->start + transferred;
- 			rreq->collected_to = stream->collected_to;
- 		}
--- 
-2.55.0
-
+On Tue, Sep 29, 2026 at 5:09=E2=80=AFAM Paulo Alcantara <pc@manguebit.org> =
+wrote:
+>
+> This series fixes a number of data corruption and spurious I/O error
+> bugs found by running generic/363 (fsx) in a loop against Windows
+> Server 2022 and Samba 4.24 servers.
+>
+> * Post-EOF pagecache poisoning on extend (1-5)
+>
+>   Data dirtied past EOF through an mmapped region was never discarded,
+>   so it reappeared as file content once the file was extended by an
+>   ordinary write, a truncate, a zero range, a copy range or a clone
+>   range.  pagecache_isize_extended() doesn't help here: it's a no-op on
+>   cifs because i_blkbits is 14.  Only the one folio straddling the old
+>   EOF can hold such data, since pages wholly beyond EOF can't be
+>   faulted in, so each extending path now zeroes or discards that folio.
+>
+> * Missing flush or drain before trusting server or pagecache state (6-9)
+>
+>   FSCTL_QUERY_ALLOCATED_RANGES can report just-written data as a hole
+>   unless it has been committed to disk first, and the O_TRUNC open,
+>   interior zero range and server-side copy/clone paths did not flush
+>   dirty data or drain in-flight I/O before an operation that assumes
+>   the pagecache and the server agree on the file's contents.
+>
+> * fallocate refused without a read lease (10, 12)
+>
+>   smb3_zero_range() and smb3_simple_falloc() returned -EOPNOTSUPP for
+>   any size-extending request whenever the inode wasn't read caching,
+>   since the cached i_size couldn't be trusted.  Query the server's EOF
+>   in that case instead of refusing the request outright.
+>
+> * Short reads leaving stale data behind (11, 13, 14)
+>
+>   The read-gaps path and the DIO/unbuffered read collector left the
+>   untransferred tail of a short read untouched, and cifs could not
+>   tell a genuine EOF from a stale cached remote_i_size after a lease
+>   downgrade.  A read racing an extending write could come back short
+>   and, in the read-gaps case, have that stale folio content written
+>   back to the server.
+>
+> * Unstable pages during a signed write (15)
+>
+>   cifs signs the pagecache folios in place before handing them to the
+>   socket.  A buffered write could modify a folio while a write
+>   subrequest built from it was still in flight, so the signature no
+>   longer matched the data that followed it; the server answered
+>   STATUS_ACCESS_DENIED, which surfaced later as -EIO.
+>
+> Paulo Alcantara (15):
+>   netfs: clear post-EOF pagecache when extending a file via write
+>   smb: client: clear post-EOF pagecache when extending a file via
+>     truncate
+>   smb: client: discard post-EOF pagecache when extending a file via zero
+>     range
+>   smb: client: discard post-EOF pagecache when extending a file via copy
+>     range
+>   smb: client: discard post-EOF pagecache when extending a file via
+>     clone range
+>   smb: client: flush and commit data before querying allocated ranges
+>   smb: client: drain outstanding I/O before truncating on O_TRUNC open
+>   smb: client: flush dirty data before zeroing a range
+>   smb: client: drain and invalidate before server-side copy/clone
+>   smb: client: only require read lease for size-extending zero range
+>   netfs: zero gaps in read-gaps folio to avoid writing back stale data
+>   smb: client: only require read lease for size-extending preallocate
+>   netfs: zero the tail of a short DIO/unbuffered read
+>   smb: client: distinguish real EOF from a stale remote_i_size on read
+>   smb: client: require stable pages for signed connections
+Reviewed-by: Namjae Jeon <linkinjeon@kernel.org>
+Thanks!
