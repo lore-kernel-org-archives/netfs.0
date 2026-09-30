@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51EB51DE07;
-	Wed, 30 Sep 2026 21:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B1F4BB5D4;
+	Wed, 30 Sep 2026 23:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790804553; cv=none; b=hAgWt+cjPaq69MG0tP93rKTPDUGh4hquU5znbOErK5fQ9erOryoQFyeT1VIiz7fqwpszpK4GUDRncLM+lN0cCe8dSY9UCVQgXs5SUJ3ZbgdCbTXyreFucqUWjzCFPIDD7sRJQ5FfFznFao9Kw8/VvCjDxBoVkmnee3Id0OeMRn0=
+	t=1790811999; cv=none; b=k7ACdMn5npQbOYAiN2QfqWmG7W/rRSomh301ZiDRNv9zk1xIJ9ynbUrMA0HejjfpamH7LdcW6yo5nPBrUQF8n7/A0DfPuh0qgSwa7ad1NrL86fg/VE7LYr5AcLW9zaSyw9DgTYi+pCOmIWJLXSa7QqS8JQXgnTj5Neun4B5FFN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790804553; c=relaxed/simple;
-	bh=9CCPN+j8Wlx6MCQOuR9q/1iOf7xKMhRMaDnk382VUWY=;
+	s=arc-20240116; t=1790811999; c=relaxed/simple;
+	bh=AFGwyByDy105SGmbfbZM4C3THaQvHxMADXqR05ivRlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ShcJORanVERZQQOhBJhCMoNkkJUFy6XcUwzyPculBxRMJttwXYgBA0rWGalahIELZURTEq5NEmC1i37m2XUCnrhqxUsteC52fY9LQdeiSOebCxQJCsF+0U/Pk4GbA8oWpI1Ee1Jmyg3JllglL0EjLEEjid4FmfQfqWBfyPjOL10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iRGmhhlO; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=eLrqU76ct/tkae2YunsJbcCFVH3XJNdO4EcbcWFdp7ZzNBu3ivR5yb+M5GeamYp2wfAj/BY4I0HzdSuuF4q1PtYtw9nzfrKO+y+SIt8nC//LoYLZ9lDqPehl2nYAljUJsbqG4mVVG6sTmFujsYpRldMr1T5IvbJVaMldXJ6w8EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bk9rQazx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iRGmhhlO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B5F71F00898;
-	Wed, 30 Sep 2026 21:42:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bk9rQazx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 058921F00899;
+	Wed, 30 Sep 2026 23:46:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790804551;
-	bh=cep3Xt9Xt+O0PBfWm6neKYILbKrQRMuPBhDFa0lHeB0=;
+	s=k20260515; t=1790811997;
+	bh=9NVWFW17PCSsbkVwgdjgVg5NjzLQfonD+D5dXqeCYvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iRGmhhlOtWZaGFMUjYTMmpmAvt5Ng6/zZpJojHQdlQ43cKg+VHVb0HRbD1Of6rpQE
-	 KCtBHJFyCj+oPs/URtEf5kyt5NasXKRmTVUpinOp4R8OZpYqvwA09wGkUtJpNsMPv+
-	 BmDVBX4jVZ3nlCeas7sbn61RaVULCsEpvRD9Tjeh+DWlO+cWhUTTxYPzJcNv8ScObO
-	 sYfHelESZS/tH8uj05d3SvzSVyF8Dk8ACGxZ3YAWi/6giAZ3D4TM4ow7XFt+cRers+
-	 E8pNtTLNNQKp+YKBx7WvLLMCFs4DQ+KYsBSrtDjyvSdUz0D3MX24EP3QdQvl6Tnvlk
-	 Laa7cDmTTyiTA==
+	b=bk9rQazx5ncG7j/m37xQL+b3rnwKtN3OCu7P4qW63DsWzMkdyBXfR7CHJL0GGkP0T
+	 NbInf9WjGD1DL5kbEVS+JswUD6b9469ciEvaFR1agq2WMlQPERhaQ7GApBMABNGcv/
+	 FLw8M6PtSa9BIp6ycAQcQUzYA/W7uq44BmQRckcfLm0zOQQS3z9FbGNBA1WJwrmapq
+	 5BR/1yWOGHNtjgZtT2YHe+9DFsMzagINr9cjQB9CaTVri5aeS3iI46hX8JQUz9UBaR
+	 xrqRdkZWcNFrodPU+ph70WwsgmX8md+jcX3Y0pVPBG6LqgSlIt34zo4USanR2Mah9c
+	 9TU35ZQdnrbYQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: David Howells <dhowells@redhat.com>,
@@ -37,13 +37,13 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-fsdevel@vger.kernel.org,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 2/3] cifs: Remove the server pointer from smb_message
-Date: Wed, 30 Sep 2026 17:42:26 -0400
-Message-ID: <20260930214227.3484209-2-sashal@kernel.org>
+Subject: [PATCH 5.10.y 2/3] cifs: Remove the server pointer from smb_message
+Date: Wed, 30 Sep 2026 19:46:30 -0400
+Message-ID: <20260930234631.1192065-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260930214227.3484209-1-sashal@kernel.org>
-References: <2026092900-threefold-unblessed-1235@gregkh>
- <20260930214227.3484209-1-sashal@kernel.org>
+In-Reply-To: <20260930234631.1192065-1-sashal@kernel.org>
+References: <2026092901-extending-vineyard-ce48@gregkh>
+ <20260930234631.1192065-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -68,17 +68,24 @@ cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
 Signed-off-by: Steve French <stfrench@microsoft.com>
 
-[5.15 backport: Keep the implementation in fs/cifs and adapt the existing
-MID allocation, release and callback routines instead of importing the
-newer cifstransport.c split or netfs I/O changes. Preserve GlobalMid_Lock,
-MID flags, and the existing cifs_mid_poolp allocation scheme. dequeue_mid()
-does not need a server argument with the global lock in this tree.
+Backport to 5.10's fs/cifs layout and existing MID lifecycle helpers.
+Pass the server explicitly through callbacks and final MID release, and
+use refcount_t so final release can receive both the server and the MID.
+Use refcount_inc() directly instead of adding the upstream smb_get_mid()
+helper. Keep GlobalMid_Lock, MID_DELETED and the existing mempool lifecycle;
+the upstream pool conversion and dequeue interface changes are not needed
+for this tree.
 
-Use refcount_t and pass the owning server explicitly through all existing
-MID callbacks and release paths. Use refcount_inc() directly rather than
-adding smb_get_mid(). Rename the existing cifs_delete_mid() to delete_mid()
-and the compound MID array to mid so the dependent fix can be cherry-picked
-without changing its delete_mid(server, mid[i]) calls. No functions added.]
+Rename the existing cifs_delete_mid() to delete_mid(), with the explicit
+server argument, and rename compound_send_recv()'s MID array to mid. This
+prepares the interface used by 8f6f8a48399f without adding functions or
+including the target's send-error fix in this dependency.
+
+cc: Shyam Prasad N <sprasad@microsoft.com>
+cc: Tom Talpey <tom@talpey.com> (RDMA, smbdirect)
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
 
 [ sashal: Reduced backport -- upstream 87fba18abbb84 touches 12 file(s), this
   backport carries 10. Not backported here:
@@ -110,18 +117,18 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  10 files changed, 112 insertions(+), 115 deletions(-)
 
 diff --git a/fs/cifs/cifsglob.h b/fs/cifs/cifsglob.h
-index 616305a32e34a..f0214df840f75 100644
+index b61e9f2efc176..abce816e9dbf5 100644
 --- a/fs/cifs/cifsglob.h
 +++ b/fs/cifs/cifsglob.h
-@@ -16,6 +16,7 @@
+@@ -25,6 +25,7 @@
  #include <linux/scatterlist.h>
  #include <linux/mm.h>
  #include <linux/mempool.h>
 +#include <linux/refcount.h>
  #include <linux/workqueue.h>
+ #include <linux/fcntl.h>
  #include "cifs_fs_sb.h"
- #include "cifsacl.h"
-@@ -1526,7 +1527,8 @@ typedef int (*mid_receive_t)(struct TCP_Server_Info *server,
+@@ -1580,7 +1581,8 @@ typedef int (*mid_receive_t)(struct TCP_Server_Info *server,
   * - it will be called by cifsd, with no locks held
   * - the mid will be removed from any lists
   */
@@ -131,7 +138,7 @@ index 616305a32e34a..f0214df840f75 100644
  
  /*
   * This is the protopyte for mid handle function. This is called once the mid
-@@ -1538,8 +1540,7 @@ typedef int (*mid_handle_t)(struct TCP_Server_Info *server,
+@@ -1592,8 +1594,7 @@ typedef int (*mid_handle_t)(struct TCP_Server_Info *server,
  /* one of these for every pending CIFS request to the server */
  struct mid_q_entry {
  	struct list_head qhead;	/* mids waiting on reply from this server */
@@ -142,10 +149,10 @@ index 616305a32e34a..f0214df840f75 100644
  	__u16 credits;		/* number of credits consumed by this mid */
  	__u16 credits_received;	/* number of credits from the response */
 diff --git a/fs/cifs/cifsproto.h b/fs/cifs/cifsproto.h
-index 8525d47f09494..e1b83ecf51737 100644
+index ba58a9f569d7c..c055324584ce6 100644
 --- a/fs/cifs/cifsproto.h
 +++ b/fs/cifs/cifsproto.h
-@@ -81,10 +81,13 @@ extern char *cifs_compose_mount_options(const char *sb_mountdata,
+@@ -83,10 +83,13 @@ extern char *cifs_compose_mount_options(const char *sb_mountdata,
  /* extern void renew_parental_timestamps(struct dentry *direntry);*/
  extern struct mid_q_entry *AllocMidQEntry(const struct smb_hdr *smb_buffer,
  					struct TCP_Server_Info *server);
@@ -159,10 +166,10 @@ index 8525d47f09494..e1b83ecf51737 100644
 +void _cifs_mid_q_entry_release(struct TCP_Server_Info *server,
 +			       struct mid_q_entry *midEntry);
 +extern void cifs_wake_up_task(struct TCP_Server_Info *server,
-+			     struct mid_q_entry *mid);
++			      struct mid_q_entry *mid);
  extern int cifs_handle_standard(struct TCP_Server_Info *server,
  				struct mid_q_entry *mid);
- extern int smb3_parse_devname(const char *devname, struct smb3_fs_context *ctx);
+ extern bool cifs_match_ipaddr(struct sockaddr *srcaddr, struct sockaddr *rhs);
 @@ -154,7 +157,8 @@ extern int decode_negTokenInit(unsigned char *security_blob, int length,
  extern int cifs_convert_address(struct sockaddr *dst, const char *src, int len);
  extern void cifs_set_port(struct sockaddr *addr, const unsigned short int port);
@@ -173,7 +180,7 @@ index 8525d47f09494..e1b83ecf51737 100644
  extern void header_assemble(struct smb_hdr *, char /* command */ ,
  			    const struct cifs_tcon *, int /* length of
  			    fixed section (word count) in two byte units */);
-@@ -634,9 +638,11 @@ static inline int cifs_create_options(struct cifs_sb_info *cifs_sb, int options)
+@@ -646,9 +650,11 @@ static inline int cifs_create_options(struct cifs_sb_info *cifs_sb, int options)
  		return options;
  }
  
@@ -188,10 +195,10 @@ index 8525d47f09494..e1b83ecf51737 100644
  
  #endif			/* _CIFSPROTO_H */
 diff --git a/fs/cifs/cifssmb.c b/fs/cifs/cifssmb.c
-index 11a400663b9f2..bf1db482470a6 100644
+index 67ff1669cab2a..17aa58cb06a8a 100644
 --- a/fs/cifs/cifssmb.c
 +++ b/fs/cifs/cifssmb.c
-@@ -629,12 +629,11 @@ CIFSSMBTDis(const unsigned int xid, struct cifs_tcon *tcon)
+@@ -746,12 +746,11 @@ CIFSSMBTDis(const unsigned int xid, struct cifs_tcon *tcon)
   * FIXME: maybe we should consider checking that the reply matches request?
   */
  static void
@@ -206,7 +213,7 @@ index 11a400663b9f2..bf1db482470a6 100644
  	add_credits(server, &credits, CIFS_ECHO_OP);
  }
  
-@@ -1503,11 +1502,10 @@ cifs_readv_receive(struct TCP_Server_Info *server, struct mid_q_entry *mid)
+@@ -1616,11 +1615,10 @@ cifs_readv_receive(struct TCP_Server_Info *server, struct mid_q_entry *mid)
  }
  
  static void
@@ -219,7 +226,7 @@ index 11a400663b9f2..bf1db482470a6 100644
  	struct smb_rqst rqst = { .rq_iov = rdata->iov,
  				 .rq_nvec = 2,
  				 .rq_pages = rdata->pages,
-@@ -1552,7 +1550,7 @@ cifs_readv_callback(struct mid_q_entry *mid)
+@@ -1665,7 +1663,7 @@ cifs_readv_callback(struct mid_q_entry *mid)
  	}
  
  	queue_work(cifsiod_wq, &rdata->work);
@@ -228,7 +235,7 @@ index 11a400663b9f2..bf1db482470a6 100644
  	add_credits(server, &credits, 0);
  }
  
-@@ -2040,17 +2038,16 @@ cifs_writedata_direct_alloc(struct page **pages, work_func_t complete)
+@@ -2152,17 +2150,16 @@ cifs_writedata_direct_alloc(struct page **pages, work_func_t complete)
   * workqueue completion task.
   */
  static void
@@ -248,7 +255,7 @@ index 11a400663b9f2..bf1db482470a6 100644
  		if (wdata->result != 0)
  			break;
  
-@@ -2081,8 +2078,8 @@ cifs_writev_callback(struct mid_q_entry *mid)
+@@ -2193,8 +2190,8 @@ cifs_writev_callback(struct mid_q_entry *mid)
  	}
  
  	queue_work(cifsiod_wq, &wdata->work);
@@ -260,10 +267,10 @@ index 11a400663b9f2..bf1db482470a6 100644
  
  /* cifs_async_writev - send an async write, and set up mid to handle result */
 diff --git a/fs/cifs/connect.c b/fs/cifs/connect.c
-index d35474b836007..4183440766470 100644
+index a95b9d2318fa2..262ac27027b4c 100644
 --- a/fs/cifs/connect.c
 +++ b/fs/cifs/connect.c
-@@ -223,7 +223,7 @@ static void cifs_mark_tcp_ses_conns_for_reconnect(struct TCP_Server_Info *server
+@@ -490,7 +490,7 @@ cifs_reconnect(struct TCP_Server_Info *server)
  	spin_lock(&GlobalMid_Lock);
  	list_for_each_safe(tmp, tmp2, &server->pending_mid_q) {
  		mid_entry = list_entry(tmp, struct mid_q_entry, qhead);
@@ -272,7 +279,7 @@ index d35474b836007..4183440766470 100644
  		if (mid_entry->mid_state == MID_REQUEST_SUBMITTED)
  			mid_entry->mid_state = MID_RETRY_NEEDED;
  		list_move(&mid_entry->qhead, &retry_list);
-@@ -236,8 +236,8 @@ static void cifs_mark_tcp_ses_conns_for_reconnect(struct TCP_Server_Info *server
+@@ -503,8 +503,8 @@ cifs_reconnect(struct TCP_Server_Info *server)
  	list_for_each_safe(tmp, tmp2, &retry_list) {
  		mid_entry = list_entry(tmp, struct mid_q_entry, qhead);
  		list_del_init(&mid_entry->qhead);
@@ -283,18 +290,18 @@ index d35474b836007..4183440766470 100644
  	}
  
  	if (cifs_rdma_enabled(server)) {
-@@ -803,7 +803,7 @@ static void clean_demultiplex_info(struct TCP_Server_Info *server)
+@@ -928,7 +928,7 @@ static void clean_demultiplex_info(struct TCP_Server_Info *server)
  		list_for_each_safe(tmp, tmp2, &server->pending_mid_q) {
  			mid_entry = list_entry(tmp, struct mid_q_entry, qhead);
- 			cifs_dbg(FYI, "Clearing mid %llu\n", mid_entry->mid);
+ 			cifs_dbg(FYI, "Clearing mid 0x%llx\n", mid_entry->mid);
 -			kref_get(&mid_entry->refcount);
 +			refcount_inc(&mid_entry->refcount);
  			mid_entry->mid_state = MID_SHUTDOWN;
  			list_move(&mid_entry->qhead, &dispose_list);
  			mid_entry->mid_flags |= MID_DELETED;
-@@ -815,8 +815,8 @@ static void clean_demultiplex_info(struct TCP_Server_Info *server)
+@@ -940,8 +940,8 @@ static void clean_demultiplex_info(struct TCP_Server_Info *server)
  			mid_entry = list_entry(tmp, struct mid_q_entry, qhead);
- 			cifs_dbg(FYI, "Callback mid %llu\n", mid_entry->mid);
+ 			cifs_dbg(FYI, "Callback mid 0x%llx\n", mid_entry->mid);
  			list_del_init(&mid_entry->qhead);
 -			mid_entry->callback(mid_entry);
 -			cifs_mid_q_entry_release(mid_entry);
@@ -303,7 +310,7 @@ index d35474b836007..4183440766470 100644
  		}
  		/* 1/8th of sec is more than enough time for them to exit */
  		msleep(125);
-@@ -1058,7 +1058,7 @@ cifs_demultiplex_thread(void *p)
+@@ -1167,7 +1167,7 @@ cifs_demultiplex_thread(void *p)
  		if (length < 0) {
  			for (i = 0; i < num_mids; i++)
  				if (mids[i])
@@ -312,8 +319,8 @@ index d35474b836007..4183440766470 100644
  			continue;
  		}
  
-@@ -1086,9 +1086,9 @@ cifs_demultiplex_thread(void *p)
- 									server);
+@@ -1188,9 +1188,9 @@ cifs_demultiplex_thread(void *p)
+ 				mids[i]->resp_buf_size = server->pdu_size;
  
  				if (!mids[i]->multiRsp || mids[i]->multiEnd)
 -					mids[i]->callback(mids[i]);
@@ -325,10 +332,10 @@ index d35474b836007..4183440766470 100644
  				   server->ops->is_oplock_break(bufs[i],
  								server)) {
 diff --git a/fs/cifs/netmisc.c b/fs/cifs/netmisc.c
-index 6ddab41f58738..dbfcc2a9eaefe 100644
+index dd2929150bf2e..440e6fa4198a2 100644
 --- a/fs/cifs/netmisc.c
 +++ b/fs/cifs/netmisc.c
-@@ -881,7 +881,8 @@ map_smb_to_linux_error(char *buf, bool logErr)
+@@ -882,7 +882,8 @@ map_smb_to_linux_error(char *buf, bool logErr)
  }
  
  int
@@ -338,7 +345,7 @@ index 6ddab41f58738..dbfcc2a9eaefe 100644
  {
  	int rc;
  	struct smb_hdr *smb = (struct smb_hdr *)mid->resp_buf;
-@@ -897,8 +898,8 @@ map_and_check_smb_error(struct mid_q_entry *mid, bool logErr)
+@@ -898,8 +899,8 @@ map_and_check_smb_error(struct mid_q_entry *mid, bool logErr)
  			cifs_dbg(FYI, "Server returned 0x%x, reconnecting session...\n",
  				code);
  			spin_lock(&GlobalMid_Lock);
@@ -350,10 +357,10 @@ index 6ddab41f58738..dbfcc2a9eaefe 100644
  		}
  	}
 diff --git a/fs/cifs/smb1ops.c b/fs/cifs/smb1ops.c
-index 41e468d06b5b0..21e4db6f816e8 100644
+index 80287c26cfac0..ad0f31da07ea2 100644
 --- a/fs/cifs/smb1ops.c
 +++ b/fs/cifs/smb1ops.c
-@@ -96,7 +96,7 @@ cifs_find_mid(struct TCP_Server_Info *server, char *buffer)
+@@ -95,7 +95,7 @@ cifs_find_mid(struct TCP_Server_Info *server, char *buffer)
  		if (compare_mid(mid->mid, buf) &&
  		    mid->mid_state == MID_REQUEST_SUBMITTED &&
  		    le16_to_cpu(mid->command) == buf->Command) {
@@ -363,10 +370,10 @@ index 41e468d06b5b0..21e4db6f816e8 100644
  			return mid;
  		}
 diff --git a/fs/cifs/smb2ops.c b/fs/cifs/smb2ops.c
-index 3aaa45375d8ba..30cf6becd5983 100644
+index 51f8ea0c89065..bad820c44993a 100644
 --- a/fs/cifs/smb2ops.c
 +++ b/fs/cifs/smb2ops.c
-@@ -339,7 +339,7 @@ __smb2_find_mid(struct TCP_Server_Info *server, char *buf, bool dequeue)
+@@ -281,7 +281,7 @@ __smb2_find_mid(struct TCP_Server_Info *server, char *buf, bool dequeue)
  		if ((mid->mid == wire_mid) &&
  		    (mid->mid_state == MID_REQUEST_SUBMITTED) &&
  		    (mid->command == shdr->Command)) {
@@ -375,10 +382,10 @@ index 3aaa45375d8ba..30cf6becd5983 100644
  			if (dequeue) {
  				list_del_init(&mid->qhead);
  				mid->mid_flags |= MID_DELETED;
-@@ -5051,13 +5051,13 @@ static void smb2_decrypt_offload(struct work_struct *work)
- 				dw->server->ops->is_network_name_deleted(dw->buf,
- 									 dw->server);
- 
+@@ -4802,13 +4802,13 @@ static void smb2_decrypt_offload(struct work_struct *work)
+ #ifdef CONFIG_CIFS_STATS2
+ 			mid->when_received = jiffies;
+ #endif
 -			mid->callback(mid);
 +			mid->callback(dw->server, mid);
  		} else {
@@ -391,7 +398,7 @@ index 3aaa45375d8ba..30cf6becd5983 100644
  			} else {
  				mid->mid_state = MID_REQUEST_SUBMITTED;
  				mid->mid_flags &= ~(MID_DELETED);
-@@ -5066,7 +5066,7 @@ static void smb2_decrypt_offload(struct work_struct *work)
+@@ -4817,7 +4817,7 @@ static void smb2_decrypt_offload(struct work_struct *work)
  				spin_unlock(&GlobalMid_Lock);
  			}
  		}
@@ -401,10 +408,10 @@ index 3aaa45375d8ba..30cf6becd5983 100644
  
  free_pages:
 diff --git a/fs/cifs/smb2pdu.c b/fs/cifs/smb2pdu.c
-index e93dd51a88557..f8900216b55bc 100644
+index 19b4f426e9afa..464651902ad7a 100644
 --- a/fs/cifs/smb2pdu.c
 +++ b/fs/cifs/smb2pdu.c
-@@ -3730,9 +3730,8 @@ SMB2_change_notify(const unsigned int xid, struct cifs_tcon *tcon,
+@@ -3658,9 +3658,8 @@ SMB2_change_notify(const unsigned int xid, struct cifs_tcon *tcon,
   * FIXME: maybe we should consider checking that the reply matches request?
   */
  static void
@@ -415,7 +422,7 @@ index e93dd51a88557..f8900216b55bc 100644
  	struct smb2_echo_rsp *rsp = (struct smb2_echo_rsp *)mid->resp_buf;
  	struct cifs_credits credits = { .value = 0, .instance = 0 };
  
-@@ -3742,7 +3741,7 @@ smb2_echo_callback(struct mid_q_entry *mid)
+@@ -3670,7 +3669,7 @@ smb2_echo_callback(struct mid_q_entry *mid)
  		credits.instance = server->reconnect_instance;
  	}
  
@@ -424,7 +431,7 @@ index e93dd51a88557..f8900216b55bc 100644
  	add_credits(server, &credits, CIFS_ECHO_OP);
  }
  
-@@ -4033,11 +4032,10 @@ smb2_new_read_req(void **buf, unsigned int *total_len,
+@@ -3959,11 +3958,10 @@ smb2_new_read_req(void **buf, unsigned int *total_len,
  }
  
  static void
@@ -437,7 +444,7 @@ index e93dd51a88557..f8900216b55bc 100644
  	struct smb2_hdr *shdr =
  				(struct smb2_hdr *)rdata->iov[0].iov_base;
  	struct cifs_credits credits = { .value = 0, .instance = 0 };
-@@ -4052,9 +4050,9 @@ smb2_readv_callback(struct mid_q_entry *mid)
+@@ -3978,9 +3976,9 @@ smb2_readv_callback(struct mid_q_entry *mid)
  		rqst.rq_tailsz = rdata->tailsz;
  	}
  
@@ -449,7 +456,7 @@ index e93dd51a88557..f8900216b55bc 100644
  
  	cifs_dbg(FYI, "%s: mid=%llu state=%d result=%d bytes=%u\n",
  		 __func__, mid->mid, mid->mid_state, rdata->result,
-@@ -4118,7 +4116,7 @@ smb2_readv_callback(struct mid_q_entry *mid)
+@@ -4044,7 +4042,7 @@ smb2_readv_callback(struct mid_q_entry *mid)
  				     rdata->offset, rdata->got_bytes);
  
  	queue_work(cifsiod_wq, &rdata->work);
@@ -458,7 +465,7 @@ index e93dd51a88557..f8900216b55bc 100644
  	add_credits(server, &credits, 0);
  }
  
-@@ -4279,18 +4277,17 @@ SMB2_read(const unsigned int xid, struct cifs_io_parms *io_parms,
+@@ -4205,18 +4203,17 @@ SMB2_read(const unsigned int xid, struct cifs_io_parms *io_parms,
   * workqueue completion task.
   */
  static void
@@ -480,7 +487,7 @@ index e93dd51a88557..f8900216b55bc 100644
  
  	switch (mid->mid_state) {
  	case MID_RESPONSE_RECEIVED:
-@@ -4356,7 +4353,7 @@ smb2_writev_callback(struct mid_q_entry *mid)
+@@ -4282,7 +4279,7 @@ smb2_writev_callback(struct mid_q_entry *mid)
  				      wdata->offset, wdata->bytes);
  
  	queue_work(cifsiod_wq, &wdata->work);
@@ -490,10 +497,10 @@ index e93dd51a88557..f8900216b55bc 100644
  }
  
 diff --git a/fs/cifs/smb2transport.c b/fs/cifs/smb2transport.c
-index c76fe00180403..7f8e99111ce02 100644
+index ef5c2cb968bfd..778a8b1de4898 100644
 --- a/fs/cifs/smb2transport.c
 +++ b/fs/cifs/smb2transport.c
-@@ -731,13 +731,12 @@ smb2_mid_entry_alloc(const struct smb2_hdr *shdr,
+@@ -742,13 +742,12 @@ smb2_mid_entry_alloc(const struct smb2_hdr *shdr,
  
  	temp = mempool_alloc(cifs_mid_poolp, GFP_NOFS);
  	memset(temp, 0, sizeof(struct mid_q_entry));
@@ -508,7 +515,7 @@ index c76fe00180403..7f8e99111ce02 100644
  
  	/*
  	 * The default is for the mid to be synchronous, so the
-@@ -841,7 +840,7 @@ smb2_setup_request(struct cifs_ses *ses, struct TCP_Server_Info *server,
+@@ -852,7 +851,7 @@ smb2_setup_request(struct cifs_ses *ses, struct TCP_Server_Info *server,
  	rc = smb2_sign_rqst(rqst, server);
  	if (rc) {
  		revert_current_mid_from_hdr(server, shdr);
@@ -517,7 +524,7 @@ index c76fe00180403..7f8e99111ce02 100644
  		return ERR_PTR(rc);
  	}
  
-@@ -871,7 +870,7 @@ smb2_setup_async_request(struct TCP_Server_Info *server, struct smb_rqst *rqst)
+@@ -882,7 +881,7 @@ smb2_setup_async_request(struct TCP_Server_Info *server, struct smb_rqst *rqst)
  	rc = smb2_sign_rqst(rqst, server);
  	if (rc) {
  		revert_current_mid_from_hdr(server, shdr);
@@ -527,10 +534,10 @@ index c76fe00180403..7f8e99111ce02 100644
  	}
  
 diff --git a/fs/cifs/transport.c b/fs/cifs/transport.c
-index d30183fac942e..8b4fbacb91fb9 100644
+index 6a6772ded4b8c..fc3f651762182 100644
 --- a/fs/cifs/transport.c
 +++ b/fs/cifs/transport.c
-@@ -32,7 +32,7 @@
+@@ -45,7 +45,7 @@
  #define CIFS_MAX_IOV_SIZE 8
  
  void
@@ -539,7 +546,7 @@ index d30183fac942e..8b4fbacb91fb9 100644
  {
  	if (mid->mid_state == MID_RESPONSE_RECEIVED)
  		mid->mid_state = MID_RESPONSE_READY;
-@@ -51,7 +51,7 @@ AllocMidQEntry(const struct smb_hdr *smb_buffer, struct TCP_Server_Info *server)
+@@ -64,7 +64,7 @@ AllocMidQEntry(const struct smb_hdr *smb_buffer, struct TCP_Server_Info *server)
  
  	temp = mempool_alloc(cifs_mid_poolp, GFP_NOFS);
  	memset(temp, 0, sizeof(struct mid_q_entry));
@@ -548,7 +555,7 @@ index d30183fac942e..8b4fbacb91fb9 100644
  	temp->mid = get_mid(smb_buffer);
  	temp->pid = current->pid;
  	temp->command = cpu_to_le16(smb_buffer->Command);
-@@ -59,7 +59,6 @@ AllocMidQEntry(const struct smb_hdr *smb_buffer, struct TCP_Server_Info *server)
+@@ -72,7 +72,6 @@ AllocMidQEntry(const struct smb_hdr *smb_buffer, struct TCP_Server_Info *server)
  	/*	do_gettimeofday(&temp->when_sent);*/ /* easier to use jiffies */
  	/* when mid allocated can be before when sent */
  	temp->when_alloc = jiffies;
@@ -556,7 +563,7 @@ index d30183fac942e..8b4fbacb91fb9 100644
  
  	/*
  	 * The default is for the mid to be synchronous, so the
-@@ -75,17 +74,15 @@ AllocMidQEntry(const struct smb_hdr *smb_buffer, struct TCP_Server_Info *server)
+@@ -88,17 +87,15 @@ AllocMidQEntry(const struct smb_hdr *smb_buffer, struct TCP_Server_Info *server)
  	return temp;
  }
  
@@ -577,7 +584,7 @@ index d30183fac942e..8b4fbacb91fb9 100644
  
  	if (midEntry->resp_buf && (midEntry->mid_flags & MID_WAIT_CANCELLED) &&
  	    (midEntry->mid_state == MID_RESPONSE_RECEIVED ||
-@@ -155,13 +152,13 @@ void _cifs_mid_q_entry_release(struct kref *refcount)
+@@ -168,13 +165,13 @@ void _cifs_mid_q_entry_release(struct kref *refcount)
  	mempool_free(midEntry, cifs_mid_poolp);
  }
  
@@ -594,7 +601,7 @@ index d30183fac942e..8b4fbacb91fb9 100644
  {
  	spin_lock(&GlobalMid_Lock);
  	if (!(mid->mid_flags & MID_DELETED)) {
-@@ -170,7 +167,7 @@ cifs_delete_mid(struct mid_q_entry *mid)
+@@ -183,7 +180,7 @@ cifs_delete_mid(struct mid_q_entry *mid)
  	}
  	spin_unlock(&GlobalMid_Lock);
  
@@ -603,7 +610,7 @@ index d30183fac942e..8b4fbacb91fb9 100644
  }
  
  /*
-@@ -787,7 +784,7 @@ cifs_setup_async_request(struct TCP_Server_Info *server, struct smb_rqst *rqst)
+@@ -758,7 +755,7 @@ cifs_setup_async_request(struct TCP_Server_Info *server, struct smb_rqst *rqst)
  
  	rc = cifs_sign_rqst(rqst, server, &mid->sequence_number);
  	if (rc) {
@@ -612,7 +619,7 @@ index d30183fac942e..8b4fbacb91fb9 100644
  		return ERR_PTR(rc);
  	}
  
-@@ -862,7 +859,7 @@ cifs_call_async(struct TCP_Server_Info *server, struct smb_rqst *rqst,
+@@ -833,7 +830,7 @@ cifs_call_async(struct TCP_Server_Info *server, struct smb_rqst *rqst,
  	if (rc < 0) {
  		revert_current_mid(server, mid->credits);
  		server->sequence_number -= 2;
@@ -621,7 +628,7 @@ index d30183fac942e..8b4fbacb91fb9 100644
  	}
  
  	mutex_unlock(&server->srv_mutex);
-@@ -934,7 +931,7 @@ cifs_sync_mid_result(struct mid_q_entry *mid, struct TCP_Server_Info *server)
+@@ -905,7 +902,7 @@ cifs_sync_mid_result(struct mid_q_entry *mid, struct TCP_Server_Info *server)
  	}
  	spin_unlock(&GlobalMid_Lock);
  
@@ -630,7 +637,7 @@ index d30183fac942e..8b4fbacb91fb9 100644
  	return rc;
  }
  
-@@ -974,11 +971,11 @@ cifs_check_receive(struct mid_q_entry *mid, struct TCP_Server_Info *server,
+@@ -945,11 +942,11 @@ cifs_check_receive(struct mid_q_entry *mid, struct TCP_Server_Info *server,
  	}
  
  	/* BB special case reconnect tid and uid here? */
@@ -644,7 +651,7 @@ index d30183fac942e..8b4fbacb91fb9 100644
  		   struct smb_rqst *rqst)
  {
  	int rc;
-@@ -992,18 +989,17 @@ cifs_setup_request(struct cifs_ses *ses, struct TCP_Server_Info *ignored,
+@@ -963,18 +960,17 @@ cifs_setup_request(struct cifs_ses *ses, struct TCP_Server_Info *ignored,
  	rc = allocate_mid(ses, hdr, &mid);
  	if (rc)
  		return ERR_PTR(rc);
@@ -666,7 +673,7 @@ index d30183fac942e..8b4fbacb91fb9 100644
  	struct cifs_credits credits;
  
  	credits.value = server->ops->get_credits(mid);
-@@ -1016,17 +1012,17 @@ cifs_compound_callback(struct mid_q_entry *mid)
+@@ -987,17 +983,17 @@ cifs_compound_callback(struct mid_q_entry *mid)
  }
  
  static void
@@ -690,7 +697,7 @@ index d30183fac942e..8b4fbacb91fb9 100644
  }
  
  /*
-@@ -1065,7 +1061,7 @@ compound_send_recv(const unsigned int xid, struct cifs_ses *ses,
+@@ -1033,7 +1029,7 @@ compound_send_recv(const unsigned int xid, struct cifs_ses *ses,
  		   int *resp_buf_type, struct kvec *resp_iov)
  {
  	int i, j, optype, rc = 0;
@@ -699,7 +706,7 @@ index d30183fac942e..8b4fbacb91fb9 100644
  	bool cancelled_mid[MAX_COMPOUND] = {false};
  	struct cifs_credits credits[MAX_COMPOUND] = {
  		{ .value = 0, .instance = 0 }
-@@ -1127,35 +1123,35 @@ compound_send_recv(const unsigned int xid, struct cifs_ses *ses,
+@@ -1095,35 +1091,35 @@ compound_send_recv(const unsigned int xid, struct cifs_ses *ses,
  	}
  
  	for (i = 0; i < num_rqst; i++) {
@@ -744,7 +751,7 @@ index d30183fac942e..8b4fbacb91fb9 100644
  
  	if (rc < 0) {
  		revert_current_mid(server, num_rqst);
-@@ -1193,20 +1189,20 @@ compound_send_recv(const unsigned int xid, struct cifs_ses *ses,
+@@ -1161,20 +1157,20 @@ compound_send_recv(const unsigned int xid, struct cifs_ses *ses,
  	}
  
  	for (i = 0; i < num_rqst; i++) {
@@ -772,7 +779,7 @@ index d30183fac942e..8b4fbacb91fb9 100644
  				cancelled_mid[i] = true;
  				credits[i].value = 0;
  			}
-@@ -1218,36 +1214,36 @@ compound_send_recv(const unsigned int xid, struct cifs_ses *ses,
+@@ -1186,36 +1182,36 @@ compound_send_recv(const unsigned int xid, struct cifs_ses *ses,
  		if (rc < 0)
  			goto out;
  
@@ -818,7 +825,7 @@ index d30183fac942e..8b4fbacb91fb9 100644
  
  	}
  
-@@ -1273,7 +1269,7 @@ compound_send_recv(const unsigned int xid, struct cifs_ses *ses,
+@@ -1241,7 +1237,7 @@ compound_send_recv(const unsigned int xid, struct cifs_ses *ses,
  	 */
  	for (i = 0; i < num_rqst; i++) {
  		if (!cancelled_mid[i])
@@ -827,7 +834,7 @@ index d30183fac942e..8b4fbacb91fb9 100644
  	}
  
  	return rc;
-@@ -1433,7 +1429,7 @@ SendReceive(const unsigned int xid, struct cifs_ses *ses,
+@@ -1401,7 +1397,7 @@ SendReceive(const unsigned int xid, struct cifs_ses *ses,
  	memcpy(out_buf, midQ->resp_buf, *pbytes_returned + 4);
  	rc = cifs_check_receive(midQ, server, 0);
  out:
@@ -836,7 +843,7 @@ index d30183fac942e..8b4fbacb91fb9 100644
  	add_credits(server, &credits, 0);
  
  	return rc;
-@@ -1522,7 +1518,7 @@ SendReceiveBlockingLock(const unsigned int xid, struct cifs_tcon *tcon,
+@@ -1490,7 +1486,7 @@ SendReceiveBlockingLock(const unsigned int xid, struct cifs_tcon *tcon,
  
  	rc = cifs_sign_smb(in_buf, server, &midQ->sequence_number);
  	if (rc) {
@@ -845,7 +852,7 @@ index d30183fac942e..8b4fbacb91fb9 100644
  		mutex_unlock(&server->srv_mutex);
  		return rc;
  	}
-@@ -1537,7 +1533,7 @@ SendReceiveBlockingLock(const unsigned int xid, struct cifs_tcon *tcon,
+@@ -1505,7 +1501,7 @@ SendReceiveBlockingLock(const unsigned int xid, struct cifs_tcon *tcon,
  	mutex_unlock(&server->srv_mutex);
  
  	if (rc < 0) {
@@ -854,7 +861,7 @@ index d30183fac942e..8b4fbacb91fb9 100644
  		return rc;
  	}
  
-@@ -1560,7 +1556,7 @@ SendReceiveBlockingLock(const unsigned int xid, struct cifs_tcon *tcon,
+@@ -1528,7 +1524,7 @@ SendReceiveBlockingLock(const unsigned int xid, struct cifs_tcon *tcon,
  			   blocking lock to return. */
  			rc = send_cancel(server, &rqst, midQ);
  			if (rc) {
@@ -863,7 +870,7 @@ index d30183fac942e..8b4fbacb91fb9 100644
  				return rc;
  			}
  		} else {
-@@ -1572,7 +1568,7 @@ SendReceiveBlockingLock(const unsigned int xid, struct cifs_tcon *tcon,
+@@ -1540,7 +1536,7 @@ SendReceiveBlockingLock(const unsigned int xid, struct cifs_tcon *tcon,
  			/* If we get -ENOLCK back the lock may have
  			   already been removed. Don't exit in this case. */
  			if (rc && rc != -ENOLCK) {
@@ -872,7 +879,7 @@ index d30183fac942e..8b4fbacb91fb9 100644
  				return rc;
  			}
  		}
-@@ -1610,7 +1606,7 @@ SendReceiveBlockingLock(const unsigned int xid, struct cifs_tcon *tcon,
+@@ -1578,7 +1574,7 @@ SendReceiveBlockingLock(const unsigned int xid, struct cifs_tcon *tcon,
  	memcpy(out_buf, midQ->resp_buf, *pbytes_returned + 4);
  	rc = cifs_check_receive(midQ, server, 0);
  out:
