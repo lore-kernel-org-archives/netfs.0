@@ -1,158 +1,91 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 181634A441D
-	for <netfs@lists.linux.dev>; Wed, 30 Sep 2026 15:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0822509F18;
+	Wed, 30 Sep 2026 16:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790781466; cv=none; b=jpuEjWyc6WKvkq/7eNrLzaXkGq8idDSPVLBOY/7TF381qZqQAE3gTVMjzkH1tXz+oRXzFvfMTlj0YhNZARq2NDDMtJTSFGwHb1imMDLXkKFV1DxQnZMM8uVTMyQdDx+k2swtj8EISwFlzaPJAGer7jTNXMSKOdf2K1RUhAhb2lU=
+	t=1790784697; cv=none; b=NkLdu3vC5lvR8P6311gRQEeKaXhnMvV+8vgYtzgoa71r5FnHPO+NiUAa+XAcYhwPfENydzPqNNa0iFLhg105m4MFCEoV1V5viPxvh3+sGZOqpegZBVgR0pF2iSy02T4rBsYVTcQyficT2xCvgOljEPq1W7eQ+B0aRLoo9Mdm5jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790781466; c=relaxed/simple;
-	bh=18kZ8PnP52CRB5IvdMYDi+jRrKH5wEsbLEEmFjxLp8M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fWp3Ylq+PlKhgCvsa5yB8iBJUbLLwb00L3A+Dk4yjjnsHgbUUmbv6VOXjTErkdGhG9+D/CNTKHKn2Z1pHD+Gn5uzBHx05UmC+lH1CMagckaa4Kb8SDOcnmKdtytp6p8DGMiAtbpJQ0CtUWSDOkw7UXM+/Jx+isGkIZi810YJuFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TLpzsh6j; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790784697; c=relaxed/simple;
+	bh=HxQ38iBVw+wN+w6U8nQsbpqflWXoKDVhNMf6MTMu/fk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=M931BybK5tXs8dli+46ojxzlyEaOyQGAXGctEDIayzaQ+IkzhgAGHJy+PDl25HdHYTUpiX/QHccWkOd9nmLMKxBieXzZL+oPkwWyEq7mfbqmBQkXU8BF4myK0gINAAJcr2p/G6xlbjdmwIeraNbfghw2XyXlLcRJ+xR4tGBp1So=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DjyME5qf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TLpzsh6j"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 119861F00898
-	for <netfs@lists.linux.dev>; Wed, 30 Sep 2026 15:17:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790781458;
-	bh=yzDSJePxqrjjuXwILoDgCSkZpGfsogLk6JJtjsdaFyk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=TLpzsh6jorD4stADLHECZ/eIS9Zrug7fJyC3Si6pE6xcZFHSV1yRl+q3kFcUYtdQJ
-	 knCnnMZ0CasHen4CtAPxUyi4UVjfeTBbv5rV3NhPxkFru+txmqOcSVN0GT3Dlt/xKP
-	 OyPvy8ZIbRD1JUDkVdNRXpVjH3hz6xp7U4K5m1vlGERSVhgOZwP6J1sFXlM2I3mBZr
-	 bzY/5jEFqUq5H7ANPl2wNs8ig1QJyOwOlXNXy6ODlvltoisYdLeEQSvkGGqkrR335J
-	 JLv5s4LY6ulXa7gJPpl8PmBA2wJcfkIsA4QQKvOTIctPS3/kpFbvXDm7WA5GRF/+re
-	 bi049VN6/FScA==
-Received: by mail-ej2-f41.google.com with SMTP id a640c23a62f3a-c2e30a06b59so38218866b.3
-        for <netfs@lists.linux.dev>; Wed, 30 Sep 2026 08:17:38 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBx7l/R5tBeGqnIWQu7/u8rbCRQfKZzcT4YZrFhVQABoNuzz8xLKy40VtiVLSp5RaMqh8vqEFQ==@lists.linux.dev
-X-Gm-Message-State: AFuF++n8CPPSXFvc2tpdpnZrFJ3o0e7JeoRTclut8LdjLZn+4I1EIxub
-	/Wx4Ar43Ni2mTjufAtwjxsBCjpT4JNDbVWyZ77L4fRFDS3zo3kX5TWf42YRkvsZv6gW2m5yGnr8
-	QzLq7/bre5FsZz4dhxy86/7r0EH1v72o=
-X-Received: by 2002:a17:907:728d:b0:c2d:ce02:8def with SMTP id
- a640c23a62f3a-c2e23ca13d9mr145278066b.12.1790781456676; Wed, 30 Sep 2026
- 08:17:36 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DjyME5qf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FDBD1F00893;
+	Wed, 30 Sep 2026 16:11:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1790784688;
+	bh=aNmkm+n4PE7qLy62fsE2le6rizEz4y4IMzHZiWM66RY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=DjyME5qf/RC9TkVyLZitmNkaDVjMfFVS49Ctw70wzWDAp75gumoH1hes/Wp/DZqkb
+	 VIZHD+d4pFg41PpyP8vMdlbnLidTiHRVKz/kZW0hhgxw/gPzQvHrwL8MVtMoj9Eyet
+	 leNDnCP359k/ITZGiMLBRaIiu8dScag5TEB10+zQ=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	"Christian Brauner (Amutable)" <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 243/982] cachefiles: Fix double fput
+Date: Wed, 30 Sep 2026 17:16:19 +0200
+Message-ID: <20260930152422.014871034@linuxfoundation.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260930152416.775402466@linuxfoundation.org>
+References: <20260930152416.775402466@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260930032822.1835287-1-pc@manguebit.org>
-In-Reply-To: <20260930032822.1835287-1-pc@manguebit.org>
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Thu, 1 Oct 2026 00:17:24 +0900
-X-Gmail-Original-Message-ID: <CAKYAXd-zUMWSM_usuKdz6HBLGz-YLcqb2+i=iWRn9fGJ30esgw@mail.gmail.com>
-X-Gm-Features: AclHuK-5owUL19DJWQsYyUypw1TibuEWOeUWM1HnLtPC1wOaWAiXfKIBbY01L2o
-Message-ID: <CAKYAXd-zUMWSM_usuKdz6HBLGz-YLcqb2+i=iWRn9fGJ30esgw@mail.gmail.com>
-Subject: Re: [PATCH v3 00/15] netfs, cifs: data corruption fixes
-To: Paulo Alcantara <pc@manguebit.org>
-Cc: linux-cifs@vger.kernel.org, netfs@lists.linux.dev, 
-	Christian Brauner <brauner@kernel.org>, David Howells <dhowells@redhat.com>, 
-	Matthew Wilcox <willy@infradead.org>, Ronnie Sahlberg <ronniesahlberg@gmail.com>, 
-	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>, 
-	Bharath SM <bharathsm@microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 30, 2026 at 12:28=E2=80=AFPM Paulo Alcantara <pc@manguebit.org>=
- wrote:
->
-> This series fixes a number of data corruption and spurious I/O error
-> bugs found by running generic/363 (fsx) in a loop against Windows
-> Server 2022 and Samba 4.24 servers.
->
-> * Post-EOF pagecache poisoning on extend (1-5)
->
->   Data dirtied past EOF through an mmapped region was never discarded,
->   so it reappeared as file content once the file was extended by an
->   ordinary write, a truncate, a zero range, a copy range or a clone
->   range.  pagecache_isize_extended() doesn't help here: it's a no-op on
->   cifs because i_blkbits is 14.  Only the one folio straddling the old
->   EOF can hold such data, since pages wholly beyond EOF can't be
->   faulted in, so each extending path now zeroes or discards that folio.
->
-> * Missing flush or drain before trusting server or pagecache state (6-9)
->
->   FSCTL_QUERY_ALLOCATED_RANGES can report just-written data as a hole
->   unless it has been committed to disk first, and the O_TRUNC open,
->   interior zero range and server-side copy/clone paths did not flush
->   dirty data or drain in-flight I/O before an operation that assumes
->   the pagecache and the server agree on the file's contents.
->
-> * fallocate refused without a read lease (10, 12)
->
->   smb3_zero_range() and smb3_simple_falloc() returned -EOPNOTSUPP for
->   any size-extending request whenever the inode wasn't read caching,
->   since the cached i_size couldn't be trusted.  Query the server's EOF
->   in that case instead of refusing the request outright.
->
-> * Short reads leaving stale data behind (11, 13, 14)
->
->   The read-gaps path and the DIO/unbuffered read collector left the
->   untransferred tail of a short read untouched, and cifs could not
->   tell a genuine EOF from a stale cached remote_i_size after a lease
->   downgrade.  A read racing an extending write could come back short
->   and, in the read-gaps case, have that stale folio content written
->   back to the server.
->
-> * Unstable pages during a signed write (15)
->
->   cifs signs the pagecache folios in place before handing them to the
->   socket.  A buffered write could modify a folio while a write
->   subrequest built from it was still in flight, so the signature no
->   longer matched the data that followed it; the server answered
->   STATUS_ACCESS_DENIED, which surfaced later as -EIO.
->
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> Changes since v2:
-> * Patch 12: zero the stale folio against the client's local i_size
->   instead of the server-queried EOF, so an extending, leaseless
->   preallocate can't skip zeroing past the client's real EOF.
->
-> Changes since v1:
-> * Patch 1: split the helper into netfs_clear_stale_pre_isize()
->   (unexported) and netfs_clear_stale_post_isize() (exported for CIFS).
-> * Patch 2: capture old_size before the resize RPC and call
->   netfs_clear_stale_post_isize() after i_size is updated, closing a
->   stat() race.
-> * Patch 9: restore unmap_mapping_pages() before the flush/invalidate so
->   a concurrent mmap store can't redirty the destination folio.
-> * Patch 10: refuse -EOPNOTSUPP when the queried server EOF still falls
->   short, and re-check a fresh i_size before the final SMB2_set_eof().
-> * Patch 12: thread old_eof into smb3_simple_fallocate_range() so it
->   doesn't misjudge a range as past EOF from a stale i_size.
-> * Picked up Reviewed-by from Namjae Jeon on patches 3-8, 11 and 13-14.
->
-> Paulo Alcantara (15):
->   netfs: clear post-EOF pagecache when extending a file via write
->   smb: client: clear post-EOF pagecache when extending a file via
->     truncate
->   smb: client: discard post-EOF pagecache when extending a file via zero
->     range
->   smb: client: discard post-EOF pagecache when extending a file via copy
->     range
->   smb: client: discard post-EOF pagecache when extending a file via
->     clone range
->   smb: client: flush and commit data before querying allocated ranges
->   smb: client: drain outstanding I/O before truncating on O_TRUNC open
->   smb: client: flush dirty data before zeroing a range
->   smb: client: drain and invalidate before server-side copy/clone
->   smb: client: only require read lease for size-extending zero range
->   netfs: zero gaps in read-gaps folio to avoid writing back stale data
->   smb: client: only require read lease for size-extending preallocate
->   netfs: zero the tail of a short DIO/unbuffered read
->   smb: client: distinguish real EOF from a stale remote_i_size on read
->   smb: client: require stable pages for signed connections
-I've reviewed the v3 changes, including updated patches 1, 2, 9, 10, 12 and=
- 15.
-The whole series looks good to me.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
-Reviewed-by: Namjae Jeon <linkinjeon@kernel.org>
+------------------
 
-Thanks!
+From: David Howells <dhowells@redhat.com>
+
+[ Upstream commit af6830cc12dfe86c832dccc9c9878a93aaa22f83 ]
+
+Fix a double fput() in error handling in cachefiles_create_tmpfile().
+
+Link: https://sashiko.dev/#/patchset/20260608145432.681865-1-dhowells%40redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/20260625140640.3116900-4-dhowells@redhat.com
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/cachefiles/namei.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/fs/cachefiles/namei.c b/fs/cachefiles/namei.c
+index cbd0ff47acea0..7893c607b2479 100644
+--- a/fs/cachefiles/namei.c
++++ b/fs/cachefiles/namei.c
+@@ -494,7 +494,6 @@ struct file *cachefiles_create_tmpfile(struct cachefiles_object *object)
+ 	ret = -EINVAL;
+ 	if (unlikely(!file->f_op->read_iter) ||
+ 	    unlikely(!file->f_op->write_iter)) {
+-		fput(file);
+ 		pr_notice("Cache does not support read_iter and write_iter\n");
+ 		goto err_unuse;
+ 	}
+-- 
+2.53.0
+
+
+
