@@ -1,90 +1,58 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB4A3793A5
-	for <netfs@lists.linux.dev>; Thu,  1 Oct 2026 13:52:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB662EBBA1
+	for <netfs@lists.linux.dev>; Fri,  2 Oct 2026 08:51:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790862735; cv=none; b=o7kYzZgTPxta4Ge848H8qiRwI+2HCuauwX6zUUgu8vttB0EPlapNftUvblWV2TPKLpcHsNN7Vt9G7ixoHsDa9rtYInyhzRsLIvTAEtFsb/1ngG07i3Lf6dnHbMN2JDv71amfElCHiizZlRnCE/onUb6TElnOq5lbyH9zmzoDbgY=
+	t=1790931113; cv=none; b=ri1/aLhuqeXJ0bBj4FQOadiZpHBHDjGLRqXUk9OXUJR64p/EOEF2mkywDjo1Ke3mjoCUERmPpl5fcR3s8RhTsGGFeMFB4wyVFmW9Ez33KnRP8lwbVYgLoPNw2z2k842b0KdMrmjj4nUHHrtPCDfOx+xCTczq9eGKRWhMvffeuIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790862735; c=relaxed/simple;
-	bh=0geIIBAtChqx0SPrXodBDN0wwm8n774sD/kCINfRRVI=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
-	 Message-ID:Content-Type; b=X8zxy5BtOAdfybgtwD6iK/tr/8dhRW0FHEa3VlwtNg83UZ4nsF4g0hzdzBqkgD9R9pk7wsxTJJgbDwf/9Z9pfc87pwjQONBQLj0iyQbWK+0LlrTq/ZNvAtar8KOmX3W2umAYAaDWilcSSxeISmpFV0G9GMMKBB52oQ0v38SpSLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JOONMuVZ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790931113; c=relaxed/simple;
+	bh=/2VOdhIoDIWMkOAjIvMqep/xz4y0Iivv5oOAb13egi8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=obrY9afzV4Zn8fvQDPegEeAlguB+LV3D4I7O94np87fDorq1Nkd8PSkhcNg+qthpEV3OHPUxdET+ARv6Kdjz6YBlSasac9N4pUnVjtXGxxrhcuzelPWdHnzoxxMVoD3KxgvPnWGLGrJIc1D3AnJbaVof+rILThfWLhSxl1MeKf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=S5+eBqZ8; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JOONMuVZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790862732;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JjcPPUA2+KSJwXDBVE75ZLKJDqcpCkUXLHxsXrz7loQ=;
-	b=JOONMuVZv4xh8ez/M7Hza93kVux3MQZt5RGgwuZ2UHDimKXt2abaSH0R619Tk/IrLjwG/X
-	Kl/rn/FUvyOmgRE5IF9iUDx4MymcyqzDl7UTVzchvLw9am/FOt1QvlCTWCmI41ervM98o1
-	48cpKWUkN/nlzjMyu7PQXMZIz49dr7w=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-677-uJbyo1fROuqS7vWfhzcp3A-1; Thu,
- 01 Oct 2026 09:52:08 -0400
-X-MC-Unique: uJbyo1fROuqS7vWfhzcp3A-1
-X-Mimecast-MFC-AGG-ID: uJbyo1fROuqS7vWfhzcp3A_1790862726
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 26FDD18011FE;
-	Thu,  1 Oct 2026 13:52:05 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.44.32.54])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CC61E1800299;
-	Thu,  1 Oct 2026 13:51:57 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20261001091239.3343034-4-dhowells@redhat.com>
-References: <20261001091239.3343034-4-dhowells@redhat.com> <20261001091239.3343034-1-dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>
-Cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.org>,
-    Matthew Wilcox <willy@infradead.org>,
-    Namjae Jeon <linkinjeon@kernel.org>,
-    Marc Dionne <marc.dionne@auristor.com>,
-    Stefan Metzmacher <metze@samba.org>,
-    Eric Van Hensbergen <ericvh@kernel.org>,
-    Dominique Martinet <asmadeus@codewreck.org>,
-    Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
-    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-    v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org, Christoph Hellwig <hch@infradead.org>
-Subject: Re: [PATCH v15 03/10] netfs: Add some tools for managing bvecq chains
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="S5+eBqZ8"
+Received: from localhost (unknown [10.10.165.9])
+	by mail.ispras.ru (Postfix) with ESMTPSA id 0BF3D406C750;
+	Fri,  2 Oct 2026 08:51:43 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 0BF3D406C750
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1790931103;
+	bh=Q6uermtlktZ0VkU5nIBo3CGNejxKsRw8bTF/OeHXl4E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=S5+eBqZ8M9jOyOU0zzBnJ8xhqxC58KFLAFPS3CZzz8wXveaWDwAoBTl9WFmHyb4l3
+	 jZsajb6u3q1Y1Vd31vBePOOqO7brAGpggTx+qxuv9pJMugDo0SIeTJ2+FU79h+6LzF
+	 kjA5H4mnvvPCmrDU9HGI4BfIPCpCcbjz97bc7Iss=
+Date: Fri, 2 Oct 2026 11:51:42 +0300
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Mikhail Mirkin <mmirkin@nppct.ru>
+Cc: Sasha Levin <sashal@kernel.org>, linux-cifs@vger.kernel.org, 
+	Shyam Prasad N <sprasad@microsoft.com>, "Paulo Alcantara (Red Hat)" <pc@manguebit.org>, 
+	David Howells <dhowells@redhat.com>, linux-fsdevel@vger.kernel.org, netfs@lists.linux.dev, 
+	Steve French <stfrench@microsoft.com>, lvc-project@linuxtesting.org
+Subject: Re: [PATCH 6.12.y] cifs: Fix handling of a beyond-EOF DIO/unbuffered
+ read over SMB1
+Message-ID: <20261002114828-a0c191e9851a3e2487ada3a0-pchelkin@ispras>
+References: <20260930120532.5436-1-mmirkin@nppct.ru>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Thu, 01 Oct 2026 14:51:56 +0100
-Message-ID: <3609012.1790862716@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: O_UBxeMQRmehwDhHx0eiqRhTfG8vghkrpvXV-1QOq6c_1790862726
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3609011.1790862716.1@warthog.procyon.org.uk>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260930120532.5436-1-mmirkin@nppct.ru>
 
-Hi Christian,
+On Wed, 30. Sep 15:05, Mikhail Mirkin wrote:
+> From: David Howells <dhowells@redhat.com>
+> 
+> commit c61af12157ef9fe480ab84b4923e8ca3d8f86a62 upstream.
 
-Could you add:
-
-	#include <linux/mempool.h>
-
-to fs/netfs/internal.h if you apply this?  One of the headers I'm using must
-bring it in conditionally because it's not pulled in when Paulo builds it.
-
-Thanks,
-David
+That's not the hash of upstream commit.  It should be
+9d85ac939d52e93d80efb01a299c6f0bedb30487.
 
