@@ -1,78 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D04476CE8;
-	Fri,  2 Oct 2026 10:08:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA423411FB5
+	for <netfs@lists.linux.dev>; Sat,  3 Oct 2026 10:11:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790935694; cv=none; b=GFDqgFN58tyYUjslySK23Zm4+ULOOZmNoHI6DMNA/ltY0bj6bsA++F6Pl+0JtgzDMiNlciXsk826e8DGQscKtb92R9PUi/SKdIKnvPNJ05Z+IYIh8XH+EDMfpiYZIioHwgzQbvj+kC3vYx/yjOLEEBvvIfMFlLn0QBKUATuANXw=
+	t=1791022309; cv=none; b=lSYlofLM6oWeABT0QdwU64Uv5X8s3xncbgSTdzq4Nl/8jURn+x8S4uXsNUqe6XaVAXRQSPmWZcsW9SHsSEZ+0YUYZD0WMsntUgmFDm+kI1SYTWZsiO60K+Ze02WsMPtSPIQhmSi1I7U+E/d3h0MmRpVe2EHIvj9Z7rh1Jef0+WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790935694; c=relaxed/simple;
-	bh=37qcnODRwYw7ndXTbNaEj8b8seuguwmGkztJcQl0AaQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rq+Xbg4N6UvjxAH1B0fm36BPZ2ORfAXALSPxFR0p4ARkLuEGrAKukeMs3//xAsC+sJMiCGeC7GJYZhqKtMuk1EkkmwjvzGBZSkjXSV5CnCVm2fNIM6Z2D75tUp8dA2GJLf8H5GUBLD4v3Ta14ltAUAq1jTnHdK4DI5AqU0QR6UM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PKj/ePF6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791022309; c=relaxed/simple;
+	bh=p6wAteknLTFMLbws31q1Ibfxgf0w34kWpjIk5elFF00=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UGM4WKhqGSYfD/YFuXUewDZ5BlhnhsTvsgVCQPnsIapCGBqsGmYYTez/YthqByn+4TfG2INSHFVGNE01w6Zs/0fjHybRRb5qSyLxkWzr273h76S4W5DphvWJs/t1z5B+5EmXhpuq0PlIu9ajRbH/7BkBtN62ChELjC4tpOdFf20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=ZjmyFTEZ; arc=none smtp.client-ip=195.133.245.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PKj/ePF6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E50151F000FF;
-	Fri,  2 Oct 2026 10:08:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790935693;
-	bh=LY9VxvcXwN76EizeDT/tvDrMhfgIEaCIidMTHshekyo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PKj/ePF6nHELeO2FNRdvzNz0hRjCk8BThq4MpGvDBAisk+vtScj48I6pdLshXBdpD
-	 LsCSNuoOMwchDIVEcxcGLdy1c3BX0eRu1gaMCuYRDkWyNVNGk/fgOrlaiHBel93VTq
-	 MbSlowB/eBsyHEBqzUsxgo6INyFboTuCGZONOZznhoCUrWeNCZ3zZD4GTz4BWklTz3
-	 cmMPK+AtOSYkeZJmpu0qH9HzzzIBw18pm1gk6AIQYagN8NdB9l+XeEjNJcPb9evXdm
-	 BMJ0qv5AS9K15prlFR3JRP2INdQiC64WIxcVBXeYARfhLUWr3NWX0cmN8ZzRh9DTO9
-	 amynbNBsuFLuw==
-From: Christian Brauner <brauner@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Matthew Wilcox <willy@infradead.org>,
+	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="ZjmyFTEZ"
+Received: from mail.nppct.ru (localhost [127.0.0.1])
+	by mail.nppct.ru (Postfix) with ESMTP id 6FDD41C2E5C
+	for <netfs@lists.linux.dev>; Sat,  3 Oct 2026 13:11:33 +0300 (MSK)
+Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
+	reason="pass (just generated, assumed good)" header.d=nppct.ru
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
+	content-transfer-encoding:mime-version:x-mailer:message-id:date
+	:date:subject:subject:to:from:from; s=dkim; t=1791022281; x=
+	1791886282; bh=p6wAteknLTFMLbws31q1Ibfxgf0w34kWpjIk5elFF00=; b=Z
+	jmyFTEZQ/G79vYh01kR6kapoSpijbGFGr7mLVeieSPLKaM/AN7y1Ig8Ga0mzSyBp
+	sOkavkoyJ8DfaWc22g8WdZsyYsaFbk1asSBBGADa16MXSY1+/cwbgiwuWIkdDnyI
+	FcbziJs8ZbPDbUGG6R9Qf1QktVnji8ZaFwwV0CZz+4=
+X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
+Received: from mail.nppct.ru ([127.0.0.1])
+	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id fT0-FT1F4H9R for <netfs@lists.linux.dev>;
+	Sat,  3 Oct 2026 13:11:21 +0300 (MSK)
+Received: from onyx3 (109-252-38-116.nat.spd-mgts.ru [109.252.38.116])
+	by mail.nppct.ru (Postfix) with ESMTPSA id 5CCC91C2304;
+	Sat,  3 Oct 2026 13:11:19 +0300 (MSK)
+From: Mikhail Mirkin <mmirkin@nppct.ru>
+To: stable@vger.kernel.org
+Cc: dhowells@redhat.com,
+	sfrench@samba.org,
 	linux-cifs@vger.kernel.org,
+	Mikhail Mirkin <mmirkin@nppct.ru>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Shyam Prasad N <sprasad@microsoft.com>,
 	netfs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: cachefiles: Fix unset error when calling netfs_prepare_write_failed()
-Date: Fri,  2 Oct 2026 12:08:07 +0200
-Message-ID: <20261002-zirkulation-serienweise-rodeln-6b433932eec4@brauner>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <3227746.1790772118@warthog.procyon.org.uk>
-References: <3227746.1790772118@warthog.procyon.org.uk>
+	lvc-project@linuxtesting.org,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12.y v2] cifs: Fix handling of a beyond-EOF DIO/unbuffered read over SMB1
+Date: Sat,  3 Oct 2026 13:09:40 +0300
+Message-ID: <20261003101004.4162-1-mmirkin@nppct.ru>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1137; i=brauner@kernel.org; h=from:subject:message-id; bh=37qcnODRwYw7ndXTbNaEj8b8seuguwmGkztJcQl0AaQ=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTtb+q49jVsw66SHWJc91bvOukql+s4v/tj9J+36c6fT +TNa707raOUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAiV5gZGZ7uCtP549bF6vpr h6n8nb25k742dP47otV5XdQqY/d0vi6Gf6YCOt+jA+e8DAoy2j/70PuJLkGPbq14+v6MzqMS39B Pt/gA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-On Wed, 30 Sep 2026 13:41:58 +0100, David Howells wrote:
-> Fix cachefiles to set subreq->error before calling
-> netfs_prepare_write_failed() otherwise netfslib will try (and fail) to
-> retry the subrequest (it shouldn't retry writes to the cache, but rather
-> abandon them).  This causes it to hang waiting for the request to complete.
+From: David Howells <dhowells@redhat.com>
 
-Applied to the vfs-7.4.netfs branch of the vfs/vfs.git tree.
-Patches in the vfs-7.4.netfs branch should appear in linux-next soon.
+commit 9d85ac939d52e93d80efb01a299c6f0bedb30487 upstream.
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+If a DIO read or an unbuffered read request extends beyond the EOF, the
+server will return a short read and a status code indicating that EOF was
+hit, which gets translated to -ENODATA.  Note that the client does not cap
+the request at i_size, but asks for the amount requested in case there's a
+race on the server with a third party.
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+Now, on the client side, the request will get split into multiple
+subrequests if rsize is smaller than the full request size.  A subrequest
+that starts before or at the EOF and returns short data up to the EOF will
+be correctly handled, with the NETFS_SREQ_HIT_EOF flag being set,
+indicating to netfslib that we can't read more.
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+If a subrequest, however, starts after the EOF and not at it, HIT_EOF will
+not be flagged, its error will be set to -ENODATA and it will be abandoned.
+This will cause the request as a whole to fail with -ENODATA.
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs-7.4.netfs
+Fix this by setting NETFS_SREQ_HIT_EOF on any subrequest that lies beyond
+the EOF marker.
 
-[1/1] cachefiles: Fix unset error when calling netfs_prepare_write_failed()
-      https://git.kernel.org/vfs/vfs/c/04b0415fa18a
+This can be reproduced by mounting with "cache=none,sign,vers=1.0" and
+doing a read of a file that's significantly bigger than the size of the
+file (e.g. attempting to read 64KiB from a 16KiB file).
+
+Fixes: a68c74865f51 ("cifs: Fix SMB1 readv/writev callback in the same way as SMB2/3")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+cc: Shyam Prasad N <sprasad@microsoft.com>
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+cc: lvc-project@linuxtesting.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[Mikhail Mirkin: Adopted for 6.12]
+Signed-off-by: Mikhail Mirkin <mmirkin@nppct.ru>
+---
+ fs/smb/client/cifssmb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
+index 01c78d9e7..11d408d1a 100644
+--- a/fs/smb/client/cifssmb.c
++++ b/fs/smb/client/cifssmb.c
+@@ -1321,7 +1321,7 @@ cifs_readv_callback(struct mid_q_entry *mid)
+ 	} else {
+ 		size_t trans = rdata->subreq.transferred + rdata->got_bytes;
+ 		if (trans < rdata->subreq.len &&
+-		    rdata->subreq.start + trans == ictx->remote_i_size) {
++		    rdata->subreq.start + trans >= ictx->remote_i_size) {
+ 			__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
+ 			rdata->result = 0;
+ 		}
+-- 
+2.50.1
+
