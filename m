@@ -1,45 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B502B4A2055
-	for <netfs@lists.linux.dev>; Tue,  6 Oct 2026 21:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B399E3655D8
+	for <netfs@lists.linux.dev>; Tue,  6 Oct 2026 21:00:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791320408; cv=none; b=lBVRBSWed7CRAz4MO0U4Id4BX8tsRcu+gIYfLO5pVI1g2dokPBZ/7+8yiSoVxTdl/9IlYtjGf+KkU1RieLz01VnEykg1KfIICYs7oqaNwOqvYdI/WcP2MZTrEMI3kkboaSZtiWGNTJWml1NmhPxn3FB4yWBVy01mZt3gNf1Ul2E=
+	t=1791320419; cv=none; b=f06ibFNzAuuZEFd2pq7qlWoWyIsWB7UNwkTv7mFLPi6+hsCC1MP3kOL6YevIkYfohYhiV3+SfdqbNz+7IJHLf0zwVJ72sNJTwRo+1ys+vdydr4b9BrMENM8qIQ1x6lA2dkL94y5y8MuRDGH+p05nCRUB480Qi+MLhnXdmK0ub80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791320408; c=relaxed/simple;
-	bh=H2FmTP0VWiKuvmUZWBnJoF4rBt8lms4tNq1kNCnaFDA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=YIiOiJXvpe71+dYcy88Ibay9qzhPmtlw8QlL6TAlaspsBy80VH1xaWQoyvdIT/38DWGv7voyNWS+bbzUeN7n/MR49t2zrzmLEfRnP9I2jQUX8fJxUOfzkQ90ODLLWGhlP9W9BYv6lIXfh98DZHhxeD7MLBZnu6ZME55Cmt+JGAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=glGCCDdD; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1791320419; c=relaxed/simple;
+	bh=51Hnywow9m+EfGeBXFdD8++qMPUJ5/apgW0WCxsmTGE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:content-type; b=vFe8JElzDtsyG1BGoobvXt3ykV12643iSuPXYxSL54Qi6qPpZB/FX9/nu0mMkhstZZhxQgFQNvOlv4aS+tXeFf12unNbX2U2C0R27IX+hUopXlrlMZpU95UpeAZUY5BKRzdTZd/4YXnS/ubA4xV3pfiIWmJVwpWJhw76h0TRQOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=d3OfYobG; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="glGCCDdD"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="d3OfYobG"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791320405;
+	s=mimecast20190719; t=1791320415;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=3UTBequP+2ece8Flw/LLZvFi64Wq0UqNMDxKFvdMi4Q=;
-	b=glGCCDdDEv5yTidkR72rg+nBtNjd1FoQ+9HqgPFAl6h1NUXxCzDvJ0O7YZAJKfSN0Zkmol
-	orIzRCQE6s2FaBtNxJ5RlEbDdE4u0Q0pCE8taVf1kwD8ZeiOhGYCqZaZCo1jV8JOp7DpZd
-	diGNNiUrsmNJ80L5gowlnzkyyTNXAX4=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qex3q47o/llFp5icyZaFvcldeQl44QEXS98v350pNx0=;
+	b=d3OfYobGV1XvYTuLiX8Zxc/GnUvmmjgBEALeFoxK63+KFsyfJKn9msI4VM8kyTLel9g3yZ
+	/yfA2Gnxc+pPIFe4SofD81Ffexa8CwU1ML+i48S0x7L0JO4cJSXbNMjorIw31pbRnJ6ZlA
+	AVMWvhSep3ShPGdGwWkFc7USMO+I/WE=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-439-OEPpxjTLNkucTpIWnjS7-A-1; Tue,
- 06 Oct 2026 17:00:02 -0400
-X-MC-Unique: OEPpxjTLNkucTpIWnjS7-A-1
-X-Mimecast-MFC-AGG-ID: OEPpxjTLNkucTpIWnjS7-A_1791320400
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-63-pA8JMPwMPvuf_UZ79wbw9A-1; Tue,
+ 6 Oct 2026 21:00:11 +0000
+X-MC-Unique: pA8JMPwMPvuf_UZ79wbw9A-1
+X-Mimecast-MFC-AGG-ID: pA8JMPwMPvuf_UZ79wbw9A_1791320408
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5CD3F1977303;
-	Tue,  6 Oct 2026 20:59:59 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 609491977597;
+	Tue,  6 Oct 2026 21:00:07 +0000 (UTC)
 Received: from warthog.com (unknown [10.44.32.90])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 16CA1180058D;
-	Tue,  6 Oct 2026 20:59:50 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2A8561800581;
+	Tue,  6 Oct 2026 21:00:00 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>
 Cc: David Howells <dhowells@redhat.com>,
@@ -58,10 +60,13 @@ Cc: David Howells <dhowells@redhat.com>,
 	ceph-devel@vger.kernel.org,
 	v9fs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v13 0/8] netfs: Use a bvecq chain position abstraction
-Date: Tue,  6 Oct 2026 21:59:36 +0100
-Message-ID: <20261006205947.608356-1-dhowells@redhat.com>
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v13 1/8] mm: Make readahead store folio count in readahead_control
+Date: Tue,  6 Oct 2026 21:59:37 +0100
+Message-ID: <20261006205947.608356-2-dhowells@redhat.com>
+In-Reply-To: <20261006205947.608356-1-dhowells@redhat.com>
+References: <20261006205947.608356-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
@@ -69,95 +74,99 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: buzLRdWNsVjq7EtPh4WTsRRpY_75MlqG9NRVCyVWBwA_1791320400
+X-Mimecast-MFC-PROC-ID: u-i_MN8b9sY833zHircyW1_RHwVEgRB1WCqap6ad0C0_1791320408
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Hi Christian,
+Make readahead store folio count in readahead_control so that the
+filesystem can know in advance how many folios it needs to keep track of.
 
-Could you pull these patches please into your vfs-7.4.netfs branch?  This
-is the fourth of five batches.  The primary purpose of this batch is to add
-an abstraction for a position in a bvecq chain and make use of it.
+This is cleared by read_pages() in case it is called from a loop.
 
-With that in mind, this patchset does the following:
+The count is accessed by the filesystem with readahead_folio_count().
 
- (1) Add a struct, bvecq_pos, to refer to a position in a bvecq chain.
-     This is a tuple of ( bvecq pointer, slot and offset } and the position
-     struct holds (for now) a ref on the bvecq pointed to.
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+cc: Matthew Wilcox <willy@infradead.org>
+cc: netfs@lists.linux.dev
+cc: linux-mm@kvack.org
+cc: linux-fsdevel@vger.kernel.org
+---
+ include/linux/pagemap.h | 10 ++++++++++
+ mm/readahead.c          |  5 +++++
+ 2 files changed, 15 insertions(+)
 
- (2) Change unbuffered/DIO to extract the supplied user buffers into a
-     bvecq chain rather than a bio_vec[] up front.  This means that
-     netfslib then uses bvecq chains for everything.
-
- (3) Add a folio count to the readahead_control struct and then makes
-     readahead pre-create its buffer using that count to determine how many
-     slots are required.
-
- (4) Change netfslib to use the bvecq_pos struct to keep track of the whole
-     request buffer and various points in it where loading, dispatch and
-     collection are taking place and to also keep track of the slice given
-     to each subrequest.
-
-This was split from v11 of a larger netfslib series[1].
-
-The patches can also be found here:
-
-	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-next-4
-
-Thanks,
-David
-
-Changes
-=======
-ver #13)
-- Rebased on -rc6 to account for some conflicting fixes.
-- Fixed a bug in netfs_prepare_read_iterator() where comparison was being
-  made against the wrong thing when limiting a subreq's size.
-
-ver #12)
-- Split from v11 of "netfs: Keep track of folios in a segmented bio_vec[]
-  chain"[1]
-
-[1] https://lore.kernel.org/r/20260902173350.3468672-1-dhowells@redhat.com/
-
-David Howells (8):
-  mm: Make readahead store folio count in readahead_control
-  netfs: Add a function to extract from an iter into a bvecq
-  netfs: Make unbuffered/DIO read and write use bvecq
-  netfs: Add some tools for managing a position in a bvecq chain
-  netfs: Provide a func to load the readahead buffers into a bvecq chain
-  netfs: Use bvecq_pos to hold the buffer positions
-  netfs: Remove the rolling_buffer implementation
-  netfs: Remove netfs_extract_user_iter()
-
- fs/afs/dir.c                   |   5 +-
- fs/afs/symlink.c               |   6 +-
- fs/cachefiles/io.c             |  12 -
- fs/netfs/Makefile              |   1 -
- fs/netfs/buffered_read.c       | 178 ++++++++-------
- fs/netfs/bvecq.c               | 310 ++++++++++++++++++++++++++
- fs/netfs/direct_read.c         |  77 +++----
- fs/netfs/direct_write.c        |  67 +++---
- fs/netfs/internal.h            |   4 +-
- fs/netfs/iterator.c            | 392 ++++++++++-----------------------
- fs/netfs/misc.c                |  18 --
- fs/netfs/objects.c             |  16 +-
- fs/netfs/read_collect.c        | 106 +++++----
- fs/netfs/read_pgpriv2.c        |  87 +++++---
- fs/netfs/read_retry.c          |  86 ++++----
- fs/netfs/read_single.c         |  16 +-
- fs/netfs/rolling_buffer.c      | 182 ---------------
- fs/netfs/write_collect.c       |  55 ++---
- fs/netfs/write_issue.c         | 166 +++++++++-----
- fs/netfs/write_retry.c         |  61 +++--
- include/linux/bvecq.h          | 184 ++++++++++++++++
- include/linux/netfs.h          |  25 ++-
- include/linux/pagemap.h        |  10 +
- include/linux/rolling_buffer.h |  47 ----
- include/trace/events/netfs.h   |  32 ++-
- mm/readahead.c                 |   5 +
- 26 files changed, 1208 insertions(+), 940 deletions(-)
- delete mode 100644 fs/netfs/rolling_buffer.c
- delete mode 100644 include/linux/rolling_buffer.h
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 0adfa6605653..b7154b81d0d7 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -1411,6 +1411,7 @@ struct readahead_control {
+ 	struct file_ra_state *ra;
+ /* private: use the readahead_* accessors instead */
+ 	pgoff_t _index;
++	unsigned int _nr_folios;
+ 	unsigned int _nr_pages;
+ 	unsigned int _batch_count;
+ 	bool dropbehind;
+@@ -1590,6 +1591,15 @@ static inline size_t readahead_batch_length(const struct readahead_control *rac)
+ 	return rac->_batch_count * PAGE_SIZE;
+ }
+ 
++/**
++ * readahead_folio_count - Get the number of folios in this readahead request.
++ * @rac: The readahead request.
++ */
++static inline unsigned int readahead_folio_count(const struct readahead_control *rac)
++{
++	return rac->_nr_folios;
++}
++
+ static inline unsigned long dir_pages(const struct inode *inode)
+ {
+ 	return (unsigned long)(inode->i_size + PAGE_SIZE - 1) >>
+diff --git a/mm/readahead.c b/mm/readahead.c
+index 6e5563290287..196542fb1c93 100644
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -188,6 +188,7 @@ static void read_pages(struct readahead_control *rac)
+ 	if (unlikely(rac->_workingset))
+ 		psi_memstall_leave(&rac->_pflags);
+ 	rac->_workingset = false;
++	rac->_nr_folios = 0;
+ 
+ 	BUG_ON(readahead_count(rac));
+ }
+@@ -303,6 +304,7 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
+ 		if (i == mark)
+ 			folio_set_readahead(folio);
+ 		ractl->_workingset |= folio_test_workingset(folio);
++		ractl->_nr_folios++;
+ 		ractl->_nr_pages += min_nrpages;
+ 		i += min_nrpages;
+ 	}
+@@ -473,6 +475,7 @@ static inline int ra_alloc_folio(struct readahead_control *ractl, pgoff_t index,
+ 		return err;
+ 	}
+ 
++	ractl->_nr_folios++;
+ 	ractl->_nr_pages += 1UL << order;
+ 	ractl->_workingset |= folio_test_workingset(folio);
+ 	return 0;
+@@ -822,6 +825,7 @@ void readahead_expand(struct readahead_control *ractl,
+ 			ractl->_workingset = true;
+ 			psi_memstall_enter(&ractl->_pflags);
+ 		}
++		ractl->_nr_folios++;
+ 		ractl->_nr_pages += min_nrpages;
+ 		ractl->_index = folio->index;
+ 	}
+@@ -851,6 +855,7 @@ void readahead_expand(struct readahead_control *ractl,
+ 			ractl->_workingset = true;
+ 			psi_memstall_enter(&ractl->_pflags);
+ 		}
++		ractl->_nr_folios++;
+ 		ractl->_nr_pages += min_nrpages;
+ 		if (ra) {
+ 			ra->size += min_nrpages;
 
