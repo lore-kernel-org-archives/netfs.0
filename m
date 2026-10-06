@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B399E3655D8
-	for <netfs@lists.linux.dev>; Tue,  6 Oct 2026 21:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992674AAC5F
+	for <netfs@lists.linux.dev>; Tue,  6 Oct 2026 21:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791320419; cv=none; b=f06ibFNzAuuZEFd2pq7qlWoWyIsWB7UNwkTv7mFLPi6+hsCC1MP3kOL6YevIkYfohYhiV3+SfdqbNz+7IJHLf0zwVJ72sNJTwRo+1ys+vdydr4b9BrMENM8qIQ1x6lA2dkL94y5y8MuRDGH+p05nCRUB480Qi+MLhnXdmK0ub80=
+	t=1791320428; cv=none; b=cbPdXPjxjZd0HXUaY9AU9gmGRRvJ1tXjmZUxpVt0Wrv/pioS+yn++7j+YmKFplmpBjlTg80qBdIsBn13ecKSh1JgUmVtUi8ts2DpCa9xYbUVh8FVKqXWi9qVnbkcVBwjGHbhzEpBatw2t39WAakkZ0icBpF59AHaKFhg12dIFQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791320419; c=relaxed/simple;
-	bh=51Hnywow9m+EfGeBXFdD8++qMPUJ5/apgW0WCxsmTGE=;
+	s=arc-20240116; t=1791320428; c=relaxed/simple;
+	bh=cptvd5mabcxyti5oUBaHwz/S+uNtiEIBIDk9E73NSlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=vFe8JElzDtsyG1BGoobvXt3ykV12643iSuPXYxSL54Qi6qPpZB/FX9/nu0mMkhstZZhxQgFQNvOlv4aS+tXeFf12unNbX2U2C0R27IX+hUopXlrlMZpU95UpeAZUY5BKRzdTZd/4YXnS/ubA4xV3pfiIWmJVwpWJhw76h0TRQOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=d3OfYobG; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:content-type; b=Xrm1fBfQ80wWaXmitQC0klWYWdxXf+2Aefrw7pto6f5Hm40II54KYxP48sAKfZnd6DsMvsH09LxLbCz4c/8ra+jS5Mrn1hzWdrgftlwXpYzwZW+0kjK83D0ec+zqeASPFUqxUe4OVDQTR7RTNQVaNfsofw+REI0cKcAzmYruWPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L7s2kEeq; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="d3OfYobG"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L7s2kEeq"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791320415;
+	s=mimecast20190719; t=1791320423;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qex3q47o/llFp5icyZaFvcldeQl44QEXS98v350pNx0=;
-	b=d3OfYobGV1XvYTuLiX8Zxc/GnUvmmjgBEALeFoxK63+KFsyfJKn9msI4VM8kyTLel9g3yZ
-	/yfA2Gnxc+pPIFe4SofD81Ffexa8CwU1ML+i48S0x7L0JO4cJSXbNMjorIw31pbRnJ6ZlA
-	AVMWvhSep3ShPGdGwWkFc7USMO+I/WE=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=XeSKuOFEYwWRCiDuJmkjSu6vaW5sFmjPYYH6PVTYfG8=;
+	b=L7s2kEeqlA2a7AH7azEzojzfOk6G+vce0iQjTCZBmLG1avO34luerdVnG5QLBD01wNVHbt
+	305O0gFQaOmFhQ6/kArpA0gLt+8H37o9S/yb8klJHc3V1x5BGWseL59q+/sTeFnWv2/u1J
+	JLRq7L6YmwXJVOWogFzEY2fprFajZwQ=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-63-pA8JMPwMPvuf_UZ79wbw9A-1; Tue,
- 6 Oct 2026 21:00:11 +0000
-X-MC-Unique: pA8JMPwMPvuf_UZ79wbw9A-1
-X-Mimecast-MFC-AGG-ID: pA8JMPwMPvuf_UZ79wbw9A_1791320408
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-679-CSEyqgbsOZiAv_3cTzs8yA-1; Tue,
+ 06 Oct 2026 17:00:17 -0400
+X-MC-Unique: CSEyqgbsOZiAv_3cTzs8yA-1
+X-Mimecast-MFC-AGG-ID: CSEyqgbsOZiAv_3cTzs8yA_1791320415
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 609491977597;
-	Tue,  6 Oct 2026 21:00:07 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2BB6E1865FDE;
+	Tue,  6 Oct 2026 21:00:14 +0000 (UTC)
 Received: from warthog.com (unknown [10.44.32.90])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2A8561800581;
-	Tue,  6 Oct 2026 21:00:00 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0DA971800586;
+	Tue,  6 Oct 2026 21:00:08 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>
 Cc: David Howells <dhowells@redhat.com>,
@@ -60,11 +60,10 @@ Cc: David Howells <dhowells@redhat.com>,
 	ceph-devel@vger.kernel.org,
 	v9fs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v13 1/8] mm: Make readahead store folio count in readahead_control
-Date: Tue,  6 Oct 2026 21:59:37 +0100
-Message-ID: <20261006205947.608356-2-dhowells@redhat.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v13 2/8] netfs: Add a function to extract from an iter into a bvecq
+Date: Tue,  6 Oct 2026 21:59:38 +0100
+Message-ID: <20261006205947.608356-3-dhowells@redhat.com>
 In-Reply-To: <20261006205947.608356-1-dhowells@redhat.com>
 References: <20261006205947.608356-1-dhowells@redhat.com>
 Precedence: bulk
@@ -74,99 +73,190 @@ List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: u-i_MN8b9sY833zHircyW1_RHwVEgRB1WCqap6ad0C0_1791320408
+X-Mimecast-MFC-PROC-ID: n0x8KYtKd_yzfUHWTUvKxz9LjybL6l2vdXsTTUkyBWA_1791320415
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Make readahead store folio count in readahead_control so that the
-filesystem can know in advance how many folios it needs to keep track of.
-
-This is cleared by read_pages() in case it is called from a loop.
-
-The count is accessed by the filesystem with readahead_folio_count().
+Add a function to extract a slice of data from an iterator of any type into
+a bvec queue chain.
 
 Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Reviewed-by: Paulo Alcantara <pc@manguebit.org>
 cc: Matthew Wilcox <willy@infradead.org>
 cc: netfs@lists.linux.dev
-cc: linux-mm@kvack.org
 cc: linux-fsdevel@vger.kernel.org
 ---
- include/linux/pagemap.h | 10 ++++++++++
- mm/readahead.c          |  5 +++++
- 2 files changed, 15 insertions(+)
+ fs/netfs/iterator.c   | 143 ++++++++++++++++++++++++++++++++++++++++++
+ include/linux/netfs.h |   3 +
+ 2 files changed, 146 insertions(+)
 
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 0adfa6605653..b7154b81d0d7 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -1411,6 +1411,7 @@ struct readahead_control {
- 	struct file_ra_state *ra;
- /* private: use the readahead_* accessors instead */
- 	pgoff_t _index;
-+	unsigned int _nr_folios;
- 	unsigned int _nr_pages;
- 	unsigned int _batch_count;
- 	bool dropbehind;
-@@ -1590,6 +1591,15 @@ static inline size_t readahead_batch_length(const struct readahead_control *rac)
- 	return rac->_batch_count * PAGE_SIZE;
- }
+diff --git a/fs/netfs/iterator.c b/fs/netfs/iterator.c
+index 31748526d568..55fd2d3b3b29 100644
+--- a/fs/netfs/iterator.c
++++ b/fs/netfs/iterator.c
+@@ -13,6 +13,149 @@
+ #include <linux/netfs.h>
+ #include "internal.h"
  
 +/**
-+ * readahead_folio_count - Get the number of folios in this readahead request.
-+ * @rac: The readahead request.
++ * netfs_extract_iter - Extract virtually contiguous pages from an iterator into a bvecq
++ * @orig: The original iterator
++ * @max_len: Maximum number of bytes to extract
++ * @max_pages: Maximum number of pages to extract
++ * @_bvecq_head: Where to cache the bvec queue
++ * @extraction_flags: Flags to qualify the request
++ * @gfp: Allocation mode for bvecq structs.
++ *
++ * Extract virtually contiguous page fragments from the source iterator up to
++ * the given maxima and build bvec queue that refers to all of those bits.
++ * This allows the original iterator to disposed of.
++ *
++ * @extraction_flags can have ITER_ALLOW_P2PDMA set to request peer-to-peer DMA
++ * be allowed on the pages extracted.
++ *
++ * On success or partial success, the amount of data in the bvec is returned,
++ * the original iterator will have been advanced by the amount extracted.
++ *
++ * If an error occurs and no pages are extracted, an error will be returned and
++ * any allocated bvecq will be freed.  If there is no data to be extracted (or
++ * @max_len or @max_pages are zero), a single empty bvecq will be returned.
++ *
++ * The bvecq segments are marked with indications on how to get clean up the
++ * extracted fragments.
 + */
-+static inline unsigned int readahead_folio_count(const struct readahead_control *rac)
++ssize_t netfs_extract_iter(struct iov_iter *orig, size_t max_len, size_t max_pages,
++			   struct bvecq **_bvecq_head,
++			   iov_iter_extraction_t extraction_flags, gfp_t gfp)
 +{
-+	return rac->_nr_folios;
-+}
++	struct bvecq *bq_tail = NULL, *bq;
++	ssize_t ret = 0;
++	size_t extracted = 0;
 +
- static inline unsigned long dir_pages(const struct inode *inode)
- {
- 	return (unsigned long)(inode->i_size + PAGE_SIZE - 1) >>
-diff --git a/mm/readahead.c b/mm/readahead.c
-index 6e5563290287..196542fb1c93 100644
---- a/mm/readahead.c
-+++ b/mm/readahead.c
-@@ -188,6 +188,7 @@ static void read_pages(struct readahead_control *rac)
- 	if (unlikely(rac->_workingset))
- 		psi_memstall_leave(&rac->_pflags);
- 	rac->_workingset = false;
-+	rac->_nr_folios = 0;
- 
- 	BUG_ON(readahead_count(rac));
- }
-@@ -303,6 +304,7 @@ void page_cache_ra_unbounded(struct readahead_control *ractl,
- 		if (i == mark)
- 			folio_set_readahead(folio);
- 		ractl->_workingset |= folio_test_workingset(folio);
-+		ractl->_nr_folios++;
- 		ractl->_nr_pages += min_nrpages;
- 		i += min_nrpages;
- 	}
-@@ -473,6 +475,7 @@ static inline int ra_alloc_folio(struct readahead_control *ractl, pgoff_t index,
- 		return err;
- 	}
- 
-+	ractl->_nr_folios++;
- 	ractl->_nr_pages += 1UL << order;
- 	ractl->_workingset |= folio_test_workingset(folio);
- 	return 0;
-@@ -822,6 +825,7 @@ void readahead_expand(struct readahead_control *ractl,
- 			ractl->_workingset = true;
- 			psi_memstall_enter(&ractl->_pflags);
- 		}
-+		ractl->_nr_folios++;
- 		ractl->_nr_pages += min_nrpages;
- 		ractl->_index = folio->index;
- 	}
-@@ -851,6 +855,7 @@ void readahead_expand(struct readahead_control *ractl,
- 			ractl->_workingset = true;
- 			psi_memstall_enter(&ractl->_pflags);
- 		}
-+		ractl->_nr_folios++;
- 		ractl->_nr_pages += min_nrpages;
- 		if (ra) {
- 			ra->size += min_nrpages;
++	_enter("{%u,%zx},%zx", orig->iter_type, orig->count, max_len);
++
++	*_bvecq_head = NULL;
++	if (max_len > orig->count)
++		max_len = orig->count;
++	if (!max_len || !max_pages)
++		goto alloc_empty;
++	if (WARN_ON_ONCE(max_pages > INT_MAX))
++		max_pages = INT_MAX; /* Protect iov_iter_npages(). */
++
++	max_pages = iov_iter_npages(orig, max_pages);
++	if (!max_pages)
++		goto alloc_empty;
++
++	do {
++		bq = bvecq_alloc_one(max_pages, gfp, false);
++		if (!bq) {
++			ret = -ENOMEM;
++			break;
++		}
++		if (user_backed_iter(orig))
++			bq->mem_type = iov_iter_extract_will_pin(orig) ?
++				BVECQ_MEM_GUP : BVECQ_MEM_PAGECACHE;
++
++		if (bq_tail)
++			bvecq_append(bq_tail, bq);
++		else
++			*_bvecq_head = bq;
++		bq_tail = bq;
++
++		if (max_len == 0)
++			break;
++
++		struct bio_vec *bv = bq->bv;
++		unsigned int slot = 0;
++		do {
++			struct page **pages;
++			ssize_t got;
++			size_t offset;
++			size_t space = bq->max_slots - slot;
++			size_t bv_size = array_size(bq->max_slots, sizeof(*bv));
++			size_t pg_size = array_size(space, sizeof(*pages));
++
++			/* Put the page list at the end of the bvec list
++			 * storage.  bvec elements are larger than page
++			 * pointers, so as long as we work 0->last, we should
++			 * be fine.
++			 */
++			pages = (void *)bv + bv_size - pg_size;
++
++			got = iov_iter_extract_pages(orig, &pages, max_len,
++						     min(space, max_pages),
++						     extraction_flags, &offset);
++			if (got < 0) {
++				ret = got;
++				goto out;
++			}
++
++			if (got == 0) {
++				pr_err("extract_pages gave nothing from %zx, %zx\n",
++				       extracted, max_len);
++				ret = -EIO;
++				goto out;
++			}
++
++			if (WARN(got > max_len,
++				 "%s: extract_pages overrun %zx > %zx bytes\n",
++				 __func__, got, max_len)) {
++				ret = -EIO;
++				goto out;
++			}
++
++			extracted += got;
++			max_len -= got;
++
++			do {
++				size_t len = umin(got, PAGE_SIZE - offset);
++
++				BUG_ON(slot >= bq->max_slots);
++
++				bvec_set_page(&bq->bv[slot], *pages++, len, offset);
++				slot++;
++				max_pages--;
++				got -= len;
++				offset = 0;
++			} while (got > 0);
++
++			bvecq_filled_to(bq, slot);
++		} while (max_len > 0 && max_pages > 0 && !bvecq_is_full(bq));
++
++	} while (max_len > 0 && max_pages > 0);
++
++out:
++	if (extracted || ret == 0)
++		return extracted;
++	bvecq_put(*_bvecq_head);
++	*_bvecq_head = NULL;
++	return ret;
++
++alloc_empty:
++	bq = bvecq_alloc_one(1, gfp, false);
++	if (!bq)
++		return -ENOMEM;
++	*_bvecq_head = bq;
++	return 0;
++
++}
++EXPORT_SYMBOL_GPL(netfs_extract_iter);
++
+ /**
+  * netfs_extract_user_iter - Extract the pages from a user iterator into a bvec
+  * @orig: The original iterator
+diff --git a/include/linux/netfs.h b/include/linux/netfs.h
+index b0dd92d12a97..aca192bc5675 100644
+--- a/include/linux/netfs.h
++++ b/include/linux/netfs.h
+@@ -454,6 +454,9 @@ void netfs_get_subrequest(struct netfs_io_subrequest *subreq,
+ 			  enum netfs_sreq_ref_trace what);
+ void netfs_put_subrequest(struct netfs_io_subrequest *subreq,
+ 			  enum netfs_sreq_ref_trace what);
++ssize_t netfs_extract_iter(struct iov_iter *orig, size_t max_len, size_t max_pages,
++			   struct bvecq **_bvecq_head,
++			   iov_iter_extraction_t extraction_flags, gfp_t gfp);
+ ssize_t netfs_extract_user_iter(struct iov_iter *orig, size_t orig_len,
+ 				struct iov_iter *new,
+ 				iov_iter_extraction_t extraction_flags);
 
