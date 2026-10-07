@@ -1,415 +1,123 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3314ACC9B
-	for <netfs@lists.linux.dev>; Tue,  6 Oct 2026 21:01:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119253CFF4C;
+	Wed,  7 Oct 2026 08:42:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791320468; cv=none; b=mpyNn82hkPhUMuQ2MgPp0k4U50Q/WO9J4HL+UmKX/Cvxj7YTkYoVhq1IV2Ov33jDY/9AmM7PWYxpNx4sPykD2OUyjnSEz7017bUC3s9m+RbXX0rO0MvCbyKTG1e1qovwhvkKsTdwItCmgDz653Bg5CVLEt0SKxcA6cwM6B52VLk=
+	t=1791362552; cv=none; b=RKbyd+pDQ+/4CDCuIvJqPxBb0TNd3nZPsTx++90tPnkZvdNlwwIzWuG7bdieCyleyXFzVApaJzHMyfGnmBG83S4RWh7jHIk9b7TuwW5br23ILGoby1JWHd+nZymy2OPmfhv1PmaymTv6MXzJgl84iRY5e9cHcYl6rYejonR1yHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791320468; c=relaxed/simple;
-	bh=BuB05dLO8R1MDAlcGvQSkpvMmrQHXxGTjrTIheD+rCE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=W1IyMzk+OInyoVcVSkkcuM4scyk6U3JTMvdSMOImx8JMYXX8RUOqfo+91kQYnzrCPcMzLCLVSKuoUGLa4X+bEkGl930nq8VBGKn2TYRSB51fU6WTFuQfKX8JLJ78IKYokFrX4RIvVMnqt5v9jAJCZ5sBBdMInHVo/xN8KfUD05Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=F7xj18Yc; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1791362552; c=relaxed/simple;
+	bh=cRsF+NLNACe3s8wVkY3WEoFqpRhxhdQW/vixnLoBn58=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VbfYuTu3r+IWBVAXl6TokdY+3Qfi+F+3NC/YFeXCi82q0kwBITohwDbB7v6ZtYcq44b2EG3OdFTeFjKFO615FmOcy47by2NgLxZ//dHDGxys/Xt0+z2Ninte7y6ZYNYlyzxpDaRvOsyUtBHEBoduofUxyeQQO6iC+KPUBIQO4ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jRmzY7qN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="F7xj18Yc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791320464;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GjpW1kD2q+/wJ4RQKo2FSmdPF3ULn0pnNFHUgcdDTCE=;
-	b=F7xj18YcB8nQzdH+LEwe3Cy4fiT7aGa2xzQq3tXMKX/cEGtAM4DNJj8nI5JFIa3PaOFrsy
-	3qLnwuctmGMdUX0W7TtfVceWU9H5scF9/v1kdF5xv9cnmcEpqEMKFf5JvIe++NpkH9+KRh
-	C9zy/k92CM9QfoCOzPtEEBpMGkaJC0U=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-384-HDCNzCDjPImVdHuzgW3QHQ-1; Tue,
- 06 Oct 2026 17:00:58 -0400
-X-MC-Unique: HDCNzCDjPImVdHuzgW3QHQ-1
-X-Mimecast-MFC-AGG-ID: HDCNzCDjPImVdHuzgW3QHQ_1791320456
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E36EC1869D96;
-	Tue,  6 Oct 2026 21:00:55 +0000 (UTC)
-Received: from warthog.com (unknown [10.44.32.90])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1B41C1800352;
-	Tue,  6 Oct 2026 21:00:50 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>
-Cc: David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Stefan Metzmacher <metze@samba.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	v9fs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v13 8/8] netfs: Remove netfs_extract_user_iter()
-Date: Tue,  6 Oct 2026 21:59:44 +0100
-Message-ID: <20261006205947.608356-9-dhowells@redhat.com>
-In-Reply-To: <20261006205947.608356-1-dhowells@redhat.com>
-References: <20261006205947.608356-1-dhowells@redhat.com>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jRmzY7qN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21BA81F0089B;
+	Wed,  7 Oct 2026 08:42:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1791362550;
+	bh=+EtyAFIfKbHUPY3d568LrwzfXzV9jhoOYO0OFwglHPM=;
+	h=Subject:To:Cc:From:Date;
+	b=jRmzY7qNR8WJVhkXzQ+9mIoYwtuxzE/VWsWUqUmhU9EJQo6nNjLFMJW4swmFVdilR
+	 mOp/uX+hc1KrSW89QzArJS73hbocqoPS6km11oqoDOp6hkA3SEDRdAeUgmsmOydSAO
+	 sRGlgl8OsjU7xRdlpgU7dA5QwFwVsvUEkYVsYZT4=
+Subject: Patch "cifs: Fix handling of a beyond-EOF DIO/unbuffered read over SMB1" has been added to the 6.12-stable tree
+To: dhowells@redhat.com,gregkh@linuxfoundation.org,mmirkin@nppct.ru,netfs@lists.linux.dev,pc@manguebit.org,sprasad@microsoft.com,stfrench@microsoft.com
+Cc: <stable-commits@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Wed, 07 Oct 2026 10:41:18 +0200
+Message-ID: <2026100718-protrude-reassign-9d93@gregkh>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: nF_-WHKKTLZe6XoEJQZHjyWh7JCp0D611gPlZ-W0H_M_1791320456
-X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+X-stable: commit
+X-Patchwork-Hint: ignore
 
-Remove netfs_extract_user_iter() as it has been replaced with
-netfs_extract_iter().
 
+This is a note to let you know that I've just added the patch titled
+
+    cifs: Fix handling of a beyond-EOF DIO/unbuffered read over SMB1
+
+to the 6.12-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+
+The filename of the patch is:
+     cifs-fix-handling-of-a-beyond-eof-dio-unbuffered-read-over-smb1.patch
+and it can be found in the queue-6.12 subdirectory.
+
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.
+
+
+From 9d85ac939d52e93d80efb01a299c6f0bedb30487 Mon Sep 17 00:00:00 2001
+From: David Howells <dhowells@redhat.com>
+Date: Tue, 2 Dec 2025 16:24:53 +0000
+Subject: cifs: Fix handling of a beyond-EOF DIO/unbuffered read over SMB1
+
+From: David Howells <dhowells@redhat.com>
+
+commit 9d85ac939d52e93d80efb01a299c6f0bedb30487 upstream.
+
+If a DIO read or an unbuffered read request extends beyond the EOF, the
+server will return a short read and a status code indicating that EOF was
+hit, which gets translated to -ENODATA.  Note that the client does not cap
+the request at i_size, but asks for the amount requested in case there's a
+race on the server with a third party.
+
+Now, on the client side, the request will get split into multiple
+subrequests if rsize is smaller than the full request size.  A subrequest
+that starts before or at the EOF and returns short data up to the EOF will
+be correctly handled, with the NETFS_SREQ_HIT_EOF flag being set,
+indicating to netfslib that we can't read more.
+
+If a subrequest, however, starts after the EOF and not at it, HIT_EOF will
+not be flagged, its error will be set to -ENODATA and it will be abandoned.
+This will cause the request as a whole to fail with -ENODATA.
+
+Fix this by setting NETFS_SREQ_HIT_EOF on any subrequest that lies beyond
+the EOF marker.
+
+This can be reproduced by mounting with "cache=none,sign,vers=1.0" and
+doing a read of a file that's significantly bigger than the size of the
+file (e.g. attempting to read 64KiB from a 16KiB file).
+
+Fixes: a68c74865f51 ("cifs: Fix SMB1 readv/writev callback in the same way as SMB2/3")
 Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Paulo Alcantara <pc@manguebit.org>
-cc: Matthew Wilcox <willy@infradead.org>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+cc: Shyam Prasad N <sprasad@microsoft.com>
+cc: linux-cifs@vger.kernel.org
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[Mikhail Mirkin: Adopted for 6.12]
+Signed-off-by: Mikhail Mirkin <mmirkin@nppct.ru>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/netfs/iterator.c   | 297 ------------------------------------------
- include/linux/netfs.h |   5 -
- 2 files changed, 302 deletions(-)
+ fs/smb/client/cifssmb.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/netfs/iterator.c b/fs/netfs/iterator.c
-index 99b419066bd0..dc97e5b0d449 100644
---- a/fs/netfs/iterator.c
-+++ b/fs/netfs/iterator.c
-@@ -155,300 +155,3 @@ ssize_t netfs_extract_iter(struct iov_iter *orig, size_t max_len, size_t max_pag
- 
- }
- EXPORT_SYMBOL_GPL(netfs_extract_iter);
--
--#if 0 // TODO: Remove in subsequent patch
--/**
-- * netfs_extract_user_iter - Extract the pages from a user iterator into a bvec
-- * @orig: The original iterator
-- * @orig_len: The amount of iterator to copy
-- * @new: The iterator to be set up
-- * @extraction_flags: Flags to qualify the request
-- *
-- * Extract the page fragments from the given amount of the source iterator and
-- * build up a second iterator that refers to all of those bits.  This allows
-- * the original iterator to be disposed of.
-- *
-- * @extraction_flags can have ITER_ALLOW_P2PDMA set to request peer-to-peer DMA be
-- * allowed on the pages extracted.
-- *
-- * On success, the number of elements in the bvec is returned, the original
-- * iterator will have been advanced by the amount extracted.
-- *
-- * The iov_iter_extract_mode() function should be used to query how cleanup
-- * should be performed.
-- */
--ssize_t netfs_extract_user_iter(struct iov_iter *orig, size_t orig_len,
--				struct iov_iter *new,
--				iov_iter_extraction_t extraction_flags)
--{
--	struct bio_vec *bv = NULL;
--	struct page **pages;
--	unsigned int cur_npages;
--	unsigned int max_pages;
--	unsigned int npages = 0;
--	unsigned int i;
--	ssize_t ret = 0;
--	size_t count = orig_len, offset, len;
--	size_t bv_size, pg_size;
--
--	if (WARN_ON_ONCE(!iter_is_ubuf(orig) && !iter_is_iovec(orig)))
--		return -EIO;
--
--	max_pages = iov_iter_npages(orig, INT_MAX);
--	bv_size = array_size(max_pages, sizeof(*bv));
--	bv = kvmalloc(bv_size, GFP_KERNEL);
--	if (!bv)
--		return -ENOMEM;
--
--	/* Put the page list at the end of the bvec list storage.  bvec
--	 * elements are larger than page pointers, so as long as we work
--	 * 0->last, we should be fine.
--	 */
--	pg_size = array_size(max_pages, sizeof(*pages));
--	pages = (void *)bv + bv_size - pg_size;
--
--	while (count && npages < max_pages) {
--		ret = iov_iter_extract_pages(orig, &pages, count,
--					     max_pages - npages, extraction_flags,
--					     &offset);
--		if (unlikely(ret <= 0)) {
--			ret = ret ?: -EIO;
--			break;
--		}
--
--		if (WARN(ret > count,
--			 "%s: extract_pages overrun %zd > %zu bytes\n",
--			 __func__, ret, count)) {
--			ret = -EIO;
--			break;
--		}
--
--		cur_npages = DIV_ROUND_UP(offset + ret, PAGE_SIZE);
--		if (WARN(cur_npages > max_pages - npages,
--			 "%s: extract_pages overrun %u > %u pages\n",
--			 __func__, npages + cur_npages, max_pages)) {
--			ret = -EIO;
--			break;
--		}
--
--		count -= ret;
--		ret += offset;
--
--		for (i = 0; i < cur_npages; i++) {
--			len = ret > PAGE_SIZE ? PAGE_SIZE : ret;
--			bvec_set_page(bv + npages + i, *pages++, len - offset, offset);
--			ret -= len;
--			offset = 0;
--		}
--
--		npages += cur_npages;
--	}
--
--	/* Note: Don't try to clean up after EIO.  Either we got no pages, so
--	 * nothing to clean up, or we got a buffer overrun, memory corruption
--	 * and can't trust the stuff in the buffer (a WARN was emitted).
--	 */
--
--	if (ret < 0 && (ret == -ENOMEM || npages == 0)) {
--		for (i = 0; i < npages; i++)
--			unpin_user_page(bv[i].bv_page);
--		kvfree(bv);
--		return ret;
--	}
--
--	iov_iter_bvec(new, orig->data_source, bv, npages, orig_len - count);
--	return npages;
--}
--EXPORT_SYMBOL_GPL(netfs_extract_user_iter);
--
--/*
-- * Select the span of a bvec iterator we're going to use.  Limit it by both maximum
-- * size and maximum number of segments.  Returns the size of the span in bytes.
-- */
--static size_t netfs_limit_bvec(const struct iov_iter *iter, size_t start_offset,
--			       size_t max_size, size_t max_segs)
--{
--	const struct bio_vec *bvecs = iter->bvec;
--	unsigned int nbv = iter->nr_segs, ix = 0, nsegs = 0;
--	size_t len, span = 0, n = iter->count;
--	size_t skip = iter->iov_offset + start_offset;
--
--	if (WARN_ON(!iov_iter_is_bvec(iter)) ||
--	    WARN_ON(start_offset > n) ||
--	    n == 0)
--		return 0;
--
--	while (n && ix < nbv && skip) {
--		len = bvecs[ix].bv_len;
--		if (skip < len)
--			break;
--		skip -= len;
--		n -= len;
--		ix++;
--	}
--
--	while (n && ix < nbv) {
--		len = min3(n, bvecs[ix].bv_len - skip, max_size);
--		span += len;
--		nsegs++;
--		ix++;
--		if (span >= max_size || nsegs >= max_segs)
--			break;
--		skip = 0;
--		n -= len;
--	}
--
--	return min(span, max_size);
--}
--
--/*
-- * Select the span of a kvec iterator we're going to use.  Limit it by both
-- * maximum size and maximum number of segments.  Returns the size of the span
-- * in bytes.
-- */
--static size_t netfs_limit_kvec(const struct iov_iter *iter, size_t start_offset,
--			       size_t max_size, size_t max_segs)
--{
--	const struct kvec *kvecs = iter->kvec;
--	unsigned int nkv = iter->nr_segs, ix = 0, nsegs = 0;
--	size_t len, span = 0, n = iter->count;
--	size_t skip = iter->iov_offset + start_offset;
--
--	if (WARN_ON(!iov_iter_is_kvec(iter)) ||
--	    WARN_ON(start_offset > n) ||
--	    n == 0)
--		return 0;
--
--	while (n && ix < nkv && skip) {
--		len = kvecs[ix].iov_len;
--		if (skip < len)
--			break;
--		skip -= len;
--		n -= len;
--		ix++;
--	}
--
--	while (n && ix < nkv) {
--		len = min3(n, kvecs[ix].iov_len - skip, max_size);
--		span += len;
--		nsegs++;
--		ix++;
--		if (span >= max_size || nsegs >= max_segs)
--			break;
--		skip = 0;
--		n -= len;
--	}
--
--	return min(span, max_size);
--}
--
--/*
-- * Select the span of an xarray iterator we're going to use.  Limit it by both
-- * maximum size and maximum number of segments.  It is assumed that segments
-- * can be larger than a page in size, provided they're physically contiguous.
-- * Returns the size of the span in bytes.
-- */
--static size_t netfs_limit_xarray(const struct iov_iter *iter, size_t start_offset,
--				 size_t max_size, size_t max_segs)
--{
--	struct folio *folio;
--	unsigned int nsegs = 0;
--	uoff_t pos = iter->xarray_start + iter->iov_offset;
--	pgoff_t index = pos / PAGE_SIZE;
--	size_t span = 0, n = iter->count;
--
--	XA_STATE(xas, iter->xarray, index);
--
--	if (WARN_ON(!iov_iter_is_xarray(iter)) ||
--	    WARN_ON(start_offset > n) ||
--	    n == 0)
--		return 0;
--	max_size = min(max_size, n - start_offset);
--
--	rcu_read_lock();
--	xas_for_each(&xas, folio, ULONG_MAX) {
--		size_t offset, flen, len;
--		if (xas_retry(&xas, folio))
--			continue;
--		if (WARN_ON(xa_is_value(folio)))
--			break;
--		if (WARN_ON(folio_test_hugetlb(folio)))
--			break;
--
--		flen = folio_size(folio);
--		offset = offset_in_folio(folio, pos);
--		len = min(max_size, flen - offset);
--		span += len;
--		nsegs++;
--		if (span >= max_size || nsegs >= max_segs)
--			break;
--	}
--
--	rcu_read_unlock();
--	return min(span, max_size);
--}
--
--/*
-- * Select the span of a bvecq iterator we're going to use.  Limit it by both
-- * maximum size and maximum number of segments.  Returns the size of the span
-- * in bytes.
-- */
--static size_t netfs_limit_bvecq(const struct iov_iter *iter, size_t start_offset,
--				size_t max_size, size_t max_segs)
--{
--	const struct bvecq *bq = iter->bvecq;
--	unsigned int nsegs = 0;
--	unsigned int slot = iter->bvecq_slot;
--	size_t span = 0, n = iter->count;
--
--	if (WARN_ON(!iov_iter_is_bvecq(iter)) ||
--	    WARN_ON(start_offset > n) ||
--	    n == 0)
--		return 0;
--	max_size = umin(max_size, n - start_offset);
--
--	if (!bvecq_acquire_slot(bq, slot)) {
--		bq = bvecq_next(bq);
--		slot = 0;
--	}
--
--	start_offset += iter->iov_offset;
--	do {
--		size_t flen;
--
--		flen = bq->bv[slot].bv_len;
--		if (start_offset < flen) {
--			span += flen - start_offset;
--			nsegs++;
--			start_offset = 0;
--		} else {
--			start_offset -= flen;
--		}
--		if (span >= max_size || nsegs >= max_segs)
--			break;
--
--		slot++;
--		if (!bvecq_acquire_slot(bq, slot)) {
--			bq = bvecq_next(bq);
--			slot = 0;
--		}
--	} while (bq);
--
--	return umin(span, max_size);
--}
--
--size_t netfs_limit_iter(const struct iov_iter *iter, size_t start_offset,
--			size_t max_size, size_t max_segs)
--{
--	if (iov_iter_is_bvecq(iter))
--		return netfs_limit_bvecq(iter, start_offset, max_size, max_segs);
--	if (iov_iter_is_bvec(iter))
--		return netfs_limit_bvec(iter, start_offset, max_size, max_segs);
--	if (iov_iter_is_xarray(iter))
--		return netfs_limit_xarray(iter, start_offset, max_size, max_segs);
--	if (iov_iter_is_kvec(iter))
--		return netfs_limit_kvec(iter, start_offset, max_size, max_segs);
--	BUG();
--}
--EXPORT_SYMBOL(netfs_limit_iter);
--#endif
-diff --git a/include/linux/netfs.h b/include/linux/netfs.h
-index f3249d0573c4..0340c9ee587b 100644
---- a/include/linux/netfs.h
-+++ b/include/linux/netfs.h
-@@ -460,11 +460,6 @@ void netfs_put_subrequest(struct netfs_io_subrequest *subreq,
- ssize_t netfs_extract_iter(struct iov_iter *orig, size_t max_len, size_t max_pages,
- 			   struct bvecq **_bvecq_head,
- 			   iov_iter_extraction_t extraction_flags, gfp_t gfp);
--ssize_t netfs_extract_user_iter(struct iov_iter *orig, size_t orig_len,
--				struct iov_iter *new,
--				iov_iter_extraction_t extraction_flags);
--size_t netfs_limit_iter(const struct iov_iter *iter, size_t start_offset,
--			size_t max_size, size_t max_segs);
- void netfs_prepare_write_failed(struct netfs_io_subrequest *subreq);
- void netfs_write_subrequest_terminated(void *_op, ssize_t transferred_or_error);
- 
+--- a/fs/smb/client/cifssmb.c
++++ b/fs/smb/client/cifssmb.c
+@@ -1321,7 +1321,7 @@ cifs_readv_callback(struct mid_q_entry *
+ 	} else {
+ 		size_t trans = rdata->subreq.transferred + rdata->got_bytes;
+ 		if (trans < rdata->subreq.len &&
+-		    rdata->subreq.start + trans == ictx->remote_i_size) {
++		    rdata->subreq.start + trans >= ictx->remote_i_size) {
+ 			__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
+ 			rdata->result = 0;
+ 		}
 
+
+Patches currently in stable-queue which might be from dhowells@redhat.com are
+
+queue-6.12/smb-client-discard-post-eof-pagecache-when-extending-a-file-via-copy-range.patch
+queue-6.12/smb-client-discard-post-eof-pagecache-when-extending-a-file-via-zero-range.patch
+queue-6.12/cifs-fix-handling-of-a-beyond-eof-dio-unbuffered-read-over-smb1.patch
+queue-6.12/netfs-clear-post-eof-pagecache-when-extending-a-file.patch
