@@ -1,123 +1,177 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119253CFF4C;
-	Wed,  7 Oct 2026 08:42:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2159A4B0CAA
+	for <netfs@lists.linux.dev>; Wed,  7 Oct 2026 14:20:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791362552; cv=none; b=RKbyd+pDQ+/4CDCuIvJqPxBb0TNd3nZPsTx++90tPnkZvdNlwwIzWuG7bdieCyleyXFzVApaJzHMyfGnmBG83S4RWh7jHIk9b7TuwW5br23ILGoby1JWHd+nZymy2OPmfhv1PmaymTv6MXzJgl84iRY5e9cHcYl6rYejonR1yHc=
+	t=1791382854; cv=none; b=kKkP2oOtvxdIJAnpcRhMJMe0WvHyb+9TVB+CHhnFXhbaqQ5mWVipWzMC7Vn3SS3SpTu60x1KqM5mFy6v1abLnAt10DUnCx3+Gjtj9gEZcvoZQwce8E+ihqe9OGS0m1cRiEOlXav6BifyLg5BTWp7MjXP8ixixL1UOL6dZkmhzGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791362552; c=relaxed/simple;
-	bh=cRsF+NLNACe3s8wVkY3WEoFqpRhxhdQW/vixnLoBn58=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VbfYuTu3r+IWBVAXl6TokdY+3Qfi+F+3NC/YFeXCi82q0kwBITohwDbB7v6ZtYcq44b2EG3OdFTeFjKFO615FmOcy47by2NgLxZ//dHDGxys/Xt0+z2Ninte7y6ZYNYlyzxpDaRvOsyUtBHEBoduofUxyeQQO6iC+KPUBIQO4ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jRmzY7qN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791382854; c=relaxed/simple;
+	bh=Img5ceWy3Ij5+EzwqTMQrksyAsso0ppmZ+Upiv789nQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=VsEQYHHLF95ajAZn9U61rB/Z7eq+gpxETr2tvPFWY3jcQ2NuHs4i1U7v7Y76Jlv98f8AJfHh8uO7IKrDk07Hmys9ej+WyNCu7bVvG6pxIL9UVActK/Ds3LmdCp6SSxb8cJ9Se+WVu8thNb+liddJd5Xbz8Yo8GXuhpeUc5ePPWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bqOscZK3; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jRmzY7qN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21BA81F0089B;
-	Wed,  7 Oct 2026 08:42:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1791362550;
-	bh=+EtyAFIfKbHUPY3d568LrwzfXzV9jhoOYO0OFwglHPM=;
-	h=Subject:To:Cc:From:Date;
-	b=jRmzY7qNR8WJVhkXzQ+9mIoYwtuxzE/VWsWUqUmhU9EJQo6nNjLFMJW4swmFVdilR
-	 mOp/uX+hc1KrSW89QzArJS73hbocqoPS6km11oqoDOp6hkA3SEDRdAeUgmsmOydSAO
-	 sRGlgl8OsjU7xRdlpgU7dA5QwFwVsvUEkYVsYZT4=
-Subject: Patch "cifs: Fix handling of a beyond-EOF DIO/unbuffered read over SMB1" has been added to the 6.12-stable tree
-To: dhowells@redhat.com,gregkh@linuxfoundation.org,mmirkin@nppct.ru,netfs@lists.linux.dev,pc@manguebit.org,sprasad@microsoft.com,stfrench@microsoft.com
-Cc: <stable-commits@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Wed, 07 Oct 2026 10:41:18 +0200
-Message-ID: <2026100718-protrude-reassign-9d93@gregkh>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bqOscZK3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791382843;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=OFr91dh5MiEqI6gHFvhW8bYz6YakTcwxHJ7Vnu5msnM=;
+	b=bqOscZK36iF4vNUWokpx0BTXzuJmN3WqFn3TWC1csJQg0Q7CsmUVqvZND/Bq8hdrD0wmTW
+	RUvXZ3y5xy5ST6kO3beVd8inLZhfPbOPVUOOKnfZ0EVwOXRIoOucpF9o3QLNnlWgoGq/TD
+	TeiyjfTq8mZRsKQSLetkGXDXrl3FlZA=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-622-f9bdVKTKOA-xg0Cmg1QDxw-1; Wed,
+ 07 Oct 2026 10:20:38 -0400
+X-MC-Unique: f9bdVKTKOA-xg0Cmg1QDxw-1
+X-Mimecast-MFC-AGG-ID: f9bdVKTKOA-xg0Cmg1QDxw_1791382835
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0BF72188B015;
+	Wed,  7 Oct 2026 14:20:16 +0000 (UTC)
+Received: from warthog.com (unknown [10.44.32.90])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A2E0F19373D8;
+	Wed,  7 Oct 2026 14:20:04 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>
+Cc: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Stefan Metzmacher <metze@samba.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v14 0/8] netfs: Use a bvecq chain position abstraction
+Date: Wed,  7 Oct 2026 15:19:51 +0100
+Message-ID: <20261007142001.851620-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-MFC-PROC-ID: gTuDvBmKDW_U5TLZy-SJIryc6OKyuGGFC_3ynVS5P9g_1791382835
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
-X-stable: commit
-X-Patchwork-Hint: ignore
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
+Hi Christian,
 
-This is a note to let you know that I've just added the patch titled
+Could you pull these patches please into your vfs-7.4.netfs branch?  This
+is the fourth of five batches.  The primary purpose of this batch is to add
+an abstraction for a position in a bvecq chain and make use of it.
 
-    cifs: Fix handling of a beyond-EOF DIO/unbuffered read over SMB1
+With that in mind, this patchset does the following:
 
-to the 6.12-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+ (1) Add a struct, bvecq_pos, to refer to a position in a bvecq chain.
+     This is a tuple of ( bvecq pointer, slot and offset } and the position
+     struct holds (for now) a ref on the bvecq pointed to.
 
-The filename of the patch is:
-     cifs-fix-handling-of-a-beyond-eof-dio-unbuffered-read-over-smb1.patch
-and it can be found in the queue-6.12 subdirectory.
+ (2) Change unbuffered/DIO to extract the supplied user buffers into a
+     bvecq chain rather than a bio_vec[] up front.  This means that
+     netfslib then uses bvecq chains for everything.
 
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+ (3) Add a folio count to the readahead_control struct and then makes
+     readahead pre-create its buffer using that count to determine how many
+     slots are required.
 
+ (4) Change netfslib to use the bvecq_pos struct to keep track of the whole
+     request buffer and various points in it where loading, dispatch and
+     collection are taking place and to also keep track of the slice given
+     to each subrequest.
 
-From 9d85ac939d52e93d80efb01a299c6f0bedb30487 Mon Sep 17 00:00:00 2001
-From: David Howells <dhowells@redhat.com>
-Date: Tue, 2 Dec 2025 16:24:53 +0000
-Subject: cifs: Fix handling of a beyond-EOF DIO/unbuffered read over SMB1
+This was split from v11 of a larger netfslib series[1].
 
-From: David Howells <dhowells@redhat.com>
+The patches can also be found here:
 
-commit 9d85ac939d52e93d80efb01a299c6f0bedb30487 upstream.
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-next-4
 
-If a DIO read or an unbuffered read request extends beyond the EOF, the
-server will return a short read and a status code indicating that EOF was
-hit, which gets translated to -ENODATA.  Note that the client does not cap
-the request at i_size, but asks for the amount requested in case there's a
-race on the server with a third party.
+Thanks,
+David
 
-Now, on the client side, the request will get split into multiple
-subrequests if rsize is smaller than the full request size.  A subrequest
-that starts before or at the EOF and returns short data up to the EOF will
-be correctly handled, with the NETFS_SREQ_HIT_EOF flag being set,
-indicating to netfslib that we can't read more.
+Changes
+=======
+ver #14)
+- Fixed issues brought up by sashiko[2]:
+  - In netfs_extract_iter(), limit the number of slots per bvecq to what
+    will fit inside a 4KiB allocation.
+  - In netfs_rreq_assess_dio(), only set the page dirty if it's from GUP or
+    it's from the pagecache.
+  - In bvecq_zero(), skip the call to bvec_zero() if part == 0.
+  - In bvecq_delete_spent(), prefer returning true because more slots got
+    added to returning false because we hit the chain end.
+  - In netfs_read_gaps(), fix a leak of already allocated sink folios if we
+    get OOM when allocating a sink folios.
+  - In netfs_clear_unread_dio(), fix double call to iov_iter_zero().
 
-If a subrequest, however, starts after the EOF and not at it, HIT_EOF will
-not be flagged, its error will be set to -ENODATA and it will be abandoned.
-This will cause the request as a whole to fail with -ENODATA.
+ver #13)
+- Rebased on -rc6 to account for some conflicting fixes.
+- Fixed a bug in netfs_prepare_read_iterator() where comparison was being
+  made against the wrong thing when limiting a subreq's size.
 
-Fix this by setting NETFS_SREQ_HIT_EOF on any subrequest that lies beyond
-the EOF marker.
+ver #12)
+- Split from v11 of "netfs: Keep track of folios in a segmented bio_vec[]
+  chain"[1]
 
-This can be reproduced by mounting with "cache=none,sign,vers=1.0" and
-doing a read of a file that's significantly bigger than the size of the
-file (e.g. attempting to read 64KiB from a 16KiB file).
+[1] https://lore.kernel.org/r/20260902173350.3468672-1-dhowells@redhat.com/
+[2] https://sashiko.dev/#/patchset/20261006205947.608356-1-dhowells%40redhat.com
 
-Fixes: a68c74865f51 ("cifs: Fix SMB1 readv/writev callback in the same way as SMB2/3")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-cc: Shyam Prasad N <sprasad@microsoft.com>
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[Mikhail Mirkin: Adopted for 6.12]
-Signed-off-by: Mikhail Mirkin <mmirkin@nppct.ru>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- fs/smb/client/cifssmb.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+David Howells (8):
+  mm: Make readahead store folio count in readahead_control
+  netfs: Add a function to extract from an iter into a bvecq
+  netfs: Make unbuffered/DIO read and write use bvecq
+  netfs: Add some tools for managing a position in a bvecq chain
+  netfs: Provide a func to load the readahead buffers into a bvecq chain
+  netfs: Use bvecq_pos to hold the buffer positions
+  netfs: Remove the rolling_buffer implementation
+  netfs: Remove netfs_extract_user_iter()
 
---- a/fs/smb/client/cifssmb.c
-+++ b/fs/smb/client/cifssmb.c
-@@ -1321,7 +1321,7 @@ cifs_readv_callback(struct mid_q_entry *
- 	} else {
- 		size_t trans = rdata->subreq.transferred + rdata->got_bytes;
- 		if (trans < rdata->subreq.len &&
--		    rdata->subreq.start + trans == ictx->remote_i_size) {
-+		    rdata->subreq.start + trans >= ictx->remote_i_size) {
- 			__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
- 			rdata->result = 0;
- 		}
+ fs/afs/dir.c                   |   5 +-
+ fs/afs/symlink.c               |   6 +-
+ fs/cachefiles/io.c             |  12 -
+ fs/netfs/Makefile              |   1 -
+ fs/netfs/buffered_read.c       | 182 ++++++++-------
+ fs/netfs/bvecq.c               | 321 +++++++++++++++++++++++++++
+ fs/netfs/direct_read.c         |  77 +++----
+ fs/netfs/direct_write.c        |  67 +++---
+ fs/netfs/internal.h            |   4 +-
+ fs/netfs/iterator.c            | 395 ++++++++++-----------------------
+ fs/netfs/misc.c                |  18 --
+ fs/netfs/objects.c             |  16 +-
+ fs/netfs/read_collect.c        | 106 +++++----
+ fs/netfs/read_pgpriv2.c        |  87 +++++---
+ fs/netfs/read_retry.c          |  86 ++++---
+ fs/netfs/read_single.c         |  16 +-
+ fs/netfs/rolling_buffer.c      | 182 ---------------
+ fs/netfs/write_collect.c       |  55 ++---
+ fs/netfs/write_issue.c         | 166 +++++++++-----
+ fs/netfs/write_retry.c         |  61 +++--
+ include/linux/bvecq.h          | 184 +++++++++++++++
+ include/linux/netfs.h          |  25 ++-
+ include/linux/pagemap.h        |  10 +
+ include/linux/rolling_buffer.h |  47 ----
+ include/trace/events/netfs.h   |  32 ++-
+ mm/readahead.c                 |   5 +
+ 26 files changed, 1225 insertions(+), 941 deletions(-)
+ delete mode 100644 fs/netfs/rolling_buffer.c
+ delete mode 100644 include/linux/rolling_buffer.h
 
-
-Patches currently in stable-queue which might be from dhowells@redhat.com are
-
-queue-6.12/smb-client-discard-post-eof-pagecache-when-extending-a-file-via-copy-range.patch
-queue-6.12/smb-client-discard-post-eof-pagecache-when-extending-a-file-via-zero-range.patch
-queue-6.12/cifs-fix-handling-of-a-beyond-eof-dio-unbuffered-read-over-smb1.patch
-queue-6.12/netfs-clear-post-eof-pagecache-when-extending-a-file.patch
