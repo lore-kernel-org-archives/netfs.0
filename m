@@ -1,574 +1,296 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C127C3B3C0F
-	for <netfs@lists.linux.dev>; Thu,  8 Oct 2026 18:16:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B10D3BBFBC;
+	Fri,  9 Oct 2026 14:15:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791483412; cv=none; b=taeJfnsbFBEv06Dy/PNxc7aVESoF8GNI867EQgohUsUvt+1SM4JO3hxSPexaWGsxJJ0Lj7+C1Pz0KmutNSfDElbOfO4ON2DDM1LeQg1Hknei/nt62nfyRgNQPEt40bPe7bCmRAfMD+gFUshA8QRg/S9Rxvxu4fEMKni55kQWxIk=
+	t=1791555354; cv=none; b=m++IKQ/tMafAOZxdPZlMoIi24xqnh+1R7N81dQVsqUs8wMqMMgK5OOW1jHgkwrKaMdbKWadwVgw5pxvf7xf/fbpfuXm6PgO/pl0MW9ISap1q9ypPyRw4u93toEOcPMGWMyT2EBg0hmvOZsdmfXsoRB6jNOpkD8fhjqtpV3MPF8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791483412; c=relaxed/simple;
-	bh=8bD5KJPJ3pfkJ6irHGpHw0bCwU3iRy1DlIWtPWdtChI=;
-	h=From:To:cc:Subject:MIME-Version:Date:Message-ID:Content-Type; b=W5zzH+cxOOn3G0QxO2lpBcL1vbz9yM0u9Vq+b78KPLRU2cROTrQ8U2cRzcigWuYzxxwKCA9hIoVArOpkR+ahysuWqQmFsai4uHIEfaolVK8X8jIWrbbY7kUOCTrevvXax8XBddzT6Ye5j50tvAhnbwliBdpl9Ybp6Oc4wltH6QE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JmTePyVu; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1791555354; c=relaxed/simple;
+	bh=3RoejBxp5tLKB/9SakvEwkWlyrmYkKPJ97SSUSqH21g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=L2P45UIKiNDAxL173xVOm+OR209NgL5W3/+pDJJ3RrtQEm5+X5xxz4w4zYH4QKS9x68oJXrI4UqaM8yD0YQOCkWLmnRGOKHH+65bKTe14f72X+9FzNU3oMf1NhuH1gkpBxfkj8IYDX0vTenqwhrxXI8VhA2riEzEeySh83B3Hbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BabylZaZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JmTePyVu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791483408;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=vBc5AI3msk79m9gaYJ/NzFQ+iopcqkYnuQWhgfhEh9Q=;
-	b=JmTePyVuCr0jBI0xk1V2op/xKFYijW0JYiPEt+U1FmEkm8tg9zNOGBr9DTqrxKlW7HDNCu
-	7NcBKNa1pLhVKA2jDQzwqm7QIQRwdey9KmH42Q5uOGHN0rv23kXJrLG3raBYVfFZnWFV6I
-	sWmjhdCGIlZSt0VeUfpWHHRn2FdOCCM=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-418-TWp5OkP6PfWxbBRQiXBr8A-1; Thu,
- 08 Oct 2026 14:16:45 -0400
-X-MC-Unique: TWp5OkP6PfWxbBRQiXBr8A-1
-X-Mimecast-MFC-AGG-ID: TWp5OkP6PfWxbBRQiXBr8A_1791483403
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EB0FF1955BD4;
-	Thu,  8 Oct 2026 18:16:41 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.44.32.90])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D18A51956041;
-	Thu,  8 Oct 2026 18:16:35 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-To: Christian Brauner <brauner@kernel.org>
-cc: dhowells@redhat.com, Marc Dionne <marc.dionne@auristor.com>,
-    Ilya Dryomov <idryomov@gmail.com>,
-    Alex Markuze <amarkuze@redhat.com>,
-    Viacheslav Dubeyko <slava@dubeyko.com>,
-    Paulo Alcantara <pc@manguebit.org>,
-    Matthew Wilcox <willy@infradead.org>, v9fs@lists.linux.dev,
-    linux-afs@lists.infradead.org, ceph-devel@vger.kernel.org,
-    linux-cifs@vger.kernel.org, netfs@lists.linux.dev,
-    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v3] fscache, cachefiles: Fix resize handling
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BabylZaZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F08D01F000FF;
+	Fri,  9 Oct 2026 14:15:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1791555350;
+	bh=2gHfNVim2MkAVeFdAnE4gBFsQI41AkSwf/KApTwljmw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=BabylZaZDdNAb2DNaEW49A3E0uD8ZKUry5amsLzGUwnykgXebXzIpFGcSXBKxNCKp
+	 APyAjv9v9/cXQMqq0Fm+dJ9vXG2v+EWPk7bPKbEdAzrv/+r21ro5bBOHmuirA0p96x
+	 8mvwELL03Zuf50NxTrkjcE5vsp3A6jhG38g1rLMo=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	David Howells <dhowells@redhat.com>,
+	Tom Talpey <tom@talpey.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	linux-cifs@vger.kernel.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 017/403] cifs: Remove the RFC1002 header from smb_hdr
+Date: Fri,  9 Oct 2026 16:06:18 +0200
+Message-ID: <20261009140952.521502731@linuxfoundation.org>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261009140952.119038291@linuxfoundation.org>
+References: <20261009140952.119038291@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Thu, 08 Oct 2026 19:16:34 +0100
-Message-ID: <1091807.1791483394@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-MFC-PROC-ID: 0qbfgOcxKjL5BsbPEf13TNzFuP1-OU6yfBAe5Sbt-Eg_1791483403
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1091806.1791483394.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Fix the resize handling in fscache and cachefiles by passing down a flag to
-indicate if the file is being shrunk as the cache's idea of how big the
-file should be may be stale and thus not useful in comparison to the
-object's size.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
-The issue is that netfs_perform_write() updates the network filesystem's
-file's i_size as it adds data to the pagecache, but the cache isn't updated
-until writeback flushes that data.  A truncation may then scrap that data
-and so the cache never sees it and doesn't update before it is told to
-resize.  In the resize, cachefiles was comparing the new size against the
-current cache size and then thinking the file was being expanded.
+------------------
 
-Note that this is a bit more complicated for ceph than other filesystems as
-ceph splits the truncation of the local pagecache and fscache to after the
-RPC reply handler has updated the inode record - the reply handler
-communicates the need for the truncation finalisation through ceph inode
-flags.
+From: David Howells <dhowells@redhat.com>
 
-To this end, ceph is changed such that the outstanding truncation count in =
-the
-inode turns into a bool and just set instead of being incremented (the code
-only cares if it's zero or non-zero) and then a second bool is added to rec=
-ord
-if the file was being shrunk.
+[ Upstream commit 83bfbd0bb9025f98fa62b44f93bd67466773d1db ]
 
-Reported-by: Marc Dionne <marc.dionne@auristor.com>
-Fixes: 1a9fe4b6e787 ("cachefiles: Don't rely on backing fs storage map for =
-most use cases")
+Remove the RFC1002 header from struct smb_hdr as used for SMB-1.0.  This
+simplifies the SMB-1.0 code by simplifying a lot of places that have to add
+or subtract 4 to work around the fact that the RFC1002 header isn't really
+part of the message and the base for various offsets within the message is
+from the base of the smb_hdr, not the RFC1002 header.
+
+Further, clean up a bunch of places that require an extra kvec struct
+specifically pointing to the RFC1002 header, such that kvec[0].iov_base
+must be exactly 4 bytes before kvec[1].iov_base.
+
+This allows the header preamble size stuff to be removed too.
+
+The size of the request and response message are then handed around either
+directly or by summing the size of all the iov_len members in the kvec
+array for which we have a count.
+
+Also, this simplifies and cleans up the common transmission and receive
+paths for SMB1 and SMB2/3 as there no longer needs to be special handling
+casing for SMB1 messages as the RFC1002 header is now generated on the fly
+for SMB1 as it is for SMB2/3.
+
 Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Ilya Dryomov <idryomov@gmail.com>
-cc: Alex Markuze <amarkuze@redhat.com>
-cc: Viacheslav Dubeyko <slava@dubeyko.com>
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: v9fs@lists.linux.dev
-cc: linux-afs@lists.infradead.org
-cc: ceph-devel@vger.kernel.org
+Reviewed-by: Tom Talpey <tom@talpey.com>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+cc: Shyam Prasad N <sprasad@microsoft.com>
 cc: linux-cifs@vger.kernel.org
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
----   =20
- Changes
- =3D=3D=3D=3D=3D=3D=3D
- ver #3)
- - Fix issues reported by sashiko[2]:
-   - In afs_setattr_edit_file(), get the "did it shrink" test the right way
-     round.
-   - In ceph_alloc_inode(), initialised the i_truncate_shrank field.
-   - In __ceph_do_pending_vmtruncate(), read the i_truncate_shrank field
-     inside the lock.
-   - In cifs_precopy_set_eof(), assume no shrinkage of the cache file as
-     this func is used to expand the server file to cover a hole in the
-     pagecache.
-   - In cifs_file_copychunk_range(), assume no shrinkage of the file.
-   - In smb3_zero_range(), assume no shrinkage of the file.
-   - In smb3_collapse_range(), assume the file always shrinks.
-   - In smb3_insert_range(), assume no shrinkage of the file.
-=20
- ver #2)
- - Fix issues reported by sashiko[1]:
-   - In cifs_file_copychunk_range(), use the old size of the target inode,
-     not the source inode.
-   - Switch to passing down a flag to indicate if the file shrank rather
-     than the old file size.
-   - In ceph, cache the truncate-shrank flag in the ceph inode.
-=20
- [1] https://sashiko.dev/#/patchset/938341.1791446974%40warthog.procyon.org=
-.uk
- [2] https://sashiko.dev/#/patchset/1029097.1791466484%40warthog.procyon.or=
-g.uk
+Signed-off-by: Steve French <stfrench@microsoft.com>
 
- Documentation/filesystems/caching/backend-api.rst |    2 +-
- Documentation/filesystems/caching/netfs-api.rst   |    2 +-
- fs/9p/vfs_inode.c                                 |    6 +++++-
- fs/9p/vfs_inode_dotl.c                            |    5 ++++-
- fs/afs/inode.c                                    |    4 ++--
- fs/cachefiles/interface.c                         |    8 ++++----
- fs/ceph/cache.h                                   |    6 +++---
- fs/ceph/inode.c                                   |   16 +++++++++++-----
- fs/ceph/super.h                                   |    3 ++-
- fs/netfs/fscache_io.c                             |    4 ++--
- fs/smb/client/cifsfs.c                            |    6 +++---
- fs/smb/client/inode.c                             |    2 +-
- fs/smb/client/smb2ops.c                           |    9 +++++----
- include/linux/fscache-cache.h                     |    2 +-
- include/linux/fscache.h                           |   11 ++++++-----
- 15 files changed, 51 insertions(+), 35 deletions(-)
+Stable dependency adaptation for 6c5c547f037bc18f0b8d0b5db5a648f8f630ce85:
 
-diff --git a/Documentation/filesystems/caching/backend-api.rst b/Documentat=
-ion/filesystems/caching/backend-api.rst
-index 3a199fc50828..df837531b3fd 100644
---- a/Documentation/filesystems/caching/backend-api.rst
-+++ b/Documentation/filesystems/caching/backend-api.rst
-@@ -339,7 +339,7 @@ pointers to methods to allow fscache to request managem=
-ent of the cache:
-    * Change the size of a data storage object [mandatory]::
-=20
- =09void (*resize_cookie)(struct netfs_cache_resources *cres,
--=09=09=09      loff_t new_size);
-+=09=09=09      loff_t new_size, bool shrank);
-=20
-      This method is called to inform the cache backend of a change in size=
- of
-      the netfs file due to local truncation.  The cache backend should mak=
-e all
-diff --git a/Documentation/filesystems/caching/netfs-api.rst b/Documentatio=
-n/filesystems/caching/netfs-api.rst
-index 665b27f1556e..3154a1686480 100644
---- a/Documentation/filesystems/caching/netfs-api.rst
-+++ b/Documentation/filesystems/caching/netfs-api.rst
-@@ -226,7 +226,7 @@ If a network filesystem file is resized locally by trun=
-cation, the following
- should be called to notify the cache::
-=20
- =09void fscache_resize_cookie(struct fscache_cookie *cookie,
--=09=09=09=09   loff_t new_size);
-+=09=09=09=09   loff_t new_size, bool shrank);
-=20
- The caller must have first marked the cookie in-use.  The cookie and the n=
-ew
- size are passed in and the cache is synchronously resized.  This is expect=
-ed to
-diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
-index 3829554ca369..2d33c53da8d9 100644
---- a/fs/9p/vfs_inode.c
-+++ b/fs/9p/vfs_inode.c
-@@ -1022,6 +1022,9 @@ static int v9fs_vfs_setattr(struct mnt_idmap *idmap,
- =09struct v9fs_session_info *v9ses;
- =09struct p9_fid *fid =3D NULL;
- =09struct p9_wstat wstat;
-+#ifdef CONFIG_9P_FSCACHE
-+=09uoff_t old_size =3D i_size_read(inode);
-+#endif
-=20
- =09p9_debug(P9_DEBUG_VFS, "\n");
- =09retval =3D setattr_prepare(&nop_mnt_idmap, dentry, iattr);
-@@ -1086,7 +1089,8 @@ static int v9fs_vfs_setattr(struct mnt_idmap *idmap,
- =09=09if (v9ses->cache & CACHE_FSCACHE) {
- =09=09=09struct v9fs_inode *v9inode =3D V9FS_I(inode);
-=20
--=09=09=09fscache_resize_cookie(v9fs_inode_cookie(v9inode), iattr->ia_size)=
-;
-+=09=09=09fscache_resize_cookie(v9fs_inode_cookie(v9inode),
-+=09=09=09=09=09      iattr->ia_size, iattr->ia_size < old_size);
- =09=09}
- #endif
- =09}
-diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
-index 116b29e95f21..dde0dbea2685 100644
---- a/fs/9p/vfs_inode_dotl.c
-+++ b/fs/9p/vfs_inode_dotl.c
-@@ -519,6 +519,9 @@ int v9fs_vfs_setattr_dotl(struct mnt_idmap *idmap,
- =09=09.uid =3D INVALID_UID,
- =09=09.gid =3D INVALID_GID,
- =09};
-+#ifdef CONFIG_9P_FSCACHE
-+=09uoff_t old_size =3D i_size_read(inode);
-+#endif
-=20
- =09p9_debug(P9_DEBUG_VFS, "\n");
-=20
-@@ -580,7 +583,7 @@ int v9fs_vfs_setattr_dotl(struct mnt_idmap *idmap,
- #ifdef CONFIG_9P_FSCACHE
- =09=09if (v9ses->cache & CACHE_FSCACHE)
- =09=09=09fscache_resize_cookie(v9fs_inode_cookie(V9FS_I(inode)),
--=09=09=09=09iattr->ia_size);
-+=09=09=09=09=09      iattr->ia_size, iattr->ia_size < old_size);
- #endif
- =09}
-=20
-diff --git a/fs/afs/inode.c b/fs/afs/inode.c
-index 634fbf8eb212..75cb5cd8ba14 100644
---- a/fs/afs/inode.c
-+++ b/fs/afs/inode.c
-@@ -744,7 +744,7 @@ static void afs_setattr_edit_file(struct afs_operation =
-*op)
- =09=09if (size !=3D old) {
- =09=09=09truncate_pagecache(inode, size);
- =09=09=09netfs_resize_file(&vnode->netfs, size, true);
--=09=09=09fscache_resize_cookie(afs_vnode_cache(vnode), size);
-+=09=09=09fscache_resize_cookie(afs_vnode_cache(vnode), size, size < old);
- =09=09}
- =09}
- }
-@@ -817,7 +817,7 @@ int afs_setattr(struct mnt_idmap *idmap, struct dentry =
-*dentry,
- =09=09=09truncate_setsize(inode, attr->ia_size);
- =09=09=09netfs_resize_file(&vnode->netfs, size, false);
- =09=09=09fscache_resize_cookie(afs_vnode_cache(vnode),
--=09=09=09=09=09      attr->ia_size);
-+=09=09=09=09=09      attr->ia_size, attr->ia_size < i_size);
- =09=09=09ret =3D 0;
- =09=09=09goto out_unlock;
- =09=09}
-diff --git a/fs/cachefiles/interface.c b/fs/cachefiles/interface.c
-index 789ff6abe926..4a31904aaf0e 100644
---- a/fs/cachefiles/interface.c
-+++ b/fs/cachefiles/interface.c
-@@ -204,7 +204,7 @@ static bool cachefiles_shorten_object(struct cachefiles=
-_object *object,
-  * Resize the backing object.
-  */
- static void cachefiles_resize_cookie(struct netfs_cache_resources *cres,
--=09=09=09=09     uoff_t new_size)
-+=09=09=09=09     uoff_t new_size, bool shrank)
+Retain only the midQ-to-mid rename in compound_send_recv(). Prepare its
+response-copy block using the corresponding layout from 62432a3f51450:
+check the received response first, then copy it and transfer ownership
+inside the resp_iov guard. This provides the context needed for the target
+to defer response-buffer transfers until compound synchronization finishes.
+
+Omit the SMB1 RFC1002 conversion and all other unrelated hunks. This stable
+tree still defines smb_hdr in client/cifspdu.h, uses the older negotiate
+and filesystem-info type names, and has moved CIFSTCon and transaction2
+helpers out of the upstream locations. Restoring those functions or
+importing the intervening SMB1 reorganization is unnecessary for the target.
+Keep HEADER_PREAMBLE_SIZE(server) in the response length because SMB1 still
+reaches this shared path through SendReceive2(). No functions are added.
+
+The target applies cleanly with a three-way application on this adaptation.
+
+cc: Shyam Prasad N <sprasad@microsoft.com>
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+
+[ sashal: Reduced backport -- upstream 83bfbd0bb9025 touches 19 file(s), this
+  backport carries 1. Not backported here:
+  fs/smb/client/cifs_debug.c
+  fs/smb/client/cifs_debug.h
+  fs/smb/client/cifsencrypt.c
+  fs/smb/client/cifsglob.h
+  fs/smb/client/cifspdu.h
+  fs/smb/client/cifsproto.h
+  fs/smb/client/cifssmb.c
+  fs/smb/client/cifstransport.c
+  ... and 10 more
+  This note is generated from the file lists only; see the resolution record
+  for the reasoning. ]
+
+Stable-dep-of: 6c5c547f037b ("smb: client: close completed creates on compound wait errors")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/smb/client/transport.c | 73 ++++++++++++++++++++-------------------
+ 1 file changed, 37 insertions(+), 36 deletions(-)
+
+diff --git a/fs/smb/client/transport.c b/fs/smb/client/transport.c
+index 4da3d62b6481e..53db53a78d6c5 100644
+--- a/fs/smb/client/transport.c
++++ b/fs/smb/client/transport.c
+@@ -864,7 +864,7 @@ compound_send_recv(const unsigned int xid, struct cifs_ses *ses,
+ 		   int *resp_buf_type, struct kvec *resp_iov)
  {
- =09struct cachefiles_object *object =3D cachefiles_cres_object(cres);
- =09struct cachefiles_cache *cache =3D object->volume->cache;
-@@ -215,10 +215,10 @@ static void cachefiles_resize_cookie(struct netfs_cac=
-he_resources *cres,
-=20
- =09_enter("%llu->%llu", object->object_size, new_size);
-=20
--=09/* If the file is being shrunk, we need to downsize the backing file
--=09 * and clear the end of the final block.
-+=09/* If the file shrank, we need to downsize the backing file and clear
-+=09 * the end of the final block.
- =09 */
--=09if (new_size < object->object_size) {
-+=09if (shrank) {
- =09=09if (new_size >=3D i_size)
- =09=09=09goto out;
- =09=09cachefiles_begin_secure(cache, &saved_cred);
-diff --git a/fs/ceph/cache.h b/fs/ceph/cache.h
-index 20efac020394..892b18c31741 100644
---- a/fs/ceph/cache.h
-+++ b/fs/ceph/cache.h
-@@ -31,14 +31,14 @@ static inline struct fscache_cookie *ceph_fscache_cooki=
-e(struct ceph_inode_info
- =09return netfs_i_cookie(&ci->netfs);
- }
-=20
--static inline void ceph_fscache_resize(struct inode *inode, loff_t to)
-+static inline void ceph_fscache_resize(struct inode *inode, loff_t to, boo=
-l shrank)
- {
- =09struct ceph_inode_info *ci =3D ceph_inode(inode);
- =09struct fscache_cookie *cookie =3D ceph_fscache_cookie(ci);
-=20
- =09if (cookie) {
- =09=09ceph_fscache_use_cookie(inode, true);
--=09=09fscache_resize_cookie(cookie, to);
-+=09=09fscache_resize_cookie(cookie, to, shrank);
- =09=09ceph_fscache_unuse_cookie(inode, true);
- =09}
- }
-@@ -96,7 +96,7 @@ static inline struct fscache_cookie *ceph_fscache_cookie(=
-struct ceph_inode_info
- =09return NULL;
- }
-=20
--static inline void ceph_fscache_resize(struct inode *inode, loff_t to)
-+static inline void ceph_fscache_resize(struct inode *inode, loff_t to, boo=
-l shrank)
- {
- }
-=20
-diff --git a/fs/ceph/inode.c b/fs/ceph/inode.c
-index d52e2b389e0b..8ed63659ae58 100644
---- a/fs/ceph/inode.c
-+++ b/fs/ceph/inode.c
-@@ -680,7 +680,8 @@ struct inode *ceph_alloc_inode(struct super_block *sb)
- =09mutex_init(&ci->i_truncate_mutex);
- =09ci->i_truncate_seq =3D 0;
- =09ci->i_truncate_size =3D 0;
--=09ci->i_truncate_pending =3D 0;
-+=09ci->i_truncate_pending =3D false;
-+=09ci->i_truncate_shrank =3D false;
- =09ci->i_truncate_pagecache_size =3D 0;
-=20
- =09ci->i_max_size =3D 0;
-@@ -847,7 +848,9 @@ int ceph_fill_file_size(struct inode *inode, int issued=
-,
- =09=09=09=09       CEPH_CAP_FILE_BUFFER)) ||
- =09=09=09    mapping_mapped(inode->i_mapping) ||
- =09=09=09    __ceph_is_file_opened(ci)) {
--=09=09=09=09ci->i_truncate_pending++;
-+=09=09=09=09ci->i_truncate_pending =3D true;
-+=09=09=09=09if (size < isize)
-+=09=09=09=09=09ci->i_truncate_shrank =3D true;
- =09=09=09=09queue_trunc =3D 1;
- =09=09=09}
- =09=09}
-@@ -2304,12 +2307,13 @@ void __ceph_do_pending_vmtruncate(struct inode *ino=
-de)
- =09struct ceph_client *cl =3D ceph_inode_to_client(inode);
- =09struct ceph_inode_info *ci =3D ceph_inode(inode);
- =09u64 to;
-+=09bool shrank;
- =09int wrbuffer_refs, finish =3D 0;
-=20
- =09mutex_lock(&ci->i_truncate_mutex);
- retry:
- =09spin_lock(&ci->i_ceph_lock);
--=09if (ci->i_truncate_pending =3D=3D 0) {
-+=09if (!ci->i_truncate_pending) {
- =09=09doutc(cl, "%p %llx.%llx none pending\n", inode,
- =09=09      ceph_vinop(inode));
- =09=09spin_unlock(&ci->i_ceph_lock);
-@@ -2333,18 +2337,20 @@ void __ceph_do_pending_vmtruncate(struct inode *ino=
-de)
- =09/* there should be no reader or writer */
- =09WARN_ON_ONCE(ci->i_rd_ref || ci->i_wr_ref);
-=20
-+=09shrank =3D ci->i_truncate_shrank;
- =09to =3D ci->i_truncate_pagecache_size;
- =09wrbuffer_refs =3D ci->i_wrbuffer_ref;
- =09doutc(cl, "%p %llx.%llx (%d) to %lld\n", inode, ceph_vinop(inode),
- =09      ci->i_truncate_pending, to);
- =09spin_unlock(&ci->i_ceph_lock);
-=20
--=09ceph_fscache_resize(inode, to);
-+=09ceph_fscache_resize(inode, to, shrank);
- =09truncate_pagecache(inode, to);
-=20
- =09spin_lock(&ci->i_ceph_lock);
- =09if (to =3D=3D ci->i_truncate_pagecache_size) {
--=09=09ci->i_truncate_pending =3D 0;
-+=09=09ci->i_truncate_shrank =3D false;
-+=09=09ci->i_truncate_pending =3D false;
- =09=09finish =3D 1;
- =09}
- =09spin_unlock(&ci->i_ceph_lock);
-diff --git a/fs/ceph/super.h b/fs/ceph/super.h
-index 72d4e30304dc..e6eaf1647fe5 100644
---- a/fs/ceph/super.h
-+++ b/fs/ceph/super.h
-@@ -481,7 +481,8 @@ struct ceph_inode_info {
- =09struct mutex i_truncate_mutex;
- =09u32 i_truncate_seq;        /* last truncate to smaller size */
- =09u64 i_truncate_size;       /*  and the size we last truncated down to *=
-/
--=09int i_truncate_pending;    /*  still need to call vmtruncate */
-+=09bool i_truncate_pending;   /*  still need to call vmtruncate */
-+=09bool i_truncate_shrank;=09=09/* Truncate shrank the file */
- =09/*
- =09 * For none fscrypt case it equals to i_truncate_size or it will
- =09 * equals to fscrypt_file_size
-diff --git a/fs/netfs/fscache_io.c b/fs/netfs/fscache_io.c
-index 056a2bae5d99..ea0b11807034 100644
---- a/fs/netfs/fscache_io.c
-+++ b/fs/netfs/fscache_io.c
-@@ -267,7 +267,7 @@ EXPORT_SYMBOL(__fscache_write_to_cache);
- /*
-  * Change the size of a backing object.
-  */
--void __fscache_resize_cookie(struct fscache_cookie *cookie, uoff_t new_siz=
-e)
-+void __fscache_resize_cookie(struct fscache_cookie *cookie, uoff_t new_siz=
-e, bool shrank)
- {
- =09struct netfs_cache_resources cres;
-=20
-@@ -281,7 +281,7 @@ void __fscache_resize_cookie(struct fscache_cookie *coo=
-kie, uoff_t new_size)
- =09=09 * netfs's inode lock so that we're serialised with respect to
- =09=09 * writes.
- =09=09 */
--=09=09cookie->volume->cache->ops->resize_cookie(&cres, new_size);
-+=09=09cookie->volume->cache->ops->resize_cookie(&cres, new_size, shrank);
- =09=09fscache_end_operation(&cres);
- =09} else {
- =09=09fscache_stat(&fscache_n_resizes_null);
-diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
-index 98b610b2a114..a60956a40aa9 100644
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -1332,7 +1332,7 @@ static int cifs_precopy_set_eof(struct inode *src_ino=
-de, struct cifsInodeInfo *s
- =09=09goto set_failed;
-=20
- =09netfs_resize_file(&src_cifsi->netfs, src_end, true);
--=09fscache_resize_cookie(cifs_inode_cookie(src_inode), src_end);
-+=09fscache_resize_cookie(cifs_inode_cookie(src_inode), src_end, false);
- =09return 0;
-=20
- set_failed:
-@@ -1626,9 +1626,9 @@ ssize_t cifs_file_copychunk_range(unsigned int xid,
- =09=09if (rc > 0 && destoff + rc > i_size_read(target_inode)) {
- =09=09=09truncate_setsize(target_inode, destoff + rc);
- =09=09=09netfs_resize_file(&target_cifsi->netfs,
--=09=09=09=09=09  i_size_read(target_inode), true);
-+=09=09=09=09=09  destoff + rc, true);
- =09=09=09fscache_resize_cookie(cifs_inode_cookie(target_inode),
--=09=09=09=09=09      i_size_read(target_inode));
-+=09=09=09=09=09      destoff + rc, false);
- =09=09}
- =09=09if (rc > 0) {
- =09=09=09spin_lock(&target_inode->i_lock);
-diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-index f29555f3c7d0..fb1afe72e6d2 100644
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -3097,7 +3097,7 @@ void cifs_resize_file_locked(struct inode *inode, lof=
-f_t old_size,
- =09=09return;
-=20
- =09fscache_use_cookie(cookie, true);
--=09fscache_resize_cookie(cookie, offset);
-+=09fscache_resize_cookie(cookie, offset, offset < old_size);
- =09cifs_fscache_unuse_inode_cookie(inode, true);
- }
-=20
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 1e9018880639..f53ba045ba82 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -3611,7 +3611,8 @@ static long smb3_zero_range(struct file *file, struct=
- cifs_tcon *tcon,
- =09=09=09if (offset < cifsi->netfs._zero_point)
- =09=09=09=09netfs_write_zero_point(inode, offset);
- =09=09=09spin_unlock(&inode->i_lock);
--=09=09=09fscache_resize_cookie(cifs_inode_cookie(inode), new_size);
-+=09=09=09fscache_resize_cookie(cifs_inode_cookie(inode),
-+=09=09=09=09=09      new_size, false);
- =09=09}
- =09}
-=20
-@@ -4146,7 +4147,7 @@ static long smb3_collapse_range(struct file *file, st=
-ruct cifs_tcon *tcon,
- =09netfs_resize_file(&cifsi->netfs, new_eof, true);
- =09netfs_write_zero_point(inode, new_eof);
- =09spin_unlock(&inode->i_lock);
--=09fscache_resize_cookie(cifs_inode_cookie(inode), new_eof);
-+=09fscache_resize_cookie(cifs_inode_cookie(inode), new_eof, true);
- out_2:
- =09filemap_invalidate_unlock(inode->i_mapping);
- out:
-@@ -4206,9 +4207,9 @@ static long smb3_insert_range(struct file *file, stru=
-ct cifs_tcon *tcon,
-=20
- =09truncate_setsize(inode, new_eof);
- =09spin_lock(&inode->i_lock);
--=09netfs_resize_file(&cifsi->netfs, i_size_read(inode), true);
-+=09netfs_resize_file(&cifsi->netfs, new_eof, true);
- =09spin_unlock(&inode->i_lock);
--=09fscache_resize_cookie(cifs_inode_cookie(inode), i_size_read(inode));
-+=09fscache_resize_cookie(cifs_inode_cookie(inode), new_eof, false);
-=20
- =09/*
- =09 * Move [off, old_eof) right by len. The helper copies backwards if the
-diff --git a/include/linux/fscache-cache.h b/include/linux/fscache-cache.h
-index ee524c863fa9..2b83ffa4510e 100644
---- a/include/linux/fscache-cache.h
-+++ b/include/linux/fscache-cache.h
-@@ -67,7 +67,7 @@ struct fscache_cache_ops {
-=20
- =09/* Change the size of a data object */
- =09void (*resize_cookie)(struct netfs_cache_resources *cres,
--=09=09=09      uoff_t new_size);
-+=09=09=09      uoff_t new_size, bool shrank);
-=20
- =09/* Invalidate an object */
- =09bool (*invalidate_cookie)(struct fscache_cookie *cookie);
-diff --git a/include/linux/fscache.h b/include/linux/fscache.h
-index f2d958bd1f48..ecd14d645690 100644
---- a/include/linux/fscache.h
-+++ b/include/linux/fscache.h
-@@ -184,7 +184,7 @@ extern struct fscache_cookie *__fscache_acquire_cookie(
- extern void __fscache_use_cookie(struct fscache_cookie *, bool);
- extern void __fscache_unuse_cookie(struct fscache_cookie *, const void *, =
-const uoff_t *);
- extern void __fscache_relinquish_cookie(struct fscache_cookie *, bool);
--extern void __fscache_resize_cookie(struct fscache_cookie *, uoff_t);
-+void __fscache_resize_cookie(struct fscache_cookie *cookie, uoff_t new_siz=
-e, bool shrank);
- extern void __fscache_invalidate(struct fscache_cookie *, const void *, uo=
-ff_t, unsigned int);
- extern int __fscache_begin_read_operation(struct netfs_cache_resources *, =
-struct fscache_cookie *);
- extern int __fscache_begin_write_operation(struct netfs_cache_resources *,=
- struct fscache_cookie *);
-@@ -394,8 +394,9 @@ void fscache_update_cookie(struct fscache_cookie *cooki=
-e, const void *aux_data,
-=20
- /**
-  * fscache_resize_cookie - Request that a cache object be resized
-- * @cookie: The cookie representing the cache object
-- * @new_size: The new size of the object (may be NULL)
-+ * @cookie: The cookie representing the cache object (may be NULL)
-+ * @new_size: The new size of the object
-+ * @shrank: True if the file shrank; false if it expanded
-  *
-  * Request that the size of an object be changed.
-  *
-@@ -403,10 +404,10 @@ void fscache_update_cookie(struct fscache_cookie *coo=
-kie, const void *aux_data,
-  * description.
-  */
- static inline
--void fscache_resize_cookie(struct fscache_cookie *cookie, uoff_t new_size)
-+void fscache_resize_cookie(struct fscache_cookie *cookie, uoff_t new_size,=
- bool shrank)
- {
- =09if (fscache_cookie_enabled(cookie))
--=09=09__fscache_resize_cookie(cookie, new_size);
-+=09=09__fscache_resize_cookie(cookie, new_size, shrank);
- }
-=20
- /**
+ 	int i, j, optype, rc = 0;
+-	struct mid_q_entry *midQ[MAX_COMPOUND];
++	struct mid_q_entry *mid[MAX_COMPOUND];
+ 	bool cancelled_mid[MAX_COMPOUND] = {false};
+ 	struct cifs_credits credits[MAX_COMPOUND] = {
+ 		{ .value = 0, .instance = 0 }
+@@ -930,35 +930,35 @@ compound_send_recv(const unsigned int xid, struct cifs_ses *ses,
+ 	}
+ 
+ 	for (i = 0; i < num_rqst; i++) {
+-		midQ[i] = server->ops->setup_request(ses, server, &rqst[i]);
+-		if (IS_ERR(midQ[i])) {
++		mid[i] = server->ops->setup_request(ses, server, &rqst[i]);
++		if (IS_ERR(mid[i])) {
+ 			revert_current_mid(server, i);
+ 			for (j = 0; j < i; j++)
+-				delete_mid(midQ[j]);
++				delete_mid(mid[j]);
+ 			cifs_server_unlock(server);
+ 
+ 			/* Update # of requests on wire to server */
+ 			for (j = 0; j < num_rqst; j++)
+ 				add_credits(server, &credits[j], optype);
+-			return PTR_ERR(midQ[i]);
++			return PTR_ERR(mid[i]);
+ 		}
+ 
+-		midQ[i]->mid_state = MID_REQUEST_SUBMITTED;
+-		midQ[i]->optype = optype;
++		mid[i]->mid_state = MID_REQUEST_SUBMITTED;
++		mid[i]->optype = optype;
+ 		/*
+ 		 * Invoke callback for every part of the compound chain
+ 		 * to calculate credits properly. Wake up this thread only when
+ 		 * the last element is received.
+ 		 */
+ 		if (i < num_rqst - 1)
+-			midQ[i]->callback = cifs_compound_callback;
++			mid[i]->callback = cifs_compound_callback;
+ 		else
+-			midQ[i]->callback = cifs_compound_last_callback;
++			mid[i]->callback = cifs_compound_last_callback;
+ 	}
+ 	rc = smb_send_rqst(server, num_rqst, rqst, flags);
+ 
+ 	for (i = 0; i < num_rqst; i++)
+-		cifs_save_when_sent(midQ[i]);
++		cifs_save_when_sent(mid[i]);
+ 
+ 	if (rc < 0) {
+ 		revert_current_mid(server, num_rqst);
+@@ -1001,23 +1001,23 @@ compound_send_recv(const unsigned int xid, struct cifs_ses *ses,
+ 	spin_unlock(&ses->ses_lock);
+ 
+ 	for (i = 0; i < num_rqst; i++) {
+-		rc = wait_for_response(server, midQ[i]);
++		rc = wait_for_response(server, mid[i]);
+ 		if (rc != 0)
+ 			break;
+ 	}
+ 	if (rc != 0) {
+ 		for (; i < num_rqst; i++) {
+ 			cifs_server_dbg(FYI, "Cancelling wait for mid %llu cmd: %d\n",
+-				 midQ[i]->mid, le16_to_cpu(midQ[i]->command));
+-			send_cancel(server, &rqst[i], midQ[i]);
+-			spin_lock(&midQ[i]->mid_lock);
+-			midQ[i]->wait_cancelled = true;
+-			if (midQ[i]->callback) {
+-				midQ[i]->callback = cifs_cancelled_callback;
++				 mid[i]->mid, le16_to_cpu(mid[i]->command));
++			send_cancel(server, &rqst[i], mid[i]);
++			spin_lock(&mid[i]->mid_lock);
++			mid[i]->wait_cancelled = true;
++			if (mid[i]->callback) {
++				mid[i]->callback = cifs_cancelled_callback;
+ 				cancelled_mid[i] = true;
+ 				credits[i].value = 0;
+ 			}
+-			spin_unlock(&midQ[i]->mid_lock);
++			spin_unlock(&mid[i]->mid_lock);
+ 		}
+ 	}
+ 
+@@ -1025,37 +1025,38 @@ compound_send_recv(const unsigned int xid, struct cifs_ses *ses,
+ 		if (rc < 0)
+ 			goto out;
+ 
+-		rc = cifs_sync_mid_result(midQ[i], server);
++		rc = cifs_sync_mid_result(mid[i], server);
+ 		if (rc != 0) {
+ 			/* mark this mid as cancelled to not free it below */
+ 			cancelled_mid[i] = true;
+ 			goto out;
+ 		}
+ 
+-		if (!midQ[i]->resp_buf ||
+-		    midQ[i]->mid_state != MID_RESPONSE_READY) {
++		if (!mid[i]->resp_buf ||
++		    mid[i]->mid_state != MID_RESPONSE_READY) {
+ 			rc = -EIO;
+ 			cifs_dbg(FYI, "Bad MID state?\n");
+ 			goto out;
+ 		}
+ 
+-		buf = (char *)midQ[i]->resp_buf;
+-		resp_iov[i].iov_base = buf;
+-		resp_iov[i].iov_len = midQ[i]->resp_buf_size +
+-			HEADER_PREAMBLE_SIZE(server);
++		rc = server->ops->check_receive(mid[i], server,
++						flags & CIFS_LOG_ERROR);
+ 
+-		if (midQ[i]->large_buf)
+-			resp_buf_type[i] = CIFS_LARGE_BUFFER;
+-		else
+-			resp_buf_type[i] = CIFS_SMALL_BUFFER;
+-
+-		rc = server->ops->check_receive(midQ[i], server,
+-						     flags & CIFS_LOG_ERROR);
++		if (resp_iov) {
++			buf = (char *)mid[i]->resp_buf;
++			resp_iov[i].iov_base = buf;
++			resp_iov[i].iov_len = mid[i]->resp_buf_size +
++				HEADER_PREAMBLE_SIZE(server);
+ 
+-		/* mark it so buf will not be freed by delete_mid */
+-		if ((flags & CIFS_NO_RSP_BUF) == 0)
+-			midQ[i]->resp_buf = NULL;
++			if (mid[i]->large_buf)
++				resp_buf_type[i] = CIFS_LARGE_BUFFER;
++			else
++				resp_buf_type[i] = CIFS_SMALL_BUFFER;
+ 
++			/* mark it so buf will not be freed by delete_mid */
++			if ((flags & CIFS_NO_RSP_BUF) == 0)
++				mid[i]->resp_buf = NULL;
++		}
+ 	}
+ 
+ 	/*
+@@ -1084,7 +1085,7 @@ compound_send_recv(const unsigned int xid, struct cifs_ses *ses,
+ 	 */
+ 	for (i = 0; i < num_rqst; i++) {
+ 		if (!cancelled_mid[i])
+-			delete_mid(midQ[i]);
++			delete_mid(mid[i]);
+ 	}
+ 
+ 	return rc;
+-- 
+2.53.0
+
+
 
