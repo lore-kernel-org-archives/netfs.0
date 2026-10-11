@@ -1,56 +1,65 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F8F3B775A
-	for <netfs@lists.linux.dev>; Fri,  9 Oct 2026 16:49:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B323C3C0C
+	for <netfs@lists.linux.dev>; Sun, 11 Oct 2026 05:29:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791564595; cv=none; b=ajPitUBzPFD/XZYTckTSQj44zll/qk3DdzEc+4R5uKRAR/O/VmR2hlsmj2arpXsMl4+5U4HXRyWXQnEqATWtABqbQBlolerqKOzjQjkFN9EO3GXbyUkFzu7N3ygFXZSEa2Ilx3Byb9xmCkatN87nUxWl9Kp5LC77j1o/cM1ir9k=
+	t=1791696588; cv=none; b=uQZqyffAqir+115nkXTLMDKTuyq7C4kz0srGFZqpRGe/n8t9uknHxsxTD6Ssx9cc0P0O3qfdQ8TpIFH6QKYftDrPZYuQB+zKWcxn6+RqhEM3M1a07h4yIgXhmcXqAJfxrjrrYEYIAzZNA3IIIQsMKuDYl/SCy0AoTc33jmF0hxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791564595; c=relaxed/simple;
-	bh=5MlBruMo2TjnAAf+Dpmzw9mk/9ImaZhareyOXW6r2pk=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
-	 Message-ID:Content-Type; b=AtFZr1EBpcSfRZHoFFmUd3PLCbJ0xQ0lUlqfhT6ovfX85k18wUYPOEXkzsOE0M9DwC/tD6PqfsF0dK6Q9kpFJ5KBNUy+35wU9efGpxfcqhpiIdEaUU738uK/NKGpJsYQ8M36uRwGxVOmzcZyTerpdXtC6wZV9v6DHBFd4mF7eR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ow4KaMmz; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1791696588; c=relaxed/simple;
+	bh=sIbRso6W6WqLNYE6yLPCDLJ+kUhhHofo7p2mjFJFouk=;
+	h=From:To:Cc:Subject:Message-ID:In-Reply-To:References:Date:
+	 MIME-Version:Content-Type; b=PfhlSu0wRdB81Es9lqYA+PyzFY8lnnsoOa7sJdQLYv8Rz/R6ZfFWcvfel08LpDVHxsIcSaKiS5ut309atSSzOEYxEoxfvazMIDGpkwzH2UT28+/4BJgOlrv/uOMIFk1+Nq7mcAvL3kexKz8IwnmyqLx5VyVbA3MoysRgKzHActU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=innovatrics.com; spf=pass smtp.mailfrom=innovatrics.com; dkim=pass (1024-bit key) header.d=innovatrics.com header.i=@innovatrics.com header.b=bWs6mx5m; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=innovatrics.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=innovatrics.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ow4KaMmz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791564588;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zT3oIpUWUIFwNAEB0XHEQYclcAc/48gMdUV5eEf/8dI=;
-	b=Ow4KaMmz9H81MAa/aKkdqJgJJM5i4pspRs/RoE1w3gLfge6V8djd3wwpX2gmqdrWxkbY0t
-	WVo8gBRsg+QyFhLAiE55+4IZeU/iHru68jt4M1ohVsxbfxkbSjh9TyXf74nr71d7jwutBx
-	TRDSX+X2xyeycphjtnZuhRSjI1QPJFQ=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-690-MEcRL3SNPvOI-11-hdY4rA-1; Fri,
- 9 Oct 2026 16:49:37 +0000
-X-MC-Unique: MEcRL3SNPvOI-11-hdY4rA-1
-X-Mimecast-MFC-AGG-ID: MEcRL3SNPvOI-11-hdY4rA_1791564574
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 43AD41955D62;
-	Fri,  9 Oct 2026 16:49:32 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.44.32.90])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CCC3C471;
-	Fri,  9 Oct 2026 16:49:22 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <asNeCzye-xas_Lt7@infradead.org>
-References: <asNeCzye-xas_Lt7@infradead.org> <20261001091239.3343034-1-dhowells@redhat.com> <20261001091239.3343034-2-dhowells@redhat.com>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
+	dkim=pass (1024-bit key) header.d=innovatrics.com header.i=@innovatrics.com header.b="bWs6mx5m"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a01933b584so8364655e9.0
+        for <netfs@lists.linux.dev>; Sat, 10 Oct 2026 22:29:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=innovatrics.com; s=google; t=1791696585; x=1792301385; darn=lists.linux.dev;
+        h=content-type:mime-version:date:references:in-reply-to:message-id
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=EwJQAcrSA8vm2/QDhj4tfogkpVMYET7O/tmaR0Uw6Xg=;
+        b=bWs6mx5mn612s8rIAAaKenRTjP2YKqiMABBEhR4YFb58f0mFnCKCRQaKI76mWupMmo
+         yPFZGsifFzZyQF/JVjLPqKUAiM4mPFV+d8U9DqGXpPemFEJHi/Q+tojmVNCU+orsAG39
+         Vr2et82o3FFU9NHc0eD+1+6vFF1rafR2LKc6I=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791696585; x=1792301385;
+        h=content-type:mime-version:date:references:in-reply-to:message-id
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=EwJQAcrSA8vm2/QDhj4tfogkpVMYET7O/tmaR0Uw6Xg=;
+        b=jCZ1X+NUkLV7oODFWNduURqbH9qaA1c0aVN1ybr8FCgMKAZZkaFg/7Q1OPtZ2lOBUX
+         rtQ3or21vGISUPbXIJdxXMD7vXR6rxIbzeefrPl4gZDB3h8830VGL4IQD6PHIXZQN4nV
+         NeLq35/vNsEwOCOWqMsGB+qgMCw76VNSerYLUKyjG1EHwr3hjiSaZ+dKLW6xhtlpg0oX
+         QYveYeHkgveUWEOY3FwZgIdIXDsf603EDPPFUg1mKuwyb7kh0QugYLyEkk9IHFxxTFUo
+         Fmg7DFpx2aPBPwRo4MoN1DbzbmXBCVWIGOZhGCKmnJLefN4O4Skxnjg4YkiJAHUJvv1r
+         /6pw==
+X-Forwarded-Encrypted: i=1; AKwUvBxbROoiP7qbAK5XxawaPW4kbc4ypNeDIQSZLGjrpLetNBKigQPk15PcswfNA0ZafIbc6SJMVQ==@lists.linux.dev
+X-Gm-Message-State: AFq9FYKy1bhzS9wTguO7cIGQ52ezjqbYtCrn4oYZJWxExIyHoltGpLeE
+	6zMoF6KQ1rLFhJlhaztcqacVlT0tSKKL3H47tuGpj7Trw73QapQARcsktvDPoYLCyw==
+X-Gm-Gg: AYBFou07JG3sPbBgy0irwtXBDkwXcXpmhl1XYnJXMnE9ewVNKTJCYvdc47rWRJK5WG6
+	5UKIA6+DmD9+326AWpuXYcAVpMmScaTsilL5VfUiULIFf/btfZ6EZNMjh0ry8JztSBcrnjYM95j
+	W7Sl6DTMq8XWheJCgaBXQwn/nsSoeTd5G9khBJhRZIJ67lwetv8JIVzXv03MZVtNJRAkkPxcUTL
+	GmnmIPa3USkiYpRhBFdpH9W44fn66w2ZwS+rGq6f6iEdSQqYy/sLTgrWkjoi8QiHXUOiN0OLDzR
+	4gUztz6MYDFmOC2OSop0MSR+nj6MqtMOZfu2jUgLhuZ/FfugbcaJlgKueKdVLsrvb7lmMEQD8ti
+	YCUnJ73DxjqQAQlLs3mE6ZkGz7jHUsrZ1HGZ5FgGs2O0baesZ2283rtS6K6abY3cvVcOBLPB0c9
+	VRPJgiNavNz3bAH2fbbe+Mxqwb3bDCNYjp1yXYXrRthLpjGjwm/VXP9EfyAN0l5LNKMxYqd6To0
+	Gmk8ujOh8YZtewqk+sPcqG0s2PEhiiUVvVLICfXyb5tzK3WAWBLCXKPZtU375ew/wYgn0R1x39o
+	TByu0z9YMEMI21KTAO5Bh/uj5iFAlJE=
+X-Received: by 2002:a05:600c:e558:20b0:4a1:946c:953f with SMTP id 5b1f17b1804b1-4a1946c9744mr30278845e9.20.1791696585122;
+        Sat, 10 Oct 2026 22:29:45 -0700 (PDT)
+Received: from [10.11.72.5] (bip-static-148.213-81-147.telecom.sk. [213.81.147.148])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a193f2c992sm107606015e9.5.2026.10.10.22.29.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 10 Oct 2026 22:29:44 -0700 (PDT)
+From: Petr Chmelar <petr.chmelar@innovatrics.com>
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <christian@brauner.io>,
     Paulo Alcantara <pc@manguebit.org>,
     Matthew Wilcox <willy@infradead.org>,
     Namjae Jeon <linkinjeon@kernel.org>,
@@ -58,315 +67,99 @@ Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
     Stefan Metzmacher <metze@samba.org>,
     Eric Van Hensbergen <ericvh@kernel.org>,
     Dominique Martinet <asmadeus@codewreck.org>,
-    Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
-    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-    v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-    linux-block@vger.kernel.org
-Subject: Re: [PATCH v15 01/10] Add a function to kmap one page of a multipage bio_vec
+    Ilya Dryomov <idryomov@gmail.com>,
+    netfs@lists.linux.dev,
+    linux-afs@lists.infradead.org,
+    linux-cifs@vger.kernel.org,
+    linux-nfs@vger.kernel.org,
+    ceph-devel@vger.kernel.org,
+    v9fs@lists.linux.dev,
+    linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v12 4/5] cachefiles: Don't rely on backing fs storage map
+ for most use cases
+Message-ID: <20261011.cachefiles-partial-zeros.pchmelar@innovatrics.com>
+In-Reply-To: <20260910220242.2165023-5-dhowells@redhat.com>
+References: <20260910220242.2165023-1-dhowells@redhat.com>
+ <20260910220242.2165023-5-dhowells@redhat.com>
+Date: Sun, 11 Oct 2026 05:29:43 +0000
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Fri, 09 Oct 2026 17:49:21 +0100
-Message-ID: <1220024.1791564561@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
-X-Mimecast-MFC-PROC-ID: bTMjis8XKjFZme4vb5oFwGdMb0-beUkpLqq9gle0A7w_1791564574
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1220023.1791564561.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 
-Christoph Hellwig <hch@infradead.org> wrote:
+Hi David,
 
-> I've now got 4 copies of this series in less than a week,
+With this patch, reading a file whose cache object is only partly
+filled returns wrong data, mostly whole 64 KiB blocks of zeros.  A
+second full read returns the same wrong blocks.  It reproduces over
+NFS and 9p on vfs-7.4.netfs (9f8b64f66).  Over 9p it bisects to this
+patch, 13e340e397 in that branch; over NFS its parent is clean and the
+branch tip is not.
 
-Sashiko is such fun. =20
+#regzbot introduced: 13e340e397
 
-> or rather partial copies as all of them seem to miss a cover letter.
+Reproducer: random 64 KiB reads covering half of a 256 MiB file of
+random data, then a full read after dropping the page cache, compared
+with the original per 64 KiB block:
 
-Apologies for that.  I removed you from the list for the first two batches =
-of
-patches because they were some internal netfs changes and cachefiles
-improvements respectively, not core code; I forgot to add you back to the
-cover letter for the third set.  I've attached the cover letter below so th=
-at
-you can refer to it.
+  fio --name=half --filename=/mnt/part.bin --rw=randread --bs=64k \
+      --ioengine=psync --fadvise_hint=random --size=256m --io_size=128m \
+      --randrepeat=1
+  sync; echo 3 > /proc/sys/vm/drop_caches
+  cmp /mnt/part.bin /path/to/original
 
-> Thus I still don't know how the core code in this series is tested
+Setup: QEMU 8.2.2 (TCG, 4 vCPUs), cache on a fresh XFS on a loop device
+(2 GiB for 9p, 4 GiB for NFS), cachefilesd 0.10.10 with brun 10%, bcull
+7%, bstop 3%, fio 3.36.  Mounts:
 
-Four ways:
+  NFS: NFSv4.2 loopback export of a tmpfs, vers=4.2,fsc,actimeo=1
+  9p:  trans=virtio,version=9p2000.L,cache=fscache,msize=1048576
 
- (1) There's a kunit module, lib/tests/kunit_iov_iter.c.
+Wrong 64 KiB blocks out of 4096, first full read / second full read:
 
- (2) -g quick xfstests on afs (with and without fscache) and cifs.
+  kernel                mount     wrong       all zeros
+  v7.3-rc6              9p        0 / 0       0
+  e0aa90eb8c            9p        0 / 0       0
+  98e0cd700d (parent)   9p        0 / 0       0
+  98e0cd700d (parent)   NFS       0 / 0       0
+  13e340e397 (this)     9p        936 / 936   825
+  8097a263bd (merge)    9p        936 / 936   825
+  9f8b64f66             9p        936 / 936   825
+  9f8b64f66             NFS       817 / 817   817
+  9f8b64f66             9p loose  0 / 0       0
 
- (3) Git checkout and kernel compilation on afs (with and without fscache) =
-and
-     cifs.
+  "9p loose" is the 9p mount with cache=loose, without fscache.
 
- (4) A bunch of different fio tests on afs (with and without fscache) and
-     cifs.
+On 9f8b64f66 over 9p, three runs gave the same counts and the same
+first wrong blocks.  The first wrong blocks are 10, 13, 15, 24, 26 and
+27 over 9p, and 50, 51, 53, 54, 55 and 56 over NFS.
 
-The code is not directly accessible by userspace so adding xfstests to driv=
-e
-it directly is not feasible.  It is also testable by 9p and to a lesser ext=
-ent
-nfs and ceph.
+Two more observations, in case they help:
 
-Paulo has also done some testing of these patch sets against a greater vari=
-ety
-of cifs servers than I have available and Marc has also run tests against
-Auristor's AFS servers.
+ - Over 9p, after the random fill and both full reads, the backing
+   object has 451 extents with this patch and 28 on v7.3-rc6 (37 on
+   98e0cd700d).
 
-> or why you've not considered using it for anything but your little corner
+ - Over NFS on 9f8b64f66, the fscache counters after the fill and both
+   full reads are IO rd=371 wr=2189.  I haven't traced whether the
+   zeros come from reads over holes in the backing file or from what
+   was written to it.
 
-Network filesystems are "my own little corner" and "niche"?  I explain belo=
-w
-in the cover letter what I'm trying to achieve with this and where I want t=
-o
-use it next.  It seems that I can probably achieve a 5% improvement in cifs
-performance, for example.  There are links in the cover letter to patch set=
-s I
-have for cifs and for ceph where I'm using this to improve the transport.
+Over NFS, a server-side rewrite of the file (invalidation) and a shrink
+and regrow through the mount both read back correctly on 9f8b64f66 and
+98e0cd700d.
 
-And I have considered rolling it out into other places - for example: pipes
-(instead of a ring buffer), the block layer, the networking layer (skbuff
-memory lists as bvecq carries info on how to clean up the memory) and the
-crypto layer (replacing scatterlists).
+I found this while testing a workaround for slow reads from fragmented
+cache objects, which I describe in a reply to the cover letter:
 
-But I have to start somewhere - and that somewhere is in improving network
-filesystems.  The main thing I'm working towards is being able to assemble =
-a
-whole RPC message and then send it in one single sendmsg call without the n=
-eed
-for corking on TCP transports - where a message may be assembled as a compo=
-und
-of other messages, may include sparse write data and may be huge (multiple
-megabytes).
+  https://lore.kernel.org/r/20261011.cachefiles-seek-hole-walk.pchmelar@innovatrics.com
 
-One alteration I've considered making to the bvecq (as mentioned in the
-attached cover letter) is to add two additional fields, the first to add to
-the offset of the first slot and the second to subtract from the length of =
-the
-last slot.  This would allow the use of a bvecq struct to point at a slice =
-of
-someone else's bio_vec[] array without the need to copy that array.  This
-might make it of more use in the block layer.
-
-> and thus barely tested.
->
-> Please slow down a bit and after the nth time please consider
-> testability.  Make sure core code regular exercised uses it, or find
-> a way to unit test it at least.
-
-I wrote some kunit tests for iov_iter back in 2023 and extended them in thi=
-s
-patch series.  May I also point out that you haven't added tests for
-iov_iter_extract_bvecs() to lib/tests/kunit_iov_iter.c yet?
-
-Granted the kunit tests could be more thorough as there's a number of thing=
-s
-that aren't tested.
-
-David
----
-Cover letter:
-
-Hi Christian,
-
-Could you pull these patches please into your vfs-7.4.netfs branch?  This
-is the third of four (maybe five) batches, in this case replacing the
-folio_queue struct with a bvecq struct, and is based upon the
-aforementioned branch.  This was split from v11 of a larger netfslib
-series[1].  I've fixed some issues spotted by sashiko[5-7].
-
-This series adds a new type, struct bvecq.  This points to a bounded array
-of bio_vecs with information about how to clean up the memory they point
-to.  A number of bvecq structs can be linked together to form a chain and
-an iterator type, ITER_BVECQ, is provided that can be pointed at the chain
-and can walk it.  Netfslib is then switched to use the new type and
-folio_queue is removed along with ITER_FOLIOQ.
-
-This is intended as a more flexible replacement for struct folio_queue as
-the latter can only point to whole folios and cannot point to partial pages
-that might be extracted from an ITER_IOVEC/ITER_UBUF for direct or
-unbuffered I/O purposes.
-
-These patches make a more or less straight swap between struct folio_queue
-and struct bvecq.  The change is not quite trivial as the folio_queue
-struct contains a folio_batch struct and is basically a list of whole
-folios only, whereas the new bvecq struct is a chain of bio_vec arrays.
-
-A further patchset will switch the netfslib unbuffered I/O code to using
-bvecqs and then the bvecqs will be passed down into the filesystem rather
-than passing an iterator.
-
-The primary reason behind making this change is so that bvecq chains can be
-used in the assembly of network filesystem messages.  Netfslib can furnish
-the filesystem with bvecq chains representing the data buffers that need to
-be read or written and then, for example, for a write RPC, the filesystem
-can add protocol headers and trailers onto the chain without the need to
-copy it and can also glue multiple buffers together to form compound
-operations and/or perform sparse operations.
-
-One option here is to add two more fields to the bvecq struct, one to
-increase the offset of the first bio_vec and one to decrease the length of
-the last, thereby allowing a bvecq struct to point at a slice of another
-bio_vec array without having to copy the array - but at the cost of adding
-one or two extra conditional ops when getting the offset or length of a
-segment.
-
-I have in-progress patch sets to rewrite the cifs transport[2] and the ceph
-and rbd transport[3] to make use of bvecq chains.  With the cifs transport,
-the idea is to extend the SMB message concept further up the stack and have
-the PDU creation routines attach individual RPC requests blobs that can
-then be automatically chained by the transport when a compound is being
-assembled for transmission.
-
-With the ceph transport, the idea is to convert all the different data
-containers it has into just passing around bvecqs.  These can then be
-chained together in order to transmit them.
-
-This improves efficiency in the TCP stack as we no longer need to cork the
-TCP socket, call sendmsg() multiple times and then uncork; rather we can
-preassemble the message in a bvecq chain and just send the entire messsage
-in one shot with a single sendmsg() and reduce the number of places doing
-loops.  This got an improvement in nfsd performance[4].
-
-I also have some changes on the TCP receive side for the cifs transport
-(which is also likely applicable to the ceph TCP transport) whereby the
-receive buffers are 'spliced' out into a bvecq in the cifs I/O thread
-rather than being copied.  Using a bvecq chain here is advantageous as we
-don't know in advance how many segments we're going to have.  This allows
-us firstly to avoid copying data with the socket lock held (thus holding up
-sendmsg) and secondly to avoid copying data in the I/O thread (copying can
-be offloaded to the app thread).  The last time I benchmarked this, it
-appeared to get fio reading tests on cifs a 5% speedup.
-
-Unfortunately, this doesn't help AFS much as that uses a UDP transport, but
-it might also help 9P, at least with its TCP transport.
-
-The patches can also be found here:
-
-=09https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/lo=
-g/?h=3Dnetfs-next-3
+It reproduces without that workaround.  The reproducer and the
+bisection were done with LLM assistance.
 
 Thanks,
-David
-
-Changes
-=3D=3D=3D=3D=3D=3D=3D
-ver #15)
-- Fix issues from Sashiko[7]:
-  - Don't need to set page counts after calling alloc_pages_bulk().
-  - Adjust netfs_writeback_single() to return 0 on success, not the amount
-    written.
-  - Remove a couple of unused constants.
-
-ver #14)
-- Fix issues from Sashiko[6]:
-  - In iter_bvecq_get_pages(), use folio_get() not get_pages.
-  - In netfs_read_set_unlock_at(), netfs_read_unlock_folios(),
-    netfs_pgpriv2_unlock_copied_folios() and
-    netfs_writeback_unlock_folios(), skip wholly unoccupied bvecqs.
-  - Remove some now-unused trace bits.
-
-ver #13)
-- Fix issues from Sashiko[5]:
-  - In iter_bvecq_get_pages(), need to add bv_offset when calling
-    want_pages_array().
-  - In iter_bvecq_get_pages(), make the getting of a ref on the page
-    dependent on the page being non-slab.
-  - In bvecq_alloc_one(), use mempool_alloc(), not
-     mempool_alloc_noreserve().
-  - In bvecq_expand_buffer(), don't apply __GFP_NORETRY|__GFP_WARN for
-    order 0 allocations.
-  - Drop the netfs_bv_slot tracepoint as it's not used in these patches.
-  - In afs_do_read_single(), afs_dir_get_block() and afs_do_read_symlink(),
-    use mapping_gfp_mask() rather than GFP_KERNEL.
-  - In netfs_writeback_single(), set ->submitted so that
-    netfs_wait_for_write() doesn't then just return -EIO.
-  - In netfs_unlock_abandoned_read_pages(), reset ->first_tail_slot when
-    moving on to next node.
-  - Remove netfs_folioq_trace(s) trace info enum and string set as their
-    tracepoint got removed.
-
-ver #12)
-- Split from v11 of "netfs: Keep track of folios in a segmented bio_vec[]
-  chain"[1]
-
-[1] https://lore.kernel.org/r/20260902173350.3468672-1-dhowells@redhat.com/
-[2] https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/l=
-og/?h=3Dcifs-experimental
-[3] https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/l=
-og/?h=3Dceph-iter
-[4] https://lore.kernel.org/netdev/168979108540.1905271.9720708849149797793=
-.stgit@morisot.1015granger.net/
-[5] https://sashiko.dev/#/patchset/20260929075913.2740968-1-dhowells%40redh=
-at.com
-[6] https://sashiko.dev/#/patchset/20260929103412.2807494-1-dhowells%40redh=
-at.com
-[7] https://sashiko.dev/#/patchset/20260930125247.3232130-1-dhowells%40redh=
-at.com
-
-David Howells (10):
-  Add a function to kmap one page of a multipage bio_vec
-  iov_iter: Add a segmented queue of bio_vec[]
-  netfs: Add some tools for managing bvecq chains
-  afs: Use a bvecq to hold dir content rather than folioq
-  cifs: Use a bvecq for buffering instead of a folioq
-  smbdirect: Support ITER_BVECQ in smbdirect_map_sges_from_iter()
-  netfs: Switch folioq to bvecq
-  smbdirect: Remove support for ITER_FOLIOQ from
-    smbdirect_map_sges_from_iter()
-  iov_iter: Remove ITER_FOLIOQ
-  netfs: Remove folio_queue
-
- Documentation/core-api/folio_queue.rst      | 209 --------
- Documentation/core-api/index.rst            |   1 -
- Documentation/filesystems/netfs_library.rst |   2 +-
- fs/afs/dir.c                                |  36 +-
- fs/afs/dir_edit.c                           |  43 +-
- fs/afs/dir_search.c                         |  33 +-
- fs/afs/inode.c                              |   2 +-
- fs/afs/internal.h                           |   6 +-
- fs/afs/symlink.c                            |  38 +-
- fs/netfs/Makefile                           |   1 +
- fs/netfs/buffered_read.c                    |  34 +-
- fs/netfs/bvecq.c                            | 344 +++++++++++++
- fs/netfs/internal.h                         |   7 +-
- fs/netfs/iterator.c                         |  33 +-
- fs/netfs/main.c                             |  13 +-
- fs/netfs/misc.c                             |  96 ----
- fs/netfs/read_collect.c                     |  48 +-
- fs/netfs/read_pgpriv2.c                     |  26 +-
- fs/netfs/read_retry.c                       |  29 +-
- fs/netfs/rolling_buffer.c                   | 189 +++----
- fs/netfs/stats.c                            |   6 +-
- fs/netfs/write_collect.c                    |  26 +-
- fs/netfs/write_issue.c                      | 191 ++------
- fs/smb/client/cifsglob.h                    |   2 +-
- fs/smb/client/smb2ops.c                     |  78 ++-
- fs/smb/smbdirect/connection.c               | 135 +++--
- include/linux/bvec.h                        |  18 +
- include/linux/bvecq.h                       | 166 +++++++
- include/linux/folio_queue.h                 | 282 -----------
- include/linux/iov_iter.h                    |  87 ++--
- include/linux/netfs.h                       |  16 +-
- include/linux/rolling_buffer.h              |  42 +-
- include/linux/uio.h                         |  17 +-
- include/trace/events/netfs.h                |  37 +-
- kernel/bpf/btf.c                            |   2 -
- lib/iov_iter.c                              | 516 ++++++++++++++------
- lib/scatterlist.c                           |  82 ++--
- lib/tests/kunit_iov_iter.c                  | 131 +++--
- 38 files changed, 1453 insertions(+), 1571 deletions(-)
- delete mode 100644 Documentation/core-api/folio_queue.rst
- create mode 100644 fs/netfs/bvecq.c
- create mode 100644 include/linux/bvecq.h
- delete mode 100644 include/linux/folio_queue.h
-
+Petr
