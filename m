@@ -1,41 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF502D7380;
-	Tue, 13 Oct 2026 12:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7E94F5DFD;
+	Tue, 13 Oct 2026 12:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791893496; cv=none; b=pOzslapJlJYTrqNT0mpcimiPbJlMm8OV3pZAEuLGojSaGUmr5titlrq66NQ6u4EPVusNFyFcY3R8Df47ZYy+RjDWyM1nqdxwx8D62cY0+O6YFqoBQZdHCkVNiIQM2BTrIZUnWX5pecBrSUw6TAYGcfOXr1EZBgk6FR07WxsO+hc=
+	t=1791893596; cv=none; b=OTC53B/e0FMcjtjn6LoHlqBfwJMR7u/5pjtXDzkju/ngYdCPBU2gpK7PS+4Sw690dP9XFUkLZ9YkiIom3WJIbvdtdFbnT/y0IZgsYGlNHs+4KMEs8SULqShf98NqNrw+KOdNjZWH4pZJaCIgtqp54CC+9wG7Ulzk5bjCwRRkrsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791893496; c=relaxed/simple;
-	bh=eQMnab2OOoieSB0p5qIatSRH0tlcciLBfVw3HxnUWOw=;
+	s=arc-20240116; t=1791893596; c=relaxed/simple;
+	bh=+JECHkX1IpaaR+4Zz5BCz8bA0uM3t+u4StrApDTYmJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FM20CiNogrKOUIQaPS/fHMHbhnV1HZCsLvjWg/Sn5YBCPJOh/LIR6cruJTjYNoiumk7x1BCDTXZ63We4uxOdh2428tDdOE7X7g2CBOu9TIkTJBPv5Vioti0uTET1MuAdWSQmSJozUNQ5+Dwd5aC0HKbGQwNlv+GDvoVOkh2sCgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1UYDSBr8; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=LjcSSEGCTfOGleoBkjGU3JlEHdiAEG9Fb/TN5MwslKPoUHSynd5ejqBSoL5Q06Bk+mehLsRzsOa3HJ8scRHwgHZ7m3jjPUzda92XBYb9kO9Jabsw6TT3akUwlg1pxfhNcQHk5Rge4vMVwvB4/LrQ3F1KkVm5haWFjtaMovuBwpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i35xYIuJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1UYDSBr8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179DA1F000FF;
-	Tue, 13 Oct 2026 12:11:34 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i35xYIuJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59E141F000FF;
+	Tue, 13 Oct 2026 12:13:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1791893495;
-	bh=PCOYEHRtaNWKTX/LkTMGQatWU4GMoPX7KpBkJntQJTM=;
+	s=korg; t=1791893594;
+	bh=Kg73AhzXi2iAcevZFY/l9qUATXilD/gdhNebfBy9LA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1UYDSBr8CRi/dDfFpRJjzW4DKG1Ib847bB34hB9i+mNLjnRTW/wpDqlNS+OH0ix8a
-	 G/sgEQsa2z+XxLCQEFySvwl6tImqCub4OrjdvsQ0Jj31ZAbdcdDVq30Bu1ZY5D+THT
-	 +/8ucR+o0SLI+kpal9pYDA67AADQZxzG23px445w=
+	b=i35xYIuJZuiGXZTDjzVLG9xlnBcH36PUFmdugzVpNQhppqB/XjR3yxMZcC2ncs5bg
+	 xrizdMDCpwbcLp5n/7l4ukyjM2LiMve+Lt4orn/4/dN2Danv5hB8O1R3PGMz8/Rbjg
+	 E0YJL7DOIlelcW7gh6LHvSGY7k5wX2T3fKnTCP34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	David Howells <dhowells@redhat.com>,
 	Paulo Alcantara <pc@manguebit.org>,
+	Matthew Wilcox <willy@infradead.org>,
 	netfs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 243/621] netfs: Fix missing barriers when accessing stream->subrequests locklessly
-Date: Tue, 13 Oct 2026 13:33:58 +0200
-Message-ID: <20261013112926.624853554@linuxfoundation.org>
+Subject: [PATCH 6.18 251/621] netfs: Fix zeropoint update where i_size > remote_i_size
+Date: Tue, 13 Oct 2026 13:34:06 +0200
+Message-ID: <20261013112926.818120005@linuxfoundation.org>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261013112920.855194808@linuxfoundation.org>
 References: <20261013112920.855194808@linuxfoundation.org>
@@ -56,179 +57,72 @@ Content-Transfer-Encoding: 8bit
 
 From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit b5782e2d462c028096f922abca46318cec890670 ]
+[ Upstream commit 4543a4d737944134a1394afe797622546fbcc98a ]
 
-The list of subrequests attached to stream->subrequests is accessed without
-locks by netfs_collect_read_results() and netfs_collect_write_results(),
-and then they access subreq->flags without taking a barrier after getting
-the subreq pointer from the list.  Relatedly, the functions that build the
-list don't use any sort of write barrier when constructing the list to make
-sure that the NETFS_SREQ_IN_PROGRESS flag is perceived to be set first if
-no lock is taken.
+Fix the update of the zero point[*] by netfs_release_folio() when there is
+uncommitted data in the pagecache beyond the folio being released but the
+on-server EOF is in this folio (ie. i_size > remote_i_size).  The update
+needs to limit zero_point to remote_i_size, not i_size as i_size is a local
+phenomenon reflecting updates made locally to the pagecache, not stuff
+written to the server.  remote_i_size tracks the server's i_size.
 
-Fix this by:
+[*] The zero point is the file position from which we can assume that the
+    server will just return zeros, so we can avoid generating reads.
 
- (1) Add a new list_add_tail_release() function that uses a release barrier
-     to set the pointer to the new member of the list.
+Note that netfs_invalidate_folio() probably doesn't need fixing as
+zero_point should be updated by setattr after truncation or fallocate.
 
- (2) Add a new list_first_entry_or_null_acquire() function that uses an
-     acquire barrier to read the pointer to the first member in a list (or
-     return NULL).
+Found with:
 
- (3) Use list_add_tail_release() when adding a subreq to ->subrequests.
+    fsx -q -N 1000000 -p 10000 -o 128000 -l 600000 \
+        /xfstest.test/junk --replay-ops=junk.fsxops
 
- (4) Use list_first_entry_or_null_acquire() when initially accessing the
-     front of the list (when an item is removed, the pointer to the new
-     front iterm is obtained under the same lock).
+using the following as junk.fsxops:
 
-Fixes: e2d46f2ec332 ("netfs: Change the read result collector to only use one work item")
-Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
-Link: https://sashiko.dev/#/patchset/20260326104544.509518-1-dhowells%40redhat.com
+    truncate 0x0 0x1bbae 0x82864
+    write 0x3ef2e 0xf9c8 0x1bbae
+    write 0x67e05 0xcb5a 0x4e8f6
+    mapread 0x57781 0x85b6 0x7495f
+    copy_range 0x5d3d 0x10329 0x54fac 0x7495f
+    write 0x64710 0x1c2b 0x7495f
+    mapread 0x64000 0x1000 0x7495f
+
+on cifs with the default cache option.
+
+It shows read-gaps on folio 0x64 failing with a short read (ie. it hits
+EOF) if the FMODE_READ check is commented out in netfs_perform_write():
+
+                if (//(file->f_mode & FMODE_READ) ||
+                    netfs_is_cache_enabled(ctx)) {
+
+and no fscache.  This was initially found with the generic/522 xfstest.
+
+Fixes: cce6bfa6ca0e ("netfs: Fix trimming of streaming-write folios in netfs_inval_folio()")
 Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-4-dhowells@redhat.com
+Link: https://patch.msgid.link/20260512123404.719402-7-dhowells@redhat.com
 cc: Paulo Alcantara <pc@manguebit.org>
+cc: Matthew Wilcox <willy@infradead.org>
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/buffered_read.c |  3 ++-
- fs/netfs/misc.c          |  1 +
- fs/netfs/read_collect.c  |  6 ++++--
- fs/netfs/write_collect.c |  6 ++++--
- fs/netfs/write_issue.c   |  3 ++-
- include/linux/list.h     | 37 +++++++++++++++++++++++++++++++++++++
- 6 files changed, 50 insertions(+), 6 deletions(-)
+ fs/netfs/misc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
-index 29868dcd1ec3b..506bfbe467a9d 100644
---- a/fs/netfs/buffered_read.c
-+++ b/fs/netfs/buffered_read.c
-@@ -170,7 +170,8 @@ void netfs_queue_read(struct netfs_io_request *rreq,
- 	 * remove entries off of the front.
- 	 */
- 	spin_lock(&rreq->lock);
--	list_add_tail(&subreq->rreq_link, &stream->subrequests);
-+	/* Write IN_PROGRESS before pointer to new subreq */
-+	list_add_tail_release(&subreq->rreq_link, &stream->subrequests);
- 	if (list_is_first(&subreq->rreq_link, &stream->subrequests)) {
- 		if (!stream->active) {
- 			stream->collected_to = subreq->start;
 diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
-index 628c45f53d83c..02654b5c53fe3 100644
+index 02654b5c53fe3..d8a67ea348f7f 100644
 --- a/fs/netfs/misc.c
 +++ b/fs/netfs/misc.c
-@@ -361,6 +361,7 @@ void netfs_wait_for_in_progress_stream(struct netfs_io_request *rreq,
- 	DEFINE_WAIT(myself);
+@@ -303,7 +303,7 @@ bool netfs_release_folio(struct folio *folio, gfp_t gfp)
+ 	if (folio_test_dirty(folio))
+ 		return false;
  
- 	list_for_each_entry(subreq, &stream->subrequests, rreq_link) {
-+		smp_rmb(); /* Read ->next before IN_PROGRESS. */
- 		if (!netfs_check_subreq_in_progress(subreq))
- 			continue;
+-	end = umin(folio_pos(folio) + folio_size(folio), i_size_read(&ctx->inode));
++	end = umin(folio_pos(folio) + folio_size(folio), ctx->remote_i_size);
+ 	if (end > ctx->zero_point)
+ 		ctx->zero_point = end;
  
-diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
-index 8ad06678e6883..02a9ad14627a0 100644
---- a/fs/netfs/read_collect.c
-+++ b/fs/netfs/read_collect.c
-@@ -221,8 +221,10 @@ static void netfs_collect_read_results(struct netfs_io_request *rreq)
- 	 * in progress.  The issuer thread may be adding stuff to the tail
- 	 * whilst we're doing this.
- 	 */
--	front = list_first_entry_or_null(&stream->subrequests,
--					 struct netfs_io_subrequest, rreq_link);
-+	front = list_first_entry_or_null_acquire(&stream->subrequests,
-+						 struct netfs_io_subrequest, rreq_link);
-+	/* Read first subreq pointer before IN_PROGRESS flag. */
-+
- 	while (front) {
- 		size_t transferred;
- 
-diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
-index b194447f4b111..7fbf50907a7fc 100644
---- a/fs/netfs/write_collect.c
-+++ b/fs/netfs/write_collect.c
-@@ -228,8 +228,10 @@ static void netfs_collect_write_results(struct netfs_io_request *wreq)
- 		if (!smp_load_acquire(&stream->active))
- 			continue;
- 
--		front = list_first_entry_or_null(&stream->subrequests,
--						 struct netfs_io_subrequest, rreq_link);
-+		front = list_first_entry_or_null_acquire(&stream->subrequests,
-+							 struct netfs_io_subrequest, rreq_link);
-+		/* Read first subreq pointer before IN_PROGRESS flag. */
-+
- 		while (front) {
- 			trace_netfs_collect_sreq(wreq, front);
- 			//_debug("sreq [%x] %llx %zx/%zx",
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index ceb1a684a758c..10315c9538116 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -206,7 +206,8 @@ void netfs_prepare_write(struct netfs_io_request *wreq,
- 	 * remove entries off of the front.
- 	 */
- 	spin_lock(&wreq->lock);
--	list_add_tail(&subreq->rreq_link, &stream->subrequests);
-+	/* Write IN_PROGRESS before pointer to new subreq */
-+	list_add_tail_release(&subreq->rreq_link, &stream->subrequests);
- 	if (list_is_first(&subreq->rreq_link, &stream->subrequests)) {
- 		if (!stream->active) {
- 			stream->collected_to = subreq->start;
-diff --git a/include/linux/list.h b/include/linux/list.h
-index 0121e2f88f890..59f8aa0905d3b 100644
---- a/include/linux/list.h
-+++ b/include/linux/list.h
-@@ -198,6 +198,29 @@ static inline void list_add_tail(struct list_head *new, struct list_head *head)
- 	__list_add(new, head->prev, head);
- }
- 
-+/**
-+ * list_add_tail_release - add a new entry with release barrier
-+ * @new: new entry to be added
-+ * @head: list head to add it before
-+ *
-+ * Insert a new entry before the specified head, using a release barrier to set
-+ * the ->next pointer that points to it.  This is useful for implementing
-+ * queues, in particular one that the elements will be walked through forwards
-+ * locklessly.
-+ */
-+static inline void list_add_tail_release(struct list_head *new,
-+					 struct list_head *head)
-+{
-+	struct list_head *prev = head->prev;
-+
-+	if (__list_add_valid(new, prev, head)) {
-+		new->next = head;
-+		new->prev = prev;
-+		head->prev = new;
-+		smp_store_release(&prev->next, new);
-+	}
-+}
-+
- /*
-  * Delete a list entry by making the prev/next entries
-  * point to each other.
-@@ -651,6 +674,20 @@ static inline void list_splice_tail_init(struct list_head *list,
- 	pos__ != head__ ? list_entry(pos__, type, member) : NULL; \
- })
- 
-+/**
-+ * list_first_entry_or_null_acquire - get the first element from a list with barrier
-+ * @ptr:	the list head to take the element from.
-+ * @type:	the type of the struct this is embedded in.
-+ * @member:	the name of the list_head within the struct.
-+ *
-+ * Note that if the list is empty, it returns NULL.
-+ */
-+#define list_first_entry_or_null_acquire(ptr, type, member) ({ \
-+	struct list_head *head__ = (ptr); \
-+	struct list_head *pos__ = smp_load_acquire(&head__->next); \
-+	pos__ != head__ ? list_entry(pos__, type, member) : NULL; \
-+})
-+
- /**
-  * list_last_entry_or_null - get the last element from a list
-  * @ptr:	the list head to take the element from.
 -- 
 2.53.0
 
