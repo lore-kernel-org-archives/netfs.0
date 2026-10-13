@@ -1,182 +1,236 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B2B3FE35F
-	for <netfs@lists.linux.dev>; Tue, 13 Oct 2026 10:44:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791888269; cv=pass; b=JodR90h27j+g8OG9rBSBBm1ftXk2iX6wPWG4+6iDWLQJZGnn4ITNV2cMpii/5uThPtjXg9KFHrHTavciBj5SrPS4y3y6okUgOFdQuoodOfor8TuuD9sJCNRmKMf47EH7ISsd2HMgaQVQ3Ty2mfNXqV7N2ZFvp6zT3a4MQI1IAUM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791888269; c=relaxed/simple;
-	bh=PelTeFwd5ud7mnoUu0LqIyINYO9v9og7hyCKjE+gurc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=W/w+13uW3lFLJXX84XJk4qrX8SULLeG3kupk+IjcW1AbCufXH84o5JmBKQfsVUElzbJuLBlvywa6plxxQAQBD4UcfLPUwAJWBAtVZG1DhFUBHN4Hn+OgQ/b6DWbGwocl7x/aLfyXXoXxh8JMGh01Wcd98kjdqsv0UMg/2DWdwnY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dneg.com; spf=pass smtp.mailfrom=dneg.com; dkim=pass (2048-bit key) header.d=dneg.com header.i=@dneg.com header.b=OGQQQM3P; arc=pass smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dneg.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dneg.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF502D7380;
+	Tue, 13 Oct 2026 12:11:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791893496; cv=none; b=pOzslapJlJYTrqNT0mpcimiPbJlMm8OV3pZAEuLGojSaGUmr5titlrq66NQ6u4EPVusNFyFcY3R8Df47ZYy+RjDWyM1nqdxwx8D62cY0+O6YFqoBQZdHCkVNiIQM2BTrIZUnWX5pecBrSUw6TAYGcfOXr1EZBgk6FR07WxsO+hc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791893496; c=relaxed/simple;
+	bh=eQMnab2OOoieSB0p5qIatSRH0tlcciLBfVw3HxnUWOw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FM20CiNogrKOUIQaPS/fHMHbhnV1HZCsLvjWg/Sn5YBCPJOh/LIR6cruJTjYNoiumk7x1BCDTXZ63We4uxOdh2428tDdOE7X7g2CBOu9TIkTJBPv5Vioti0uTET1MuAdWSQmSJozUNQ5+Dwd5aC0HKbGQwNlv+GDvoVOkh2sCgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1UYDSBr8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dneg.com header.i=@dneg.com header.b="OGQQQM3P"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c2dc63f8d8aso467625666b.0
-        for <netfs@lists.linux.dev>; Tue, 13 Oct 2026 03:44:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791888265; cv=none;
-        d=google.com; s=arc-20260327;
-        b=EfEDxuV65FBfn/GXLOTcnVKSQzhlMDfa7Dmr7XGD7+ilZmUMSg1g9g0E0rjm7VnFg/
-         SB4YmYKTY6RPYP2ISnzI6041B+Mcv0rw7VEp1pawIVd+y5JKgyPvffeQ3W/MjwOxF5Bx
-         ikjE7/HfckBTspt8owOqjuR5Gn9utpTIFa2PJB/ddly53AXxyW43ncFKNlIt3usu8Wxb
-         TDFqhnlWSuNBJrJtHGGv5pQJDuJMkdak16j24mKiCJ063wVnlHOWMqVOi6Uq8J5tLLIJ
-         ezgcWoj2OTev+HrjOVc9TLXE9Pz0B4M+XyeKgmnf57XmKHnt3mwDDJw2j3CF9lZqfM3O
-         H4eQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=VgQkjFUz0Kq5wc1rWCSsIQFYXBAR5PgY4WxoDpZtyJ0=;
-        fh=qQNbsA0PvHYgFX5nAOVCkX6DSTT/4tBH+bh9E71xP9I=;
-        b=XugvSlJ1IENxLi8USkQHvK+ykpe00H2IQ63D4CzUy1uRmwoe8IhbXmuSJl7k/zMSrL
-         WTxcmV3ITDQEYBcLAjec3O3wjqzSgKbA/WWgMUyAx2oGzyCAJ9beVemdCf0LTvyTdG+0
-         LeTu3A51fcfEBUUXkKK+VXYJwmufuIdsB8lA4RDNGUZwSW4M5ulOAD+gjK/VGIrp5Vg6
-         1JIVg/iz1/wvpUdTiw92uRKZ3QfwUTNGYBc7q1KSXIPMZN3OQREaASDG8VUeJ7bYgTPV
-         GS72iVvykR200euipCb9h+pSryJJW9Z7rXSdl2Tj+4WIc/Tq/+Xy6d4+m0xcuixGUAYG
-         flNw==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dneg.com; s=google; t=1791888265; x=1792493065; darn=lists.linux.dev;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VgQkjFUz0Kq5wc1rWCSsIQFYXBAR5PgY4WxoDpZtyJ0=;
-        b=OGQQQM3PUyu4CQ5E/1nnXNW2eBfMfrSdGachTzeKK/5T8UBmyMeOaEcIZ1ZzySM4wG
-         dSiMiqmb/3FMCgyLEUQvqm0JIWz2SQAysiyAoZMIzH9JvsjQaq+Lux6qpPQ7cYKpPSd+
-         1a2JDkCsPmAkRSKZOweIC9kgtgfHSMDhR8EJNV1I7Ftdl83HjWYF2wqwm/IvKwPrkCwO
-         NKBeNtx766FIqVCgtgU2Yi+ddJpY7D6iS2iCs0ngdhtnNy4y4PbPSLqjccmWOpehC7zx
-         MIeoqSSREAx2NCBE1RKnt70tbafuG7ep+qOYzR1QcJTKsHD6vARTF8qydb7tLFy1jQA1
-         fgnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791888265; x=1792493065;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=VgQkjFUz0Kq5wc1rWCSsIQFYXBAR5PgY4WxoDpZtyJ0=;
-        b=HhYa9mZWElxp0ZshpEQXz55G5VN8RiMz1YYkA09/m3qBpjMPytHYkRqI7pHmO9yFw0
-         QJ1FUkz/xN1cdewUZBt6eyWnCmYz10+vXEL0BlJaCIFU0rImqdU7uBIjk9drJa1pRFPR
-         2ZfowcdlHPPKUkIS5nEgdacmFVb6MxxY6zblq541XtjUYdRT29aui9mIZk9KRfw0biwO
-         5T4/Ic+mkkj8zc1toOy/425mJhGeSQBYxkHLN+Z1HCJwgu7Q6BBkNJAW2vl/3nKrVmHi
-         Mn64te1A+4FKTW9bowverLs6Gdg+lBsqh4s3AgB0wc7liYa1YpqVj7faJQO2lZ1gHvkf
-         Ad3Q==
-X-Forwarded-Encrypted: i=1; AKwUvBxE8Y97/zhnJoZCoX8pPrKotwM7IdEuOz40g4TOfrj11/O8WMgTz2NUTnHG6U2Mk1QZPb7iVA==@lists.linux.dev
-X-Gm-Message-State: AFq9FYJ1ZvHHJIbA21qi5ePaaOWpwLG3FJA/5yfngpMpwlwC56S0MgFT
-	8QXI6HiMjAjSwAZ+AZM7DLFYrN/BCGJ3eCirOra+BGONMKOP3g6euiXh2dvF+TYicpHxuNAPH8Y
-	Q/43m+94MnP58s4s0ErCTtSO3NhUxUtDOpLRJOsIwOw==
-X-Gm-Gg: AYBFou35nR58GlJ/Fz+FSMRGrS2rRqFdwJtl/qksZjWjS9Ia14pd2GsTGEkQRldV6hR
-	C1GPyj+DjXaubDDDirAadatANB8W/Ej8r6/Ux2rrb2gHnFpvECjj2SmmP3xKhLEdsTSxyR7//0q
-	PQvSneif2BnYyPBK4z8EdSlMSRLn4FGwPy9OEoX37PLeogfjmZMJdsELFcH01Ic+5o0GL2pi05O
-	eSz2IAq44HLxQr/PByR+tQcFwbiomhazTzvhYS7qd5jZhAOfGc4C948hY+ssxbzWoJunCBpjuKq
-	SDKX0K19Kvv/RWqljaJgithP7xkOMAP4kAa/+yWSS6YVaB319FLi/LEYwKzZr20AipHjwDigSSw
-	n/vTL7rqYeig=
-X-Received: by 2002:a17:907:e158:b0:c34:e9fe:82ed with SMTP id
- a640c23a62f3a-c34e9fe8db4mr344907066b.28.1791888264638; Tue, 13 Oct 2026
- 03:44:24 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1UYDSBr8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179DA1F000FF;
+	Tue, 13 Oct 2026 12:11:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1791893495;
+	bh=PCOYEHRtaNWKTX/LkTMGQatWU4GMoPX7KpBkJntQJTM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=1UYDSBr8CRi/dDfFpRJjzW4DKG1Ib847bB34hB9i+mNLjnRTW/wpDqlNS+OH0ix8a
+	 G/sgEQsa2z+XxLCQEFySvwl6tImqCub4OrjdvsQ0Jj31ZAbdcdDVq30Bu1ZY5D+THT
+	 +/8ucR+o0SLI+kpal9pYDA67AADQZxzG23px445w=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 243/621] netfs: Fix missing barriers when accessing stream->subrequests locklessly
+Date: Tue, 13 Oct 2026 13:33:58 +0200
+Message-ID: <20261013112926.624853554@linuxfoundation.org>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261013112920.855194808@linuxfoundation.org>
+References: <20261013112920.855194808@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260910220242.2165023-1-dhowells@redhat.com> <20261011.cachefiles-seek-hole-walk.pchmelar@innovatrics.com>
- <1655915.1791879248@warthog.procyon.org.uk>
-In-Reply-To: <1655915.1791879248@warthog.procyon.org.uk>
-From: Daire Byrne <daire@dneg.com>
-Date: Tue, 13 Oct 2026 11:43:48 +0100
-X-Gm-Features: AclHuK_oVCRmnPd9NH08Wt-JPyd6g1EMor68YJAilUyzKCf7DPZ-awFW_Pr3mM8
-Message-ID: <CAPt2mGPPYTv=mBo=ysFt49t9=6AVh=P4uvHh4EwZ4Xh=ZULo=Q@mail.gmail.com>
-Subject: Re: [PATCH v12 0/5] netfs, cachefiles: Changes for next, primarily
- occupancy tracking-related
-To: David Howells <dhowells@redhat.com>
-Cc: Petr Chmelar <petr.chmelar@innovatrics.com>, Christian Brauner <christian@brauner.io>, 
-	Paulo Alcantara <pc@manguebit.org>, Matthew Wilcox <willy@infradead.org>, 
-	Namjae Jeon <linkinjeon@kernel.org>, Marc Dionne <marc.dionne@auristor.com>, 
-	Stefan Metzmacher <metze@samba.org>, Eric Van Hensbergen <ericvh@kernel.org>, 
-	Dominique Martinet <asmadeus@codewreck.org>, Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev, 
-	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org, 
-	linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, v9fs@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hi,
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
-I don't know if it's particularly useful (or relevant), but we set an
-extent hint size of 8MB on the backing XFS filesystem for
-fscache/cachefiles.
+------------------
 
-For our workloads (mostly larger files), this seems to work quite well
-in keeping down the extent counts on the cachefiles objects. It's
-perhaps not very space efficient at first, but it seems to improve
-over time as more data is cached.
+From: David Howells <dhowells@redhat.com>
 
-Also, compared to XFS, ext4 seems to do a better job of keeping the
-extent counts lower even without an extent hint.
+[ Upstream commit b5782e2d462c028096f922abca46318cec890670 ]
 
-In terms of granularity, I think we'd be fine with something like 256k
-(as we are with 8MB). But we would still want to be able to cache a
-wide range of file sizes (4k -> TBs).
+The list of subrequests attached to stream->subrequests is accessed without
+locks by netfs_collect_read_results() and netfs_collect_write_results(),
+and then they access subreq->flags without taking a barrier after getting
+the subreq pointer from the list.  Relatedly, the functions that build the
+list don't use any sort of write barrier when constructing the list to make
+sure that the NETFS_SREQ_IN_PROGRESS flag is perceived to be set first if
+no lock is taken.
 
-We also have a particularly horrible random IO 4k workload where the
-files are MBs on disk but get read in random 4k chunks over a few
-hours. We specifically detect these reads and have a (readahead)
-daemon that goes and reads the entire file into cache rather than
-waiting for it to grow organically (in 4k chunks).
+Fix this by:
 
-Daire
+ (1) Add a new list_add_tail_release() function that uses a release barrier
+     to set the pointer to the new member of the list.
+
+ (2) Add a new list_first_entry_or_null_acquire() function that uses an
+     acquire barrier to read the pointer to the first member in a list (or
+     return NULL).
+
+ (3) Use list_add_tail_release() when adding a subreq to ->subrequests.
+
+ (4) Use list_first_entry_or_null_acquire() when initially accessing the
+     front of the list (when an item is removed, the pointer to the new
+     front iterm is obtained under the same lock).
+
+Fixes: e2d46f2ec332 ("netfs: Change the read result collector to only use one work item")
+Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
+Link: https://sashiko.dev/#/patchset/20260326104544.509518-1-dhowells%40redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/20260512123404.719402-4-dhowells@redhat.com
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/netfs/buffered_read.c |  3 ++-
+ fs/netfs/misc.c          |  1 +
+ fs/netfs/read_collect.c  |  6 ++++--
+ fs/netfs/write_collect.c |  6 ++++--
+ fs/netfs/write_issue.c   |  3 ++-
+ include/linux/list.h     | 37 +++++++++++++++++++++++++++++++++++++
+ 6 files changed, 50 insertions(+), 6 deletions(-)
+
+diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
+index 29868dcd1ec3b..506bfbe467a9d 100644
+--- a/fs/netfs/buffered_read.c
++++ b/fs/netfs/buffered_read.c
+@@ -170,7 +170,8 @@ void netfs_queue_read(struct netfs_io_request *rreq,
+ 	 * remove entries off of the front.
+ 	 */
+ 	spin_lock(&rreq->lock);
+-	list_add_tail(&subreq->rreq_link, &stream->subrequests);
++	/* Write IN_PROGRESS before pointer to new subreq */
++	list_add_tail_release(&subreq->rreq_link, &stream->subrequests);
+ 	if (list_is_first(&subreq->rreq_link, &stream->subrequests)) {
+ 		if (!stream->active) {
+ 			stream->collected_to = subreq->start;
+diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
+index 628c45f53d83c..02654b5c53fe3 100644
+--- a/fs/netfs/misc.c
++++ b/fs/netfs/misc.c
+@@ -361,6 +361,7 @@ void netfs_wait_for_in_progress_stream(struct netfs_io_request *rreq,
+ 	DEFINE_WAIT(myself);
+ 
+ 	list_for_each_entry(subreq, &stream->subrequests, rreq_link) {
++		smp_rmb(); /* Read ->next before IN_PROGRESS. */
+ 		if (!netfs_check_subreq_in_progress(subreq))
+ 			continue;
+ 
+diff --git a/fs/netfs/read_collect.c b/fs/netfs/read_collect.c
+index 8ad06678e6883..02a9ad14627a0 100644
+--- a/fs/netfs/read_collect.c
++++ b/fs/netfs/read_collect.c
+@@ -221,8 +221,10 @@ static void netfs_collect_read_results(struct netfs_io_request *rreq)
+ 	 * in progress.  The issuer thread may be adding stuff to the tail
+ 	 * whilst we're doing this.
+ 	 */
+-	front = list_first_entry_or_null(&stream->subrequests,
+-					 struct netfs_io_subrequest, rreq_link);
++	front = list_first_entry_or_null_acquire(&stream->subrequests,
++						 struct netfs_io_subrequest, rreq_link);
++	/* Read first subreq pointer before IN_PROGRESS flag. */
++
+ 	while (front) {
+ 		size_t transferred;
+ 
+diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
+index b194447f4b111..7fbf50907a7fc 100644
+--- a/fs/netfs/write_collect.c
++++ b/fs/netfs/write_collect.c
+@@ -228,8 +228,10 @@ static void netfs_collect_write_results(struct netfs_io_request *wreq)
+ 		if (!smp_load_acquire(&stream->active))
+ 			continue;
+ 
+-		front = list_first_entry_or_null(&stream->subrequests,
+-						 struct netfs_io_subrequest, rreq_link);
++		front = list_first_entry_or_null_acquire(&stream->subrequests,
++							 struct netfs_io_subrequest, rreq_link);
++		/* Read first subreq pointer before IN_PROGRESS flag. */
++
+ 		while (front) {
+ 			trace_netfs_collect_sreq(wreq, front);
+ 			//_debug("sreq [%x] %llx %zx/%zx",
+diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
+index ceb1a684a758c..10315c9538116 100644
+--- a/fs/netfs/write_issue.c
++++ b/fs/netfs/write_issue.c
+@@ -206,7 +206,8 @@ void netfs_prepare_write(struct netfs_io_request *wreq,
+ 	 * remove entries off of the front.
+ 	 */
+ 	spin_lock(&wreq->lock);
+-	list_add_tail(&subreq->rreq_link, &stream->subrequests);
++	/* Write IN_PROGRESS before pointer to new subreq */
++	list_add_tail_release(&subreq->rreq_link, &stream->subrequests);
+ 	if (list_is_first(&subreq->rreq_link, &stream->subrequests)) {
+ 		if (!stream->active) {
+ 			stream->collected_to = subreq->start;
+diff --git a/include/linux/list.h b/include/linux/list.h
+index 0121e2f88f890..59f8aa0905d3b 100644
+--- a/include/linux/list.h
++++ b/include/linux/list.h
+@@ -198,6 +198,29 @@ static inline void list_add_tail(struct list_head *new, struct list_head *head)
+ 	__list_add(new, head->prev, head);
+ }
+ 
++/**
++ * list_add_tail_release - add a new entry with release barrier
++ * @new: new entry to be added
++ * @head: list head to add it before
++ *
++ * Insert a new entry before the specified head, using a release barrier to set
++ * the ->next pointer that points to it.  This is useful for implementing
++ * queues, in particular one that the elements will be walked through forwards
++ * locklessly.
++ */
++static inline void list_add_tail_release(struct list_head *new,
++					 struct list_head *head)
++{
++	struct list_head *prev = head->prev;
++
++	if (__list_add_valid(new, prev, head)) {
++		new->next = head;
++		new->prev = prev;
++		head->prev = new;
++		smp_store_release(&prev->next, new);
++	}
++}
++
+ /*
+  * Delete a list entry by making the prev/next entries
+  * point to each other.
+@@ -651,6 +674,20 @@ static inline void list_splice_tail_init(struct list_head *list,
+ 	pos__ != head__ ? list_entry(pos__, type, member) : NULL; \
+ })
+ 
++/**
++ * list_first_entry_or_null_acquire - get the first element from a list with barrier
++ * @ptr:	the list head to take the element from.
++ * @type:	the type of the struct this is embedded in.
++ * @member:	the name of the list_head within the struct.
++ *
++ * Note that if the list is empty, it returns NULL.
++ */
++#define list_first_entry_or_null_acquire(ptr, type, member) ({ \
++	struct list_head *head__ = (ptr); \
++	struct list_head *pos__ = smp_load_acquire(&head__->next); \
++	pos__ != head__ ? list_entry(pos__, type, member) : NULL; \
++})
++
+ /**
+  * list_last_entry_or_null - get the last element from a list
+  * @ptr:	the list head to take the element from.
+-- 
+2.53.0
 
 
-On Tue, 13 Oct 2026 at 09:28, David Howells <dhowells@redhat.com> wrote:
->
-> Petr Chmelar <petr.chmelar@innovatrics.com> wrote:
->
-> > The cover letter leaves non-contiguous objects, which still use
-> > SEEK_DATA/SEEK_HOLE, for a later series.  We hit that case badly in
-> > production, so here are numbers in case they help with its priority.
->
-> I know.  But it's a tricky problem to solve as I need to store a map of the
-> content somewhere.  xattrs are painful as I can only read or write them
-> atomically and as whole blobs - and also I'm not sure if I need to limit the
-> size of any given xattr to 512 bytes.  Further, the xattr wangling interface
-> inside the kernel assumes a flat virtual buffer rather than taking an I/O
-> iterator.
->
-> I have patches that store a bitmap in an xattr, with 1 bit per 256K block of
-> cachefile, for a 512 byte xattr able to map up to 1G of file size.  I need to
-> revisit this at some point soon.  It may be better to switch to storing an
-> extent list, but:
->
-> > On our NFS clients (Ubuntu, v6.8, cache on XFS), a sequential read of a
-> > fully cached 184 GB object with 1,080,732 extents ran at 0.4 MB/s.
->
-> Trying to store a million+ extent records in a single xattr would kind of
-> suck.  Now, it might be possible to collapse that somewhat if a lot of the
-> extents are virtually sequential within the file, since I don't care about
-> physical sequentiality.
->
-> Also, can you tell if you have a preferred cache granularity?  Would a 256K
-> granularity, say, use too much space?
->
-> > I expect the right fix is for cachefiles to track what it has written
-> > itself, as CONTENT_ALL now does for contiguous files, rather than
-> > something like the above.
->
-> Indeed - as mentioned above.
->
-> > I can send the workaround if it's useful as a reference,
->
-> If you could, that would be great!
->
-> > and I'm happy to test whatever you plan for this case on our workload.
->
-> Thanks.  Now I just need to reproduce your bug.  Note that I posted another
-> cachefiles patch that Christian hasn't picked up yet:
->
-> https://lore.kernel.org/linux-fsdevel/1091807.1791483394@warthog.procyon.org.uk/T/#u
->
-> David
->
->
+
