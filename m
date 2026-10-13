@@ -1,65 +1,56 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8A53CAA47
-	for <netfs@lists.linux.dev>; Sun, 11 Oct 2026 05:29:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C165D3955CA
+	for <netfs@lists.linux.dev>; Tue, 13 Oct 2026 07:55:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791696595; cv=none; b=mYJXJcuiXv1T4lHwecx7CdZdf1kAJAyW/bXcD7FDxa4YTYU6cR3yHynR19JLlC+2HVohvGi/7KGdAs93V23OUvJB0zcp1mXdku2o03eUa8AS8ihw8ohcNA2Uk81vY18gb4aHagUGZRrqIcbpoza+BbIRCVmCue9wKR4fccJk8uc=
+	t=1791878125; cv=none; b=bWuj4HGZHetF8MVzPpWtSDJ1DcN2sj+1mXBcSfsjT9ihkXZJITVQgSmNKiwCaG8+iIc+ahTLVlT59d9nOeVjzOI5A3LJhMa+letzrIkTq+YQsox1lVMBEQzy7b1nQ9Lj3VysDGDHZrNRAXR9CRQA2+YKCkU8U5hKmNiwHAH9ICE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791696595; c=relaxed/simple;
-	bh=1haV4dNMWDdQWqZsUuA0TFAZtQMdcpLXPmSnhiji0ao=;
-	h=From:To:Cc:Subject:Message-ID:In-Reply-To:References:Date:
-	 MIME-Version:Content-Type; b=uPyiX0RYcdQe7v9Hwq1SRHNoIKOcCUa22e7aUOGAFqWKNOm6BUqejwdF5t8oIp6mwVa45ZeBokndgB9i7ALAOkUc1juid4rNepjijq8QTqQ1UAx/B+HXe7MoIfYf1ne4KNzxj2gXFWZ5SnjH3fsb/XgQe1TbDmUBmi+LLSFPz+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=innovatrics.com; spf=pass smtp.mailfrom=innovatrics.com; dkim=pass (1024-bit key) header.d=innovatrics.com header.i=@innovatrics.com header.b=Dai8Og6g; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=innovatrics.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=innovatrics.com
+	s=arc-20240116; t=1791878125; c=relaxed/simple;
+	bh=VHRHfn+lNRqLr2KFYksEOm2u41ma05X3vjcvBZ09xhM=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
+	 Message-ID:Content-Type; b=Q8yhh+kdHHRfZTEblYf9aQi928pZGT6B5+RjdpeVI6X5cWQtEAUfnNYFxX/GKATpYUj+EK9WeQG8VV9X6i1GbFR3YrJ6Z6XJCKuGuS+Fn43aI4qhTJeqVUuTWvRVi/g0n65NoMSokpjEuRBuMF2k7jC7XvOCAWQHMp/5c5VIDIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BIW3uW9Y; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=innovatrics.com header.i=@innovatrics.com header.b="Dai8Og6g"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a16c1608faso12011545e9.0
-        for <netfs@lists.linux.dev>; Sat, 10 Oct 2026 22:29:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=innovatrics.com; s=google; t=1791696592; x=1792301392; darn=lists.linux.dev;
-        h=content-type:mime-version:date:references:in-reply-to:message-id
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=q2LSr6tsQNBQXJylfG8nOPgyPFtDzDbVgLjnyN+NvOY=;
-        b=Dai8Og6gkGNV/4jrUqexlNsWK4ghUIwDHVm34ywi7P6vTgF0QDIuRph0P9Ud2IlhYQ
-         Fj8uiOtqG2w5DcN/yUFTL7DhA+10JinUazM2oNL6ioEUIzd5oTUWxf/gINdCjA4rKAi9
-         pmme7InSAIH1h8DKEc2Jhooq8Y6/h9bnQPEPM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791696592; x=1792301392;
-        h=content-type:mime-version:date:references:in-reply-to:message-id
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=q2LSr6tsQNBQXJylfG8nOPgyPFtDzDbVgLjnyN+NvOY=;
-        b=NEaLdHWI0TzusMRQF6kY/MCJZpvWjFkUsivRokh2bNJ2MqNcu4sHVZRGQywlXoJvXd
-         kte7OKUIkkwLu/3iuldrFDVg+rCB+etJmHOax5aUayJuZPN2KhUD+XH0RTStZMvVC7ME
-         t8p0oXA+5hynPfiKJNtgXiWIhUc87cwMVVyeyzJ9lqqHadyyAk9TRp8xPMBcg5XlpUjo
-         QdKLVjk4hqpmmWZARfeQZqCSAEFGGemJcMdpgZgIuGwB2BF0UbA49ytPEiBaQAYYPoiu
-         MjcTpJrkqQ75FUA604WbYXMJinhsvlZB1HJl+rb4J96WG9CuSg9PKUOUpzHbBkIQ+qKS
-         Q4oA==
-X-Forwarded-Encrypted: i=1; AKwUvBxQbSTklioTctep02zyCbVn/CT1KsuWrJpIwVlxJAK27cBcSqYNGKghYLLIMmAA6IQJrXxFCA==@lists.linux.dev
-X-Gm-Message-State: AFq9FYK4MfzbJhj0bz15gKcK4uWtzvNpqHwjXQ9smWrZaXTGqGRzY+mk
-	rN3YaN5pRBkzvst+QkH4FtONCGKHmsXD+tJsUrmlj/ucCDnGcp4zDKWnmsZfpXEsXw==
-X-Gm-Gg: AYBFou2AitVS1+DGHdDNrC0Xq7/A8jqkmEJMcksK+Vpii9fpVfjLOPZQInyCAvyJM7V
-	2ms1r/r2UkYKikn3AG/v2SUkXNy0yOsW7tjZ4R48lhFcS/kvjbdplyeXcbsSrUqRFv7puJMDTu7
-	jpnHNhlwpbNzlYCUfKc/UHMtYWFF7sKqrHFsD/lWI11YQ/Y9LUZILBYhqyyrRwyFJkU6rgvKQUu
-	oainIYDK/W7XWp3kBf6+0x+tgP0POFyX6pHBcV75pW/qGuvVFeHX0lj96IgBclgXMqePtVvKrsl
-	/mmWEaiPa9d/fwUtL4iQqfskHyjz0kJ2peszKALgcJSg3oZMiCVuXz93DlutwVdd+oPDqODelpS
-	fABzoqZcscKDBspwBshM82Cq72WwuHDwUS5Byzsf6aiTr0ZMiv3qyK7WENwswhSXkPCd3J8dxmX
-	ZaahJQU11bGe3sUy6EVwqbaerSoCDIz+kTkwxds+loChXl3huX12SlD/aROy9SKbehLootbqPLH
-	HHuEdFMJLkTZlT1nAVVBnUDnfbXkLivTtRykrlK2aH6hLEVPia67+5lj+vOVKo/T+BwvqPwmEHM
-	mdefKEfo3r/+/9NXl35M4nxLusix6z0=
-X-Received: by 2002:a05:600c:3146:b0:4a0:34a:588c with SMTP id 5b1f17b1804b1-4a18e4a7cb9mr117216165e9.14.1791696591843;
-        Sat, 10 Oct 2026 22:29:51 -0700 (PDT)
-Received: from [10.11.72.5] (bip-static-148.213-81-147.telecom.sk. [213.81.147.148])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18bea0f1csm277235065e9.9.2026.10.10.22.29.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Oct 2026 22:29:51 -0700 (PDT)
-From: Petr Chmelar <petr.chmelar@innovatrics.com>
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <christian@brauner.io>,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BIW3uW9Y"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791878122;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MWpCDO0AA+sEZzr3VsDUDjssf+Zo8tluNrapGjgiY5o=;
+	b=BIW3uW9Yv/GqNuKK/R0CxqQRkc8MqJL15QAFl3YNOfaR7ODleTEnGexjwRrCQ3p0/phSJS
+	mtFKxxIZaP6swRA1qH1sNrcfnP6SNM42kJRA0Kw7q+/Mq6gkb25cYr7/lNiKLon3VNacAo
+	rIRBRZAr1YzolaUrS2kKdS2WWVflS20=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-58-rUZAsi6DMcieVbVMGWpCBQ-1; Tue,
+ 13 Oct 2026 07:55:12 +0000
+X-MC-Unique: rUZAsi6DMcieVbVMGWpCBQ-1
+X-Mimecast-MFC-AGG-ID: rUZAsi6DMcieVbVMGWpCBQ_1791878109
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 972E618009D3;
+	Tue, 13 Oct 2026 07:55:06 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.48.11])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3345430001B9;
+	Tue, 13 Oct 2026 07:54:59 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20261011.cachefiles-partial-zeros.pchmelar@innovatrics.com>
+References: <20261011.cachefiles-partial-zeros.pchmelar@innovatrics.com> <20260910220242.2165023-1-dhowells@redhat.com> <20260910220242.2165023-5-dhowells@redhat.com>
+To: Petr Chmelar <petr.chmelar@innovatrics.com>
+Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
     Paulo Alcantara <pc@manguebit.org>,
     Matthew Wilcox <willy@infradead.org>,
     Namjae Jeon <linkinjeon@kernel.org>,
@@ -67,103 +58,122 @@ Cc: Christian Brauner <christian@brauner.io>,
     Stefan Metzmacher <metze@samba.org>,
     Eric Van Hensbergen <ericvh@kernel.org>,
     Dominique Martinet <asmadeus@codewreck.org>,
-    Ilya Dryomov <idryomov@gmail.com>,
-    netfs@lists.linux.dev,
-    linux-afs@lists.infradead.org,
-    linux-cifs@vger.kernel.org,
-    linux-nfs@vger.kernel.org,
-    ceph-devel@vger.kernel.org,
-    v9fs@lists.linux.dev,
-    linux-fsdevel@vger.kernel.org,
+    Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
+    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+    v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
     linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v12 0/5] netfs, cachefiles: Changes for next, primarily
- occupancy tracking-related
-Message-ID: <20261011.cachefiles-seek-hole-walk.pchmelar@innovatrics.com>
-In-Reply-To: <20260910220242.2165023-1-dhowells@redhat.com>
-References: <20260910220242.2165023-1-dhowells@redhat.com>
-Date: Sun, 11 Oct 2026 05:29:50 +0000
+Subject: Re: [PATCH v12 4/5] cachefiles: Don't rely on backing fs storage map for most use cases
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Date: Tue, 13 Oct 2026 08:54:58 +0100
+Message-ID: <1655268.1791878098@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: GMqJ9NSVl5gJYproMedWcXF72R3UEnAc2I908wJjxFc_1791878109
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1655267.1791878098.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
 
-Hi David,
+Petr Chmelar <petr.chmelar@innovatrics.com> wrote:
 
-The cover letter leaves non-contiguous objects, which still use
-SEEK_DATA/SEEK_HOLE, for a later series.  We hit that case badly in
-production, so here are numbers in case they help with its priority.
+> Reproducer: random 64 KiB reads covering half of a 256 MiB file of
+> random data, then a full read after dropping the page cache, compared
+> with the original per 64 KiB block:
+>=20
+>   fio --name=3Dhalf --filename=3D/mnt/part.bin --rw=3Drandread --bs=3D64k=
+ \
+>       --ioengine=3Dpsync --fadvise_hint=3Drandom --size=3D256m --io_size=
+=3D128m \
+>       --randrepeat=3D1
+>   sync; echo 3 > /proc/sys/vm/drop_caches
+>   cmp /mnt/part.bin /path/to/original
 
-Objects get into that state when a large file is read at random
-offsets, as training jobs do with data sets on NFS.  Each read is
-copied to the cache at its own offset, and with other files being
-cached at the same time most pieces end up in separate XFS extents.  The
-object is BACKFS_MAP from the first discontiguous write and stays so
-once it has filled in.
+Unfortunately, I can't reproduce this.  Can you get me some tracing?
 
-SEEK_HOLE has no upper bound.  On XFS, iomap_seek_hole() calls
-xfs_seek_iomap_begin() once per extent until it finds a hole, and in a
-fully populated object the only hole is EOF.  cachefiles probes the
-occupancy at least once per read request, so a sequential read of such
-an object walks the rest of its extent list for every readahead batch.
+echo 65536 >/sys/kernel/tracing/buffer_size_kb
+echo 1 >/sys/kernel/tracing/events/netfs/netfs_read/enable
+echo 1 >/sys/kernel/tracing/events/netfs/netfs_write/enable
+echo 1 >/sys/kernel/tracing/events/netfs/netfs_rreq/enable
+echo 1 >/sys/kernel/tracing/events/netfs/netfs_sreq/enable
+echo 1 >/sys/kernel/tracing/events/netfs/netfs_failure/enable
+echo 1 >/sys/kernel/tracing/events/cachefiles/cachefiles_coherency/enable
 
-On our NFS clients (Ubuntu, v6.8, cache on XFS), a sequential read of a
-fully cached 184 GB object with 1,080,732 extents ran at 0.4 MB/s.  In
-a 15 s trace of one of the affected readers, each SEEK_HOLE took 64 ms
-to 1 s, XFS did 58.5 million extent lookups, and nothing was read from
-the server.  After xfs_fsr brought the object down to a few hundred
-extents, a traced read of it ran at 369 MB/s from the cache.  On
-another machine, v6.14 does the same walk at about 220 ns per extent,
-against 520 ns on v6.8.
+before running, then after running do:
 
-It's the same on vfs-7.4.netfs (9f8b64f66).  In QEMU (TCG, 4 vCPUs),
-over an NFSv4.2 loopback mount with fsc and the cache on XFS, a 1 GiB
-object filled by random 64 KiB reads, while a second file is filled
-the same way, ends up with about 16,300 extents.  A sequential read of
-it after dropping the page cache makes 4,098 SEEK_HOLE calls that take
-176 s in total, and runs at 4.3 MiB/s.
+cat /sys/kernel/tracing/trace | bzip2 -9 >/tmp/cachefiles-bug.trace.bz2
 
-To confirm that the walk is the whole problem, I wrote a naive
-workaround with LLM assistance.  I don't know the cachefiles and netfs
-internals well, so take it as a probe rather than a proposal:
+When I do this and grep the trace output for 'WRITEBACK\|WRIT TERM\|cachefi=
+les'
+it all looks reasonable, looking something like:
 
- - Each cachefiles_object remembers the last region that SEEK_DATA/
-   SEEK_HOLE found to be contiguous data.  cachefiles_query_occupancy()
-   answers a query that starts inside that region without seeking, and
-   overlapping or abutting regions merge.  A sequential read then pays
-   for one walk instead of one per request.
+fio-5895 : netfs_write: R=3D00001301 WRITEBACK c=3D00000006 o=3D00000004 i=
+=3Dc6a742 by=3D0-ffffffffffffffff
+fio-5895 : netfs_sreq: R=3D00001301[2] WRIT TERM  f=3D100 s=3D0 100000/1000=
+00 s=3D7 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[4] WRIT TERM  f=3D100 s=3D100000 100000=
+/100000 s=3D15 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[6] WRIT TERM  f=3D100 s=3D200000 100000=
+/100000 s=3D23 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[8] WRIT TERM  f=3D100 s=3D300000 100000=
+/100000 s=3D0 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[a] WRIT TERM  f=3D100 s=3D400000 100000=
+/100000 s=3D8 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[c] WRIT TERM  f=3D100 s=3D500000 100000=
+/100000 s=3D16 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[e] WRIT TERM  f=3D100 s=3D600000 100000=
+/100000 s=3D24 e=3D0
+...
+fio-5895 : netfs_sreq: R=3D00001301[1f4] WRIT TERM  f=3D100 s=3Df900000 100=
+000/100000 s=3D15 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[1f6] WRIT TERM  f=3D100 s=3Dfa00000 100=
+000/100000 s=3D23 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[1f8] WRIT TERM  f=3D100 s=3Dfb00000 100=
+000/100000 s=3D0 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[1fa] WRIT TERM  f=3D100 s=3Dfc00000 100=
+000/100000 s=3D8 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[1fc] WRIT TERM  f=3D100 s=3Dfd00000 100=
+000/100000 s=3D16 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[1fe] WRIT TERM  f=3D100 s=3Dfe00000 100=
+000/100000 s=3D24 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[200] WRIT TERM  f=3D100 s=3Dff00000 100=
+000/100000 s=3D1 e=3D0
+ kworker : cachefiles_coherency: o=3D00000004 SET ok   B=3D46012e oz=3D1000=
+0000 c=3D2 aux=3D0 dsk=3D0
 
- - The region is forgotten after every place where cachefiles removes
-   data from a backing file: the punch on low space in
-   __cachefiles_prepare_write(), the padding clear and the truncation in
-   cachefiles_collect_write(), cachefiles_shorten_object() and
-   invalidation.  A sequence number sampled before the seeks stops a
-   query that raced with a removal from recording what it saw, and
-   cookie->inval_counter ties the region to the backing file.
+You can see the writes to the cache terminating and then the cache is set c=
+=3D2
+which is CACHEFILES_CONTENT_ALL indicating that the cache file has no holes=
+ in
+it.
 
-In the same test, the workaround makes one SEEK_HOLE call taking 61 ms,
-and the read runs at 17 MiB/s.  A debug build that checked every
-remembered answer against a fresh SEEK_DATA/SEEK_HOLE saw no mismatch in
-more than 7,000 checks over NFS and 9p.  It only helps fully or mostly
-populated objects read in order; random reads of a partly cached object
-still seek.
+That happens pretty much as soon as fio lays out its file and then all futu=
+re
+accesses are just reads from the cache.
 
-I expect the right fix is for cachefiles to track what it has written
-itself, as CONTENT_ALL now does for contiguous files, rather than
-something like the above.  I can send the workaround if it's useful as
-a reference, and I'm happy to test whatever you plan for this case on
-our workload.
+Looking at the UPLD lines is interesting:
 
-While testing it I hit a data corruption on partly cached objects that
-bisects to patch 4/5 of this series and reproduces without the
-workaround; I've reported it in a reply to that patch:
+fio-5895 : netfs_sreq: R=3D00001301[185] UPLD TERM  f=3D110 s=3Dc1fedd0 fff=
+e8/fffe8 s=3D8 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[187] UPLD TERM  f=3D110 s=3Dc2fedb8 fff=
+e8/fffe8 s=3D16 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[189] UPLD TERM  f=3D110 s=3Dc3feda0 fff=
+e8/fffe8 s=3D24 e=3D0
+fio-5895 : netfs_sreq: R=3D00001301[18b] UPLD TERM  f=3D110 s=3Dc4fed88 fff=
+e8/fffe8 s=3D1 e=3D0
 
-  https://lore.kernel.org/r/20261011.cachefiles-partial-zeros.pchmelar@innovatrics.com
+I guess 9P can't quite squeeze 1M of data in a packet as metadata has to go=
+ in
+as well.
 
-The numbers on vfs-7.4.netfs and the debug cross-check were also
-produced with LLM assistance.
+One further question occurs to me: does the entire 256M file fit in the tes=
+t
+VM's memory?
 
 Thanks,
-Petr
+David
+
