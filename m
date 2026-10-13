@@ -1,56 +1,65 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83BE13A16AE
-	for <netfs@lists.linux.dev>; Tue, 13 Oct 2026 08:14:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F696383C83
+	for <netfs@lists.linux.dev>; Tue, 13 Oct 2026 09:56:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791879265; cv=none; b=bQ0DAUHffkoNJqMNa1MO/S/seaREaSfmtHdOZtZ5osSDB8778Mvla9bUaPNZuJ7vTSX8Uyq2qON7xn+2Tz63WAkhqrq5gHA/CxFgaH7ssBwzx+XVuoqckHOMAMEN8Cu/aBfCOWb92CDYkf8akeZSnkxAjrOBo0QpEOf65VJswg8=
+	t=1791885402; cv=none; b=jQH4Ff4qLiVr0658Np7Sd5v6IUfg4f3e2jSHiHNcInsvWFcyDEgD7kupYPaopnR9AfYsh10wDYExIyGbMPqJ5d4TQxl/p7CxoC9mM3S1OegGiuGFiMyTOTFOMNh5nkMZssM9Uf2Vfnv1ZL/IgRIZVLFrxv9JwkwTQpgmbLd+Oz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791879265; c=relaxed/simple;
-	bh=IKFHO+kOl9Tc4S7kki9YjAh5N0Gn40d8snKchp+T/oQ=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
-	 Message-ID:Content-Type; b=kAYhozlrdDVhIXt8h5ZLY9QlFCcJFeGGKAxjC+xPwU05UAiX7SQ9QACEA26zXCutbWHUg5DwsUa87ojuNyS75uts6zX0nfrD+IgTkDS0W7nIc43QvMaln3VA/dDqYAUQ+PGcvRz6Uk/m9c/g6mIXNG9IjOLLu4+rgejEMHSSZjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UZHkzcaC; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1791885402; c=relaxed/simple;
+	bh=HFJ4UjRCkhaihkIH92sybsRJA7S5NLo3OntK/t8+1bY=;
+	h=From:To:Cc:Subject:Message-ID:In-Reply-To:References:Date:
+	 MIME-Version:Content-Type; b=Vuy60l0uuz9TKE3FTq0DwO5ASFl2vtngAare1bH7EBUWsOqRel2LiVWD1nxJ8oWRLhiagfXaZ9e5gP+XYYJ/TR2oBoXSwH/DnmKFxdeqnBFEqcp8tmn/BntZwFFrgWzN6mlOF+5TfURPsJGJnkt3lOH2nRDeYZkvuOyjeNJAmhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=innovatrics.com; spf=pass smtp.mailfrom=innovatrics.com; dkim=pass (1024-bit key) header.d=innovatrics.com header.i=@innovatrics.com header.b=mppJpghm; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=innovatrics.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=innovatrics.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UZHkzcaC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791879262;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KPcLZMrkmKQNPyJNJuuM2meyy3DGclfXgz3Bj4WDa04=;
-	b=UZHkzcaCVzn9EwrMCt7bH+OUsxXYChrccUwLiE4NLumIr+//rrE0vNpJ6uyMy4wGQ9/XUn
-	tmXv/uEE0i9n6LM2glEoCBd9JYDsHaLxZYbSDqKS2jDhJ5yw+YPdju0AVqjOJSnNPaUQTm
-	g6jnivEVm3GCcWmSOl6+P64KZSzq1y4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-15-W3Z3eWXuN-uipHnTTMh3Aw-1; Tue,
- 13 Oct 2026 08:14:19 +0000
-X-MC-Unique: W3Z3eWXuN-uipHnTTMh3Aw-1
-X-Mimecast-MFC-AGG-ID: W3Z3eWXuN-uipHnTTMh3Aw_1791879256
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8FC411956055;
-	Tue, 13 Oct 2026 08:14:15 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.44.48.11])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F30691956095;
-	Tue, 13 Oct 2026 08:14:09 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20261011.cachefiles-seek-hole-walk.pchmelar@innovatrics.com>
-References: <20261011.cachefiles-seek-hole-walk.pchmelar@innovatrics.com> <20260910220242.2165023-1-dhowells@redhat.com>
-To: Petr Chmelar <petr.chmelar@innovatrics.com>
-Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
+	dkim=pass (1024-bit key) header.d=innovatrics.com header.i=@innovatrics.com header.b="mppJpghm"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4a1698ea378so22567165e9.2
+        for <netfs@lists.linux.dev>; Tue, 13 Oct 2026 02:56:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=innovatrics.com; s=google; t=1791885399; x=1792490199; darn=lists.linux.dev;
+        h=content-type:mime-version:date:references:in-reply-to:message-id
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=St+5KkhKptBQbmhWMvm7sQZJ2JL6wlGqGqKQDJo/9iM=;
+        b=mppJpghmRNl/8Le2KloMgW9wI7x+UfP51y3UAvaUgQAYE5VC06qVqHfW50df7Ko8cD
+         ENzbrNWkLMW6kc0O7Nse2+8TgPe0UbGcFBMIPTgdlU+YOHqekqf92l8oD15/Ci/s6wkD
+         1ztvotSn888t9+aIhzsRnU8ExlmuGNbDdGlfU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791885399; x=1792490199;
+        h=content-type:mime-version:date:references:in-reply-to:message-id
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=St+5KkhKptBQbmhWMvm7sQZJ2JL6wlGqGqKQDJo/9iM=;
+        b=l7XdN8mKMXPgioYltrqiNpg7kiBDUjfJ1oJOix8TS8o/5omwK+UI+YsR5HnTom15zT
+         zHtCG8Ak3mL121ePEFfECqRHslQ8N3MsReER7J9JkHjWzX7cyryieyX8YXYqBlkfKdn4
+         R/yDQhREr6jZTbPldyiWhz4GXhifFgAo0W4oJ3B2UB5q1UBlkyxKq5AVlgRwyXxmM9tB
+         zrVE3goIvpEjd0pK7S9o0V0xU8ME8sxB8oUliu0bjZ4Yy6rUTtbtnF4/+9zdL1+iCbfA
+         TuorN2lzxJekqWlleezqw5tT4L2+sA3CVgM1+r2bnMRMeNG59rzDuf+JIwX3mNA7Vmmi
+         KCJA==
+X-Forwarded-Encrypted: i=1; AKwUvBzCM1zu3jaV3vMcTFkBMaeoiH/lXeuqGAiMOFTetVJ1fWQC+4qiS7D8IrsdjnRSlxKS056oWA==@lists.linux.dev
+X-Gm-Message-State: AFq9FYLPCkIzjXGf+KKTaqJ2nMaWR6bGzgpI3Pd1iywktEvGFLXt4Jen
+	FJuudkhhM/Tapu/a97x47pl13SPA6VfYTN+b4vFWw1xhw/E0zRlP0GHBId+JSzHCkw==
+X-Gm-Gg: AYBFou1j9BlulIsGmlH6NSWycsZ073Lo09bHzu+zD2gWIWLuTz3yAmEcy52aT9cjEGp
+	wNisl2kQAbiQP6/PIDt5gooIPKBOALHebltgVS8dVCVqcKmY1PZ7Pz4fW58ESKbQr/jebFC+Ye3
+	9MwhwcUMeVamJmA8EUSvo4rLieiO0yG8vbTz6m0GPeyhKMYl9e3cJqLyJAE33IGeESx4DtM6ekr
+	Fuaj7r2OTrHeVGB89RSmBcepluICafoSpwzRaA9HJsQDTjFLdzqKx9cJwqAZBAW4qOKuTbFHAjC
+	WvX9VdI+KRm+VTJB8kXFCPk5Yo6IH49sIX6xKx1d23N2fQzy1qV93P4lcNJY+YaCUpP0pHDDFrc
+	QOcv28sPjzI87VFUbshm/4p52k3wsQksppx1jgi3oNE1EPbwicaR2JpUgwQ/+ZM3DgQ5lwUvNwl
+	Ykhs6/xbrJuMOp2qXSBSSO5lR61XA6tqozOioe0hWgM1xixNaov+PrNNU8wIZvwtydlGT/2lxX/
+	3MB4doT9CT7BjaCnKY253Hi10c1cqgbLq4uhN76NgJdLBqT1GlnPJfz9GVGONzITMuXl9esapWe
+	snn4nLUZ1DG485mGs7M5nPy7p8DaQpo=
+X-Received: by 2002:a05:600c:1c07:b0:4a1:b044:9ccd with SMTP id 5b1f17b1804b1-4a1b0449d00mr3292955e9.28.1791885399299;
+        Tue, 13 Oct 2026 02:56:39 -0700 (PDT)
+Received: from [10.11.72.5] (bip-static-148.213-81-147.telecom.sk. [213.81.147.148])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a19f249692sm289830295e9.3.2026.10.13.02.56.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2026 02:56:38 -0700 (PDT)
+From: Petr Chmelar <petr.chmelar@innovatrics.com>
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <christian@brauner.io>,
     Paulo Alcantara <pc@manguebit.org>,
     Matthew Wilcox <willy@infradead.org>,
     Namjae Jeon <linkinjeon@kernel.org>,
@@ -58,77 +67,100 @@ Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
     Stefan Metzmacher <metze@samba.org>,
     Eric Van Hensbergen <ericvh@kernel.org>,
     Dominique Martinet <asmadeus@codewreck.org>,
-    Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
-    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-    v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+    Ilya Dryomov <idryomov@gmail.com>,
+    netfs@lists.linux.dev,
+    linux-afs@lists.infradead.org,
+    linux-cifs@vger.kernel.org,
+    linux-nfs@vger.kernel.org,
+    ceph-devel@vger.kernel.org,
+    v9fs@lists.linux.dev,
+    linux-fsdevel@vger.kernel.org,
     linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v12 0/5] netfs, cachefiles: Changes for next, primarily occupancy tracking-related
+Subject: Re: [PATCH v12 4/5] cachefiles: Don't rely on backing fs storage map
+ for most use cases
+Message-ID: <20261013.cachefiles-partial-zeros-trace.pchmelar@innovatrics.com>
+In-Reply-To: <1655268.1791878098@warthog.procyon.org.uk>
+References: <20260910220242.2165023-1-dhowells@redhat.com>
+ <20260910220242.2165023-5-dhowells@redhat.com>
+ <20261011.cachefiles-partial-zeros.pchmelar@innovatrics.com>
+ <1655268.1791878098@warthog.procyon.org.uk>
+Date: Tue, 13 Oct 2026 09:56:37 +0000
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Tue, 13 Oct 2026 09:14:08 +0100
-Message-ID: <1655915.1791879248@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-MFC-PROC-ID: CLa4iwV2oA3M9X0t10LVKff3lvrcmqhLt1BorNZwmHY_1791879256
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1655914.1791879248.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 
-Petr Chmelar <petr.chmelar@innovatrics.com> wrote:
+David Howells <dhowells@redhat.com> wrote:
 
-> The cover letter leaves non-contiguous objects, which still use
-> SEEK_DATA/SEEK_HOLE, for a later series.  We hit that case badly in
-> production, so here are numbers in case they help with its priority.
+> Unfortunately, I can't reproduce this.  Can you get me some tracing?
 
-I know.  But it's a tricky problem to solve as I need to store a map of the
-content somewhere.  xattrs are painful as I can only read or write them
-atomically and as whole blobs - and also I'm not sure if I need to limit th=
-e
-size of any given xattr to 512 bytes.  Further, the xattr wangling interfac=
-e
-inside the kernel assumes a flat virtual buffer rather than taking an I/O
-iterator.
+Thanks for looking.  The trace shows reads served from the cache over
+ranges that were never written to it; details below.
 
-I have patches that store a bitmap in an xattr, with 1 bit per 256K block o=
-f
-cachefile, for a 512 byte xattr able to map up to 1G of file size.  I need =
-to
-revisit this at some point soon.  It may be better to switch to storing an
-extent list, but:
+I think the reason you don't see it is how the file gets into the cache,
+which I should have said in the report.  In your run, fio lays the file
+out through the mount, so the client fills its cache sequentially and the
+object ends up CONTENT_ALL.  In ours, the client never writes the file:
+it is written on the server side beforehand, and the client's cache fills
+only as the client reads it, at random offsets, so the object stays
+BACKFS_MAP.  That is how our training nodes use the cache: they read data
+sets that they didn't write, mostly at random offsets.
 
-> On our NFS clients (Ubuntu, v6.8, cache on XFS), a sequential read of a
-> fully cached 184 GB object with 1,080,732 extents ran at 0.4 MB/s.
+I reran it on 9f8b64f66 over 9p with your tracepoints enabled, with the
+same result: 936 of 4096 64 KiB blocks wrong, 825 of them zeros, first
+wrong blocks 10, 13, 15, 24, 26 and 27.  I'm sending you the trace
+off-list; it is 790 KB as bzip2.
 
-Trying to store a million+ extent records in a single xattr would kind of
-suck.  Now, it might be possible to collapse that somewhat if a lot of the
-extents are virtually sequential within the file, since I don't care about
-physical sequentiality.
+What the trace shows:
 
-Also, can you tell if you have a preferred cache granularity?  Would a 256K
-granularity, say, use too much space?
+ - After the random reads the object is set to BACKFS_MAP:
 
-> I expect the right fix is for cachefiles to track what it has written
-> itself, as CONTENT_ALL now does for contiguous files, rather than
-> something like the above.
+     cachefiles_coherency: o=00000001 SET ok   B=c4 oz=10000000 c=3
 
-Indeed - as mentioned above.
+   After dropping the page cache it is looked up again (o=00000002 OK,
+   c=3) and set to c=4.
 
-> I can send the workaround if it's useful as a reference,
+ - Before the full read, WRIT TERM subrequests cover 2048 of the 4096
+   64 KiB blocks, as expected for half the file.
 
-If you could, that would be great!
+ - During the full read, READ subrequests from the cache cover 2143
+   blocks, and 936 of those never had a WRIT: the same count as the wrong
+   blocks, starting with the same blocks, 10, 13, 15, 24, 26 and 27.
+   For example this one read:
 
-> and I'm happy to test whatever you plan for this case on our workload.
+     R=0000285a[1] READ TERM  f=110 s=7c000 7c000/7c000 s=7 e=0
 
-Thanks.  Now I just need to reproduce your bug.  Note that I posted another
-cachefiles patch that Christian hasn't picked up yet:
+   covers 0xa0000-0xb0000, 0xd0000-0xe0000 and 0xf0000-0xf8000, and no
+   write ever reached those ranges.  The writes around it were:
 
-https://lore.kernel.org/linux-fsdevel/1091807.1791483394@warthog.procyon.or=
-g.uk/T/#u
+     R=00002291[3] WRIT TERM  f=100 s=70000 20000/20000 s=6 e=0
+     R=000024dc[1] WRIT TERM  f=100 s=90000 10000/10000 s=16 e=0
+     R=00002291[4] WRIT TERM  f=100 s=b0000 20000/20000 s=9 e=0
+     R=000024dc[2] WRIT TERM  f=100 s=e0000 10000/10000 s=3 e=0
 
-David
+So for the BACKFS_MAP object, the occupancy the read is based on treats
+the holes between those writes as data.
 
+> One further question occurs to me: does the entire 256M file fit in the
+> test VM's memory?
+
+Yes.  The VM has 7946 MiB of memory with 7498 MiB available, and the page
+cache is dropped before the full read.
+
+The setup, for reference:
+
+ - 9f8b64f66 with netfs, fscache, cachefiles, 9p and 9p fscache built in;
+   QEMU without KVM, 4 vCPUs, 8 GiB RAM
+ - 9p: QEMU virtfs local, security_model=none, the host directory on XFS;
+   mounted with trans=virtio,version=9p2000.L,cache=fscache,msize=1048576
+ - part.bin: 256 MiB from /dev/urandom, written on the host before the
+   mount
+ - cache: XFS on a loop device in the guest, cachefilesd 0.10.10
+
+The trace analysis was done with LLM assistance.
+
+Thanks,
+Petr
