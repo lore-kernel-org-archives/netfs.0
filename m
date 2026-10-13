@@ -1,54 +1,54 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C165D3955CA
-	for <netfs@lists.linux.dev>; Tue, 13 Oct 2026 07:55:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83BE13A16AE
+	for <netfs@lists.linux.dev>; Tue, 13 Oct 2026 08:14:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791878125; cv=none; b=bWuj4HGZHetF8MVzPpWtSDJ1DcN2sj+1mXBcSfsjT9ihkXZJITVQgSmNKiwCaG8+iIc+ahTLVlT59d9nOeVjzOI5A3LJhMa+letzrIkTq+YQsox1lVMBEQzy7b1nQ9Lj3VysDGDHZrNRAXR9CRQA2+YKCkU8U5hKmNiwHAH9ICE=
+	t=1791879265; cv=none; b=bQ0DAUHffkoNJqMNa1MO/S/seaREaSfmtHdOZtZ5osSDB8778Mvla9bUaPNZuJ7vTSX8Uyq2qON7xn+2Tz63WAkhqrq5gHA/CxFgaH7ssBwzx+XVuoqckHOMAMEN8Cu/aBfCOWb92CDYkf8akeZSnkxAjrOBo0QpEOf65VJswg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791878125; c=relaxed/simple;
-	bh=VHRHfn+lNRqLr2KFYksEOm2u41ma05X3vjcvBZ09xhM=;
+	s=arc-20240116; t=1791879265; c=relaxed/simple;
+	bh=IKFHO+kOl9Tc4S7kki9YjAh5N0Gn40d8snKchp+T/oQ=;
 	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
-	 Message-ID:Content-Type; b=Q8yhh+kdHHRfZTEblYf9aQi928pZGT6B5+RjdpeVI6X5cWQtEAUfnNYFxX/GKATpYUj+EK9WeQG8VV9X6i1GbFR3YrJ6Z6XJCKuGuS+Fn43aI4qhTJeqVUuTWvRVi/g0n65NoMSokpjEuRBuMF2k7jC7XvOCAWQHMp/5c5VIDIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BIW3uW9Y; arc=none smtp.client-ip=170.10.133.124
+	 Message-ID:Content-Type; b=kAYhozlrdDVhIXt8h5ZLY9QlFCcJFeGGKAxjC+xPwU05UAiX7SQ9QACEA26zXCutbWHUg5DwsUa87ojuNyS75uts6zX0nfrD+IgTkDS0W7nIc43QvMaln3VA/dDqYAUQ+PGcvRz6Uk/m9c/g6mIXNG9IjOLLu4+rgejEMHSSZjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UZHkzcaC; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BIW3uW9Y"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UZHkzcaC"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791878122;
+	s=mimecast20190719; t=1791879262;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MWpCDO0AA+sEZzr3VsDUDjssf+Zo8tluNrapGjgiY5o=;
-	b=BIW3uW9Yv/GqNuKK/R0CxqQRkc8MqJL15QAFl3YNOfaR7ODleTEnGexjwRrCQ3p0/phSJS
-	mtFKxxIZaP6swRA1qH1sNrcfnP6SNM42kJRA0Kw7q+/Mq6gkb25cYr7/lNiKLon3VNacAo
-	rIRBRZAr1YzolaUrS2kKdS2WWVflS20=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=KPcLZMrkmKQNPyJNJuuM2meyy3DGclfXgz3Bj4WDa04=;
+	b=UZHkzcaCVzn9EwrMCt7bH+OUsxXYChrccUwLiE4NLumIr+//rrE0vNpJ6uyMy4wGQ9/XUn
+	tmXv/uEE0i9n6LM2glEoCBd9JYDsHaLxZYbSDqKS2jDhJ5yw+YPdju0AVqjOJSnNPaUQTm
+	g6jnivEVm3GCcWmSOl6+P64KZSzq1y4=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-58-rUZAsi6DMcieVbVMGWpCBQ-1; Tue,
- 13 Oct 2026 07:55:12 +0000
-X-MC-Unique: rUZAsi6DMcieVbVMGWpCBQ-1
-X-Mimecast-MFC-AGG-ID: rUZAsi6DMcieVbVMGWpCBQ_1791878109
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-15-W3Z3eWXuN-uipHnTTMh3Aw-1; Tue,
+ 13 Oct 2026 08:14:19 +0000
+X-MC-Unique: W3Z3eWXuN-uipHnTTMh3Aw-1
+X-Mimecast-MFC-AGG-ID: W3Z3eWXuN-uipHnTTMh3Aw_1791879256
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 972E618009D3;
-	Tue, 13 Oct 2026 07:55:06 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8FC411956055;
+	Tue, 13 Oct 2026 08:14:15 +0000 (UTC)
 Received: from warthog.procyon.org.uk (unknown [10.44.48.11])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3345430001B9;
-	Tue, 13 Oct 2026 07:54:59 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F30691956095;
+	Tue, 13 Oct 2026 08:14:09 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
 	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
 	Kingdom.
 	Registered in England and Wales under Company Registration No. 3798903
 From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20261011.cachefiles-partial-zeros.pchmelar@innovatrics.com>
-References: <20261011.cachefiles-partial-zeros.pchmelar@innovatrics.com> <20260910220242.2165023-1-dhowells@redhat.com> <20260910220242.2165023-5-dhowells@redhat.com>
+In-Reply-To: <20261011.cachefiles-seek-hole-walk.pchmelar@innovatrics.com>
+References: <20261011.cachefiles-seek-hole-walk.pchmelar@innovatrics.com> <20260910220242.2165023-1-dhowells@redhat.com>
 To: Petr Chmelar <petr.chmelar@innovatrics.com>
 Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
     Paulo Alcantara <pc@manguebit.org>,
@@ -63,117 +63,72 @@ Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
     linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
     v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
     linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v12 4/5] cachefiles: Don't rely on backing fs storage map for most use cases
+Subject: Re: [PATCH v12 0/5] netfs, cachefiles: Changes for next, primarily occupancy tracking-related
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Date: Tue, 13 Oct 2026 08:54:58 +0100
-Message-ID: <1655268.1791878098@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: GMqJ9NSVl5gJYproMedWcXF72R3UEnAc2I908wJjxFc_1791878109
+Date: Tue, 13 Oct 2026 09:14:08 +0100
+Message-ID: <1655915.1791879248@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-MFC-PROC-ID: CLa4iwV2oA3M9X0t10LVKff3lvrcmqhLt1BorNZwmHY_1791879256
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1655267.1791878098.1@warthog.procyon.org.uk>
+Content-ID: <1655914.1791879248.1@warthog.procyon.org.uk>
 Content-Transfer-Encoding: quoted-printable
 
 Petr Chmelar <petr.chmelar@innovatrics.com> wrote:
 
-> Reproducer: random 64 KiB reads covering half of a 256 MiB file of
-> random data, then a full read after dropping the page cache, compared
-> with the original per 64 KiB block:
->=20
->   fio --name=3Dhalf --filename=3D/mnt/part.bin --rw=3Drandread --bs=3D64k=
- \
->       --ioengine=3Dpsync --fadvise_hint=3Drandom --size=3D256m --io_size=
-=3D128m \
->       --randrepeat=3D1
->   sync; echo 3 > /proc/sys/vm/drop_caches
->   cmp /mnt/part.bin /path/to/original
+> The cover letter leaves non-contiguous objects, which still use
+> SEEK_DATA/SEEK_HOLE, for a later series.  We hit that case badly in
+> production, so here are numbers in case they help with its priority.
 
-Unfortunately, I can't reproduce this.  Can you get me some tracing?
+I know.  But it's a tricky problem to solve as I need to store a map of the
+content somewhere.  xattrs are painful as I can only read or write them
+atomically and as whole blobs - and also I'm not sure if I need to limit th=
+e
+size of any given xattr to 512 bytes.  Further, the xattr wangling interfac=
+e
+inside the kernel assumes a flat virtual buffer rather than taking an I/O
+iterator.
 
-echo 65536 >/sys/kernel/tracing/buffer_size_kb
-echo 1 >/sys/kernel/tracing/events/netfs/netfs_read/enable
-echo 1 >/sys/kernel/tracing/events/netfs/netfs_write/enable
-echo 1 >/sys/kernel/tracing/events/netfs/netfs_rreq/enable
-echo 1 >/sys/kernel/tracing/events/netfs/netfs_sreq/enable
-echo 1 >/sys/kernel/tracing/events/netfs/netfs_failure/enable
-echo 1 >/sys/kernel/tracing/events/cachefiles/cachefiles_coherency/enable
+I have patches that store a bitmap in an xattr, with 1 bit per 256K block o=
+f
+cachefile, for a 512 byte xattr able to map up to 1G of file size.  I need =
+to
+revisit this at some point soon.  It may be better to switch to storing an
+extent list, but:
 
-before running, then after running do:
+> On our NFS clients (Ubuntu, v6.8, cache on XFS), a sequential read of a
+> fully cached 184 GB object with 1,080,732 extents ran at 0.4 MB/s.
 
-cat /sys/kernel/tracing/trace | bzip2 -9 >/tmp/cachefiles-bug.trace.bz2
+Trying to store a million+ extent records in a single xattr would kind of
+suck.  Now, it might be possible to collapse that somewhat if a lot of the
+extents are virtually sequential within the file, since I don't care about
+physical sequentiality.
 
-When I do this and grep the trace output for 'WRITEBACK\|WRIT TERM\|cachefi=
-les'
-it all looks reasonable, looking something like:
+Also, can you tell if you have a preferred cache granularity?  Would a 256K
+granularity, say, use too much space?
 
-fio-5895 : netfs_write: R=3D00001301 WRITEBACK c=3D00000006 o=3D00000004 i=
-=3Dc6a742 by=3D0-ffffffffffffffff
-fio-5895 : netfs_sreq: R=3D00001301[2] WRIT TERM  f=3D100 s=3D0 100000/1000=
-00 s=3D7 e=3D0
-fio-5895 : netfs_sreq: R=3D00001301[4] WRIT TERM  f=3D100 s=3D100000 100000=
-/100000 s=3D15 e=3D0
-fio-5895 : netfs_sreq: R=3D00001301[6] WRIT TERM  f=3D100 s=3D200000 100000=
-/100000 s=3D23 e=3D0
-fio-5895 : netfs_sreq: R=3D00001301[8] WRIT TERM  f=3D100 s=3D300000 100000=
-/100000 s=3D0 e=3D0
-fio-5895 : netfs_sreq: R=3D00001301[a] WRIT TERM  f=3D100 s=3D400000 100000=
-/100000 s=3D8 e=3D0
-fio-5895 : netfs_sreq: R=3D00001301[c] WRIT TERM  f=3D100 s=3D500000 100000=
-/100000 s=3D16 e=3D0
-fio-5895 : netfs_sreq: R=3D00001301[e] WRIT TERM  f=3D100 s=3D600000 100000=
-/100000 s=3D24 e=3D0
-...
-fio-5895 : netfs_sreq: R=3D00001301[1f4] WRIT TERM  f=3D100 s=3Df900000 100=
-000/100000 s=3D15 e=3D0
-fio-5895 : netfs_sreq: R=3D00001301[1f6] WRIT TERM  f=3D100 s=3Dfa00000 100=
-000/100000 s=3D23 e=3D0
-fio-5895 : netfs_sreq: R=3D00001301[1f8] WRIT TERM  f=3D100 s=3Dfb00000 100=
-000/100000 s=3D0 e=3D0
-fio-5895 : netfs_sreq: R=3D00001301[1fa] WRIT TERM  f=3D100 s=3Dfc00000 100=
-000/100000 s=3D8 e=3D0
-fio-5895 : netfs_sreq: R=3D00001301[1fc] WRIT TERM  f=3D100 s=3Dfd00000 100=
-000/100000 s=3D16 e=3D0
-fio-5895 : netfs_sreq: R=3D00001301[1fe] WRIT TERM  f=3D100 s=3Dfe00000 100=
-000/100000 s=3D24 e=3D0
-fio-5895 : netfs_sreq: R=3D00001301[200] WRIT TERM  f=3D100 s=3Dff00000 100=
-000/100000 s=3D1 e=3D0
- kworker : cachefiles_coherency: o=3D00000004 SET ok   B=3D46012e oz=3D1000=
-0000 c=3D2 aux=3D0 dsk=3D0
+> I expect the right fix is for cachefiles to track what it has written
+> itself, as CONTENT_ALL now does for contiguous files, rather than
+> something like the above.
 
-You can see the writes to the cache terminating and then the cache is set c=
-=3D2
-which is CACHEFILES_CONTENT_ALL indicating that the cache file has no holes=
- in
-it.
+Indeed - as mentioned above.
 
-That happens pretty much as soon as fio lays out its file and then all futu=
-re
-accesses are just reads from the cache.
+> I can send the workaround if it's useful as a reference,
 
-Looking at the UPLD lines is interesting:
+If you could, that would be great!
 
-fio-5895 : netfs_sreq: R=3D00001301[185] UPLD TERM  f=3D110 s=3Dc1fedd0 fff=
-e8/fffe8 s=3D8 e=3D0
-fio-5895 : netfs_sreq: R=3D00001301[187] UPLD TERM  f=3D110 s=3Dc2fedb8 fff=
-e8/fffe8 s=3D16 e=3D0
-fio-5895 : netfs_sreq: R=3D00001301[189] UPLD TERM  f=3D110 s=3Dc3feda0 fff=
-e8/fffe8 s=3D24 e=3D0
-fio-5895 : netfs_sreq: R=3D00001301[18b] UPLD TERM  f=3D110 s=3Dc4fed88 fff=
-e8/fffe8 s=3D1 e=3D0
+> and I'm happy to test whatever you plan for this case on our workload.
 
-I guess 9P can't quite squeeze 1M of data in a packet as metadata has to go=
- in
-as well.
+Thanks.  Now I just need to reproduce your bug.  Note that I posted another
+cachefiles patch that Christian hasn't picked up yet:
 
-One further question occurs to me: does the entire 256M file fit in the tes=
-t
-VM's memory?
+https://lore.kernel.org/linux-fsdevel/1091807.1791483394@warthog.procyon.or=
+g.uk/T/#u
 
-Thanks,
 David
 
