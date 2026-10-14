@@ -1,113 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277DC4F3937;
-	Tue, 13 Oct 2026 12:46:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6D3480DEF
+	for <netfs@lists.linux.dev>; Wed, 14 Oct 2026 09:45:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791895593; cv=none; b=MR2u6GJTqohpvC2z2vbE2nyaFs9xmWRG3XbrpBsOU+XocE3grgGkF3oe67im/wH1jYjP9TT3bGZOb1ifEefIV0bIojoKjd9mMhD6aTEgsu+DDTpJnNJVgSIi+r/Jf7wMgJPUNwrABb0Xsuz7YnwUJnzcYMj8mgkjgzgEaSTwK74=
+	t=1791971149; cv=none; b=K/uplklpPPOWVYlhEC77En4pfxiIapNyE9KJJghLGA54ZOv7DjicEy1ooW4ZbqkbuAqqFT5NPmRxuJexD34JVPhPqyPGQXiTGPa/PQXE0g+MQoU4RxR+1hHswdiDAIaco0IqoaH70fKBbP8c95yjuq6q1tbgPSaEn528/JeBiOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791895593; c=relaxed/simple;
-	bh=jVht4KgzVAFV+gl14qMQrFWaAgU4Fcpsmt5nDjpCTXk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cgurk1owyQX5sJYjjM5m4dnyKTM4rswrOsbV3hKnB6b8gowvKOXhSp4C/8WirRsCdI32BewTuCKihVfEFPJV/eNd+Lyl/OIR0dBNx/4FhINgZFFG6y+qbZ6ZQeC5dtd9f/AHNbCHMoujuoiASaA8xON4eeZzAdYIjd4lCIcQDcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ng9tFqn3; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791971149; c=relaxed/simple;
+	bh=2euws2BtiykWLEQqEj/FcYcSrWCloXdpYoSOULCX5dA=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:Date:
+	 Message-ID:Content-Type; b=Bimkqh3psSaxO5bYDuM2b50FznOgwzVuRlTZkJ2z+/nE+PuV1rLQ9H5fUBT0g1IDFZvCjIljhhjcUBiBFUw8/sSaEvDSMbCk8TB7NZaqwdD9Kr9jWo7h3vUCgHFw2zj/Ujfxt7BLXgyAlKIuASWuG6lS4fuWRvts9Bm+LMz182A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gFBLPyEG; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ng9tFqn3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8643A1F000FF;
-	Tue, 13 Oct 2026 12:46:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1791895591;
-	bh=Adpi6jKuDnV0r2enq+l26CxOX1Py0fbcVPZtIZ697og=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ng9tFqn3WXVtJiOwdcdKkuIO2sgV9s6/hLjvPsrzyAz7fNnkjPBhLpeteyARklyTA
-	 TX56Ks/XqYzPrRDTq0yIsPZGR7SHTXkrYTaVhayQNNKGd9qQyI0hegy16GDReleJzX
-	 dRMojqd/1z+kAzGB+HyvhcWR3ph6jmZx5h9XiBOU=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
-	Mikhail Mirkin <mmirkin@nppct.ru>
-Subject: [PATCH 6.12 272/497] cifs: Fix handling of a beyond-EOF DIO/unbuffered read over SMB1
-Date: Tue, 13 Oct 2026 13:37:19 +0200
-Message-ID: <20261013112914.348170131@linuxfoundation.org>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261013112907.864180619@linuxfoundation.org>
-References: <20261013112907.864180619@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gFBLPyEG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791971147;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2euws2BtiykWLEQqEj/FcYcSrWCloXdpYoSOULCX5dA=;
+	b=gFBLPyEGRmfkn51xWN+Xe2sThccf7Q752PocaagxtfG6tqNYpAQ8vaNXS9zDITt0RX+y9Q
+	e5D4Zv6HKMtbMvoHTcUQJ0jw2+kHDrzfzQ/SuGDs2bUUS0QAx1Czw+hhIoTVoh3rjlFKUT
+	RTJhzfjhvLL8pqvOwhZoEIQelD+Qn0w=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-524-o3tIefQBPv-FG1zUwHrgIw-1; Wed,
+ 14 Oct 2026 09:45:38 +0000
+X-MC-Unique: o3tIefQBPv-FG1zUwHrgIw-1
+X-Mimecast-MFC-AGG-ID: o3tIefQBPv-FG1zUwHrgIw_1791971135
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 396ED19560B2;
+	Wed, 14 Oct 2026 09:45:34 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.48.11])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 696E830000E3;
+	Wed, 14 Oct 2026 09:45:27 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20261013.cachefiles-partial-zeros-trace.pchmelar@innovatrics.com>
+References: <20261013.cachefiles-partial-zeros-trace.pchmelar@innovatrics.com> <20260910220242.2165023-1-dhowells@redhat.com> <20260910220242.2165023-5-dhowells@redhat.com> <20261011.cachefiles-partial-zeros.pchmelar@innovatrics.com> <1655268.1791878098@warthog.procyon.org.uk>
+To: Petr Chmelar <petr.chmelar@innovatrics.com>
+Cc: dhowells@redhat.com, Christian Brauner <christian@brauner.io>,
+    Paulo Alcantara <pc@manguebit.org>,
+    Matthew Wilcox <willy@infradead.org>,
+    Namjae Jeon <linkinjeon@kernel.org>,
+    Marc Dionne <marc.dionne@auristor.com>,
+    Stefan Metzmacher <metze@samba.org>,
+    Eric Van Hensbergen <ericvh@kernel.org>,
+    Dominique Martinet <asmadeus@codewreck.org>,
+    Ilya Dryomov <idryomov@gmail.com>, netfs@lists.linux.dev,
+    linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+    v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v12 4/5] cachefiles: Don't rely on backing fs storage map for most use cases
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Wed, 14 Oct 2026 10:45:25 +0100
+Message-ID: <1995693.1791971125@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: yuPLVRKfTYn_Ym_p1x-0I2h6gbNvdWeIHlSwyd3kNjM_1791971135
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1995692.1791971125.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+Does the attached fix the problem?
 
-------------------
-
-From: David Howells <dhowells@redhat.com>
-
-commit 9d85ac939d52e93d80efb01a299c6f0bedb30487 upstream.
-
-If a DIO read or an unbuffered read request extends beyond the EOF, the
-server will return a short read and a status code indicating that EOF was
-hit, which gets translated to -ENODATA.  Note that the client does not cap
-the request at i_size, but asks for the amount requested in case there's a
-race on the server with a third party.
-
-Now, on the client side, the request will get split into multiple
-subrequests if rsize is smaller than the full request size.  A subrequest
-that starts before or at the EOF and returns short data up to the EOF will
-be correctly handled, with the NETFS_SREQ_HIT_EOF flag being set,
-indicating to netfslib that we can't read more.
-
-If a subrequest, however, starts after the EOF and not at it, HIT_EOF will
-not be flagged, its error will be set to -ENODATA and it will be abandoned.
-This will cause the request as a whole to fail with -ENODATA.
-
-Fix this by setting NETFS_SREQ_HIT_EOF on any subrequest that lies beyond
-the EOF marker.
-
-This can be reproduced by mounting with "cache=none,sign,vers=1.0" and
-doing a read of a file that's significantly bigger than the size of the
-file (e.g. attempting to read 64KiB from a 16KiB file).
-
-Fixes: a68c74865f51 ("cifs: Fix SMB1 readv/writev callback in the same way as SMB2/3")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-cc: Shyam Prasad N <sprasad@microsoft.com>
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[Mikhail Mirkin: Adopted for 6.12]
-Signed-off-by: Mikhail Mirkin <mmirkin@nppct.ru>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+David
 ---
- fs/smb/client/cifssmb.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/fs/smb/client/cifssmb.c
-+++ b/fs/smb/client/cifssmb.c
-@@ -1321,7 +1321,7 @@ cifs_readv_callback(struct mid_q_entry *
- 	} else {
- 		size_t trans = rdata->subreq.transferred + rdata->got_bytes;
- 		if (trans < rdata->subreq.len &&
--		    rdata->subreq.start + trans == ictx->remote_i_size) {
-+		    rdata->subreq.start + trans >= ictx->remote_i_size) {
- 			__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
- 			rdata->result = 0;
- 		}
-
+diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
+index cc1b00f301d2..c0157f9a338d 100644
+--- a/fs/netfs/buffered_read.c
++++ b/fs/netfs/buffered_read.c
+@@ -379,7 +379,7 @@ static void netfs_read_to_pagecache(struct netfs_io_req=
+uest *rreq)
+ =09=09}
+=20
+ =09=09subreq->start=09=3D start;
+-=09=09subreq->len=09=3D size;
++=09=09subreq->len=09=3D len;
+ =09=09if (copy)
+ =09=09=09__set_bit(NETFS_SREQ_COPY_TO_CACHE, &subreq->flags);
+=20
 
