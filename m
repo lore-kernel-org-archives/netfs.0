@@ -1,367 +1,302 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0405C48C8C4
-	for <netfs@lists.linux.dev>; Thu, 15 Oct 2026 06:18:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05EA51E44B;
+	Thu, 15 Oct 2026 12:19:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792045108; cv=none; b=AyCFAYEo+6OaLqmDnqnziPj4RjVE+3+noEl1D4HiuriWAf0wq+7GeL2nqco7Ss5XZmdxbs6/YLfj9aqJH+ly+WYNUzHNwHZ8njQeDEstco7ckNVzhQU6YcevNw2Jl6qgeFQf7Kd75p/vLEO/nsD0s0RLwwXUKpFGIXKxTQYT9+o=
+	t=1792066794; cv=none; b=t3z3CfHDHdpnVhfEQ5qPO3/pdjMKrJpyL1VSixLLbpZJQZos+rkryRln71fxi6V3XZ9tBJ28RImdaGSZxXa9xVyK/gDxoF4KnSngR/a8P+GBW/2AYrljMxdocr7aiR2LCLMRr06ekuoNtQzrGlO2WbuRUY1FmqJMcMufVe+VOWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792045108; c=relaxed/simple;
-	bh=1lAU43YWVdr5DDXvmYDk056t5S5n1HW3hiJrh30a2s4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=emEfQPpfxhY8kdtFCQjBfJ0NgNkkJKs8M7hujlMa9ERSXwlsTNM93Lr317f/RCAMvuiGpPtXX0H+1aDDDxAoKD1taTR5mik+lJ2p+yn8GtAaZhSoXLEqoa0x2MxPqZsHpxXCwjHt0oo1Yf+F55O5NszBMfk8QfLg8+W1kZjK6fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=amgnXnKi; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792066794; c=relaxed/simple;
+	bh=FSJuhELEP9BBphk1HG7ReW9hYZ7Ctz/v8OyQMbPSEnU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fz0Sn6BGekfFQQMpoWatzKG4WnpRq6TWSVxTRtctX5O2NPYguLVedMYLf2ERIoUGlUjU4lxEv6+l7LSNgG5lejjNEqhuYg+6CVba/aZ9DFez96Jt/B3A1RtvXqLHiI2m0qTfql0X/osPjL/XpuKlhS18Qh+ZC0WGBzLixa99sIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=mkH2HjGO; arc=none smtp.client-ip=113.46.200.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="amgnXnKi"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a022fee0caso45711275e9.1
-        for <netfs@lists.linux.dev>; Wed, 14 Oct 2026 23:18:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792045099; x=1792649899; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=AYy87NBCVnHsw0Sw6rkQhtJDHEE+dUu5u4tUQ3Od5eM=;
-        b=amgnXnKiJ+uNMqkGt43afFPVMeLPk5gVfiApcyDAZAYumyTkxJuduG8wCPbgX8igG1
-         hIVLmsWVpjzN1Jaljm0Lp1CNgdqM70IGKZblwl42q7pIzLyc69NiKMN26CAJv8HyBpQA
-         nv8z+2hommvPBKR3itZCTiPtBbuFVW3EfUSJ6ktwIcyPaBwscvjeH8VcNQdiA5H5VkM2
-         CJb18YNLlcCUXGH8q3tutHOjA5LgU+JP+ylOEtcPQ3L+WgpmrSYYxoPrXof63ChrnBNN
-         gMmDhzihTublfiUgteWCxLOLwPJtbUeRoXkS4vtM88Plp83ZC1Ex5X7EVwCFW1dGi46n
-         G7VQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792045099; x=1792649899;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=AYy87NBCVnHsw0Sw6rkQhtJDHEE+dUu5u4tUQ3Od5eM=;
-        b=EzmWdFWszg+Wrd+R7khYdVT25VQh5sE+36BcKpZ5f5Sf0JgProBf9ZU70vNKortA4z
-         qqXVJVzmiCiEACUIn/FNKXbUPcEDmQQlNpwN9Gd2u33SzYoqtFxb+LVo6lwRzQBobc/9
-         lXlJC+oNNWx+M5fT4i6aUEPSHB+nRY1sW+Q2oerWKEGryOlOqk2s5ZnLEEVOcyIyQQpe
-         7yAsfirUoRLm6Yfsn67672lmJDtH5lusZA8qGxJbrEAeq7oPI2vPJ3FT9dYbz+0IGwQi
-         LfuyrTNccPDihebZszPpVDvSJU9ZuENgvG2+DPZH7B0ZJ1K+fzsDm3k/IykVhGaM/6OB
-         8qwA==
-X-Forwarded-Encrypted: i=1; AKwUvByQyTIl12r1DYh7lVsfnmowrl1qZpgfZng+Pfp3qq0eyZwFjwWKAa2U9+f58Pq/FAZfpQftZA==@lists.linux.dev
-X-Gm-Message-State: AFq9FYKbOI+30EBJXXsdh1F2wGhdwfteZ/33C9jmBV8+gQ1tr2ug5xPp
-	IyLJ1Uodt1pVkL5L+ELMfDmsNaIj5tDNmRG/eq3LHkj9nGsrPjSHKtr4
-X-Gm-Gg: AYBFou120qiimKXTqLqofef3xWQi7LdsiEpoDw6eWzqE95ORpzapS1HzXZFTDuto2kC
-	ZXXyGrQ5cryoleEGeECOktPCiu5yal63vvFHl7jA5m0CN6vj7jXf3YTHdww5NW4JV+kiWvLzYrW
-	lwbZj2OoX1hhSjXkzYVeLLkLywX0D+4dU5nPMYR1wcqZiwYqR4kLsZSXEUZAhEYw6z7MKN9No5x
-	IMNjqQy62LEep++NLGW4Rm+dY62EiOGpJV6tNZn4vgXl86J6E53C5qiZxJX3HzTqoo93/iEulUW
-	q8G5PuA/Gp0BOOlF04ngkeoFldh6dYaOUB1c+AMI9j2lT+QI86HO4ddX07b6VDbgO5YRq45wKO1
-	PCKFAlN3BvQuW68yM+SRve//F7SL/BPnisEZBdQ49MwYLe38GasKRG5du2RXcpO2gqaYgrEQzHR
-	whVj5b4CngGpf3SrHfg3tBOjAss5ZXfbFh1qH6IF9FJXdz9dUXvrsy5RbV4LmtfqTbVYvWCHAud
-	Y7MpK+ZD6AV+SPOwOnrwiZTtzB+ulg/lwbTtu0diLvSHY5ukXiC9Do+v9mRmLn53vNdLkwoG2mv
-	cXEPWNUG8PZlpHfGpuIcuyw0viyZA9RLatB229Y8OslZzvOVlkeeIn4eQnjQtdb6VYuIlC7BhjO
-	Zrg==
-X-Received: by 2002:a05:600c:3e8d:b0:4a1:7701:f863 with SMTP id 5b1f17b1804b1-4a18e4aeae4mr329784855e9.15.1792045098660;
-        Wed, 14 Oct 2026 23:18:18 -0700 (PDT)
-Received: from localhost.localdomain (dynamic-2a02-3100-aeb3-cd01-f139-812c-65df-b930.310.pool.telefonica.de. [2a02:3100:aeb3:cd01:f139:812c:65df:b930])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1bd67b125sm33020125e9.3.2026.10.14.23.18.17
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 14 Oct 2026 23:18:17 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Ilya Dryomov <idryomov@gmail.com>,
-	Alex Markuze <amarkuze@redhat.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>
-Cc: David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	ceph-devel@vger.kernel.org,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [BUG] ceph: uninitialized err causes buffered read use-after-free
-Date: Thu, 15 Oct 2026 08:18:05 +0200
-Message-Id: <20261015061805.3366-1-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="mkH2HjGO"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=E17YEsFh6XSH2r7pXJNy8yLvPwELwbsMQXYgrv/NATk=;
+	b=mkH2HjGO1yRj5ZEhDW16E+gYaC3mINE9PCQdk6b4emrFZjqLatLCDbD6VcNWEucDEMgg7fjDm
+	efRkpsabNJluFnsTPasFB40sF9aZvT70s0fXCNyw96mK+ZjjvMvweP8fYjFjgmFM9TARqnDPP+Z
+	two6/q/99KzFphsg8KnLHt4=
+Received: from mail.maildlp.com (unknown [172.19.163.0])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4j56JF53GYzpSyV;
+	Thu, 15 Oct 2026 20:07:09 +0800 (CST)
+Received: from whupemk100010.china.huawei.com (unknown [7.152.184.41])
+	by mail.maildlp.com (Postfix) with ESMTPS id E20DE40537;
+	Thu, 15 Oct 2026 20:19:46 +0800 (CST)
+Received: from octopus.huawei.com (10.67.174.191) by
+ whupemk100010.china.huawei.com (7.152.184.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Thu, 15 Oct 2026 20:19:41 +0800
+From: Cai Xinchen <caixinchen1@huawei.com>
+To: <mic@digikod.net>, <gnoack@google.com>, <paul@paul-moore.com>,
+	<jmorris@namei.org>, <serge@hallyn.com>, <corbet@lwn.net>,
+	<skhan@linuxfoundation.org>
+CC: <ast@kernel.org>, <daniel@iogearbox.net>, <andrii@kernel.org>,
+	<eddyz87@gmail.com>, <memxor@gmail.com>, <martin.lau@linux.dev>,
+	<song@kernel.org>, <yonghong.song@linux.dev>, <jolsa@kernel.org>,
+	<emil@etsalapatis.com>, <ihor.solodrai@linux.dev>, <rdunlap@infradead.org>,
+	<gregkh@linuxfoundation.org>, <rafael@kernel.org>, <dakr@kernel.org>,
+	<johan@kernel.org>, <dlemoal@kernel.org>, <hch@lst.de>, <axboe@kernel.dk>,
+	<viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <jack@suse.cz>,
+	<dhowells@redhat.com>, <code@tyhicks.com>, <linkinjeon@kernel.org>,
+	<sj1557.seo@samsung.com>, <yuezhang.mo@sony.com>,
+	<hirofumi@mail.parknet.co.jp>, <cel@kernel.org>, <jlayton@kernel.org>,
+	<neil@brown.name>, <okorniev@redhat.com>, <Dai.Ngo@oracle.com>,
+	<tom@talpey.com>, <hyc.lee@gmail.com>, <miklos@szeredi.hu>,
+	<amir73il@gmail.com>, <senozhatsky@chromium.org>,
+	<chenxiaosong@chenxiaosong.com>, <kpsingh@kernel.org>, <matt@bobrowski.net>,
+	<rostedt@goodmis.org>, <mhiramat@kernel.org>,
+	<mathieu.desnoyers@efficios.com>, <john.johansen@canonical.com>,
+	<georgia.garcia@canonical.com>, <zohar@linux.ibm.com>,
+	<roberto.sassu@huawei.com>, <dmitry.kasatkin@gmail.com>,
+	<eric.snowberg@oracle.com>, <stephen.smalley.work@gmail.com>,
+	<omosnacek@gmail.com>, <casey@schaufler-ca.com>, <takedakn@nttdata.co.jp>,
+	<penguin-kernel@I-love.SAKURA.ne.jp>, <xiujianfeng@huawei.com>,
+	<nanx95726@gmail.com>, <djwong@kernel.org>, <lujialin4@huawei.com>,
+	<bpf@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
+	<driver-core@lists.linux.dev>, <linux-block@vger.kernel.org>,
+	<linux-fsdevel@vger.kernel.org>, <netfs@lists.linux.dev>,
+	<ecryptfs@vger.kernel.org>, <exfat@lists.linux.dev>,
+	<linux-nfs@vger.kernel.org>, <ntfs@lists.linux.dev>,
+	<linux-unionfs@vger.kernel.org>, <linux-cifs@vger.kernel.org>,
+	<linux-trace-kernel@vger.kernel.org>, <apparmor@lists.ubuntu.com>,
+	<linux-integrity@vger.kernel.org>, <selinux@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>
+Subject: [PATCH v2 -next 00/18] landlock: Add READ_METADATA and WRITE_METADATA access rights
+Date: Thu, 15 Oct 2026 20:54:06 +0800
+Message-ID: <20261015125425.3246251-1-caixinchen1@huawei.com>
+X-Mailer: git-send-email 2.18.0.huawei.25
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ whupemk100010.china.huawei.com (7.152.184.41)
 
-An ordinary unencrypted CephFS buffered read triggers a slab
-use-after-free on v7.3-rc5.
+This series adds two new Landlock filesystem access rights,
+LANDLOCK_ACCESS_FS_READ_METADATA and LANDLOCK_ACCESS_FS_WRITE_METADATA,
+which control access to file and directory metadata such as inode
+attributes (mode, ownership, timestamps), extended attributes, POSIX
+ACLs and chattr(1)-style flags.  It picks up the work from the
+"landlock: add chmod and chown support" series [1] and follows the
+coarse-grained grouping discussed in that thread [2]: instead of
+separate chmod/chown rights, metadata operations are grouped into one
+read and one write right.
 
-ceph_netfs_issue_read() leaves err uninitialized on the successful
-non-sparse path:
+Landlock evaluates access rights on a per-path basis, but the
+metadata related LSM hooks (inode_setattr, inode_setsecctx, the inode
+xattr, POSIX ACL and fileattr hooks) only receive the dentry of the
+accessed object.  Patches 1-8 therefore first pass struct path
+instead of dentry through the metadata-related VFS helpers and LSM
+hooks.  This is a pure refactoring with no behavior change, split so
+that every patch builds on its own:
 
-        ceph_osdc_start_request(req->r_osdc, req);
-out:
-        ceph_osdc_put_request(req);
-        if (err) {
-                subreq->error = err;
-                netfs_read_subreq_terminated(subreq);
-        }
+  1: notify_change() and its callers
+  2: inode_setsecctx hook (must come before 3: the SELinux and Smack
+     implementations call __vfs_setxattr_locked internally)
+  3: xattr helpers, which also drops a redundant EVM xattr size sanity
+     check whose vfs_getxattr() call only has a dentry and therefore
+     cannot be migrated to the new path-based signature
+  4: POSIX ACL helpers
+  5: inode_setattr hook
+  6: inode xattr hooks
+  7: inode POSIX ACL hooks
+  8: inode fileattr hooks (FS_IOC_[GS]ETFLAGS, FS_IOC_FS[SG]ETXATTR,
+     file_[gs]etattr(2)), which also adds __vfs_fileattr_[gs]et()
+     counterparts without security checks for the fileattr forwards
+     of ecryptfs and overlayfs, following the __vfs_setxattr_noperm()
+     precedent, and removes the ovl_security_fileattr() hack
 
-CONFIG_INIT_STACK_ALL_ZERO masks this bug. With
-CONFIG_INIT_STACK_ALL_PATTERN=y, err is 0xaaaaaaaa and the failure is
-deterministic. The function terminates the subrequest immediately after
-submitting it. The real OSD completion later accesses the freed iterator.
-KASAN reports a use-after-free in iter_folioq_get_pages(), followed by
-an oops in the ceph-msgr worker.
+Two deliberate scoping decisions for this refactor:
 
-Commit ee4cdf7ba857a894ad1650d6ab77669cbbfa329e ("netfs: Speed up
-buffered reading") changed "int err = 0" to "int err". Current
-mainline 0fcb05b72344f40806cbe810de8872f1698bf053 still has this.
+- The hooks consistently take struct path rather than struct file.  The
+  VFS call sites involved (chmod(2), chown(2), utimensat(2), xattr(2)
+  and ACL syscalls) operate on paths, and several of them (lstat(2),
+  lchown(2), llistxattr(2), ...) have no struct file to begin with.
 
-Assisted-by: LLM
+- struct inode_operations->setattr still receives (idmap, dentry, attr).
+  Only the VFS boundary (notify_change()) and the LSM hook layer see the
+  path, which keeps the refactor contained to fs/attr.c and the LSM
+  infrastructure instead of touching every filesystem.
 
-Reproducer:
+Since these hooks now operate on paths rather than inodes, patches
+10-15 rename them to the path_* naming convention used by the other
+hooks that take a struct path (path_chmod, path_chown, path_link,
+...).  The inode_getattr hook, which already received a struct path,
+is renamed to path_getattr for consistency as well.  These renames
+are purely mechanical and can be reviewed, or dropped, independently.
 
-        sync
-        echo 3 > /proc/sys/vm/drop_caches
-        sha256sum /mnt/ceph/payload
+Patch 9 then adds the access rights and implements the hooks, and
+patches 16-18 add the selftests, the sandboxer sample update and the
+documentation.  Semantics:
 
-This triggered on the first read. sha256sum returned an all-zero digest
-before KASAN reported the UAF.
+- READ_METADATA covers stat(2) and friends, getxattr(2) and friends,
+  listxattr(2) and friends, POSIX ACL reads, and the chattr(1)-style
+  reads ioctl(FS_IOC_GETFLAGS), ioctl(FS_IOC_FSGETXATTR) and
+  file_getattr(2).
+- WRITE_METADATA covers chmod(2) and friends, chown(2) and friends,
+  utimensat(2) and friends, setxattr(2) and friends, removexattr(2)
+  and friends, POSIX ACL set and remove, and the chattr(1)-style
+  writes ioctl(FS_IOC_SETFLAGS), ioctl(FS_IOC_FSSETXATTR) and
+  file_setattr(2).
+- Only explicit metadata changes requested by user space are
+  restricted.  Implicit changes performed by the kernel (e.g.
+  timestamp updates and size changes on write(2) or truncate(2)) are
+  not, and neither are chmod(2)/chown(2) calls that change nothing
+  (e.g. chown(2) with (-1, -1), which never reaches the hook),
+  matching the SELinux inode_setattr behavior.
+- Clearing the set-user-ID and set-group-ID bits after write(2) or
+  truncate(2) does not require WRITE_METADATA either: the mode
+  change that the kernel synthesizes from ATTR_KILL_S[UG]ID is
+  ignored, like SELinux and Smack do.
+- Kernel-internal accesses performed with override_creds() (e.g.
+  overlayfs, cachefiles) and kernel threads without a Landlock
+  domain (e.g. nfsd, ksmbd) are not restricted.
 
-Test setup:
+The Landlock ABI version is incremented from 12 to 13; ABI 12 was
+taken by the capability and namespace use restrictions that are
+already in linux-next.
 
-        Linux v7.3-rc5 (5a956dde5526), arm64 QEMU virt
-        Clang 22.1.8
-        CONFIG_CEPH_FS=y
-        CONFIG_KASAN=y
-        CONFIG_KASAN_GENERIC=y
-        CONFIG_INIT_STACK_ALL_PATTERN=y
-        Ceph 18.2.7, single-node local cluster
-        4 MiB regular file, inline data and encryption disabled
+The series is based on linux-next commit d419d682257d ("Add linux-next
+specific files for 20261014").
 
-I have not tested a fix.
+Testing: each of the 19 trees (the base plus one per patch) builds
+for aarch64 (gcc), with the sandboxer sample cross-compiled at every
+step, and the landlock selftests (including the new ones) pass in
+QEMU on aarch64 with a kernel built from this series; base_test
+reports ABI v13.
 
-KASAN report:
+Changes since v1 [3]:
 
-[  679.342179] BUG: KASAN: slab-use-after-free in iter_folioq_get_pages+0x35c/0x4e8
-[  679.343240] Read of size 1 at addr fff00000cf20cd00 by task kworker/1:0/23
+- Rebased onto next-20261014; the Landlock ABI version is now 13
+  (12 was taken upstream, see above).
+- New fileattr coverage: ioctl(FS_IOC_GETFLAGS),
+  ioctl(FS_IOC_SETFLAGS), ioctl(FS_IOC_FSGETXATTR) and
+  ioctl(FS_IOC_FSSETXATTR) are now controlled as well, through the
+  inode_file_getattr and inode_file_setattr hooks, with the ecryptfs
+  and overlayfs fileattr forwards taken into account (new patch 8),
+  and new selftests: fileattr, fileattr_write_only,
+  layout2_overlay.fileattr and overlay_mount_denied.
+- Clearing the set-user-ID and set-group-ID bits on write(2) or
+  truncate(2) no longer requires WRITE_METADATA (see above); the
+  write_metadata selftest now checks it.
+- v1 patches 8 ("Add READ_METADATA and WRITE_METADATA access rights")
+  and 9 ("Implement the metadata access hooks") are folded into one
+  patch (now patch 9).
+- New patches 10-15: rename the updated hooks to the path_*
+  convention (see above).
+- The sandboxer sample and the documentation are updated accordingly.
 
-[  679.344183] CPU: 1 UID: 0 PID: 23 Comm: kworker/1:0 Not tainted 7.3.0-rc5-ceph-ab #1 PREEMPTLAZY 
-[  679.344388] Hardware name: linux,dummy-virt (DT)
-[  679.344629] Workqueue: ceph-msgr ceph_con_workfn
-[  679.345870] Call trace:
-[  679.346009]  show_stack+0x14/0x1c (C)
-[  679.346228]  __dump_stack+0x24/0x30
-[  679.346302]  dump_stack_lvl+0x50/0x64
-[  679.346356]  print_address_description+0x94/0x204
-[  679.346395]  print_report+0x64/0x7c
-[  679.346431]  kasan_report+0xb0/0x104
-[  679.346475]  __asan_report_load1_noabort+0x1c/0x24
-[  679.346514]  iter_folioq_get_pages+0x35c/0x4e8
-[  679.346552]  __iov_iter_get_pages_alloc+0x534/0x708
-[  679.346590]  iov_iter_get_pages2+0x20/0x38
-[  679.346627]  ceph_msg_data_next+0x3f8/0x8bc
-[  679.346666]  read_partial_msg_data+0x150/0x2c0
-[  679.346704]  ceph_con_v1_try_read+0x1894/0x3a6c
-[  679.346745]  ceph_con_workfn+0x144/0x628
-[  679.346790]  process_scheduled_works+0x59c/0xa70
-[  679.346833]  worker_thread+0x864/0xd60
-[  679.346869]  kthread+0x2a4/0x370
-[  679.346908]  ret_from_fork+0x10/0x20
+[1]https://lore.kernel.org/all/20220827111215.131442-1-xiujianfeng@huawei.com/
+[2]https://lore.kernel.org/all/abc960a1-e66e-792e-6869-cfd201c29dbe@digikod.net/
+[3]https://lore.kernel.org/all/20260924104831.1081137-1-caixinchen1@huawei.com/
 
-[  679.347153] Allocated by task 2006:
-[  679.347279]  kasan_save_track+0x3c/0x70
-[  679.347342]  kasan_save_alloc_info+0x3c/0x48
-[  679.347378]  __kasan_kmalloc+0x80/0x94
-[  679.347410]  __kmalloc_noprof+0x1cc/0x318
-[  679.347444]  mempool_kmalloc+0x18/0x20
-[  679.347492]  rolling_buffer_bulk_load_from_ra+0x160/0xb08
-[  679.347534]  netfs_readahead+0x2bc/0x420
-[  679.347570]  read_pages+0xc4/0x6e0
-[  679.347602]  page_cache_ra_unbounded+0x37c/0x41c
-[  679.347634]  page_cache_ra_order+0x144/0x1b8
-[  679.347666]  page_cache_sync_ra+0x384/0x548
-[  679.347698]  filemap_get_pages+0x20c/0x100c
-[  679.347733]  filemap_read+0x26c/0x8f0
-[  679.347766]  generic_file_read_iter+0x7c/0x2f8
-[  679.347801]  ceph_read_iter+0x304/0x9a4
-[  679.347849]  vfs_read+0x424/0x6f0
-[  679.347887]  ksys_read+0xa8/0x128
-[  679.347920]  __arm64_sys_read+0x7c/0x8c
-[  679.347953]  invoke_syscall+0x6c/0x174
-[  679.347989]  do_el0_svc+0xfc/0x178
-[  679.348024]  el0_svc+0x20/0x54
-[  679.348058]  el0t_64_sync_handler+0x7c/0x120
-[  679.348092]  el0t_64_sync+0x154/0x158
+Link: https://github.com/landlock-lsm/linux/issues/11
 
-[  679.348188] Freed by task 87:
-[  679.348215]  kasan_save_track+0x3c/0x70
-[  679.348248]  kasan_save_free_info+0x50/0x64
-[  679.348282]  __kasan_slab_free+0x54/0x80
-[  679.348313]  kfree+0xe4/0x324
-[  679.348344]  mempool_kfree+0xc/0x14
-[  679.348436]  mempool_free+0x80/0x94
-[  679.348495]  rolling_buffer_clear+0x19c/0x1fc
-[  679.348554]  netfs_free_request+0x424/0x4c4
-[  679.348591]  process_scheduled_works+0x59c/0xa70
-[  679.348625]  worker_thread+0x864/0xd60
-[  679.348657]  kthread+0x2a4/0x370
-[  679.348713]  ret_from_fork+0x10/0x20
+Cai Xinchen (18):
+  fs: pass struct path to notify_change()
+  LSM: pass struct path to the inode_setsecctx hook
+  fs: pass struct path to xattr helpers
+  fs: pass struct path to POSIX ACL helpers
+  LSM: pass struct path to the inode_setattr hook
+  LSM: pass struct path to the inode xattr hooks
+  LSM: pass struct path to the inode posix acl hooks
+  LSM: pass struct path to the inode fileattr hooks
+  landlock: Add READ_METADATA and WRITE_METADATA access rights
+  LSM: rename inode_getattr to path_getattr
+  LSM: rename inode_setattr to path_setattr
+  LSM: rename the inode xattr hooks to path_xattr hooks
+  LSM: rename the inode posix acl hooks to path_*_acl hooks
+  LSM: rename the inode fileattr hooks to path_file_* hooks
+  LSM: rename inode_setsecctx to path_setsecctx
+  selftests/landlock: Add tests for metadata access rights
+  samples/landlock: Add metadata rights to sandboxer
+  Documentation: Update landlock doc for metadata rights
 
-[  679.348872] The buggy address belongs to the object at fff00000cf20cc00
-                which belongs to the cache kmalloc-512 of size 512
-[  679.348980] The buggy address is located 256 bytes inside of
-                freed 512-byte region [fff00000cf20cc00, fff00000cf20ce00)
+ Documentation/bpf/fs_kfuncs.rst               |   2 +-
+ Documentation/userspace-api/landlock.rst      |  47 +-
+ drivers/base/devtmpfs.c                       |   6 +-
+ drivers/block/zloop.c                         |   4 +-
+ fs/attr.c                                     | 107 +++-
+ fs/bpf_fs_kfuncs.c                            |   6 +-
+ fs/cachefiles/xattr.c                         |  35 +-
+ fs/coredump.c                                 |   2 +-
+ fs/ecryptfs/inode.c                           |  38 +-
+ fs/exfat/file.c                               |   3 +-
+ fs/fat/file.c                                 |   3 +-
+ fs/file_attr.c                                | 128 ++--
+ fs/inode.c                                    |   7 +-
+ fs/internal.h                                 |  17 +-
+ fs/namei.c                                    |   7 +-
+ fs/nfsd/nfs4ctl.h                             |   4 +-
+ fs/nfsd/nfs4state.c                           |  14 +-
+ fs/nfsd/nfs4xdr.c                             |   2 +-
+ fs/nfsd/state.h                               |   2 +-
+ fs/nfsd/vfs.c                                 |  75 ++-
+ fs/ntfs/named_stream.c                        |   2 +-
+ fs/open.c                                     |  18 +-
+ fs/overlayfs/copy_up.c                        |   4 +-
+ fs/overlayfs/inode.c                          |  53 +-
+ fs/overlayfs/overlayfs.h                      |  39 +-
+ fs/overlayfs/xattrs.c                         |  10 +-
+ fs/posix_acl.c                                |  46 +-
+ fs/smb/server/smb2pdu.c                       |  83 +--
+ fs/smb/server/smb_common.c                    |   2 -
+ fs/smb/server/smbacl.c                        |  21 +-
+ fs/smb/server/tests/smbacl_kunit.c            |   6 +-
+ fs/smb/server/vfs.c                           | 128 ++--
+ fs/smb/server/vfs.h                           |  41 +-
+ fs/smb/server/vfs_cache.c                     |   3 +-
+ fs/stat.c                                     |   4 +-
+ fs/utimes.c                                   |   3 +-
+ fs/xattr.c                                    |  96 +--
+ include/linux/fileattr.h                      |   8 +-
+ include/linux/fs.h                            |   8 +-
+ include/linux/landlock.h                      |   4 +-
+ include/linux/lsm_hook_defs.h                 |  37 +-
+ include/linux/posix_acl.h                     |  21 +-
+ include/linux/security.h                      |  77 +--
+ include/linux/xattr.h                         |  22 +-
+ include/uapi/linux/landlock.h                 |  25 +-
+ kernel/bpf/bpf_lsm.c                          |  10 +-
+ kernel/trace/bpf_trace.c                      |   2 +-
+ samples/landlock/sandboxer.c                  |  16 +-
+ security/apparmor/lsm.c                       |   4 +-
+ security/commoncap.c                          |  22 +-
+ security/integrity/evm/evm_crypto.c           |   8 +-
+ security/integrity/evm/evm_main.c             |  60 +-
+ security/integrity/ima/ima_appraise.c         |  25 +-
+ security/landlock/fs.c                        | 126 ++++
+ security/landlock/limits.h                    |   2 +-
+ security/landlock/syscalls.c                  |   2 +-
+ security/security.c                           | 143 ++---
+ security/selinux/hooks.c                      |  85 +--
+ security/smack/smack_lsm.c                    |  98 +--
+ security/tomoyo/tomoyo.c                      |   6 +-
+ .../testing/selftests/bpf/prog_tests/d_path.c |   2 +-
+ .../selftests/bpf/prog_tests/fs_kfuncs.c      |  10 +-
+ .../testing/selftests/bpf/progs/test_d_path.c |   2 +-
+ .../bpf/progs/test_d_path_check_rdonly_mem.c  |   2 +-
+ .../bpf/progs/test_d_path_check_types.c       |   2 +-
+ .../selftests/bpf/progs/test_get_xattr.c      |   6 +-
+ .../bpf/progs/test_set_remove_xattr.c         |  31 +-
+ .../bpf/progs/verifier_lsm_init_xattr.c       |   4 +-
+ .../selftests/bpf/progs/verifier_vfs_accept.c |   2 +-
+ .../selftests/bpf/progs/verifier_vfs_reject.c |   2 +-
+ tools/testing/selftests/landlock/base_test.c  |   2 +-
+ tools/testing/selftests/landlock/fs_test.c    | 606 +++++++++++++++++-
+ .../selftests/landlock/trace_fs_test.c        |   3 +-
+ 73 files changed, 1683 insertions(+), 870 deletions(-)
 
-[  679.349127] The buggy address belongs to the physical page:
-[  679.349814] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x10f20c
-[  679.350061] head: order:2 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-[  679.350132] flags: 0x8000000000000040(head|zone=2)
-[  679.350391] page_type: f5(slab)
-[  679.350758] raw: 8000000000000040 fff00000c0001c80 dead000000000100 dead000000000122
-[  679.350848] raw: 0000000000000000 0000000000100010 00000000f5000000 0000000000000000
-[  679.350919] head: 8000000000000040 fff00000c0001c80 dead000000000100 dead000000000122
-[  679.350952] head: 0000000000000000 0000000000100010 00000000f5000000 0000000000000000
-[  679.350984] head: 8000000000000002 ffffc1ffc33c8301 00000000ffffffff 00000000ffffffff
-[  679.351015] head: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000004
-[  679.351067] page dumped because: kasan: bad access detected
+-- 
+2.18.0.huawei.25
 
-[  679.351168] Memory state around the buggy address:
-[  679.351366]  fff00000cf20cc00: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[  679.351435]  fff00000cf20cc80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[  679.351508] >fff00000cf20cd00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[  679.351554]                    ^
-[  679.351669]  fff00000cf20cd80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[  679.351712]  fff00000cf20ce00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  679.351768] ==================================================================
-[  679.368513] Disabling lock debugging due to kernel taint
-[  679.368720] ==================================================================
-[  679.368770] BUG: KASAN: slab-use-after-free in iter_folioq_get_pages+0x22c/0x4e8
-[  679.368859] Read of size 8 at addr fff00000cf20cc08 by task kworker/1:0/23
-
-[  679.369145] CPU: 1 UID: 0 PID: 23 Comm: kworker/1:0 Tainted: G    B               7.3.0-rc5-ceph-ab #1 PREEMPTLAZY 
-[  679.369267] Tainted: [B]=BAD_PAGE
-[  679.369300] Hardware name: linux,dummy-virt (DT)
-[  679.369347] Workqueue: ceph-msgr ceph_con_workfn
-[  679.369459] Call trace:
-[  679.369532]  show_stack+0x14/0x1c (C)
-[  679.369716]  __dump_stack+0x24/0x30
-[  679.369835]  dump_stack_lvl+0x50/0x64
-[  679.369884]  print_address_description+0x94/0x204
-[  679.369929]  print_report+0x64/0x7c
-[  679.369970]  kasan_report+0xb0/0x104
-[  679.370015]  __asan_report_load8_noabort+0x1c/0x24
-[  679.370058]  iter_folioq_get_pages+0x22c/0x4e8
-[  679.370101]  __iov_iter_get_pages_alloc+0x534/0x708
-[  679.370146]  iov_iter_get_pages2+0x20/0x38
-[  679.370217]  ceph_msg_data_next+0x3f8/0x8bc
-[  679.370285]  read_partial_msg_data+0x150/0x2c0
-[  679.370330]  ceph_con_v1_try_read+0x1894/0x3a6c
-[  679.370376]  ceph_con_workfn+0x144/0x628
-[  679.370455]  process_scheduled_works+0x59c/0xa70
-[  679.370541]  worker_thread+0x864/0xd60
-[  679.370582]  kthread+0x2a4/0x370
-[  679.370625]  ret_from_fork+0x10/0x20
-
-[  679.370927] Allocated by task 2006:
-[  679.370997]  kasan_save_track+0x3c/0x70
-[  679.371047]  kasan_save_alloc_info+0x3c/0x48
-[  679.371088]  __kasan_kmalloc+0x80/0x94
-[  679.371125]  __kmalloc_noprof+0x1cc/0x318
-[  679.371196]  mempool_kmalloc+0x18/0x20
-[  679.371328]  rolling_buffer_bulk_load_from_ra+0x160/0xb08
-[  679.371422]  netfs_readahead+0x2bc/0x420
-[  679.371591]  read_pages+0xc4/0x6e0
-[  679.371674]  page_cache_ra_unbounded+0x37c/0x41c
-[  679.371828]  page_cache_ra_order+0x144/0x1b8
-[  679.371927]  page_cache_sync_ra+0x384/0x548
-[  679.372084]  filemap_get_pages+0x20c/0x100c
-[  679.372126]  filemap_read+0x26c/0x8f0
-[  679.372165]  generic_file_read_iter+0x7c/0x2f8
-[  679.372210]  ceph_read_iter+0x304/0x9a4
-[  679.372291]  vfs_read+0x424/0x6f0
-[  679.372485]  ksys_read+0xa8/0x128
-[  679.372656]  __arm64_sys_read+0x7c/0x8c
-[  679.372778]  invoke_syscall+0x6c/0x174
-[  679.372883]  do_el0_svc+0xfc/0x178
-[  679.372930]  el0_svc+0x20/0x54
-[  679.373056]  el0t_64_sync_handler+0x7c/0x120
-[  679.373127]  el0t_64_sync+0x154/0x158
-
-[  679.373329] Freed by task 87:
-[  679.373404]  kasan_save_track+0x3c/0x70
-[  679.373545]  kasan_save_free_info+0x50/0x64
-[  679.373627]  __kasan_slab_free+0x54/0x80
-[  679.373708]  kfree+0xe4/0x324
-[  679.373851]  mempool_kfree+0xc/0x14
-[  679.373932]  mempool_free+0x80/0x94
-[  679.373977]  rolling_buffer_clear+0x19c/0x1fc
-[  679.374016]  netfs_free_request+0x424/0x4c4
-[  679.374098]  process_scheduled_works+0x59c/0xa70
-[  679.374152]  worker_thread+0x864/0xd60
-[  679.374262]  kthread+0x2a4/0x370
-[  679.374346]  ret_from_fork+0x10/0x20
-
-[  679.374511] The buggy address belongs to the object at fff00000cf20cc00
-                which belongs to the cache kmalloc-512 of size 512
-[  679.374553] The buggy address is located 8 bytes inside of
-                freed 512-byte region [fff00000cf20cc00, fff00000cf20ce00)
-
-[  679.374628] The buggy address belongs to the physical page:
-[  679.374750] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x10f20c
-[  679.374847] head: order:2 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-[  679.374995] flags: 0x8000000000000040(head|zone=2)
-[  679.375143] page_type: f5(slab)
-[  679.375218] raw: 8000000000000040 fff00000c0001c80 dead000000000100 dead000000000122
-[  679.375325] raw: 0000000000000000 0000000000100010 00000000f5000000 0000000000000000
-[  679.375419] head: 8000000000000040 fff00000c0001c80 dead000000000100 dead000000000122
-[  679.375540] head: 0000000000000000 0000000000100010 00000000f5000000 0000000000000000
-[  679.375578] head: 8000000000000002 ffffc1ffc33c8301 00000000ffffffff 00000000ffffffff
-[  679.375653] head: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000004
-[  679.375714] page dumped because: kasan: bad access detected
-
-[  679.375817] Memory state around the buggy address:
-[  679.375965]  fff00000cf20cb00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  679.376070]  fff00000cf20cb80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  679.376137] >fff00000cf20cc00: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[  679.376205]                       ^
-[  679.376353]  fff00000cf20cc80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[  679.376460]  fff00000cf20cd00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[  679.376564] ==================================================================
-[  679.388802] Unable to handle kernel paging request at virtual address 007d0011c000000b
-[  679.388969] Mem abort info:
-[  679.389004]   ESR = 0x0000000096000004
-[  679.389106]   EC = 0x25: DABT (current EL), IL = 32 bits
-[  679.389269]   SET = 0, FnV = 0
-[  679.389348]   EA = 0, S1PTW = 0
-[  679.389410]   FSC = 0x04: level 0 translation fault
-[  679.389534] Data abort info:
-[  679.389579]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-[  679.389620]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[  679.389677]   GCS = 0, Overlay = 0, DirtyBit = 0
-[  679.389877] [007d0011c000000b] address between user and kernel address ranges
-[  679.390302] Internal error: Oops: 0000000096000004 [#1]  SMP
-[  679.415322] CPU: 1 UID: 0 PID: 23 Comm: kworker/1:0 Tainted: G    B               7.3.0-rc5-ceph-ab #1 PREEMPTLAZY 
-[  679.415899] Tainted: [B]=BAD_PAGE
-[  679.416223] Hardware name: linux,dummy-virt (DT)
-[  679.416471] Workqueue: ceph-msgr ceph_con_workfn
-[  679.416940] pstate: 61402005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-[  679.417345] pc : iter_folioq_get_pages+0x284/0x4e8
-[  679.417616] lr : iter_folioq_get_pages+0x22c/0x4e8
-[  679.417878] sp : ffff8000821075f0
-[  679.418090] x29: ffff800082107690 x28: 03ec008e00000057 x27: 03ec008e00000057
-[  679.418750] x26: fff00000cf20cc08 x25: ffff8000821077b8 x24: 0000000000000000
-[  679.419288] x23: 0000000000000000 x22: fff00000cf20cc08 x21: 0000000000001000
-[  679.419768] x20: dfff800000000000 x19: 0000000000001000 x18: fff00000c759dd10
-[  679.420338] x17: ffffffffffffffff x16: 0000000000000000 x15: 0000000000000001
-[  679.420888] x14: 1ffff000103d6398 x13: 0000000000000000 x12: 0000000000000000
-[  679.421533] x11: ffff7000103d6399 x10: 0000000000001000 x9 : 0000000000000000
-[  679.422133] x8 : 007d8011c000000b x7 : 0000000000000000 x6 : 0000000000000000
-[  679.422661] x5 : 0000000000000000 x4 : ffff800082777bb0 x3 : ffff800080076f1c
-[  679.423233] x2 : 0000000000000001 x1 : 0000000000000008 x0 : 0000000000000001
-[  679.423846] Call trace:
-[  679.424312]  iter_folioq_get_pages+0x284/0x4e8 (P)
-[  679.424632]  __iov_iter_get_pages_alloc+0x534/0x708
-[  679.424930]  iov_iter_get_pages2+0x20/0x38
-[  679.425164]  ceph_msg_data_next+0x3f8/0x8bc
-[  679.425458]  read_partial_msg_data+0x150/0x2c0
-[  679.425721]  ceph_con_v1_try_read+0x1894/0x3a6c
-[  679.426148]  ceph_con_workfn+0x144/0x628
-[  679.426391]  process_scheduled_works+0x59c/0xa70
-[  679.426640]  worker_thread+0x864/0xd60
-[  679.426861]  kthread+0x2a4/0x370
-[  679.427106]  ret_from_fork+0x10/0x20
-[  679.427576] Code: 8b081b7c 91002388 f900033c d343fd08 (38746908) 
-[  679.428129] ---[ end trace 0000000000000000 ]---
-
-Thanks,
-Karl
