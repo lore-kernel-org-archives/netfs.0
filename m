@@ -1,184 +1,85 @@
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB64525A90;
-	Thu, 15 Oct 2026 12:21:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.217
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31467377EAC;
+	Fri, 16 Oct 2026 08:59:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792066880; cv=none; b=uZCkteXwzPIlHVDdZ469U3BWTCw5a62rXSYXyUZq9TNklKK+QbJpfEbzgV/StWZp1DVkcrdWrHPF3TIDNAtDw5VW7uJUy77jGlNXh7ESatpnpGaiCG61Yef/VW0KUiu27perpUamDPpmHsU/eM8iF+O2lSnAwuq6VdkZUvQiDI8=
+	t=1792141181; cv=none; b=kgToQ4Z6mo5nB2HWKkXyBzaqS7c9rKuVXD+rY3wFfR7JjR0jgPYu9tsNAFEfUoFTLfJtqDJ07u7hIlDYvY5il6UAubmSU0NHD89CGRIBcOG3rbL+5os5p/lIXtlHc8KaGzxYxa8nAarXXKF3YCdHOa9raf6JiCeX8PJP1Y3xSEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792066880; c=relaxed/simple;
-	bh=FLFyRRHhJi6tZU18s+v2YoKZn2fIoW7LNdezj0jo31A=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ih/iVxSniI+ZHczuNwAJ/3yQlPIh6Zewba/gTrmq3Am/UMsSlrxaaccBYu5SuSAN2crV/G22/xS11UT07JqTU4HJGj6c7QyjDFNH69aCy42SuwRv5W/jwDExmqobpHdSdvn5syRD14fXlhd+GauHhMuZoyLKLmOWuiMSJv/PJ9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=wNSiwWKR; arc=none smtp.client-ip=113.46.200.217
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1792141181; c=relaxed/simple;
+	bh=NeGmjayS22zWnD1WnDqIK44ygvIXtCwzs8PUMbdojAk=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=nNicKicZKUP2WzPS3XliYkPreONopI4l0ecpEEU5oDzFE7EQC8l4GNqunWoVQD6w2xc5g3y0CZoUkjUpgsINxQLL2LH83ckO28AvGA671oEHc0aY7Preo/nYKo9STnFpWGB8G54wM0PRxN2jUtWFBpjRBr35JAMRWwna3w8ifHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m7bZ4agY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="wNSiwWKR"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=VESGW3TkU2bTfPpPgP4UR7E6JTjX0tkAQhUuZU9C/tM=;
-	b=wNSiwWKRvOV1fjcErXNkqErXQUmQG3eZuwQkj3Zu6VFMiHhxXORXqjDrFe8LUISRsPYsZW2e2
-	XQPGavZQkQgiZRnvDs0uHkrRCuZtCv9Ii/3WQe+SgmFIlieaRlAE3u38ZstYmsJIs87/e1uCN43
-	22ZWBtq2ZdGrbDeJX79IZTo=
-Received: from mail.maildlp.com (unknown [172.19.163.104])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4j56Lb1Ppmzcb1H;
-	Thu, 15 Oct 2026 20:09:11 +0800 (CST)
-Received: from whupemk100010.china.huawei.com (unknown [7.152.184.41])
-	by mail.maildlp.com (Postfix) with ESMTPS id E96A04056E;
-	Thu, 15 Oct 2026 20:21:15 +0800 (CST)
-Received: from octopus.huawei.com (10.67.174.191) by
- whupemk100010.china.huawei.com (7.152.184.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 15 Oct 2026 20:21:10 +0800
-From: Cai Xinchen <caixinchen1@huawei.com>
-To: <mic@digikod.net>, <gnoack@google.com>, <paul@paul-moore.com>,
-	<jmorris@namei.org>, <serge@hallyn.com>, <corbet@lwn.net>,
-	<skhan@linuxfoundation.org>
-CC: <ast@kernel.org>, <daniel@iogearbox.net>, <andrii@kernel.org>,
-	<eddyz87@gmail.com>, <memxor@gmail.com>, <martin.lau@linux.dev>,
-	<song@kernel.org>, <yonghong.song@linux.dev>, <jolsa@kernel.org>,
-	<emil@etsalapatis.com>, <ihor.solodrai@linux.dev>, <rdunlap@infradead.org>,
-	<gregkh@linuxfoundation.org>, <rafael@kernel.org>, <dakr@kernel.org>,
-	<johan@kernel.org>, <dlemoal@kernel.org>, <hch@lst.de>, <axboe@kernel.dk>,
-	<viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <jack@suse.cz>,
-	<dhowells@redhat.com>, <code@tyhicks.com>, <linkinjeon@kernel.org>,
-	<sj1557.seo@samsung.com>, <yuezhang.mo@sony.com>,
-	<hirofumi@mail.parknet.co.jp>, <cel@kernel.org>, <jlayton@kernel.org>,
-	<neil@brown.name>, <okorniev@redhat.com>, <Dai.Ngo@oracle.com>,
-	<tom@talpey.com>, <hyc.lee@gmail.com>, <miklos@szeredi.hu>,
-	<amir73il@gmail.com>, <senozhatsky@chromium.org>,
-	<chenxiaosong@chenxiaosong.com>, <kpsingh@kernel.org>, <matt@bobrowski.net>,
-	<rostedt@goodmis.org>, <mhiramat@kernel.org>,
-	<mathieu.desnoyers@efficios.com>, <john.johansen@canonical.com>,
-	<georgia.garcia@canonical.com>, <zohar@linux.ibm.com>,
-	<roberto.sassu@huawei.com>, <dmitry.kasatkin@gmail.com>,
-	<eric.snowberg@oracle.com>, <stephen.smalley.work@gmail.com>,
-	<omosnacek@gmail.com>, <casey@schaufler-ca.com>, <takedakn@nttdata.co.jp>,
-	<penguin-kernel@I-love.SAKURA.ne.jp>, <xiujianfeng@huawei.com>,
-	<nanx95726@gmail.com>, <djwong@kernel.org>, <lujialin4@huawei.com>,
-	<bpf@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
-	<driver-core@lists.linux.dev>, <linux-block@vger.kernel.org>,
-	<linux-fsdevel@vger.kernel.org>, <netfs@lists.linux.dev>,
-	<ecryptfs@vger.kernel.org>, <exfat@lists.linux.dev>,
-	<linux-nfs@vger.kernel.org>, <ntfs@lists.linux.dev>,
-	<linux-unionfs@vger.kernel.org>, <linux-cifs@vger.kernel.org>,
-	<linux-trace-kernel@vger.kernel.org>, <apparmor@lists.ubuntu.com>,
-	<linux-integrity@vger.kernel.org>, <selinux@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>
-Subject: [PATCH v2 -next 18/18] Documentation: Update landlock doc for metadata rights
-Date: Thu, 15 Oct 2026 20:54:24 +0800
-Message-ID: <20261015125425.3246251-19-caixinchen1@huawei.com>
-X-Mailer: git-send-email 2.18.0.huawei.25
-In-Reply-To: <20261015125425.3246251-1-caixinchen1@huawei.com>
-References: <20261015125425.3246251-1-caixinchen1@huawei.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m7bZ4agY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C93F1F000C4;
+	Fri, 16 Oct 2026 08:59:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792141179;
+	bh=ygPqvTu0MZgnk+/Kb6/16DzoVjrOgynRG8deEIsJd64=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=m7bZ4agYIMispujf5L370KG15bRIqUoeSyxTGdIctuS2r7xWF36CBfEBhe9KRGvVq
+	 i/Pv8f67AF5QF/yIhkhjPFuMyYWqPZOtOW9/hgwjsIKcNxyy9/MIJ46hEscejW7i/g
+	 FDHBsAOfkUeSG0jZzaRWjachh22tG3vqK1hpudZDN0lp52jNh4uyHss03SDLh43pN3
+	 N/9YwfIuhX29rz19vcMa8fMOhFmeU2h3CyJRAKAj6bAubZuwx/ioHZ2rgvNo7ND80c
+	 GTZYkYcJgzeKFgNOrIpHChbdnx8Xj9/ewFHY1Pgl4RP0A6gNUBcPpDW/PD83pamUsF
+	 wMyTg7y8fW3xA==
+From: Christian Brauner <brauner@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Marc Dionne <marc.dionne@auristor.com>, 
+ Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>, 
+ Viacheslav Dubeyko <slava@dubeyko.com>, Paulo Alcantara <pc@manguebit.org>, 
+ Matthew Wilcox <willy@infradead.org>, v9fs@lists.linux.dev, 
+ linux-afs@lists.infradead.org, ceph-devel@vger.kernel.org, 
+ linux-cifs@vger.kernel.org, netfs@lists.linux.dev, 
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <1091807.1791483394@warthog.procyon.org.uk>
+References: <1091807.1791483394@warthog.procyon.org.uk>
+Subject: Re: [PATCH v3] fscache, cachefiles: Fix resize handling
+Message-Id: <20261016-betagten-raspel-gepunktet-718b691298d2@brauner>
+Date: Fri, 16 Oct 2026 10:59:33 +0200
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- whupemk100010.china.huawei.com (7.152.184.41)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev-3d1b8
 
-Update the user space documentation for the new
-LANDLOCK_ACCESS_FS_READ_METADATA and
-LANDLOCK_ACCESS_FS_WRITE_METADATA access rights: add them to the
-example ruleset attributes, extend the ABI version fallback switch
-to remove them for ABI < 13, and document their semantics in a new
-"File metadata" section, including the fact that only explicit
-metadata changes requested by user space are restricted.
+On Thu, 08 Oct 2026 19:16:34 +0100, David Howells wrote:
+> Fix the resize handling in fscache and cachefiles by passing down a flag to
+> indicate if the file is being shrunk as the cache's idea of how big the
+> file should be may be stale and thus not useful in comparison to the
+> object's size.
+> 
+> The issue is that netfs_perform_write() updates the network filesystem's
+> file's i_size as it adds data to the pagecache, but the cache isn't updated
+> until writeback flushes that data.  A truncation may then scrap that data
+> and so the cache never sees it and doesn't update before it is told to
+> resize.  In the resize, cachefiles was comparing the new size against the
+> current cache size and then thinking the file was being expanded.
+> 
+> [...]
 
-The new section also warns that most of the time,
-LANDLOCK_ACCESS_FS_READ_METADATA should be granted together with
-LANDLOCK_ACCESS_FS_READ_FILE and LANDLOCK_ACCESS_FS_READ_DIR:
-programs commonly read metadata alongside file contents and
-directory listings (e.g. with stat(2)) and do not expect such calls
-to fail, while denying only READ_FILE or READ_DIR does not hide
-metadata.
+Applied to the vfs-7.4.netfs branch of the vfs/vfs.git tree.
+Patches in the vfs-7.4.netfs branch should appear in linux-next soon.
 
-Assisted-by: opencode: glm-5.3
-Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
----
- Documentation/userspace-api/landlock.rst | 47 +++++++++++++++++++++++-
- 1 file changed, 46 insertions(+), 1 deletion(-)
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-diff --git a/Documentation/userspace-api/landlock.rst b/Documentation/userspace-api/landlock.rst
-index 3d45b956b640..62fe39a8b61e 100644
---- a/Documentation/userspace-api/landlock.rst
-+++ b/Documentation/userspace-api/landlock.rst
-@@ -87,7 +87,9 @@ to be explicit about the denied-by-default access rights.
-             LANDLOCK_ACCESS_FS_REFER |
-             LANDLOCK_ACCESS_FS_TRUNCATE |
-             LANDLOCK_ACCESS_FS_IOCTL_DEV |
--            LANDLOCK_ACCESS_FS_RESOLVE_UNIX,
-+            LANDLOCK_ACCESS_FS_RESOLVE_UNIX |
-+            LANDLOCK_ACCESS_FS_READ_METADATA |
-+            LANDLOCK_ACCESS_FS_WRITE_METADATA,
-         .handled_access_net =
-             LANDLOCK_ACCESS_NET_BIND_TCP |
-             LANDLOCK_ACCESS_NET_CONNECT_TCP |
-@@ -159,6 +161,10 @@ version, and only use the available subset of access rights:
-         ruleset_attr.handled_permissions &=
-             ~(LANDLOCK_PERMISSION_NAMESPACE_USE |
-               LANDLOCK_PERMISSION_CAPABILITY_USE);
-+        /* Removes metadata rights for ABI < 13 */
-+        ruleset_attr.handled_access_fs &=
-+            ~(LANDLOCK_ACCESS_FS_READ_METADATA |
-+              LANDLOCK_ACCESS_FS_WRITE_METADATA);
-     }
- 
- This enables the creation of an inclusive ruleset that will contain our rules.
-@@ -669,6 +675,45 @@ for writing, sidestepping the ``LANDLOCK_ACCESS_FS_TRUNCATE`` right.
- 
- The truncate right is associated with the opened file (see below).
- 
-+File metadata
-+-------------
-+
-+The ``LANDLOCK_ACCESS_FS_READ_METADATA`` right governs reading file and
-+directory metadata: :manpage:`stat(2)` and friends,
-+:manpage:`getxattr(2)`, :manpage:`listxattr(2)` and friends, and POSIX ACL
-+reads.
-+
-+The ``LANDLOCK_ACCESS_FS_WRITE_METADATA`` right governs explicit changes to
-+file and directory metadata: :manpage:`chmod(2)` and friends,
-+:manpage:`chown(2)` and friends, :manpage:`utimensat(2)`,
-+:manpage:`setxattr(2)`, :manpage:`removexattr(2)` and friends, and POSIX ACL
-+changes.  Both rights apply to files and directories alike.
-+
-+Implicit metadata changes performed by the kernel are not restricted by
-+``LANDLOCK_ACCESS_FS_WRITE_METADATA``: reading a file may update its access
-+time, writing a file updates its modification and change times and may change
-+the file size, and writing to or truncating a file with a set-user-ID or
-+set-group-ID bit clears these bits.  File size changes through
-+:manpage:`truncate(2)` and friends are governed by
-+``LANDLOCK_ACCESS_FS_TRUNCATE`` instead.  Metadata change requests that do
-+not change any attribute (e.g. :manpage:`chown(2)` with owner and group
-+``-1``) are not restricted either.
-+
-+.. warning::
-+
-+   Many programs read metadata as part of reading file contents or listing
-+   directories (e.g. calling :manpage:`stat(2)` before or after
-+   :manpage:`open(2)`), and do not expect such calls to fail with
-+   ``EACCES``.  Most of the time, ``LANDLOCK_ACCESS_FS_READ_METADATA``
-+   should therefore be granted together with
-+   ``LANDLOCK_ACCESS_FS_READ_FILE`` and ``LANDLOCK_ACCESS_FS_READ_DIR``.
-+   Conversely, denying only ``LANDLOCK_ACCESS_FS_READ_FILE`` or
-+   ``LANDLOCK_ACCESS_FS_READ_DIR`` does not hide metadata: it remains
-+   readable through :manpage:`stat(2)` and friends unless
-+   ``LANDLOCK_ACCESS_FS_READ_METADATA`` is denied as well.  Tailored
-+   programs that do not read metadata at all can still deny this right to
-+   further restrict their sandbox.
-+
- Rights associated with file descriptors
- ---------------------------------------
- 
--- 
-2.18.0.huawei.25
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs-7.4.netfs
+
+[1/1] fscache, cachefiles: Fix resize handling
+      https://git.kernel.org/vfs/vfs/c/f65f6269cd37
 
