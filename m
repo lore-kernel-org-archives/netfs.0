@@ -1,41 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A682248B3;
-	Sat, 17 Oct 2026 16:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D020F384CED;
+	Sat, 17 Oct 2026 16:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792254163; cv=none; b=HbxBhhM7xDmQ+gm/WsEAlx0/97M6Ue7KzpJtnEfQYhqt9DypzH9A8eKgo2tzgkYBGLiOTVMFwKnAeBf+h6Km5kL9n+v2tpg/ThlAyxzlxMj000E6P+1Fp/7SX1Babqr5vRUKbtzd/rbviwz52D1sk1u5mRU5fexcwi98nCWUhQk=
+	t=1792254193; cv=none; b=J6Mpk+87YWK/bzN2clnV7/vX/Ge7sjUltU8PpDpgaA4frgE28tlHXoYwZm3HYPu+GRNyFD/ZzxijIRBmF7EWV9a6ieL2GIjXwfKFxhXmlRIDfUIetQLo3nF34vlXIpGUG7jaCsLHZ5Fyi/61Dv8N5Xi79zHrdlGC/A926mwaj1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792254163; c=relaxed/simple;
-	bh=573aALkI6ygS10sTpHOQ/FI7UAyi8SLfMXCCmivh82U=;
+	s=arc-20240116; t=1792254193; c=relaxed/simple;
+	bh=L/BY99RdC2OrtnlkjQxpZJCD16VGHCo+61LJR5JTjVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fGaCrxN51xRq3ymQuCF4QspNIrecTPU7r8mcXDq6csIm2NDcqmDMqOieXpkv+zgjaPvYM9lim3xHJc8eLHyehaqO6ihbp4J4/MmtEuQBl/HoO9eROCwzMsX+kHU8lm3vm4up96scsJhpog5Zwl3tjVdzOwiqZp+CFsFnF2prDcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFnzQvDG; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=sTGIkT1bYN4Zx/Z/lk6I3HZKQEbJGAE4NVysgh97Y738j0Z34/7NmyMmfK7NbYtP+pXhGlH8oAM+FZqkGk6xel+KP7n5iV2XuN0aWWmi3BbATOWhoI3CtfJr3s/KrCau8UqS1xW1+2q1eOQm8tTIfvqayVhcq2BnCTtB8HKuuTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NhwfYky6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFnzQvDG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA26F1F000C4;
-	Sat, 17 Oct 2026 16:22:41 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NhwfYky6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 331461F000C4;
+	Sat, 17 Oct 2026 16:23:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1792254162;
-	bh=B/DQCLIYadzjVrnF83FGXwttCSzoHCf8mjMIVCPtEHc=;
+	s=korg; t=1792254192;
+	bh=rZhJ2UZzwssNe3fRSTZrOMrvV1DEg+U8DB8YdcV1qeQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IFnzQvDGqoScS9SQCn6sfZQtA7PsAAixIQ1TxRoKDgQ18uCg4puoNTLAD1kmWihMV
-	 Q0Xe0IK49u1XwM9/zlGiRdvB/gqfc/dpxJRT93gzTcADnaQLBW9y7eEK8dmJIXne6u
-	 ZrYzgu2JjIFeag6xcR0lG7IA4umqI9QVwT6Y9aPE=
+	b=NhwfYky694Ya85MUTyGxEmAIwPr26s0wWzJW4nvW8XOMM6M+cs/VYs78X1lZbS8uJ
+	 BuZFIsRD7Ckkt6R9BdOFa49M0vXWD9JC8R1E7nDP42e438SqrSyUQ1p4O709pSVf3v
+	 dI7akenqD4NiOGN0gZ195Rw6a3fA7e37JyennWhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	David Howells <dhowells@redhat.com>,
 	Paulo Alcantara <pc@manguebit.org>,
+	Matthew Wilcox <willy@infradead.org>,
 	netfs@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 356/869] netfs: Fix missing locking around retry adding new subreqs
-Date: Sat, 17 Oct 2026 17:53:17 +0200
-Message-ID: <20261017160046.234460515@linuxfoundation.org>
+Subject: [PATCH 6.12 365/869] netfs: Fix zeropoint update where i_size > remote_i_size
+Date: Sat, 17 Oct 2026 17:53:26 +0200
+Message-ID: <20261017160046.466695204@linuxfoundation.org>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261017160036.979869304@linuxfoundation.org>
 References: <20261017160036.979869304@linuxfoundation.org>
@@ -56,52 +57,72 @@ Content-Transfer-Encoding: 8bit
 
 From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit cce18c263e9623872327ba3c956012f73c1179cc ]
+[ Upstream commit 4543a4d737944134a1394afe797622546fbcc98a ]
 
-Fix netfs_retry_read_subrequests() and netfs_retry_write_stream() to take
-the appropriate lock when adding extra subrequests into
-stream->subrequests.
+Fix the update of the zero point[*] by netfs_release_folio() when there is
+uncommitted data in the pagecache beyond the folio being released but the
+on-server EOF is in this folio (ie. i_size > remote_i_size).  The update
+needs to limit zero_point to remote_i_size, not i_size as i_size is a local
+phenomenon reflecting updates made locally to the pagecache, not stuff
+written to the server.  remote_i_size tracks the server's i_size.
 
-Fixes: e2d46f2ec332 ("netfs: Change the read result collector to only use one work item")
-Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
-Closes: https://sashiko.dev/#/patchset/20260425125426.3855807-1-dhowells%40redhat.com
+[*] The zero point is the file position from which we can assume that the
+    server will just return zeros, so we can avoid generating reads.
+
+Note that netfs_invalidate_folio() probably doesn't need fixing as
+zero_point should be updated by setattr after truncation or fallocate.
+
+Found with:
+
+    fsx -q -N 1000000 -p 10000 -o 128000 -l 600000 \
+        /xfstest.test/junk --replay-ops=junk.fsxops
+
+using the following as junk.fsxops:
+
+    truncate 0x0 0x1bbae 0x82864
+    write 0x3ef2e 0xf9c8 0x1bbae
+    write 0x67e05 0xcb5a 0x4e8f6
+    mapread 0x57781 0x85b6 0x7495f
+    copy_range 0x5d3d 0x10329 0x54fac 0x7495f
+    write 0x64710 0x1c2b 0x7495f
+    mapread 0x64000 0x1000 0x7495f
+
+on cifs with the default cache option.
+
+It shows read-gaps on folio 0x64 failing with a short read (ie. it hits
+EOF) if the FMODE_READ check is commented out in netfs_perform_write():
+
+                if (//(file->f_mode & FMODE_READ) ||
+                    netfs_is_cache_enabled(ctx)) {
+
+and no fscache.  This was initially found with the generic/522 xfstest.
+
+Fixes: cce6bfa6ca0e ("netfs: Fix trimming of streaming-write folios in netfs_inval_folio()")
 Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-3-dhowells@redhat.com
+Link: https://patch.msgid.link/20260512123404.719402-7-dhowells@redhat.com
 cc: Paulo Alcantara <pc@manguebit.org>
+cc: Matthew Wilcox <willy@infradead.org>
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/write_collect.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/netfs/misc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/netfs/write_collect.c b/fs/netfs/write_collect.c
-index c349867d74c34..ad2edf794f0ff 100644
---- a/fs/netfs/write_collect.c
-+++ b/fs/netfs/write_collect.c
-@@ -263,7 +263,9 @@ static void netfs_retry_write_stream(struct netfs_io_request *wreq,
- 			list_for_each_entry_safe_from(subreq, tmp,
- 						      &stream->subrequests, rreq_link) {
- 				trace_netfs_sreq(subreq, netfs_sreq_trace_discard);
-+				spin_lock_bh(&wreq->lock);
- 				list_del(&subreq->rreq_link);
-+				spin_unlock_bh(&wreq->lock);
- 				netfs_put_subrequest(subreq, false, netfs_sreq_trace_put_done);
- 				if (subreq == to)
- 					break;
-@@ -287,8 +289,10 @@ static void netfs_retry_write_stream(struct netfs_io_request *wreq,
- 					     netfs_sreq_trace_new);
- 			trace_netfs_sreq(subreq, netfs_sreq_trace_split);
+diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
+index f5f7c0de3a7ca..8bdacbf15226c 100644
+--- a/fs/netfs/misc.c
++++ b/fs/netfs/misc.c
+@@ -315,7 +315,7 @@ bool netfs_release_folio(struct folio *folio, gfp_t gfp)
+ 	if (folio_test_dirty(folio))
+ 		return false;
  
-+			spin_lock_bh(&wreq->lock);
- 			list_add(&subreq->rreq_link, &to->rreq_link);
--			to = list_next_entry(to, rreq_link);
-+			spin_unlock_bh(&wreq->lock);
-+			to = subreq;
- 			trace_netfs_sreq(subreq, netfs_sreq_trace_retry);
+-	end = umin(folio_pos(folio) + folio_size(folio), i_size_read(&ctx->inode));
++	end = umin(folio_pos(folio) + folio_size(folio), ctx->remote_i_size);
+ 	if (end > ctx->zero_point)
+ 		ctx->zero_point = end;
  
- 			stream->sreq_max_len	= len;
 -- 
 2.53.0
 
