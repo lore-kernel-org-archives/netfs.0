@@ -1,99 +1,238 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB143A7F41;
-	Sat, 17 Oct 2026 16:49:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4329C4DE718
+	for <netfs@lists.linux.dev>; Mon, 19 Oct 2026 11:43:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792255742; cv=none; b=t1bIhhuO7xK2i0ihFPH5UgHR11OnRbP+mdz1X5d9zMhgZEMrNcnc7ldCmGrlfw7if7Z3zksbbsiEhT3OHqeOZtrDmiJDu114j/jnB4UPqRMAkQ4cUjR9ZY8TCpmiII0StN0ngNlbcsjIw5XucctjD8e32MvO8mmDzlPjBc0uLCw=
+	t=1792410203; cv=none; b=t+v69EH06fIPpNYyuhC8Y7R+QCToeitSJEcVVBKayuL2lti+1pPyoGlfdZg1oRKCwUiK0NCCyXrGd7Xs88kurLNYihpse08KU12HGTQg6/w85fyk0EGdJp3t9c7fjh14FuQPJBGD86hEvibZ8Gm74YHXP14+LwvIXBtRQq188bY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792255742; c=relaxed/simple;
-	bh=nUugFOwlYFMOtuWEPg6Xpl18rX216FZa3eNW3Cmr/pk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dgiycPLJGTZzHkMQqZY4kA8JqtuO5vWFajy8hLsP3/6H/SHu/ZMOVi75gUQy7ka/kSMSINBQ33cN4tW11Iva/H4yyIckyNT2f0MKYxLptLK4tGvZoX+a+H2VmL7MkLxoZIWWY+i4F7ACL07ndlLewVMiqz7rSZXMHGA8BlzRl7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHhMClQe; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792410203; c=relaxed/simple;
+	bh=0h+fMlcy0nHUgqx0ZgNb3jSrGz0nmItuE/FyNlwIrZ4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qZ0Ui6wH0vRWpvfqI1onVL1/RrYPB1U/rvrv5PbTnv1O2/JBPKE15ZgWPVyDZL1e4OET1ewsEgx3CfQEVxT4AUGZu2odExOj/aFJgB40WDZwDQBnzP/JSo+PF24oUXUQR+Y1S1TWzr+SYx2Y/rKwzs7oDOEeA+PLn4y8rS5lj1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oZ3nJ+2H; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHhMClQe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CB4E1F000C4;
-	Sat, 17 Oct 2026 16:48:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1792255740;
-	bh=MlPUZ35hTcV++rBe1PHqRl77Ak7FpewK0YokX2RjYGM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aHhMClQeUQSRLPB4TK57Iw1jqauTg9mD/SosfiNGahauFV/o2szsv0RKmocjiL+7B
-	 T1ifqKBZOzTncN/aDcGeNQwGz9/9C5N78aUnEmj0i1UPiJlTbuTVd3ZeWwdvZXFRdB
-	 sHQZPzMT5BVvXHa1jwF2ZvA8A1S2tnW4YQrmICME=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	"Christian Brauner (Amutable)" <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 846/869] netfs: Fix folio state after ENOMEM whilst under writeback iteration
-Date: Sat, 17 Oct 2026 18:01:27 +0200
-Message-ID: <20261017160058.556176896@linuxfoundation.org>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261017160036.979869304@linuxfoundation.org>
-References: <20261017160036.979869304@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oZ3nJ+2H"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a1cef0439aso21470225e9.0
+        for <netfs@lists.linux.dev>; Mon, 19 Oct 2026 04:43:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1792410195; x=1793014995; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=uPs8kNwzq2ixzAyx8BoNzSjliUbshG+1sbYaMKzI60Q=;
+        b=oZ3nJ+2H+6xVjW+nl+y5Mk6OZqq3MJf6iw5PxtdzlsENn1gtR/wiKu0MkL+zE1dojK
+         HmDqB4pDS2o7irOFmYTMGxC98pLvNInsfayDBFQ4vkyg6nqjdEuBJMtWh4MZ12bBVaVR
+         kEkUa4B++U/Zwzl/C6wvKCkjDKSkxJ/4bJQx0nQKzsyhptN7wJI+xKUdn615hLC+GWic
+         I6guGqOpv7vfOerr0YXGwdO/VpZt6+pPPjoORrIVHX7SBFKfOkyzYoo5AeV8s0JSzCK8
+         ilbZafSug52mpFeVI94IfKW+CYRneHbuV0gxswnlV5lQGH3EVq5j9WVyFygKmbTxW5MX
+         REVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792410195; x=1793014995;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=uPs8kNwzq2ixzAyx8BoNzSjliUbshG+1sbYaMKzI60Q=;
+        b=eZ9XByf9lN4iA3XkZK9SOnys3oOfTycSghOwFkqAGsrjCke/JD65fvcSxcyAw5lrkS
+         M8gyAV3mTE1/WsG8ARIHWy76MK53SV+8alOu8T86IQ1yqCqlrhOfM0mPm6eHVr/17iwY
+         9BhuPzbzyh5F2JMOHQ0Lv52zprYuNfiic58EWBim01Z52qqUHHZ1tLEocM41DVpiASeC
+         jl6xKfHK6rR8ILsoxaCFKweiDy0BoanKS3NqKfe1YBBBmSsakb/zxmSNbhrLA2a8hQMG
+         f8i5cEd4e0Ndif7ZfnHH+HhZulG8TFd9LB3wYNRceG5JOwl9Yfn2nn5lFCgmWaM1O92s
+         Xzvw==
+X-Forwarded-Encrypted: i=1; AKwUvBzqfpiCJAWobNOICkIzYro1IxEJ8SA/+wA4+gx0Tp/yYe/iBdxOvmJueQJ/V9r9b241XCwOuA==@lists.linux.dev
+X-Gm-Message-State: AFq9FYKinRmxGpMDLEx0v9G+yG7ifIx2Bgu5kCJoQju91U18/dKdIc3R
+	KgYX96DVB5s+ph5KFkUdYC/8gA5VsyqJiTbvE1e9qJq09UiWWJFGGzoG9AC0EBShrg==
+X-Gm-Gg: AYBFou0ZIA3X3kozgek4fyKacSBmtjbuglP9NAhJGv/l6T1hQT+oos3MwOks7Z1fokn
+	JeZwhanBn03mZPUQONA3rrqMZklf31d8HeD/hxvFoqRqLN/wvj1ESaRWRIZ3IuRmmGkV0PGQSXS
+	te7L1x0nfy3fGc2jkCl52VqbLgZ81NuLqV9pAs92upJJAUn2emYU7Dhe0GFFOJ+YvmO2/8OoIIb
+	b/fK/XZzFWObKgfyuqXqXOaZbS4832DpnSC9xL7qBKj32q5EoY6CSMx+2I2hbfHo5Cl75Czu+a0
+	Ukw+9c1ksKKzekrEgUsiAI2CTxtVUDcH4Xx4Xe1jfDjn2JHfY0HSfW1p/XLCSlKRE4NJlk5/PE1
+	nbvyIRmr5lnTcYoyYKGjIxbyeoupIya7roj3dhBq0lTMedJIc/LMESnwW3wZPeZO71K6Mw6ba//
+	I8lyGiRNOMUr8Kf0nmyxkOX/MZ1SFAoK/SdgFb8ygwJXLwX7IVIbQGYe3fAo1rmSaATLsIGy80A
+	uXvl6cK67kgv3Z1qwV0C80ZxwUck+8=
+X-Received: by 2002:a05:600c:3508:b0:49f:e772:6ddf with SMTP id 5b1f17b1804b1-4a1d762251bmr165269695e9.32.1792410194117;
+        Mon, 19 Oct 2026 04:43:14 -0700 (PDT)
+Received: from google.com ([2a00:79e0:288a:8:d186:2d44:63ff:537f])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1e9423f20sm58112105e9.7.2026.10.19.04.43.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Oct 2026 04:43:13 -0700 (PDT)
+Date: Mon, 19 Oct 2026 13:43:04 +0200
+From: =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>
+To: Justin Suess <utilityemal77@gmail.com>
+Cc: Cai Xinchen <caixinchen1@huawei.com>, mic@digikod.net,
+	paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+	corbet@lwn.net, skhan@linuxfoundation.org, ast@kernel.org,
+	daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com,
+	memxor@gmail.com, martin.lau@linux.dev, song@kernel.org,
+	yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com,
+	ihor.solodrai@linux.dev, rdunlap@infradead.org,
+	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
+	johan@kernel.org, dlemoal@kernel.org, hch@lst.de, axboe@kernel.dk,
+	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
+	dhowells@redhat.com, code@tyhicks.com, linkinjeon@kernel.org,
+	sj1557.seo@samsung.com, yuezhang.mo@sony.com,
+	hirofumi@mail.parknet.co.jp, cel@kernel.org, jlayton@kernel.org,
+	neil@brown.name, okorniev@redhat.com, Dai.Ngo@oracle.com,
+	tom@talpey.com, hyc.lee@gmail.com, miklos@szeredi.hu,
+	amir73il@gmail.com, senozhatsky@chromium.org,
+	chenxiaosong@chenxiaosong.com, kpsingh@kernel.org,
+	matt@bobrowski.net, rostedt@goodmis.org, mhiramat@kernel.org,
+	mathieu.desnoyers@efficios.com, john.johansen@canonical.com,
+	georgia.garcia@canonical.com, zohar@linux.ibm.com,
+	roberto.sassu@huawei.com, dmitry.kasatkin@gmail.com,
+	eric.snowberg@oracle.com, stephen.smalley.work@gmail.com,
+	omosnacek@gmail.com, casey@schaufler-ca.com, takedakn@nttdata.co.jp,
+	penguin-kernel@i-love.sakura.ne.jp, xiujianfeng@huawei.com,
+	nanx95726@gmail.com, djwong@kernel.org, lujialin4@huawei.com,
+	bpf@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
+	driver-core@lists.linux.dev, linux-block@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, netfs@lists.linux.dev,
+	ecryptfs@vger.kernel.org, exfat@lists.linux.dev,
+	linux-nfs@vger.kernel.org, ntfs@lists.linux.dev,
+	linux-unionfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, apparmor@lists.ubuntu.com,
+	linux-integrity@vger.kernel.org, selinux@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v2 -next 09/18] landlock: Add READ_METADATA and
+ WRITE_METADATA access rights
+Message-ID: <atYBVCIYE1zDb7do@google.com>
+References: <20261015125425.3246251-1-caixinchen1@huawei.com>
+ <20261015125425.3246251-10-caixinchen1@huawei.com>
+ <atI20Vs7Du9-g1Hz@zenbox>
 Precedence: bulk
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Subscribe: <mailto:netfs+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <atI20Vs7Du9-g1Hz@zenbox>
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+Hello!
 
-------------------
+On Fri, Oct 16, 2026 at 10:44:16AM -0400, Justin Suess wrote:
+> On Thu, Oct 15, 2026 at 08:54:15PM +0800, Cai Xinchen wrote:
+> > Add two new filesystem access rights to control file metadata access:
+> > 
+> > - LANDLOCK_ACCESS_FS_READ_METADATA: Read file or directory metadata
+> >   (e.g. inode attributes, extended attributes and POSIX ACLs) through
+> >   stat(2), fstat(2), lstat(2), newfstatat(2), getxattr(2) and
+> >   friends, listxattr(2) and friends, and the POSIX ACL read
+> >   operations.
+> > - LANDLOCK_ACCESS_FS_WRITE_METADATA: Change file or directory
+> >   metadata through chmod(2) and friends, chown(2) and friends,
+> >   utimensat(2) and friends, setxattr(2) and friends, removexattr(2)
+> >   and friends, and the POSIX ACL set and remove operations.
+> > 
+> > This follows the coarse-grained grouping approach discussed in the
+> > mailing list [1], where file metadata operations are grouped by
+> > security relevance rather than by individual syscall.
+> > 
+> > Implement the two rights by hooking the inode_getattr,
+> > inode_file_getattr, inode_setattr, inode_file_setattr,
+> > inode_setxattr, inode_getxattr, inode_listxattr, inode_removexattr,
+> > inode_set_acl, inode_get_acl and inode_remove_acl LSM hooks, which
+> > now receive a struct path thanks to the preceding VFS and LSM
+> > refactoring.  The following system calls are now controlled:
+> > 
+> > - stat(2), fstat(2), lstat(2), newfstatat(2), getxattr(2) and
+> >   friends, listxattr(2) and friends, POSIX ACL reads, and the
+> >   chattr(1)/xfs_io style reads: ioctl(FS_IOC_GETFLAGS),
+> >   ioctl(FS_IOC_FSGETXATTR) and file_getattr(2) via inode_getattr,
+> >   inode_getxattr, inode_listxattr, inode_get_acl and
+> >   inode_file_getattr (READ_METADATA)
+> > - chmod(2), fchmod(2), fchmodat(2), fchmodat2(2), chown(2), fchown(2),
+> >   lchown(2), fchownat(2), chgrp(2), utimensat(2), futimens(2),
+> >   utime(2), setxattr(2) and friends, removexattr(2) and friends,
+> >   POSIX ACL set and remove, and the chattr(1)/xfs_io style writes:
+> >   ioctl(FS_IOC_SETFLAGS), ioctl(FS_IOC_FSSETXATTR) and
+> >   file_setattr(2) via inode_setattr, inode_file_setattr,
+> >   inode_setxattr, inode_removexattr, inode_set_acl and
+> >   inode_remove_acl (WRITE_METADATA)
+> > 
+> > Both new rights are added to ACCESS_FILE as they apply to both files
+> > and directories.
+> > 
+> > hook_inode_setattr only restricts explicit metadata changes, i.e. it
+> > checks WRITE_METADATA only when the ia_valid mask contains
+> > ATTR_MODE, ATTR_UID, ATTR_GID, ATTR_TIMES_SET or ATTR_TOUCH.
+> > Metadata changes that the kernel performs implicitly, such as
+> > timestamp updates on write(2) or size changes on truncate(2), are
+> > therefore not restricted, and neither are chmod(2)/chown(2) calls
+> > that do not change any attribute (e.g. chown(2) with -1/-1, which is
+> > a no-op that never reaches the hook), matching the behavior of the
+> > SELinux inode_setattr hook.
+> > 
+> > Stacking filesystems forward fileattr operations to underlying inodes
+> > without calling the LSM hooks again (see the preceding patch), so a
+> > fileattr operation on an overlayfs file is checked once on the
+> > user-facing merged path and is not spuriously denied because of the
+> > kernel-side creator credentials used for the forward.
+> > 
+> > Kernel-internal accesses performed with override_creds() (e.g.
+> > overlayfs and cachefiles) are not affected because Landlock domains
+> > are attached to credentials, and kernel threads without a Landlock
+> > domain (e.g. nfsd and ksmbd) are not restricted either.
+> > 
+> > Remove stat(2), chmod(2), chown(2), setxattr(2) and utime(2) from the
+> > list of file-related actions that cannot be restricted yet, and add
+> > the names of the new rights to _LANDLOCK_ACCESS_FS_NAMES in
+> > include/linux/landlock.h, which is shared by audit records and trace
+> > events, so that denied accesses can be reported with a human-readable
+> > name and the static assertion on fs_access_strings in
+> > security/landlock/audit.c stays valid.
+> > 
+> > Increment the Landlock ABI version from 12 to 13, and update the ABI
+> > version check in tools/testing/selftests/landlock/base_test.c
+> > accordingly.
+> >
+> LANDLOCK_ACCESS_FS_*_METADATA should be checked at open time and follow
+> the mechanic for the truncate right. Otherwise the access for already
+> opened file descriptors would be changed. See hook_file_open in
+> security/landlock/fs.c and this discussion here [1]
+> 
+> It should have clear documentation for this as well.
+> 
+> Justin
+> [1] https://lore.kernel.org/all/20260929.Ahgoo4yeetai@digikod.net/
 
-From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit b6a713fd34b9498ee2164d5d3e8460732a392efc ]
+I agree with Justin here.
 
-Fix the state of the current folio when ENOMEM occurs during writeback
-iteration.  The folio needs to be redirtied and unlocked before the
-terminal writeback_iter() is invoked.
+Apart from what I said in [1], Justin and Mickaël pointed out this
+other aspect in which it is similar to *_TRUNCATE, in [2] and [3]:
+System calls like fstat(2) operate on an already-opened file
+descriptor, and the semantic that Landlock has so far been following
+for these is that the effective access rights for that file descriptor
+would be determined at the time of open(2) and stored in the opened
+struct file, just as it has been done for the *_TRUNCATE and
+*_IOCTL_DEV access rights in the hook_file_open() call which Justin
+points to above.
 
-Fixes: 06fa229ceb36 ("netfs: Abstract out a rolling folio buffer implementation")
-Link: https://sashiko.dev/#/patchset/20260619140646.2633762-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260625140640.3116900-15-dhowells@redhat.com
-cc: Paulo Alcantara <pc@manguebit.org>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/netfs/write_issue.c | 4 ++++
- 1 file changed, 4 insertions(+)
+That way, an already opened file acts as a handle for a "capability"
+(in the more general sense of the word), and the things you can do
+with that opened file don't change as the process enforces nested
+Landlock domains.
 
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index 4242cfc683d7c..b115f5285f434 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -582,6 +582,10 @@ int netfs_writepages(struct address_space *mapping,
- 		}
- 
- 		error = netfs_write_folio(wreq, wbc, folio);
-+		if (error == -ENOMEM) {
-+			folio_redirty_for_writepage(wbc, folio);
-+			folio_unlock(folio);
-+		}
- 	} while ((folio = writeback_iter(mapping, wbc, folio, &error)));
- 
- 	netfs_end_issue_write(wreq);
--- 
-2.53.0
+Landlock's documentation describes this in
+https://docs.kernel.org/userspace-api/landlock.html#rights-associated-with-file-descriptors
 
+It feels that this would be in order for the *_METADATA rights as
+well?  Does this seem reasonable to you?
 
+(If you have arguments against that, I'm also more than happy to
+discuss, but we should make a conscious decision. :-))
+
+—Günther
+
+[1] https://lore.kernel.org/all/arurOphe6QIx2Zr8@google.com/
+[2] https://lore.kernel.org/all/arvjb0HJYh1KyEBB@suesslenovo/
+[3] https://lore.kernel.org/all/20260929.Ahgoo4yeetai@digikod.net/
 
