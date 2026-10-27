@@ -1,135 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.189.73
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792798978;
-	b=XKx5UZAWXihLk9guBzxpE63t8zQUzZq0Byjc6QrNmD8Wurt+mOiP4wUElMa+8AyTxkTD
-	 MBrUFIZ78ViCEaJGG6daXNWvp9oC1gys0FoKXVGCMEEQTh7Bv5xQht4ZyLq4LU/xvdKlz
-	 eskvSxL6IHrIXDkbsLLpiBU1vlm9jKZzkxvBs3N25Y7sIZ4Bbsi0urSW39uyPylq/DzeE
-	 s9dh7nbLR/PfRsEtUnjUvop+WUbFrcfvMhk+BR8TYxCNos84nz4gBdkih8OaI5zXfAqwz
-	 iigpRhWpihGBjnugxb4OOVPMIJhMAWA2I0uybETnvUNjuMG059ZeS73xEBQwM0Em7sw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792798978;
-	h=DMARC-Filter:Received:Received:From:To:CC:Subject:Thread-Topic:
-	 Thread-Index:Date:Message-ID:Accept-Language:Content-Language:
-	 X-MS-Has-Attach:X-MS-TNEF-Correlator:msip_labels:
-	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
-	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
-	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
-	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
-	 x-ms-exchange-antispam-messagedata-chunkcount:
-	 x-ms-exchange-antispam-messagedata-0:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-originalarrivaltime:
-	 X-MS-Exchange-CrossTenant-fromentityheader:
-	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
-	 X-MS-Exchange-CrossTenant-userprincipalname:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=WQtoXKB5twcPFd8Dpyy1b9JzkI2YlPpe8vt1L/L4fmc=;
-	b=jtLUgGZWS9wQrzP+Ffo7XZH5quyR/NBPJuguHO7Yp0jCDwE+eXwLTgK767GgNSKHY2oY
-	 GkLAMwyRUUMmgtEno9iCYV6HqcsuDVSOpLT1UipnyF+0AZAlxwXZD/EQLIJCQR2vsMMWs
-	 dopZjZkuck8Js2xcb3T4pmJ+U6TX6vjjL2eFmZ3F1+UMaOOz3f0qV+C7c2q8DGqI9nNit
-	 CfTedbie4+e/gWf43KL+yAImwjJ9hLk/98RnGjhUDcpMRGPlqKWQ+oEPtlmHf0gxudUjy
-	 S/p6cXFf1pkU8HfmJbmU0NifLbj8/g0cGf2xz3DztWTUwXjMlKbxQZTPkfXfmYXKzqg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=morshed.eu;
-	spf=pass smtp.mailfrom=morshed.eu;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.189.73
-Received: from YT3PR01CU008.outbound.protection.outlook.com (mail-canadacentralazon11020073.outbound.protection.outlook.com [52.101.189.73])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.219
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793101091;
+	b=5Hy6BqRsUyNbd3WNjwB/5xR3ZF4vcquIei7ik/BOdFXk3ksF/cIgnREo0oRa/FFFKw0Z
+	 Zqtv/E2ccizWr3d5mrR6QDM1YRw3Q7DDH3jm+Cc9FGkMfyW6hY2HduyCJX6v43KSOqGMN
+	 Z66S2CG4tHqJnHhAny9beFSWdKaF0nctfwWSyNsJUB5IxEXYflHhORx1Ta+Hfe82dSw4T
+	 yYQLoBzxHCk54X/0B+ZUnS7BxshhpGzk5oUU70dOI+2QtWYYkLxN3dlrEPVBT97d/gHYM
+	 2GIWH4E5H9FEHTbk0Q/aZdjhl8kzt9iwLjrVBjfUN2lznrxX2PEF/kA8HweDHTQWuag==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793101091;
+	h=DMARC-Filter:dkim-signature:Received:Received:Received:From:To:CC:
+	 Subject:Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-Originating-IP:X-ClientProxiedBy;
+	bh=LWyfT9A94nxLJhqbaGE64JokHioc+waUYIEWWOe2AXU=;
+	b=JS8JT3GehocIZcrZ5x0BrHDnNLwZ1a8bP1Zt/dxC+PIoVXHtlunRhXlgV8jGR5UamjWD
+	 6RteZaVr2YP0YFPn44PYXyjHt/B8w9sOU3/czcjVM5OjxUzI+YhjvRnZfum9ufkZQh1t/
+	 fqNTS4lf6KL4C43CwLOvL+yb0GX7mjMRHtup/VCJUtmt5VEiLKl0P4C00N6ZZtzs3Grd1
+	 8jJgcnhhVnAj5PKaqodS5sLvYwwTKRbgJzo9KxLElQss+zPip/hVumhZ3uP4SuYJrsFfv
+	 iUfBKgoyeoQO7EPaiPYhsizPPzTMJ53rsio9wqbWblVYgiMShgGzUIw2huCatXniySA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=huawei.com;
+	spf=pass smtp.mailfrom=huawei.com;
+	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b="s/ySzqws";
+	arc=none smtp.remote-ip=113.46.200.219
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F2F606A31E
-	for <netfs@lists.linux.dev>; Fri, 23 Oct 2026 23:42:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 39F2F606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=morshed.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morshed.eu
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gQY4IfIMaMaVKqGxkREFpIsQZXRM9Ukepez7Jxumk38Te8MB0xCsgjl7U0mAWNhPzZrZMlEL4KjIYZiJfEDIJDqlJrfKTT/Ya/ybvg1f2/XLnGqvwxMEYQNNltkC9baeQwW8uQnuEPN3T9oVz61zIrpNUe265Ibhlhy+K5ioBdaZYvQLg4pp3FveC4Gugf6XTnuN6/8+kq8eHUIaEud17zIRZOXZTQXKKgf/gRpS+YOzURottEubaWbR0sDQoaaZzyP5nJcbm3RJxooEFiLaUgo9QJY1Vu6JLHy/oY3lIi1hABmwxYwKERFWWxPQqiRoHEC7zDXzONxppgyeLM+xnQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WQtoXKB5twcPFd8Dpyy1b9JzkI2YlPpe8vt1L/L4fmc=;
- b=F+9+Czkq/szbx1jDHVpodSo3n+2HKwcTX6HLgaPqfdmzE6yybyTGuCr3V1Ugo1kyvvkUmX2qL8a6qIiIj/ilA+o1Gy/5FpxQbbPju3jCWo9WQ1IroZDLMeMhhQQh0I2HIBqS4/X8/h/Du47PfcRy+w9CLLXJ6qiPXfdSp/k1FXYmgI21Ys038AEKF806q6XXD68etApc2ksHtL8/kjNfvmdyQhH2ke0S5klNXhbvtqdy8BXlp1Pm4ef/aXih0vBMHOeInA5GNR/dzrpjpVEEot/uy3ELr3iudM9paR1AAPf2sx6dgTbbzWShoA7JHuzKUK6uKa/Y3qaWfcTWPbjcOQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=morshed.eu; dmarc=pass action=none header.from=morshed.eu;
- dkim=pass header.d=morshed.eu; arc=none
-Received: from YQBP288MB0164.CANP288.PROD.OUTLOOK.COM (2603:10b6:c01:72::14)
- by YQBP288MB0746.CANP288.PROD.OUTLOOK.COM (2603:10b6:c01:8f::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.20; Fri, 23 Oct
- 2026 23:42:53 +0000
-Received: from YQBP288MB0164.CANP288.PROD.OUTLOOK.COM
- ([fe80::3a11:7130:faa2:1b9e]) by YQBP288MB0164.CANP288.PROD.OUTLOOK.COM
- ([fe80::3a11:7130:faa2:1b9e%7]) with mapi id 15.21.0546.019; Fri, 23 Oct 2026
- 23:42:52 +0000
-From: Nurullah Morshed <nurullah@morshed.eu>
-To: "linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>,
-	"netfs@lists.linux.dev" <netfs@lists.linux.dev>
-CC: "trondmy@kernel.org" <trondmy@kernel.org>, "anna@kernel.org"
-	<anna@kernel.org>, "dhowells@redhat.com" <dhowells@redhat.com>,
-	"pc@manguebit.org" <pc@manguebit.org>, "linux-fsdevel@vger.kernel.org"
-	<linux-fsdevel@vger.kernel.org>
-Subject: [BUG] NFS: fsc reads return zeroed file tails after short READ
- replies
-Thread-Topic: [BUG] NFS: fsc reads return zeroed file tails after short READ
- replies
-Thread-Index: AQHdY0RnkTc0c7DE4EmEoxrrYYPnVQ==
-Date: Fri, 23 Oct 2026 23:42:52 +0000
-Message-ID:
- <YQBP288MB016467ACB8048B62A153F00CBB642@YQBP288MB0164.CANP288.PROD.OUTLOOK.COM>
-Accept-Language: en-GB, en-US
-Content-Language: en-GB
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=morshed.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: YQBP288MB0164:EE_|YQBP288MB0746:EE_
-x-ms-office365-filtering-correlation-id: c3cbe4de-42d1-4739-a6f5-08df315f5acf
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|23010399003|376014|1800799024|18002099003|5023799004|56012099006|261022105027099003|261022075727099003|261022115727099003|10067099003|261009223027099003|261021121427099003|261021135927099003|38070700021;
-x-microsoft-antispam-message-info:
- 9piUK6JZcyaO5B2V8kGnye81YnK/qDIXgHLSeBAstGhQXV6PJKD33d+eK3SyS+4iSSaeIpW12pALQkUC7DVrn6bu9+wdFbh82pCrphP4j1qq3VMc2SK+YnScDDuia4rEqHOtYlW+00DvZn00XmGxqTR//i7YLSDjmZ3WEgtP2erqlSVUk4CSepIL4QCJDqSz5reQWUuRwQZgW5a4Ph/wt+jDgS9dFek7r3NnIUHmGOw72QJKg6BhjF4lh6CZkAGDc1wvi0HuXGzYYieiGmBeEPx9UnBhwDy754zHEQfV1E63/aXNR5WVdFRtO/rYH4ioGYI+fI854yJIWRFE3qcShEnLYFmbxqu0VXTA7rprN/dQGjuTtr5L8v6m0WvR/+csWJOxrDwPO8nva1koW00079kgkAct8MLUmDZYWczykX38fClTKIv2vBSx8M9ZSeENqMVLoLQeeSo4NEk1apkEefvBYNfPt9KVFVYwIcRgnAYOfYtIIckQO+I+cK78gS8+7drlODJbTa0b7IsFRVnvYUuoX4xBYxNDIuxHyn3KyUmFTSlggZang5Z4P4oDIWxqDMJfwwoHfykygft1Y66S0BVMrcSt0He4lHo7blY3+oeuwzVsTYQeyuBH7hYNHsOdvVAzzHQ9JAhb6U+RPF1egSnzPP11JDkVMRBPcF95PPI=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YQBP288MB0164.CANP288.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(1800799024)(18002099003)(5023799004)(56012099006)(261022105027099003)(261022075727099003)(261022115727099003)(10067099003)(261009223027099003)(261021121427099003)(261021135927099003)(38070700021);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?+wCzW89YeBx5L5EZyN0COR7wwcaTBUffJaHKK58n74d8UxCSK9wSd/tJKh?=
- =?iso-8859-1?Q?W2FQAD32L2yuIEWdJ756uQCHOQH5wMKqrMfa0OAL8/ki7HBbTsBBNKp3mL?=
- =?iso-8859-1?Q?i4g7fJ8lIDvbIH8M0JXmR4lpdmysD495CaIPZ0HxITLQ2Hq0eR5GhQ7PPW?=
- =?iso-8859-1?Q?EGHlp94/Ogb5yXDeS+ukTuUu3Ut77I6mvWrP9tS2UUBKeotaNY5vestLdG?=
- =?iso-8859-1?Q?Ee5Nn/r6IkgMgkVayHRMZp3MivOyuWntt/DaU6tsZ8mOHWlfbsQlrfOE6/?=
- =?iso-8859-1?Q?RS27/rknnBzF8XsqFevtFXJ6qdq6au3GQpU4BZEox3IqjO7YaSpLhvXMHJ?=
- =?iso-8859-1?Q?Px4ksI2HknUpKw+o78FMRNAgzOSEXd1/nq9mKyP98CbAxV5kyL9Um3X/Ee?=
- =?iso-8859-1?Q?Nd5BnEBk/R93ekFKe4uVoXPosKQ017223Bo1MF0a2PyhU1zjsjmeXt9WOp?=
- =?iso-8859-1?Q?h/t/P1ujzNdsVuTA9B+pLNOykGFBPkiEx7EDrVizu/nLwv9ni3pnQRdR2C?=
- =?iso-8859-1?Q?/RcrmC6GgGRLSw8bupxMg3oC1R25FFWamDYEOPcOxZkie68qwDSJ3cNCcc?=
- =?iso-8859-1?Q?jSqNpJQm/GYrJQXMbk8JCvT43zeIptqXbpWOpPxlv/cnsPwNQBfneiQNAV?=
- =?iso-8859-1?Q?YOB0y0MF/9ScSfIhZX2J+dW+EKFOw0fAW0bWgHqgNVBZuwzmH+P1i+Jsim?=
- =?iso-8859-1?Q?MYHXpWbVNbq1IGXeEAg+ezF4iG8A+HkQy1vx6iBh+OxpUcghG6wE5X6O9d?=
- =?iso-8859-1?Q?dGB33mWcWCDhNEmvcCGQQOPGfU+pPol1npEuD5fVmAl/VP9Xp7gIV6eqEW?=
- =?iso-8859-1?Q?KzxTKESZvD81WZUy39L6hVKSTNTztbQ567zlByNJoVnkAQZss7iSW1CFZ0?=
- =?iso-8859-1?Q?/S3rHQlsLFHrBEOqC2Cz6rKWSU+Uy4gaT6TleMolgdb7Yn1hBydQ4SORod?=
- =?iso-8859-1?Q?d9EO9Jok5msY79CHW1PW1OIAtggOQCVdHkcv/jOm59g77v4k+Lfa/ardcB?=
- =?iso-8859-1?Q?3KkXqra+Gh61dF7Cco2a7goMKhuXwA4+ILbgJNwTZq39Rycc/PueHS8buG?=
- =?iso-8859-1?Q?aIlZExhiem48G4fvxEZMwlhn/7MglQxvBSBFXG5oALJDoSKhbjlErj/P/i?=
- =?iso-8859-1?Q?U12cHSTfDnLX4lUc+b2rHl7aVL60ip3UD82WV7NNLCrHLdyKf4pRFFNpEM?=
- =?iso-8859-1?Q?kEdX8TDv9KWxpJKDUMkodPb3+uTcsKU98jbX9PMGXT8aLo4M/uDEXk8V8y?=
- =?iso-8859-1?Q?T8+hVYNhCAWAr9fCKH+VR+Kl/I5bs1Pbx3NP0+qf/UwCUFKMU/IrolTSNa?=
- =?iso-8859-1?Q?Sm5yrwnJTSRTx1mRgFMGmZWJFvNeMRVSAhvbcgFXhj0uHLuZ9N+wFTwGA/?=
- =?iso-8859-1?Q?10z28n2fesEe62/7Qb+gcbgbdwhOXwYJSFp9FM+psGxB9c6YPdpyuE7hYe?=
- =?iso-8859-1?Q?1hP7bWguCViHj/XbIlxQkzmyaWHR9CFRywEgZ13tFdoUzJw8o1FtYaSsfZ?=
- =?iso-8859-1?Q?zBKeP+/hPSCX0rlYsmo1ui3goXpXgHrunlawX1eXMQN4kmjrRqQcVyyDcg?=
- =?iso-8859-1?Q?tYFbdmyYyoytMtdWwOhADTeljMGcYc4UA6MzIfQhZ/vDiJw63pHIpIKINz?=
- =?iso-8859-1?Q?RAvFVoO1Z9TEn6KbR1Df7KD+n5yu9S3cYVpZ8xUcEN+OKDEjG3olq6CqKz?=
- =?iso-8859-1?Q?T17aRM0RJWFzrkB0GF3Pu9sSs2JG635gRPeKk7IMaRV6R4b7yfUOQIaes2?=
- =?iso-8859-1?Q?pOd+cUZdaFDZPgy8ruFFIoyL38RxSpYGwkDLg53sH6qLLM?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9CFA606A31A;
+	Tue, 27 Oct 2026 11:38:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E9CFA606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=s/ySzqws
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=LWyfT9A94nxLJhqbaGE64JokHioc+waUYIEWWOe2AXU=;
+	b=s/ySzqwsMJN7JHSHqug0jf29kkiX+Exogl+4yCafpF9XlrIKMXa1yZd6RsRcjqPk74cc0xFyP
+	g2UkNP03BiMY956QzbeCN7fAJUF1guZuLT47120YKEtsXcuSIvbMvDMZsYLoHoArH6Nv70g7r6w
+	ZsmTcuAIl/PT/IQxXA2JuAA=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4jDT4x2WWxz1prLP;
+	Tue, 27 Oct 2026 19:37:53 +0800 (CST)
+Received: from whupemk100010.china.huawei.com (unknown [7.152.184.41])
+	by mail.maildlp.com (Postfix) with ESMTPS id D43944058F;
+	Tue, 27 Oct 2026 19:38:00 +0800 (CST)
+Received: from octopus.huawei.com (10.67.174.191) by
+ whupemk100010.china.huawei.com (7.152.184.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Tue, 27 Oct 2026 19:37:55 +0800
+From: Cai Xinchen <caixinchen1@huawei.com>
+To: <mic@digikod.net>, <gnoack@google.com>, <paul@paul-moore.com>,
+	<jmorris@namei.org>, <serge@hallyn.com>, <corbet@lwn.net>,
+	<skhan@linuxfoundation.org>, <utilityemal77@gmail.com>,
+	<caixinchen1@huawei.com>
+CC: <ast@kernel.org>, <daniel@iogearbox.net>, <andrii@kernel.org>,
+	<eddyz87@gmail.com>, <memxor@gmail.com>, <martin.lau@linux.dev>,
+	<song@kernel.org>, <yonghong.song@linux.dev>, <jolsa@kernel.org>,
+	<emil@etsalapatis.com>, <ihor.solodrai@linux.dev>, <rdunlap@infradead.org>,
+	<gregkh@linuxfoundation.org>, <rafael@kernel.org>, <dakr@kernel.org>,
+	<johan@kernel.org>, <dlemoal@kernel.org>, <hch@lst.de>, <axboe@kernel.dk>,
+	<viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <jack@suse.cz>,
+	<dhowells@redhat.com>, <code@tyhicks.com>, <linkinjeon@kernel.org>,
+	<sj1557.seo@samsung.com>, <yuezhang.mo@sony.com>,
+	<hirofumi@mail.parknet.co.jp>, <cel@kernel.org>, <jlayton@kernel.org>,
+	<neil@brown.name>, <okorniev@redhat.com>, <Dai.Ngo@oracle.com>,
+	<tom@talpey.com>, <hyc.lee@gmail.com>, <miklos@szeredi.hu>,
+	<amir73il@gmail.com>, <senozhatsky@chromium.org>,
+	<chenxiaosong@chenxiaosong.com>, <dsterba@suse.com>, <mason@kernel.org>,
+	<kpsingh@kernel.org>, <matt@bobrowski.net>, <rostedt@goodmis.org>,
+	<mhiramat@kernel.org>, <mathieu.desnoyers@efficios.com>,
+	<john.johansen@canonical.com>, <georgia.garcia@canonical.com>,
+	<zohar@linux.ibm.com>, <roberto.sassu@huawei.com>,
+	<dmitry.kasatkin@gmail.com>, <eric.snowberg@oracle.com>,
+	<stephen.smalley.work@gmail.com>, <omosnacek@gmail.com>,
+	<casey@schaufler-ca.com>, <takedakn@nttdata.co.jp>,
+	<penguin-kernel@I-love.SAKURA.ne.jp>, <xiujianfeng@huawei.com>,
+	<nanx95726@gmail.com>, <djwong@kernel.org>, <lujialin4@huawei.com>,
+	<bpf@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
+	<driver-core@lists.linux.dev>, <linux-block@vger.kernel.org>,
+	<linux-btrfs@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+	<netfs@lists.linux.dev>, <ecryptfs@vger.kernel.org>, <exfat@lists.linux.dev>,
+	<linux-nfs@vger.kernel.org>, <ntfs@lists.linux.dev>,
+	<linux-unionfs@vger.kernel.org>, <linux-cifs@vger.kernel.org>,
+	<linux-trace-kernel@vger.kernel.org>, <apparmor@lists.ubuntu.com>,
+	<linux-integrity@vger.kernel.org>, <selinux@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>
+Subject: [PATCH v3 -next 00/18] landlock: Add READ_METADATA and WRITE_METADATA access rights
+Date: Tue, 27 Oct 2026 20:11:33 +0800
+Message-ID: <20261027121151.1887650-1-caixinchen1@huawei.com>
+X-Mailer: git-send-email 2.18.0.huawei.25
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Post: <mailto:netfs@lists.linux.dev>
@@ -139,237 +101,324 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:netfs+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-OriginatorOrg: morshed.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: YQBP288MB0164.CANP288.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: c3cbe4de-42d1-4739-a6f5-08df315f5acf
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Oct 2026 23:42:52.4211
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 034f4b93-8a3a-40bd-b983-78d952173bd5
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 0JnDVITfyixHpuVg3/wCra2lKQpTkLjHEZUcjiEZEqmPcwZ7NW3MR89AYClvgK222qHVV+QARG9Ihcj37vg23g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: YQBP288MB0746
+Content-Type: text/plain; charset="y"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ whupemk100010.china.huawei.com (7.152.184.41)
 
-Hi,=0A=
-=0A=
-With fsc on an NFSv3 mount, buffered reads can return a file whose last=0A=
-part is zeros: correct size, no error, and the zeros stay in the page=0A=
-cache (and are written into the cache when cachefilesd is running).=0A=
-O_DIRECT reads of the same file are correct. Tracing shows the server=0A=
-returns all the data; it's the client who loses it in the short-read path. =
-A=0A=
-one-line change, tested below, fixes it. I also see an oops in=0A=
-nfs_netfs_folio_unlock() on the same mounts, which is what I was=0A=
-actually trying to figure out. It may be related, and a second=0A=
-symptom of the same problem, but this is now beyond my knowledge.=0A=
-Both issues stop when fsc is removed from the mount.=0A=
-=0A=
-A note on how this was put together: I used Claude (an AI assistant) to=0A=
-help gather the data, run the tests and write this up. Kernel internals=0A=
-are not my area. The measurements and trace lines below are real and I=0A=
-can share the raw files. The explanation of the code in sections 3 and=0A=
-5 is my reading of it after getting claude to break it down, =0A=
-and the patch has only been tested as described in section 4, =0A=
-so please review it as a lead rather than any sort of finished fix. =0A=
-All that being said, I'm happy support anyway I can. I can provide =0A=
-information from our systems and test fixes as well. =0A=
-=0A=
-How I hit it: I was migrating our GPU nodes in k8s to FS-Cache. fsc was add=
-ed=0A=
-to the NFS mounts on every node at once, while cachefilesd only arrives=0A=
-with a node image rebuild, so the fleet was a mix of nodes with a cache=0A=
-and nodes where fsc was set but no cache was bound. The crashes and the=0A=
-production corruption I examined were on nodes without a bound cache. =0A=
-However, on a test host, binding a cache made the corruption much =0A=
-more frequent but that looks more likely to be related to spikes in traffic=
- =0A=
-to the NFS.=0A=
-=0A=
-Kernels (Ubuntu, Oracle Cloud variant), both affected:=0A=
-6.17.0-1020-oracle #20-Ubuntu=0A=
-7.0.0-1013-oracle #13~24.04.1-Ubuntu=0A=
-I have not built mainline, but the code below is unchanged there.=0A=
-=0A=
-Mount: NFSv3 to Oracle File Storage,=0A=
-vers=3D3,proto=3Dtcp,nconnect=3D16,rsize=3D1048576,wsize=3D1048576,hard,=0A=
-timeo=3D100,nocto,actimeo=3D120,nolock,local_lock=3Dall,noatime,fsc=0A=
-=0A=
-1. The corruption=0A=
------------------=0A=
-=0A=
-Reproducer: N processes read many files once each with plain=0A=
-open()/read() and compare each to a known MD5. On a mismatch, the file=0A=
-is read again buffered (still wrong) and with O_DIRECT (right). 50,000=0A=
-files of 1-90 MB, about 1 TB per pass, 32 workers, one host, stock=0A=
-7.0.0-1013-oracle:=0A=
-=0A=
-  Mount                               nconnect   Bad files / 50,000=0A=
-  ---------------------------------   --------   ------------------=0A=
-  no fsc                                    16                    0=0A=
-  no fsc, 64G memory cgroup                 16                    0=0A=
-  fsc, no cache                             16                    0=0A=
-  fsc, no cache, 64G memory cgroup          16                    1=0A=
-  fsc, no cache, 64G memory cgroup           1                    3=0A=
-  fsc + cachefilesd, cold                   16                   58=0A=
-  fsc + cachefilesd, cold                    1                    0=0A=
-  fsc + cachefilesd, warm                   16                  58*=0A=
-=0A=
-  * the same 58 files, now served from the cache=0A=
-=0A=
-In production (fsc, no cache, long-lived mounts, jobs in 64-128G=0A=
-cgroups) it was about 1 file in 1,000.=0A=
-=0A=
-Every bad file looks the same: from some offset to EOF the data is=0A=
-zeros, and the zeroed length is a whole number of 32 KiB blocks=0A=
-(24 to 31 of them here, 851,968 bytes in one production case). The=0A=
-server here sends short READ replies in bursts, so the rate varies a=0A=
-lot from run to run.=0A=
-=0A=
-2. What the trace shows=0A=
------------------------=0A=
-=0A=
-I traced nfs:nfs_readpage_done (eof / short / error only),=0A=
-nfs:nfs_readpage_short, netfs:netfs_sreq (CLEAR_TAIL / HIT_EOF / error=0A=
-only) and netfs:netfs_read during a corrupting pass. No events were=0A=
-dropped. 34 files were corrupted; 33 match the pattern below exactly=0A=
-(the 34th had two short replies in the trace, and the numbers fit the=0A=
-other one).=0A=
-=0A=
-Example, a 6,284,333-byte file, zeros from byte 5,268,525 to EOF:=0A=
-=0A=
-nfs_readpage_done offset=3D5242880 count=3D1044480 res=3D1015808=0A=
-nfs_readpage_short offset=3D5242880 count=3D1044480 res=3D1015808=0A=
-nfs_readpage_done offset=3D6258688 count=3D28672 res=3D25645 eof=0A=
-netfs_sreq: R=3D00b44f0d[1] DOWN N-CLR f=3D103 s=3D500000 642d/fe42d=0A=
-netfs_sreq: R=3D00b44f0d[1] DOWN TERM f=3D103 s=3D500000 642d/fe42d=0A=
-netfs_sreq: R=3D00b44f0d[1] DOWN CLEAR f=3D003 s=3D500000 fe42d/fe42d=0A=
-=0A=
-The subrequest covers the last 1,041,453 bytes (0xfe42d). The server=0A=
-answers the first READ short, 1,015,808 bytes with no EOF, which is=0A=
-legal. The client reads the remainder and gets 25,645 bytes with EOF.=0A=
-1,015,808 + 25,645 =3D 1,041,453: the server sent everything. But netfs=0A=
-records only 0x642d =3D 25,645 bytes transferred, sees a short subrequest=
-=0A=
-that hit EOF, and clears its tail, from 5,242,880 + 25,645 =3D 5,268,525=0A=
-on. That is exactly where the zeros start, and the zeroed length is=0A=
-exactly the first, dropped reply.=0A=
-=0A=
-3. Cause=0A=
---------=0A=
-=0A=
-nfs_netfs_read_completion() accounts the header with=0A=
-=0A=
-atomic64_add(hdr->res.count, &netfs->transferred);=0A=
-=0A=
-nfs_readpage_retry() resends a short READ on the same header: it=0A=
-advances mds_offset and args.offset/args.count by resp->count, then=0A=
-sets resp->count =3D 0. So at completion hdr->res.count holds only the=0A=
-last reply, and the bytes of the earlier replies never reach=0A=
-netfs->transferred. The data is in the folios; only the count is wrong.=0A=
-=0A=
-The same miscount hits short replies in the middle of a file: netfs is=0A=
-told e.g. 0x8000 of 0x100000, with no EOF, and abandons the subrequest=0A=
-with -ENODATA. In one 4-minute traced pass there were 18,667 short=0A=
-replies, 18,481 abandoned subrequests and 34 tail clears.=0A=
-=0A=
-4. Patch and test=0A=
------------------=0A=
-=0A=
-Against Ubuntu's 7.0.0-1013-oracle source (fs/nfs/fscache.c is the same=0A=
-in mainline as far as I can see):=0A=
-=0A=
---- a/fs/nfs/fscache.c=0A=
-+++ b/fs/nfs/fscache.c=0A=
-@@ -374,7 +374,13 @@=0A=
-if (hdr->error)=0A=
-netfs->error =3D hdr->error;=0A=
-else=0A=
-- atomic64_add(hdr->res.count, &netfs->transferred);=0A=
-+ /*=0A=
-+ * A short READ is retried on the same header: nfs_readpage_retry()=0A=
-+ * advances mds_offset past each partial reply and resets res.count,=0A=
-+ * so res.count alone is only the last reply. Count all of it.=0A=
-+ */=0A=
-+ atomic64_add(hdr->mds_offset - hdr->io_start + hdr->res.count,=0A=
-+ &netfs->transferred);=0A=
-=0A=
-nfs_netfs_put(netfs);=0A=
-hdr->netfs =3D NULL;=0A=
-=0A=
-mds_offset and io_start both start at req_offset(hdr->req) in=0A=
-nfs_pgio_rpcsetup()/nfs_pgheader_init(), and only the retry advances=0A=
-mds_offset, so this is the total received across all replies (the=0A=
-pNFS layout drivers already use mds_offset + res.count as the end of=0A=
-the data received). It is counted once, at the final completion.=0A=
-=0A=
-An earlier version added each partial reply to netfs->transferred in=0A=
-nfs_readpage_retry() itself. It also fixed the problem in testing, but=0A=
-on a pNFS read that is redone through the MDS (NFS_IOHDR_REDO,=0A=
-nfs_pageio_resend() reuses hdr->netfs) the partial bytes would be=0A=
-counted twice, since the redone header's completion is skipped. Counting=0A=
-at completion avoids that. The pNFS path is untested; my mounts are=0A=
-NFSv3.=0A=
-=0A=
-Test: the nfs modules rebuilt from Ubuntu's source with this change=0A=
-and loaded on a VM running 7.0.0-1013-oracle, against the same server,=0A=
-alternating with the stock modules. Each run reads a 64.5 GB corpus=0A=
-(3,000 random files, MD5s computed when written) that was written just=0A=
-before the run, through fsc with cachefilesd on a RAM disk,=0A=
-nconnect=3D16, 64 readers:=0A=
-=0A=
-  Module    Runs   Short replies   Abandoned   Tail clears   Bad files=0A=
-  -------   ----   -------------   ---------   -----------   ---------=0A=
-  stock       10           1,359       1,338             4           4=0A=
-  patched     10          11,357           0             0           0=0A=
-=0A=
-One patched run hit the biggest burst of short replies of the whole=0A=
-investigation (11,305) with no abandons and no bad files; the stock run=0A=
-right after it got 665 short replies and one bad file. Without a cache,=0A=
-across 6 runs of 1 TB, stock abandoned all 172 short replies it got and=0A=
-the patched modules none of 322. Run times are the same to the second.=0A=
-The modules were built with a different gcc than the distro kernel=0A=
-(the build warned about it); the VM never oopsed or rebooted.=0A=
-=0A=
-5. The oops, may be related=0A=
------------------------------=0A=
-=0A=
-This is what I was chasing initially.=0A=
-=0A=
-On the same fsc mounts (no cache bound), under multi-node training=0A=
-load, hosts panicked 10 times in two days, every time with:=0A=
-=0A=
-BUG: kernel NULL pointer dereference, address: 0000000000000000=0A=
-Workqueue: nfsiod rpc_async_release [sunrpc]=0A=
-RIP: 0010:nfs_netfs_folio_unlock+0xa/0x30 [nfs]=0A=
-Call Trace:=0A=
-nfs_readpage_release.isra.0+0x4e/0x80 [nfs]=0A=
-nfs_read_completion+0x80/0x170 [nfs]=0A=
-nfs_pgio_release+0x13/0x20 [nfs]=0A=
-rpc_free_task+0x3c/0x80 [sunrpc]=0A=
-rpc_async_release+0x33/0x50 [sunrpc]=0A=
-=0A=
-folio->mapping is NULL in nfs_netfs_folio_unlock() (it loads=0A=
-folio->mapping->host). Claude's guess is that the subrequests abandoned=0A=
-because of the miscount unlock folios while another NFS read for the=0A=
-same folio is still in flight, so the folio can be dropped from the=0A=
-page cache before nfs_readpage_release() reaches it.=0A=
-=0A=
-However, I could not reproduce the oops across any of my hour long runs=0A=
-(in the 1st test, about 227,000 abandoned subrequests, no crash), so this p=
-art is=0A=
-unconfirmed, and so is whether the patch fixes it. I have the full crash lo=
-gs=0A=
-from pstore and can share them.=0A=
-=0A=
-This is not the CVE-2025-38338 fix in nfs_return_empty_folio(); both=0A=
-kernels carry it.=0A=
-=0A=
-Workaround for now: fsc removed from the mounts, which ends both.=0A=
-=0A=
-I have the full trace (2.4M lines), the saved good/bad file pairs, the=0A=
-reproducer and the test harness, and can test other patches on these=0A=
-hosts.=0A=
-=0A=
-Thanks,=0A=
-Nurullah Morshed=0A=
+This series adds two new Landlock filesystem access rights,
+LANDLOCK_ACCESS_FS_READ_METADATA and LANDLOCK_ACCESS_FS_WRITE_METADATA,
+which control access to file and directory metadata such as inode
+attributes (mode, ownership, timestamps), extended attributes, POSIX
+ACLs and chattr(1)-style flags.  It picks up the work from the
+"landlock: add chmod and chown support" series [1] and follows the
+coarse-grained grouping discussed in that thread [2]: instead of
+separate chmod/chown rights, metadata operations are grouped into one
+read and one write right.
+
+Landlock evaluates access rights on a per-path basis, but the
+metadata related LSM hooks (inode_setattr, inode_setsecctx, the inode
+xattr, POSIX ACL and fileattr hooks) only receive the dentry of the
+accessed object.  Patches 1-8 therefore first pass struct path
+instead of dentry through the metadata-related VFS helpers and LSM
+hooks.  The hooks also receive a struct file argument, set by the
+VFS to the file through which the operation is requested when there
+is one (i.e. for the file descriptor-based system calls such as
+fchmod(2), fchown(2), fgetxattr(2), utimensat(2) on an empty path,
+and for the FS_IOC_* ioctls and file_[gs]etattr(2) with
+AT_EMPTY_PATH), and NULL otherwise (i.e. for the path-based system
+calls and for kernel-internal accesses).  This is a pure refactoring
+with no behavior change for the other LSMs, which only have their
+hook implementations' signatures updated; the file argument is only
+consumed by Landlock (patch 15).  The series is split so that every
+patch builds on its own:
+
+  1: notify_change() and its callers
+  2: inode_setsecctx hook (must come before 3: the SELinux and Smack
+     implementations call __vfs_setxattr_locked internally)
+  3: xattr helpers, which also drops a redundant EVM xattr size sanity
+     check whose vfs_getxattr() call only has a dentry and therefore
+     cannot be migrated to the new path-based signature
+  4: POSIX ACL helpers
+  5: inode_setattr hook, which now receives the struct file held by
+     the fd-based callers (fchmod(2), fchown(2), fchmodat2(2) and
+     fchownat(2) with AT_EMPTY_PATH, utimensat(2) on an empty path);
+     do_truncate() passes NULL because size changes are governed by
+     the truncate hooks
+  6: inode xattr hooks, threaded through the xattr helpers so that
+     the f[gs]etxattr(2) and io_uring flows pass their file
+  7: inode POSIX ACL hooks, threaded through do_set_acl()/do_get_acl()
+  8: inode fileattr hooks (FS_IOC_[GS]ETFLAGS, FS_IOC_FS[SG]ETXATTR,
+     file_[gs]etattr(2)), which also adds __vfs_fileattr_[gs]et()
+     counterparts without security checks for the fileattr forwards
+     of ecryptfs and overlayfs, following the __vfs_setxattr_noperm()
+     precedent, and removes the ovl_security_fileattr() hack
+
+Three deliberate scoping decisions for this refactor:
+
+- The hooks consistently take struct path rather than struct file as
+  their primary object.  The VFS call sites involved (chmod(2),
+  chown(2), utimensat(2), xattr(2) and ACL syscalls) operate on
+  paths, and several of them (lstat(2), lchown(2), llistxattr(2),
+  ...) have no struct file to begin with.  The optional struct file
+  argument carries the open-time semantic described below.
+
+- struct inode_operations->setattr still receives (idmap, dentry, attr).
+  Only the VFS boundary (notify_change()) and the LSM hook layer see the
+  path, which keeps the refactor contained to fs/attr.c and the LSM
+  infrastructure instead of touching every filesystem.
+
+- The path argument of the hooks is only meant to be handed to VFS
+  helpers taking a struct path (e.g., notify_change(), the xattr
+  helpers): the VFS makes no guarantees with regard to path->mnt,
+  whose layout and implementation details are subject to change, and
+  implementations must not rely on its properties.  The idmap, in
+  contrast, is passed separately so that the VFS and the filesystem
+  are guaranteed to see the same idmap.
+  
+Unlike what was done for LANDLOCK_ACCESS_FS_TRUNCATE, no new file_*
+hooks are introduced for the file descriptor flows: the metadata
+hooks are already consumed by other LSMs (SELinux, Smack, EVM, IMA,
+AppArmor, TOMOYO) on these flows, and routing them to new hooks
+would either silently remove the other LSMs' checks, or keep the
+path_* hooks as well and check twice with Landlock.  Passing the
+struct file to the existing path_* hooks instead keeps the pipeline
+and the other LSMs' behavior unchanged, while giving Landlock the
+information it needs to apply the open-time semantic below.
+
+Since these hooks now operate on paths rather than inodes, patches
+9-14 rename them to the path_* naming convention used by the other
+hooks that take a struct path (path_chmod, path_chown, path_link,
+...).  The inode_getattr hook, which already received a struct path,
+is renamed to path_getattr as well; patch 9 also threads the struct
+file held by the fd-based vfs_fstat() and vfs_statx_fd() callers
+through it, while the many kernel-internal vfs_getattr() callers
+keep a wrapper which passes NULL.  These renames are purely
+mechanical and can be reviewed independently.
+
+Patch 15 then adds the access rights and implements their
+enforcement, and patches 16-18 add the selftests, the sandboxer
+sample update and the documentation.
+
+Patch 15 applies the LANDLOCK_ACCESS_FS_TRUNCATE mechanic to the
+new rights, following Mickaël's confirmation [4]: for operations on
+already opened files, it is the access rights at the time of open(2)
+which decide whether a metadata operation is permitted, not the
+rights of the current thread.  READ_METADATA and WRITE_METADATA are
+looked up at open time, recorded in the opened file, and consumed by
+the metadata hooks when they are called with a file.  As a
+consequence:
+
+- A file descriptor opened before sandboxing keeps allowing metadata
+  operations whatever the current domain is, which resolves the
+  "catch-22" raised by Justin [5]: an already opened file descriptor
+  keeps working, it is not an escape hatch because its rights were
+  fixed when it was legitimate to open the file.
+- Conversely, a restricted file descriptor passed to another
+  (possibly non-landlocked) process keeps denying metadata
+  operations: the file descriptor carries the rights of the process
+  which opened it.
+- ioctl(FS_IOC_GETFLAGS) and friends on a file descriptor opened
+  without READ_METADATA are now denied, which closes the metadata
+  leak Justin was concerned about.
+- O_PATH file descriptors are an exception: they are not opened
+  through the open permission checks (cf. do_dentry_open()) and
+  carry no recorded rights; metadata accesses through them are
+  checked against the current domain, like path-based accesses.
+- File descriptors obtained without going through the file_open
+  hook (e.g. memfd_create(2), pipes, sockets) keep the full access
+  rights granted at file allocation time, consistent with the
+  truncate behavior.
+- deny_masks_t is widened from u8 to u16 to keep tracking one
+  nibble per optional access right for the audit logs.
+  
+The path-based semantics are unchanged from v2:
+
+- READ_METADATA covers stat(2) and friends, getxattr(2) and friends,
+  listxattr(2) and friends, POSIX ACL reads, and the chattr(1)-style
+  reads ioctl(FS_IOC_GETFLAGS), ioctl(FS_IOC_FSGETXATTR) and
+  file_getattr(2).
+- WRITE_METADATA covers chmod(2) and friends, chown(2) and friends,
+  utimensat(2) and friends, setxattr(2) and friends, removexattr(2)
+  and friends, POSIX ACL set and remove, and the chattr(1)-style
+  writes ioctl(FS_IOC_SETFLAGS), ioctl(FS_IOC_FSSETXATTR) and
+  file_setattr(2).
+- Only explicit metadata changes requested by user space are
+  restricted.  Implicit changes performed by the kernel (e.g.
+  timestamp updates and size changes on write(2) or truncate(2)) are
+  not, and neither are chmod(2)/chown(2) calls that change nothing
+  (e.g. chown(2) with (-1, -1), which never reaches the hook),
+  matching the SELinux inode_setattr behavior.
+- Clearing the set-user-ID and set-group-ID bits after write(2) or
+  truncate(2) does not require WRITE_METADATA either: the mode
+  change that the kernel synthesizes from ATTR_KILL_S[UG]ID is
+  ignored, like SELinux and Smack do.
+- Kernel-internal accesses performed with override_creds() (e.g.
+  overlayfs, cachefiles) and kernel threads without a Landlock
+  domain (e.g. nfsd, ksmbd) are not restricted.
+
+Two review suggestions are deliberately not taken, following the
+TRUNCATE precedent and Mickaël's arbitration [4]:
+
+- Requiring READ_METADATA for open(2) and readdir(2) (Günther's
+  lockstep proposal) would change the semantics of existing rights;
+  the documentation instead recommends granting READ_METADATA
+  together with READ_FILE and READ_DIR, as it already recommends
+  grouping TRUNCATE with WRITE_FILE.
+- Making READ_FILE imply READ_METADATA (Justin's proposal) would
+  break the orthogonality of the access rights; the same
+  documentation warning covers the grouping.
+
+The Landlock ABI version is incremented from 12 to 13; ABI 12 was
+taken by the capability and namespace use restrictions that are
+already in linux-next.
+
+The series is based on linux-next commit f1ac44c32cba ("Add linux-next
+specific files for 20261026").
+
+Changes since v2 [3]:
+
+- The idmap is passed separately from the struct path again, instead
+  of being derived from path->mnt inside the helpers and the hooks.
+  As Christian explains in his review of patch 1, the idmap must be
+  taken of the mount at the time it was checked and passed down to
+  the filesystem so that the VFS and the filesystem are guaranteed
+  to see the same idmap.  The mainline signatures are kept wherever
+  they already pass an idmap: notify_change(), the xattr, POSIX ACL
+  and fileattr helpers, and the setattr, setxattr, removexattr and
+  *_acl hooks, along with their SELinux, Smack, EVM, IMA and
+  capability implementations, keep receiving the idmap as a separate
+  argument (patches 1, 3-8, 10-12).  The Landlock implementations
+  receive it as well (patch 15).  The getxattr and listxattr hooks
+  keep taking no idmap, like their mainline counterparts, and the
+  new fileattr hooks take none either, as they have no mainline
+  counterpart to inherit the argument from.
+- The metadata-related LSM hooks now also receive the struct file
+  through which the operation is requested, when there is one
+  (patches 5-9); see above for why no new file_* hooks are
+  introduced.
+- Metadata accesses on already opened files are now checked at open
+  time, following the LANDLOCK_ACCESS_FS_TRUNCATE mechanic confirmed
+  by Mickaël [4] (patch 15).
+- The Landlock patch is moved after the hook renames (patch 15 now,
+  patch 9 in v2), so that it lands on the hooks' final path_* names.
+- The kernel-doc comments of the converted security_*() wrappers and
+  of the EVM and Smack hook implementations are completed and fixed:
+  the new file and idmap arguments are documented, and the wrappers
+  state that the VFS makes no guarantees with regard to path->mnt.
+- The selftests are adapted to the open-time semantic (the
+  fileattr_write_only and write_metadata denial cases now use file
+  descriptors opened after the ruleset is enforced) and extended
+  with the metadata_open_time and metadata_transfer tests; the
+  documentation describes the open-time semantic and the O_PATH
+  exception.
+
+[1]
+https://lore.kernel.org/all/20220827111215.131442-1-xiujianfeng@huawei.com/
+[2]
+https://lore.kernel.org/all/abc960a1-e66e-792e-6869-cfd201c29dbe@digikod.net/
+[3]
+https://lore.kernel.org/all/20261015125425.3246251-1-caixinchen1@huawei.com/
+[4] https://lore.kernel.org/all/20260929.Ahgoo4yeetai@digikod.net/
+[5] https://lore.kernel.org/all/arvjb0HJYh1KyEBB@suesslenovo/
+
+Cai Xinchen (18):
+  fs: pass struct path to notify_change()
+  LSM: pass struct path to the inode_setsecctx hook
+  fs: pass struct path to xattr helpers
+  fs: pass struct path to POSIX ACL helpers
+  LSM: pass struct path and struct file to the inode_setattr hook
+  LSM: pass struct path and struct file to the inode xattr hooks
+  LSM: pass struct path and struct file to the inode posix acl hooks
+  LSM: pass struct path and struct file to the inode fileattr hooks
+  LSM: rename inode_getattr to path_getattr and pass struct file
+  LSM: rename inode_setattr to path_setattr
+  LSM: rename the inode xattr hooks to path_xattr hooks
+  LSM: rename the inode posix acl hooks to path_*_acl hooks
+  LSM: rename the inode fileattr hooks to path_file_* hooks
+  LSM: rename inode_setsecctx to path_setsecctx
+  landlock: Add READ_METADATA and WRITE_METADATA access rights
+  selftests/landlock: Add tests for metadata access rights
+  samples/landlock: Add metadata rights to sandboxer
+  Documentation: Update landlock doc for metadata rights
+
+ Documentation/bpf/fs_kfuncs.rst               |   2 +-
+ Documentation/userspace-api/landlock.rst      |  92 +-
+ drivers/base/devtmpfs.c                       |   6 +-
+ drivers/block/zloop.c                         |   9 +-
+ fs/attr.c                                     | 113 ++-
+ fs/bpf_fs_kfuncs.c                            |   6 +-
+ fs/btrfs/volumes.c                            |   2 +-
+ fs/cachefiles/xattr.c                         |  45 +-
+ fs/coredump.c                                 |   2 +-
+ fs/ecryptfs/inode.c                           |  42 +-
+ fs/exfat/file.c                               |   4 +-
+ fs/fat/file.c                                 |   4 +-
+ fs/file_attr.c                                | 159 ++-
+ fs/init.c                                     |   6 +-
+ fs/inode.c                                    |   7 +-
+ fs/internal.h                                 |  26 +-
+ fs/namei.c                                    |   5 +-
+ fs/nfsd/nfs4ctl.h                             |   4 +-
+ fs/nfsd/nfs4state.c                           |  14 +-
+ fs/nfsd/nfs4xdr.c                             |   2 +-
+ fs/nfsd/state.h                               |   2 +-
+ fs/nfsd/vfs.c                                 |  79 +-
+ fs/ntfs/named_stream.c                        |   2 +-
+ fs/open.c                                     |  63 +-
+ fs/overlayfs/copy_up.c                        |   4 +-
+ fs/overlayfs/inode.c                          |  54 +-
+ fs/overlayfs/overlayfs.h                      |  44 +-
+ fs/overlayfs/xattrs.c                         |  12 +-
+ fs/posix_acl.c                                |  52 +-
+ fs/smb/server/smb2pdu.c                       |  56 +-
+ fs/smb/server/smb_common.c                    |  12 +-
+ fs/smb/server/smbacl.c                        |  12 +-
+ fs/smb/server/vfs.c                           | 100 +-
+ fs/smb/server/vfs.h                           |  18 +-
+ fs/stat.c                                     |  48 +-
+ fs/utimes.c                                   |  23 +-
+ fs/xattr.c                                    | 114 ++-
+ include/linux/fileattr.h                      |  10 +-
+ include/linux/fs.h                            |  14 +-
+ include/linux/landlock.h                      |   4 +-
+ include/linux/lsm_hook_defs.h                 |  59 +-
+ include/linux/posix_acl.h                     |  24 +-
+ include/linux/security.h                      | 129 +--
+ include/linux/xattr.h                         |  31 +-
+ include/uapi/linux/landlock.h                 |  25 +-
+ init/initramfs.c                              |   2 +-
+ kernel/bpf/bpf_lsm.c                          |  10 +-
+ kernel/trace/bpf_trace.c                      |   2 +-
+ samples/landlock/sandboxer.c                  |  16 +-
+ security/apparmor/lsm.c                       |   5 +-
+ security/commoncap.c                          |  24 +-
+ security/integrity/evm/evm_crypto.c           |   8 +-
+ security/integrity/evm/evm_main.c             |  77 +-
+ security/integrity/ima/ima_appraise.c         |  41 +-
+ security/landlock/access.h                    |  13 +-
+ security/landlock/fs.c                        | 232 ++++-
+ security/landlock/limits.h                    |   2 +-
+ security/landlock/syscalls.c                  |   2 +-
+ security/security.c                           | 169 ++--
+ security/selinux/hooks.c                      | 104 +-
+ security/smack/smack_lsm.c                    | 124 ++-
+ security/tomoyo/tomoyo.c                      |   7 +-
+ .../testing/selftests/bpf/prog_tests/d_path.c |   4 +-
+ .../selftests/bpf/prog_tests/fs_kfuncs.c      |  10 +-
+ .../testing/selftests/bpf/progs/test_d_path.c |   2 +-
+ .../bpf/progs/test_d_path_check_rdonly_mem.c  |   2 +-
+ .../bpf/progs/test_d_path_check_types.c       |   2 +-
+ .../selftests/bpf/progs/test_get_xattr.c      |   7 +-
+ .../bpf/progs/test_set_remove_xattr.c         |  34 +-
+ .../bpf/progs/verifier_lsm_init_xattr.c       |   8 +-
+ .../selftests/bpf/progs/verifier_vfs_accept.c |   2 +-
+ .../selftests/bpf/progs/verifier_vfs_reject.c |   2 +-
+ tools/testing/selftests/landlock/base_test.c  |   2 +-
+ tools/testing/selftests/landlock/fs_test.c    | 921 +++++++++++++++++-
+ .../selftests/landlock/trace_fs_test.c        |   3 +-
+ 75 files changed, 2472 insertions(+), 906 deletions(-)
+
+-- 
+2.18.0.huawei.25
+
