@@ -1,55 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.224
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.218
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793101095;
-	b=qriC2bEJTERLvQofQosLlnPpZlhAuQKTkcTXQOZB84Pj+VlK1PWDYUl/sXucBPJCemkF
-	 /aQfTCnMMU5J47vAAv9dJYzpjB1LYHHXUlTAmW6RHbuuRCngVUMOy5FBUHMPQ+X/oLp7c
-	 UYXK11zpWUu4Jxc9QtkD/bOie2jB7Mfgpjgzvpd+D/i7nhjKNBnLkDd9Naow3gn6bLXlA
-	 /F7P8iag7tpWW47oozKbFsrJ8roHv3n0dBOp9M/9wRoZEkuV1ID1ZjPOOplyDBqiHLTfK
-	 JYdOcgFcseALns2KebHbFLqOnQYdk/iRW6NNPsS83e2ZrjyvH5hiRUKBw5eK1NzVayA==
+	t=1793101101;
+	b=v2evMKvI32XddBWNUZ/5GE07u9Dut56ZZiKOZ4DDSIrzbv5VMmcFn94BCnmSHVPb2dJo
+	 M5+lDkUrhszkE2/feZ+eSKZsCwQR/eEfzhCzPBSTkL87AMoWfQZpT2j4RY6ze3KOc7VWx
+	 JIPjiRGd8DfqZ4WOGIbyghPDAOsekAyMPBfuLC34GAMOpfhDka3H4rK/5z2tybLXw1Gmk
+	 egViZQ2tjpQ8kpUNV2x+ACUt8fI9/it/8aqrpcc3o0/hYdfDOpvI9dYTuqx+UmvsNQufM
+	 6vDTU683vorAvaqCPgZonvhsfvoPbsQofG4UaVmJF8GZJAUCnU3uArpy3EsmAX9OANg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793101095;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793101101;
 	h=DMARC-Filter:dkim-signature:Received:Received:Received:From:To:CC:
 	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Type:X-Originating-IP:X-ClientProxiedBy;
-	bh=uAOcN1LcskuRbgaMclCWuwOteHecX2U/xvOnleYVofo=;
-	b=1BEI948vl6Wfnx/ZR4sGv0ezIEDdxclVaEeKSjMS/ZtiTLefrGq38q8gmEwaugelJcyv
-	 O+v1X94bModfIgtukx2DGkdvinPEamBvobeAV92ek5GkuHTlW3R3OIf5UHAvUFhZ7ZZSE
-	 URCaxfkuXuyfbMfdaLk4WzNYesmTglJFxFx98UiP+Y4OIfgNvvxVFvUI7yIdzKF724OBq
-	 gQMX/G2Mmv4IkVS2WqxfF65p1WeJ3EVq6qL+CgfYDJ3EKpiAwgOEmigJlbJ93waCos0Kl
-	 NVfbCJMTfehCr3cWm/SF4ENmTEFGxNazlT1cnaBXg0nt9h3LAktcvqKn31AZbp/LTVw==
+	bh=zCAnyHTsEUnaDrKXyVBKtVOJkNfujPmgtaXgOZelr2Q=;
+	b=IBhllimsKMZaxTruARhCVIKpdnqiPdHvdvaUz5v85wRXQmt2XmgNpza1xZEuYqOlnsBD
+	 /y/+LOiKhr/MJlFowv2uejCMWbYvTOLKp3urMuqr39jy34p/JMyMiiSgW1MXiZjShXiQ8
+	 LWVFX8Y7oXKUEnnmbvLufYpmus63q+2Q88zTcajIkvKdyCOlXaS9G2/MWZBh8iVd9dpcY
+	 h05L/Dhc8vJG9na9PcTVGLqXWCbkfHtCUjzRlghMRm+uornC1E0SsM/E4aG7zvDG91WBZ
+	 WxgWe+1nRI4DIL8iCWcrmxvfHXJx83kraJff9+E4nm4Kfrxrmm/VORRADe6OxqmCqWQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=huawei.com;
 	spf=pass smtp.mailfrom=huawei.com;
-	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=J75jMg8h;
-	arc=none smtp.remote-ip=113.46.200.224
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=HO0vuCrA;
+	arc=none smtp.remote-ip=113.46.200.218
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BCEF606A338;
-	Tue, 27 Oct 2026 11:38:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7BCEF606A338
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0E0606A33A;
+	Tue, 27 Oct 2026 11:38:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9C0E0606A33A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=J75jMg8h
+	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=HO0vuCrA
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=uAOcN1LcskuRbgaMclCWuwOteHecX2U/xvOnleYVofo=;
-	b=J75jMg8hZVy2GAZ4D2kNOmck3kpIf5S9zVxkocG76YdJoJYsALBYmXy9r4pWO4P5eiDLqV8tI
-	ghC0nU14goKo5/1SHQv9tVtAE4wLkf7n13A9x+w1hNH+lqQEq+bO6+dpEzYooPSprUqBKheNJYf
-	u91C5jjYkhFpmCFWgX0pWKQ=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4jDT536PgRz1cyQv;
-	Tue, 27 Oct 2026 19:37:59 +0800 (CST)
+	bh=zCAnyHTsEUnaDrKXyVBKtVOJkNfujPmgtaXgOZelr2Q=;
+	b=HO0vuCrAWyR8c47nDuZcOR0f9U1EocL9DcC//k8mTn/11dptyCQEGKBb3vZxrr3M4m6sseyjl
+	VnVw9DiCJhaJ+HHsyQD5QkS7B+LuHeTv9Ur0uP/HNIEmRJkswW1VXyQvZKt4/Bs6KL7aTmYJCZq
+	VkgPLp/l6kRHhXcWSBdpzSs=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4jDT593xbNzpSt7;
+	Tue, 27 Oct 2026 19:38:05 +0800 (CST)
 Received: from whupemk100010.china.huawei.com (unknown [7.152.184.41])
-	by mail.maildlp.com (Postfix) with ESMTPS id 032B240565;
-	Tue, 27 Oct 2026 19:38:06 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 68F324058F;
+	Tue, 27 Oct 2026 19:38:16 +0800 (CST)
 Received: from octopus.huawei.com (10.67.174.191) by
  whupemk100010.china.huawei.com (7.152.184.41) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Tue, 27 Oct 2026 19:38:00 +0800
+ 15.2.2562.45; Tue, 27 Oct 2026 19:38:10 +0800
 From: Cai Xinchen <caixinchen1@huawei.com>
 To: <mic@digikod.net>, <gnoack@google.com>, <paul@paul-moore.com>,
 	<jmorris@namei.org>, <serge@hallyn.com>, <corbet@lwn.net>,
@@ -88,9 +88,9 @@ CC: <ast@kernel.org>, <daniel@iogearbox.net>, <andrii@kernel.org>,
 	<linux-trace-kernel@vger.kernel.org>, <apparmor@lists.ubuntu.com>,
 	<linux-integrity@vger.kernel.org>, <selinux@vger.kernel.org>,
 	<linux-kselftest@vger.kernel.org>
-Subject: [PATCH v3 -next 01/18] fs: pass struct path to notify_change()
-Date: Tue, 27 Oct 2026 20:11:34 +0800
-Message-ID: <20261027121151.1887650-2-caixinchen1@huawei.com>
+Subject: [PATCH v3 -next 03/18] fs: pass struct path to xattr helpers
+Date: Tue, 27 Oct 2026 20:11:36 +0800
+Message-ID: <20261027121151.1887650-4-caixinchen1@huawei.com>
 X-Mailer: git-send-email 2.18.0.huawei.25
 In-Reply-To: <20261027121151.1887650-1-caixinchen1@huawei.com>
 References: <20261027121151.1887650-1-caixinchen1@huawei.com>
@@ -107,640 +107,1584 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
  whupemk100010.china.huawei.com (7.152.184.41)
 
-notify_change() takes a struct mnt_idmap and a struct dentry even though
-all of its callers either already hold a struct path (or a struct file)
-or have to pass &nop_mnt_idmap because no idmapped mount is involved.
-Switch the helper and its declaration to take a struct path instead of
-the dentry, next to the idmap: the dentry is taken from the path, while
-the idmap remains a separate argument, as it must be taken from the
-mount at the time the path is checked and passed down unchanged, so
-that the VFS and the filesystem are guaranteed to see the same idmap.
+vfs_setxattr(), vfs_getxattr(), vfs_listxattr() and vfs_removexattr()
+along with their __vfs_setxattr_locked()/__vfs_removexattr_locked()
+counterparts take a struct dentry even though their callers either
+already hold a struct path (or a struct file).  Switch them all to
+take a struct path instead of the dentry.
 
-The ntfs named stream support applies metadata changes shared with a
-stream to the base inode's anonymous dentry, for which no struct path
-exists.  Add a __notify_change() variant without the LSM hook call,
-following the __vfs_setxattr_noperm() and __vfs_fileattr_set()
-precedents, and use it for that internal forward: the user-facing
-operation on the stream was already checked by the surrounding
-notify_change() call, so the base inode does not need a second
-security_inode_setattr() check.
+The struct mnt_idmap stays a separate argument: it is taken from the
+mount at the time the path is checked and must be passed down
+unchanged so that the VFS and the filesystem are guaranteed to see
+the same idmap, so it cannot be derived from the path inside the
+helpers.  The do_setxattr()/do_getxattr()/removexattr() syscall
+helpers that resolve the path themselves read the idmap once at their
+boundary from the file or path they resolved via
+file_mnt_idmap()/mnt_idmap() and pass it down.
 
-The security_inode_setattr() call within notify_change() keeps taking
-the idmap and dentry for now; it will be converted together with
-the LSM hook itself in a separate patch.
+__vfs_setxattr_noperm(), __vfs_getxattr(), __vfs_setxattr(),
+__vfs_removexattr() and vfs_getxattr_alloc() keep taking the idmap
+and dentry as they are only called from contexts that operate on
+bare dentries such as LSM internals.  The SELinux and Smack
+inode_setsecctx implementations pass the path they got from the
+previous patch together with &nop_mnt_idmap.
+
+The ksmbd VFS helpers wrapping these calls get the same treatment:
+they keep taking the idmap and now take a struct path instead of a
+dentry where they did not yet, and their callers pass the idmap they
+already hold.  ksmbd_vfs_fill_dentry_attrs() used to wrap the dentry
+it was given into a synthetic path using the share root's mount.
+Take a proper struct path from the callers instead so that the mount
+always matches the dentry: the directory being enumerated supplies
+the mount, and ksmbd_populate_dot_dotdot_entries() now starts from
+the enumerated directory's path and swaps in the dentry it pins
+with dget()/dget_parent().
+
+The security_inode_*xattr() hooks invoked from fs/xattr.c keep
+taking the idmap and dentry for now; they will be converted together
+with the LSM hooks themselves in separate patches.
+
+evm_calc_hmac_or_hash() contains a redundant xattr size sanity check
+which calls vfs_getxattr() only to emit a debug message when the
+kernel-side and user-space-side xattr sizes differ, without ever
+influencing the result.  Because that function only has a dentry, the
+call cannot be migrated to the new path-based signature; drop the
+check and the now unused user_space_size variable instead.
 
 Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
 ---
- drivers/base/devtmpfs.c  |   6 ++-
- fs/attr.c                | 109 +++++++++++++++++++++++++++------------
- fs/coredump.c            |   2 +-
- fs/ecryptfs/inode.c      |  15 +++---
- fs/inode.c               |   7 +--
- fs/namei.c               |   5 +-
- fs/nfsd/nfs4state.c      |  14 ++---
- fs/nfsd/nfs4xdr.c        |   2 +-
- fs/nfsd/state.h          |   2 +-
- fs/nfsd/vfs.c            |  15 ++++--
- fs/ntfs/named_stream.c   |   2 +-
- fs/open.c                |  17 +++---
- fs/overlayfs/overlayfs.h |   7 ++-
- fs/smb/server/smb2pdu.c  |   2 +-
- fs/smb/server/smbacl.c   |   2 +-
- fs/utimes.c              |   2 +-
- include/linux/fs.h       |   8 +--
- 17 files changed, 141 insertions(+), 76 deletions(-)
+ drivers/block/zloop.c               |  4 +-
+ fs/cachefiles/xattr.c               | 35 +++++++------
+ fs/ecryptfs/inode.c                 |  9 ++--
+ fs/nfsd/nfs4ctl.h                   |  4 +-
+ fs/nfsd/vfs.c                       | 57 +++++++++++---------
+ fs/overlayfs/copy_up.c              |  4 +-
+ fs/overlayfs/overlayfs.h            | 17 ++++--
+ fs/overlayfs/xattrs.c               | 12 +++--
+ fs/smb/server/smb2pdu.c             | 48 +++++++++--------
+ fs/smb/server/smb_common.c          | 12 ++---
+ fs/smb/server/smbacl.c              | 10 ++--
+ fs/smb/server/vfs.c                 | 80 +++++++++++++----------------
+ fs/smb/server/vfs.h                 | 16 +++---
+ fs/xattr.c                          | 78 +++++++++++++++-------------
+ include/linux/xattr.h               | 25 +++++----
+ security/integrity/evm/evm_crypto.c |  8 +--
+ security/selinux/hooks.c            |  4 +-
+ security/smack/smack_lsm.c          |  4 +-
+ 18 files changed, 222 insertions(+), 205 deletions(-)
 
-diff --git a/drivers/base/devtmpfs.c b/drivers/base/devtmpfs.c
-index 11c70888f38b..410906a66ee9 100644
---- a/drivers/base/devtmpfs.c
-+++ b/drivers/base/devtmpfs.c
-@@ -284,13 +284,14 @@ static int handle_create(const char *nodename, umode_t mode, kuid_t uid,
- 			dev->devt, NULL);
- 	if (!err) {
- 		struct iattr newattrs;
-+		struct path attr_path = { .mnt = path.mnt, .dentry = dentry };
+diff --git a/drivers/block/zloop.c b/drivers/block/zloop.c
+index 9145e0f98d56..4cf502454100 100644
+--- a/drivers/block/zloop.c
++++ b/drivers/block/zloop.c
+@@ -718,7 +718,7 @@ static int zloop_record_safe_wps(struct zloop_device *zlo)
  
- 		newattrs.ia_mode = mode;
- 		newattrs.ia_uid = uid;
- 		newattrs.ia_gid = gid;
- 		newattrs.ia_valid = ATTR_MODE|ATTR_UID|ATTR_GID;
- 		inode_lock(d_inode(dentry));
--		notify_change(&nop_mnt_idmap, dentry, &newattrs, NULL);
-+		notify_change(&nop_mnt_idmap, &attr_path, &newattrs, NULL);
- 		inode_unlock(d_inode(dentry));
+ 		if (!zloop_zone_is_active(zone))
+ 			continue;
+-		ret = vfs_setxattr(file_mnt_idmap(file), file_dentry(file),
++		ret = vfs_setxattr(file_mnt_idmap(file), &file->f_path,
+ 				"user.zloop.wp", &zone->wp, sizeof(zone->wp), 0);
+ 		if (ret) {
+ 			pr_err("%pg: failed to record write pointer (%d)\n",
+@@ -1422,7 +1422,7 @@ static void zloop_forget_cache(struct zloop_device *zlo)
+ 		if (!zloop_zone_is_active(zone))
+ 			continue;
  
- 		/* mark as kernel-created inode */
-@@ -380,6 +381,7 @@ static int handle_remove(const char *nodename, struct device *dev)
- 	inode = d_inode(dentry);
- 	if (dev_mynode(dev, inode)) {
- 		struct iattr newattrs;
-+		struct path attr_path = { .mnt = parent.mnt, .dentry = dentry };
- 		/*
- 		 * before unlinking this node, reset permissions
- 		 * of possible references like hardlinks
-@@ -390,7 +392,7 @@ static int handle_remove(const char *nodename, struct device *dev)
- 		newattrs.ia_valid =
- 			ATTR_UID|ATTR_GID|ATTR_MODE;
- 		inode_lock(d_inode(dentry));
--		notify_change(&nop_mnt_idmap, dentry, &newattrs, NULL);
-+		notify_change(&nop_mnt_idmap, &attr_path, &newattrs, NULL);
- 		inode_unlock(d_inode(dentry));
- 		err = vfs_unlink(&nop_mnt_idmap, d_inode(parent.dentry),
- 				 dentry, NULL);
-diff --git a/fs/attr.c b/fs/attr.c
-index 9706d370f34a..cc06fd676e6b 100644
---- a/fs/attr.c
-+++ b/fs/attr.c
-@@ -397,35 +397,10 @@ int may_setattr(const struct mnt_idmap *idmap, struct inode *inode,
- }
- EXPORT_SYMBOL(may_setattr);
- 
--/**
-- * notify_change - modify attributes of a filesystem object
-- * @idmap:	idmap of the mount the inode was found from
-- * @dentry:	object affected
-- * @attr:	new attributes
-- * @delegated_inode: returns inode, if the inode is delegated
-- *
-- * The caller must hold the i_rwsem exclusively on the affected object.
-- *
-- * If notify_change discovers a delegation in need of breaking,
-- * it will return -EWOULDBLOCK and return a reference to the inode in
-- * delegated_inode.  The caller should then break the delegation and
-- * retry.  Because breaking a delegation may take a long time, the
-- * caller should drop the i_rwsem before doing so.
-- *
-- * Alternatively, a caller may pass NULL for delegated_inode.  This may
-- * be appropriate for callers that expect the underlying filesystem not
-- * to be NFS exported.  Also, passing NULL is fine for callers holding
-- * the file open for write, as there can be no conflicting delegation in
-- * that case.
-- *
-- * If the inode has been found through an idmapped mount the idmap of
-- * the vfsmount must be passed through @idmap. This function will then
-- * take care to map the inode according to @idmap before checking
-- * permissions. On non-idmapped mounts or if permission checking is to be
-- * performed on the raw inode simply pass @nop_mnt_idmap.
-- */
--int notify_change(const struct mnt_idmap *idmap, struct dentry *dentry,
--		  struct iattr *attr, struct delegated_inode *delegated_inode)
-+static int do_notify_change(const struct path *const path,
-+			    const struct mnt_idmap *const idmap,
-+			    struct dentry *const dentry, struct iattr *attr,
-+			    struct delegated_inode *delegated_inode)
+-		ret = vfs_getxattr(file_mnt_idmap(file), file_dentry(file),
++		ret = vfs_getxattr(file_mnt_idmap(file), &file->f_path,
+ 				"user.zloop.wp", &old_wp, sizeof(old_wp));
+ 		if (ret == -ENODATA) {
+ 			old_wp = 0;
+diff --git a/fs/cachefiles/xattr.c b/fs/cachefiles/xattr.c
+index 8ebb713482e3..afdce5ce3b73 100644
+--- a/fs/cachefiles/xattr.c
++++ b/fs/cachefiles/xattr.c
+@@ -40,7 +40,6 @@ struct cachefiles_vol_xattr {
+ int cachefiles_preset_object_xattr(struct cachefiles_object *object, struct file *file)
  {
- 	struct inode *inode = dentry->d_inode;
- 	umode_t mode = inode->i_mode;
-@@ -537,9 +512,16 @@ int notify_change(const struct mnt_idmap *idmap, struct dentry *dentry,
- 	    !vfsgid_valid(i_gid_into_vfsgid(idmap, inode)))
- 		return -EOVERFLOW;
+ 	struct cachefiles_xattr *buf;
+-	struct dentry *dentry = file->f_path.dentry;
+ 	unsigned int len = object->cookie->aux_len;
+ 	int ret;
  
--	error = security_inode_setattr(idmap, dentry, attr);
--	if (error)
--		return error;
-+	/*
-+	 * The LSM checks are only performed for user-facing calls (i.e.
-+	 * when @path is set): internal forwards, e.g. from a stacking
-+	 * filesystem, were already checked on the user-facing path.
-+	 */
-+	if (path) {
-+		error = security_inode_setattr(idmap, dentry, attr);
-+		if (error)
-+			return error;
-+	}
+@@ -55,7 +54,7 @@ int cachefiles_preset_object_xattr(struct cachefiles_object *object, struct file
+ 	if (ret == 0) {
+ 		ret = mnt_want_write_file(file);
+ 		if (ret == 0) {
+-			ret = vfs_setxattr(&nop_mnt_idmap, dentry,
++			ret = vfs_setxattr(&nop_mnt_idmap, &file->f_path,
+ 					   cachefiles_xattr_cache, buf,
+ 					   sizeof(struct cachefiles_xattr) + len, 0);
+ 			mnt_drop_write_file(file);
+@@ -91,7 +90,6 @@ int cachefiles_preset_object_xattr(struct cachefiles_object *object, struct file
+ int cachefiles_set_object_xattr(struct cachefiles_object *object)
+ {
+ 	struct cachefiles_xattr *buf;
+-	struct dentry *dentry;
+ 	struct file *file = object->file;
+ 	unsigned int len = object->cookie->aux_len;
+ 	uoff_t object_size = object->cookie->object_size;
+@@ -99,7 +97,6 @@ int cachefiles_set_object_xattr(struct cachefiles_object *object)
  
- 	/*
- 	 * If ATTR_DELEG is set, then these attributes are being set on
-@@ -564,4 +546,67 @@ int notify_change(const struct mnt_idmap *idmap, struct dentry *dentry,
+ 	if (!file)
+ 		return -ESTALE;
+-	dentry = file->f_path.dentry;
  
- 	return error;
- }
-+
-+/**
-+ * __notify_change - modify attributes of a filesystem object, without
-+ *                   the LSM check
-+ * @idmap:	idmap of the mount the inode was found from
-+ * @dentry:	object affected
-+ * @attr:	new attributes
-+ * @delegated_inode: returns inode, if the inode is delegated
-+ *
-+ * Like notify_change(), but no security_inode_setattr() hook is called:
-+ * this is the variant to use for internal forwards, where the LSM
-+ * checks were already performed on the user-facing path.
-+ *
-+ * The caller must hold the i_rwsem exclusively on the affected object.
-+ *
-+ * If the inode has been found through an idmapped mount, permission
-+ * checking is performed based on @idmap.  This function will take care
-+ * to map the inode according to the idmap before checking permissions.
-+ *
-+ * Return: 0 on success, or a negative error on failure.
-+ */
-+int __notify_change(const struct mnt_idmap *idmap, struct dentry *dentry,
-+		    struct iattr *attr, struct delegated_inode *delegated_inode)
-+{
-+	return do_notify_change(NULL, idmap, dentry, attr, delegated_inode);
-+}
-+EXPORT_SYMBOL(__notify_change);
-+
-+/**
-+ * notify_change - modify attributes of a filesystem object
-+ * @idmap:	idmap of the mount the inode was found from
-+ * @path:	object affected
-+ * @attr:	new attributes
-+ * @delegated_inode: returns inode, if the inode is delegated
-+ *
-+ * The caller must hold the i_rwsem exclusively on the affected object.
-+ *
-+ * If notify_change discovers a delegation in need of breaking,
-+ * it will return -EWOULDBLOCK and return a reference to the inode in
-+ * delegated_inode.  The caller should then break the delegation and
-+ * retry.  Because breaking a delegation may take a long time, the
-+ * caller should drop the i_rwsem before doing so.
-+ *
-+ * Alternatively, a caller may pass NULL for delegated_inode.  This may
-+ * be appropriate for callers that expect the underlying filesystem not
-+ * to be NFS exported.  Also, passing NULL is fine for callers holding
-+ * the file open for write, as there can be no conflicting delegation in
-+ * that case.
-+ *
-+ * If the inode has been found through an idmapped mount the idmap of
-+ * the vfsmount must be passed through @idmap. This function will then
-+ * take care to map the inode according to @idmap before checking
-+ * permissions. On non-idmapped mounts or if permission checking is to
-+ * be performed on the raw inode simply pass @nop_mnt_idmap.
-+ *
-+ * Return: 0 on success, or a negative error on failure.
-+ */
-+int notify_change(const struct mnt_idmap *idmap, const struct path *path,
-+		  struct iattr *attr, struct delegated_inode *delegated_inode)
-+{
-+	return do_notify_change(path, idmap, path->dentry, attr,
-+				delegated_inode);
-+}
- EXPORT_SYMBOL(notify_change);
-diff --git a/fs/coredump.c b/fs/coredump.c
-index b25ef2ffbdee..6ade29cf7d06 100644
---- a/fs/coredump.c
-+++ b/fs/coredump.c
-@@ -1060,7 +1060,7 @@ static bool coredump_file(struct core_name *cn, struct coredump_params *cprm,
+ 	_enter("%x,#%d", object->debug_id, len);
+ 
+@@ -121,7 +118,7 @@ int cachefiles_set_object_xattr(struct cachefiles_object *object)
+ 	if (ret == 0) {
+ 		ret = mnt_want_write_file(file);
+ 		if (ret == 0) {
+-			ret = vfs_setxattr(&nop_mnt_idmap, dentry,
++			ret = vfs_setxattr(&nop_mnt_idmap, &file->f_path,
+ 					   cachefiles_xattr_cache, buf,
+ 					   sizeof(struct cachefiles_xattr) + len, 0);
+ 			mnt_drop_write_file(file);
+@@ -160,7 +157,6 @@ int cachefiles_set_object_xattr(struct cachefiles_object *object)
+ int cachefiles_check_auxdata(struct cachefiles_object *object, struct file *file)
+ {
+ 	struct cachefiles_xattr *buf;
+-	struct dentry *dentry = file->f_path.dentry;
+ 	struct inode *inode = file_inode(file);
+ 	unsigned int len = object->cookie->aux_len, tlen;
+ 	const void *p = fscache_get_aux(object->cookie);
+@@ -177,7 +173,8 @@ int cachefiles_check_auxdata(struct cachefiles_object *object, struct file *file
+ 
+ 	xlen = cachefiles_inject_read_error();
+ 	if (xlen == 0)
+-		xlen = vfs_getxattr(&nop_mnt_idmap, dentry, cachefiles_xattr_cache, buf, tlen);
++		xlen = vfs_getxattr(&nop_mnt_idmap, &file->f_path,
++				    cachefiles_xattr_cache, buf, tlen);
+ 	if (xlen != tlen) {
+ 		if (xlen < 0) {
+ 			ret = xlen;
+@@ -226,6 +223,7 @@ int cachefiles_remove_object_xattr(struct cachefiles_cache *cache,
+ 				   struct cachefiles_object *object,
+ 				   struct dentry *dentry)
+ {
++	struct path path = { .mnt = cache->mnt, .dentry = dentry };
+ 	int ret;
+ 
+ 	trace_cachefiles_coherency(object, d_inode(dentry)->i_ino, 0, NULL, 0,
+@@ -235,7 +233,7 @@ int cachefiles_remove_object_xattr(struct cachefiles_cache *cache,
+ 	if (ret == 0) {
+ 		ret = mnt_want_write(cache->mnt);
+ 		if (ret == 0) {
+-			ret = vfs_removexattr(&nop_mnt_idmap, dentry,
++			ret = vfs_removexattr(&nop_mnt_idmap, &path,
+ 					      cachefiles_xattr_cache);
+ 			mnt_drop_write(cache->mnt);
+ 		}
+@@ -282,7 +280,8 @@ bool cachefiles_set_volume_xattr(struct cachefiles_volume *volume)
+ 	struct cachefiles_vol_xattr *buf;
+ 	unsigned int len = volume->vcookie->coherency_len;
+ 	const void *p = volume->vcookie->coherency;
+-	struct dentry *dentry = volume->dentry;
++	struct path path = { .mnt = volume->cache->mnt,
++			     .dentry = volume->dentry };
+ 	int ret;
+ 
+ 	_enter("%x,#%d", volume->vcookie->debug_id, len);
+@@ -298,22 +297,22 @@ bool cachefiles_set_volume_xattr(struct cachefiles_volume *volume)
+ 	if (ret == 0) {
+ 		ret = mnt_want_write(volume->cache->mnt);
+ 		if (ret == 0) {
+-			ret = vfs_setxattr(&nop_mnt_idmap, dentry,
++			ret = vfs_setxattr(&nop_mnt_idmap, &path,
+ 					   cachefiles_xattr_cache,
+ 					   buf, len, 0);
+ 			mnt_drop_write(volume->cache->mnt);
+ 		}
  	}
- 	if (!(file->f_mode & FMODE_CAN_WRITE))
- 		return false;
--	if (do_truncate(idmap, file->f_path.dentry, 0, 0, file))
-+	if (do_truncate(idmap, &file->f_path, 0, 0, file))
- 		return false;
+ 	if (ret < 0) {
+-		trace_cachefiles_vfs_error(NULL, d_inode(dentry), ret,
++		trace_cachefiles_vfs_error(NULL, d_inode(path.dentry), ret,
+ 					   cachefiles_trace_setxattr_error);
+-		trace_cachefiles_vol_coherency(volume, d_inode(dentry)->i_ino,
++		trace_cachefiles_vol_coherency(volume, d_inode(path.dentry)->i_ino,
+ 					       cachefiles_coherency_vol_set_fail);
+ 		if (ret != -ENOMEM)
+ 			cachefiles_io_error(
+ 				volume->cache, "Failed to set xattr with error %d", ret);
+ 	} else {
+-		trace_cachefiles_vol_coherency(volume, d_inode(dentry)->i_ino,
++		trace_cachefiles_vol_coherency(volume, d_inode(path.dentry)->i_ino,
+ 					       cachefiles_coherency_vol_set_ok);
+ 	}
  
- 	cprm->file = no_free_ptr(file);
+@@ -328,9 +327,10 @@ bool cachefiles_set_volume_xattr(struct cachefiles_volume *volume)
+ int cachefiles_check_volume_xattr(struct cachefiles_volume *volume)
+ {
+ 	struct cachefiles_vol_xattr *buf;
+-	struct dentry *dentry = volume->dentry;
+ 	unsigned int len = volume->vcookie->coherency_len;
+ 	const void *p = volume->vcookie->coherency;
++	struct path path = { .mnt = volume->cache->mnt,
++			     .dentry = volume->dentry };
+ 	enum cachefiles_coherency_trace why;
+ 	ssize_t xlen;
+ 	int ret = -ESTALE;
+@@ -344,11 +344,12 @@ int cachefiles_check_volume_xattr(struct cachefiles_volume *volume)
+ 
+ 	xlen = cachefiles_inject_read_error();
+ 	if (xlen == 0)
+-		xlen = vfs_getxattr(&nop_mnt_idmap, dentry, cachefiles_xattr_cache, buf, len);
++		xlen = vfs_getxattr(&nop_mnt_idmap, &path,
++				    cachefiles_xattr_cache, buf, len);
+ 	if (xlen != len) {
+ 		if (xlen < 0) {
+ 			ret = xlen;
+-			trace_cachefiles_vfs_error(NULL, d_inode(dentry), xlen,
++			trace_cachefiles_vfs_error(NULL, d_inode(path.dentry), xlen,
+ 						   cachefiles_trace_getxattr_error);
+ 			if (xlen == -EIO)
+ 				cachefiles_io_error(
+@@ -365,7 +366,7 @@ int cachefiles_check_volume_xattr(struct cachefiles_volume *volume)
+ 		ret = 0;
+ 	}
+ 
+-	trace_cachefiles_vol_coherency(volume, d_inode(dentry)->i_ino, why);
++	trace_cachefiles_vol_coherency(volume, d_inode(path.dentry)->i_ino, why);
+ 	kfree(buf);
+ 	_leave(" = %d", ret);
+ 	return ret;
 diff --git a/fs/ecryptfs/inode.c b/fs/ecryptfs/inode.c
-index 48e520960d66..26967e4e4660 100644
+index 26967e4e4660..c1be27e1f7eb 100644
 --- a/fs/ecryptfs/inode.c
 +++ b/fs/ecryptfs/inode.c
-@@ -732,7 +732,8 @@ upper_size_to_lower_size(struct ecryptfs_crypt_stat *crypt_stat,
-  */
- static int __ecryptfs_truncate(struct dentry *dentry, const struct iattr *ia)
+@@ -992,17 +992,18 @@ ecryptfs_setxattr(struct dentry *dentry, struct inode *inode,
+ 		  size_t size, int flags)
  {
--	struct dentry *lower_dentry = ecryptfs_dentry_to_lower(dentry);
-+	struct path lower_path = ecryptfs_lower_path(dentry);
-+	struct dentry *lower_dentry = lower_path.dentry;
- 	struct inode *inode = d_inode(dentry);
- 	struct ecryptfs_crypt_stat *crypt_stat;
- 	loff_t i_size = i_size_read(inode);
-@@ -821,7 +822,7 @@ static int __ecryptfs_truncate(struct dentry *dentry, const struct iattr *ia)
- set_size:
- 	lower_ia.ia_valid |= ATTR_SIZE;
- 	inode_lock(d_inode(lower_dentry));
--	rc = notify_change(&nop_mnt_idmap, lower_dentry, &lower_ia, NULL);
-+	rc = notify_change(&nop_mnt_idmap, &lower_path, &lower_ia, NULL);
- 	inode_unlock(d_inode(lower_dentry));
- out:
- 	ecryptfs_put_lower_file(inode);
-@@ -873,7 +874,6 @@ static int ecryptfs_setattr(const struct mnt_idmap *idmap,
- 			    struct dentry *dentry, struct iattr *ia)
- {
- 	struct inode *inode = d_inode(dentry);
--	struct dentry *lower_dentry = ecryptfs_dentry_to_lower(dentry);
- 	struct inode *lower_inode = ecryptfs_inode_to_lower(inode);
- 	struct ecryptfs_crypt_stat *crypt_stat;
  	int rc;
-@@ -925,14 +925,15 @@ static int ecryptfs_setattr(const struct mnt_idmap *idmap,
- 	if (ia->ia_valid & ATTR_SIZE) {
- 		rc = __ecryptfs_truncate(dentry, ia);
- 	} else {
-+		struct path lower_path = ecryptfs_lower_path(dentry);
- 		struct iattr lower_ia;
+-	struct dentry *lower_dentry;
++	struct path lower_path;
+ 	struct inode *lower_inode;
  
- 		ecryptfs_iattr_to_lower(&lower_ia, ia);
- 
--		inode_lock(d_inode(lower_dentry));
--		rc = notify_change(&nop_mnt_idmap, lower_dentry, &lower_ia,
--				NULL);
--		inode_unlock(d_inode(lower_dentry));
-+		inode_lock(d_inode(lower_path.dentry));
-+		rc = notify_change(&nop_mnt_idmap, &lower_path, &lower_ia,
-+				   NULL);
-+		inode_unlock(d_inode(lower_path.dentry));
+-	lower_dentry = ecryptfs_dentry_to_lower(dentry);
+-	lower_inode = d_inode(lower_dentry);
++	lower_path = ecryptfs_lower_path(dentry);
++	lower_inode = d_inode(lower_path.dentry);
+ 	if (!(lower_inode->i_opflags & IOP_XATTR)) {
+ 		rc = -EOPNOTSUPP;
+ 		goto out;
  	}
- out:
- 	fsstack_copy_attr_all(inode, lower_inode);
-diff --git a/fs/inode.c b/fs/inode.c
-index 702f2d5ef459..fe176293fd36 100644
---- a/fs/inode.c
-+++ b/fs/inode.c
-@@ -2357,7 +2357,7 @@ int dentry_needs_remove_privs(const struct mnt_idmap *idmap,
+ 	inode_lock(lower_inode);
+-	rc = __vfs_setxattr_locked(&nop_mnt_idmap, lower_dentry, name, value, size, flags, NULL);
++	rc = __vfs_setxattr_locked(&nop_mnt_idmap, &lower_path, name, value,
++				   size, flags, NULL);
+ 	inode_unlock(lower_inode);
+ 	if (!rc && inode)
+ 		fsstack_copy_attr_all(inode, lower_inode);
+diff --git a/fs/nfsd/nfs4ctl.h b/fs/nfsd/nfs4ctl.h
+index bcec4c4ef1d5..97ab3d4212aa 100644
+--- a/fs/nfsd/nfs4ctl.h
++++ b/fs/nfsd/nfs4ctl.h
+@@ -38,7 +38,7 @@ int nfsd4_create_laundry_wq(void);
+ void nfsd4_destroy_laundry_wq(void);
+ bool nfsd_wait_for_delegreturn(struct svc_rqst *rqstp, struct inode *inode);
+ 
+-extern int nfsd4_is_junction(struct dentry *dentry);
++extern int nfsd4_is_junction(const struct path *path);
+ extern int register_cld_notifier(void);
+ extern void unregister_cld_notifier(void);
+ #ifdef CONFIG_NFSD_V4_2_INTER_SSC
+@@ -68,7 +68,7 @@ static inline bool nfsd_wait_for_delegreturn(struct svc_rqst *rqstp,
+ 	return false;
  }
  
- static int __remove_privs(const struct mnt_idmap *idmap,
--			  struct dentry *dentry, int kill)
-+			  const struct path *path, int kill)
+-static inline int nfsd4_is_junction(struct dentry *dentry)
++static inline int nfsd4_is_junction(const struct path *path)
  {
- 	struct iattr newattrs;
- 
-@@ -2366,7 +2366,7 @@ static int __remove_privs(const struct mnt_idmap *idmap,
- 	 * Note we call this on write, so notify_change will not
- 	 * encounter any conflicting delegations:
- 	 */
--	return notify_change(idmap, dentry, &newattrs, NULL);
-+	return notify_change(idmap, path, &newattrs, NULL);
+ 	return 0;
  }
- 
- static int file_remove_privs_flags(struct file *file, unsigned int flags)
-@@ -2387,7 +2387,8 @@ static int file_remove_privs_flags(struct file *file, unsigned int flags)
- 		if (flags & IOCB_NOWAIT)
- 			return -EAGAIN;
- 
--		error = __remove_privs(file_mnt_idmap(file), dentry, kill);
-+		error = __remove_privs(file_mnt_idmap(file), &file->f_path,
-+				       kill);
- 	}
- 
- 	if (!error)
-diff --git a/fs/namei.c b/fs/namei.c
-index 96c65940391a..e3961bc336c9 100644
---- a/fs/namei.c
-+++ b/fs/namei.c
-@@ -4297,9 +4297,8 @@ static int handle_truncate(const struct mnt_idmap *idmap, struct file *filp)
- 
- 	error = security_file_truncate(filp);
- 	if (!error) {
--		error = do_truncate(idmap, path->dentry, 0,
--				    ATTR_MTIME|ATTR_CTIME|ATTR_OPEN,
--				    filp);
-+		error = do_truncate(idmap, path, 0,
-+				    ATTR_MTIME|ATTR_CTIME|ATTR_OPEN, filp);
- 	}
- 	put_write_access(inode);
- 	return error;
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 1de6c6d757c3..3a08c56a27c6 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -10477,8 +10477,10 @@ bool nfsd4_vet_deleg_time(struct timespec64 *req, const struct timespec64 *orig,
- 	return true;
- }
- 
--static int cb_getattr_update_times(struct dentry *dentry, struct nfs4_delegation *dp)
-+static int cb_getattr_update_times(const struct path *path,
-+				   struct nfs4_delegation *dp)
- {
-+	struct dentry *dentry = path->dentry;
- 	struct inode *inode = d_inode(dentry);
- 	struct nfs4_cb_fattr *ncf = &dp->dl_cb_fattr;
- 	struct iattr attrs = { };
-@@ -10508,7 +10510,7 @@ static int cb_getattr_update_times(struct dentry *dentry, struct nfs4_delegation
- 
- 	attrs.ia_valid |= ATTR_DELEG;
- 	inode_lock(inode);
--	ret = notify_change(&nop_mnt_idmap, dentry, &attrs, NULL);
-+	ret = notify_change(&nop_mnt_idmap, path, &attrs, NULL);
- 	inode_unlock(inode);
- 	return ret;
- }
-@@ -10531,7 +10533,7 @@ static int cb_getattr_update_times(struct dentry *dentry, struct nfs4_delegation
-  * caller must put the reference.
-  */
- __be32
--nfsd4_deleg_getattr_conflict(struct svc_rqst *rqstp, struct dentry *dentry,
-+nfsd4_deleg_getattr_conflict(struct svc_rqst *rqstp, const struct path *path,
- 			     struct nfs4_delegation **pdp)
- {
- 	struct nfsd_thread_local_info *ntli = rqstp->rq_private;
-@@ -10539,7 +10541,7 @@ nfsd4_deleg_getattr_conflict(struct svc_rqst *rqstp, struct dentry *dentry,
- 	struct nfs4_delegation *dp = NULL;
- 	struct file_lease *fl;
- 	struct nfs4_cb_fattr *ncf;
--	struct inode *inode = d_inode(dentry);
-+	struct inode *inode = d_inode(path->dentry);
- 	__be32 status;
- 
- 	ctx = locks_inode_context(inode);
-@@ -10603,7 +10605,7 @@ nfsd4_deleg_getattr_conflict(struct svc_rqst *rqstp, struct dentry *dentry,
- 		 * not update the file's metadata with the client's
- 		 * modified size
- 		 */
--		err = cb_getattr_update_times(dentry, dp);
-+		err = cb_getattr_update_times(path, dp);
- 		if (err) {
- 			status = nfserrno(err);
- 			goto out_status;
-@@ -10789,7 +10791,7 @@ void nfsd_update_cmtime_attr(struct file *f, unsigned int flags)
- 	};
- 
- 	inode_lock(inode);
--	ret = notify_change(&nop_mnt_idmap, f->f_path.dentry, &attr, NULL);
-+	ret = notify_change(&nop_mnt_idmap, &f->f_path, &attr, NULL);
- 	inode_unlock(inode);
- 	if (ret)
- 		pr_notice_ratelimited("nfsd: Unable to update timestamps on "
-diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index 84161dbecd1c..2a86b69b2ae9 100644
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -4083,7 +4083,7 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
- 	    (attrmask[1] & (FATTR4_WORD1_TIME_ACCESS |
- 			    FATTR4_WORD1_TIME_MODIFY |
- 			    FATTR4_WORD1_TIME_METADATA))) {
--		status = nfsd4_deleg_getattr_conflict(rqstp, dentry, &dp);
-+		status = nfsd4_deleg_getattr_conflict(rqstp, &path, &dp);
- 		if (status)
- 			goto out;
- 	}
-diff --git a/fs/nfsd/state.h b/fs/nfsd/state.h
-index cd9294f024bb..183123f0b91f 100644
---- a/fs/nfsd/state.h
-+++ b/fs/nfsd/state.h
-@@ -1018,7 +1018,7 @@ static inline bool try_to_expire_client(struct nfs4_client *clp)
- }
- 
- extern __be32 nfsd4_deleg_getattr_conflict(struct svc_rqst *rqstp,
--		struct dentry *dentry, struct nfs4_delegation **pdp);
-+		const struct path *path, struct nfs4_delegation **pdp);
- 
- struct nfsd4_get_dir_delegation;
- struct nfs4_delegation *nfsd_get_dir_deleg(struct nfsd4_compound_state *cstate,
 diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index 56c49b5bc5bb..54440029c235 100644
+index 8d5abfbc71aa..397f417e77b3 100644
 --- a/fs/nfsd/vfs.c
 +++ b/fs/nfsd/vfs.c
-@@ -455,7 +455,7 @@ nfsd_get_write_access(struct svc_fh *fhp)
- 	return nfserrno(get_write_access(d_inode(fhp->fh_dentry)));
+@@ -233,11 +233,13 @@ static int nfsd_lookup_parent(struct svc_rqst *rqstp, struct dentry *dparent, st
+  */
+ int nfsd_mountpoint(struct dentry *dentry, struct svc_export *exp)
+ {
++	struct path path = { .mnt = exp->ex_path.mnt, .dentry = dentry };
++
+ 	if (!d_inode(dentry))
+ 		return 0;
+ 	if (exp->ex_flags & NFSEXP_V4ROOT)
+ 		return 1;
+-	if (nfsd4_is_junction(dentry))
++	if (nfsd4_is_junction(&path))
+ 		return 1;
+ 	if (d_managed(dentry))
+ 		/*
+@@ -685,14 +687,14 @@ nfsd_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ /**
+  * nfsd4_is_junction - Test if an object could be an NFS junction
+  *
+- * @dentry: object to test
++ * @path: object to test
+  *
+- * Returns 1 if "dentry" appears to contain NFS junction information.
++ * Returns 1 if "path" appears to contain NFS junction information.
+  * Otherwise 0 is returned.
+  */
+-int nfsd4_is_junction(struct dentry *dentry)
++int nfsd4_is_junction(const struct path *path)
+ {
+-	struct inode *inode = d_inode(dentry);
++	struct inode *inode = d_inode(path->dentry);
+ 
+ 	if (inode == NULL)
+ 		return 0;
+@@ -700,7 +702,7 @@ int nfsd4_is_junction(struct dentry *dentry)
+ 		return 0;
+ 	if (!(inode->i_mode & S_ISVTX))
+ 		return 0;
+-	if (vfs_getxattr(&nop_mnt_idmap, dentry, NFSD_JUNCTION_XATTR_NAME,
++	if (vfs_getxattr(&nop_mnt_idmap, path, NFSD_JUNCTION_XATTR_NAME,
+ 			 NULL, 0) <= 0)
+ 		return 0;
+ 	return 1;
+@@ -2653,19 +2655,20 @@ nfsd_getxattr(struct svc_rqst *rqstp, struct svc_fh *fhp, char *name,
+ 	__be32 err;
+ 	char *buf;
+ 	struct inode *inode;
+-	struct dentry *dentry;
++	struct path path;
+ 
+ 	err = fh_verify(rqstp, fhp, 0, NFSD_MAY_READ);
+ 	if (err)
+ 		return err;
+ 
+ 	err = nfs_ok;
+-	dentry = fhp->fh_dentry;
+-	inode = d_inode(dentry);
++	path.mnt = fhp->fh_export->ex_path.mnt;
++	path.dentry = fhp->fh_dentry;
++	inode = d_inode(path.dentry);
+ 
+ 	inode_lock_shared(inode);
+ 
+-	len = vfs_getxattr(&nop_mnt_idmap, dentry, name, NULL, 0);
++	len = vfs_getxattr(&nop_mnt_idmap, &path, name, NULL, 0);
+ 
+ 	/*
+ 	 * Zero-length attribute, just return.
+@@ -2692,7 +2695,7 @@ nfsd_getxattr(struct svc_rqst *rqstp, struct svc_fh *fhp, char *name,
+ 		goto out;
+ 	}
+ 
+-	len = vfs_getxattr(&nop_mnt_idmap, dentry, name, buf, len);
++	len = vfs_getxattr(&nop_mnt_idmap, &path, name, buf, len);
+ 	if (len <= 0) {
+ 		kvfree(buf);
+ 		buf = NULL;
+@@ -2726,19 +2729,20 @@ nfsd_listxattr(struct svc_rqst *rqstp, struct svc_fh *fhp, char **bufp,
+ 	__be32 err;
+ 	char *buf;
+ 	struct inode *inode;
+-	struct dentry *dentry;
++	struct path path;
+ 
+ 	err = fh_verify(rqstp, fhp, 0, NFSD_MAY_READ);
+ 	if (err)
+ 		return err;
+ 
+-	dentry = fhp->fh_dentry;
+-	inode = d_inode(dentry);
++	path.mnt = fhp->fh_export->ex_path.mnt;
++	path.dentry = fhp->fh_dentry;
++	inode = d_inode(path.dentry);
+ 	*lenp = 0;
+ 
+ 	inode_lock_shared(inode);
+ 
+-	len = vfs_listxattr(dentry, NULL, 0);
++	len = vfs_listxattr(&path, NULL, 0);
+ 	if (len <= 0) {
+ 		err = nfsd_xattr_errno(len);
+ 		goto out;
+@@ -2755,7 +2759,7 @@ nfsd_listxattr(struct svc_rqst *rqstp, struct svc_fh *fhp, char **bufp,
+ 		goto out;
+ 	}
+ 
+-	len = vfs_listxattr(dentry, buf, len);
++	len = vfs_listxattr(&path, buf, len);
+ 	if (len <= 0) {
+ 		kvfree(buf);
+ 		err = nfsd_xattr_errno(len);
+@@ -2788,6 +2792,7 @@ nfsd_removexattr(struct svc_rqst *rqstp, struct svc_fh *fhp, char *name)
+ {
+ 	__be32 err;
+ 	int ret;
++	struct path path;
+ 
+ 	err = fh_verify(rqstp, fhp, 0, NFSD_MAY_WRITE);
+ 	if (err)
+@@ -2797,16 +2802,17 @@ nfsd_removexattr(struct svc_rqst *rqstp, struct svc_fh *fhp, char *name)
+ 	if (ret)
+ 		return nfserrno(ret);
+ 
+-	inode_lock(fhp->fh_dentry->d_inode);
++	path.mnt = fhp->fh_export->ex_path.mnt;
++	path.dentry = fhp->fh_dentry;
++	inode_lock(d_inode(path.dentry));
+ 	err = fh_fill_pre_attrs(fhp);
+ 	if (err != nfs_ok)
+ 		goto out_unlock;
+-	ret = __vfs_removexattr_locked(&nop_mnt_idmap, fhp->fh_dentry,
+-				       name, NULL);
++	ret = __vfs_removexattr_locked(&nop_mnt_idmap, &path, name, NULL);
+ 	err = nfsd_xattr_errno(ret);
+ 	fh_fill_post_attrs(fhp);
+ out_unlock:
+-	inode_unlock(fhp->fh_dentry->d_inode);
++	inode_unlock(d_inode(path.dentry));
+ 	fh_drop_write(fhp);
+ 
+ 	return err;
+@@ -2818,6 +2824,7 @@ nfsd_setxattr(struct svc_rqst *rqstp, struct svc_fh *fhp, char *name,
+ {
+ 	__be32 err;
+ 	int ret;
++	struct path path;
+ 
+ 	err = fh_verify(rqstp, fhp, 0, NFSD_MAY_WRITE);
+ 	if (err)
+@@ -2826,16 +2833,18 @@ nfsd_setxattr(struct svc_rqst *rqstp, struct svc_fh *fhp, char *name,
+ 	ret = fh_want_write(fhp);
+ 	if (ret)
+ 		return nfserrno(ret);
+-	inode_lock(fhp->fh_dentry->d_inode);
++	path.mnt = fhp->fh_export->ex_path.mnt;
++	path.dentry = fhp->fh_dentry;
++	inode_lock(d_inode(path.dentry));
+ 	err = fh_fill_pre_attrs(fhp);
+ 	if (err != nfs_ok)
+ 		goto out_unlock;
+-	ret = __vfs_setxattr_locked(&nop_mnt_idmap, fhp->fh_dentry,
+-				    name, buf, len, flags, NULL);
++	ret = __vfs_setxattr_locked(&nop_mnt_idmap, &path, name, buf, len,
++				    flags, NULL);
+ 	fh_fill_post_attrs(fhp);
+ 	err = nfsd_xattr_errno(ret);
+ out_unlock:
+-	inode_unlock(fhp->fh_dentry->d_inode);
++	inode_unlock(d_inode(path.dentry));
+ 	fh_drop_write(fhp);
+ 	return err;
+ }
+diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
+index e963701b4c87..6dc241f195a6 100644
+--- a/fs/overlayfs/copy_up.c
++++ b/fs/overlayfs/copy_up.c
+@@ -83,7 +83,7 @@ int ovl_copy_xattr(struct super_block *sb, const struct path *oldpath, struct de
+ 	if (!old->d_inode->i_op->listxattr || !new->d_inode->i_op->listxattr)
+ 		return 0;
+ 
+-	list_size = vfs_listxattr(old, NULL, 0);
++	list_size = vfs_listxattr(oldpath, NULL, 0);
+ 	if (list_size <= 0) {
+ 		if (list_size == -EOPNOTSUPP)
+ 			return 0;
+@@ -94,7 +94,7 @@ int ovl_copy_xattr(struct super_block *sb, const struct path *oldpath, struct de
+ 	if (!buf)
+ 		return -ENOMEM;
+ 
+-	list_size = vfs_listxattr(old, buf, list_size);
++	list_size = vfs_listxattr(oldpath, buf, list_size);
+ 	if (list_size <= 0) {
+ 		error = list_size;
+ 		goto out;
+diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
+index 0d5699ffadea..bf3fa54ee27a 100644
+--- a/fs/overlayfs/overlayfs.h
++++ b/fs/overlayfs/overlayfs.h
+@@ -295,8 +295,7 @@ static inline ssize_t ovl_do_getxattr(const struct path *path, const char *name,
+ 
+ 	WARN_ON(path->dentry->d_sb != path->mnt->mnt_sb);
+ 
+-	err = vfs_getxattr(mnt_idmap(path->mnt), path->dentry,
+-			       name, value, size);
++	err = vfs_getxattr(mnt_idmap(path->mnt), path, name, value, size);
+ 	len = (value && err > 0) ? err : 0;
+ 
+ 	pr_debug("getxattr(%pd2, \"%s\", \"%*pE\", %zu, 0) = %i\n",
+@@ -329,8 +328,13 @@ static inline int ovl_do_setxattr(struct ovl_fs *ofs, struct dentry *dentry,
+ 				  const char *name, const void *value,
+ 				  size_t size, int flags)
+ {
++	struct path path = {
++		.mnt = ovl_upper_mnt(ofs),
++		.dentry = dentry,
++	};
++
+ 	/* Use vfs_setxattr(), not __vfs_setxattr(): it idmaps the security.capability rootid. */
+-	int err = vfs_setxattr(ovl_upper_mnt_idmap(ofs), dentry, name,
++	int err = vfs_setxattr(ovl_upper_mnt_idmap(ofs), &path, name,
+ 			       value, size, flags);
+ 
+ 	pr_debug("setxattr(%pd2, \"%s\", \"%*pE\", %zu, %d) = %i\n",
+@@ -348,7 +352,12 @@ static inline int ovl_setxattr(struct ovl_fs *ofs, struct dentry *dentry,
+ static inline int ovl_do_removexattr(struct ovl_fs *ofs, struct dentry *dentry,
+ 				     const char *name)
+ {
+-	int err = vfs_removexattr(ovl_upper_mnt_idmap(ofs), dentry, name);
++	struct path path = {
++		.mnt = ovl_upper_mnt(ofs),
++		.dentry = dentry,
++	};
++
++	int err = vfs_removexattr(ovl_upper_mnt_idmap(ofs), &path, name);
+ 	pr_debug("removexattr(%pd2, \"%s\") = %i\n", dentry, name, err);
+ 	return err;
+ }
+diff --git a/fs/overlayfs/xattrs.c b/fs/overlayfs/xattrs.c
+index acc54f6138ef..2a97a9ec642a 100644
+--- a/fs/overlayfs/xattrs.c
++++ b/fs/overlayfs/xattrs.c
+@@ -45,7 +45,8 @@ static int ovl_xattr_set(struct dentry *dentry, struct inode *inode, const char
+ 	if (!value && !upperdentry) {
+ 		ovl_path_lower(dentry, &realpath);
+ 		with_ovl_creds(dentry->d_sb)
+-			err = vfs_getxattr(mnt_idmap(realpath.mnt), realdentry, name, NULL, 0);
++			err = vfs_getxattr(mnt_idmap(realpath.mnt), &realpath,
++					   name, NULL, 0);
+ 		if (err < 0)
+ 			goto out;
+ 	}
+@@ -86,7 +87,8 @@ static int ovl_xattr_get(struct dentry *dentry, struct inode *inode, const char
+ 	ovl_i_path_real(inode, &realpath);
+ 	/* Use vfs_getxattr(), not __vfs_getxattr(): it idmaps the security.capability rootid. */
+ 	with_ovl_creds(dentry->d_sb)
+-		return vfs_getxattr(mnt_idmap(realpath.mnt), realpath.dentry, name, value, size);
++		return vfs_getxattr(mnt_idmap(realpath.mnt), &realpath,
++				    name, value, size);
  }
  
--static int __nfsd_setattr(struct dentry *dentry, struct iattr *iap)
-+static int __nfsd_setattr(const struct path *path, struct iattr *iap)
+ static bool ovl_can_list(struct super_block *sb, const char *s)
+@@ -105,15 +107,17 @@ static bool ovl_can_list(struct super_block *sb, const char *s)
+ 
+ ssize_t ovl_listxattr(struct dentry *dentry, char *list, size_t size)
  {
- 	int host_err;
+-	struct dentry *realdentry = ovl_dentry_real(dentry);
++	struct path realpath;
+ 	struct ovl_fs *ofs = OVL_FS(dentry->d_sb);
+ 	ssize_t res;
+ 	size_t len;
+ 	char *s;
+ 	size_t prefix_len, name_len;
  
-@@ -475,7 +475,8 @@ static int __nfsd_setattr(struct dentry *dentry, struct iattr *iap)
- 		if (iap->ia_size < 0)
- 			return -EFBIG;
++	ovl_path_real(dentry, &realpath);
++
+ 	with_ovl_creds(dentry->d_sb)
+-		res = vfs_listxattr(realdentry, list, size);
++		res = vfs_listxattr(&realpath, list, size);
+ 	if (res <= 0 || size == 0)
+ 		return res;
  
--		host_err = notify_change(&nop_mnt_idmap, dentry, &size_attr, NULL);
-+		host_err = notify_change(&nop_mnt_idmap, path, &size_attr,
-+					  NULL);
- 		if (host_err)
- 			return host_err;
- 		iap->ia_valid &= ~ATTR_SIZE;
-@@ -501,7 +502,7 @@ static int __nfsd_setattr(struct dentry *dentry, struct iattr *iap)
- 	if (!(iap->ia_valid & ATTR_DELEG))
- 		iap->ia_valid |= ATTR_CTIME;
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 45275b8f23b6..07b0a71a4353 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -3442,16 +3442,14 @@ static int smb2_set_ea(struct smb2_ea_info *eabuf, unsigned int buf_len,
+ 		value = (char *)&eabuf->name + eabuf->EaNameLength + 1;
  
--	return notify_change(&nop_mnt_idmap, dentry, iap, NULL);
-+	return notify_change(&nop_mnt_idmap, path, iap, NULL);
+ 		if (!eabuf->EaValueLength) {
+-			rc = ksmbd_vfs_casexattr_len(idmap,
+-						     path->dentry,
++			rc = ksmbd_vfs_casexattr_len(idmap, path,
+ 						     attr_name,
+ 						     XATTR_USER_PREFIX_LEN +
+ 						     eabuf->EaNameLength, NULL);
+ 
+ 			/* delete the EA only when it exits */
+ 			if (rc > 0) {
+-				rc = ksmbd_vfs_remove_xattr(idmap,
+-							    path,
++				rc = ksmbd_vfs_remove_xattr(idmap, path,
+ 							    attr_name,
+ 							    get_write);
+ 
+@@ -3519,8 +3517,7 @@ static noinline int smb2_set_stream_name_xattr(const struct path *path,
+ 	fp->stream.size = xattr_stream_size;
+ 
+ 	/* Keep the existing xattr's case for subsequent writes and removal. */
+-	rc = ksmbd_vfs_casexattr_len(idmap,
+-				     path->dentry,
++	rc = ksmbd_vfs_casexattr_len(idmap, path,
+ 				     xattr_stream_name,
+ 				     xattr_stream_size, xattr_stream_name);
+ 	if (rc >= 0)
+@@ -3574,7 +3571,7 @@ static noinline int smb2_set_stream_name_xattr(const struct path *path,
+ static loff_t ksmbd_stream_eof(struct ksmbd_file *fp)
+ {
+ 	ssize_t slen = ksmbd_vfs_casexattr_len(file_mnt_idmap(fp->filp),
+-					       fp->filp->f_path.dentry,
++					       &fp->filp->f_path,
+ 					       fp->stream.name,
+ 					       fp->stream.size, NULL);
+ 	return slen < 0 ? 0 : (loff_t)slen;
+@@ -3587,7 +3584,7 @@ static int smb2_remove_smb_xattrs(const struct path *path)
+ 	ssize_t xattr_list_len;
+ 	int err = 0;
+ 
+-	xattr_list_len = ksmbd_vfs_listxattr(path->dentry, &xattr_list);
++	xattr_list_len = ksmbd_vfs_listxattr(path, &xattr_list);
+ 	if (xattr_list_len < 0) {
+ 		goto out;
+ 	} else if (!xattr_list_len) {
+@@ -3602,8 +3599,7 @@ static int smb2_remove_smb_xattrs(const struct path *path)
+ 		if (!strncmp(name, XATTR_USER_PREFIX, XATTR_USER_PREFIX_LEN) &&
+ 		    !strncmp(&name[XATTR_USER_PREFIX_LEN], STREAM_PREFIX,
+ 			     STREAM_PREFIX_LEN)) {
+-			err = ksmbd_vfs_remove_xattr(idmap, path,
+-						     name, true);
++			err = ksmbd_vfs_remove_xattr(idmap, path, name, true);
+ 			if (err)
+ 				ksmbd_debug(SMB, "remove xattr failed : %s\n",
+ 					    name);
+@@ -3658,6 +3654,7 @@ static bool smb2_parent_compressed(struct ksmbd_tree_connect *tcon,
+ 				   const struct path *path)
+ {
+ 	struct dentry *parent = dget_parent(path->dentry);
++	struct path parent_path = { .mnt = path->mnt, .dentry = parent };
+ 	struct file_kattr fa = { .flags_valid = true };
+ 	struct xattr_dos_attrib da;
+ 	bool compressed = false;
+@@ -3669,7 +3666,8 @@ static bool smb2_parent_compressed(struct ksmbd_tree_connect *tcon,
+ 		goto out;
+ 	}
+ 
+-	rc = ksmbd_vfs_get_dos_attrib_xattr(mnt_idmap(path->mnt), parent, &da);
++	rc = ksmbd_vfs_get_dos_attrib_xattr(mnt_idmap(path->mnt),
++					    &parent_path, &da);
+ 	if (rc > 0 && da.attr & FILE_ATTRIBUTE_COMPRESSED)
+ 		compressed = true;
+ 
+@@ -3690,7 +3688,7 @@ static void smb2_update_xattrs(struct ksmbd_tree_connect *tcon,
+ 
+ 	/* get FileAttributes from XATTR_NAME_DOS_ATTRIBUTE */
+ 	rc = ksmbd_vfs_get_dos_attrib_xattr(mnt_idmap(path->mnt),
+-					    path->dentry, &da);
++					    path, &da);
+ 	if (rc > 0) {
+ 		if (store_dos_attrs) {
+ 			fp->f_ci->m_fattr = cpu_to_le32(da.attr);
+@@ -4717,7 +4715,7 @@ int smb2_open(struct ksmbd_work *work)
+ 			if (test_share_config_flag(tcon->share_conf,
+ 						   KSMBD_SHARE_FLAG_STORE_DOS_ATTRS) &&
+ 			    ksmbd_vfs_get_dos_attrib_xattr(mnt_idmap(path.mnt),
+-							 path.dentry, &da) > 0 &&
++							   &path, &da) > 0 &&
+ 			    da.attr & FILE_ATTRIBUTE_READONLY) {
+ 				rsp->hdr.Status = STATUS_CANNOT_DELETE;
+ 				rc = -EACCES;
+@@ -6261,13 +6259,14 @@ static int process_query_dir_entries(struct smb2_query_dir_private *priv)
+ 			continue;
+ 		}
+ 
++		path.mnt = priv->dir_fp->filp->f_path.mnt;
++		path.dentry = dent;
++
+ 		if (test_share_config_flag(priv->work->tcon->share_conf,
+ 					   KSMBD_SHARE_FLAG_HIDE_UNREADABLE)) {
+ 			__le32 daccess = FILE_READ_DATA_LE | FILE_READ_EA_LE |
+ 				FILE_READ_ATTRIBUTES_LE;
+ 
+-			path.mnt = priv->dir_fp->filp->f_path.mnt;
+-			path.dentry = dent;
+ 			rc = smb_check_perm_dacl(priv->work->conn, &path,
+ 						 &daccess, daccess,
+ 						 priv->work->sess->user->uid,
+@@ -6282,7 +6281,7 @@ static int process_query_dir_entries(struct smb2_query_dir_private *priv)
+ 		if (priv->info_level != FILE_NAMES_INFORMATION) {
+ 			rc = ksmbd_vfs_fill_dentry_attrs(priv->work,
+ 							 idmap,
+-							 dent,
++							 &path,
+ 							 &ksmbd_kstat);
+ 			if (rc) {
+ 				dput(dent);
+@@ -6926,7 +6925,7 @@ static int smb2_get_ea(struct ksmbd_work *work, struct ksmbd_file *fp,
+ 	if (buf_free_len < 0)
+ 		return -EINVAL;
+ 
+-	rc = ksmbd_vfs_listxattr(path->dentry, &xattr_list);
++	rc = ksmbd_vfs_listxattr(path, &xattr_list);
+ 	if (rc < 0) {
+ 		rsp->hdr.Status = STATUS_INVALID_HANDLE;
+ 		goto out;
+@@ -6972,8 +6971,7 @@ static int smb2_get_ea(struct ksmbd_work *work, struct ksmbd_file *fp,
+ 		buf_free_len -= (offsetof(struct smb2_ea_info, name) +
+ 				name_len + 1);
+ 		/* bailout if xattr can't fit in buf_free_len */
+-		value_len = ksmbd_vfs_getxattr(idmap, path->dentry,
+-					       name, &buf);
++		value_len = ksmbd_vfs_getxattr(idmap, path, name, &buf);
+ 		if (value_len <= 0) {
+ 			rc = -ENOENT;
+ 			rsp->hdr.Status = STATUS_INVALID_HANDLE;
+@@ -7263,7 +7261,7 @@ static char *smb2_get_normalized_stream_name(struct ksmbd_file *fp)
+ 	if (!ksmbd_stream_fd(fp))
+ 		return NULL;
+ 
+-	xattr_list_len = ksmbd_vfs_listxattr(fp->filp->f_path.dentry,
++	xattr_list_len = ksmbd_vfs_listxattr(&fp->filp->f_path,
+ 					     &xattr_list);
+ 	if (xattr_list_len <= 0)
+ 		goto out;
+@@ -7366,7 +7364,7 @@ static int get_file_stream_info(struct ksmbd_work *work,
+ 	if (buf_free_len < 0)
+ 		goto out;
+ 
+-	xattr_list_len = ksmbd_vfs_listxattr(path->dentry, &xattr_list);
++	xattr_list_len = ksmbd_vfs_listxattr(path, &xattr_list);
+ 	if (xattr_list_len < 0) {
+ 		goto out;
+ 	} else if (!xattr_list_len) {
+@@ -7413,7 +7411,7 @@ static int get_file_stream_info(struct ksmbd_work *work,
+ 		kfree(stream_buf);
+ 		file_info->StreamNameLength = cpu_to_le32(streamlen);
+ 		slen = ksmbd_vfs_xattr_len(file_mnt_idmap(fp->filp),
+-					   path->dentry, stream_name);
++					   path, stream_name);
+ 		ssize = slen < 0 ? 0 : (loff_t)slen;
+ 		file_info->StreamSize = cpu_to_le64(ssize);
+ 		file_info->StreamAllocationSize = cpu_to_le64(ssize);
+@@ -8222,7 +8220,7 @@ static int smb2_get_info_sec(struct ksmbd_work *work,
+ 	if (test_share_config_flag(work->tcon->share_conf,
+ 				   KSMBD_SHARE_FLAG_ACL_XATTR))
+ 		ppntsd_size = ksmbd_vfs_get_sd_xattr(work->conn, idmap,
+-						     fp->filp->f_path.dentry,
++						     &fp->filp->f_path,
+ 						     &ppntsd);
+ 
+ 	/* Check if sd buffer size exceeds response buffer size */
+@@ -8584,7 +8582,7 @@ static int smb2_rename(struct ksmbd_work *work,
+ 			}
+ 
+ 			stream_buf_len = ksmbd_vfs_getcasexattr(file_mnt_idmap(fp->filp),
+-								fp->filp->f_path.dentry,
++								&fp->filp->f_path,
+ 								fp->stream.name,
+ 								fp->stream.size,
+ 								&stream_buf);
+@@ -11471,7 +11469,7 @@ static inline int fsctl_set_sparse(struct ksmbd_work *work, u64 id,
+ 		struct xattr_dos_attrib da = {0};
+ 
+ 		ret = ksmbd_vfs_get_dos_attrib_xattr(idmap,
+-						     fp->filp->f_path.dentry, &da);
++						     &fp->filp->f_path, &da);
+ 		if (ret <= 0) {
+ 			da.version = 4;
+ 			da.itime = fp->itime;
+diff --git a/fs/smb/server/smb_common.c b/fs/smb/server/smb_common.c
+index f9fb3741ada3..86ea69068fd3 100644
+--- a/fs/smb/server/smb_common.c
++++ b/fs/smb/server/smb_common.c
+@@ -472,32 +472,32 @@ int ksmbd_populate_dot_dotdot_entries(struct ksmbd_work *work, int info_level,
+ 	for (i = 0; i < 2; i++) {
+ 		struct kstat kstat;
+ 		struct ksmbd_kstat ksmbd_kstat;
+-		struct dentry *dentry;
++		struct path path = dir->filp->f_path;
+ 
+ 		if (!dir->dot_dotdot[i]) { /* fill dot entry info */
+ 			if (i == 0) {
+ 				d_info->name = ".";
+ 				d_info->name_len = 1;
+-				dentry = dget(dir->filp->f_path.dentry);
++				path.dentry = dget(path.dentry);
+ 			} else {
+ 				d_info->name = "..";
+ 				d_info->name_len = 2;
+-				dentry = dget_parent(dir->filp->f_path.dentry);
++				path.dentry = dget_parent(path.dentry);
+ 			}
+ 
+ 			if (!match_pattern(d_info->name, d_info->name_len,
+ 					   search_pattern)) {
+ 				dir->dot_dotdot[i] = 1;
+-				dput(dentry);
++				dput(path.dentry);
+ 				continue;
+ 			}
+ 
+ 			ksmbd_kstat.kstat = &kstat;
+ 			rc = ksmbd_vfs_fill_dentry_attrs(work,
+ 							 idmap,
+-							 dentry,
++							 &path,
+ 							 &ksmbd_kstat);
+-			dput(dentry);
++			dput(path.dentry);
+ 			if (rc)
+ 				break;
+ 
+diff --git a/fs/smb/server/smbacl.c b/fs/smb/server/smbacl.c
+index c79aa9863c85..94bf83d07452 100644
+--- a/fs/smb/server/smbacl.c
++++ b/fs/smb/server/smbacl.c
+@@ -1207,7 +1207,8 @@ int smb_inherit_dacl(struct ksmbd_conn *conn,
+ 	struct smb_acl *parent_pdacl;
+ 	struct smb_ntsd *parent_pntsd = NULL;
+ 	struct smb_sid owner_sid, group_sid;
+-	struct dentry *parent = path->dentry->d_parent;
++	struct path parent_path = { .mnt = path->mnt,
++				    .dentry = path->dentry->d_parent };
+ 	const struct mnt_idmap *idmap = mnt_idmap(path->mnt);
+ 	int inherited_flags = 0, flags = 0, i, nt_size = 0, pdacl_size;
+ 	int rc = 0, pntsd_type, ppntsd_size, acl_len, aces_size;
+@@ -1217,8 +1218,8 @@ int smb_inherit_dacl(struct ksmbd_conn *conn,
+ 	char *aces_base;
+ 	bool is_dir = S_ISDIR(d_inode(path->dentry)->i_mode);
+ 
+-	ppntsd_size = ksmbd_vfs_get_sd_xattr(conn, idmap,
+-					    parent, &parent_pntsd);
++	ppntsd_size = ksmbd_vfs_get_sd_xattr(conn, idmap, &parent_path,
++					    &parent_pntsd);
+ 	if (ppntsd_size <= 0)
+ 		return -ENOENT;
+ 
+@@ -1484,8 +1485,7 @@ int smb_check_perm_dacl(struct ksmbd_conn *conn, const struct path *path,
+ 	vfsuid_t vfsuid;
+ 
+ 	ksmbd_debug(SMB, "check permission using windows acl\n");
+-	pntsd_size = ksmbd_vfs_get_sd_xattr(conn, idmap,
+-					    path->dentry, &pntsd);
++	pntsd_size = ksmbd_vfs_get_sd_xattr(conn, idmap, path, &pntsd);
+ 	if (pntsd_size <= 0 || !pntsd)
+ 		goto err_out;
+ 
+diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
+index 4ee72eda9bc0..96aca3e659e9 100644
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -223,13 +223,13 @@ int ksmbd_vfs_mkdir(struct ksmbd_work *work, const char *name, umode_t mode)
+ }
+ 
+ ssize_t ksmbd_vfs_getcasexattr(const struct mnt_idmap *idmap,
+-			       struct dentry *dentry, char *attr_name,
++			       const struct path *path, char *attr_name,
+ 			       int attr_name_len, char **attr_value)
+ {
+ 	char *name, *xattr_list = NULL;
+ 	ssize_t value_len = -ENOENT, xattr_list_len;
+ 
+-	xattr_list_len = ksmbd_vfs_listxattr(dentry, &xattr_list);
++	xattr_list_len = ksmbd_vfs_listxattr(path, &xattr_list);
+ 	if (xattr_list_len <= 0)
+ 		goto out;
+ 
+@@ -239,8 +239,7 @@ ssize_t ksmbd_vfs_getcasexattr(const struct mnt_idmap *idmap,
+ 		if (strncasecmp(attr_name, name, attr_name_len))
+ 			continue;
+ 
+-		value_len = ksmbd_vfs_getxattr(idmap,
+-					       dentry,
++		value_len = ksmbd_vfs_getxattr(idmap, path,
+ 					       name,
+ 					       attr_value);
+ 		if (value_len < 0)
+@@ -265,7 +264,7 @@ static int ksmbd_vfs_stream_read(struct ksmbd_file *fp, char *buf, loff_t *pos,
+ 
+ 	saved_cred = override_creds(fp->filp->f_cred);
+ 	v_len = ksmbd_vfs_getcasexattr(file_mnt_idmap(fp->filp),
+-				       fp->filp->f_path.dentry,
++				       &fp->filp->f_path,
+ 				       fp->stream.name,
+ 				       fp->stream.size,
+ 				       &stream_buf);
+@@ -410,8 +409,7 @@ static int ksmbd_vfs_stream_write(struct ksmbd_file *fp, char *buf, loff_t *pos,
+ 	write_end = *pos + count;
+ 
+ 	saved_cred = override_creds(fp->filp->f_cred);
+-	v_len = ksmbd_vfs_getcasexattr(idmap,
+-				       fp->filp->f_path.dentry,
++	v_len = ksmbd_vfs_getcasexattr(idmap, &fp->filp->f_path,
+ 				       fp->stream.name,
+ 				       fp->stream.size,
+ 				       &stream_buf);
+@@ -438,8 +436,7 @@ static int ksmbd_vfs_stream_write(struct ksmbd_file *fp, char *buf, loff_t *pos,
+ 
+ 	memcpy(&stream_buf[*pos], buf, count);
+ 
+-	err = ksmbd_vfs_setxattr(idmap,
+-				 &fp->filp->f_path,
++	err = ksmbd_vfs_setxattr(idmap, &fp->filp->f_path,
+ 				 fp->stream.name,
+ 				 (void *)stream_buf,
+ 				 size,
+@@ -480,7 +477,7 @@ int ksmbd_vfs_stream_truncate(struct ksmbd_file *fp, loff_t newsize)
+ 		return -EFBIG;
+ 
+ 	saved_cred = override_creds(fp->filp->f_cred);
+-	v_len = ksmbd_vfs_getcasexattr(idmap, fp->filp->f_path.dentry,
++	v_len = ksmbd_vfs_getcasexattr(idmap, &fp->filp->f_path,
+ 				       fp->stream.name, fp->stream.size,
+ 				       &stream_buf);
+ 	if (v_len < 0) {
+@@ -873,17 +870,17 @@ int ksmbd_vfs_truncate(struct ksmbd_work *work,
+ 
+ /**
+  * ksmbd_vfs_listxattr() - vfs helper for smb list extended attributes
+- * @dentry:	dentry of file for listing xattrs
++ * @path:	path of file for listing xattrs
+  * @list:	destination buffer
+  *
+  * Return:	xattr list length on success, otherwise error
+  */
+-ssize_t ksmbd_vfs_listxattr(struct dentry *dentry, char **list)
++ssize_t ksmbd_vfs_listxattr(const struct path *path, char **list)
+ {
+ 	ssize_t size;
+ 	char *vlist = NULL;
+ 
+-	size = vfs_listxattr(dentry, NULL, 0);
++	size = vfs_listxattr(path, NULL, 0);
+ 	if (size <= 0)
+ 		return size;
+ 
+@@ -892,7 +889,7 @@ ssize_t ksmbd_vfs_listxattr(struct dentry *dentry, char **list)
+ 		return -ENOMEM;
+ 
+ 	*list = vlist;
+-	size = vfs_listxattr(dentry, vlist, size);
++	size = vfs_listxattr(path, vlist, size);
+ 	if (size < 0) {
+ 		ksmbd_debug(VFS, "listxattr failed\n");
+ 		kvfree(vlist);
+@@ -903,29 +900,29 @@ ssize_t ksmbd_vfs_listxattr(struct dentry *dentry, char **list)
+ }
+ 
+ ssize_t ksmbd_vfs_xattr_len(const struct mnt_idmap *idmap,
+-			    struct dentry *dentry, char *xattr_name)
++			    const struct path *path, char *xattr_name)
+ {
+-	return vfs_getxattr(idmap, dentry, xattr_name, NULL, 0);
++	return vfs_getxattr(idmap, path, xattr_name, NULL, 0);
  }
  
  /**
-@@ -524,6 +525,7 @@ nfsd_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
+  * ksmbd_vfs_getxattr() - vfs helper for smb get extended attributes value
+  * @idmap:	idmap
+- * @dentry:	dentry of file for getting xattrs
++ * @path:	path of file for getting xattrs
+  * @xattr_name:	name of xattr name to query
+  * @xattr_buf:	destination buffer xattr value
+  *
+  * Return:	read xattr value length on success, otherwise error
+  */
+ ssize_t ksmbd_vfs_getxattr(const struct mnt_idmap *idmap,
+-			   struct dentry *dentry,
++			   const struct path *path,
+ 			   char *xattr_name, char **xattr_buf)
  {
- 	struct dentry	*dentry;
- 	struct inode	*inode;
-+	struct path	path;
- 	struct iattr	*iap = attr->na_iattr;
- 	int		accmode = NFSD_MAY_SATTR;
- 	umode_t		ftype = 0;
-@@ -569,6 +571,11 @@ nfsd_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	dentry = fhp->fh_dentry;
- 	inode = d_inode(dentry);
+ 	ssize_t xattr_len;
+ 	char *buf;
  
-+	path = (struct path){
-+		.mnt	= fhp->fh_export->ex_path.mnt,
-+		.dentry	= dentry,
-+	};
-+
- 	nfsd_sanitize_attrs(inode, iap);
+ 	*xattr_buf = NULL;
+-	xattr_len = ksmbd_vfs_xattr_len(idmap, dentry, xattr_name);
++	xattr_len = ksmbd_vfs_xattr_len(idmap, path, xattr_name);
+ 	if (xattr_len < 0)
+ 		return xattr_len;
  
- 	/*
-@@ -612,7 +619,7 @@ nfsd_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 		 * copy for every loop iteration.
- 		 */
- 		attrs = *iap;
--		host_err = __nfsd_setattr(dentry, &attrs);
-+		host_err = __nfsd_setattr(&path, &attrs);
- 		if (host_err != -EAGAIN || !retries--)
- 			break;
- 		if (!nfsd_wait_for_delegreturn(rqstp, inode))
-diff --git a/fs/ntfs/named_stream.c b/fs/ntfs/named_stream.c
-index 95a3c05f9821..f0b577a6f7c3 100644
---- a/fs/ntfs/named_stream.c
-+++ b/fs/ntfs/named_stream.c
-@@ -897,7 +897,7 @@ static int ntfs_stream_setattr_common(const struct mnt_idmap *idmap,
- 			goto out;
- 		}
- 		if (base_attr.ia_valid)
--			err = notify_change(idmap, base_dentry, &base_attr,
-+			err = __notify_change(idmap, base_dentry, &base_attr,
- 					NULL);
- 		else
- 			err = 0;
-diff --git a/fs/open.c b/fs/open.c
-index bf398105f03a..294d0ea7488e 100644
---- a/fs/open.c
-+++ b/fs/open.c
-@@ -36,10 +36,11 @@
+@@ -933,7 +930,7 @@ ssize_t ksmbd_vfs_getxattr(const struct mnt_idmap *idmap,
+ 	if (!buf)
+ 		return -ENOMEM;
  
- #include "internal.h"
- 
--int do_truncate(const struct mnt_idmap *idmap, struct dentry *dentry,
-+int do_truncate(const struct mnt_idmap *idmap, const struct path *path,
- 		loff_t length, unsigned int time_attrs, struct file *filp)
- {
- 	int ret;
-+	struct dentry *dentry = path->dentry;
- 	struct iattr newattrs;
- 
- 	/* Not pretty: "inode->i_size" shouldn't really be signed. But it is. */
-@@ -65,7 +66,7 @@ int do_truncate(const struct mnt_idmap *idmap, struct dentry *dentry,
- 		return ret;
- 
- 	/* Note any delegations or leases have already been broken: */
--	ret = notify_change(idmap, dentry, &newattrs, NULL);
-+	ret = notify_change(idmap, path, &newattrs, NULL);
- 	inode_unlock(dentry->d_inode);
- 	return ret;
- }
-@@ -115,7 +116,7 @@ int vfs_truncate(const struct path *path, loff_t length)
- 
- 	error = security_path_truncate(path);
- 	if (!error)
--		error = do_truncate(idmap, path->dentry, length, 0, NULL);
-+		error = do_truncate(idmap, path, length, 0, NULL);
- 
- put_write_and_out:
- 	put_write_access(inode);
-@@ -191,8 +192,8 @@ int do_ftruncate(struct file *file, loff_t length, unsigned int flags)
- 		return error;
- 
- 	scoped_guard(super_write, inode->i_sb)
--		return do_truncate(file_mnt_idmap(file), dentry, length,
--				   ATTR_MTIME | ATTR_CTIME, file);
-+		return do_truncate(file_mnt_idmap(file), &file->f_path,
-+				   length, ATTR_MTIME | ATTR_CTIME, file);
- }
- 
- int ksys_ftruncate(unsigned int fd, loff_t length, unsigned int flags)
-@@ -683,8 +684,8 @@ int chmod_common(const struct path *path, umode_t mode)
- 		goto out_unlock;
- 	newattrs.ia_mode = (mode & S_IALLUGO) | (inode->i_mode & ~S_IALLUGO);
- 	newattrs.ia_valid = ATTR_MODE | ATTR_CTIME;
--	error = notify_change(mnt_idmap(path->mnt), path->dentry,
--			      &newattrs, &delegated_inode);
-+	error = notify_change(mnt_idmap(path->mnt), path, &newattrs,
-+			      &delegated_inode);
- out_unlock:
- 	inode_unlock(inode);
- 	if (is_delegated(&delegated_inode)) {
-@@ -822,7 +823,7 @@ int chown_common(const struct path *path, uid_t user, gid_t group)
- 		from_vfsuid(idmap, fs_userns, newattrs.ia_vfsuid),
- 		from_vfsgid(idmap, fs_userns, newattrs.ia_vfsgid));
- 	if (!error)
--		error = notify_change(idmap, path->dentry, &newattrs,
-+		error = notify_change(idmap, path, &newattrs,
- 				      &delegated_inode);
- 	inode_unlock(inode);
- 	if (is_delegated(&delegated_inode)) {
-diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
-index 92da556598da..0d5699ffadea 100644
---- a/fs/overlayfs/overlayfs.h
-+++ b/fs/overlayfs/overlayfs.h
-@@ -208,7 +208,12 @@ static inline int ovl_do_notify_change(struct ovl_fs *ofs,
- 				       struct dentry *upperdentry,
- 				       struct iattr *attr)
- {
--	return notify_change(ovl_upper_mnt_idmap(ofs), upperdentry, attr, NULL);
-+	struct path path = {
-+		.mnt = ovl_upper_mnt(ofs),
-+		.dentry = upperdentry,
-+	};
-+
-+	return notify_change(ovl_upper_mnt_idmap(ofs), &path, attr, NULL);
- }
- 
- static inline int ovl_do_rmdir(struct ovl_fs *ofs,
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index f5fe3cf8ba32..45275b8f23b6 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -8780,7 +8780,7 @@ static int set_file_basic_info(struct ksmbd_file *fp,
- 			return -EACCES;
- 
- 		inode_lock(inode);
--		rc = notify_change(idmap, dentry, &attrs, NULL);
-+		rc = notify_change(idmap, &filp->f_path, &attrs, NULL);
- 		inode_unlock(inode);
- 	}
- 	return rc;
-diff --git a/fs/smb/server/smbacl.c b/fs/smb/server/smbacl.c
-index 664f01263611..c79aa9863c85 100644
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -1749,7 +1749,7 @@ int set_info_sec(struct ksmbd_conn *conn, struct ksmbd_tree_connect *tcon,
+-	xattr_len = vfs_getxattr(idmap, dentry, xattr_name,
++	xattr_len = vfs_getxattr(idmap, path, xattr_name,
+ 				 (void *)buf, xattr_len);
+ 	if (xattr_len > 0)
+ 		*xattr_buf = buf;
+@@ -967,8 +964,7 @@ int ksmbd_vfs_setxattr(const struct mnt_idmap *idmap,
+ 			return err;
  	}
  
- 	inode_lock(inode);
--	rc = notify_change(idmap, path->dentry, &newattrs, NULL);
-+	rc = notify_change(idmap, path, &newattrs, NULL);
- 	inode_unlock(inode);
- 	if (rc)
+-	err = vfs_setxattr(idmap,
+-			   path->dentry,
++	err = vfs_setxattr(idmap, path,
+ 			   attr_name,
+ 			   attr_value,
+ 			   attr_size,
+@@ -1259,7 +1255,7 @@ int ksmbd_vfs_remove_xattr(const struct mnt_idmap *idmap,
+ 			return err;
+ 	}
+ 
+-	err = vfs_removexattr(idmap, path->dentry, attr_name);
++	err = vfs_removexattr(idmap, path, attr_name);
+ 
+ 	if (get_write == true)
+ 		mnt_drop_write(path->mnt);
+@@ -1548,7 +1544,7 @@ int ksmbd_vfs_remove_acl_xattrs(const struct mnt_idmap *idmap,
+ 	ssize_t xattr_list_len;
+ 	int err = 0;
+ 
+-	xattr_list_len = ksmbd_vfs_listxattr(path->dentry, &xattr_list);
++	xattr_list_len = ksmbd_vfs_listxattr(path, &xattr_list);
+ 	if (xattr_list_len < 0) {
  		goto out;
-diff --git a/fs/utimes.c b/fs/utimes.c
-index e22664e4115f..5193d504d289 100644
---- a/fs/utimes.c
-+++ b/fs/utimes.c
-@@ -64,7 +64,7 @@ int vfs_utimes(const struct path *path, struct timespec64 *times)
- 	}
+ 	} else if (!xattr_list_len) {
+@@ -1587,7 +1583,7 @@ int ksmbd_vfs_remove_sd_xattrs(const struct mnt_idmap *idmap, const struct path
+ 	ssize_t xattr_list_len;
+ 	int err = 0;
+ 
+-	xattr_list_len = ksmbd_vfs_listxattr(path->dentry, &xattr_list);
++	xattr_list_len = ksmbd_vfs_listxattr(path, &xattr_list);
+ 	if (xattr_list_len < 0) {
+ 		goto out;
+ 	} else if (!xattr_list_len) {
+@@ -1745,18 +1741,18 @@ EXPORT_SYMBOL_IF_KUNIT(ksmbd_vfs_set_sd_xattr);
+ 
+ int ksmbd_vfs_get_sd_xattr(struct ksmbd_conn *conn,
+ 			   const struct mnt_idmap *idmap,
+-			   struct dentry *dentry,
++			   const struct path *path,
+ 			   struct smb_ntsd **pntsd)
+ {
+ 	int rc;
+ 	struct ndr n;
+-	struct inode *inode = d_inode(dentry);
++	struct inode *inode = d_inode(path->dentry);
+ 	struct ndr acl_ndr = {0};
+ 	struct xattr_ntacl acl = {0};
+ 	struct xattr_smb_acl *smb_acl = NULL, *def_smb_acl = NULL;
+ 	__u8 cmp_hash[XATTR_SD_HASH_SIZE] = {0};
+ 
+-	rc = ksmbd_vfs_getxattr(idmap, dentry, XATTR_NAME_SD, &n.data);
++	rc = ksmbd_vfs_getxattr(idmap, path, XATTR_NAME_SD, &n.data);
+ 	if (rc <= 0)
+ 		return rc;
+ 
+@@ -1836,13 +1832,13 @@ int ksmbd_vfs_set_dos_attrib_xattr(const struct mnt_idmap *idmap,
+ }
+ 
+ int ksmbd_vfs_get_dos_attrib_xattr(const struct mnt_idmap *idmap,
+-				   struct dentry *dentry,
++				   const struct path *path,
+ 				   struct xattr_dos_attrib *da)
+ {
+ 	struct ndr n;
+ 	int err;
+ 
+-	err = ksmbd_vfs_getxattr(idmap, dentry, XATTR_NAME_DOS_ATTRIBUTE,
++	err = ksmbd_vfs_getxattr(idmap, path, XATTR_NAME_DOS_ATTRIBUTE,
+ 				 (char **)&n.data);
+ 	if (err > 0) {
+ 		n.length = err;
+@@ -1892,18 +1888,13 @@ void *ksmbd_vfs_init_kstat(char **p, struct ksmbd_kstat *ksmbd_kstat)
+ 
+ int ksmbd_vfs_fill_dentry_attrs(struct ksmbd_work *work,
+ 				const struct mnt_idmap *idmap,
+-				struct dentry *dentry,
++				const struct path *path,
+ 				struct ksmbd_kstat *ksmbd_kstat)
+ {
+-	struct ksmbd_share_config *share_conf = work->tcon->share_conf;
+ 	u64 time;
+ 	int rc;
+-	struct path path = {
+-		.mnt = share_conf->vfs_path.mnt,
+-		.dentry = dentry,
+-	};
+ 
+-	rc = vfs_getattr(&path, ksmbd_kstat->kstat,
++	rc = vfs_getattr(path, ksmbd_kstat->kstat,
+ 			 STATX_BASIC_STATS | STATX_BTIME,
+ 			 AT_STATX_SYNC_AS_STAT);
+ 	if (rc)
+@@ -1925,7 +1916,7 @@ int ksmbd_vfs_fill_dentry_attrs(struct ksmbd_work *work,
+ 				   KSMBD_SHARE_FLAG_STORE_DOS_ATTRS)) {
+ 		struct xattr_dos_attrib da;
+ 
+-		rc = ksmbd_vfs_get_dos_attrib_xattr(idmap, dentry, &da);
++		rc = ksmbd_vfs_get_dos_attrib_xattr(idmap, path, &da);
+ 		if (rc > 0) {
+ 			ksmbd_kstat->file_attributes = cpu_to_le32(da.attr);
+ 			ksmbd_kstat->create_time = da.create_time;
+@@ -1948,7 +1939,7 @@ int ksmbd_vfs_fill_dentry_attrs(struct ksmbd_work *work,
+ 		char *xattr_list = NULL, *name;
+ 		ssize_t xattr_list_len;
+ 
+-		xattr_list_len = ksmbd_vfs_listxattr(dentry, &xattr_list);
++		xattr_list_len = ksmbd_vfs_listxattr(path, &xattr_list);
+ 		if (xattr_list_len > 0) {
+ 			for (name = xattr_list;
+ 			     name - xattr_list < xattr_list_len;
+@@ -1967,13 +1958,13 @@ int ksmbd_vfs_fill_dentry_attrs(struct ksmbd_work *work,
+ }
+ 
+ ssize_t ksmbd_vfs_casexattr_len(const struct mnt_idmap *idmap,
+-				struct dentry *dentry, char *attr_name,
++				const struct path *path, char *attr_name,
+ 				int attr_name_len, char *actual_name)
+ {
+ 	char *name, *xattr_list = NULL;
+ 	ssize_t value_len = -ENOENT, xattr_list_len;
+ 
+-	xattr_list_len = ksmbd_vfs_listxattr(dentry, &xattr_list);
++	xattr_list_len = ksmbd_vfs_listxattr(path, &xattr_list);
+ 	if (xattr_list_len < 0) {
+ 		value_len = xattr_list_len;
+ 		goto out;
+@@ -1989,7 +1980,7 @@ ssize_t ksmbd_vfs_casexattr_len(const struct mnt_idmap *idmap,
+ 		if (actual_name && strlen(name) + 1 != attr_name_len)
+ 			continue;
+ 
+-		value_len = ksmbd_vfs_xattr_len(idmap, dentry, name);
++		value_len = ksmbd_vfs_xattr_len(idmap, path, name);
+ 		/* The caller provides attr_name_len bytes for the actual name. */
+ 		if (value_len >= 0 && actual_name)
+ 			memcpy(actual_name, name, attr_name_len);
+@@ -2146,7 +2137,7 @@ int ksmbd_vfs_copy_file_ranges(struct ksmbd_work *work,
+ 		saved_cred = override_creds(src_fp->filp->f_cred);
+ 		src_file_size = ksmbd_vfs_casexattr_len(
+ 				file_mnt_idmap(src_fp->filp),
+-				src_fp->filp->f_path.dentry,
++				&src_fp->filp->f_path,
+ 				src_fp->stream.name, src_fp->stream.size, NULL);
+ 		revert_creds(saved_cred);
+ 		if (src_file_size < 0)
+@@ -2464,7 +2455,8 @@ static int __ksmbd_vfs_set_compression(struct ksmbd_work *work,
+ 	if (fp->f_ci->m_fattr != old_fattr) {
+ 		struct xattr_dos_attrib da = {0};
+ 
+-		rc = ksmbd_vfs_get_dos_attrib_xattr(idmap, dentry, &da);
++		rc = ksmbd_vfs_get_dos_attrib_xattr(idmap, &fp->filp->f_path,
++						    &da);
+ 		if (rc <= 0) {
+ 			da.version = 4;
+ 			da.itime = fp->itime;
+diff --git a/fs/smb/server/vfs.h b/fs/smb/server/vfs.h
+index 21b0d29a3db0..c1ea94cf153f 100644
+--- a/fs/smb/server/vfs.h
++++ b/fs/smb/server/vfs.h
+@@ -104,18 +104,18 @@ int ksmbd_vfs_copy_file_ranges(struct ksmbd_work *work,
+ 			       unsigned int *chunk_count_written,
+ 			       unsigned int *chunk_size_written,
+ 			       loff_t  *total_size_written);
+-ssize_t ksmbd_vfs_listxattr(struct dentry *dentry, char **list);
++ssize_t ksmbd_vfs_listxattr(const struct path *path, char **list);
+ ssize_t ksmbd_vfs_getxattr(const struct mnt_idmap *idmap,
+-			   struct dentry *dentry,
++			   const struct path *path,
+ 			   char *xattr_name,
+ 			   char **xattr_buf);
+ ssize_t ksmbd_vfs_xattr_len(const struct mnt_idmap *idmap,
+-			    struct dentry *dentry, char *xattr_name);
++			    const struct path *path, char *xattr_name);
+ ssize_t ksmbd_vfs_getcasexattr(const struct mnt_idmap *idmap,
+-			       struct dentry *dentry, char *attr_name,
++			       const struct path *path, char *attr_name,
+ 			       int attr_name_len, char **attr_value);
+ ssize_t ksmbd_vfs_casexattr_len(const struct mnt_idmap *idmap,
+-				struct dentry *dentry, char *attr_name,
++				const struct path *path, char *attr_name,
+ 				int attr_name_len, char *actual_name);
+ int ksmbd_vfs_setxattr(const struct mnt_idmap *idmap,
+ 		       const struct path *path, const char *attr_name,
+@@ -154,7 +154,7 @@ int ksmbd_vfs_unlink(struct file *filp);
+ void *ksmbd_vfs_init_kstat(char **p, struct ksmbd_kstat *ksmbd_kstat);
+ int ksmbd_vfs_fill_dentry_attrs(struct ksmbd_work *work,
+ 				const struct mnt_idmap *idmap,
+-				struct dentry *dentry,
++				const struct path *path,
+ 				struct ksmbd_kstat *ksmbd_kstat);
+ void ksmbd_vfs_posix_lock_wait(struct file_lock *flock);
+ void ksmbd_vfs_posix_lock_unblock(struct file_lock *flock);
+@@ -168,14 +168,14 @@ int ksmbd_vfs_set_sd_xattr(struct ksmbd_conn *conn,
+ 			   bool get_write);
+ int ksmbd_vfs_get_sd_xattr(struct ksmbd_conn *conn,
+ 			   const struct mnt_idmap *idmap,
+-			   struct dentry *dentry,
++			   const struct path *path,
+ 			   struct smb_ntsd **pntsd);
+ int ksmbd_vfs_set_dos_attrib_xattr(const struct mnt_idmap *idmap,
+ 				   const struct path *path,
+ 				   struct xattr_dos_attrib *da,
+ 				   bool get_write);
+ int ksmbd_vfs_get_dos_attrib_xattr(const struct mnt_idmap *idmap,
+-				   struct dentry *dentry,
++				   const struct path *path,
+ 				   struct xattr_dos_attrib *da);
+ int ksmbd_vfs_set_init_posix_acl(const struct mnt_idmap *idmap,
+ 				 const struct path *path);
+diff --git a/fs/xattr.c b/fs/xattr.c
+index d9f035610f0b..6234ca550982 100644
+--- a/fs/xattr.c
++++ b/fs/xattr.c
+@@ -286,7 +286,7 @@ int __vfs_setxattr_noperm(const struct mnt_idmap *idmap,
+  * lock
+  *
+  *  @idmap: idmap of the mount of the target inode
+- *  @dentry: object to perform setxattr on
++ *  @path: object to perform setxattr on
+  *  @name: xattr name to set
+  *  @value: value to set @name to
+  *  @size: size of @value
+@@ -295,10 +295,11 @@ int __vfs_setxattr_noperm(const struct mnt_idmap *idmap,
+  *  a delegation was broken on, NULL if none.
+  */
+ int
+-__vfs_setxattr_locked(const struct mnt_idmap *idmap, struct dentry *dentry,
++__vfs_setxattr_locked(const struct mnt_idmap *idmap, const struct path *path,
+ 		      const char *name, const void *value, size_t size,
+ 		      int flags, struct delegated_inode *delegated_inode)
+ {
++	struct dentry *dentry = path->dentry;
+ 	struct inode *inode = dentry->d_inode;
+ 	int error;
+ 
+@@ -324,9 +325,10 @@ __vfs_setxattr_locked(const struct mnt_idmap *idmap, struct dentry *dentry,
+ EXPORT_SYMBOL_GPL(__vfs_setxattr_locked);
+ 
+ int
+-vfs_setxattr(const struct mnt_idmap *idmap, struct dentry *dentry,
++vfs_setxattr(const struct mnt_idmap *idmap, const struct path *path,
+ 	     const char *name, const void *value, size_t size, int flags)
+ {
++	struct dentry *dentry = path->dentry;
+ 	struct inode *inode = dentry->d_inode;
+ 	struct delegated_inode delegated_inode = { };
+ 	const void  *orig_value = value;
+@@ -341,7 +343,7 @@ vfs_setxattr(const struct mnt_idmap *idmap, struct dentry *dentry,
+ 
  retry_deleg:
  	inode_lock(inode);
--	error = notify_change(mnt_idmap(path->mnt), path->dentry, &newattrs,
-+	error = notify_change(mnt_idmap(path->mnt), path, &newattrs,
- 			      &delegated_inode);
+-	error = __vfs_setxattr_locked(idmap, dentry, name, value, size,
++	error = __vfs_setxattr_locked(idmap, path, name, value, size,
+ 				      flags, &delegated_inode);
  	inode_unlock(inode);
+ 
+@@ -448,9 +450,10 @@ __vfs_getxattr(struct dentry *dentry, struct inode *inode, const char *name,
+ EXPORT_SYMBOL(__vfs_getxattr);
+ 
+ ssize_t
+-vfs_getxattr(const struct mnt_idmap *idmap, struct dentry *dentry,
++vfs_getxattr(const struct mnt_idmap *idmap, const struct path *path,
+ 	     const char *name, void *value, size_t size)
+ {
++	struct dentry *dentry = path->dentry;
+ 	struct inode *inode = dentry->d_inode;
+ 	int error;
+ 
+@@ -482,12 +485,12 @@ EXPORT_SYMBOL_GPL(vfs_getxattr);
+ 
+ /**
+  * vfs_listxattr - retrieve \0 separated list of xattr names
+- * @dentry: the dentry from whose inode the xattr names are retrieved
++ * @path: the path from whose inode the xattr names are retrieved
+  * @list: buffer to store xattr names into
+  * @size: size of the buffer
+  *
+  * This function returns the names of all xattrs associated with the
+- * inode of @dentry.
++ * inode of @path->dentry.
+  *
+  * Note, for legacy reasons the vfs_listxattr() function lists POSIX
+  * ACLs as well. Since POSIX ACLs are decoupled from IOP_XATTR the
+@@ -503,8 +506,9 @@ EXPORT_SYMBOL_GPL(vfs_getxattr);
+  *         negative error code.
+  */
+ ssize_t
+-vfs_listxattr(struct dentry *dentry, char *list, size_t size)
++vfs_listxattr(const struct path *path, char *list, size_t size)
+ {
++	struct dentry *dentry = path->dentry;
+ 	struct inode *inode = d_inode(dentry);
+ 	ssize_t error;
+ 
+@@ -551,16 +555,17 @@ EXPORT_SYMBOL(__vfs_removexattr);
+  * lock
+  *
+  *  @idmap: idmap of the mount of the target inode
+- *  @dentry: object to perform setxattr on
++ *  @path: object to perform removexattr on
+  *  @name: name of xattr to remove
+  *  @delegated_inode: on return, will contain an inode pointer that
+  *  a delegation was broken on, NULL if none.
+  */
+ int
+ __vfs_removexattr_locked(const struct mnt_idmap *idmap,
+-			 struct dentry *dentry, const char *name,
++			 const struct path *path, const char *name,
+ 			 struct delegated_inode *delegated_inode)
+ {
++	struct dentry *dentry = path->dentry;
+ 	struct inode *inode = dentry->d_inode;
+ 	int error;
+ 
+@@ -589,17 +594,17 @@ __vfs_removexattr_locked(const struct mnt_idmap *idmap,
+ EXPORT_SYMBOL_GPL(__vfs_removexattr_locked);
+ 
+ int
+-vfs_removexattr(const struct mnt_idmap *idmap, struct dentry *dentry,
++vfs_removexattr(const struct mnt_idmap *idmap, const struct path *path,
+ 		const char *name)
+ {
++	struct dentry *dentry = path->dentry;
+ 	struct inode *inode = dentry->d_inode;
+ 	struct delegated_inode delegated_inode = { };
+ 	int error;
+ 
+ retry_deleg:
+ 	inode_lock(inode);
+-	error = __vfs_removexattr_locked(idmap, dentry,
+-					 name, &delegated_inode);
++	error = __vfs_removexattr_locked(idmap, path, name, &delegated_inode);
+ 	inode_unlock(inode);
+ 
  	if (is_delegated(&delegated_inode)) {
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 3e240579e2b5..960334128b83 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -2490,8 +2490,8 @@ static inline bool is_idmapped_mnt(const struct vfsmount *mnt)
+@@ -652,14 +657,14 @@ int setxattr_copy(const char __user *name, struct kernel_xattr_ctx *ctx)
+ 	return error;
  }
  
- int vfs_truncate(const struct path *, loff_t);
--int do_truncate(const struct mnt_idmap *, struct dentry *, loff_t start,
--		unsigned int time_attrs, struct file *filp);
-+int do_truncate(const struct mnt_idmap *, const struct path *,
-+		loff_t length, unsigned int time_attrs, struct file *filp);
- extern int vfs_fallocate(struct file *file, int mode, loff_t offset,
- 			loff_t len);
- int do_sys_open(int dfd, const char __user *filename, int flags,
-@@ -2714,7 +2714,9 @@ static inline int bmap(struct inode *inode,  sector_t *block)
- }
- #endif
+-static int do_setxattr(const struct mnt_idmap *idmap, struct dentry *dentry,
+-		struct kernel_xattr_ctx *ctx)
++static int do_setxattr(const struct mnt_idmap *idmap, const struct path *path,
++		       struct kernel_xattr_ctx *ctx)
+ {
+ 	if (is_posix_acl_xattr(ctx->kname->name))
+-		return do_set_acl(idmap, dentry, ctx->kname->name,
+-				  ctx->kvalue, ctx->size);
++		return do_set_acl(idmap, path->dentry,
++				  ctx->kname->name, ctx->kvalue, ctx->size);
  
--int notify_change(const struct mnt_idmap *, struct dentry *,
-+int __notify_change(const struct mnt_idmap *, struct dentry *,
-+		    struct iattr *, struct delegated_inode *);
-+int notify_change(const struct mnt_idmap *, const struct path *,
- 		  struct iattr *, struct delegated_inode *);
- int inode_permission(const struct mnt_idmap *, struct inode *, int);
- int generic_permission(const struct mnt_idmap *, struct inode *, int);
+-	return vfs_setxattr(idmap, dentry, ctx->kname->name,
++	return vfs_setxattr(idmap, path, ctx->kname->name,
+ 			ctx->kvalue, ctx->size, ctx->flags);
+ }
+ 
+@@ -669,7 +674,7 @@ int file_setxattr(struct file *f, struct kernel_xattr_ctx *ctx)
+ 
+ 	if (!error) {
+ 		audit_file(f);
+-		error = do_setxattr(file_mnt_idmap(f), f->f_path.dentry, ctx);
++		error = do_setxattr(file_mnt_idmap(f), &f->f_path, ctx);
+ 		mnt_drop_write_file(f);
+ 	}
+ 	return error;
+@@ -687,7 +692,7 @@ int filename_setxattr(int dfd, struct filename *filename,
+ 		return error;
+ 	error = mnt_want_write(path.mnt);
+ 	if (!error) {
+-		error = do_setxattr(mnt_idmap(path.mnt), path.dentry, ctx);
++		error = do_setxattr(mnt_idmap(path.mnt), &path, ctx);
+ 		mnt_drop_write(path.mnt);
+ 	}
+ 	path_put(&path);
+@@ -787,8 +792,8 @@ SYSCALL_DEFINE5(fsetxattr, int, fd, const char __user *, name,
+  * Extended attribute GET operations
+  */
+ static ssize_t
+-do_getxattr(const struct mnt_idmap *idmap, struct dentry *d,
+-	struct kernel_xattr_ctx *ctx)
++do_getxattr(const struct mnt_idmap *idmap, const struct path *path,
++	    struct kernel_xattr_ctx *ctx)
+ {
+ 	ssize_t error;
+ 	char *kname = ctx->kname->name;
+@@ -803,9 +808,10 @@ do_getxattr(const struct mnt_idmap *idmap, struct dentry *d,
+ 	}
+ 
+ 	if (is_posix_acl_xattr(kname))
+-		error = do_get_acl(idmap, d, kname, kvalue, ctx->size);
++		error = do_get_acl(idmap, path->dentry,
++				   kname, kvalue, ctx->size);
+ 	else
+-		error = vfs_getxattr(idmap, d, kname, kvalue, ctx->size);
++		error = vfs_getxattr(idmap, path, kname, kvalue, ctx->size);
+ 	if (error > 0) {
+ 		if (ctx->size && copy_to_user(ctx->value, kvalue, error))
+ 			error = -EFAULT;
+@@ -822,7 +828,7 @@ do_getxattr(const struct mnt_idmap *idmap, struct dentry *d,
+ ssize_t file_getxattr(struct file *f, struct kernel_xattr_ctx *ctx)
+ {
+ 	audit_file(f);
+-	return do_getxattr(file_mnt_idmap(f), f->f_path.dentry, ctx);
++	return do_getxattr(file_mnt_idmap(f), &f->f_path, ctx);
+ }
+ 
+ ssize_t filename_getxattr(int dfd, struct filename *filename,
+@@ -834,7 +840,7 @@ ssize_t filename_getxattr(int dfd, struct filename *filename,
+ 	error = filename_lookup(dfd, filename, lookup_flags, &path, NULL);
+ 	if (error)
+ 		return error;
+-	error = do_getxattr(mnt_idmap(path.mnt), path.dentry, ctx);
++	error = do_getxattr(mnt_idmap(path.mnt), &path, ctx);
+ 	path_put(&path);
+ 	if (retry_estale(error, lookup_flags)) {
+ 		lookup_flags |= LOOKUP_REVAL;
+@@ -925,7 +931,7 @@ SYSCALL_DEFINE4(fgetxattr, int, fd, const char __user *, name,
+  * Extended attribute LIST operations
+  */
+ static ssize_t
+-listxattr(struct dentry *d, char __user *list, size_t size)
++listxattr(const struct path *path, char __user *list, size_t size)
+ {
+ 	ssize_t error;
+ 	char *klist = NULL;
+@@ -938,7 +944,7 @@ listxattr(struct dentry *d, char __user *list, size_t size)
+ 			return -ENOMEM;
+ 	}
+ 
+-	error = vfs_listxattr(d, klist, size);
++	error = vfs_listxattr(path, klist, size);
+ 	if (error > 0) {
+ 		if (size && copy_to_user(list, klist, error))
+ 			error = -EFAULT;
+@@ -957,7 +963,7 @@ static
+ ssize_t file_listxattr(struct file *f, char __user *list, size_t size)
+ {
+ 	audit_file(f);
+-	return listxattr(f->f_path.dentry, list, size);
++	return listxattr(&f->f_path, list, size);
+ }
+ 
+ static
+@@ -971,7 +977,7 @@ ssize_t filename_listxattr(int dfd, struct filename *filename,
+ 	error = filename_lookup(dfd, filename, lookup_flags, &path, NULL);
+ 	if (error)
+ 		return error;
+-	error = listxattr(path.dentry, list, size);
++	error = listxattr(&path, list, size);
+ 	path_put(&path);
+ 	if (retry_estale(error, lookup_flags)) {
+ 		lookup_flags |= LOOKUP_REVAL;
+@@ -1029,11 +1035,12 @@ SYSCALL_DEFINE3(flistxattr, int, fd, char __user *, list, size_t, size)
+  * Extended attribute REMOVE operations
+  */
+ static long
+-removexattr(const struct mnt_idmap *idmap, struct dentry *d, const char *name)
++removexattr(const struct mnt_idmap *idmap, const struct path *path,
++	    const char *name)
+ {
+ 	if (is_posix_acl_xattr(name))
+-		return vfs_remove_acl(idmap, d, name);
+-	return vfs_removexattr(idmap, d, name);
++		return vfs_remove_acl(idmap, path->dentry, name);
++	return vfs_removexattr(idmap, path, name);
+ }
+ 
+ static int file_removexattr(struct file *f, struct xattr_name *kname)
+@@ -1042,8 +1049,7 @@ static int file_removexattr(struct file *f, struct xattr_name *kname)
+ 
+ 	if (!error) {
+ 		audit_file(f);
+-		error = removexattr(file_mnt_idmap(f),
+-				    f->f_path.dentry, kname->name);
++		error = removexattr(file_mnt_idmap(f), &f->f_path, kname->name);
+ 		mnt_drop_write_file(f);
+ 	}
+ 	return error;
+@@ -1061,7 +1067,7 @@ static int filename_removexattr(int dfd, struct filename *filename,
+ 		return error;
+ 	error = mnt_want_write(path.mnt);
+ 	if (!error) {
+-		error = removexattr(mnt_idmap(path.mnt), path.dentry, kname->name);
++		error = removexattr(mnt_idmap(path.mnt), &path, kname->name);
+ 		mnt_drop_write(path.mnt);
+ 	}
+ 	path_put(&path);
+diff --git a/include/linux/xattr.h b/include/linux/xattr.h
+index 4cc4257de084..68301f0b3de2 100644
+--- a/include/linux/xattr.h
++++ b/include/linux/xattr.h
+@@ -77,22 +77,25 @@ struct xattr {
+ };
+ 
+ ssize_t __vfs_getxattr(struct dentry *, struct inode *, const char *, void *, size_t);
+-ssize_t vfs_getxattr(const struct mnt_idmap *, struct dentry *, const char *,
+-		     void *, size_t);
+-ssize_t vfs_listxattr(struct dentry *d, char *list, size_t size);
++ssize_t vfs_getxattr(const struct mnt_idmap *idmap, const struct path *path,
++		     const char *name, void *value, size_t size);
++ssize_t vfs_listxattr(const struct path *path, char *list, size_t size);
+ int __vfs_setxattr(const struct mnt_idmap *, struct dentry *, struct inode *,
+ 		   const char *, const void *, size_t, int);
+ int __vfs_setxattr_noperm(const struct mnt_idmap *, struct dentry *,
+ 			  const char *, const void *, size_t, int);
+-int __vfs_setxattr_locked(const struct mnt_idmap *, struct dentry *,
+-			  const char *, const void *, size_t, int,
+-			  struct delegated_inode *);
+-int vfs_setxattr(const struct mnt_idmap *, struct dentry *, const char *,
+-		 const void *, size_t, int);
++int __vfs_setxattr_locked(const struct mnt_idmap *idmap,
++			  const struct path *path, const char *name,
++			  const void *value, size_t size, int flags,
++			  struct delegated_inode *delegated_inode);
++int vfs_setxattr(const struct mnt_idmap *idmap, const struct path *path,
++		 const char *name, const void *value, size_t size, int flags);
+ int __vfs_removexattr(const struct mnt_idmap *, struct dentry *, const char *);
+-int __vfs_removexattr_locked(const struct mnt_idmap *, struct dentry *,
+-			     const char *, struct delegated_inode *);
+-int vfs_removexattr(const struct mnt_idmap *, struct dentry *, const char *);
++int __vfs_removexattr_locked(const struct mnt_idmap *idmap,
++			     const struct path *path, const char *name,
++			     struct delegated_inode *delegated_inode);
++int vfs_removexattr(const struct mnt_idmap *idmap, const struct path *path,
++		    const char *name);
+ 
+ ssize_t generic_listxattr(struct dentry *dentry, char *buffer, size_t buffer_size);
+ int vfs_getxattr_alloc(const struct mnt_idmap *idmap,
+diff --git a/security/integrity/evm/evm_crypto.c b/security/integrity/evm/evm_crypto.c
+index 1c41af2f91a6..3d759efd3c6c 100644
+--- a/security/integrity/evm/evm_crypto.c
++++ b/security/integrity/evm/evm_crypto.c
+@@ -237,7 +237,7 @@ static int evm_calc_hmac_or_hash(struct dentry *dentry,
+ 	size_t xattr_size = 0;
+ 	char *xattr_value = NULL;
+ 	int error;
+-	int size, user_space_size;
++	int size;
+ 	bool ima_present = false;
+ 	u64 i_version = 0;
+ 
+@@ -287,12 +287,6 @@ static int evm_calc_hmac_or_hash(struct dentry *dentry,
+ 		if (size < 0)
+ 			continue;
+ 
+-		user_space_size = vfs_getxattr(&nop_mnt_idmap, dentry,
+-					       xattr->name, NULL, 0);
+-		if (user_space_size != size)
+-			pr_debug("file %s: xattr %s size mismatch (kernel: %d, user: %d)\n",
+-				 dentry->d_name.name, xattr->name, size,
+-				 user_space_size);
+ 		error = 0;
+ 		xattr_size = size;
+ 		crypto_shash_update(desc, (const u8 *)xattr_value, xattr_size);
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index 9d7467fe73c5..548a14ff0664 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -7145,8 +7145,8 @@ static int selinux_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen
+  */
+ static int selinux_inode_setsecctx(const struct path *path, void *ctx, u32 ctxlen)
+ {
+-	return __vfs_setxattr_locked(&nop_mnt_idmap, path->dentry,
+-				     XATTR_NAME_SELINUX, ctx, ctxlen, 0, NULL);
++	return __vfs_setxattr_locked(&nop_mnt_idmap, path, XATTR_NAME_SELINUX,
++				     ctx, ctxlen, 0, NULL);
+ }
+ 
+ static int selinux_inode_getsecctx(struct inode *inode, struct lsm_context *cp)
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index 953461571026..b39bee15b70c 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -4980,8 +4980,8 @@ static int smack_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen)
+ 
+ static int smack_inode_setsecctx(const struct path *path, void *ctx, u32 ctxlen)
+ {
+-	return __vfs_setxattr_locked(&nop_mnt_idmap, path->dentry,
+-				     XATTR_NAME_SMACK, ctx, ctxlen, 0, NULL);
++	return __vfs_setxattr_locked(&nop_mnt_idmap, path, XATTR_NAME_SMACK,
++				     ctx, ctxlen, 0, NULL);
+ }
+ 
+ static int smack_inode_getsecctx(struct inode *inode, struct lsm_context *cp)
 -- 
 2.18.0.huawei.25
 
