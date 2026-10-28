@@ -1,83 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793211158;
-	b=kHtkQNAJhikUBXFuL21HPVfS6VkoYSMegz798RzAwFNHBGsZ2BUG3d5QxuqT32w+Nle2
-	 AIJJI6hGPHTHFw/a2WKruVGK23+qVk5kRjJkNpvEBHq+/VkmbT8u9sO15v2HvN1Wiw72c
-	 CI/cQTWogKdkfh2PTZwhI4RSeNdU/r97moelPTDilKf1CPIFRiQcADQneSyOG0NOuK144
-	 3BWyJ9vHDc6PIbtN+ue+S6VqoL5lgi2lChwSZjXNHq3AR8eBi0SFID2TKIpN3JvfF1TlF
-	 Sj3E9nVdTLyN4yG+VvSezGEXZxnHTLs/ScfATfEFc3GGShgiMi5op0uXFvnYHxw4fLg==
+	t=1793211160;
+	b=ccFMyNMxIbS3R1ejlte8a8Mu2tc2qCj0aj/2lxSz4v/ffMdGYDYuOdWEGrpYyq5XYmxX
+	 ZoWe+wdP0m+9Y3hF4YNfOn4pLBkR14tKrHUQUSFFUWbXDsGvyfs1PojwgRyU2fKQZHxA8
+	 GnUVYk1Jz+3u+UfwXpcGjXdKQcfdNvtdzFYT3Xcoy7/9pEr0Rze6Ruf716ihJ1hfiHv7o
+	 POw+rm6RJ7anDSJ0jB7VHaI5M6ncpT4b4GPWFoyYeuHkbNzjTyfudhTQJfhNsKwb7ftWy
+	 nlKa3A3U34aaHd3zvx3G6+dRTIhkH8y6Ix9gWNVFtI13dEkITDjNlK03bSzB9jB/VFg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793211158;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793211160;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=q0d6qWi5B+qlp69DsFDkPKiAVkLkzeJOiKS+6AQfdW8=;
-	b=HmX6PAsvAvohoQpfQYosnJl6MuGtrOTQ5trrvG5vn6oXcZ6Fe/KRpdazVxmN+/Xu7Z0d
-	 GeDkBe7sTd6R/0dC7DErO9ZX3RD3l9YpxqF0vwqrZXavYQ54/7PYbQOYyjQ+xrh8Bveqc
-	 AaRq0LIagwQpSeuT2QxXNCKoow7RQz/hjShu5RrX80+ulVB1VqlQxd2oYq2AtLcqcYDWV
-	 6DJma9Z44f5eLemUPwAdiNr08x+lxzKHw1/KU6fnXQ01RwW6owNyw1IR3WMoBTfDattRN
-	 Q1ZuRznkPPFa0/lb70G5RYQy4LHEAPSdYe4+W6wbOvmYoJzC/HtLyK4uiyjEznaXYOQ==
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=halThLpFR9MA/xSJWhg2nbRX5BJT0ocg9O7I/oZTep8=;
+	b=TP0aBeZJUnF2XZIKFYwSGaiheHVjhBKccIwdwuJQ2ucYUOcBy2pKgXqE3CEhVuJ2+/mZ
+	 intUsw7jt/Sc4urB+hCW4JhrOx0RckEw0gOnliSPha72CbAgkxICK/QqeCm37nMYGNwJe
+	 L38DLUFY5dB1YO2RnmebAlnlNC+vJzeQx6BYWH78kxKnG9GCSTZPZW/iQW7nTmcKBdSyZ
+	 pqKACFB3dGXnxO0ApwRcBmSTcrWsrjekgUBhdBZwirAqj9hZlb5v6Mn1Om6Z3VpEnFUQG
+	 +vobMMamvhKQxQF/6vECBnY8FQxuv/XcyTv5lu3/sK2wu8JefKstg8ht5MLVlnSD+pw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ea5wiVFT;
-	arc=none smtp.remote-ip=74.125.82.170
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zWpSky+f;
+	arc=none smtp.remote-ip=74.125.82.174
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9DEE60A2627
-	for <netfs@lists.linux.dev>; Wed, 28 Oct 2026 18:12:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E9DEE60A2627
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C240606A972
+	for <netfs@lists.linux.dev>; Wed, 28 Oct 2026 18:12:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8C240606A972
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ea5wiVFT
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-3535bf8b3e0so1810109eec.0
-        for <netfs@lists.linux.dev>; Wed, 28 Oct 2026 11:12:37 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zWpSky+f
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-3535bf8b3e0so1810149eec.0
+        for <netfs@lists.linux.dev>; Wed, 28 Oct 2026 11:12:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793211157; x=1793815957; darn=lists.linux.dev;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=q0d6qWi5B+qlp69DsFDkPKiAVkLkzeJOiKS+6AQfdW8=;
-        b=ea5wiVFT9VX8iY+8CHXklRFTGSC2edyqop9vACt9Up05aU9rCV38rbyGw4J2d5lIAg
-         cftMkwtqOVs8vuoON4S6tZYnKGTDxXJ1aV0pvJbFJcidBjNbibiMDJt6/54PlU0WJCEf
-         wXY2t12EloSn4Xh2dWgSNlsKDvoBeOIO+WG9f6AS0iFkouVAxw4ffD5oL7JkW0mpH+U6
-         Su9ERvNA/H4xJrY7/MW6VhV5V2wtpQlkDjp2sOtR4dN1MZUJjfxIqeFa8MRUAC1EdutU
-         GRKiOoT2cVFYIC7pqpCuLyJ2nWRnnk22RZHnb8BjeM12wk3oPQJgHHpTLED6A+YKA3VK
-         6qUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793211157; x=1793815957;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+        d=gmail.com; s=20260707; t=1793211159; x=1793815959; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=q0d6qWi5B+qlp69DsFDkPKiAVkLkzeJOiKS+6AQfdW8=;
-        b=D9NIdORiwwrdkkfKtKjZjCT1fDUNOyp4xo0Z7Ae/rQbqJuGsOXHPzpOoWUi4vSYZ++
-         2zZTMls3A0bT5WdG/z8jEHn0dZMjCn7I157xlzy9Ijg18Kd7D21/bl/Kgz4IDQT5qzFZ
-         gkzu72jWDdLDXs/A+keFBIpx81G7bfNVbCxC0J7IQAHd0PUDHj9WzQSzHUOnyCJrSpi7
-         oqX6xFe0dyuBuyAd1rOeFfPBovi4zyKSRu3fgDXcxO0EATMlqhZbU/OEUhTEHpGqURo7
-         0GB6dIrLNiqQgjLHXWEJ+3rlyduqbTMjgUzsNFom+vpTeHYOcGIsTDpssb8E/Pn9PXOy
-         RxKQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz8QN/ukIvebVc8jutsHQlo2MnAvIlO5ZYHGUGFb1+xTzSLCR3nT4SCLWj7kRdYuKHEYhRL4Q==@lists.linux.dev
-X-Gm-Message-State: AFq9FYJ9YkMW/6IC4mKRYxPSQ30B/D1MwkTXUvthJrQ3s6NxO3AJckvm
-	TwMr42w5w/xuUNA6jvEarF5AZwmrX6h7GFy8SIw4X/zYNh1/bh3Zjhe+
-X-Gm-Gg: AYBFou1nMYBG2WHjhthKL8tmNg/lfmcFAfUPg524w8q8mGU+U06cOpgKd3EddNf/jje
-	eTzD/WFTifa5BqYtJim7PZAzpQEGbNjsptZMuI+ddUG2qnn95sU7zWR53UZRIzLhbPNQH9+ieMe
-	Kb2Iz+43Tl4CgQoGxkqcqIMEUdsNt5e2h355ZmEEhN3Nn3shE3P9uKYhA8r0HBfBVjjIqBtXxOw
-	iugL52gRmGz0JYVA3nan1LE0oySCIGzrQtkVs0LE+Suj6T05jfOpxwe1YaLRhNYQtnRgvFK8FV4
-	eThOYphWbKFM8UfvPBwEOdYA3s1+diD9qVazKTJ/PgQ07HcVZXvVCxVeBPjqSdZvOXgmdVrjp/a
-	QT6Lx7vQRSyVyh45Uk+7uTPT7X+Uo0ukmxNeScxf5+6nNtsNCl+3MrNvunhLrKjL0kgHr9jIJu1
-	YVMqWewC+UfDHDbg9fBqMI5LA1eftWilGxZBuFIEkkAjoK9rXSXWmHq/z0fZAXGSwLjGsruD2dU
-	3FbmaC29wwu9gy6MTBGkyqtbde1v1TtLg8jYl79mMQU4qAUioKqRVVvxFfpm5inekljfBn59yHu
-	KddQsRKBXlQddUOSZTlY64r4
-X-Received: by 2002:a05:7300:a230:b0:369:a113:7578 with SMTP id 5a478bee46e88-36a1ff4734emr3881706eec.1.1793211156240;
-        Wed, 28 Oct 2026 11:12:36 -0700 (PDT)
+        bh=halThLpFR9MA/xSJWhg2nbRX5BJT0ocg9O7I/oZTep8=;
+        b=zWpSky+fe1Zg+sGuV6ygWUy1bnfjrJGxIXUUr5+p5E9s+I6zWdPP9aJ3bCAVDeUTSl
+         rMrInjKUZalE3e4hVmbuHaf2D+khOitbm6lmFhSZZT4w/dFVuUzVlO1V8rwxa0vW/bAn
+         u08Kn6nQDKSWnayUIUD+GdB9dbfyFpNoyZsv/cLcYj793cL5HJZIh3HnAVcKrrxnMQbT
+         yQOkw+dIgJnZcS7B0pYayjUgIbsSdR+fPe9VTEJvQbBeHcdYCQCd69rePvcsizcvmXWG
+         j+wRQ2m6Uq1gLkyBEg4kYzWF2Pz9dk1XLMVPhGBPVIzfMHx+pwC7v/8CJFxuAc+79oXo
+         IREw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793211159; x=1793815959;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=halThLpFR9MA/xSJWhg2nbRX5BJT0ocg9O7I/oZTep8=;
+        b=ox4KugxDsmRnGx36FvVYOFUvHWbgAlS6+Mi5z5CdvvZVUpHj/4riXe0ctJ97DaF1Sp
+         ClAxzspqQnng+jwAcre+O9PPwTlWyAl3Y2IikSzIhG4HmBnvPPmT4MOztBplfV8BINla
+         YfMHoD9nEoH+JLKGHxcmOYk5x3nR5YuafbnNxuqNkhDWsgDr/uQZw1GXO6vI/+srkuOT
+         rj4CCk6UEwFtlu0Jds+KlCRIgk8Ak/pVo4Ir0CxJCXSNNRu8RVKz4AwmLq5Mu0JaC4Re
+         neN3pj6NHPIZW8uP6UXOHjJ2sCMJ72a58evai6XsXbMS08HmNIYdDFxFRMoUAKZIa3HV
+         tJEQ==
+X-Forwarded-Encrypted: i=1; AKwUvByAE68BdLFaNvydhfUeNGQlNIn1WRrYX1GsmBttqXm40o+VmGjvyCEmPEH2APwujHbWsd64cg==@lists.linux.dev
+X-Gm-Message-State: AFq9FYJ+WLlr7altzy2h1GJCcTBJD+8i6XXquqHe/3NjLk+i25bFO7JI
+	bVHC/ueHD4+vY2b/56NMD3mzaoH30NjWugaX2bJDjDM0Yv38wwBtYWf0
+X-Gm-Gg: AYBFou1Wk8UhR35Q48OTbjaJ8mHB9JldsdCikOjZcfAwj9w7/rVNLBG2tUCJSDSsUN6
+	EJQrBkhCdZxZUbg9tBNJiZN79LE4qzTeXpchGc6Awu7u9utwLNMrr948wkm5FS8D42e4G+S4Gwr
+	WduUhIFw5+Uh3qMbxi1nkxNpP0n8ltVW3+k9KzmT9kTcFEWbgX6TmhBbvvzxxxvQz9oUvW0XDdE
+	3eCtaUuJka0pwssuV8XxbUqgfmKeyrdH5s2bGFOeG2H3ThLNOOmWomqoQg46zBKQ2756O8P9Qhi
+	9Kf0ECyv0Qny2OIuy7dKnOJuI/MoGGjeQgAEVQMxUuMytY/u1aktYsOYBdYaI70C9EXs0g6VMOj
+	PKrEIQI3jnuGFXBAZrZY8ELD32Quh1qR3+7bsydt123ZWjRs4I+K0PYYZisPgKRs02Z3Y5wgRlf
+	FDT3Z+Dj52niCpd89LHP0HWoMY0cZSdXFEds7AugsgfD+ozqaX2ecmnZngsT5/1hudFsTtJBnZa
+	KfbxokAmGkG/N4bm6ED2Sh1f2ixTMu66d5gZBPQwLbDrQO+lMXWHFPOmbC3AyglmK52EECVF+Q8
+	+Z5/UtODhfGB8uJcJuw+jow=
+X-Received: by 2002:a05:7300:d706:b0:35c:6ffd:e91b with SMTP id 5a478bee46e88-36a2013bd0dmr5935780eec.40.1793211158462;
+        Wed, 28 Oct 2026 11:12:38 -0700 (PDT)
 Received: from unix.. ([181.229.23.179])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a238da675sm8309394eec.5.2026.10.28.11.12.31
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36a238da675sm8309394eec.5.2026.10.28.11.12.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2026 11:12:33 -0700 (PDT)
+        Wed, 28 Oct 2026 11:12:38 -0700 (PDT)
 From: =?UTF-8?q?Iv=C3=A1n=20Ezequiel=20Rodriguez?= <ivanrwcm25@gmail.com>
 To: David Howells <dhowells@redhat.com>,
 	Paulo Alcantara <pc@manguebit.org>,
@@ -87,10 +88,12 @@ Cc: Shyam Prasad N <sprasad@microsoft.com>,
 	linux-fsdevel@vger.kernel.org,
 	linux-cifs@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH netfs v1 0/2] preserve prepare_write errno across write reissue
-Date: Wed, 28 Oct 2026 15:12:27 -0300
-Message-ID: <20261028181229.1408342-1-ivanrwcm25@gmail.com>
+Subject: [PATCH netfs v1 1/2] netfs: preserve prepare_write errno on reissue
+Date: Wed, 28 Oct 2026 15:12:28 -0300
+Message-ID: <20261028181229.1408342-2-ivanrwcm25@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261028181229.1408342-1-ivanrwcm25@gmail.com>
+References: <20261028181229.1408342-1-ivanrwcm25@gmail.com>
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Post: <mailto:netfs@lists.linux.dev>
@@ -103,44 +106,39 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-cifs (and others) may fail in prepare_write() with
-netfs_prepare_write_failed() before write_retry calls
-netfs_reissue_write().  Since 82e8885bd763, reissue clears
-subreq->error to 0 for a clean I/O retry, so a FAILED subreq is
-terminated with 0.  The collector then does mapping_set_error(0),
-which is a no-op — writeback errno is lost (not an infinite retry).
+prepare_write() may call netfs_prepare_write_failed() (FAILED + errno)
+before write_retry calls netfs_reissue_write().  Clearing subreq->error
+to 0 for a clean I/O reissue (82e8885bd763) then makes
+netfs_do_issue_write() terminate with 0.  The collector copies
+front->error into stream->error and mapping_set_error(), which ignores
+0, so writeback failure is silent.
 
-Patch 1 skips that clear when FAILED is already set.
-Patch 2 adds a KUnit stub test: FAIL unpatched, PASS patched.
+Skip clearing error when NETFS_SREQ_FAILED is already set;
+do_issue_write() already terminates FAILED subrequests.
 
-  ./tools/testing/kunit/kunit.py run --kunitconfig=fs/netfs/.kunitconfig \
-	netfs_reissue_write*
-
-No prior lore report found for this interaction; surfaces on top of
-Shyam's NEED_RETRY change.
-
-Cc: David Howells <dhowells@redhat.com>
-Cc: Paulo Alcantara <pc@manguebit.org>
+Fixes: 82e8885bd763 ("netfs: when subreq is marked for retry, do not check if it faced an error")
 Cc: Shyam Prasad N <sprasad@microsoft.com>
 Cc: Steve French <stfrench@microsoft.com>
-Cc: netfs@lists.linux.dev
-Cc: linux-fsdevel@vger.kernel.org
-Cc: linux-cifs@vger.kernel.org
+Signed-off-by: Iván Ezequiel Rodriguez <ivanrwcm25@gmail.com>
+---
+ fs/netfs/write_issue.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Iván Ezequiel Rodriguez (2):
-  netfs: preserve prepare_write errno on reissue
-  netfs: add KUnit coverage for reissue prepare_write errno
-
- fs/netfs/.kunitconfig          |  3 ++
- fs/netfs/Kconfig               |  9 +++++
- fs/netfs/Makefile              |  2 +
- fs/netfs/write_collect.c       |  4 ++
- fs/netfs/write_issue.c         |  4 +-
- fs/netfs/write_reissue_kunit.c | 73 ++++++++++++++++++++++++++++++++++
- 6 files changed, 94 insertions(+), 1 deletion(-)
- create mode 100644 fs/netfs/.kunitconfig
- create mode 100644 fs/netfs/write_reissue_kunit.c
-
+diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
+index b8237e1314d8..f23364116421 100644
+--- a/fs/netfs/write_issue.c
++++ b/fs/netfs/write_issue.c
+@@ -268,7 +268,9 @@ void netfs_reissue_write(struct netfs_io_stream *stream,
+ 	iov_iter_truncate(&subreq->io_iter, size);
+ 
+ 	subreq->retry_count++;
+-	subreq->error = 0;
++	/* Keep prepare_write() errno; do_issue_write() terminates FAILED. */
++	if (!test_bit(NETFS_SREQ_FAILED, &subreq->flags))
++		subreq->error = 0;
+ 	__clear_bit(NETFS_SREQ_MADE_PROGRESS, &subreq->flags);
+ 	__set_bit(NETFS_SREQ_IN_PROGRESS, &subreq->flags);
+ 	netfs_stat(&netfs_n_wh_retry_write_subreq);
 -- 
 2.43.0
 
