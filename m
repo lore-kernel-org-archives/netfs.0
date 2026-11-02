@@ -1,83 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793269197;
-	b=j/bLzmBo1o292xAuV2xVxqmHX8NCsJ9EJFk5BqYKOeios/gRd+heDn9yqcRJsBDZMSa8
-	 WffgnXYihEaSvgWP/BAUZR/P5sOmuCp2SEAu0tQZt2H3hCLpxmf5+3CTd4OWQO1OnFpxw
-	 YjBkOzVzqjk924vEXiixyiG18ps9I9bAZr/qWYzqXtU5rgz44Bcyzs0vNNWsSfT2MZfoL
-	 mhSeWEmAfSPlTpEBokPhaPPlrk5ZGLJMPIq8pca9uGLaQun49KkN62EBzvHD/4TYf6Li8
-	 j/FGEO+hpCWphn3KbPiC+QpE3PyQ7D0uIM5rDsSb13kRgu9D0letS4VNkDHt+zrBAJQ==
+	t=1793632026;
+	b=fPkiSXsQDXyvguGyTcJHE4XuhTac7GWYnXanhpYWo4/2ZHGQFH2AGJQFy2GauwaSKb8i
+	 tGACX4Kjb1lp3p6Oql64Qisq0kA76F8Nb0IkPvavxpDSfU4qydWyxvCBw6WGRXt+4lU0U
+	 JficG1vlqH1SKgwt9iRPSV3DdzBY9b1NguD9buocfMZvIjt/X9L0Z/j14VEKj9pjDvkLe
+	 DCbeHLift+pRAZUiXuVxK3i0F0gjEsn6VhSNnsc9pgL0HInf1aBxB2xTMyLNcxKZnro/Q
+	 m9PBSb2Gq1etERE40SyEuGddK3eVm3IeAOSdM01dZRJFkqODw1Q8nIy89WBM4bZ+gfA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793269197;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To;
-	bh=zfY9oMoIW/0okd9xFFx3UCLsKMsJOADfA+RNZfH9SM0=;
-	b=gc2U0AFfszc/3JgP6c9iZhVxGnD536+QfnsHrj4T5OjMxA/mb2K3VGcAAUA57aEp76RF
-	 +GR8QnT0xFm1onYijipPf1AAhkcnd13th3Ws75Myd8CTtASk2locfqPFlbcJpZMTw8LBK
-	 YQk2ESymtoHQVgpwwWTyQSkWvSSBSm+2X/1ZAzeBIMk0P+y4M/VMLPjQLK2FsirpUrgb+
-	 +3I8BKE25scFrW63FcvKR8EWLDr+yhwUVt/9LNqeJMOXRQIKyvKzke3UWoDfB7F68GNVC
-	 PfoBC34MFwQ675j0jN3yGU37xUsBmpVC38M2PWaDbO6uP00EDiiEnBJFauOsv6Kl0zg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793632026;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=dylFydTJD2AJSyC001lOFTgMCOP2ZnGzBFoGx74ahLY=;
+	b=EJtAqHtOBO135EfTgi5akW+mVsj+cbDXtv/XAfEDFXFVQ7/1r/TtOdzmZpfY82YDTXBb
+	 7VXOWvqijGUkLNtx6l+kmWycmqFTBQ9pp3Hg/PMpVOUdB5qWUwXlysi/+141SxRe7Dhu8
+	 ZonIQMd6u6bNGvmrlZbIGxt79hPFCLtgk4Irn7PDuxFpzRFs0UpSvNfztCUikUXmVtrL9
+	 tTvmStrPOVscGMqExkZjYHARilrLAh1TPcd3827JR72BrsXJcIDIO6WQ/PeVfiORyAEzb
+	 pQqmuvfsuZICZEfBU7CAjazjT/3RP48KJm8JkTXwqicwAyfLGFqE2bzfZsmpfR2L6GA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cM9IhEPC;
-	arc=none smtp.remote-ip=192.198.163.17
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IxY+fr7f;
+	arc=none smtp.remote-ip=209.85.128.42
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FD7606A320;
-	Thu, 29 Oct 2026 10:19:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 14FD7606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F166072C41
+	for <netfs@lists.linux.dev>; Mon,  2 Nov 2026 15:07:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 07F166072C41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cM9IhEPC
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793269196; x=1824805196;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=Qt6D4YLPwSHv5zAOxXUaLkXyrpRhNSrHIbMspXroy44=;
-  b=cM9IhEPCqBq+zO7PeJUhczV/19F6tI12u0jw53S/+D2fKqJGrpIGVm1z
-   sCeYg5JBVb5AK4SAA2UBqDf9+dqs2t9BqOAnaE30XbY2g6NI2t6qjvFhw
-   /G1ZgmIohvQTQr48h4qNxt2hvWgm/cQHOR/cTqpzAkDEiTpme3Ax8wFdc
-   UsLIBM4g4eTpWHa3SOhjTqzHaTj8T9CYIB8slqBmyjrhrSO8hxmQwx830
-   /2s+mW3PllCCvdZcCtZ5x5VOxEuzR4bz+NrCzVUxCAls5P/Gkyow9gLag
-   o9HcRcPNKA4ePzT4fkiM0GmWCK4xCs7TCfhsbCjQNq/JLinjhRe2tchF3
-   g==;
-X-CSE-ConnectionGUID: semNkrLhQ4ex6T/ozfbINg==
-X-CSE-MsgGUID: FrJJw8cPQvyqKInkLU+cZg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="2024006"
-X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
-   d="scan'208";a="2024006"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2026 03:19:47 -0700
-X-CSE-ConnectionGUID: H6ANZahERZeuR9ZW3Z4ybA==
-X-CSE-MsgGUID: Iq/Jf3wIQGmkAMGQYBYpXg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
-   d="scan'208";a="4986684"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 29 Oct 2026 03:19:45 -0700
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xMNEU-00000000ZxU-25rj;
-	Thu, 29 Oct 2026 10:19:42 +0000
-Date: Thu, 29 Oct 2026 18:19:34 +0800
-From: kernel test robot <lkp@intel.com>
-To: =?iso-8859-1?Q?Iv=E1n?= Ezequiel Rodriguez <ivanrwcm25@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>, netfs@lists.linux.dev
-Cc: oe-kbuild-all@lists.linux.dev, Shyam Prasad N <sprasad@microsoft.com>,
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IxY+fr7f
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4ac95761c85so20043555e9.2
+        for <netfs@lists.linux.dev>; Mon, 02 Nov 2026 07:07:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793632024; x=1794236824; darn=lists.linux.dev;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=dylFydTJD2AJSyC001lOFTgMCOP2ZnGzBFoGx74ahLY=;
+        b=IxY+fr7fZsYntyvDnh+aIH+EY8Je3P3+hpjFZj4dKMwnRQnbwLdvYrE6B4zWsPhRiF
+         sWvEi5cWbRk9so8AnrVbI1wCQWfdSSCVlzQ5G2Zz3JWrSFx3NOWhqZNcWfJ1PpZv1e2K
+         v71IYtBXHXHZFCg659ByDij1E4qgXh4wVWWXzI129mTU72u/WUF4CGerFIktYSk3xIkr
+         gkzPgXNCrY2cwzd4JZj/XGJdv+MH7oglqjKGU9uaSoYdmA3gZ0vUFVuBbQNG460E5O2Z
+         Ui3yXAZYNbPf9shEOEdR7V9Edhuzr9JHhOJ3jZbYUkSY0FJnTwHFsGOcvbZzTh3vp7EQ
+         QgBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793632024; x=1794236824;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dylFydTJD2AJSyC001lOFTgMCOP2ZnGzBFoGx74ahLY=;
+        b=Y/CraWTt4T1Pzx1LeAbFA2+Cgcl49sdbDsQeVQtAj1mKsj8RjrwYN08ORSrqGFDU9O
+         XyQb9Rb1IRefJL3SA2M9AxW4tPkFfO4Kwy8zxud/ICbWeIzLTWYFAqGkWluq33OVoBCM
+         /+RJCgNhtEcK9cz1qpSJgD/vW4qRezRIdBwxqMm+IZFTA+n9+7cRRJR7BDhExhVuCvN3
+         BiyGFNMKvJ8yO7U5K6SvkGiGIJhjtaZeQOsNWmYaWGamQjAKZaBCvrW3XCaEcAzRNF3y
+         qeXFPaQyG2yVJcUbjuG+c4+/pOny1MNOwq7UbnZP39IKA7VKWxD77GTR5rCfPi0YPHVI
+         voIw==
+X-Forwarded-Encrypted: i=1; AKwUvBwYHXAAyc3xzp4deyAWFvk7t591Fn/NX8ribpqsA1X7izzdKlvluFkXsM+v4z+TmHjOe/0Y3w==@lists.linux.dev
+X-Gm-Message-State: AFq9FYKyngi1Rs6wUuXEgNE3fRV6oTNrLTcoi8SW9c3HLxARfFQJLN40
+	Wnvbu1zx8ca+4BrAy2AdsKKhwHJA/wwN6/h5ULlfKQYxIrmWMjUhviYJ
+X-Gm-Gg: AYBFou0VP5KEumZgjEW2IM2TgU9VkHNj8Z4s9Kmjc3CmMn4FLHqesjPARCTeddycfRA
+	MCGnTKXTJfNoS23Kl5/S+zLEsttVnxNOE5lFnxm1d5g6u0IXFPsEue8r0jaEZHBn6i3T8tkc0gm
+	qhOmk0iB7RZSQn/V+tQy9lmSKh0LPJSFEy+YWtRXo+zGPmjc4gMCuSAufa1WrcqX/tQ0oCeDdnN
+	Ewf8SRU7A7YGUz3uPa5XeRhR9DJBkdVazjJK5CSGkbH6cutnM8EkjXQHFYk4svhNM7OEDx7xpr4
+	XqX03oXKXIRdPcavKWBIX6jAB4lnrzjkJM557cppHwFf4tygZSJ9ed9brZ44bgB2dY0g1PGtGNS
+	xt5NgF9fatY1AEuk44Pb3S1xMXjL9UdjcpyMOBtfrUdJimjsvm/gIA+a9hlJY4fEhz8BYNbSjzO
+	HtK7nAzwhLIlKJyZJv41qB9OURwcPTcyauA0OzfctOxc1E/jLUEXXXRoA4cdyFXEj9dE8X/FTdp
+	U/NLIsSQzXtmoh0zAsZIfaAEAPxBxfmlfF9lOXzuVHcpu4Dr0GB3k1idzf2Ug8Pf8070JgeJiyn
+	CNa+VTjlKgxPeJ76vzIrV/WQztea3gf+5Qjt6hnqw5UaEg==
+X-Received: by 2002:a05:600c:1f8d:b0:4a2:c9b:9b98 with SMTP id 5b1f17b1804b1-4ac177539f6mr227554115e9.17.1793632024294;
+        Mon, 02 Nov 2026 07:07:04 -0800 (PST)
+Received: from localhost.localdomain ([2800:810:84a:dc6d:d32b:1515:b2a9:c74e])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4aa81b7fe80sm395629535e9.11.2026.11.02.07.07.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Nov 2026 07:07:03 -0800 (PST)
+From: =?UTF-8?q?Iv=C3=A1n=20Ezequiel=20Rodriguez?= <ivanrwcm25@gmail.com>
+To: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	netfs@lists.linux.dev
+Cc: Shyam Prasad N <sprasad@microsoft.com>,
 	Steve French <stfrench@microsoft.com>,
-	linux-fsdevel@vger.kernel.org, linux-cifs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-cifs@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH netfs v1 2/2] netfs: add KUnit coverage for reissue
- prepare_write errno
-Message-ID: <202610291753.Jr3HECY2-lkp@intel.com>
-References: <20261028181229.1408342-3-ivanrwcm25@gmail.com>
+Subject: [PATCH netfs v2 0/2] preserve prepare_write errno across write reissue
+Date: Mon,  2 Nov 2026 12:06:53 -0300
+Message-ID: <20261102150656.207612-1-ivanrwcm25@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261028181229.1408342-1-ivanrwcm25@gmail.com>
+References: <20261028181229.1408342-1-ivanrwcm25@gmail.com>
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Post: <mailto:netfs@lists.linux.dev>
@@ -87,83 +103,53 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:netfs+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261028181229.1408342-3-ivanrwcm25@gmail.com>
 
-Hi Iv�n,
+cifs (and others) may fail in prepare_write() with
+netfs_prepare_write_failed() before write_retry calls
+netfs_reissue_write().  Since 82e8885bd763, reissue clears
+subreq->error to 0 for a clean I/O retry, so a FAILED subreq is
+terminated with 0.  The collector then does mapping_set_error(0),
+which is a no-op — writeback errno is lost (not an infinite retry).
 
-kernel test robot noticed the following build warnings:
+Patch 1 skips that clear when FAILED is already set.
+Patch 2 adds a KUnit stub test: FAIL unpatched, PASS patched.
 
-[auto build test WARNING on brauner-vfs/vfs.all]
-[also build test WARNING on linus/master v7.3 next-20261028]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+  ./tools/testing/kunit/kunit.py run --kunitconfig=fs/netfs/.kunitconfig \
+	netfs_reissue_write*
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Iv-n-Ezequiel-Rodriguez/netfs-preserve-prepare_write-errno-on-reissue/20261028-151228
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git vfs.all
-patch link:    https://lore.kernel.org/r/20261028181229.1408342-3-ivanrwcm25%40gmail.com
-patch subject: [PATCH netfs v1 2/2] netfs: add KUnit coverage for reissue prepare_write errno
-config: arm-allyesconfig (https://download.01.org/0day-ci/archive/20261029/202610291753.Jr3HECY2-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 16.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261029/202610291753.Jr3HECY2-lkp@intel.com/reproduce)
+Changes in v2:
+- KUnit: allocate netfs_io_request / netfs_io_subrequest with
+  kunit_kzalloc() to fix ARM allyesconfig -Wframe-larger-than=
+  (kernel test robot).
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202610291753.Jr3HECY2-lkp@intel.com/
+No prior lore report found for this interaction; surfaces on top of
+Shyam's NEED_RETRY change.
 
-All warnings (new ones prefixed by >>):
-
-   fs/netfs/write_reissue_kunit.c: In function 'reissue_preserves_prep_error':
->> fs/netfs/write_reissue_kunit.c:61:1: warning: the frame size of 1400 bytes is larger than 1280 bytes [-Wframe-larger-than=]
-      61 | }
-         | ^
+Cc: David Howells <dhowells@redhat.com>
+Cc: Paulo Alcantara <pc@manguebit.org>
+Cc: Shyam Prasad N <sprasad@microsoft.com>
+Cc: Steve French <stfrench@microsoft.com>
+Cc: netfs@lists.linux.dev
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-cifs@vger.kernel.org
 
 
-vim +61 fs/netfs/write_reissue_kunit.c
+Iván Ezequiel Rodriguez (2):
+  netfs: preserve prepare_write errno on reissue
+  netfs: add KUnit coverage for reissue prepare_write errno
 
-    25	
-    26	/*
-    27	 * prepare_write_failed() sets FAILED + errno, then write_retry still calls
-    28	 * reissue_write().  Before the fix, reissue wiped error to 0 so terminated
-    29	 * reported success and mapping_set_error(0) was a no-op.
-    30	 */
-    31	static void reissue_preserves_prep_error(struct kunit *test)
-    32	{
-    33		struct term_capture cap = {};
-    34		struct netfs_io_request wreq = {};
-    35		struct netfs_io_stream stream = {
-    36			.source = NETFS_UPLOAD_TO_SERVER,
-    37		};
-    38		struct netfs_io_subrequest subreq = {
-    39			.rreq = &wreq,
-    40			.len = 1,
-    41			.transferred = 0,
-    42			.error = -EIO,
-    43			.source = NETFS_UPLOAD_TO_SERVER,
-    44		};
-    45		char buf[1] = { 0 };
-    46		struct kvec kvec = { .iov_base = buf, .iov_len = 1 };
-    47		struct iov_iter source;
-    48	
-    49		__set_bit(NETFS_SREQ_FAILED, &subreq.flags);
-    50		iov_iter_kvec(&source, ITER_SOURCE, &kvec, 1, 1);
-    51	
-    52		test->priv = &cap;
-    53		kunit_activate_static_stub(test, netfs_write_subrequest_terminated,
-    54					   capture_terminated);
-    55	
-    56		netfs_reissue_write(&stream, &subreq, &source);
-    57	
-    58		KUNIT_EXPECT_TRUE(test, cap.called);
-    59		KUNIT_EXPECT_EQ(test, cap.transferred_or_error, -EIO);
-    60		KUNIT_EXPECT_EQ(test, subreq.error, -EIO);
-  > 61	}
-    62	
+ fs/netfs/.kunitconfig          |  3 ++
+ fs/netfs/Kconfig               |  9 ++++
+ fs/netfs/Makefile              |  2 +
+ fs/netfs/write_collect.c       |  4 ++
+ fs/netfs/write_issue.c         |  4 +-
+ fs/netfs/write_reissue_kunit.c | 80 ++++++++++++++++++++++++++++++++++
+ 6 files changed, 101 insertions(+), 1 deletion(-)
+ create mode 100644 fs/netfs/.kunitconfig
+ create mode 100644 fs/netfs/write_reissue_kunit.c
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+-- 
+2.43.0
+
