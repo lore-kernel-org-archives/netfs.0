@@ -1,50 +1,50 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=143.255.12.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793746824;
-	b=SZi6xWd9UleZcDWWEaCKFeL52IVNKbNOX27O0zj23c9HOADuZohfw8RiL3thTiBHu3dr
-	 w7EKoH9zQki4fg11mcQ0314dap6W9MenO/tqcLLkD8/j7F0gFEJ4SxX3W+ElOM7reQbu+
-	 qSWLj5CclSbokd7CNeOPQj6Ob0jLrF9QQeWyozjIUdPO6ot9QH1hlaOdkK2STylZT7yXO
-	 Z50zyJplNQBi17krRMrfyybAkvFzlJrDxLyINuFNjn/Byu/o8gtKQ9f2co+yQSzMPPEOZ
-	 EvXz8lgk/9lI9Xu4xvSjyc68kTbj7t1VC0jjbJThNb3oJoY4fyFH1g8uTdQcPwsaMuQ==
+	t=1793746825;
+	b=EtXkC/e65OkqjAAkA6sUv6adFHLmZ+D2PdUa7TF/r+Ek1cTm/dMx0Q7ybYnkq+pLJZhK
+	 zfExHL0Y9BVSE7LKyNBtlD5HL+6rPAE8LOrefctN5eeeohnl/31Ref5wiP90Gh1/ndOak
+	 cmvlh8DwyuzrnHL9k4uPv1Joc6llRdFTwyuvkq9NKLipR+KdpuMs9NfFHwbbovu9cE3Sb
+	 8BisHmSiPIfYFotVrPZl/thylCMaMcx00199dJ9Ba7QJUZYunXW0OCJQlqHkGigglpN46
+	 kk4iIrX5MPbC8aO2ac+W3sIJGDRMjFvmKqNKMtDKSeaxVBreJ/ol1yoHxUR3SAIaIwQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793746824;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793746825;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=SeGUYU2j3Gwp0nKs6/+eaIpZ4Np7xEbON774wLqvFzY=;
-	b=zq38fNzO0xeWO1HgekwehdXaNKiWhoN4r96+9Avyp+yyJRYbebqfTn47EYVlab+Co3VT
-	 hgQXqK8F139PEs/xbFeetuQQYDf7XEmOf9FZnXFMRiLHmNhH3B/3vzZUmBN2lJIipGfb/
-	 IY9kfczIItckXqIhNJa1uE+G8WvS5h7aHUx/Z0wjU6jo0FUiGHgNx4OTN/5d8xCYgBXQl
-	 TUm//ad4YyNwc1OIsxfowtROjpp8YDv25wT0rTQymZeTh/BeVxPRpDjG8uibb2vIDGDb+
-	 bKjAeHu92HJntIaLLoxreRwvoLdlGOLFd2FiSo8B0KncDVqRR6GY+9+a9rzx2sO5T/g==
+	bh=rxu3usRU6V45z79IJjKUZpBQggZAWEDLODVZowP/c/Q=;
+	b=SNtIkzEUlDBy9iqTiOl/VoNWfdm9A1pHvk4yHKFEmGi9mywpweaaGzohWADWs4x9hRrQ
+	 9E3BcV+poa2prZ4/LtVpgbEc8bjSU+hL1gR9AVzGtCVJA+ubd9vOt8KFtkCDcM+BImDNj
+	 mWzJWRXabb9BRIpLZa2VKtTTzfWJxjoDikr6CReFYYUJWQCAjYU7wpVjGNowqo58ub2xT
+	 QD3GdTB674g3xDKF3fGhPLBPZgbKa/VdF9zgODOlsGlC5qCDuhOaxEll4mKLy7QrtHv4+
+	 WqtORnyjkLJHaWPis+Rya3WCLI6Yi/oH75RVfonEt9fxPDW4xLnb+DbFI8pEongX+SQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=manguebit.org;
 	spf=pass smtp.mailfrom=manguebit.org;
-	dkim=pass header.d=manguebit.org header.i=@manguebit.org header.a=rsa-sha256 header.s=dkim header.b="1sxjZd/0";
+	dkim=pass header.d=manguebit.org header.i=@manguebit.org header.a=rsa-sha256 header.s=dkim header.b=1HJxYVdX;
 	arc=none smtp.remote-ip=143.255.12.172
 Received: from mx1.manguebit.org (mx1.manguebit.org [143.255.12.172])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6162C606A32F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A1D606A334;
 	Tue,  3 Nov 2026 23:00:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6162C606A32F
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B4A1D606A334
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=manguebit.org header.i=@manguebit.org header.a=rsa-sha256 header.s=dkim header.b=1sxjZd/0
+	dkim=pass (2048-bit key, unprotected) header.d=manguebit.org header.i=@manguebit.org header.a=rsa-sha256 header.s=dkim header.b=1HJxYVdX
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=manguebit.org; s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Content-Type:Reply-To:
 	Content-ID:Content-Description;
-	bh=SeGUYU2j3Gwp0nKs6/+eaIpZ4Np7xEbON774wLqvFzY=; b=1sxjZd/0OrEEcdYiTlOpbVz510
-	VZjAMoEK0Xjutw1Vuc3a7TqByhNpdqTftDmP2rmAIh1g4nWXs9SITBuaXLvfM2k7bWXqSlzGa+utq
-	bwhYdxJYSp2V9bZpn1do33D2LXLEM1eXL7hkc+EiGMrICG/7A8Sb+hzoe772NTgoPLvzmIbRF2W7f
-	TsAbqruT3mnAneSs6KOk4z8sARkaSwFK1hbSdgbpajzYfPotfQ6mbg5mNQzUh0Vu1GDaWXy21pwjC
-	WWLas3X5/7GqDYWW2U54g6tdSuX1sjo1cuSU/eq5jmH3CA+hkUOBnIVbndOhA4iIHsENVkwJ3hHJC
-	lKVpc4QQ==;
+	bh=rxu3usRU6V45z79IJjKUZpBQggZAWEDLODVZowP/c/Q=; b=1HJxYVdXX7OjwBGLdVtuEOVk4o
+	OZJKfl9bwn3ABjq6V6oyyDLzZ+Xbn9Qhc3mE3GPCp02GQV9xUVQKkfweTeMchJ2pvqYwBmlqw8RM+
+	D+rPHxDlCaosmcohP7KxN4F+1HsP3nl2z0koXqptGqO5mCplQNIMgta6vGU9yesIL+TKiKhRzVl/x
+	h/utP006ybrs/5rvxl7QolmcSpZctxxpr86I3rCOq0970Tg//Ff6nI2FubBQmeYHdtdAr6pVrP1VB
+	n2fv+HfOKpVw9P2dms7TmLk1gPWKfmMsa5g68DpwZvEjBHL6nDV+N0tYZLfVWu8Xqwe/7Xva8oxCU
+	xTUP9iEA==;
 Received: from pc by mx1.manguebit.org with local (Exim 4.100.1)
-	id 1xONUL-00000000kNL-3RLm;
+	id 1xONUM-00000000kNY-0eM9;
 	Tue, 03 Nov 2026 20:00:23 -0300
 From: Paulo Alcantara <pc@manguebit.org>
 To: linux-cifs@vger.kernel.org,
@@ -57,9 +57,9 @@ Cc: Namjae Jeon <linkinjeon@kernel.org>,
 	Bharath SM <bharathsm@microsoft.com>,
 	Christian Brauner <brauner@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v3 07/16] smb: client: don't block dying tasks waiting for writeback on close
-Date: Tue,  3 Nov 2026 20:00:11 -0300
-Message-ID: <20261103230020.1617748-8-pc@manguebit.org>
+Subject: [PATCH v3 08/16] smb: client: issue writes from a worker if the task is dying
+Date: Tue,  3 Nov 2026 20:00:12 -0300
+Message-ID: <20261103230020.1617748-9-pc@manguebit.org>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261103230020.1617748-1-pc@manguebit.org>
 References: <20261103230020.1617748-1-pc@manguebit.org>
@@ -74,77 +74,149 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-cifs_flush() waits uninterruptibly for the writeback it starts.  A task
-that gets killed while closing a file on a hard mount with an
-unresponsive server is stuck in D state until the server comes back.  It
-also consumes any writeback error for a caller that is about to exit,
-hiding it from everyone else.
+A task with a fatal signal pending can't send on the socket:
+__smb_send_rqst() refuses it upfront with -ERESTARTSYS, as SIGKILL can't
+be blocked and a send interrupted halfway forces a reconnect.  Writeback,
+however, runs in the context of whoever starts it, so when a dying task
+flushes dirty pages - close() racing with SIGKILL, or fd teardown during
+exit_group() - every write subrequest gets refused:
 
-Wait killably instead.  If the closer gets killed, stop waiting and leave
-the error bits in the mapping for others to see; writeback already in
-flight completes on its own.
+  smb3_write_err: ... offset=0x1400000 len=0x400000 rc=-512
+  cifs_flush_err: ino=... rc=-512
 
-This is also needed before letting dying tasks issue their writes from a
-worker, which would otherwise make them wait for every one of them.
+Since the switch to netfslib, a failed upload ends writeback with the
+folios clean, so the data is silently lost: the server ends up with
+20MiB of a 64MiB file while stat(2) reports the full size.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Issue writeback subrequests of dying tasks from a new cifswritebackd
+workqueue instead, like afs does for all of its writes, so they get sent
+from a context with no signals.  Leave direct and unbuffered writes
+alone, as their callers get the error.  Use a dedicated WQ_UNBOUND
+workqueue as the writes may block for long on credits, sends or reopens,
+e.g. on hard mounts with an unresponsive server, and must not hold up
+other cifs work such as reconnects, nor starve the WQ_MEM_RECLAIM
+rescuer of cifsiod_wq.
+
+Fixes: 3ee1a1fc3981 ("cifs: Cut over to using netfslib")
 Signed-off-by: Paulo Alcantara <pc@manguebit.org>
 Cc: stable@vger.kernel.org
 ---
- fs/smb/client/file.c | 32 +++++++++++++++++++++++++++++---
- 1 file changed, 29 insertions(+), 3 deletions(-)
+ fs/smb/client/cifsfs.c   | 15 +++++++++++++--
+ fs/smb/client/cifsglob.h |  1 +
+ fs/smb/client/file.c     | 26 +++++++++++++++++++++++++-
+ 3 files changed, 39 insertions(+), 3 deletions(-)
 
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index e79eacacf625..9bdcacbee8a8 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -3039,17 +3039,43 @@ int cifs_fsync(struct file *file, loff_t start, loff_t end, int datasync)
- 	return rc;
+diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
+index b3735c98bfc3..7146bb22a69e 100644
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -164,6 +164,7 @@ struct workqueue_struct	*cifsoplockd_wq;
+ struct workqueue_struct	*deferredclose_wq;
+ struct workqueue_struct	*serverclose_wq;
+ struct workqueue_struct	*cfid_put_wq;
++struct workqueue_struct	*cifs_writeback_wq;
+ __u32 cifs_lock_secret;
+ 
+ /*
+@@ -2133,9 +2134,16 @@ init_cifs(void)
+ 		goto out_destroy_serverclose_wq;
+ 	}
+ 
+-	rc = cifs_init_inodecache();
+-	if (rc)
++	cifs_writeback_wq = alloc_workqueue("cifswritebackd",
++					    WQ_UNBOUND | WQ_MEM_RECLAIM, 0);
++	if (!cifs_writeback_wq) {
++		rc = -ENOMEM;
+ 		goto out_destroy_cfid_put_wq;
++	}
++
++	rc = cifs_init_inodecache();
++	if (rc)
++		goto out_destroy_writeback_wq;
+ 
+ 	rc = cifs_init_netfs();
+ 	if (rc)
+@@ -2206,6 +2214,8 @@ init_cifs(void)
+ 	cifs_destroy_netfs();
+ out_destroy_inodecache:
+ 	cifs_destroy_inodecache();
++out_destroy_writeback_wq:
++	destroy_workqueue(cifs_writeback_wq);
+ out_destroy_cfid_put_wq:
+ 	destroy_workqueue(cfid_put_wq);
+ out_destroy_serverclose_wq:
+@@ -2251,6 +2261,7 @@ exit_cifs(void)
+ 	destroy_workqueue(fileinfo_put_wq);
+ 	destroy_workqueue(serverclose_wq);
+ 	destroy_workqueue(cfid_put_wq);
++	destroy_workqueue(cifs_writeback_wq);
+ 	destroy_workqueue(cifsiod_wq);
  }
  
-+static int cifs_wait_writeback_killable(struct address_space *mapping)
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index b6a993cc0245..e211dea91e6e 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -2144,6 +2144,7 @@ extern struct workqueue_struct *cifsoplockd_wq;
+ extern struct workqueue_struct *deferredclose_wq;
+ extern struct workqueue_struct *serverclose_wq;
+ extern struct workqueue_struct *cfid_put_wq;
++extern struct workqueue_struct *cifs_writeback_wq;
+ extern __u32 cifs_lock_secret;
+ 
+ extern mempool_t *cifs_sm_req_poolp;
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index 9bdcacbee8a8..e124042cabf5 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -90,6 +90,12 @@ static bool cifs_io_aborted(struct cifs_io_subrequest *subreq)
+ 	       tcon->need_reconnect;
+ }
+ 
++static bool cifs_writeback_dying(struct netfs_io_subrequest *subreq)
 +{
-+	struct folio_batch fbatch;
-+	pgoff_t index = 0;
-+	int rc = 0;
-+
-+	folio_batch_init(&fbatch);
-+	while (!rc &&
-+	       filemap_get_folios_tag(mapping, &index, (pgoff_t)-1,
-+				      PAGECACHE_TAG_WRITEBACK, &fbatch)) {
-+		for (unsigned int i = 0;
-+		     !rc && i < folio_batch_count(&fbatch); i++)
-+			rc = folio_wait_writeback_killable(fbatch.folios[i]);
-+		folio_batch_release(&fbatch);
-+		cond_resched();
-+	}
-+	return rc;
++	return subreq->rreq->origin == NETFS_WRITEBACK &&
++		fatal_signal_pending(current);
 +}
 +
  /*
-  * As file closes, flush all cached write data for this inode checking
-  * for write behind errors.
+  * Prepare a subrequest to upload to the server.  We need to allocate credits
+  * so that we know the maximum amount of data that we can include in it.
+@@ -166,7 +172,7 @@ static void cifs_prepare_write(struct netfs_io_subrequest *subreq)
+ /*
+  * Issue a subrequest to upload to the server.
   */
- int cifs_flush(struct file *file, fl_owner_t id)
+-static void cifs_issue_write(struct netfs_io_subrequest *subreq)
++static void __cifs_issue_write(struct netfs_io_subrequest *subreq)
  {
-+	struct address_space *mapping = file->f_mapping;
- 	struct inode *inode = file_inode(file);
--	int rc = 0;
-+	int rc = 0, rc2;
+ 	struct cifs_io_subrequest *wdata =
+ 		container_of(subreq, struct cifs_io_subrequest, subreq);
+@@ -204,6 +210,24 @@ static void cifs_issue_write(struct netfs_io_subrequest *subreq)
+ 	goto out;
+ }
  
--	if (file->f_mode & FMODE_WRITE)
--		rc = filemap_write_and_wait(inode->i_mapping);
-+	if (file->f_mode & FMODE_WRITE) {
-+		rc = filemap_fdatawrite(mapping);
-+		if (cifs_wait_writeback_killable(mapping))
-+			return 0;
-+		rc2 = filemap_check_errors(mapping);
-+		if (!rc)
-+			rc = rc2;
++static void cifs_issue_write_worker(struct work_struct *work)
++{
++	struct netfs_io_subrequest *subreq;
++
++	subreq = container_of(work, struct netfs_io_subrequest, work);
++	__cifs_issue_write(subreq);
++}
++
++static void cifs_issue_write(struct netfs_io_subrequest *subreq)
++{
++	if (unlikely(cifs_writeback_dying(subreq))) {
++		subreq->work.func = cifs_issue_write_worker;
++		WARN_ON_ONCE(!queue_work(cifs_writeback_wq, &subreq->work));
++		return;
 +	}
- 
- 	cifs_dbg(FYI, "Flush inode %p file %p rc %d\n", inode, file, rc);
- 	if (rc) {
++	__cifs_issue_write(subreq);
++}
++
+ static void cifs_netfs_invalidate_cache(struct netfs_io_request *wreq)
+ {
+ 	cifs_invalidate_cache(wreq->inode, 0);
 -- 
 2.56.0
 
