@@ -1,51 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=143.255.12.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793746824;
-	b=stPwr4TbTHYEXvxg8N4A9NNUhbzLLC8yM0C75FAdVBX1DDT5aBUEaaacwb+2e7+q7kMf
-	 K7/gq7j/X8198zL5WEFNG+Of/JPdRwO9vt+XBLghWQvmeBJ4NP5vW9wNP/eXhhDgO2s/N
-	 vJMoVChO+0XFe/xQEfUj+NxJtWrFeNlap50N2UwQY4m9x5W1V1Q9JFB++7rLf/hvcl5UG
-	 3wzAvKiWC8U8GlfOExPR6WMQlghSw6xph6kVY7pYwgy/fAhOYo8GBjr6KfsEtZjW22DHt
-	 fFhU5cke8eBz64pwauQjjJ/rwDd6CiQgepaeYdVaoM+x4E1TgCeDnGiaCf/lpyz+cuQ==
+	t=1793827701;
+	b=1DGh/vyFm7Lo3Vve92IXWIpnb+ch53LbdarZRX/f1GGkIPGgBnUlHLj9AQeVELhJe/9Z
+	 +4jDcrhezCbHVTxBjIzvgAfFsBj1i6rzPj20wpZJV2eeEQ0rJMTNO6tfsfv+6AugLzQ6o
+	 fQpDSoj3Y+ELePxkh5OXIXmxARZvCilKwsMqVPVPfsNKS66mPasOFl9hvfO75uF6Dd32E
+	 +yvgLtjdv5LJFMrPnK8fKBVgGJWLIbr/FFuTh35ufNhBt6P7RRRNPnyLPhNPJWGddahsp
+	 4IqGAT1g+FG4F/dTIATqG6Q9rtVQrG5iw070eTQAPy1XPebPAvwqEW36ZDDJ4s51V9A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793746824;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793827701;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
 	bh=5bb5pZgvdlB0zwtIHxMXIpmN4q11PB8sTOikLkpnbGA=;
-	b=wvIWjOmgR1lWF5/nR8SehB1DZEQGRgtZrKVgD/QIykdn6cLxVf5GGXAPNHxZ6SYgqFcb
-	 DVJivk1J6vx3iNfXSaqWeXZ7W20Hlsx0ISt/PQxmH0O1iL5VJYAkc3C6c7FX3tXz/SM0w
-	 7DLeMIFTH2DnRlhvvmWF3L2we47vWqNcDvRyR1fNOV5+GyV8H1EH989uS3BFttgoqqBzk
-	 aYEu+gW9vj0+w3JRKbdh8/EELFTabOXVw/nfnlKiMminyxV/POBz52WhXzsnXIk/VKqTe
-	 UOODDAxrDRWREfj6Oh8L1DGfbMN8KfgW8ybp3ZZk28lDmL3yLJdX+zXE61/Tz7WtboA==
+	b=J8sEfU3HF8s17lsuh605iXYrUtzs3Mlp4EkHnDijdabDSn7w+sncQdMDKRCkXbXPTNTL
+	 VVopG7cDtxUJf7PofdTfV6NhOVUlLKGSO8UVkfDNVJevnGNGBaXdTDpufXgwTu5UYb7+t
+	 qmgUZdR5vQbFPPbH2KeTZBx4DKJTyCe/SCwZ43mdP/d6IvlS9OT4zeYFAK0f6Nrj6bUfH
+	 lIy8NY+kDRtXcIUHs6jbxBSppbH/MnpRKUIG4By3zMBtWaGP+MkfQyUzNCEM4Y2SFzpcD
+	 Js+N7GnMrxqAU26tsX1nEUiW2HrwkzSV6GKsT6Vy1LaNvSYNGoID2qb6Gvk2Z4jycVg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=manguebit.org;
 	spf=pass smtp.mailfrom=manguebit.org;
-	dkim=pass header.d=manguebit.org header.i=@manguebit.org header.a=rsa-sha256 header.s=dkim header.b=6eqkfHFf;
+	dkim=pass header.d=manguebit.org header.i=@manguebit.org header.a=rsa-sha256 header.s=dkim header.b=TQgyHP+L;
 	arc=none smtp.remote-ip=143.255.12.172
 Received: from mx1.manguebit.org (mx1.manguebit.org [143.255.12.172])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCFE9606A324;
-	Tue,  3 Nov 2026 23:00:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BCFE9606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6F7606BA25;
+	Wed,  4 Nov 2026 21:28:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2D6F7606BA25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=manguebit.org header.i=@manguebit.org header.a=rsa-sha256 header.s=dkim header.b=6eqkfHFf
+	dkim=pass (2048-bit key, unprotected) header.d=manguebit.org header.i=@manguebit.org header.a=rsa-sha256 header.s=dkim header.b=TQgyHP+L
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=manguebit.org; s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Content-Type:Reply-To:
 	Content-ID:Content-Description;
-	bh=5bb5pZgvdlB0zwtIHxMXIpmN4q11PB8sTOikLkpnbGA=; b=6eqkfHFfpYfNabzkWbbSLwNtbb
-	WwBD/X9EmmilXOnFfwpHgTug2Ch7kBpdTGN1qSzk47rKgu8vSShABY7T5eNDW5Tp8yx3VHA/8RVMm
-	/4Me1+BKN7xkUe/JynrwfaM4uXMdn04JUT1XtO7U7OGnMEigQTSxhkbzYw8vriVcIQOhIoZGYyBMv
-	ARXgGMGDwA6gJi9Ws1VgwsTt8hB3Tc7XJfxba+Q8MwJyzlYYygrD3NrqZ6WVWAcEo7+0w4V+HLRGn
-	igkyUBjL0FEBPgyChT9LozTVOXxL9xWhrQ+laTmuqYMIl+o7SAkDbuuGZHdsW2kag3Th7smE7vyCv
-	Q3F5CAKg==;
+	bh=5bb5pZgvdlB0zwtIHxMXIpmN4q11PB8sTOikLkpnbGA=; b=TQgyHP+LkzWqNqZXayzh18rtWw
+	nBVVElZVUVHZQmOapMpwSk7qDsxP8IyNNpXYjpgko7XIpqyA6gyO4bl7gTz1iQlESpwfciC+rUydP
+	x6hGvkP+4L0QZSWyx2VBwknEzCb665p2uoI0aMP49eeewlbtK0lUOvCylCUYBUcG7Nywq3ZP8oplc
+	4BEdAnzrIrQFF8yIma82/uRKO+2Fef/J6Nnkdg8oR3D/cQICb7ggq6XepR+bNjSEErj9Hp/A4EefZ
+	FZavCUexoAMgXC0Is6tGHGqV9xM4macKhNkDDCTSPx2kbCr4jw+h0y7myspndEHpvQJWbDuzvumHq
+	XqXjPy7Q==;
 Received: from pc by mx1.manguebit.org with local (Exim 4.100.1)
-	id 1xONUL-00000000kMx-0cQt;
-	Tue, 03 Nov 2026 20:00:22 -0300
+	id 1xOiWh-00000000rGF-27na;
+	Wed, 04 Nov 2026 18:28:12 -0300
 From: Paulo Alcantara <pc@manguebit.org>
 To: linux-cifs@vger.kernel.org,
 	netfs@lists.linux.dev,
@@ -57,12 +57,12 @@ Cc: Namjae Jeon <linkinjeon@kernel.org>,
 	Bharath SM <bharathsm@microsoft.com>,
 	Christian Brauner <brauner@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v3 05/16] smb: client: don't give up writeback on the first replayable error
-Date: Tue,  3 Nov 2026 20:00:09 -0300
-Message-ID: <20261103230020.1617748-6-pc@manguebit.org>
+Subject: [PATCH v4 05/17] smb: client: don't give up writeback on the first replayable error
+Date: Wed,  4 Nov 2026 18:27:58 -0300
+Message-ID: <20261104212810.1935575-6-pc@manguebit.org>
 X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261103230020.1617748-1-pc@manguebit.org>
-References: <20261103230020.1617748-1-pc@manguebit.org>
+In-Reply-To: <20261104212810.1935575-1-pc@manguebit.org>
+References: <20261104212810.1935575-1-pc@manguebit.org>
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Post: <mailto:netfs@lists.linux.dev>
