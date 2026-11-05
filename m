@@ -1,48 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=143.255.12.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793827712;
-	b=AF3C/lU9lREn+EAVjdWYmK6f4e8iqqvwG6ZssFAjVNsCqP59dX/MPl/Y0cKP9oKKDyNA
-	 v/iTf+/jMf4yCnpVyAxo/g6tQkVtpr+2arOil3+3s7DhY90YlL+98sGf9/asrA2pDUpqc
-	 Oa7cOWPtw/LbSr5/UeUopRNL6rdy2SamfWCbcFHRNzIIVzwrdtTL9Q3gCNd4jGIq7GNHO
-	 ybNEWbQmI2q+tdjrXSArdmpQb7kmmb50UwoYME+lzmV0iYR1OpHYJIDtswh+bG+2Q3Sil
-	 V2V2Qx9GCVJRTno0BzzvcrIsdO2COA0mRARROdRiaAldpbHy8Ll2V4a+D3eG8KZWLVQ==
+	t=1793918743;
+	b=zcU7G+vyGnGlFoUdYmG4/qB3Gojl4aiAsImxOpJx6ewj5i2kGT/Oa8hY7yVob6ME8Gt6
+	 9tq0NRVFIXpy16ahjOBcDaKpRpLQeT7QnJNOuJenZ0PfImD2lct0AORESrx1kWaIkAIss
+	 u0Xh1KyoIxC6lOS5qSVZNovY+zrMdSOwx8NwsWjukk4Udxo1cnvr6zOJUUpeFZvnMu+Yr
+	 BHAXEWCnO8ZuBBrHiHuFeIkNY7+W/4WJ00DfTGBGaVe44H33ZwJQ+e1jR0Lz0iMF1tu0b
+	 +fohdzcUxBynU6wqY8xUTrmcQu06rZNjWZl0G9X3+cClF4dyVyca97lWXNFZnS3Esag==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793827712;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793918743;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
 	bh=z45gJVenqDQdfqsulcVzTmokKGR0+PriaPFVgi6XmGI=;
-	b=LxaA970FMLWT80rMEqBNMlw+MN8FicJhkGXpUWlSnoa0VYVuklTWN9R3CDnxe4H7GKIj
-	 en7To0k2BUdANbR3WZjiv3sdZVJlVcwiHf4G7IrxNWJ6y0vLrpAKMK42PJCl2M4ZqsOCR
-	 CISLhAJvvnNrXSbY+zy+nZa65BmJoeAr2e7mypLSOLlEYnpfm+LeATXOKHEh+/VZOUnaj
-	 vJwIfNQED07af3G0jMjp4kyGLgwkrbT7D1bArR1MDyb/nHrS5FMnD6vlO4DkQ7wClNSHr
-	 WS+Nx3wQetu9taDLXKsdChjL2o/avwQ4gFJMCQeXqzDE6VQXO94RJmkpBCkinVM9LdQ==
+	b=SQqOr+Y9Gwpe1rVi2+JFDID48+rkFbSg3SqD1cGsa1OATtPgdKei6Ot8dnxWNJkejQCf
+	 s4wt83NSddBauFrz2OimDLJfnXCa6ZIvNtd+aIcMV8BOLkV6v9xReefanvUMW2IPZfKo2
+	 vZQJEIuDGaYrgYN00239eT4iMbKuLWOEjU6fpaYE7XNYfaP8v+uQOMVVNRB/b2VRzilh3
+	 5jAThrN3WMNFvCFkBvCsgxU2MaHz81+r2UlOYjnRY9lYlIulfSJivwfFXrvjtw/cfWycU
+	 w5Sm4XbXlRMcQfgJ+qh/84seLDggNXAb6NLDWja5qgkEYPrDGFnq9MNGv30s2MJcfsw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=manguebit.org;
 	spf=pass smtp.mailfrom=manguebit.org;
+	dkim=pass header.d=manguebit.org header.i=@manguebit.org header.a=rsa-sha256 header.s=dkim header.b=kKstYBYZ;
 	arc=none smtp.remote-ip=143.255.12.172
 Received: from mx1.manguebit.org (mx1.manguebit.org [143.255.12.172])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F34D606C5A1;
-	Wed,  4 Nov 2026 21:28:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2F34D606C5A1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB6D606A332;
+	Thu,  5 Nov 2026 22:45:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8FB6D606A332
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=manguebit.org header.i=@manguebit.org header.a=rsa-sha256 header.s=dkim header.b=kKstYBYZ
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=manguebit.org; s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Content-Type:Reply-To:
 	Content-ID:Content-Description;
-	bh=z45gJVenqDQdfqsulcVzTmokKGR0+PriaPFVgi6XmGI=; b=jiMwf424bI14qwVs4HrT71NjU3
-	XhYjdDthx7XQNT2lS3P+602hTIevDS8+vQtYQQc0EerKzyQfIYlLwDXSIPHcOxuQh/PQuzh6wgW0j
-	DjaCIN0gpQXJxx8mGz2HsQFnnfGAniOKQt1mfnF5amO8a1lF7NwBHuKpipaFR9xsVxCEL5BM0mKf8
-	NqLFEoxmf42sxJpeS5CtvrX2i6yR4+zJKGeuC9f2kxD0SyIw41j1lJsJPgPZnHzwxnzUNYoMTRfaQ
-	gUUgDssPCwfL+V3naFdHWddhSZOPqEt0/Kr7O8gpu8/HArMpOAOQ6A8gr6Jd88K9sRYmHKmoN9Vzc
-	Mp/K0dJQ==;
+	bh=z45gJVenqDQdfqsulcVzTmokKGR0+PriaPFVgi6XmGI=; b=kKstYBYZQ2DUIsejsU8w5L6bsk
+	Q3BotTJKwNvcF1moifwY8c3dC1HEuK+189LgPS0IftQWtmqS/Hb0zYB816ddBQOxVAcMhYnw3FOAY
+	w+yc1sTKhh3p6crkDwainCi/z4Log+cS0sSkK13QO54QsFyUn6HyJlCpOpxrP9NZeTOpdzHBDi6b1
+	/S56bpn+VDpLFFuCpA5yWF7+8s4WWUh+/6pq0r3zRTeMM687pvgWg+2u1E36d8bzj7PVCoJYTv7gj
+	qfHGiaKDxdCQ7Y9FezCQupQwxsEBDNDX9uUfAtoZlDVFdsTNSEpjS3YBJSHgGbZtCPwSm1yXvDcgZ
+	kT536gLw==;
 Received: from pc by mx1.manguebit.org with local (Exim 4.100.1)
-	id 1xOiWg-00000000rG5-3RyU;
-	Wed, 04 Nov 2026 18:28:12 -0300
+	id 1xP6D6-00000000yml-0AOO;
+	Thu, 05 Nov 2026 19:45:33 -0300
 From: Paulo Alcantara <pc@manguebit.org>
 To: linux-cifs@vger.kernel.org,
 	netfs@lists.linux.dev,
@@ -54,12 +57,12 @@ Cc: Namjae Jeon <linkinjeon@kernel.org>,
 	Bharath SM <bharathsm@microsoft.com>,
 	Christian Brauner <brauner@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v4 03/17] netfs: keep the prepare_read errno when abandoning read retries
-Date: Wed,  4 Nov 2026 18:27:56 -0300
-Message-ID: <20261104212810.1935575-4-pc@manguebit.org>
+Subject: [PATCH v5 03/17] netfs: keep the prepare_read errno when abandoning read retries
+Date: Thu,  5 Nov 2026 19:45:17 -0300
+Message-ID: <20261105224531.2316211-4-pc@manguebit.org>
 X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261104212810.1935575-1-pc@manguebit.org>
-References: <20261104212810.1935575-1-pc@manguebit.org>
+In-Reply-To: <20261105224531.2316211-1-pc@manguebit.org>
+References: <20261105224531.2316211-1-pc@manguebit.org>
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Post: <mailto:netfs@lists.linux.dev>
