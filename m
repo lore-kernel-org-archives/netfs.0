@@ -1,51 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=143.255.12.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794007121;
-	b=J0e2J+53orVTxKiyiFfcurmR5r8Jl6Cm1oDC7mtPXNCdHLr0GNQG1UWdqjK054J+OwuM
-	 zoqo3aofjgyMDdCsYezg3S+zCGW647eKejiHOt77PX4Rk0aYkELu+uX0PWf+MDPtKnf+O
-	 ywBMwt3vhsSQGUL8/F3FQ96PJFutgQmf5/LK8za16/hgOWtp5KaEt7oPCINBKOkY/trQT
-	 QpgsX5A8FTkYZm80tu1bf9D12P7wvstS0ms6OLaUpBcZ4BNEgbBzbmjYgltsae0PlZbCz
-	 EzOeUglxKLR+baBPab8S5fxrB/TyPwibmTRUaeCNTnAkkdvT+UzcbI+MOlTT7tAu1hQ==
+	b=ueyqj37IHcKBWzoTnh1a6O2OYWmC24jYJkD9jNqKSWqJ1QOa+MxN2fblSla23aZd+LME
+	 0MmPp0Ui1cRLvGG/+VWGW3B/GIyVXin4VaK91VPoLwQ9e465vvwkz7pv1uLSLHqu820J6
+	 gtTqOEAccF9JihFRMRcOD14vADKLq3jv2jiaVbiFSg5lowXOV/B93srqqxs5owF7Ldlsk
+	 7aIOdEb1PfIBm5f4m3Npys8oGwyXR2yAS+nomJsd3VaXjox8quAovp0CGWFFAKCmz72qa
+	 BNo5zS6vS6Ow+zmDx6JuEdN+rzsa8PfLPbk/8Sdd0e0JXFToBAKUKrCQ0FKa+847M7A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794007121;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=zbKLAnuBZe+4yKtzTOQDfDyNndD4zkvcGnWOdV0jqwo=;
-	b=0fqdgpx8W2D2ysp07eF4UzEE8NBqMV3Rg/lPft11KbuanDsJ3qBImQmavCj0OuQZgzg1
-	 hoO1/YaDjYc6z1bXe/XjHC1a0cKxlhddAK6OAFbgvJ4BU/1g+HYKyc8bkaqteb99J30UE
-	 w13FU3VsPB/7o5VSBGL0tV1FJlL7r7GWCfMQdMiWH9cLYsoKB9RapeKuyBuqt1xQJg401
-	 1F6JxiOUE+ZCFOWiirDl9uRnHX+sPDcaao8YB+z1Nej6SwlujqX1kjVQJ2iZDFq5GKgsR
-	 qw1K5vAYTBEI6FGjZrLpeQYPMihwNad7bVJOe/aFWxsPl1V6ykQO/Cm1fIsCcUU357g==
+	bh=uOG/KkuhZOl1W0f3V8wkqLBpX9ePYaWvkGWgvWH8BPw=;
+	b=uIksw6DH8G2uQrsaCKxli28gNzT9Y7fS4OD29Ur9TmslXyUXMckYivDG6CTMk3MuxMP6
+	 yScxExz1+Qe4Rb7Uq1C0dCc/9O60jFvVsNqveR/+GZXMbImrqSmX0DBTJhPnDQB0V/v/v
+	 tQ+e3GplCMHP/+hMKZ6eJjF6uPNrnmEHiTQ1DoQH94ctlXGcOd04RjJ+oJVAsvL0XDmSt
+	 EfbDHgASSdWi4t3dtEahYzAwKWFJs8wlLuTIIqHe/4IRDWPkfzHwF3IKSGnW9CDxVQSux
+	 Gj9vzkXgtgvcrFRgQRn72DpH8KOVG4Ocg+ojQkaNOIDl5okqnHBCxZ1ZMz8LDeykpIw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=manguebit.org;
 	spf=pass smtp.mailfrom=manguebit.org;
-	dkim=pass header.d=manguebit.org header.i=@manguebit.org header.a=rsa-sha256 header.s=dkim header.b="EGs2/CoC";
+	dkim=pass header.d=manguebit.org header.i=@manguebit.org header.a=rsa-sha256 header.s=dkim header.b=Ms0nDC1z;
 	arc=none smtp.remote-ip=143.255.12.172
 Received: from mx1.manguebit.org (mx1.manguebit.org [143.255.12.172])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A1F606A33A;
-	Fri,  6 Nov 2026 23:18:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 94A1F606A33A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2FB8606A338;
+	Fri,  6 Nov 2026 23:18:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B2FB8606A338
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=manguebit.org header.i=@manguebit.org header.a=rsa-sha256 header.s=dkim header.b=EGs2/CoC
+	dkim=pass (2048-bit key, unprotected) header.d=manguebit.org header.i=@manguebit.org header.a=rsa-sha256 header.s=dkim header.b=Ms0nDC1z
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=manguebit.org; s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Content-Type:Reply-To:
 	Content-ID:Content-Description;
-	bh=zbKLAnuBZe+4yKtzTOQDfDyNndD4zkvcGnWOdV0jqwo=; b=EGs2/CoCz50aunAmTon4zqPwB8
-	bp9Coud4LOnTFH2HsFd1IdeWN0tzL/1cC1BxiL/R5B+3tjfVwBjGqUBssi5S5VorSbexb9TcSPOPp
-	0RWyK/1D5esjq9rlB4YbJ9DXmoYFLrc5SsVfOY0RxnB/9z+NuvW6OWc9UGsw5Blzk5C5kKWEl49px
-	+hpJHF8V0NIVKwBiSk39RbioN2IggUn9FJrn5V7PNhubdE+Lr9z9uYKvZkR93W61Xv3hHWmbH8Frf
-	WTDkMJpviJHlYlIcZY1eTaVxXHaO5mTZE/XjFHsHhAhTwFRSGQ8ou+Y2EXYWUcuZlgcyqFk+/Igh8
-	JI303wuw==;
+	bh=uOG/KkuhZOl1W0f3V8wkqLBpX9ePYaWvkGWgvWH8BPw=; b=Ms0nDC1z0sZivWnGelbF2YM0n/
+	c/u7BEIEBGub7Hxhmym8bhIFlFTqGASBJdxZAgDKtVMwofLQ2qWG1EjXmy8h106218UfkQZ1+XpQK
+	RmPo6pYWIZqfx2N+PbuZBQV+7oTgCJ6N9VmIGxm+YwhA0hIU6IZxbsEtVRsk74N22TuP2YK1UroGP
+	+NLVki4+XCm9EG51ESGRoPpMLn4fEYdqmP+4aiJB11N7Wj/O5UJvp/b7+lYq6GvRbBYpW+uR+EIRD
+	yAK7LEADBgqdThczh9ZGOleuyKvJSzT/7pHhRH/WQWCfxJrP08cBSxbUzdVMTvYBAuugJDqlmB6TK
+	R7bLUG+w==;
 Received: from pc by mx1.manguebit.org with local (Exim 4.100.1)
-	id 1xPTCY-000000014FW-2arI;
-	Fri, 06 Nov 2026 20:18:31 -0300
+	id 1xPTCa-000000014Gb-1B57;
+	Fri, 06 Nov 2026 20:18:33 -0300
 From: Paulo Alcantara <pc@manguebit.org>
 To: linux-cifs@vger.kernel.org,
 	netfs@lists.linux.dev,
@@ -57,9 +57,9 @@ Cc: Namjae Jeon <linkinjeon@kernel.org>,
 	Bharath SM <bharathsm@microsoft.com>,
 	Christian Brauner <brauner@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v7 11/19] smb: client: don't fail writeback preparation if the task is dying
-Date: Fri,  6 Nov 2026 20:18:19 -0300
-Message-ID: <20261106231827.2604956-12-pc@manguebit.org>
+Subject: [PATCH v7 16/19] smb: client: let umount -f stop waiting for reconnects on hard mounts
+Date: Fri,  6 Nov 2026 20:18:24 -0300
+Message-ID: <20261106231827.2604956-17-pc@manguebit.org>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261106231827.2604956-1-pc@manguebit.org>
 References: <20261106231827.2604956-1-pc@manguebit.org>
@@ -74,146 +74,417 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-cifs_prepare_write() may need to reopen an invalidated handle and to wait
-for credits, both from the context of the task doing writeback.  A dying
-task gets the reopen refused at send time and the killable credit wait
-interrupted, so the subrequest is failed and, as with refused sends, its
-folios end writeback clean and the data is lost.
+Requests waiting in smb2_reconnect() or cifs_reconnect_tcon() for a
+reconnect wait for as long as it takes on hard mounts.  With the server
+gone, writeback stuck there keeps umount -f hanging in sync_filesystem()
+while it waits for that writeback, even though retries of reads and
+writes started before it now give up.
 
-For writeback in a dying task, skip both and prepare a credit-less
-subrequest capped at SMB2_MAX_BUFFER_SIZE, as already done when the
-server is low on credits.  It gets issued from cifswritebackd, which
-reopens the handle if needed and takes a single credit when sending,
-neither of which can be interrupted there.  Do the same when the reopen
-or credit wait fails because a fatal signal arrived meanwhile.
+Count umount -f attempts per tcon and stop waiting for reconnects, as on
+soft mounts, once one is made after the request started waiting, waking
+up such requests on all channels right away.  Do this for the master
+tcon and for the per-user tcons of a multiuser mount, skipping tcons
+another mount still uses.  Count the references mounts hold on a tcon
+for that, rather than relying on tc_count, which internal references
+such as a reconnect worker also raise.  Requests started after umount -f
+are unaffected.
 
-cifs_begin_writeback() reopens the handle too when all the writable ones
-got invalidated, e.g. by a reconnect.  If that fails, there is no
-upload stream, so netfs ends writeback of every folio clean with no
-error recorded.  Take an invalidated handle as is there and leave
-reopening it to cifs_prepare_write().  If there is no writable handle at
-all, record -EIO for the mapping, so that the loss gets reported.
-
-Fixes: 3ee1a1fc3981 ("cifs: Cut over to using netfslib")
 Signed-off-by: Paulo Alcantara <pc@manguebit.org>
 Cc: stable@vger.kernel.org
 ---
- fs/smb/client/cifsglob.h |  1 +
- fs/smb/client/file.c     | 37 ++++++++++++++++++++++++++++++-------
- 2 files changed, 31 insertions(+), 7 deletions(-)
+ fs/smb/client/cifsfs.c    | 129 ++++++++++++++++++++++++++++----------
+ fs/smb/client/cifsglob.h  |   7 +++
+ fs/smb/client/cifsproto.h |   3 +-
+ fs/smb/client/cifssmb.c   |   9 ++-
+ fs/smb/client/connect.c   |  13 +++-
+ fs/smb/client/misc.c      |  16 ++++-
+ fs/smb/client/smb2pdu.c   |   9 ++-
+ 7 files changed, 142 insertions(+), 44 deletions(-)
 
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index e211dea91e6e..064a2cdab4d9 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -1894,6 +1894,7 @@ enum cifs_find_flags {
- 	FIND_NO_PENDING_DELETE	= (1U << 2),
- 	FIND_OPEN_FLAGS		= (1U << 3),
- 	FIND_NO_DIRECT		= (1U << 4),
-+	FIND_NO_REOPEN		= (1U << 5),
- };
- 
- #define   MID_FREE 0
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index 1bd8edbc8d7b..396524c3f2b6 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -135,12 +135,17 @@ static void cifs_prepare_write(struct netfs_io_subrequest *subreq)
- 		cifs_negotiate_wsize(server, cifs_sb->ctx,
- 				     tlink_tcon(req->cfile->tlink));
- 
-+	if (cifs_writeback_dying(subreq))
-+		goto defer;
-+
- retry:
- 	if (open_file->invalidHandle) {
- 		rc = cifs_reopen_file(open_file, false);
- 		if (rc < 0) {
- 			if (rc == -EAGAIN)
- 				goto retry;
-+			if (cifs_writeback_dying(subreq))
-+				goto defer;
- 			subreq->error = rc;
- 			return netfs_prepare_write_failed(subreq);
- 		}
-@@ -149,10 +154,17 @@ static void cifs_prepare_write(struct netfs_io_subrequest *subreq)
- 	rc = server->ops->wait_mtu_credits(server, wsize, &stream->sreq_max_len,
- 					   &wdata->credits);
- 	if (rc < 0) {
-+		if (cifs_writeback_dying(subreq))
-+			goto defer;
- 		subreq->error = rc;
- 		return netfs_prepare_write_failed(subreq);
- 	}
-+	goto out;
- 
-+defer:
-+	wdata->credits = (struct cifs_credits){};
-+	stream->sreq_max_len = min_t(size_t, wsize, SMB2_MAX_BUFFER_SIZE);
-+out:
- 	wdata->credits.rreq_debug_id = subreq->rreq->debug_id;
- 	wdata->credits.rreq_debug_index = subreq->debug_index;
- 	wdata->credits.in_flight_check = 1;
-@@ -216,10 +228,15 @@ static void __cifs_issue_write(struct netfs_io_subrequest *subreq)
- 
- static void cifs_issue_write_worker(struct work_struct *work)
- {
--	struct netfs_io_subrequest *subreq;
-+	struct cifs_io_subrequest *wdata;
-+	struct cifsFileInfo *cfile;
- 
--	subreq = container_of(work, struct netfs_io_subrequest, work);
--	__cifs_issue_write(subreq);
-+	wdata = container_of(work, struct cifs_io_subrequest, subreq.work);
-+	cfile = wdata->req->cfile;
-+	while (cfile->invalidHandle &&
-+	       cifs_reopen_file(cfile, false) == -EAGAIN)
-+		;
-+	__cifs_issue_write(&wdata->subreq);
+diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
+index 7146bb22a69e..2a8c14e0ffb0 100644
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -294,6 +294,72 @@ cifs_read_super(struct super_block *sb)
+ 	return rc;
  }
  
- static void cifs_issue_write(struct netfs_io_subrequest *subreq)
-@@ -354,15 +371,17 @@ static void cifs_begin_writeback(struct netfs_io_request *wreq)
- 	struct cifs_io_request *req = container_of(wreq, struct cifs_io_request, rreq);
- 	int ret;
++static void wake_ses_waiters(struct cifs_ses *ses)
++{
++	guard(spinlock)(&ses->chan_lock);
++	for (size_t i = 0; i < ses->chan_count; i++) {
++		struct TCP_Server_Info *server = ses->chans[i].server;
++
++		if (!server)
++			continue;
++		wake_up_all(&server->request_q);
++		wake_up_all(&server->response_q);
++	}
++}
++
++struct cifs_tcon_ref {
++	struct list_head list;
++	struct tcon_link *tlink;
++	struct cifs_tcon *tcon;
++};
++
++static void get_sb_tcons(struct cifs_sb_info *cifs_sb, struct list_head *tcons)
++{
++	struct rb_root *root = &cifs_sb->tlink_tree;
++	struct cifs_tcon_ref *ref;
++	struct tcon_link *tlink;
++	struct cifs_tcon *tcon;
++	struct rb_node *node;
++
++	spin_lock(&cifs_sb->tlink_tree_lock);
++	for (node = rb_first(root); node; node = rb_next(node)) {
++		tlink = rb_entry(node, struct tcon_link, tl_rbnode);
++		tcon = tlink_tcon(tlink);
++		if (IS_ERR_OR_NULL(tcon))
++			continue;
++		ref = kmalloc_obj(struct cifs_tcon_ref, GFP_ATOMIC);
++		if (!ref)
++			break;
++		ref->tlink = cifs_get_tlink(tlink);
++		ref->tcon = tcon;
++		list_add_tail(&ref->list, tcons);
++	}
++	spin_unlock(&cifs_sb->tlink_tree_lock);
++}
++
++static void put_sb_tcons(struct list_head *tcons)
++{
++	struct cifs_tcon_ref *ref, *tmp;
++
++	list_for_each_entry_safe(ref, tmp, tcons, list) {
++		cifs_put_tlink(ref->tlink);
++		list_del(&ref->list);
++		kfree(ref);
++	}
++}
++
++static bool used_by_other_mounts(struct cifs_tcon *tcon,
++				 struct list_head *tcons)
++{
++	struct cifs_tcon_ref *ref;
++	int n = 0;
++
++	list_for_each_entry(ref, tcons, list)
++		n += ref->tcon == tcon;
++	guard(spinlock)(&tcon->tc_lock);
++	return tcon->mnt_refs > n;
++}
++
+ static void cifs_kill_sb(struct super_block *sb)
+ {
+ 	struct cifs_sb_info *cifs_sb = CIFS_SB(sb);
+@@ -837,47 +903,46 @@ cifs_show_options(struct seq_file *s, struct dentry *root)
+ 	return 0;
+ }
  
--	ret = cifs_get_writable_file(CIFS_I(wreq->inode), FIND_NO_DIRECT,
-+	ret = cifs_get_writable_file(CIFS_I(wreq->inode),
-+				     FIND_NO_REOPEN | FIND_NO_DIRECT,
- 				     &req->cfile);
- 	if (ret) {
--		ret = cifs_get_writable_file(CIFS_I(wreq->inode), FIND_ANY,
--					     &req->cfile);
-+		ret = cifs_get_writable_file(CIFS_I(wreq->inode),
-+					     FIND_NO_REOPEN, &req->cfile);
+-static void cifs_umount_begin(struct super_block *sb)
++static void abort_reconnect(struct cifs_tcon *tcon)
+ {
+-	struct cifs_sb_info *cifs_sb = CIFS_SB(sb);
+-	struct cifs_tcon *tcon;
+-
+-	if (cifs_sb == NULL)
+-		return;
+-
+-	atomic_inc(&cifs_sb->umount_aborts);
+-	tcon = cifs_sb_master_tcon(cifs_sb);
+-
+-	spin_lock(&cifs_tcp_ses_lock);
+-	spin_lock(&tcon->tc_lock);
+-	trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
+-			    netfs_trace_tcon_ref_see_umount);
+-	if ((tcon->tc_count > 1) || (tcon->status == TID_EXITING)) {
+-		/* we have other mounts to same share or we have
+-		   already tried to umount this and woken up
+-		   all waiting network requests, nothing to do */
+-		spin_unlock(&tcon->tc_lock);
+-		spin_unlock(&cifs_tcp_ses_lock);
+-		return;
+-	}
+-	/*
+-	 * can not set tcon->status to TID_EXITING yet since we don't know if umount -f will
+-	 * fail later (e.g. due to open files).  TID_EXITING will be set just before tdis req sent
+-	 */
+-	spin_unlock(&tcon->tc_lock);
+-	spin_unlock(&cifs_tcp_ses_lock);
++	scoped_guard(spinlock, &tcon->tc_lock)
++		trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
++				    netfs_trace_tcon_ref_see_umount);
+ 
++	atomic_inc(&tcon->umount_aborts);
+ 	if (tcon->ses && tcon->ses->server) {
+ 		cifs_dbg(FYI, "wake up tasks now - umount begin not complete\n");
+-		wake_up_all(&tcon->ses->server->request_q);
+-		wake_up_all(&tcon->ses->server->response_q);
++		wake_ses_waiters(tcon->ses);
+ 		msleep(1); /* yield */
+ 		/* we have to kick the requests once more */
+-		wake_up_all(&tcon->ses->server->response_q);
++		wake_ses_waiters(tcon->ses);
+ 		msleep(1);
  	}
- 	if (ret) {
- 		cifs_dbg(VFS, "%s: couldn't find writable handle: %d\n",
- 			 __func__, ret);
-+		mapping_set_error(wreq->mapping, -EIO);
- 		return;
++}
+ 
+-	return;
++static void cifs_umount_begin(struct super_block *sb)
++{
++	struct cifs_sb_info *cifs_sb = CIFS_SB(sb);
++	struct cifs_tcon_ref *ref;
++	LIST_HEAD(tcons);
++
++	if (cifs_sb == NULL)
++		return;
++
++	atomic_inc(&cifs_sb->umount_aborts);
++
++	/*
++	 * Abort the reconnect waits of the master tcon and of any per-user
++	 * tcons of a multiuser mount that no other mount uses, pinning their
++	 * tlinks so that they stay alive, and aren't pruned, while we abort and
++	 * sleep outside the tree lock.
++	 */
++	get_sb_tcons(cifs_sb, &tcons);
++	list_for_each_entry(ref, &tcons, list) {
++		if (!used_by_other_mounts(ref->tcon, &tcons))
++			abort_reconnect(ref->tcon);
++	}
++	put_sb_tcons(&tcons);
+ }
+ 
+ static int cifs_freeze(struct super_block *sb)
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index 09bde6a08dd7..fe64abdfd740 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -1196,6 +1196,8 @@ struct cifs_tcon {
+ 	struct list_head tcon_list;
+ 	int debug_id;		/* Debugging for tracing */
+ 	int tc_count;
++	int mnt_refs;		/* refs held by mounts, under tc_lock */
++	atomic_t umount_aborts;	/* nr of umount -f attempts */
+ 	struct list_head rlist; /* reconnect list */
+ 	spinlock_t tc_lock;  /* protect anything here that is not protected */
+ 	atomic_t num_local_opens;  /* num of all opens including disconnected */
+@@ -2382,6 +2384,11 @@ static inline void cifs_reset_oplock(struct cifsInodeInfo *cinode)
+ 		WRITE_ONCE(cinode->oplock, 0);
+ }
+ 
++static inline bool cifs_tcon_retry(struct cifs_tcon *tcon, int aborts)
++{
++	return tcon->retry && atomic_read(&tcon->umount_aborts) == aborts;
++}
++
+ static inline bool cifs_forced_shutdown(const struct cifs_sb_info *sbi)
+ {
+ 	return cifs_sb_flags(sbi) & CIFS_MOUNT_SHUTDOWN;
+diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
+index a37eee2ca54b..8b7914dd13af 100644
+--- a/fs/smb/client/cifsproto.h
++++ b/fs/smb/client/cifsproto.h
+@@ -442,7 +442,8 @@ static inline int cifs_create_options(struct cifs_sb_info *cifs_sb, int options)
+ 		return options;
+ }
+ 
+-int cifs_wait_for_server_reconnect(struct TCP_Server_Info *server, bool retry);
++int cifs_wait_for_server_reconnect(struct TCP_Server_Info *server,
++				   struct cifs_tcon *tcon, int aborts);
+ 
+ static inline void cifs_put_smb_ses(struct cifs_ses *ses)
+ {
+diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
+index fcf97b3d6bea..712086eb3d1f 100644
+--- a/fs/smb/client/cifssmb.c
++++ b/fs/smb/client/cifssmb.c
+@@ -73,6 +73,7 @@ cifs_reconnect_tcon(struct cifs_tcon *tcon, int smb_command)
+ {
+ 	struct TCP_Server_Info *server;
+ 	struct cifs_ses *ses;
++	int aborts;
+ 	int rc;
+ 
+ 	/*
+@@ -83,6 +84,8 @@ cifs_reconnect_tcon(struct cifs_tcon *tcon, int smb_command)
+ 	if (!tcon)
+ 		return 0;
+ 
++	aborts = atomic_read(&tcon->umount_aborts);
++
+ 	ses = tcon->ses;
+ 	server = ses->server;
+ 
+@@ -102,7 +105,7 @@ cifs_reconnect_tcon(struct cifs_tcon *tcon, int smb_command)
+ 	spin_unlock(&tcon->tc_lock);
+ 
+ again:
+-	rc = cifs_wait_for_server_reconnect(server, tcon->retry);
++	rc = cifs_wait_for_server_reconnect(server, tcon, aborts);
+ 	if (rc)
+ 		return rc;
+ 
+@@ -127,7 +130,7 @@ cifs_reconnect_tcon(struct cifs_tcon *tcon, int smb_command)
+ 	case CifsNeedReconnect:
+ 		spin_unlock(&server->srv_lock);
+ 		mutex_unlock(&ses->session_mutex);
+-		if (!tcon->retry)
++		if (!cifs_tcon_retry(tcon, aborts))
+ 			return -EHOSTDOWN;
+ 		goto again;
+ 	default:
+@@ -159,7 +162,7 @@ cifs_reconnect_tcon(struct cifs_tcon *tcon, int smb_command)
+ 	rc = cifs_negotiate_protocol(0, ses, server);
+ 	if (rc) {
+ 		mutex_unlock(&ses->session_mutex);
+-		if (!tcon->retry)
++		if (!cifs_tcon_retry(tcon, aborts))
+ 			return -EHOSTDOWN;
+ 		goto again;
+ 	}
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index e68fffb2ab2e..422666ffdc26 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -2622,6 +2622,7 @@ cifs_find_tcon(struct cifs_ses *ses, struct smb3_fs_context *ctx)
+ 			continue;
+ 		}
+ 		++tcon->tc_count;
++		++tcon->mnt_refs;
+ 		trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
+ 				    netfs_trace_tcon_ref_get_find);
+ 		spin_unlock(&tcon->tc_lock);
+@@ -2695,6 +2696,13 @@ cifs_put_tcon(struct cifs_tcon *tcon, enum smb3_tcon_ref_trace trace)
+ #endif
+ }
+ 
++static void put_mnt_tcon(struct cifs_tcon *tcon, enum smb3_tcon_ref_trace trace)
++{
++	scoped_guard(spinlock, &tcon->tc_lock)
++		tcon->mnt_refs--;
++	cifs_put_tcon(tcon, trace);
++}
++
+ /**
+  * cifs_get_tcon - get a tcon matching @ctx data from @ses
+  * @ses: smb session to issue the request on
+@@ -2750,6 +2758,7 @@ cifs_get_tcon(struct cifs_ses *ses, struct smb3_fs_context *ctx)
+ 		rc = -ENOMEM;
+ 		goto out_fail;
+ 	}
++	tcon->mnt_refs = 1;
+ 	tcon->nohandlecache = nohandlecache;
+ 
+ 	if (ctx->snapshot_time) {
+@@ -2952,7 +2961,7 @@ cifs_put_tlink(struct tcon_link *tlink)
  	}
  
-@@ -2828,7 +2847,7 @@ int __cifs_get_writable_file(struct cifsInodeInfo *cifs_inode,
+ 	if (!IS_ERR(tlink_tcon(tlink)))
+-		cifs_put_tcon(tlink_tcon(tlink), netfs_trace_tcon_ref_put_tlink);
++		put_mnt_tcon(tlink_tcon(tlink), netfs_trace_tcon_ref_put_tlink);
+ 	kfree(tlink);
+ }
+ 
+@@ -3576,7 +3585,7 @@ void cifs_mount_put_conns(struct cifs_mount_ctx *mnt_ctx)
+ 	int rc = 0;
+ 
+ 	if (mnt_ctx->tcon)
+-		cifs_put_tcon(mnt_ctx->tcon, netfs_trace_tcon_ref_put_mnt_ctx);
++		put_mnt_tcon(mnt_ctx->tcon, netfs_trace_tcon_ref_put_mnt_ctx);
+ 	else if (mnt_ctx->ses)
+ 		cifs_put_smb_ses(mnt_ctx->ses);
+ 	else if (mnt_ctx->server)
+diff --git a/fs/smb/client/misc.c b/fs/smb/client/misc.c
+index ec28f102ea08..13eb067ad88a 100644
+--- a/fs/smb/client/misc.c
++++ b/fs/smb/client/misc.c
+@@ -1073,7 +1073,15 @@ int cifs_inval_name_dfs_link_error(const unsigned int xid,
+ }
+ #endif
+ 
+-int cifs_wait_for_server_reconnect(struct TCP_Server_Info *server, bool retry)
++static bool reco_wait_done(struct TCP_Server_Info *server,
++			   struct cifs_tcon *tcon, int aborts)
++{
++	return server->tcpStatus != CifsNeedReconnect ||
++		atomic_read(&tcon->umount_aborts) != aborts;
++}
++
++int cifs_wait_for_server_reconnect(struct TCP_Server_Info *server,
++				   struct cifs_tcon *tcon, int aborts)
+ {
+ 	int timeout = 10;
+ 	int rc;
+@@ -1096,7 +1104,9 @@ int cifs_wait_for_server_reconnect(struct TCP_Server_Info *server, bool retry)
+ 	 */
+ 	do {
+ 		rc = wait_event_interruptible_timeout(server->response_q,
+-						      (server->tcpStatus != CifsNeedReconnect),
++						      reco_wait_done(server,
++								     tcon,
++								     aborts),
+ 						      timeout * HZ);
+ 		if (rc < 0) {
+ 			cifs_dbg(FYI, "%s: aborting reconnect due to received signal\n",
+@@ -1111,7 +1121,7 @@ int cifs_wait_for_server_reconnect(struct TCP_Server_Info *server, bool retry)
+ 			return 0;
+ 		}
+ 		spin_unlock(&server->srv_lock);
+-	} while (retry);
++	} while (cifs_tcon_retry(tcon, aborts));
+ 
+ 	cifs_dbg(FYI, "%s: gave up waiting on reconnect\n", __func__);
+ 	return -EHOSTDOWN;
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index bf22e7f6445d..b603e937d1a8 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -251,6 +251,7 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
+ 	       struct TCP_Server_Info *server, bool from_reconnect)
+ {
+ 	struct cifs_ses *ses;
++	int aborts;
+ 	int xid;
+ 	int rc = 0;
+ 
+@@ -262,6 +263,8 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
+ 	if (tcon == NULL)
+ 		return 0;
+ 
++	aborts = atomic_read(&tcon->umount_aborts);
++
+ 	if (smb2_command == SMB2_TREE_CONNECT)
+ 		return 0;
+ 
+@@ -318,7 +321,7 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
+ 	spin_unlock(&server->srv_lock);
+ 
+ again:
+-	rc = cifs_wait_for_server_reconnect(server, tcon->retry);
++	rc = cifs_wait_for_server_reconnect(server, tcon, aborts);
+ 	if (rc)
+ 		return rc;
+ 
+@@ -346,7 +349,7 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
+ 	case CifsNeedReconnect:
+ 		spin_unlock(&server->srv_lock);
+ 		mutex_unlock(&ses->session_mutex);
+-		if (!tcon->retry)
++		if (!cifs_tcon_retry(tcon, aborts))
+ 			return -EHOSTDOWN;
+ 		goto again;
+ 	default:
+@@ -377,7 +380,7 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
+ 	rc = cifs_negotiate_protocol(0, ses, server);
+ 	if (rc) {
+ 		mutex_unlock(&ses->session_mutex);
+-		if (!tcon->retry)
++		if (!cifs_tcon_retry(tcon, aborts))
+ 			return -EHOSTDOWN;
+ 		goto again;
  	}
- 
- 	if (test_bit(CIFS_INO_TMPFILE, &cifs_inode->flags))
--		find_flags &= FIND_NO_DIRECT;
-+		find_flags &= FIND_NO_REOPEN | FIND_NO_DIRECT;
- 
- 	cifs_sb = CIFS_SB(cifs_inode);
- 
-@@ -2888,6 +2907,10 @@ int __cifs_get_writable_file(struct cifsInodeInfo *cifs_inode,
- 	spin_unlock(&cifs_inode->open_file_lock);
- 
- 	if (inv_file) {
-+		if (find_flags & FIND_NO_REOPEN) {
-+			*ret_file = inv_file;
-+			return 0;
-+		}
- 		rc = cifs_reopen_file(inv_file, false);
- 		if (!rc) {
- 			*ret_file = inv_file;
 -- 
 2.56.0
 
