@@ -1,68 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=143.255.12.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794024603;
-	b=x2VSuSC6luYPVafpEu1m39xS0JgqArz4HlWRrzAgyoLjtYm6+WjOSrLRG8VEHKEmc/GS
-	 hZd/uXy3ruQK9ozNlbwhrw1MVKcRkGU24lWgeKtgXgqveyk4ydI8gtP1qVYQFc30aHRVb
-	 /jpt9yjoEXjhgCY76TrMxYttThuW3+FxKWssEwIa0FXswIpCBCy652dPGUWyHfckJbIiq
-	 WnbFKpK07asf37QsVVRsXRUhUO6bmihraU1OQhWEtfDvloPQcn4m6KOL5DI1hVYWBdEBX
-	 o4tRDHuC/E2Nr/nERneK2QvwJ0Hq6r9NvvGDQRZtKDlls3iMdcM2tbQFZDa6e7PxEGQ==
+	t=1794067718;
+	b=E1Zq/2dUqr+LofptAIS2TDJkLiSzSpr+S6wezEZV0kn6zLJydE68mev1D0DIsKorTO1h
+	 5pDkN7SDLn/1v7JDaFIh0pzaFvk8tCEpRjnq3pmcXsCh5fXRWdAYANybReZ155cxxWOyq
+	 08WMtTAOksvQOkznqIhUSS5LsQp1eQfPshR6RiFRSfz4e5cIYF25UTkXKq4JN6MTxQiNy
+	 Q/sBKooD3vUVsyvqwWmtBpHAYVBRe9DT2I89VJ7qdAnIl+lDuklDwp3ke5SKxfVDJ3inN
+	 9erW0ONAOQdiJC3wvWXhFiCV2uVrUyHTJiZaMJ7F6a/tzHt5kamkGOHo/Kv6ELlLdGg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794024603;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=5ix3ncGC6XxOL1C54SKvCDIqL28OmH9FLsnrVM6k+9Q=;
-	b=jUr4r6L9E1+3CWReVlic//gbJP9RszloUweuQtGtGHwfIsH7P8Vy9Bd4JahOVWr6kokB
-	 e79jCyUMndbaDGUGbVZ4j3oR3/JHZXihSp271qYH3SshL9wIAxbcFYBnTaiYaS6wJ0Jxl
-	 3NoorqAXxgUMjzK9rSfGYGdEiSppI02JtSWRh1tQiw/m8ScPNEjPc5KvQgzr7iSMRC4ae
-	 MTpv0aS2oAe7uQsmK0e/MqjY+eDX8ol8s1CJb5kaovFjJOh2AjH2Vly3x4BPGuPbUd3Mb
-	 xQp86GV8T6gSqem6En/hfkZmrUi/wYAQSERZn0GnVCQ4NWcl8suDQljFKYpRPVyhLPA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794067718;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:MIME-Version:X-Scanned-By:X-Mimecast-MFC-PROC-ID:
+	 X-Mimecast-Originator:Content-Transfer-Encoding:content-type;
+	bh=AkggF1IZMKELF6PrvsMx3bviXaYutAqrhI39oo9RDTg=;
+	b=FnhK3RxdupWx3xlCdh4o+2GGuLzSid2si66Nasl8s/cUIokk2wbYN33hk/PBf58pu3YN
+	 yHkHCO2HlPQ3Fwm3vSQmKkMsmYz7I15yp6FCBHE8n9ekjfBH9Ux5T2yW8R2bSxUb8KxX5
+	 h/GfgPbqf5ID4kluSCrVnJ1Lmlo4LYpXMjMH9OZiG6r5nXBZAm+nR1FJGuAZdrqlfYWPd
+	 CIe86F66thTdxH206rXSHHlvbqc+0Qrlnnr25qZ9owWWfGHGIspAwZd9/UR7A3OGQrKhl
+	 UtvypmIJcjTf9mGNDh2JlCId+jp5Xlc+iQutCqSfJ6QcDA6Q2XUhtA2P+ZjM/rJnOgQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=manguebit.org;
-	spf=pass smtp.mailfrom=manguebit.org;
-	dkim=pass header.d=manguebit.org header.i=@manguebit.org header.a=rsa-sha256 header.s=dkim header.b=sAgmD7cv;
-	arc=none smtp.remote-ip=143.255.12.172
-Received: from mx1.manguebit.org (mx1.manguebit.org [143.255.12.172])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CGoZulgo;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD1D606D809;
-	Sat,  7 Nov 2026 04:09:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7CD1D606D809
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41EA606A33A
+	for <netfs@lists.linux.dev>; Sat,  7 Nov 2026 16:08:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A41EA606A33A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.a=rsa-sha256 header.s=dkim header.b=sAgmD7cv
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=manguebit.org; s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Content-Type:Reply-To:
-	Content-ID:Content-Description;
-	bh=5ix3ncGC6XxOL1C54SKvCDIqL28OmH9FLsnrVM6k+9Q=; b=sAgmD7cvSr3ybBmLADod4pIFQ8
-	7iSgVkc0j+Zb8wWc97xNvfgL2AYr+A4N+7cPlhxB57R9vbgp0e+6NtX288Ukl8UpC6up0j0fd3rlK
-	rMoTDxdbWddmK+EYMaVXbFDcC7DyRumEV6+b5wVhoz7DlqXJM9HTfDDXJK6/WBtsS3mXdCT6KmkSI
-	bE8aPEQ8QeheyYui+CuIXofp7WczVWsHwwslixVvh4TP9vtLNPgLdHOh/ErxDZGFKMXFI4S0rk1cg
-	O4VKe97YRfUGK+UXYMcOSNm03tDFFTqOuHZMAAWPTwJlNiosfaIyEV8T/FOmjCmDwBz1OwHS9n5is
-	evXSgByw==;
-Received: from pc by mx1.manguebit.org with local (Exim 4.100.1)
-	id 1xPXkP-000000015OX-3fXh;
-	Sat, 07 Nov 2026 01:09:47 -0300
-From: Paulo Alcantara <pc@manguebit.org>
-To: linux-cifs@vger.kernel.org,
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CGoZulgo
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794067716;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=AkggF1IZMKELF6PrvsMx3bviXaYutAqrhI39oo9RDTg=;
+	b=CGoZulgo/aEKDDTTsFQr4aK11sxv2Bfi/2qPUcUNMj9moTmjpMf6EpsDV3d65TmGKKgo6i
+	K7yyhk8pMvOhm9jgI6rhaToSLx/7t0tojD/lC7W6H/sFuBz3D9sqxsTn3H8pJAzq9GT+K0
+	deYMUhn8jxCjCdMUiuMB2Klgu5MkkkI=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-500-Y62LxWCdMJWR70Hg0IDtIg-1; Sat,
+ 07 Nov 2026 11:08:34 -0500
+X-MC-Unique: Y62LxWCdMJWR70Hg0IDtIg-1
+X-Mimecast-MFC-AGG-ID: Y62LxWCdMJWR70Hg0IDtIg_1794067712
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 958D4180055E;
+	Sat,  7 Nov 2026 16:08:31 +0000 (UTC)
+Received: from dhowells-thinkpadp1gen8.rmtgb.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BC228195608B;
+	Sat,  7 Nov 2026 16:08:25 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>
+Cc: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Stefan Metzmacher <metze@samba.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
 	netfs@lists.linux.dev,
-	David Howells <dhowells@redhat.com>
-Cc: Namjae Jeon <linkinjeon@kernel.org>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Christian Brauner <brauner@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v8 17/19] smb: client: don't replay handle reopens inside SMB2_open()
-Date: Sat,  7 Nov 2026 01:09:38 -0300
-Message-ID: <20261107040940.2692656-18-pc@manguebit.org>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261107040940.2692656-1-pc@manguebit.org>
-References: <20261107040940.2692656-1-pc@manguebit.org>
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v16 00/15] netfs, iov_iter: Use a chain of bio_vec arrays instead of folio_queue
+Date: Sat,  7 Nov 2026 16:08:03 +0000
+Message-ID: <20261107160823.1465553-1-dhowells@redhat.com>
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Post: <mailto:netfs@lists.linux.dev>
@@ -72,310 +90,251 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:netfs+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: xzMj_T1q75wnLp2Lx3oR7EA6yLqvEDxclrTT5Lvzrik_1794067712
+X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-cifs_reopen_file_retry() reopens a read's or write's handle with backoff,
-per the hard and retrans mount options, giving up on umount -f.  It calls
-cifs_reopen_file() -> SMB2_open(), which replays replayable errors on its
-own, also per hard and retrans.  So each reopen is retried at both
-layers: up to (retrans + 1)^2 opens on a soft mount, and, on a hard
-mount, forever inside SMB2_open() without ever returning to
-cifs_reopen_file_retry() to notice umount -f - a worker doing writeback
-then can't be stopped.
+Hi Christian,
 
-Have cifs_reopen_file_retry() tell SMB2_open() not to replay, so these
-reopens are bounded and stopped only by cifs_reopen_file_retry().  Other
-callers of cifs_reopen_file() keep SMB2_open()'s replay; SMB1 opens are
-unchanged.
+Could you pull these patches please into your vfs-7.5.netfs branch?  This
+is the third of five batches (two already having gone upstream), in this
+case replacing the folio_queue struct with a bvecq struct.  It has been
+rebased on v7.4-rc1.  This was split from v11 of a larger netfslib
+series[1].
 
-A reopen reconnects the durable handle or, if the server lost it, opens
-the file afresh.  Without SMB2_open()'s loop, a retry must open afresh
-again rather than reconnect, which the server would reject, and replay
-its last create, with the same GUID and access and keeping its access
-fallbacks, if that create may have been processed, or it leaks or loses
-a handle.  Track both on the open
-file under fh_mutex, so concurrent reopens agree: replay only after a
-create that SMB2_open() built and that failed with no answer from the
-server, and leave the state alone after an attempt that was interrupted
-or never built.
+This series adds a new type, struct bvecq.  This points to a bounded array
+of bio_vecs with information about how to clean up the memory they point
+to.  A number of bvecq structs can be linked together to form a chain and
+an iterator type, ITER_BVECQ, is provided that can be pointed at the chain
+and can walk it.  Netfslib is then switched to use the new type and
+folio_queue is removed along with ITER_FOLIOQ.
 
-SMB2_open()'s own loop retried a failed durable reconnect as a fresh open
-with a stale GUID, and smb2_open_file()'s retry without
-FILE_READ_ATTRIBUTES as a fresh open, skipping the relock; have both
-reissue the same create, only replay a create that was built, and don't
-leave SMB2_open()'s own replay state behind for the caller's next create.
+This is intended as a more flexible replacement for struct folio_queue as
+the latter can only point to whole folios and cannot point to partial pages
+that might be extracted from an ITER_IOVEC/ITER_UBUF for direct or
+unbuffered I/O purposes.
 
-Fixes: 69c3c023af25 ("cifs: Implement netfslib hooks")
-Fixes: 4f1fffa23769 ("cifs: commands that are retried should have replay flag set")
-Fixes: 79520587fe42 ("cifs: update the same create_guid on replay")
-Fixes: e255612b5ed9 ("cifs: Add fallback for SMB2 CREATE without FILE_READ_ATTRIBUTES")
-Signed-off-by: Paulo Alcantara <pc@manguebit.org>
-Cc: stable@vger.kernel.org
----
- fs/smb/client/cifsglob.h |  5 +++++
- fs/smb/client/file.c     | 42 +++++++++++++++++++++++++++++++---------
- fs/smb/client/smb2file.c | 15 ++++++++++----
- fs/smb/client/smb2pdu.c  | 29 ++++++++++++++++++++++++---
- 4 files changed, 75 insertions(+), 16 deletions(-)
+These patches make a more or less straight swap between struct folio_queue
+and struct bvecq.  The change is not quite trivial as the folio_queue
+struct contains a folio_batch struct and is basically a list of whole
+folios only, whereas the new bvecq struct is a chain of bio_vec arrays.
 
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index fe64abdfd740..8e5495c172c6 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -1409,6 +1409,8 @@ struct cifs_open_parms {
- 	umode_t mode;
- 	bool reconnect:1;
- 	bool replay:1; /* indicates that this open is for a replay */
-+	bool no_replay:1; /* don't replay this open internally */
-+	bool pending:1; /* in/out: last built create had no answer */
- 	struct kvec *ea_cctx;
- 	__le32 lease_flags;
- };
-@@ -1461,6 +1463,9 @@ struct cifsFileInfo {
- 	spinlock_t file_info_lock; /* protects four flag/count fields above */
- 	struct mutex fh_mutex; /* prevents reopen race after dead ses*/
- 	unsigned int reopens;
-+	bool reopen_fresh; /* durable handle gone: reopen opens afresh */
-+	bool reopen_replay; /* reopen replays its last create */
-+	int reopen_access; /* desired access of that create */
- 	struct cifs_search_info srch_inf;
- 	struct work_struct oplock_break; /* work for oplock breaks */
- 	struct work_struct put; /* work for the final part of _put */
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index 904df549a884..ff950f11de22 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -37,7 +37,11 @@
- #include "cached_dir.h"
- #include <trace/events/netfs.h>
- 
--static int cifs_reopen_file(struct cifsFileInfo *cfile, bool can_flush);
-+/* flags for cifs_reopen_file() */
-+#define CIFS_REOPEN_BOUND	BIT(0)	/* caller bounds the retries */
-+
-+static int cifs_reopen_file(struct cifsFileInfo *cfile, bool can_flush,
-+			    unsigned int flags);
- 
- bool cifs_io_stopped(struct cifs_io_subrequest *subreq)
- {
-@@ -176,7 +180,7 @@ static int cifs_reopen_file_retry(struct cifsFileInfo *cfile, bool can_flush,
- 			return -EIO;
- 		retrying = true;
- 		reconnects = cifs_ses_reconnects(ses);
--		rc = cifs_reopen_file(cfile, can_flush);
-+		rc = cifs_reopen_file(cfile, can_flush, CIFS_REOPEN_BOUND);
- 		if (!rc || is_interrupt_error(rc) ||
- 		    cifs_writeback_dying(&subreq->subreq))
- 			return rc;
-@@ -1553,7 +1557,7 @@ cifs_relock_file(struct cifsFileInfo *cfile)
- }
- 
- static int
--cifs_reopen_file(struct cifsFileInfo *cfile, bool can_flush)
-+cifs_reopen_file(struct cifsFileInfo *cfile, bool can_flush, unsigned int flags)
- {
- 	int rc = -EACCES;
- 	unsigned int xid;
-@@ -1570,6 +1574,7 @@ cifs_reopen_file(struct cifsFileInfo *cfile, bool can_flush)
- 	int create_options = CREATE_NOT_DIR;
- 	struct cifs_open_parms oparms;
- 	int rdwr_for_fscache = 0;
-+	bool fresh;
- 
- 	xid = get_xid();
- 	mutex_lock(&cfile->fh_mutex);
-@@ -1640,11 +1645,17 @@ cifs_reopen_file(struct cifsFileInfo *cfile, bool can_flush)
- 	desired_access = cifs_convert_flags(cfile->f_flags, rdwr_for_fscache);
- 	create_options |= cifs_open_create_options(cfile->f_flags,
- 						   create_options);
-+	if (cfile->reopen_replay) {
-+		desired_access = cfile->reopen_access;
-+		if (rdwr_for_fscache == 1 && !(desired_access & GENERIC_READ))
-+			rdwr_for_fscache = 2;
-+	}
- 
- 	if (server->ops->get_lease_key)
- 		server->ops->get_lease_key(inode, &cfile->fid);
- 
- retry_open:
-+	fresh = cfile->reopen_fresh;
- 	oparms = (struct cifs_open_parms) {
- 		.tcon = tcon,
- 		.cifs_sb = cifs_sb,
-@@ -1653,7 +1664,10 @@ cifs_reopen_file(struct cifsFileInfo *cfile, bool can_flush)
- 		.disposition = disposition,
- 		.path = full_path,
- 		.fid = &cfile->fid,
--		.reconnect = true,
-+		.reconnect = !fresh,
-+		.replay = cfile->reopen_replay,
-+		.pending = cfile->reopen_replay,
-+		.no_replay = !!(flags & CIFS_REOPEN_BOUND),
- 	};
- 
- 	/*
-@@ -1664,12 +1678,21 @@ cifs_reopen_file(struct cifsFileInfo *cfile, bool can_flush)
- 	 * not dirty locally we could do this.
- 	 */
- 	rc = server->ops->open(xid, &oparms, &oplock, NULL);
--	if (rc == -ENOENT && oparms.reconnect == false) {
-+	if (rc == -ENOENT && !fresh && !oparms.reconnect) {
- 		/* durable handle timeout is expired - open the file again */
-+		fresh = true;
-+		oparms.desired_access = desired_access;
-+		oparms.replay = false;
-+		oparms.pending = false;
- 		rc = server->ops->open(xid, &oparms, &oplock, NULL);
--		/* indicate that we need to relock the file */
-+	}
-+	cfile->reopen_fresh = rc && fresh;
-+	cfile->reopen_replay = rc && oparms.pending;
-+	if (cfile->reopen_replay)
-+		cfile->reopen_access = oparms.desired_access;
-+	/* indicate that we need to relock the file */
-+	if (fresh)
- 		oparms.reconnect = true;
--	}
- 	if (rc == -EACCES && rdwr_for_fscache == 1) {
- 		desired_access = cifs_convert_flags(cfile->f_flags, 0);
- 		rdwr_for_fscache = 2;
-@@ -1850,7 +1873,8 @@ cifs_reopen_persistent_handles(struct cifs_tcon *tcon)
- 	spin_unlock(&tcon->open_file_lock);
- 
- 	list_for_each_entry_safe(open_file, tmp, &tmp_list, rlist) {
--		if (cifs_reopen_file(open_file, false /* do not flush */))
-+		/* do not flush */
-+		if (cifs_reopen_file(open_file, false, 0))
- 			tcon->need_reopen_files = true;
- 		list_del_init(&open_file->rlist);
- 		cifsFileInfo_put(open_file);
-@@ -3080,7 +3104,7 @@ int __cifs_get_writable_file(struct cifsInodeInfo *cifs_inode,
- 			*ret_file = inv_file;
- 			return 0;
- 		}
--		rc = cifs_reopen_file(inv_file, false);
-+		rc = cifs_reopen_file(inv_file, false, 0);
- 		if (!rc) {
- 			*ret_file = inv_file;
- 			return 0;
-diff --git a/fs/smb/client/smb2file.c b/fs/smb/client/smb2file.c
-index fb2fccbe8667..d46a0b198a19 100644
---- a/fs/smb/client/smb2file.c
-+++ b/fs/smb/client/smb2file.c
-@@ -175,6 +175,7 @@ int smb2_open_file(const unsigned int xid, struct cifs_open_parms *oparms,
- 	struct cifs_fid *fid = oparms->fid;
- 	struct network_resiliency_req nr_ioctl_req;
- 	bool retry_without_read_attributes = false;
-+	bool reconnect = oparms->reconnect;
- 
- 	smb2_path = cifs_convert_path_to_utf16(oparms->path, oparms->cifs_sb);
- 	if (smb2_path == NULL)
-@@ -186,13 +187,17 @@ int smb2_open_file(const unsigned int xid, struct cifs_open_parms *oparms,
- 	 * FILE_READ_ATTRIBUTES when not needed and prevent calling code path
- 	 * for retry_without_read_attributes.
- 	 */
--	if (!(oparms->desired_access & FILE_READ_ATTRIBUTES) &&
--	    !(oparms->desired_access & GENERIC_READ) &&
-+	if (!(oparms->desired_access & GENERIC_READ) &&
- 	    !(oparms->desired_access & GENERIC_EXECUTE) &&
- 	    !(oparms->desired_access & GENERIC_ALL) &&
- 	    !(oparms->desired_access & MAXIMUM_ALLOWED)) {
--		oparms->desired_access |= FILE_READ_ATTRIBUTES;
--		retry_without_read_attributes = true;
-+		if (oparms->replay) {
-+			retry_without_read_attributes =
-+				oparms->desired_access & FILE_READ_ATTRIBUTES;
-+		} else if (!(oparms->desired_access & FILE_READ_ATTRIBUTES)) {
-+			oparms->desired_access |= FILE_READ_ATTRIBUTES;
-+			retry_without_read_attributes = true;
-+		}
- 	}
- 	smb2_oplock = SMB2_OPLOCK_LEVEL_BATCH;
- 
-@@ -203,6 +208,8 @@ int smb2_open_file(const unsigned int xid, struct cifs_open_parms *oparms,
- 		memset(&err_iov, 0, sizeof(err_iov));
- 		err_buftype = CIFS_NO_BUFFER;
- 		oparms->desired_access &= ~FILE_READ_ATTRIBUTES;
-+		oparms->reconnect = reconnect;
-+		oparms->replay = false;
- 		rc = SMB2_open(xid, oparms, smb2_path, &smb2_oplock, data, NULL, &err_iov,
- 			       &err_buftype);
- 	}
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index b603e937d1a8..c18912693895 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -3332,14 +3332,25 @@ SMB2_open(const unsigned int xid, struct cifs_open_parms *oparms, __le16 *path,
- 	int flags = 0;
- 	int retries = 0, cur_sleep = 0;
- 	struct smb2_file_all_info *file_info = buf ? &buf->fi : NULL;
-+	bool reconnect = oparms->reconnect;
-+	bool replay = oparms->replay;
-+	bool built = false;
-+	bool answered;
-+	bool sent;
- 
- replay_again:
- 	/* reinitialize for possible replay */
-+	answered = false;
-+	sent = false;
- 	resp_buftype = CIFS_NO_BUFFER;
- 	memset(&rsp_iov, 0, sizeof(rsp_iov));
- 	flags = 0;
- 	server = cifs_pick_channel(ses);
--	oparms->replay = !!(retries);
-+	/* reissue the same create: a durable reconnect clears ->reconnect */
-+	oparms->reconnect = reconnect;
-+	/* with no_replay the caller owns oparms->replay */
-+	if (!oparms->no_replay)
-+		oparms->replay = replay || built;
- 
- 	cifs_dbg(FYI, "create/open\n");
- 	if (!ses || !server)
-@@ -3357,11 +3368,13 @@ SMB2_open(const unsigned int xid, struct cifs_open_parms *oparms, __le16 *path,
- 			    &rqst, oplock, oparms, path);
- 	if (rc)
- 		goto creat_exit;
-+	built = true;
-+	sent = true;
- 
- 	trace_smb3_open_enter(xid, tcon->tid, tcon->ses->Suid, oparms->path,
- 		oparms->create_options, oparms->desired_access);
- 
--	if (retries) {
-+	if (oparms->replay) {
- 		/* Back-off before retry */
- 		if (cur_sleep)
- 			msleep(cur_sleep);
-@@ -3372,6 +3385,7 @@ SMB2_open(const unsigned int xid, struct cifs_open_parms *oparms, __le16 *path,
- 			    &rqst, &resp_buftype, flags,
- 			    &rsp_iov);
- 	rsp = (struct smb2_create_rsp *)rsp_iov.iov_base;
-+	answered = rsp;
- 
- 	if (rc != 0) {
- 		cifs_stats_fail_inc(tcon, SMB2_CREATE_HE);
-@@ -3428,10 +3442,19 @@ SMB2_open(const unsigned int xid, struct cifs_open_parms *oparms, __le16 *path,
- 	SMB2_open_free(&rqst);
- 	free_rsp_buf(resp_buftype, rsp);
- 
--	if (is_replayable_error(rc) &&
-+	if (sent) {
-+		if (!rc || answered)
-+			oparms->pending = false;
-+		else if (!is_interrupt_error(rc))
-+			oparms->pending = true;
-+	}
-+
-+	if (!oparms->no_replay && is_replayable_error(rc) &&
- 	    smb2_should_replay(tcon, &retries, &cur_sleep))
- 		goto replay_again;
- 
-+	if (!oparms->no_replay)
-+		oparms->replay = replay;
- 	return rc;
- }
- 
--- 
-2.56.0
+A further patchset will switch the netfslib unbuffered I/O code to using
+bvecqs and then the bvecqs will be passed down into the filesystem rather
+than passing an iterator.
+
+The primary reason behind making this change is so that bvecq chains can be
+used in the assembly of network filesystem messages.  Netfslib can furnish
+the filesystem with bvecq chains representing the data buffers that need to
+be read or written and then, for example, for a write RPC, the filesystem
+can add protocol headers and trailers onto the chain without the need to
+copy it and can also glue multiple buffers together to form compound
+operations and/or perform sparse operations.
+
+One option here is to add two more fields to the bvecq struct, one to
+increase the offset of the first bio_vec and one to decrease the length of
+the last, thereby allowing a bvecq struct to point at a slice of another
+bio_vec array without having to copy the array - but at the cost of adding
+one or two extra conditional ops when getting the offset or length of a
+segment.
+
+I have in-progress patch sets to rewrite the cifs transport[2] and the ceph
+and rbd transport[3] to make use of bvecq chains.  For the cifs transport,
+the idea is to extend the SMB message concept further up the stack, where
+the PDU-marshalling routines will create individual RPC request blobs that
+the transport can then automatically chain together when it is assembling
+a compound SMB request for transmission.
+
+With the ceph transport, the idea is to convert all the different data
+containers it has into just passing around bvecqs.  These can then be
+chained together in order to transmit them.
+
+This improves efficiency in the TCP stack as we no longer need to cork the
+TCP socket, call sendmsg() multiple times and then uncork; rather we can
+preassemble the message in a bvecq chain and just send the entire message
+in one shot with a single sendmsg() and reduce the number of places doing
+loops.  Using a single sendmsg got an improvement in nfsd performance[4].
+
+I also have some changes on the TCP receive side for the cifs transport
+(which is also likely applicable to the ceph TCP transport) whereby the
+receive buffers are 'spliced' out into a bvecq in the cifs I/O thread
+rather than being copied.  Using a bvecq chain here is advantageous as we
+don't know in advance how many segments we're going to have.  This allows
+us firstly to avoid copying data with the socket lock held (thus holding up
+sendmsg) and secondly to avoid copying data in the I/O thread (copying can
+be offloaded to the app thread).  The last time I benchmarked this, it
+appeared to get fio reading tests on cifs a 5% speedup.
+
+Unfortunately, this doesn't help AFS much as that uses a UDP transport, but
+it might also help 9P, at least with its TCP transport.
+
+The patches can also be found here:
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-next-3
+
+Thanks,
+David
+
+Changes
+=======
+ver #16)
+- Rebase on v7.4-rc1.
+- Add docs for the bvecq tools.
+- Add some kunit tests for the bvecq iterator.
+- Fixed issues found by local review with claude-opus-5-5:
+  - Added missing linux/mempool.h inclusion.
+  - Fix bvecq_alloc_one() to check the rounded-up allocation size against
+    the pool allocation size, not the struct+array size which may have a
+    gap.
+  - Fix bvecq_alloc_one() to limit the max slots to USHRT_MAX to not
+    overrun the slot counters.
+  - Make bvec_kmap_partial()'s bvec pointer const.
+  - Added an iter_to_sg kunit test for bvecq.
+  - Added a patch to make afs symlink's use of ->directory_size
+    consistent.
+  - In netfs_writeback_single(), fix the value ->submit_extendable_to is
+    set to (though a future patch series will remove this).
+  - Split the afs dir bvecq patch into three:
+    - A patch to pass the content length to netfs_writeback_single(),
+      separately from the buffer size in the iov_iter.  The filesystem is
+      then responsible for providing zeroed padding.
+      - A check is added to make sure the buffer is not smaller than the
+        content.
+      - The API doc is updated.
+    - A patch to simplify netfs_writeback_single():
+      - No looking inside the iov_iter.
+      - Effectively do DIO rather than buffered I/O (pagecache not used).
+      - Pass a single op to the cache.
+      - Wait synchronously for op completion for now as the calling
+        filesystem should otherwise do a wait.
+      - Removed the bits to set up a write to the server since it should
+        only write to the cache.
+    - A patch to switch afs dir (and symlink) buffering to use bvecq
+      instead of folio_queue.
+  - Clear new pages as added and clear the tail if shrunk by a third party
+    for AFS directories.
+  - Clear the buffer tail before calling netfs_writeback_single() for AFS
+    symlinks.
+  - Fix netfs_limit_bvecq() to handle empty bvecqs and short chains.
+  - Added missing SPDX to new doc.
+  - Added new files to MAINTAINERS.
+
+ver #15)
+- Fix issues from Sashiko[7]:
+  - Don't need to set page counts after calling alloc_pages_bulk().
+  - Adjust netfs_writeback_single() to return 0 on success, not the amount
+    written.
+  - Remove a couple of unused constants.
+
+ver #14)
+- Fix issues from Sashiko[6]:
+  - In iter_bvecq_get_pages(), use folio_get() not get_pages.
+  - In netfs_read_set_unlock_at(), netfs_read_unlock_folios(),
+    netfs_pgpriv2_unlock_copied_folios() and
+    netfs_writeback_unlock_folios(), skip wholly unoccupied bvecqs.
+  - Remove some now-unused trace bits.
+
+ver #13)
+- Fix issues from Sashiko[5]:
+  - In iter_bvecq_get_pages(), need to add bv_offset when calling
+    want_pages_array().
+  - In iter_bvecq_get_pages(), make the getting of a ref on the page
+    dependent on the page being non-slab.
+  - In bvecq_alloc_one(), use mempool_alloc(), not
+     mempool_alloc_noreserve().
+  - In bvecq_expand_buffer(), don't add __GFP_NORETRY|__GFP_WARN for
+    order 0 allocations.
+  - Drop the netfs_bv_slot tracepoint as it's not used in these patches.
+  - In afs_do_read_single(), afs_dir_get_block() and afs_do_read_symlink(),
+    use mapping_gfp_mask() rather than GFP_KERNEL.
+  - In netfs_writeback_single(), set ->submitted so that
+    netfs_wait_for_write() doesn't then just return -EIO.
+  - In netfs_unlock_abandoned_read_pages(), reset ->first_tail_slot when
+    moving on to next node.
+  - Remove netfs_folioq_trace(s) trace info enum and string set as their
+    tracepoint got removed.
+
+ver #12)
+- Split from v11 of "netfs: Keep track of folios in a segmented bio_vec[]
+  chain"[1]
+
+[1] https://lore.kernel.org/r/20260902173350.3468672-1-dhowells@redhat.com/
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=cifs-experimental
+[3] https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=ceph-iter
+[4] https://lore.kernel.org/netdev/168979108540.1905271.9720708849149797793.stgit@morisot.1015granger.net/
+[5] https://sashiko.dev/#/patchset/20260929075913.2740968-1-dhowells%40redhat.com
+[6] https://sashiko.dev/#/patchset/20260929103412.2807494-1-dhowells%40redhat.com
+[7] https://sashiko.dev/#/patchset/20260930125247.3232130-1-dhowells%40redhat.com
+
+David Howells (15):
+  Add a function to kmap one page of a multipage bio_vec
+  iov_iter: Add a segmented queue of bio_vec[]
+  netfs: Add some tools for managing bvecq chains
+  iov_iter: Add an API document for the bvecq structure
+  iov_iter: Add a bvecq kunit test
+  afs: Fix an inconsistency in the symlink code
+  netfs: Explicitly pass tail padding to netfs_writeback_single()
+  netfs: Change netfs_writeback_single() to not look inside the iterator
+  afs: Use a bvecq to hold dir content rather than folioq
+  cifs: Use a bvecq for buffering instead of a folioq
+  smbdirect: Support ITER_BVECQ in smbdirect_map_sges_from_iter()
+  netfs: Switch folioq to bvecq
+  smbdirect: Remove support for ITER_FOLIOQ from
+    smbdirect_map_sges_from_iter()
+  iov_iter: Remove ITER_FOLIOQ
+  netfs: Remove folio_queue
+
+ Documentation/core-api/bvecq.rst            | 229 ++++++++
+ Documentation/core-api/folio_queue.rst      | 209 -------
+ Documentation/core-api/index.rst            |   2 +-
+ Documentation/filesystems/netfs_library.rst |  47 +-
+ MAINTAINERS                                 |   3 +
+ fs/afs/dir.c                                |  47 +-
+ fs/afs/dir_edit.c                           |  44 +-
+ fs/afs/dir_search.c                         |  33 +-
+ fs/afs/inode.c                              |   2 +-
+ fs/afs/internal.h                           |   6 +-
+ fs/afs/symlink.c                            |  55 +-
+ fs/netfs/Makefile                           |   1 +
+ fs/netfs/buffered_read.c                    |  34 +-
+ fs/netfs/bvecq.c                            | 357 ++++++++++++
+ fs/netfs/internal.h                         |   8 +-
+ fs/netfs/iterator.c                         |  42 +-
+ fs/netfs/main.c                             |  13 +-
+ fs/netfs/misc.c                             |  96 ----
+ fs/netfs/objects.c                          |   1 -
+ fs/netfs/read_collect.c                     |  48 +-
+ fs/netfs/read_pgpriv2.c                     |  26 +-
+ fs/netfs/read_retry.c                       |  29 +-
+ fs/netfs/rolling_buffer.c                   | 190 ++-----
+ fs/netfs/stats.c                            |   6 +-
+ fs/netfs/write_collect.c                    |  26 +-
+ fs/netfs/write_issue.c                      | 195 ++-----
+ fs/smb/client/cifsglob.h                    |   2 +-
+ fs/smb/client/smb2ops.c                     |  78 ++-
+ fs/smb/smbdirect/connection.c               | 135 +++--
+ include/linux/bvec.h                        |  18 +
+ include/linux/bvecq.h                       | 176 ++++++
+ include/linux/folio_queue.h                 | 282 ---------
+ include/linux/iov_iter.h                    |  87 +--
+ include/linux/netfs.h                       |  18 +-
+ include/linux/rolling_buffer.h              |  42 +-
+ include/linux/uio.h                         |  17 +-
+ include/trace/events/netfs.h                |  37 +-
+ kernel/bpf/btf.c                            |   2 -
+ lib/Kconfig.debug                           |  13 +
+ lib/iov_iter.c                              | 517 ++++++++++++-----
+ lib/scatterlist.c                           |  82 ++-
+ lib/tests/Makefile                          |   1 +
+ lib/tests/kunit_bvecq.c                     | 599 ++++++++++++++++++++
+ lib/tests/kunit_iov_iter.c                  | 124 ++--
+ 44 files changed, 2395 insertions(+), 1584 deletions(-)
+ create mode 100644 Documentation/core-api/bvecq.rst
+ delete mode 100644 Documentation/core-api/folio_queue.rst
+ create mode 100644 fs/netfs/bvecq.c
+ create mode 100644 include/linux/bvecq.h
+ delete mode 100644 include/linux/folio_queue.h
+ create mode 100644 lib/tests/kunit_bvecq.c
 
