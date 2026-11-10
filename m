@@ -1,66 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=143.255.12.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794251547;
-	b=H3Vf0NL6ZsX8rKbzjadRkJ0hLFK885oeUaH+UxRtgPJieAQH1bmi+kZfA5Gj3kuepDjK
-	 XPHADQJy9h9vSfIv/3fb9VisMli0l/72OTqgoj4bA4eRz4BMzF2g2NT1EZqijeoeimPHN
-	 ynfTduDzQR6wlIYF3Tznp2F2aHXjMzIcWnsqEA5SowHED89v3ywQ3+wPb7uyamqF09qB7
-	 LRydwqt1ZYUjvJwhIjDS95ylpKXO2XEHSD2ojrWnuW44TaVCXSQ7+edxu3ZgSboRPaYwA
-	 A1RWCLBONog3vwzOQD+AYuVFWSGqVZrRyMoC6hiaPrWfB7TxfSB8b7FDS8DQwH/ct+g==
+	t=1794329543;
+	b=MqUrDRKNkm5LTuWw/p72EmWMN8y5gRS7IKO9coqAv0GrbEWIJsBAT987R4Icfg+VWKI2
+	 uo4ni/3H9tbkzcfyK89ILbPx2po3H4aJt8bADreecaLh6FLcAahbfvoewTUJCStR54Bk0
+	 JkbQES+PqiCgbMDyF1EAIJilLbna8+LZHRvL2MPVmcTpyKzzbXa2rQF+IWXQEj0blP8ym
+	 WgivW55NuDvwXCrregevCDHueABXJ1HvJA+1Z++6bstcMbA/95HTL3+D31s3o6SMuwFgR
+	 VlIH7aw/1GBxOdCm8o9fF+QmMVKT9YNCFkJQeswK5esi27KX1ayMXXTXdDTj4VVAQYA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794251547;
-	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:From:To:Cc:Subject:
-	 In-Reply-To:References:Date:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=iDbXTgguYxJP6pzU6QfRyBYR+dcD++wKGFFljJ+0QiQ=;
-	b=Po+1PX9+wpVwdiqDt1SDxVXh0YAhYPDTR/FYDcMwb4XLFYSG9EjwyhLZOHFdV0DaBTxH
-	 vGZB00MkEC2X0Tr70BP15Bg351ZsQfjO3HY1Fw17hpnj6mTNKDiR6DKpWI6zCbuP3NSrP
-	 M4PIUO+aU6+4dPyTxM5xTCLAznG4uN8oYnu0KndgO4FgaokrENgyvTV08vNqGakmg7ma2
-	 ypA3xkffzUtUjTUUPIW/pEb4LsdLlUaWFC1YgFmQznuRS46QKWwNsWInc+SAoEiH5Oogv
-	 gnDYCGCym6nO5h4ewlS0R3WnLjwdiXb8YR0LM6J9uXg7ROz9/f4L/Cqmex79d2/FUfg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794329543;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=KyDcpTwF2G84cUTe+PVKDz9G3rULU78GRC2w0kOsrLc=;
+	b=l4aw2tre8GbBz5g9LuX5bM4yQTz96CFbLG8LsM7VKIXayuVmXV30ZQ32DPTyLKLklvnF
+	 fYFQ3zY+xdGIl+RC9ylnA/C7J49VUkApYGigBDyRkZo5czIM8Cqw8hUKbFZyn1/IgtQ3m
+	 Z/RGVRymJUJsoZqE4xFLoNPCFQbl09Pa3uiRQy/26ID/0+MFb3/zKlbTzp+JvVrStnzwK
+	 eWITQsh2iQT/0NCBfg5oKIZVh3Q6CWsgmG0dT0HwHYfcy3NvJnhpa5fox9BM20Ijf/wdi
+	 YYcsCHji+6Oik6v5hEeEl7hh1kCC4piXf0Q3DTWANagDf07zGSFRMlxB9cJ+9m6KinQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=manguebit.org;
-	spf=pass smtp.mailfrom=manguebit.org;
-	dkim=pass header.d=manguebit.org header.i=@manguebit.org header.a=rsa-sha256 header.s=dkim header.b=hVhgVGxD;
-	arc=none smtp.remote-ip=143.255.12.172
-Received: from mx1.manguebit.org (mx1.manguebit.org [143.255.12.172])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="WSR4/meg";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76110606A31C;
-	Mon,  9 Nov 2026 19:12:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 76110606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DB6606A330;
+	Tue, 10 Nov 2026 16:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=manguebit.org header.i=@manguebit.org header.a=rsa-sha256 header.s=dkim header.b=hVhgVGxD
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=manguebit.org; s=dkim; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Date:References:In-Reply-To:Subject:Cc:To:From:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description;
-	bh=iDbXTgguYxJP6pzU6QfRyBYR+dcD++wKGFFljJ+0QiQ=; b=hVhgVGxDFLF41YpCLUNWrS+PTg
-	1tJrqObdJa5xerjSzXGPt4RxI/Tw2kkhLZstFXuJjqi7V4JgySG6m9yHuQiWSW1yhXMS5/4Mu1N+j
-	c9SCcZqCErA63BtwwmhYz5p7QAnrxXl863eGvBk/wlve7GbDyBNcreSp8C7Uxa6yof43gqeHaUeqw
-	vJGBncDk+nVMaI/U4lNFrX8yqwrz8PORmTclLTA3kmMQAY6aLCeUrGEw0ROHrEi3j7ooKbFU9lSEb
-	6E4W1n5axGd0UsmjrvIUQl4syh2FXj/wOgBUjCvod+wX3Wg9+2jV2hBUifctAfAvOYsmmgolc6S/8
-	Xm9iD4IA==;
-Received: from pc by mx1.manguebit.org with local (Exim 4.100.1)
-	id 1xQUmt-00000001HIj-0qH6;
-	Mon, 09 Nov 2026 16:12:16 -0300
-Message-ID: <b0fecf98c80a78b4b40488e44dd73ebe@manguebit.org>
-From: Paulo Alcantara <pc@manguebit.org>
-To: =?utf-8?Q?Iv=C3=A1n?= Ezequiel Rodriguez <ivanrwcm25@gmail.com>, David
- Howells
- <dhowells@redhat.com>, netfs@lists.linux.dev
-Cc: Shyam Prasad N <sprasad@microsoft.com>, Steve French
- <stfrench@microsoft.com>, linux-fsdevel@vger.kernel.org,
- linux-cifs@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH netfs v2 1/2] netfs: preserve prepare_write errno on
- reissue
-In-Reply-To: <20261102150656.207612-2-ivanrwcm25@gmail.com>
-References: <20261028181229.1408342-1-ivanrwcm25@gmail.com>
- <20261102150656.207612-1-ivanrwcm25@gmail.com>
- <20261102150656.207612-2-ivanrwcm25@gmail.com>
-Date: Mon, 09 Nov 2026 16:12:15 -0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WSR4/meg
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C6B21F0089F;
+	Tue, 10 Nov 2026 16:52:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794329543;
+	bh=KyDcpTwF2G84cUTe+PVKDz9G3rULU78GRC2w0kOsrLc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=WSR4/megdggMO9wsDWOY+uoQSmNtO3j2yfbZkG8wNi5rB7hE651wqOzDxlgDXK7Ew
+	 RmAWiz2VBpllg4ynVFTcPIjgzyk7nAxhySjvb+byysmSgsCnpkfEzxkJqRWKHq9/mc
+	 YNAQhE0ikpxZ0sqlywqGqK0vnkiWmSjRjigl1fL7x76Q0lUOnOc+fEhl7WUDNrnt2X
+	 Hda+VOxkwzLr8arHFGMZFn9v/vCdMOGy5b+eY24hGBQ3e42uhb8xHhCF/aPlSMJPft
+	 3tCywwxXOQqTXxdhv8EqxUpg5QCSLRW2i8oyD+4B0ftty6ddfdgKmdarmtnmAcuyq1
+	 heVa4ehNncfYw==
+Date: Tue, 10 Nov 2026 17:52:03 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Cai Xinchen <caixinchen1@huawei.com>
+Cc: mic@digikod.net, gnoack@google.com, paul@paul-moore.com, 
+	jmorris@namei.org, serge@hallyn.com, corbet@lwn.net, skhan@linuxfoundation.org, 
+	utilityemal77@gmail.com, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
+	eddyz87@gmail.com, memxor@gmail.com, martin.lau@linux.dev, song@kernel.org, 
+	yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com, ihor.solodrai@linux.dev, 
+	rdunlap@infradead.org, gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org, 
+	johan@kernel.org, dlemoal@kernel.org, hch@lst.de, axboe@kernel.dk, 
+	viro@zeniv.linux.org.uk, jack@suse.cz, dhowells@redhat.com, code@tyhicks.com, 
+	linkinjeon@kernel.org, sj1557.seo@samsung.com, yuezhang.mo@sony.com, 
+	hirofumi@mail.parknet.co.jp, cel@kernel.org, jlayton@kernel.org, neil@brown.name, 
+	okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com, hyc.lee@gmail.com, 
+	miklos@szeredi.hu, amir73il@gmail.com, senozhatsky@chromium.org, 
+	chenxiaosong@chenxiaosong.com, dsterba@suse.com, mason@kernel.org, kpsingh@kernel.org, 
+	matt@bobrowski.net, rostedt@goodmis.org, mhiramat@kernel.org, 
+	mathieu.desnoyers@efficios.com, john.johansen@canonical.com, georgia.garcia@canonical.com, 
+	zohar@linux.ibm.com, roberto.sassu@huawei.com, dmitry.kasatkin@gmail.com, 
+	eric.snowberg@oracle.com, stephen.smalley.work@gmail.com, omosnacek@gmail.com, 
+	casey@schaufler-ca.com, takedakn@nttdata.co.jp, penguin-kernel@i-love.sakura.ne.jp, 
+	xiujianfeng@huawei.com, nanx95726@gmail.com, djwong@kernel.org, lujialin4@huawei.com, 
+	bpf@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, driver-core@lists.linux.dev, linux-block@vger.kernel.org, 
+	linux-btrfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, netfs@lists.linux.dev, 
+	ecryptfs@vger.kernel.org, exfat@lists.linux.dev, linux-nfs@vger.kernel.org, 
+	ntfs@lists.linux.dev, linux-unionfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, apparmor@lists.ubuntu.com, linux-integrity@vger.kernel.org, 
+	selinux@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v3 -next 00/18] landlock: Add READ_METADATA and
+ WRITE_METADATA access rights
+Message-ID: <20261110-rekonstruieren-erbfolge-vollversammlung-26be74966211@brauner>
+References: <20261027121151.1887650-1-caixinchen1@huawei.com>
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Post: <mailto:netfs@lists.linux.dev>
@@ -71,24 +82,26 @@ List-Owner: <mailto:netfs+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+In-Reply-To: <20261027121151.1887650-1-caixinchen1@huawei.com>
 
-Iv=C3=A1n Ezequiel Rodriguez <ivanrwcm25@gmail.com> writes:
+On Tue, Oct 27, 2026 at 08:11:33PM +0800, Cai Xinchen wrote:
+> - The idmap is passed separately from the struct path again, instead
+>   of being derived from path->mnt inside the helpers and the hooks.
+>   As Christian explains in his review of patch 1, the idmap must be
+>   taken of the mount at the time it was checked and passed down to
+>   the filesystem so that the VFS and the filesystem are guaranteed
+>   to see the same idmap.
 
-> prepare_write() may call netfs_prepare_write_failed() (FAILED + errno)
-> before write_retry calls netfs_reissue_write().  Clearing subreq->error
-> to 0 for a clean I/O reissue (82e8885bd763) then makes
-> netfs_do_issue_write() terminate with 0.  The collector copies
-> front->error into stream->error and mapping_set_error(), which ignores
-> 0, so writeback failure is silent.
->
-> Skip clearing error when NETFS_SREQ_FAILED is already set;
-> do_issue_write() already terminates FAILED subrequests.
->
-> Fixes: 82e8885bd763 ("netfs: when subreq is marked for retry, do not chec=
-k if it faced an error")
-> Cc: Shyam Prasad N <sprasad@microsoft.com>
-> Cc: Steve French <stfrench@microsoft.com>
-> Signed-off-by: Iv=C3=A1n Ezequiel Rodriguez <ivanrwcm25@gmail.com>
+This regresses AT_EMPTY_PATH. fchmodat2(), fchownat() and utimensat()
+with an empty path now go through CLASS(fd) which is fdget() and that 
+refuses O_PATH file descriptors. IOW, this is very very broken.
 
-Applied with R-b from Dave.
+Please also go through Sashiko's review of v3 (cf. [1]). The new struct
+file arguments need __nullable or bpf programs can dereference NULL,
+and the ntfs3 stream setattr and overlayfs fileattr paths that bypass
+the hooks need treatment.
+
+[1]: https://sashiko.dev/#/patchset/20261027121151.1887650-1-caixinchen1%40huawei.com
+
+-- 
