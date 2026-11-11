@@ -1,77 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.54
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794329543;
-	b=MqUrDRKNkm5LTuWw/p72EmWMN8y5gRS7IKO9coqAv0GrbEWIJsBAT987R4Icfg+VWKI2
-	 uo4ni/3H9tbkzcfyK89ILbPx2po3H4aJt8bADreecaLh6FLcAahbfvoewTUJCStR54Bk0
-	 JkbQES+PqiCgbMDyF1EAIJilLbna8+LZHRvL2MPVmcTpyKzzbXa2rQF+IWXQEj0blP8ym
-	 WgivW55NuDvwXCrregevCDHueABXJ1HvJA+1Z++6bstcMbA/95HTL3+D31s3o6SMuwFgR
-	 VlIH7aw/1GBxOdCm8o9fF+QmMVKT9YNCFkJQeswK5esi27KX1ayMXXTXdDTj4VVAQYA==
+	t=1794411910;
+	b=3Knnhvs//23/i6gYo6TSDTwpNb+FYKdrZFJGgW79h2I8Il2uTRMHGZWbhu5PJYabostR
+	 gqNQIMfMVYFAIT2CyoaMz5RnfvelxlV4g1/DSD4tsCSQI8zSs1P82+ISWa1ZrPTROatWl
+	 EeUoDhyCv2PIZej0DQuflaUiDE40veIqkE2CuVgAm39QmJ8wneQJxhLfenJ1U/mN87onU
+	 Czi58RRf/5T5ew+mZnw4Ba9qm8JCKcYQCgDFx3nh1tTqmtqVR2AVtfk92mQztNQU+z5eP
+	 J38tuPBkNgi+mJPsq4s+qA8F3/MkGRRxcqmmuP54zTpCb+lSS1apG9KpW+M9ZZbaOZg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794329543;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=KyDcpTwF2G84cUTe+PVKDz9G3rULU78GRC2w0kOsrLc=;
-	b=l4aw2tre8GbBz5g9LuX5bM4yQTz96CFbLG8LsM7VKIXayuVmXV30ZQ32DPTyLKLklvnF
-	 fYFQ3zY+xdGIl+RC9ylnA/C7J49VUkApYGigBDyRkZo5czIM8Cqw8hUKbFZyn1/IgtQ3m
-	 Z/RGVRymJUJsoZqE4xFLoNPCFQbl09Pa3uiRQy/26ID/0+MFb3/zKlbTzp+JvVrStnzwK
-	 eWITQsh2iQT/0NCBfg5oKIZVh3Q6CWsgmG0dT0HwHYfcy3NvJnhpa5fox9BM20Ijf/wdi
-	 YYcsCHji+6Oik6v5hEeEl7hh1kCC4piXf0Q3DTWANagDf07zGSFRMlxB9cJ+9m6KinQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794411910;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=sJv/vQe3wv4xM1igYaOZea7+QqPV13IlBCEtGrk80JI=;
+	b=vzpNHPob0CgkPo4+MUVctRK2/yaXatDO3CUL8fy8VZv9GHKW8uo+wCTkHQrbzDZbSeU7
+	 gck0HbrCfGH2DteIN4Twx7i6Ft5GRmGQFo3AiwwjNHvKtoETO2rsNJFk4T4Eta+FjxyMU
+	 ITeH367+ShFtY7ySVAPMkHxOxuk0PAeixFrNjYLP317YOHvwVUOFuwUY3NbrgXcKmGQ03
+	 OP52sCq52DiTdduu1FZfa93zceEHKxj72RkQqCbYBTPbDSWkj52xoe5BmeszTXKRyIZGv
+	 4Y4ZHvMc5qu+LYHY7bKOF7U6+Cs66ECyc58exzioABJ1AJFlJgRuj6pzWOn0e0yzXrQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="WSR4/meg";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=ionos.com;
+	spf=pass smtp.mailfrom=ionos.com;
+	dkim=pass header.d=ionos.com header.i=@ionos.com header.a=rsa-sha256 header.s=google header.b=MzfWBmvd;
+	arc=none smtp.remote-ip=209.85.221.54
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DB6606A330;
-	Tue, 10 Nov 2026 16:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491CA606A32A
+	for <netfs@lists.linux.dev>; Wed, 11 Nov 2026 15:45:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 491CA606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WSR4/meg
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C6B21F0089F;
-	Tue, 10 Nov 2026 16:52:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794329543;
-	bh=KyDcpTwF2G84cUTe+PVKDz9G3rULU78GRC2w0kOsrLc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WSR4/megdggMO9wsDWOY+uoQSmNtO3j2yfbZkG8wNi5rB7hE651wqOzDxlgDXK7Ew
-	 RmAWiz2VBpllg4ynVFTcPIjgzyk7nAxhySjvb+byysmSgsCnpkfEzxkJqRWKHq9/mc
-	 YNAQhE0ikpxZ0sqlywqGqK0vnkiWmSjRjigl1fL7x76Q0lUOnOc+fEhl7WUDNrnt2X
-	 Hda+VOxkwzLr8arHFGMZFn9v/vCdMOGy5b+eY24hGBQ3e42uhb8xHhCF/aPlSMJPft
-	 3tCywwxXOQqTXxdhv8EqxUpg5QCSLRW2i8oyD+4B0ftty6ddfdgKmdarmtnmAcuyq1
-	 heVa4ehNncfYw==
-Date: Tue, 10 Nov 2026 17:52:03 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Cai Xinchen <caixinchen1@huawei.com>
-Cc: mic@digikod.net, gnoack@google.com, paul@paul-moore.com, 
-	jmorris@namei.org, serge@hallyn.com, corbet@lwn.net, skhan@linuxfoundation.org, 
-	utilityemal77@gmail.com, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
-	eddyz87@gmail.com, memxor@gmail.com, martin.lau@linux.dev, song@kernel.org, 
-	yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com, ihor.solodrai@linux.dev, 
-	rdunlap@infradead.org, gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org, 
-	johan@kernel.org, dlemoal@kernel.org, hch@lst.de, axboe@kernel.dk, 
-	viro@zeniv.linux.org.uk, jack@suse.cz, dhowells@redhat.com, code@tyhicks.com, 
-	linkinjeon@kernel.org, sj1557.seo@samsung.com, yuezhang.mo@sony.com, 
-	hirofumi@mail.parknet.co.jp, cel@kernel.org, jlayton@kernel.org, neil@brown.name, 
-	okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com, hyc.lee@gmail.com, 
-	miklos@szeredi.hu, amir73il@gmail.com, senozhatsky@chromium.org, 
-	chenxiaosong@chenxiaosong.com, dsterba@suse.com, mason@kernel.org, kpsingh@kernel.org, 
-	matt@bobrowski.net, rostedt@goodmis.org, mhiramat@kernel.org, 
-	mathieu.desnoyers@efficios.com, john.johansen@canonical.com, georgia.garcia@canonical.com, 
-	zohar@linux.ibm.com, roberto.sassu@huawei.com, dmitry.kasatkin@gmail.com, 
-	eric.snowberg@oracle.com, stephen.smalley.work@gmail.com, omosnacek@gmail.com, 
-	casey@schaufler-ca.com, takedakn@nttdata.co.jp, penguin-kernel@i-love.sakura.ne.jp, 
-	xiujianfeng@huawei.com, nanx95726@gmail.com, djwong@kernel.org, lujialin4@huawei.com, 
-	bpf@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, driver-core@lists.linux.dev, linux-block@vger.kernel.org, 
-	linux-btrfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, netfs@lists.linux.dev, 
-	ecryptfs@vger.kernel.org, exfat@lists.linux.dev, linux-nfs@vger.kernel.org, 
-	ntfs@lists.linux.dev, linux-unionfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, apparmor@lists.ubuntu.com, linux-integrity@vger.kernel.org, 
-	selinux@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v3 -next 00/18] landlock: Add READ_METADATA and
- WRITE_METADATA access rights
-Message-ID: <20261110-rekonstruieren-erbfolge-vollversammlung-26be74966211@brauner>
-References: <20261027121151.1887650-1-caixinchen1@huawei.com>
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.a=rsa-sha256 header.s=google header.b=MzfWBmvd
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-48e09aa5264so1931993f8f.2
+        for <netfs@lists.linux.dev>; Wed, 11 Nov 2026 07:45:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1794411907; x=1795016707; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=sJv/vQe3wv4xM1igYaOZea7+QqPV13IlBCEtGrk80JI=;
+        b=MzfWBmvdKWYBcKX3UJwfQX1gR0FPiM2Ts55N/WPo1tZruQvnRWHnWZ8v9mOflxVu10
+         aHgzyZzTyT+1WmqVcMTkdAuUytNxsS0cwO2692NMLJJ728HqymWC/hj7IXyXL+1IQVwU
+         Q9ilLKMYQh2dCqhQa8N0hlJD/d51z9KDtIzznYuVtOcfU+Lk346oE7cyh04DCGLUzM4N
+         5btJPo6vSlxJAP7CWNNkXVcJ6WFt9GVfrdnyKgp2Nm22siKnQibu/4Or8TcnqiJb+u+7
+         xddWNQAVwbhQSdazmo8ud+Lsou6ooE7a5er8c37x/fno84nmOqVbWzQXH6YfuCSyorrs
+         hrdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794411907; x=1795016707;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=sJv/vQe3wv4xM1igYaOZea7+QqPV13IlBCEtGrk80JI=;
+        b=l12U0Bl/WzCrqome4eQ6c3yPDvk3XcZBPwOQxcDxfBPquaKW5U7cqUs9keA6QtdMN+
+         eq58fTXN7hMk7xxcHdXfToLIJNVx5NCXj5Pmjj1ttbuKEQJks0FAS0imOM0gLvHTdRET
+         T00KTFBW+O4LdPwBti4pHeUd1C4A88aOc9RlIcE5vOSNdftVk5duUkaQ+5iZbBwrSFKV
+         01gNaBsNJbuykFd0uNJS5aa6sNsULCK+3Expwj+FDbl8lFluefuR3pvibMbARcypE781
+         jYHMI6ROY7N8V+QsHor5KdZD+xeWhyzsZzYXMUx/F1GmqimmAjT2K/Sy6/LkJHQYbf6n
+         twZw==
+X-Forwarded-Encrypted: i=1; AL+hErHd0os0xekuDl2HQe8nH4m5eeyVToQFj8j7kgEOG0sxJklwBTnSKp98+12BAQViVQzXfxY9fQ==@lists.linux.dev
+X-Gm-Message-State: APuU4Z9iyvAdLWzNQBP0PiE+BKl5gifLfQWJCaX1q+CF5m9kt2hrnB1V
+	40Yo9cQmCLsWINYWEy3K1MWD1adJi6aVTzYiGEEQ4dv9uP+7Ee/C4fJ+abn1VyR8u98=
+X-Gm-Gg: AYBFou3fNeOU0NFDBrHvtBqNTYFKtpv/rXMrrC1RLzAPUcfa0RtLF3uMbDOOx1Rno8+
+	Zti6xK55UwHSi5ecemb5CcrK579VIzFbeXri/Bodh0CWUOkaANuwj7GqxWPQq/MTtSnr1UFeSJl
+	HhQ/BsHc2dvh+4XkbsWuL1nOoe8ATMSdWt58ZXZyjmVMU9JvAoSsxrqnFgky1qgmJxME//R3s2j
+	Aeo31o7UdPI4kwT3Oi+I2mH0LW6xnU9zil3fqGebUwdoYPHHWgdnV/OhOFe9sKzaDD9V2LD+W9c
+	xEaCAaBH6+X+XORFcSWgLtU7iwGV7ounPxvHbYlJKzKEMXecDBpY3djuIK8feqqaaNZ8swygJxD
+	c1JNpO6mTyIOIIFB1LSSbsPcoipkjDYNlldnCymjpIVibRoCvUWZyhbtLhVch3wD/tV8WL2f2x5
+	FTTYxASUcHcRMWMoV6lHkLNX+JHqmoZSmGZ1On7uGRRoLjM5uvO8+UDUeMAmTwcxU60rLGKjFwb
+	YM5HMfgYAGTX5qqVG4uFuPv8boge3QWvtt6S/dJ4WiqjstEZ5QKxbH1q5EYUZmdbxakOP2A8nZ+
+	whn6TpneOGCW1TvkHMcaOZb1JcJ9iD4hMM2+zY71M10TqnJcxKwBSYIoVPoaGUpfZmtCdvI1c0n
+	HRtg/0k64ISrtlQhxK6KRv4ZqGK1KMzI=
+X-Received: by 2002:a05:6000:3ca:b0:498:1a65:50ce with SMTP id ffacd0b85a97d-499c7a24ac2mr4382494f8f.22.1794411907466;
+        Wed, 11 Nov 2026 07:45:07 -0800 (PST)
+Received: from raven.intern.cm-ag (p200300dc6f4cbe00023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f4c:be00:230:64ff:fe74:809])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-498365cbfc6sm12392832f8f.41.2026.11.11.07.45.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Nov 2026 07:45:06 -0800 (PST)
+From: Max Kellermann <max.kellermann@ionos.com>
+To: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>
+Cc: Max Kellermann <max.kellermann@ionos.com>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] fscache: make the procfs cookie listing optional
+Date: Wed, 11 Nov 2026 16:45:00 +0100
+Message-ID: <20261111154504.1314170-1-max.kellermann@ionos.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Post: <mailto:netfs@lists.linux.dev>
@@ -81,27 +98,136 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:netfs+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261027121151.1887650-1-caixinchen1@huawei.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 27, 2026 at 08:11:33PM +0800, Cai Xinchen wrote:
-> - The idmap is passed separately from the struct path again, instead
->   of being derived from path->mnt inside the helpers and the hooks.
->   As Christian explains in his review of patch 1, the idmap must be
->   taken of the mount at the time it was checked and passed down to
->   the filesystem so that the VFS and the filesystem are guaranteed
->   to see the same idmap.
+Add FSCACHE_COOKIE_PROC, enabled by default, to omit the diagnostic
+cookie list and its maintenance when not needed.  Caching and counters
+are unaffected.  Disabling it reduces the size of the struct by 16
+bytes.
 
-This regresses AT_EMPTY_PATH. fchmodat2(), fchownat() and utimensat()
-with an empty path now go through CLASS(fd) which is fdget() and that 
-refuses O_PATH file descriptors. IOW, this is very very broken.
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+---
+ fs/netfs/Kconfig          | 10 ++++++++++
+ fs/netfs/fscache_cookie.c |  8 +++++++-
+ fs/netfs/fscache_proc.c   |  2 ++
+ fs/netfs/internal.h       |  2 ++
+ include/linux/fscache.h   |  2 ++
+ 5 files changed, 23 insertions(+), 1 deletion(-)
 
-Please also go through Sashiko's review of v3 (cf. [1]). The new struct
-file arguments need __nullable or bpf programs can dereference NULL,
-and the ntfs3 stream setattr and overlayfs fileattr paths that bypass
-the hooks need treatment.
-
-[1]: https://sashiko.dev/#/patchset/20261027121151.1887650-1-caixinchen1%40huawei.com
-
+diff --git a/fs/netfs/Kconfig b/fs/netfs/Kconfig
+index d0e7b0971fa3..881b081e3a52 100644
+--- a/fs/netfs/Kconfig
++++ b/fs/netfs/Kconfig
+@@ -44,6 +44,16 @@ config FSCACHE
+ 
+ 	  See Documentation/filesystems/caching/fscache.rst for more information.
+ 
++config FSCACHE_COOKIE_PROC
++	bool "List FS-Cache cookies in procfs"
++	depends on FSCACHE && PROC_FS
++	default y
++	help
++	  Provide the diagnostic /proc/fs/netfs/cookies listing (also
++	  available through /proc/fs/fscache/cookies). Disabling this saves
++	  two pointers per cookie and avoids maintaining the global list.
++	  Caching and statistics remain available.
++
+ config FSCACHE_STATS
+ 	bool "Gather statistical information on local caching"
+ 	depends on FSCACHE && PROC_FS
+diff --git a/fs/netfs/fscache_cookie.c b/fs/netfs/fscache_cookie.c
+index 5a226f9cbdea..fe0832ec2056 100644
+--- a/fs/netfs/fscache_cookie.c
++++ b/fs/netfs/fscache_cookie.c
+@@ -23,8 +23,10 @@ static void fscache_perform_invalidation(struct fscache_cookie *cookie);
+ 
+ #define fscache_cookie_hash_shift 15
+ static struct hlist_bl_head fscache_cookie_hash[1 << fscache_cookie_hash_shift];
++#ifdef CONFIG_FSCACHE_COOKIE_PROC
+ static LIST_HEAD(fscache_cookies);
+ static DEFINE_RWLOCK(fscache_cookies_lock);
++#endif
+ static LIST_HEAD(fscache_cookie_lru);
+ static DEFINE_SPINLOCK(fscache_cookie_lru_lock);
+ DEFINE_TIMER(fscache_cookie_lru_timer, fscache_cookie_lru_timed_out);
+@@ -68,9 +70,11 @@ static void fscache_free_cookie(struct fscache_cookie *cookie)
+ 		return;
+ 	}
+ 
++#ifdef CONFIG_FSCACHE_COOKIE_PROC
+ 	write_lock(&fscache_cookies_lock);
+ 	list_del(&cookie->proc_link);
+ 	write_unlock(&fscache_cookies_lock);
++#endif
+ 	if (cookie->aux_len > sizeof(cookie->inline_aux))
+ 		kfree(cookie->aux);
+ 	if (cookie->key_len > sizeof(cookie->inline_key))
+@@ -363,9 +367,11 @@ static struct fscache_cookie *fscache_alloc_cookie(
+ 	INIT_WORK(&cookie->work, fscache_cookie_worker);
+ 	__fscache_set_cookie_state(cookie, FSCACHE_COOKIE_STATE_QUIESCENT);
+ 
++#ifdef CONFIG_FSCACHE_COOKIE_PROC
+ 	write_lock(&fscache_cookies_lock);
+ 	list_add_tail(&cookie->proc_link, &fscache_cookies);
+ 	write_unlock(&fscache_cookies_lock);
++#endif
+ 	fscache_see_cookie(cookie, fscache_cookie_new_acquire);
+ 	return cookie;
+ 
+@@ -1104,7 +1110,7 @@ void __fscache_invalidate(struct fscache_cookie *cookie,
+ }
+ EXPORT_SYMBOL(__fscache_invalidate);
+ 
+-#ifdef CONFIG_PROC_FS
++#ifdef CONFIG_FSCACHE_COOKIE_PROC
+ /*
+  * Generate a list of extant cookies in /proc/fs/fscache/cookies
+  */
+diff --git a/fs/netfs/fscache_proc.c b/fs/netfs/fscache_proc.c
+index 874d951bc390..6ab23083cf01 100644
+--- a/fs/netfs/fscache_proc.c
++++ b/fs/netfs/fscache_proc.c
+@@ -27,9 +27,11 @@ int __init fscache_proc_init(void)
+ 			     &fscache_volumes_seq_ops))
+ 		goto error;
+ 
++#ifdef CONFIG_FSCACHE_COOKIE_PROC
+ 	if (!proc_create_seq("fs/netfs/cookies", S_IFREG | 0444, NULL,
+ 			     &fscache_cookies_seq_ops))
+ 		goto error;
++#endif
+ 	return 0;
+ 
+ error:
+diff --git a/fs/netfs/internal.h b/fs/netfs/internal.h
+index 6b583152132f..855fc47fbe6d 100644
+--- a/fs/netfs/internal.h
++++ b/fs/netfs/internal.h
+@@ -406,8 +406,10 @@ static inline bool fscache_set_cache_state_maybe(struct fscache_cache *cache,
+  */
+ extern struct kmem_cache *fscache_cookie_jar;
+ #ifdef CONFIG_PROC_FS
++#ifdef CONFIG_FSCACHE_COOKIE_PROC
+ extern const struct seq_operations fscache_cookies_seq_ops;
+ #endif
++#endif
+ extern struct timer_list fscache_cookie_lru_timer;
+ 
+ extern void fscache_print_cookie(struct fscache_cookie *cookie, char prefix);
+diff --git a/include/linux/fscache.h b/include/linux/fscache.h
+index ecd14d645690..b4aedcfb5945 100644
+--- a/include/linux/fscache.h
++++ b/include/linux/fscache.h
+@@ -109,7 +109,9 @@ struct fscache_cookie {
+ 	struct fscache_volume		*volume;	/* Parent volume of this file. */
+ 	void				*cache_priv;	/* Cache-side representation */
+ 	struct hlist_bl_node		hash_link;	/* Link in hash table */
++#ifdef CONFIG_FSCACHE_COOKIE_PROC
+ 	struct list_head		proc_link;	/* Link in proc list */
++#endif
+ 	struct list_head		commit_link;	/* Link in commit queue */
+ 	struct work_struct		work;		/* Commit/relinq/withdraw work */
+ 	uoff_t				object_size;	/* Size of the netfs object */
 -- 
+2.53.0
+
