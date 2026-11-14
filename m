@@ -1,58 +1,51 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.223
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794535698;
-	b=somxbktSCRbimvDk1x4m8nZ0nQjLs7nKOxJzR3JxmhEp0U48oM353KvdmcXdVwXaFk9F
-	 FU5RbPpCMHI/J5yTx48gquCEHM2VrzsDwA5Q8OQ3hqlhi2wlcEPCW+q8z3Qi4DQj0JboI
-	 vJwUfl+TqvQFG+fu32xPlAx8Ha7IDM5vffkh7r0QzWx3li41puP8NAj8jSHfVmZB1Nycl
-	 g13mUPGkU3hnVXO5wozRBWxVWyCf6BaxIbJkPAG4QfgRkK+UQFOKhr3zjc8K12HPLCnYP
-	 AX7fxaAG8b+787LXoEvZUk1aq4fgMbWqZdaJc5BJK5e5FKMseOckXjw0j9v0W5RItEw==
+	t=1794649335;
+	b=JEetZKUTqfpEM/jtCqKdhDEjchxYHpAuYsxkNzEXCekdGksXTSUO0ZUXAyYgMz0w6bm+
+	 IIhxTpNy4qR5xclO8z86Dt/6X5We/a4kvDdPu1w7mFBTNyZ6iZi22/YTLziE9uY6wfMtf
+	 KhlkRIMhnTou/jS32m+42Qr7s6VJ0l+8Is903HagUYnxEnZbJ10Yu30jNEQN7IQk4quxV
+	 jih/6LFzFeqx8cD7VtSa5m7SCfz/T7DIHT2CYDO/j4pdtFplW+ut8SJQK++wfZAc49awZ
+	 NG7cMP7k4NkyoGuj1J/dbyG/R6V7Uzfw5YdccfNRXn7SeMVshic82mqMEZIrvuvj0KQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794535698;
-	h=DMARC-Filter:dkim-signature:Received:Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:CC:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Originating-IP:X-ClientProxiedBy;
-	bh=fRlFnEwOyhCsf6bntFNWmv0q3cjwumqt5gvXEY0j99s=;
-	b=vrBt7E8IukUhQyV+5h5AsjI/sIAf5o7lRU32SeCHS4btBeXQPiGrYVsEtN7FcRKXcxqN
-	 qv+SArQ59lXPt1C3Pd//jk7aNi50QGRyyq7XiZPnDME8KKFeMYqBImb2y1OtIFnKA2IJo
-	 VBz1ugYhxqGd/4yWtGD/uxAwgHtI7eBvUCtrOBEEMBdQ1C1L8XNd9ISSjulmVdMoondxr
-	 8LO+cAYd81pme64mlMOyR1q0zS3+v1WQ9yIaSEInvEjcXgjPXEMFukMakWNeQQDaBx5ZX
-	 zqkFfc76j3lHIwnAcRXuBv2RandOf6dnhw5cIcN/s0HgsPw70SRAETJgxSk+cQwu62A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794649335;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 MIME-Version:Content-Type:Content-Disposition;
+	bh=pIGPIFBWZWXbATAlZfCud1WRKu4IF0iJVD7JMKvXy3k=;
+	b=lwi8yvFyhG1DEvgJDeouoda6r1TF+33P1Zv6mwDEMYytUuBnfgbz2Md/f30n+q+b/ieu
+	 2iQtOxyg2wCN61YaodbsWwN1ADu9x0We95YCg5uVlj5PUaR9b7ur/gfDAfXWz3gZ0QdG7
+	 8xe+R1/sL5X2gBu//inlHukLOrV5v8LWVa9clET6p2C0u67m6c96bBYnW6bNLVhVWEGpl
+	 PoI0sg7iki4ayOnRwj2L0DfwKJ7kh53rwvjwXZtIvoXQDp934UK9KCYaqHRI/M3c8aCtj
+	 VPKoNKH706p9ddN6d3jpRXc+tC1hP/aPamwRQz/XbAA0/y4aYCnklH15LShYJase1Hw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=huawei.com;
-	spf=pass smtp.mailfrom=huawei.com;
-	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=tgB76D+u;
-	arc=none smtp.remote-ip=113.46.200.223
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="WAtNUQ/z";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D93A606A8BA;
-	Fri, 13 Nov 2026 02:08:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7D93A606A8BA
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5A7606A327;
+	Sat, 14 Nov 2026 09:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=tgB76D+u
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=fRlFnEwOyhCsf6bntFNWmv0q3cjwumqt5gvXEY0j99s=;
-	b=tgB76D+uPHT+xoP/MsIq5QT99tPRFyjCjYAa5bPvS0n/BLMW7GmhAJphWd0AaFaCXwNcxc4Ka
-	dPjWkV3Gm+TFWMTFawukI93MmREL5xwGs2ILp3CVZdJ2RNXEKTgDHIK4mZDlwgvononmGVpnLul
-	eI6cXevbd8zNABceS1BMSf4=
-Received: from mail.maildlp.com (unknown [172.19.163.127])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4jQgdM28nxzmVC1;
-	Fri, 13 Nov 2026 10:07:51 +0800 (CST)
-Received: from whupemk100010.china.huawei.com (unknown [7.152.184.41])
-	by mail.maildlp.com (Postfix) with ESMTPS id 63B8C40572;
-	Fri, 13 Nov 2026 10:08:07 +0800 (CST)
-Received: from [10.67.110.140] (10.67.110.140) by
- whupemk100010.china.huawei.com (7.152.184.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 13 Nov 2026 10:08:00 +0800
-Message-ID: <2dbd365b-eac5-448b-b6c2-4ed8754551a7@huawei.com>
-Date: Fri, 13 Nov 2026 10:07:59 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WAtNUQ/z
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A651F000C4;
+	Sat, 14 Nov 2026 09:42:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794649334;
+	bh=pIGPIFBWZWXbATAlZfCud1WRKu4IF0iJVD7JMKvXy3k=;
+	h=Date:From:To:Cc:Subject;
+	b=WAtNUQ/zCoSrc5CtT9ENLWfPqfjaFnMPxfkd76t7U0TKG7tJa+edV+Aux29yphSYJ
+	 V1lxgo3iFEII6bPcWj61hVlauDB3LQCayNQqjxYX8YhZ4wEucZSHBuO4qQI/SxKeMJ
+	 cGFZkiDilgz3tsMvMlipk42LiDa5jRR7zIZcMKDoIYRA2ycl19L8ELQWpcMpjG+lAw
+	 HembcyEj31tbDPDXdAMconldGvFJrBKdaqUMXIIGgtHw5NCCGCkUk4SSc+2cot9DXJ
+	 KhWW2usp2QxZns2uVpmwRDvGDppeAa66WwbnJpRdJ2ZuhTx+KfJZX7Q2aAwkq2/zTX
+	 2rdyi+uXFtFwg==
+Date: Sat, 14 Nov 2026 10:42:11 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Jan Kara <jack@suse.cz>, netfs@lists.linux.dev, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: cachefiles: cache objects get created on a frozen cache filesystem
+Message-ID: <20261114-hingen-unannehmbar-gelage-7397ef6d8e33@brauner>
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Post: <mailto:netfs@lists.linux.dev>
@@ -62,95 +55,53 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:netfs+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 -next 00/18] landlock: Add READ_METADATA and
- WRITE_METADATA access rights
-To: Christian Brauner <brauner@kernel.org>
-CC: <mic@digikod.net>, <gnoack@google.com>, <paul@paul-moore.com>,
-	<jmorris@namei.org>, <serge@hallyn.com>, <corbet@lwn.net>,
-	<skhan@linuxfoundation.org>, <utilityemal77@gmail.com>, <ast@kernel.org>,
-	<daniel@iogearbox.net>, <andrii@kernel.org>, <eddyz87@gmail.com>,
-	<memxor@gmail.com>, <martin.lau@linux.dev>, <song@kernel.org>,
-	<yonghong.song@linux.dev>, <jolsa@kernel.org>, <emil@etsalapatis.com>,
-	<ihor.solodrai@linux.dev>, <rdunlap@infradead.org>,
-	<gregkh@linuxfoundation.org>, <rafael@kernel.org>, <dakr@kernel.org>,
-	<johan@kernel.org>, <dlemoal@kernel.org>, <hch@lst.de>, <axboe@kernel.dk>,
-	<viro@zeniv.linux.org.uk>, <jack@suse.cz>, <dhowells@redhat.com>,
-	<code@tyhicks.com>, <linkinjeon@kernel.org>, <sj1557.seo@samsung.com>,
-	<yuezhang.mo@sony.com>, <hirofumi@mail.parknet.co.jp>, <cel@kernel.org>,
-	<jlayton@kernel.org>, <neil@brown.name>, <okorniev@redhat.com>,
-	<Dai.Ngo@oracle.com>, <tom@talpey.com>, <hyc.lee@gmail.com>,
-	<miklos@szeredi.hu>, <amir73il@gmail.com>, <senozhatsky@chromium.org>,
-	<chenxiaosong@chenxiaosong.com>, <dsterba@suse.com>, <mason@kernel.org>,
-	<kpsingh@kernel.org>, <matt@bobrowski.net>, <rostedt@goodmis.org>,
-	<mhiramat@kernel.org>, <mathieu.desnoyers@efficios.com>,
-	<john.johansen@canonical.com>, <georgia.garcia@canonical.com>,
-	<zohar@linux.ibm.com>, <roberto.sassu@huawei.com>,
-	<dmitry.kasatkin@gmail.com>, <eric.snowberg@oracle.com>,
-	<stephen.smalley.work@gmail.com>, <omosnacek@gmail.com>,
-	<casey@schaufler-ca.com>, <takedakn@nttdata.co.jp>,
-	<penguin-kernel@i-love.sakura.ne.jp>, <xiujianfeng@huawei.com>,
-	<nanx95726@gmail.com>, <djwong@kernel.org>, <lujialin4@huawei.com>,
-	<bpf@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
-	<driver-core@lists.linux.dev>, <linux-block@vger.kernel.org>,
-	<linux-btrfs@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<netfs@lists.linux.dev>, <ecryptfs@vger.kernel.org>, <exfat@lists.linux.dev>,
-	<linux-nfs@vger.kernel.org>, <ntfs@lists.linux.dev>,
-	<linux-unionfs@vger.kernel.org>, <linux-cifs@vger.kernel.org>,
-	<linux-trace-kernel@vger.kernel.org>, <apparmor@lists.ubuntu.com>,
-	<linux-integrity@vger.kernel.org>, <selinux@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>
-References: <20261027121151.1887650-1-caixinchen1@huawei.com>
- <20261110-rekonstruieren-erbfolge-vollversammlung-26be74966211@brauner>
-Content-Language: en-US
-From: Cai Xinchen <caixinchen1@huawei.com>
-In-Reply-To: <20261110-rekonstruieren-erbfolge-vollversammlung-26be74966211@brauner>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- whupemk100010.china.huawei.com (7.152.184.41)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 
-You are right, and thanks for catching it.
+Hey,
 
-I have been working on these modifications over the past two weeks and 
-have deployed sashiko locally. However, my current changes are still 
-being flagged for some bugs by my local sashiko, and I am still in the 
-process of fixing them. I expect to release v4 in a few days. Regarding 
-these issues, my current fixes are as follows: - AT_EMPTY_PATH: v4 will 
-use CLASS(fd_raw, f)(dfd), the   same lookup path_init() does for an 
-empty path, so O_PATH descriptors   work again.  do_utimes_fd() 
-(futimens(2)) intentionally keeps   CLASS(fd, f), matching 
-fchmod(2)/fchown(2); AT_EMPTY_PATH returns   -EINVAL there anyway.  The 
-same patch rejects a NULL pathname with   -EFAULT before 
-CLASS(filename_maybe_null) can turn it into an empty   path relative to 
-AT_FDCWD, and adds the missing audit_file() on the   do_utimes_path() fd 
-branch. - __nullable (patches 5-9, 11-13): v4 will extend 
-kernel/bpf/bpf_lsm_proto.c (the existing   strong-override file used for 
-mmap_file) with strong definitions for   all 11 hooks that gained a file 
-argument, each declared   file__nullable, so the verifier sees 
-PTR_MAYBE_NULL and a program must   check before dereferencing. - ntfs 
-named stream setattr (patch 1): v3 forwarded with   
-__notify_change(idmap, base_dentry, ...).  v4 will use   
-notify_change_target(idmap, attr->ia_path, base_dentry, ...), so the   
-hook is checked against the path the syscall used while the attributes   
-still land on the base inode. - overlayfs fileattr (patch 8): v3 removed 
-the ovl_security_fileattr()   workaround but then called the unchecked 
-__vfs_fileattr_get()/_set()   on the real dentry, which bypasses the 
-hooks.  v4 will call the checked   vfs_fileattr_get()/_set() with the 
-real upper/lower path, so the hooks   also run for the underlying layer; 
-ecryptfs is switched the same way.
+I'm working on freeze protection fixes across the tree and this one I
+just can't fix myself.
 
-Best regards.
+cachefiles only takes freeze protection around its xattr updates since
+80887f316729 ("cachefiles: Fix non-taking of sb_writers around
+set/removexattr"). The namespace operations on the cache filesystem
+still don't have it. So cachefiles modifies a frozen cache filesystem.
+On ext4 that trips the WARN_ON() in ext4_journal_check_start().
 
-Cai
+Reproduced on v7.4-rc1 with the cache on ext4, bound through
+/dev/cachefiles, and an NFS mount with -o fsc. Freeze the cache
+filesystem and read files through NFS that aren't cached yet:
 
-On 11/11/2026 12:52 AM, Christian Brauner wrote:
-> This regresses AT_EMPTY_PATH. fchmodat2(), fchownat() and utimensat()
-> with an empty path now go through CLASS(fd) which is fdget() and that
-> refuses O_PATH file descriptors. IOW, this is very very broken.
->
-> Please also go through Sashiko's review of v3 (cf. [1]). The new struct
-> file arguments need __nullable or bpf programs can dereference NULL,
-> and the ntfs3 stream setattr and overlayfs fileattr paths that bypass
-> the hooks need treatment.
+  WARNING: fs/ext4/ext4_jbd2.c:90 at ext4_journal_check_start+0x1f6/0x2d0, CPU#2: kworker/u16:1/43
+  Workqueue: fscache fscache_cookie_worker
+  Call Trace:
+   __ext4_journal_start_sb+0x7a/0x470
+   __ext4_new_inode+0x23da/0x45d0
+   ext4_tmpfile+0x1b9/0x490
+   vfs_tmpfile+0x414/0xa90
+   kernel_tmpfile_open+0x3d/0x70
+   cachefiles_create_tmpfile+0x1c7/0x800
+   cachefiles_create_file+0x6f/0x2f0
+   cachefiles_look_up_object+0x71a/0x8a0
+   cachefiles_lookup_cookie+0x3b8/0x8f0
+   fscache_cookie_worker+0xa23/0x19a0
+   process_one_work+0x946/0x1820
+   worker_thread+0x4f1/0xd60
+   kthread+0x364/0x460
+
+That's one per file read.
+
+From reading the code the other namespace operations have the same
+problem but I've only triggered the tmpfile creation:
+
+- vfs_mkdir() in cachefiles_get_directory()
+- vfs_rename() in cachefiles_bury_object()
+- vfs_unlink() in cachefiles_unlink()
+- vfs_link() in cachefiles_commit_tmpfile()
+
+They need mnt_want_write(cache->mnt) taken before the parent's inode
+lock, like the xattr helpers do it.
+
+The tmpfile creation goes back to 1f08c925e7a3 ("cachefiles: Implement
+backing file wrangling").
