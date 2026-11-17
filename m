@@ -1,67 +1,67 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794936067;
-	b=mwarEXPzuAH+H2HmlkHFeGfZ8IeUAAbUbVabABToPK//gkmVAyvmQwLyVMd8BFD4waCx
-	 EfAyJ7LcZ/5ueuI29GkzA3xjbAGH3Fgk+0PKKz7YgrUzxu//o4AuH5T49bKHIZTsJdU4O
-	 Ug2/aCtnreQQK+SoFF7OKQcDuV2lRpLJknZ0eQmrLTXYQXPs76Ss9q4csKuo6KYyHwhle
-	 bU8QPVtv7Ue6L2aIcHkZVuKJs3Kz7DO7FeAHHVpneLhfcDYuOVluYpHTT7gyXhEUg5Gt1
-	 rYAElPfZ2KPDwoxR/PghEHLW1i7mbyHCl4ybhluyYrvyvU1WNiSL/8GXNLz+drtewrw==
+	t=1794936073;
+	b=0W+mZnxxdOz+R4GNjwKDQGD8mYY3ZZ+gkbLXyiK6ed/tAiYZXfDkRYpIj4JzdEvEgEL9
+	 Q/IHYvWz8lovD/ttL+sAjNCHp4IKyfIs3KK0n7xf0CjEbbLLQF1Z1UZ32f1VNcPoRvUFJ
+	 +w6tsSPIrzeotdawhF3xHCeQ+rAhb+M39g97BjYQ38+UgHGPL8N11pRqYWJxl2VGar+2b
+	 dKbW+izLTgbB9JQ+GvTJxPR5tYNkKhgz8YDxqPnBEAnavDSlIpbWZBBiE6Ouo+Eh+VxFh
+	 ycB1n9jsFGc9vnwHg/P5lB4/H3CKPRIdzNSsA524m+pzFyCnR62Zy8oFfIgMDnWlxrA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794936067;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794936073;
 	h=DMARC-Filter:DKIM-Signature:X-MC-Rep:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
 	 Message-ID:In-Reply-To:References:MIME-Version:X-Scanned-By:
 	 X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:
 	 Content-Transfer-Encoding:content-type;
-	bh=CZaqB8zLqbirkp9myGrNJcVtQI5qFYQmk8ue8ilaeuU=;
-	b=tn1D1685ay/OZOZftvVOfClwPOwYVGwTUPeLD+CcPbS3OVxmX3qptxc6/Q7nTJh9thTA
-	 Rk5UtgB4ULLYqLlkH0R0tJo8Bv4jXLAlbrL7Tc9ddwi9Epx2cNvyKZ3jsrJ8VJDp1jrM5
-	 TZWBo/PglgbdUjtNMkAitYZ5/eKUbPoyGosIPQcRSjVtXdU5WbN+8QQ2yAF8pFsmLdh0S
-	 my4e1IpRKElspjGC/DtAu6c08tMdEceyUbswQfNCMDFpZJYsKmvjFvrycv3jwfOCU2AIh
-	 YQdUFMe8XE33mUcin7OeEFg8AhCIC75FGhN/i5ldV4TaxA/hjV6/1pGM1sTA5sjluDQ==
+	bh=9dk9kL49guxKer+r/d3oR1NNShzzS7x0RBJAR6pZ1HE=;
+	b=AKa1hNnUC2G7tXY8M6KY+0P40mbejO2+hYfktGfZ+jkDM66bDfuOxVH6uDH7XYrwjgjP
+	 qkMN0uP2SgHsWCG2638I5gKmUJ0uOu1HUfyCFsqYSdRMO2uzJrjbvIsyY0dW7SkmW6kgy
+	 yvvS+e1Dd6+EvHkbzeSifDpaaNJ50YD7KYJaYr8fJ76gaDeguFyz95f16McDtC1qBwG81
+	 ZAx+86UidxHGeXMXXg3TRFVhlaeiER2hw4QUj9UjkgDNyCYCjKkOpsTRN+8l+qouG2iJU
+	 tlKeQZxqt/hQseeAwkJrXAjnwQJpsyeQ+WYHD+IXt0MELSsce8YD6Gj1ycSvWj3L49A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QHPNsJyt;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LQPpb2Ul;
 	arc=none smtp.remote-ip=170.10.129.124
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0ACA606A891
-	for <netfs@lists.linux.dev>; Tue, 17 Nov 2026 17:21:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E0ACA606A891
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD1DC606A8B5
+	for <netfs@lists.linux.dev>; Tue, 17 Nov 2026 17:21:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BD1DC606A8B5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QHPNsJyt
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LQPpb2Ul
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794936067;
+	s=mimecast20190719; t=1794936071;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=CZaqB8zLqbirkp9myGrNJcVtQI5qFYQmk8ue8ilaeuU=;
-	b=QHPNsJyt4EPfAB94BYLEoMkLMVFBp7xpiO2vVq5yQxSf2uzywMVnVc/3tJ32gSxo5uALmA
-	JYg/YdHeaiXaOi3911Sent1kWePLe2kJyfFjoiuiypXgz8aLXjjZ+now0GFaojMQRdAC7L
-	2k16nGkq+hiucJiaETLzAw3Du4BIi2M=
+	bh=9dk9kL49guxKer+r/d3oR1NNShzzS7x0RBJAR6pZ1HE=;
+	b=LQPpb2UlWKxUlXuYO4demMyTPu4H5RIXNNgX442Pf4PhNvSDkZ0Ivdq5r6QpNWTEo+fB4C
+	XiqNnctHoCnel2ZZEEkk3mtFxGyZBY9qme+1nokUZtmDXWqWi1e1rwvMBOKwq8Sx+P/YI2
+	/w19mSoXjGyi7O/y6YuOvYC17TYYPYU=
 X-MC-Rep: binary re single
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-107-2WD__u3GNjSrhmUjMV98Sw-1; Tue,
- 17 Nov 2026 12:21:02 -0500
-X-MC-Unique: 2WD__u3GNjSrhmUjMV98Sw-1
-X-Mimecast-MFC-AGG-ID: 2WD__u3GNjSrhmUjMV98Sw_1794936060
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-27-C6G4NVEZOxKLspGpx-mH_g-1; Tue,
+ 17 Nov 2026 12:21:07 -0500
+X-MC-Unique: C6G4NVEZOxKLspGpx-mH_g-1
+X-Mimecast-MFC-AGG-ID: C6G4NVEZOxKLspGpx-mH_g_1794936065
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0AFD718002D1;
-	Tue, 17 Nov 2026 17:21:00 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 01FA91955F37;
+	Tue, 17 Nov 2026 17:21:05 +0000 (UTC)
 Received: from dhowells-thinkpadp1gen8.rmtgb.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 54B9318004F7;
-	Tue, 17 Nov 2026 17:20:56 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2D8111956054;
+	Tue, 17 Nov 2026 17:21:01 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>
 Cc: David Howells <dhowells@redhat.com>,
@@ -82,9 +82,9 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Christoph Hellwig <hch@infradead.org>
-Subject: [PATCH v18 07/17] afs: Fix an inconsistency in the symlink code
-Date: Tue, 17 Nov 2026 17:19:05 +0000
-Message-ID: <20261117171958.2982801-8-dhowells@redhat.com>
+Subject: [PATCH v18 08/17] netfs: Explicitly pass tail padding to netfs_writeback_single()
+Date: Tue, 17 Nov 2026 17:19:06 +0000
+Message-ID: <20261117171958.2982801-9-dhowells@redhat.com>
 In-Reply-To: <20261117171958.2982801-1-dhowells@redhat.com>
 References: <20261117171958.2982801-1-dhowells@redhat.com>
 X-Mailing-List: netfs@lists.linux.dev
@@ -96,18 +96,28 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:netfs+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: ov4XiGeW4Y4GJw9BN8R2eufP53lfKEcKLPrvPgC_dAk_1794936060
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: bReaPrxU1vuVF7su21TG75IPbHBhhPPIzsju-vl4vSE_1794936065
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Fix the afs symlink code to set ->directory_size to the size of the buffer,
-not PAGE_SIZE-1 or i_size.  This doesn't actually change the operation
-since the value is ignored by the symlink writeback path (which writes to
-the cache).
+Change netfs_writeback_single() so that the function is now given an
+explicit content length in addition to the buffer iterator.  The buffer
+must be rounded out to the cache DIO block size and netfslib will then draw
+on this excess space to write padding into the cache beyond the content
+length specified.  The caller must also now clear the padding space.
 
-This was spotted by Claude.
+AFS directory code is modified to comply with this, including allocating
+pre-zeroed buffer space and clearing excess buffer space if the content is
+shrunk by a third party.  It's not done during writeback as that may happen
+many times for a directory.
+
+AFS symlink code, however, is modified such that the clearing is done when
+the content is written to the cache (expected to be a one-off per symlink,
+if it happens).
+
+A further patch will make better use of the two different lengths.
 
 Signed-off-by: David Howells <dhowells@redhat.com>
 cc: Paulo Alcantara <pc@manguebit.org>
@@ -118,28 +128,246 @@ cc: linux-afs@lists.infradead.org
 cc: netfs@lists.linux.dev
 cc: linux-fsdevel@vger.kernel.org
 ---
- fs/afs/symlink.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ Documentation/filesystems/netfs_library.rst | 47 +++++++++++++++------
+ fs/afs/dir.c                                | 17 ++++++--
+ fs/afs/dir_edit.c                           |  2 +-
+ fs/afs/symlink.c                            | 16 ++++++-
+ fs/netfs/write_issue.c                      | 13 ++++--
+ include/linux/netfs.h                       |  2 +-
+ 6 files changed, 73 insertions(+), 24 deletions(-)
 
-diff --git a/fs/afs/symlink.c b/fs/afs/symlink.c
-index 6b8c122877ca..a1dbd552ddff 100644
---- a/fs/afs/symlink.c
-+++ b/fs/afs/symlink.c
-@@ -99,7 +99,7 @@ static ssize_t afs_do_read_symlink(struct afs_vnode *vnode)
+diff --git a/Documentation/filesystems/netfs_library.rst b/Documentation/filesystems/netfs_library.rst
+index 215a6621f3d3..1fe110ceb3f1 100644
+--- a/Documentation/filesystems/netfs_library.rst
++++ b/Documentation/filesystems/netfs_library.rst
+@@ -437,22 +437,43 @@ Monolithic Files API
+ 
+ There is also a special API set for files for which the content must be read in
+ a single RPC (and not written back) and is maintained as a monolithic blob
+-(e.g. an AFS directory), though it can be stored and updated in the local cache::
++(e.g. an AFS directory), though it can be stored and updated in the local
++cache.
++
++To start with, there's a function to synchronously read the contents of such a
++file into a buffer in a single operation::
++
++	ssize_t netfs_read_single(struct inode *inode,
++				  struct file *file,
++				  struct iov_iter *iter);
++
++If such a file is modified locally, it can be marked dirty with::
+ 
+-	ssize_t netfs_read_single(struct inode *inode, struct file *file, struct iov_iter *iter);
+ 	void netfs_single_mark_inode_dirty(struct inode *inode);
++
++which will schedule it for writeback later.  When the writeback eventually
++happens, the filesystem should call::
++
+ 	int netfs_writeback_single(struct address_space *mapping,
+ 				   struct writeback_control *wbc,
+-				   struct iov_iter *iter);
++				   struct iov_iter *iter,
++				   size_t len);
++
++to write the data to the cache from its writepages method.
+ 
+-The first function reads from a file into the given buffer, reading from the
+-cache in preference if the data is cached there; the second function allows the
+-inode to be marked dirty, causing a later writeback; and the third function can
+-be called from the writeback code to write the data to the cache, if there is
+-one.
++In both the read and writeback functions, the buffer needs to be rounded up to
++a multiple of the cache DIO size, with ``iter->count`` indicating the size of
++the buffer.  For the write function, ``len`` should indicate the size of the
++content which may be less than the buffer size.  The gap between ``len`` and the
++buffer size should be cleared by the filesystem as this will be used as padding
++if the write size has to be increased (e.g. for the cache DIO).
++
++Note that, for the moment, rounding the buffer up to a multiple of PAGE_SIZE
++instead of the cache DIO size should suffice.  DIO size > PAGE_SIZE is not
++currently supported.
+ 
+ The inode should be marked ``NETFS_ICTX_SINGLE_NO_UPLOAD`` if this API is to be
+-used.  The writeback function requires the buffer to be of ITER_FOLIOQ type.
++used.
+ 
+ Clearing Stale Post-EOF Pagecache
+ ---------------------------------
+@@ -859,12 +880,12 @@ The methods defined in the table are:
+    paths to ask the filesystem to update its idea of the file size.  If not
+    given, netfslib will set i_size and i_blocks and update the local cache
+    cookie.
+-   
++
+  * ``post_modify()``
+ 
+    [Optional] This is called after netfslib writes to the pagecache or when it
+    allows an mmap'd page to be marked as writable.
+-   
++
+  * ``begin_writeback()``
+ 
+    [Optional] Netfslib calls this when processing a writeback request if it
+@@ -872,7 +893,7 @@ The methods defined in the table are:
+    indicating it must be written to the server.  This allows the filesystem to
+    only set up writeback resources when it knows it's going to have to perform
+    a write.
+-   
++
+  * ``prepare_write()``
+ 
+    [Optional] This is called to allow the filesystem to limit the size of a
+@@ -911,7 +932,7 @@ The methods defined in the table are:
+    allows the filesystem to examine the state of the request, the subrequests
+    in the indicated stream and of its own data and make adjustments or
+    renegotiate resources.
+-   
++
+  * ``invalidate_cache()``
+ 
+    [Optional] This is called by netfslib to invalidate data stored in the local
+diff --git a/fs/afs/dir.c b/fs/afs/dir.c
+index 75f8f70cfeff..51c158d8f723 100644
+--- a/fs/afs/dir.c
++++ b/fs/afs/dir.c
+@@ -252,7 +252,8 @@ static ssize_t afs_do_read_single(struct afs_vnode *dvnode, struct file *file)
+ 
  		ret = netfs_alloc_folioq_buffer(NULL,
- 						&vnode->directory, &cur_size, PAGE_SIZE,
- 						mapping_gfp_mask(vnode->netfs.inode.i_mapping));
--		vnode->directory_size = PAGE_SIZE - 1;
-+		vnode->directory_size = PAGE_SIZE;
+ 						&dvnode->directory, &cur_size, i_size,
+-						mapping_gfp_mask(dvnode->netfs.inode.i_mapping));
++						mapping_gfp_mask(dvnode->netfs.inode.i_mapping) |
++						__GFP_ZERO);
+ 		dvnode->directory_size = cur_size;
  		if (ret < 0)
  			return ret;
- 	}
-@@ -116,7 +116,6 @@ static ssize_t afs_do_read_symlink(struct afs_vnode *vnode)
- 			trace_afs_file_error(vnode, -EFBIG, afs_file_error_dir_big);
- 			return -EFBIG;
+@@ -278,6 +279,13 @@ static ssize_t afs_do_read_single(struct afs_vnode *dvnode, struct file *file)
+ 			if (ret2 < 0)
+ 				ret = ret2;
  		}
--		vnode->directory_size = i_size;
++
++		if (ret >= 0 && ret < dvnode->directory_size) {
++			iov_iter_folio_queue(&iter, ITER_DEST, dvnode->directory,
++					     0, 0, dvnode->directory_size);
++			iov_iter_advance(&iter, ret);
++			iov_iter_zero(dvnode->directory_size - ret, &iter);
++		}
+ 	}
  
- 		/* Copy the symlink. */
- 		symlink = kmalloc_flex(struct afs_symlink, content, i_size + 1);
+ 	return ret;
+@@ -2228,9 +2236,10 @@ static int afs_dir_writepages(struct address_space *mapping,
+ 	}
+ 
+ 	if (test_bit(AFS_VNODE_DIR_VALID, &dvnode->flags)) {
+-		iov_iter_folio_queue(&iter, ITER_SOURCE, dvnode->directory, 0, 0,
+-				     i_size_read(&dvnode->netfs.inode));
+-		ret = netfs_writeback_single(mapping, wbc, &iter);
++		iov_iter_folio_queue(&iter, ITER_SOURCE, dvnode->directory,
++				     0, 0, dvnode->directory_size);
++		ret = netfs_writeback_single(mapping, wbc, &iter,
++					     i_size_read(&dvnode->netfs.inode));
+ 		if (ret == 1)
+ 			ret = 0; /* Skipped write due to lock conflict. */
+ 	}
+diff --git a/fs/afs/dir_edit.c b/fs/afs/dir_edit.c
+index c31303059444..185e8819e424 100644
+--- a/fs/afs/dir_edit.c
++++ b/fs/afs/dir_edit.c
+@@ -122,7 +122,7 @@ static union afs_xdr_dir_block *afs_dir_get_block(struct afs_dir_iter *iter, siz
+ 
+ 		ret = netfs_alloc_folioq_buffer(
+ 			NULL, &dvnode->directory, &cur_size, blend,
+-			mapping_gfp_mask(dvnode->netfs.inode.i_mapping));
++			mapping_gfp_mask(dvnode->netfs.inode.i_mapping) | __GFP_ZERO);
+ 		dvnode->directory_size = cur_size;
+ 		if (ret < 0)
+ 			goto fail;
+diff --git a/fs/afs/symlink.c b/fs/afs/symlink.c
+index a1dbd552ddff..c18e4f806423 100644
+--- a/fs/afs/symlink.c
++++ b/fs/afs/symlink.c
+@@ -228,6 +228,10 @@ int afs_readlink(struct dentry *dentry, char __user *buffer, int buflen)
+ /*
+  * Write the symlink contents to the cache as a single blob.  We then throw
+  * away the page we used to receive it.
++ *
++ * Note that the buffer tail is cleared under a shared lock on ->validate_lock
++ * - though hopefully there won't be racing writers since the only
++ * 'modification' is to be either read from the server or locally created.
+  */
+ int afs_symlink_writepages(struct address_space *mapping,
+ 			   struct writeback_control *wbc)
+@@ -247,9 +251,17 @@ int afs_symlink_writepages(struct address_space *mapping,
+ 
+ 	if (vnode->directory &&
+ 	    atomic64_read(&vnode->cb_expires_at) != AFS_NO_CB_PROMISE) {
++		size_t i_size = i_size_read(&vnode->netfs.inode);
++
++		if (i_size < vnode->directory_size) {
++			iov_iter_folio_queue(&iter, ITER_DEST, vnode->directory, 0, 0,
++					     vnode->directory_size);
++			iov_iter_advance(&iter, i_size);
++			iov_iter_zero(vnode->directory_size - i_size, &iter);
++		}
+ 		iov_iter_folio_queue(&iter, ITER_SOURCE, vnode->directory, 0, 0,
+-				     i_size_read(&vnode->netfs.inode));
+-		ret = netfs_writeback_single(mapping, wbc, &iter);
++				     vnode->directory_size);
++		ret = netfs_writeback_single(mapping, wbc, &iter, i_size);
+ 	}
+ 
+ 	if (ret == 0) {
+diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
+index f23364116421..63b0e2599c3c 100644
+--- a/fs/netfs/write_issue.c
++++ b/fs/netfs/write_issue.c
+@@ -749,26 +749,33 @@ static int netfs_write_folio_single(struct netfs_io_request *wreq,
+  * netfs_writeback_single - Write back a monolithic payload
+  * @mapping: The mapping to write from
+  * @wbc: Hints from the VM
+- * @iter: Data to write, must be ITER_FOLIOQ.
++ * @iter: Data buffer to write from, must be ITER_FOLIOQ.
++ * @len: Amount of data to write.
+  *
+  * Write a monolithic, non-pagecache object back to the server and/or
+  * the cache.
+  *
++ * The data buffer may be bigger than @len (as set in @iter's count), and if
++ * so, this function will use the extra as needed to provide padding into the
++ * cache to handle DIO rounding, so the caller should clear it.
++ *
+  * Return: 0 if successful; 1 if skipped due to lock conflict and WB_SYNC_NONE;
+  * or a negative error code.
+  */
+ int netfs_writeback_single(struct address_space *mapping,
+ 			   struct writeback_control *wbc,
+-			   struct iov_iter *iter)
++			   struct iov_iter *iter, size_t len)
+ {
+ 	struct netfs_io_request *wreq;
+ 	struct netfs_inode *ictx = netfs_inode(mapping->host);
+ 	struct folio_queue *fq;
+-	size_t size = iov_iter_count(iter);
++	size_t size = len;
+ 	int ret;
+ 
+ 	if (WARN_ON_ONCE(!iov_iter_is_folioq(iter)))
+ 		return -EIO;
++	if (WARN_ON_ONCE(iov_iter_count(iter) < len))
++		return -EIO;
+ 
+ 	if (!netfs_wb_begin(ictx, wbc->sync_mode == WB_SYNC_NONE)) {
+ 		/* The VFS will have undirtied the inode. */
+diff --git a/include/linux/netfs.h b/include/linux/netfs.h
+index 2cf1163aafa6..375fd415b4e5 100644
+--- a/include/linux/netfs.h
++++ b/include/linux/netfs.h
+@@ -430,7 +430,7 @@ void netfs_single_mark_inode_dirty(struct inode *inode);
+ ssize_t netfs_read_single(struct inode *inode, struct file *file, struct iov_iter *iter);
+ int netfs_writeback_single(struct address_space *mapping,
+ 			   struct writeback_control *wbc,
+-			   struct iov_iter *iter);
++			   struct iov_iter *iter, size_t len);
+ 
+ /* Address operations API */
+ struct readahead_control;
 
