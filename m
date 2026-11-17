@@ -1,55 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.218
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.224
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794926073;
-	b=SuKCVlrmwoeg+cCXV5EhmW0UELRlp6RMEp4RySDkI1uQxS3gNfWrddm5v890ojuZ8vlo
-	 M02kabRmzJfZIMsZ0U45jo39j9F+nyBmvrToErTSlGID6q0nVSS/+QhWORgKvi+TgGo63
-	 ZTrYqDdE2/Yl+QR6qA1c7GX2onhIt81Iq+DAMO2QRTVb7mTkkGfLfXatVaiN3YfMU7oeY
-	 8YtkFePhPDvrvH6M9550H5HiZNWOT5wkDraHqV9KenytJ2Ow2xKiGIdAoVUouo08Ghm9o
-	 TmUo7kz3VI0Qvdr7sD2YmldA71sEB187iFnp3Hm1YR6hVaihTUUJDbLht1LmaalDrdQ==
+	t=1794926079;
+	b=UMgxM3KZZhJfkbxdY3uczz4ofxqcFaol7oMhtp3yw2pyy0AoAvNSWIhUHm4L/YYyyvJJ
+	 q8VPLMvcrW86kekDWunrog7jY8Al9yXmr4WzvX8/sexxNB+l7gC4V6ecu6yKOO0utYRKd
+	 ybmbm3hJFDXLBUbijUK4cGSCT+dLz/Sgo1RWJGPdAaCUmLcDxQIo1R3v+pzWfk3Wnadvi
+	 pKKbaKnba4S3uSaXQuXSIyhrr7pq71uuV3xuRJFHS/0hY+IqluBOQBCvuIlpGpGqzVHEZ
+	 g/v0nwUD98EjAA1VhvdPAHXkLTRawng8TPnU/2WYqXMNAUVg7t1Wn/2F6csPExyGFpg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794926073;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794926079;
 	h=DMARC-Filter:dkim-signature:Received:Received:Received:From:To:CC:
 	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Type:X-Originating-IP:X-ClientProxiedBy;
-	bh=srZoMQfI3h/KCqPWrJLDpXUMdpkk1REo9nZW8J8+H2c=;
-	b=L3mD6SM3Vc4sntOTW/XrFpusz+/RnG9aG5Nuu0VxkCffw/sxh6Sqy95UZcEipXM3rQxj
-	 aMsIzSIBC7638WZOOhLTw6gFJAkTLDTUdykx4ZOjhdzPNuO+AslnK1EhZtPyvuN0q8xqc
-	 ZvrZB8Ki0gJEUY9yNXntyU5+sFHm2a6fng+1ud0m4gX+11eycqJIIaLJOxGN/gK/jDFVn
-	 WmN9A0COYDLZu7pbanC8R1p9mwcW4xMkjjxV9hNaA6J1Xy5278GtNei2IgDxCH1sbvDgc
-	 cKSLKVJaQB4qHbl6GTtu/8M0QNzckddoo+9JC5YjTIgFLaafVIxG/j+ePOihsfEX4+w==
+	bh=w86cV2bb3MyKXzy+SNkdTfjimVqq9a/C4MF1gm/02i0=;
+	b=0uVvw6eU198+iFTps1+7mqs7xWU1sz2NoycOIH9GMn45wcAb7UZQ+Hxm5parlgRfE4Is
+	 q6Xl1HYlPP/LggRSCvRVnkU+oAZlSGlMay8GGYjdxdIJUsyO6jQmUQFpOLKxzDoQLq8b6
+	 mdVnj+ZMCQ/be5vtP3X34ZcbVMCDfvb7Dtbsyy0MCz7SE1vYyPPt2c0waW/9v/TrgrC8c
+	 Teg+CoSR6mbHkjrPjZyWW+L7PFp7MHw/qAxUqm6nykZTKMLnbOm1e+3+dLlauAGu5ibzs
+	 ixSDQLoa1EIRr0CqE7bEz2MvilG0Mp/yW3d/iv0oN7bGQXjK0o3xb5FUq8jJHuy01jg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=huawei.com;
 	spf=pass smtp.mailfrom=huawei.com;
-	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=jiKEIZHE;
-	arc=none smtp.remote-ip=113.46.200.218
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=j4sfMkzr;
+	arc=none smtp.remote-ip=113.46.200.224
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7C3606A888;
-	Tue, 17 Nov 2026 14:34:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2A7C3606A888
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B314D606A8A4;
+	Tue, 17 Nov 2026 14:34:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B314D606A8A4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=jiKEIZHE
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=j4sfMkzr
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=srZoMQfI3h/KCqPWrJLDpXUMdpkk1REo9nZW8J8+H2c=;
-	b=jiKEIZHEvuM8nNFQYe9BdSzUpPs4f1Hw7NyPE8egcz2H2TtMgQSHGLWJwEic6yJA5AweTAuFe
-	9+9qDfOMp24asnvUeQqa1N3e1feK44e9KSSZu26zn1sUXY7Cl76nEULgNerD/feshbNnA2NZZLx
-	433K2fRqsZgwjzuPsghMwAw=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4jTS056VcKzpSyd;
-	Tue, 17 Nov 2026 22:33:41 +0800 (CST)
+	bh=w86cV2bb3MyKXzy+SNkdTfjimVqq9a/C4MF1gm/02i0=;
+	b=j4sfMkzrx0u+HCLQoLmIN3C70STbKLUiECaxltG793CBV22VLVRWn7VTN2mHPKJxij6G9+mC8
+	VSgHzHBmuq+Ye3rPwS1NKHqI/TzeGD7EuEBTyNjJPM8bDiUND0DsrUchiymyRUcGHgE6bilK8Pq
+	WsCCSa8UM53zv+UWn42fy3o=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4jTS0m4BDCz1cypX;
+	Tue, 17 Nov 2026 22:34:16 +0800 (CST)
 Received: from whupemk100010.china.huawei.com (unknown [7.152.184.41])
-	by mail.maildlp.com (Postfix) with ESMTPS id 615AF40686;
-	Tue, 17 Nov 2026 22:34:30 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id DF6834055B;
+	Tue, 17 Nov 2026 22:34:35 +0800 (CST)
 Received: from octopus.huawei.com (10.67.174.191) by
  whupemk100010.china.huawei.com (7.152.184.41) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Tue, 17 Nov 2026 22:34:24 +0800
+ 15.2.2562.45; Tue, 17 Nov 2026 22:34:30 +0800
 From: Cai Xinchen <caixinchen1@huawei.com>
 To: <mic@digikod.net>, <gnoack@google.com>, <paul@paul-moore.com>,
 	<brauner@kernel.org>, <jack@suse.cz>, <caixinchen1@huawei.com>
@@ -86,9 +86,9 @@ CC: <amir73il@gmail.com>, <andrii@kernel.org>, <apparmor@lists.ubuntu.com>,
 	<stephen.smalley.work@gmail.com>, <takedakn@nttdata.co.jp>, <tom@talpey.com>,
 	<viro@zeniv.linux.org.uk>, <yonghong.song@linux.dev>, <yuezhang.mo@sony.com>,
 	<zohar@linux.ibm.com>, <utilityemal77@gmail.com>, <lujialin4@huawei.com>
-Subject: [PATCH -next -v4 12/17] LSM: rename the inode fileattr hooks to path_file_* hooks
-Date: Tue, 17 Nov 2026 23:05:37 +0800
-Message-ID: <20261117150542.1169451-13-caixinchen1@huawei.com>
+Subject: [PATCH -next -v4 13/17] LSM: rename inode_setsecctx to path_setsecctx
+Date: Tue, 17 Nov 2026 23:05:38 +0800
+Message-ID: <20261117150542.1169451-14-caixinchen1@huawei.com>
 X-Mailer: git-send-email 2.18.0.huawei.25
 In-Reply-To: <20261117150542.1169451-1-caixinchen1@huawei.com>
 References: <20261117150542.1169451-1-caixinchen1@huawei.com>
@@ -105,221 +105,146 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
  whupemk100010.china.huawei.com (7.152.184.41)
 
-Rename the inode_file_getattr and inode_file_setattr hooks to
-path_file_getattr and path_file_setattr, as they take a struct path, and
-rename security_inode_file_*() and the SELinux implementations
-accordingly.
-
-Update the BPF selftests and the strong definitions in
-kernel/bpf/bpf_lsm_proto.c.
+The inode_setsecctx hook receives a struct path, so rename it to
+path_setsecctx and rename security_inode_setsecctx() and the SELinux and
+Smack implementations accordingly.  The exported symbol is renamed as
+well, so out-of-tree modules calling security_inode_setsecctx() have to
+be updated.  Nothing under tools/ attaches to this hook.
 
 Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
 ---
- fs/file_attr.c                |  4 ++--
- include/linux/lsm_hook_defs.h |  4 ++--
- include/linux/security.h      | 20 ++++++++++----------
- kernel/bpf/bpf_lsm_proto.c    | 16 ++++++++--------
- security/security.c           | 16 ++++++++--------
- security/selinux/hooks.c      | 16 ++++++++--------
- 6 files changed, 38 insertions(+), 38 deletions(-)
+ fs/nfsd/vfs.c                 | 2 +-
+ include/linux/lsm_hook_defs.h | 2 +-
+ include/linux/security.h      | 6 +++---
+ security/security.c           | 8 ++++----
+ security/selinux/hooks.c      | 6 +++---
+ security/smack/smack_lsm.c    | 4 ++--
+ 6 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/fs/file_attr.c b/fs/file_attr.c
-index 846847e64ad3..3b8eb92feade 100644
---- a/fs/file_attr.c
-+++ b/fs/file_attr.c
-@@ -129,7 +129,7 @@ int vfs_fileattr_get(const struct path *path, struct file_kattr *fa,
- 	if (!inode->i_op->fileattr_get)
- 		return -ENOIOCTLCMD;
- 
--	error = security_inode_file_getattr(path, fa, file);
-+	error = security_path_file_getattr(path, fa, file);
- 	if (error)
- 		return error;
- 
-@@ -325,7 +325,7 @@ static int do_vfs_fileattr_set(const struct path *const path,
- 		err = fileattr_set_prepare(inode, &old_ma, fa);
- 		if (err)
- 			goto out;
--		err = security_inode_file_setattr(path, fa, file);
-+		err = security_path_file_setattr(path, fa, file);
- 		if (err)
- 			goto out;
- 		err = inode->i_op->fileattr_set(idmap, dentry, fa);
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index 9eae731ecb26..aa75d2a60d60 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -628,7 +628,7 @@ nfsd_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 			break;
+ 	}
+ 	if (attr->na_seclabel && attr->na_seclabel->len)
+-		attr->na_labelerr = security_inode_setsecctx(&path,
++		attr->na_labelerr = security_path_setsecctx(&path,
+ 			attr->na_seclabel->data, attr->na_seclabel->len);
+ 	if (IS_ENABLED(CONFIG_FS_POSIX_ACL) && attr->na_dpacl) {
+ 		if (!S_ISDIR(inode->i_mode))
 diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
-index 0db95ec9d1d1..2680972b2c50 100644
+index 2680972b2c50..eefe68db5b45 100644
 --- a/include/linux/lsm_hook_defs.h
 +++ b/include/linux/lsm_hook_defs.h
-@@ -180,9 +180,9 @@ LSM_HOOK(int, 0, path_removexattr, const struct mnt_idmap *idmap,
- 	 const struct path *path, const char *name, struct file *file)
- LSM_HOOK(void, LSM_RET_VOID, inode_post_removexattr, struct dentry *dentry,
- 	 const char *name)
--LSM_HOOK(int, 0, inode_file_setattr, const struct path *path,
-+LSM_HOOK(int, 0, path_file_setattr, const struct path *path,
- 	 struct file_kattr *fa, struct file *file)
--LSM_HOOK(int, 0, inode_file_getattr, const struct path *path,
-+LSM_HOOK(int, 0, path_file_getattr, const struct path *path,
- 	 struct file_kattr *fa, struct file *file)
- LSM_HOOK(int, 0, path_set_acl, const struct mnt_idmap *idmap,
- 	 const struct path *path, const char *acl_name,
+@@ -340,7 +340,7 @@ LSM_HOOK(int, 0, secctx_to_secid, const char *secdata, u32 seclen, u32 *secid)
+ LSM_HOOK(void, LSM_RET_VOID, release_secctx, struct lsm_context *cp)
+ LSM_HOOK(void, LSM_RET_VOID, inode_invalidate_secctx, struct inode *inode)
+ LSM_HOOK(int, 0, inode_notifysecctx, struct inode *inode, void *ctx, u32 ctxlen)
+-LSM_HOOK(int, 0, inode_setsecctx, const struct path *path, void *ctx,
++LSM_HOOK(int, 0, path_setsecctx, const struct path *path, void *ctx,
+ 	 u32 ctxlen)
+ LSM_HOOK(int, -EOPNOTSUPP, inode_getsecctx, struct inode *inode,
+ 	 struct lsm_context *cp)
 diff --git a/include/linux/security.h b/include/linux/security.h
-index 3dbdfe77d9c3..e625564ada1f 100644
+index e625564ada1f..ddd9e1561084 100644
 --- a/include/linux/security.h
 +++ b/include/linux/security.h
-@@ -464,10 +464,10 @@ int security_path_removexattr(const struct mnt_idmap *idmap,
- 			      const struct path *path, const char *name,
- 			      struct file *file);
- void security_inode_post_removexattr(struct dentry *dentry, const char *name);
--int security_inode_file_setattr(const struct path *path,
--				struct file_kattr *fa, struct file *file);
--int security_inode_file_getattr(const struct path *path,
--				struct file_kattr *fa, struct file *file);
-+int security_path_file_setattr(const struct path *path,
-+			       struct file_kattr *fa, struct file *file);
-+int security_path_file_getattr(const struct path *path,
-+			       struct file_kattr *fa, struct file *file);
- int security_inode_need_killpriv(struct dentry *dentry);
- int security_inode_killpriv(const struct mnt_idmap *idmap, struct dentry *dentry);
- int security_inode_getsecurity(const struct mnt_idmap *idmap,
-@@ -1094,16 +1094,16 @@ static inline void security_inode_post_removexattr(struct dentry *dentry,
- 						   const char *name)
- { }
- 
--static inline int security_inode_file_setattr(const struct path *path,
--					      struct file_kattr *fa,
--					      struct file *file)
-+static inline int security_path_file_setattr(const struct path *path,
-+					     struct file_kattr *fa,
-+					     struct file *file)
+@@ -597,7 +597,7 @@ int security_secctx_to_secid(const char *secdata, u32 seclen, u32 *secid);
+ void security_release_secctx(struct lsm_context *cp);
+ void security_inode_invalidate_secctx(struct inode *inode);
+ int security_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen);
+-int security_inode_setsecctx(const struct path *path, void *ctx, u32 ctxlen);
++int security_path_setsecctx(const struct path *path, void *ctx, u32 ctxlen);
+ int security_inode_getsecctx(struct inode *inode, struct lsm_context *cp);
+ int security_locked_down(enum lockdown_reason what);
+ int lsm_fill_user_ctx(struct lsm_ctx __user *uctx, u32 *uctx_len,
+@@ -1650,8 +1650,8 @@ static inline int security_inode_notifysecctx(struct inode *inode, void *ctx, u3
  {
- 	return 0;
+ 	return -EOPNOTSUPP;
  }
- 
--static inline int security_inode_file_getattr(const struct path *path,
--					      struct file_kattr *fa,
--					      struct file *file)
-+static inline int security_path_file_getattr(const struct path *path,
-+					     struct file_kattr *fa,
-+					     struct file *file)
+-static inline int security_inode_setsecctx(const struct path *path, void *ctx,
+-					   u32 ctxlen)
++static inline int security_path_setsecctx(const struct path *path, void *ctx,
++					  u32 ctxlen)
  {
- 	return 0;
- }
-diff --git a/kernel/bpf/bpf_lsm_proto.c b/kernel/bpf/bpf_lsm_proto.c
-index 1bc90fd53388..d359ca8ab3cd 100644
---- a/kernel/bpf/bpf_lsm_proto.c
-+++ b/kernel/bpf/bpf_lsm_proto.c
-@@ -94,20 +94,20 @@ noinline int bpf_lsm_path_removexattr(const struct mnt_idmap *idmap,
- }
- 
- /*
-- * Strong definitions of the inode fileattr BPF LSM hooks.  The file argument
-- * is only set for file descriptor-based operations and is NULL for path-based
-+ * Strong definitions of the path fileattr BPF LSM hooks.  The file argument is
-+ * only set for file descriptor-based operations and is NULL for path-based
-  * and in-kernel callers, so mark it as PTR_MAYBE_NULL.
-  */
--noinline int bpf_lsm_inode_file_setattr(const struct path *path,
--					struct file_kattr *fa,
--					struct file *file__nullable)
-+noinline int bpf_lsm_path_file_setattr(const struct path *path,
-+				       struct file_kattr *fa,
-+				       struct file *file__nullable)
- {
- 	return 0;
- }
- 
--noinline int bpf_lsm_inode_file_getattr(const struct path *path,
--					struct file_kattr *fa,
--					struct file *file__nullable)
-+noinline int bpf_lsm_path_file_getattr(const struct path *path,
-+				       struct file_kattr *fa,
-+				       struct file *file__nullable)
- {
- 	return 0;
+ 	return -EOPNOTSUPP;
  }
 diff --git a/security/security.c b/security/security.c
-index 95d3e890e841..314c7736f0dd 100644
+index 314c7736f0dd..d892a26f382f 100644
 --- a/security/security.c
 +++ b/security/security.c
-@@ -2189,7 +2189,7 @@ void security_inode_post_removexattr(struct dentry *dentry, const char *name)
- }
+@@ -4140,7 +4140,7 @@ int security_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen)
+ EXPORT_SYMBOL(security_inode_notifysecctx);
  
  /**
-- * security_inode_file_setattr() - check if setting fsxattr is allowed
-+ * security_path_file_setattr() - check if setting fsxattr is allowed
-  * @path: file to set filesystem extended attributes on (the VFS makes no
-  *        guarantees with regard to @path->mnt)
-  * @fa: extended attributes to set on the inode
-@@ -2200,14 +2200,14 @@ void security_inode_post_removexattr(struct dentry *dentry, const char *name)
+- * security_inode_setsecctx() - Change the security label of an inode
++ * security_path_setsecctx() - Change the security label of an inode
+  * @path: inode (the VFS makes no guarantees with regard to @path->mnt)
+  * @ctx: secctx
+  * @ctxlen: length of secctx
+@@ -4155,11 +4155,11 @@ EXPORT_SYMBOL(security_inode_notifysecctx);
   *
-  * Return: Returns 0 if permission is granted.
+  * Return: Returns 0 on success, error on failure.
   */
--int security_inode_file_setattr(const struct path *path,
--				struct file_kattr *fa, struct file *file)
-+int security_path_file_setattr(const struct path *path,
-+			       struct file_kattr *fa, struct file *file)
+-int security_inode_setsecctx(const struct path *path, void *ctx, u32 ctxlen)
++int security_path_setsecctx(const struct path *path, void *ctx, u32 ctxlen)
  {
--	return call_int_hook(inode_file_setattr, path, fa, file);
-+	return call_int_hook(path_file_setattr, path, fa, file);
+-	return call_int_hook(inode_setsecctx, path, ctx, ctxlen);
++	return call_int_hook(path_setsecctx, path, ctx, ctxlen);
  }
+-EXPORT_SYMBOL(security_inode_setsecctx);
++EXPORT_SYMBOL(security_path_setsecctx);
  
  /**
-- * security_inode_file_getattr() - check if retrieving fsxattr is allowed
-+ * security_path_file_getattr() - check if retrieving fsxattr is allowed
-  * @path: file to retrieve filesystem extended attributes from (the VFS makes no
-  *        guarantees with regard to @path->mnt)
-  * @fa: extended attributes to get
-@@ -2218,10 +2218,10 @@ int security_inode_file_setattr(const struct path *path,
-  *
-  * Return: Returns 0 if permission is granted.
-  */
--int security_inode_file_getattr(const struct path *path,
--				struct file_kattr *fa, struct file *file)
-+int security_path_file_getattr(const struct path *path,
-+			       struct file_kattr *fa, struct file *file)
- {
--	return call_int_hook(inode_file_getattr, path, fa, file);
-+	return call_int_hook(path_file_getattr, path, fa, file);
- }
- 
- /**
+  * security_inode_getsecctx() - Get the security label of an inode
 diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-index e0f384bb7ca6..02fa9bbf7ea3 100644
+index 02fa9bbf7ea3..b7d90a78c686 100644
 --- a/security/selinux/hooks.c
 +++ b/security/selinux/hooks.c
-@@ -3573,16 +3573,16 @@ static int selinux_path_removexattr(const struct mnt_idmap *idmap,
- 	return -EACCES;
+@@ -7162,8 +7162,8 @@ static int selinux_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen
+ /*
+  *	called with inode->i_mutex locked
+  */
+-static int selinux_inode_setsecctx(const struct path *path, void *ctx,
+-				   u32 ctxlen)
++static int selinux_path_setsecctx(const struct path *path, void *ctx,
++				  u32 ctxlen)
+ {
+ 	return __vfs_setxattr_locked(&nop_mnt_idmap, path, XATTR_NAME_SELINUX,
+ 				     ctx, ctxlen, 0, NULL, NULL);
+@@ -7837,7 +7837,7 @@ static struct security_hook_list selinux_hooks[] __ro_after_init = {
+ 	LSM_HOOK_INIT(release_secctx, selinux_release_secctx),
+ 	LSM_HOOK_INIT(inode_invalidate_secctx, selinux_inode_invalidate_secctx),
+ 	LSM_HOOK_INIT(inode_notifysecctx, selinux_inode_notifysecctx),
+-	LSM_HOOK_INIT(inode_setsecctx, selinux_inode_setsecctx),
++	LSM_HOOK_INIT(path_setsecctx, selinux_path_setsecctx),
+ 
+ 	LSM_HOOK_INIT(unix_stream_connect, selinux_socket_unix_stream_connect),
+ 	LSM_HOOK_INIT(unix_may_send, selinux_socket_unix_may_send),
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index f301757ab2b7..d4364e9eb1f1 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -5006,7 +5006,7 @@ static int smack_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen)
+ 				       ctxlen, 0);
  }
  
--static int selinux_inode_file_setattr(const struct path *path,
--				      struct file_kattr *fa,
--				      struct file *file)
-+static int selinux_path_file_setattr(const struct path *path,
-+				     struct file_kattr *fa,
-+				     struct file *file)
+-static int smack_inode_setsecctx(const struct path *path, void *ctx, u32 ctxlen)
++static int smack_path_setsecctx(const struct path *path, void *ctx, u32 ctxlen)
  {
- 	return dentry_has_perm(current_cred(), path->dentry, FILE__SETATTR);
- }
- 
--static int selinux_inode_file_getattr(const struct path *path,
--				      struct file_kattr *fa,
--				      struct file *file)
-+static int selinux_path_file_getattr(const struct path *path,
-+				     struct file_kattr *fa,
-+				     struct file *file)
- {
- 	return dentry_has_perm(current_cred(), path->dentry, FILE__GETATTR);
- }
-@@ -7749,8 +7749,8 @@ static struct security_hook_list selinux_hooks[] __ro_after_init = {
- 	LSM_HOOK_INIT(path_getxattr, selinux_path_getxattr),
- 	LSM_HOOK_INIT(path_listxattr, selinux_path_listxattr),
- 	LSM_HOOK_INIT(path_removexattr, selinux_path_removexattr),
--	LSM_HOOK_INIT(inode_file_getattr, selinux_inode_file_getattr),
--	LSM_HOOK_INIT(inode_file_setattr, selinux_inode_file_setattr),
-+	LSM_HOOK_INIT(path_file_getattr, selinux_path_file_getattr),
-+	LSM_HOOK_INIT(path_file_setattr, selinux_path_file_setattr),
- 	LSM_HOOK_INIT(path_set_acl, selinux_path_set_acl),
- 	LSM_HOOK_INIT(path_get_acl, selinux_path_get_acl),
- 	LSM_HOOK_INIT(path_remove_acl, selinux_path_remove_acl),
+ 	return __vfs_setxattr_locked(&nop_mnt_idmap, path, XATTR_NAME_SMACK,
+ 				     ctx, ctxlen, 0, NULL, NULL);
+@@ -5331,7 +5331,7 @@ static struct security_hook_list smack_hooks[] __ro_after_init = {
+ 	LSM_HOOK_INIT(lsmprop_to_secctx, smack_lsmprop_to_secctx),
+ 	LSM_HOOK_INIT(secctx_to_secid, smack_secctx_to_secid),
+ 	LSM_HOOK_INIT(inode_notifysecctx, smack_inode_notifysecctx),
+-	LSM_HOOK_INIT(inode_setsecctx, smack_inode_setsecctx),
++	LSM_HOOK_INIT(path_setsecctx, smack_path_setsecctx),
+ 	LSM_HOOK_INIT(inode_getsecctx, smack_inode_getsecctx),
+ 	LSM_HOOK_INIT(inode_copy_up, smack_inode_copy_up),
+ 	LSM_HOOK_INIT(inode_copy_up_xattr, smack_inode_copy_up_xattr),
 -- 
 2.18.0.huawei.25
 
