@@ -1,97 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.220
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794926102;
-	b=lhA3gtkAksCPUtytDrj4pAKPfyrQC/bzCGqza8R/aL0639VPqR9gXI7470XYzM2Vbxuo
-	 XNhWnCgIqkibdEMXNV7Dy6OR3ixuf+7yRNm3KbYIdTFYhRySCgVax/JrV2LIZUYlX21Bg
-	 9701bXyKV0DMr8YZNyvqUU4fb1Rr73l68/yLuJKuBdWMRO5MGR5s0s+GKM2ykc+ymAEnl
-	 bxFT8CLtm/wXBzf9uMwVxj8ZjBIlCnrGKbdj8DtwBtFrBi5XrUQ3L3i4OGw2kaoxunDIe
-	 wGl6hHNpLCWUxxul77/bs2A9TYhcq6Bd6wKwhsjJKxxbwA4pbOgpjPwggPokQWaDiAQ==
+	t=1794936028;
+	b=bGJSadbR0/EN8QNK/fLrtKZnIad3idYc9OsQo/EfpiE69UWUy1IpZja9zgK/vcYJbQMD
+	 BstvqCqNE+fX89Q+MQaXb1GylW5G8ZDbgdskjEHOL1rhZmwiK2zkbjwhr921VbK6lJVOT
+	 G0GNwdDwwdnoNZIfeuimgu/H6ax2nlj5vdbv2i+Ul1v812zMk+sEx6Ygi6EO4+DpgKQ6t
+	 8gwkkHeBmC7oi+J1RFJ5WJbUeVxj9BppYqwSL06D1fJ24pptpULgmCEMW9R3tzpTHSzIC
+	 55sh+gKg+y1vVQcdpzf+XiloexfqOQzI9lN2q8XEA8x1MNC3yylyUERlhGjZX5tlg+g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794926102;
-	h=DMARC-Filter:dkim-signature:Received:Received:Received:From:To:CC:
-	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Type:X-Originating-IP:X-ClientProxiedBy;
-	bh=oUeL2OYGRrmUqOr+vX/qVkuVNBKWD8szUYft8PgT9+8=;
-	b=Syf4ly55OfJga3x7VB0enl27RTqSa1ObSCPnc8FrZk8EUJ7eDsovs2fRkQ5dv7h5LfBH
-	 79w1ePBC1jEQR3imdkgAkq2grwNI2OnfNgDcB8H0WwMImu55EJQeX98/Bc7G47F5tVQBp
-	 cvBXAYwTFXXKLDdbpdGDYrWGG7HNY0BMbhewhE64BR9x0UURHCRG+OQnVoNgrwd69hWZs
-	 w9TCe0YomXFwMywWfZiFsMpkAAoO7IXJD0p+Xp8Fkc9y14oAzbapYlP8wfN+oGA83A7yH
-	 94dh5zaI3Yp6Ism8H2ITWPHW4VkYTLFdOQ0Wx+ffR1BomfKQhYd11VDu5y+azqdA5dw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794936028;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:MIME-Version:X-Scanned-By:X-Mimecast-MFC-PROC-ID:
+	 X-Mimecast-Originator:Content-Transfer-Encoding:content-type;
+	bh=qA4EiwiblQZZCKffcHzmahJj0FAvJhdXgqguQB+9SlM=;
+	b=f1yQ3GQf26R0zECpeei48fCNuBhkkd0H9tQX1+xvASizLp1Hkqlgtqo0RoijxFKSMKz8
+	 5LIqc24ZQq8Ta48XhQRPWYqBLMCF0+j8h+Y10ZA5jQS0omD2zx/Tf3NKTAILbM6Dq7Ywg
+	 94mB9sj1B0eBHos1QbAoJkMC7mc+v0VGkgi6rSotp0n+PCTj3tt5Mhozm5+rp3cGnqbtl
+	 SmCu6eAGR/5ThsgVAJSqkN6wdFO0NKbajcECCMLbP2+zCUOnsbTZiof7+BFpuUYk0FHgW
+	 /A1jybSN9ziucDXH5Ul5SSzmylY/gZKO1CeGSV6u8JGe1C55mfaIMUPaEud+VfzUFdA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=huawei.com;
-	spf=pass smtp.mailfrom=huawei.com;
-	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=eohoCTlB;
-	arc=none smtp.remote-ip=113.46.200.220
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YiZWFaXS;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED5B6077F97;
-	Tue, 17 Nov 2026 14:35:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EED5B6077F97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4950D606A333
+	for <netfs@lists.linux.dev>; Tue, 17 Nov 2026 17:20:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4950D606A333
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=eohoCTlB
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=oUeL2OYGRrmUqOr+vX/qVkuVNBKWD8szUYft8PgT9+8=;
-	b=eohoCTlB2EIhXi+ewW+XKEqOdvBDn6Rrsrmr9Kn5t5St9JqqpV913wAAnhmwJh4+HvB/PecZv
-	/e0ZLkqaqYq5tn9tmIPG9zIT+wg/d6Rlli36jENtRgsXSMICASpSKXjz4vHglw5HcmWtRUyR/gp
-	IPaRLndTI9S6R9Vn5xnWqNQ=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4jTS0Y3MBfz12LD4;
-	Tue, 17 Nov 2026 22:34:05 +0800 (CST)
-Received: from whupemk100010.china.huawei.com (unknown [7.152.184.41])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1A0AF40685;
-	Tue, 17 Nov 2026 22:34:58 +0800 (CST)
-Received: from octopus.huawei.com (10.67.174.191) by
- whupemk100010.china.huawei.com (7.152.184.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Tue, 17 Nov 2026 22:34:52 +0800
-From: Cai Xinchen <caixinchen1@huawei.com>
-To: <mic@digikod.net>, <gnoack@google.com>, <paul@paul-moore.com>,
-	<brauner@kernel.org>, <jack@suse.cz>, <caixinchen1@huawei.com>
-CC: <amir73il@gmail.com>, <andrii@kernel.org>, <apparmor@lists.ubuntu.com>,
-	<ast@kernel.org>, <axboe@kernel.dk>, <bpf@vger.kernel.org>,
-	<casey@schaufler-ca.com>, <cel@kernel.org>, <cem@kernel.org>,
-	<chenxiaosong@chenxiaosong.com>, <code@tyhicks.com>, <corbet@lwn.net>,
-	<Dai.Ngo@oracle.com>, <dakr@kernel.org>, <daniel@iogearbox.net>,
-	<dhowells@redhat.com>, <dlemoal@kernel.org>, <dmitry.kasatkin@gmail.com>,
-	<driver-core@lists.linux.dev>, <dsterba@suse.com>,
-	<ecryptfs@vger.kernel.org>, <eddyz87@gmail.com>, <emil@etsalapatis.com>,
-	<eric.snowberg@oracle.com>, <exfat@lists.linux.dev>,
-	<georgia.garcia@canonical.com>, <gregkh@linuxfoundation.org>, <hch@lst.de>,
-	<hirofumi@mail.parknet.co.jp>, <hyc.lee@gmail.com>,
-	<ihor.solodrai@linux.dev>, <jlayton@kernel.org>, <jmorris@namei.org>,
-	<johan@kernel.org>, <john.fastabend@gmail.com>,
-	<john.johansen@canonical.com>, <jolsa@kernel.org>, <kpsingh@kernel.org>,
-	<linkinjeon@kernel.org>, <linux-api@vger.kernel.org>,
-	<linux-block@vger.kernel.org>, <linux-btrfs@vger.kernel.org>,
-	<linux-cifs@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-	<linux-fsdevel@vger.kernel.org>, <linux-integrity@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
-	<linux-nfs@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
-	<linux-trace-kernel@vger.kernel.org>, <linux-unionfs@vger.kernel.org>,
-	<linux-xfs@vger.kernel.org>, <liubaolin12138@163.com>,
-	<martin.lau@linux.dev>, <mason@kernel.org>, <mathieu.desnoyers@efficios.com>,
-	<matt@bobrowski.net>, <memxor@gmail.com>, <mhiramat@kernel.org>,
-	<miklos@szeredi.hu>, <neil@brown.name>, <netfs@lists.linux.dev>,
-	<ntfs@lists.linux.dev>, <okorniev@redhat.com>, <omosnacek@gmail.com>,
-	<penguin-kernel@I-love.SAKURA.ne.jp>, <rafael@kernel.org>,
-	<rdunlap@infradead.org>, <roberto.sassu@huawei.com>, <rostedt@goodmis.org>,
-	<selinux@vger.kernel.org>, <senozhatsky@chromium.org>, <serge@hallyn.com>,
-	<sj1557.seo@samsung.com>, <skhan@linuxfoundation.org>, <song@kernel.org>,
-	<stephen.smalley.work@gmail.com>, <takedakn@nttdata.co.jp>, <tom@talpey.com>,
-	<viro@zeniv.linux.org.uk>, <yonghong.song@linux.dev>, <yuezhang.mo@sony.com>,
-	<zohar@linux.ibm.com>, <utilityemal77@gmail.com>, <lujialin4@huawei.com>
-Subject: [PATCH -next -v4 17/17] Documentation: Update landlock doc for metadata rights
-Date: Tue, 17 Nov 2026 23:05:42 +0800
-Message-ID: <20261117150542.1169451-18-caixinchen1@huawei.com>
-X-Mailer: git-send-email 2.18.0.huawei.25
-In-Reply-To: <20261117150542.1169451-1-caixinchen1@huawei.com>
-References: <20261117150542.1169451-1-caixinchen1@huawei.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YiZWFaXS
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794936026;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=qA4EiwiblQZZCKffcHzmahJj0FAvJhdXgqguQB+9SlM=;
+	b=YiZWFaXS71tYITrtmQWdfQfcHf0s9ctfZWUzFzp2WOis74Pq1+QVOTuAz6c8AXEXMLue0v
+	5+BB89Y83vd5wLoy9kBG1vyCMF6wRNzpfq6OMOCYibPdOwoDm2gX+3NOLISD0nHJFADDKG
+	WCoMyU3ELnrUCNuez8lFMtUBShhtWak=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-256-MZPuOTnmPdCngz4zO8KaIA-1; Tue,
+ 17 Nov 2026 12:20:22 -0500
+X-MC-Unique: MZPuOTnmPdCngz4zO8KaIA-1
+X-Mimecast-MFC-AGG-ID: MZPuOTnmPdCngz4zO8KaIA_1794936020
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 47B51195605A;
+	Tue, 17 Nov 2026 17:20:19 +0000 (UTC)
+Received: from dhowells-thinkpadp1gen8.rmtgb.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1B4161800543;
+	Tue, 17 Nov 2026 17:20:13 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Christian Brauner <christian@brauner.io>
+Cc: David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Stefan Metzmacher <metze@samba.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	netfs@lists.linux.dev,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	v9fs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v18 00/17] netfs, iov_iter: Use a chain of bio_vec arrays instead of folio_queue
+Date: Tue, 17 Nov 2026 17:18:58 +0000
+Message-ID: <20261117171958.2982801-1-dhowells@redhat.com>
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Post: <mailto:netfs@lists.linux.dev>
@@ -101,260 +90,332 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:netfs+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- whupemk100010.china.huawei.com (7.152.184.41)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-MFC-PROC-ID: 3wAYegp3uznuznVFW0fiL_U_1HizM7tIjc8t6Y-CUK4_1794936020
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-Document the two new access rights: add them to the example ruleset and
-to the ABI fallback switch, and describe their semantics in a new "File
-metadata" section, including the open-time semantic, the exclusion of
-implicit changes and the chown(2) special case, and the warning that
-READ_METADATA usually needs to be granted together with READ_FILE and
-READ_DIR.
+Hi Christian,
 
-Also rename the "Bind mounts and OverlayFS" section to "Bind mounts and
-stacking filesystems" and describe how eCryptfs forwards attribute
-changes under the caller's credentials, which causes the lower path to be
-checked as well, and extend the blockers list in
-Documentation/admin-guide/LSM/landlock.rst.
+Could you pull these patches please into your vfs-7.5.netfs branch?  This
+is the third of five batches (two already having gone upstream), in this
+case replacing the folio_queue struct with a bvecq struct.  It has been
+rebased on v7.4-rc3.  This was split from v11 of a larger netfslib
+series[1].
 
-Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
----
- Documentation/admin-guide/LSM/landlock.rst |   2 +
- Documentation/userspace-api/landlock.rst   | 148 ++++++++++++++++++---
- 2 files changed, 135 insertions(+), 15 deletions(-)
+This series adds a new type, struct bvecq.  This points to a bounded array
+of bio_vecs with information about how to clean up the memory they point
+to.  A number of bvecq structs can be linked together to form a chain and
+an iterator type, ITER_BVECQ, is provided that can be pointed at the chain
+and can walk it.  Netfslib is then switched to use the new type and
+folio_queue is removed along with ITER_FOLIOQ.
 
-diff --git a/Documentation/admin-guide/LSM/landlock.rst b/Documentation/admin-guide/LSM/landlock.rst
-index 946f3bf89650..86f8c7cbdacb 100644
---- a/Documentation/admin-guide/LSM/landlock.rst
-+++ b/Documentation/admin-guide/LSM/landlock.rst
-@@ -56,6 +56,8 @@ AUDIT_LANDLOCK_ACCESS
-         - fs.truncate (ABI 3+)
-         - fs.ioctl_dev (ABI 5+)
-         - fs.resolve_unix (ABI 9+)
-+        - fs.read_metadata (ABI 13+)
-+        - fs.write_metadata (ABI 13+)
- 
-     **net.*** - Network access rights (ABI 4+):
-         - net.bind_tcp - TCP port binding was denied
-diff --git a/Documentation/userspace-api/landlock.rst b/Documentation/userspace-api/landlock.rst
-index 24cfc2c23cb2..3aab4197319b 100644
---- a/Documentation/userspace-api/landlock.rst
-+++ b/Documentation/userspace-api/landlock.rst
-@@ -87,7 +87,9 @@ to be explicit about the denied-by-default access rights.
-             LANDLOCK_ACCESS_FS_REFER |
-             LANDLOCK_ACCESS_FS_TRUNCATE |
-             LANDLOCK_ACCESS_FS_IOCTL_DEV |
--            LANDLOCK_ACCESS_FS_RESOLVE_UNIX,
-+            LANDLOCK_ACCESS_FS_RESOLVE_UNIX |
-+            LANDLOCK_ACCESS_FS_READ_METADATA |
-+            LANDLOCK_ACCESS_FS_WRITE_METADATA,
-         .handled_access_net =
-             LANDLOCK_ACCESS_NET_BIND_TCP |
-             LANDLOCK_ACCESS_NET_CONNECT_TCP |
-@@ -159,6 +161,12 @@ version, and only use the available subset of access rights:
-         ruleset_attr.handled_permissions &=
-             ~(LANDLOCK_PERMISSION_NAMESPACE_USE |
-               LANDLOCK_PERMISSION_CAPABILITY_USE);
-+        __attribute__((fallthrough));
-+    case 12:
-+        /* Removes metadata rights for ABI < 13 */
-+        ruleset_attr.handled_access_fs &=
-+            ~(LANDLOCK_ACCESS_FS_READ_METADATA |
-+              LANDLOCK_ACCESS_FS_WRITE_METADATA);
-     }
- 
- This enables the creation of an inclusive ruleset that will contain our rules.
-@@ -175,10 +183,12 @@ This enables the creation of an inclusive ruleset that will contain our rules.
- 
- We can now add a new rule to this ruleset thanks to the returned file
- descriptor referring to this ruleset.  The rule will allow reading and
--executing the file hierarchy ``/usr``.  Without another rule, write actions
--would then be denied by the ruleset.  To add ``/usr`` to the ruleset, we open
--it with the ``O_PATH`` flag and fill the &struct landlock_path_beneath_attr with
--this file descriptor.
-+executing the file hierarchy ``/usr``, as well as reading its metadata (e.g.
-+with :manpage:`stat(2)`): most programs do not expect metadata reads to fail
-+and read metadata alongside file contents and directory listings.  Without
-+another rule, write actions would then be denied by the ruleset.  To add
-+``/usr`` to the ruleset, we open it with the ``O_PATH`` flag and fill the
-+&struct landlock_path_beneath_attr with this file descriptor.
- 
- .. code-block:: c
- 
-@@ -187,7 +197,8 @@ this file descriptor.
-         .allowed_access =
-             LANDLOCK_ACCESS_FS_EXECUTE |
-             LANDLOCK_ACCESS_FS_READ_FILE |
--            LANDLOCK_ACCESS_FS_READ_DIR,
-+            LANDLOCK_ACCESS_FS_READ_DIR |
-+            LANDLOCK_ACCESS_FS_READ_METADATA,
-     };
- 
-     path_beneath.allowed_access &= ruleset_attr.handled_access_fs;
-@@ -359,8 +370,8 @@ no_new_privs should only be left unset if such a privilege transition is
- expected.
- 
- We now have a ruleset with the first rule allowing read and execute access to
--``/usr`` while denying all other handled accesses for the filesystem, and two
--more rules allowing DNS queries.
-+``/usr``, including reading its metadata, while denying all other handled
-+accesses for the filesystem, and two more rules allowing DNS queries.
- 
- .. code-block:: c
- 
-@@ -432,8 +443,8 @@ a file path if all its enforced policy layers grant the access as well as all
- the other system access controls (e.g. filesystem DAC, other LSM policies,
- etc.).
- 
--Bind mounts and OverlayFS
---------------------------
-+Bind mounts and stacking filesystems
-+------------------------------------
- 
- Landlock enables restricting access to file hierarchies, which means that these
- access rights can be propagated with bind mounts (cf.
-@@ -458,6 +469,23 @@ OverlayFS layer will not restrict the resulted merged hierarchy, and vice versa.
- Landlock users should then only think about file hierarchies they want to allow
- access to, regardless of the underlying filesystem.
- 
-+eCryptfs is another stacking filesystem, but unlike OverlayFS it forwards some
-+metadata changes to the lower filesystem under the credentials of the calling
-+thread.  Forwarded attribute changes (:manpage:`chmod(2)`, :manpage:`chown(2)`,
-+:manpage:`utimensat(2)`) are checked a second time, against the current
-+Landlock domain, on the lower path, in addition to the check performed on the
-+eCryptfs path.  The first check follows the usual semantics, including the
-+open-time rights of file descriptor-based operations, but the forwarded one
-+always uses the rights of the calling thread.  A sandboxed process changing
-+attributes through an eCryptfs mount may therefore also need the corresponding
-+metadata access rights on the lower path, even when the file descriptor was
-+opened before the ruleset was enforced.  Extended attribute reads and removals
-+are forwarded with the unchecked ``__vfs_getxattr()``, ``i_op->listxattr`` and
-+``__vfs_removexattr()`` helpers and are only checked once, on the eCryptfs
-+path, whereas setting an extended attribute, and reading or changing POSIX
-+ACLs and file attributes, are forwarded with the checking helpers and are
-+therefore checked on the lower path as well.
-+
- Inheritance
- -----------
- 
-@@ -669,14 +697,91 @@ for writing, sidestepping the ``LANDLOCK_ACCESS_FS_TRUNCATE`` right.
- 
- The truncate right is associated with the opened file (see below).
- 
-+File metadata
-+-------------
-+
-+The ``LANDLOCK_ACCESS_FS_READ_METADATA`` right governs reading file and
-+directory metadata: :manpage:`stat(2)` and friends, :manpage:`getxattr(2)`,
-+:manpage:`listxattr(2)` and friends, the ``FS_IOC_GETFLAGS`` and
-+``FS_IOC_FSGETXATTR`` ioctls, :manpage:`file_getattr(2)`, and POSIX ACL reads.
-+Path-based checks also cover the metadata lookups that the kernel performs on
-+behalf of the caller, for example when the ``LOOP_GET_STATUS`` ioctl reads
-+the attributes of a loop device's backing file: a sandbox may therefore need
-+to grant access to such paths as well.
-+
-+The ``LANDLOCK_ACCESS_FS_WRITE_METADATA`` right governs explicit changes to
-+file and directory metadata: :manpage:`chmod(2)` and friends,
-+:manpage:`chown(2)` and friends, :manpage:`utimensat(2)`,
-+:manpage:`setxattr(2)`, :manpage:`removexattr(2)` and friends, the
-+``FS_IOC_SETFLAGS`` and ``FS_IOC_FSSETXATTR`` ioctls,
-+:manpage:`file_setattr(2)`, and POSIX ACL changes.  Both rights apply to files
-+and directories alike.
-+
-+Metadata changes that the kernel performs implicitly on behalf of another
-+operation are not restricted by ``LANDLOCK_ACCESS_FS_WRITE_METADATA``:
-+reading a file may update its access time, writing a file updates its
-+modification and change times and may change the file size, and writing to
-+or truncating a file with a set-user-ID or set-group-ID bit clears these
-+bits unless the caller holds ``CAP_FSETID`` (the set-group-ID bit is only
-+cleared on a group-executable file whose group the caller is not a member
-+of).  File size changes through
-+:manpage:`truncate(2)` and friends are governed by
-+``LANDLOCK_ACCESS_FS_TRUNCATE`` instead.
-+
-+``LANDLOCK_ACCESS_FS_WRITE_METADATA`` also governs the clearing of
-+set-user-ID bits, set-group-ID bits and file capabilities requested by an
-+explicit :manpage:`chown(2)`, whereas the same clearing performed implicitly
-+after a write is not restricted.  A :manpage:`chown(2)` with owner and group
-+``-1`` on a file without a set-user-ID bit, without file capabilities, and
-+without a set-group-ID bit that the call would clear (as described above)
-+changes nothing that ``LANDLOCK_ACCESS_FS_WRITE_METADATA`` governs, and is
-+not restricted.
-+
-+.. warning::
-+
-+   Many programs read metadata as part of reading file contents or listing
-+   directories (e.g. calling :manpage:`stat(2)` before or after
-+   :manpage:`open(2)`), and do not expect such calls to fail with
-+   ``EACCES``.  Most of the time, ``LANDLOCK_ACCESS_FS_READ_METADATA``
-+   should therefore be granted together with
-+   ``LANDLOCK_ACCESS_FS_READ_FILE`` and ``LANDLOCK_ACCESS_FS_READ_DIR``.
-+   Conversely, denying only ``LANDLOCK_ACCESS_FS_READ_FILE`` or
-+   ``LANDLOCK_ACCESS_FS_READ_DIR`` does not hide metadata: it remains
-+   readable through :manpage:`stat(2)` and friends unless
-+   ``LANDLOCK_ACCESS_FS_READ_METADATA`` is denied as well.  Tailored
-+   programs that do not read metadata at all can still deny this right to
-+   further restrict their sandbox.
-+
-+Both metadata rights are associated with opened files, like
-+``LANDLOCK_ACCESS_FS_TRUNCATE`` (see below): metadata accesses and changes
-+requested through an already opened file descriptor, e.g. with
-+:manpage:`fchmod(2)`, :manpage:`fchown(2)`, :manpage:`utimensat(2)` on an
-+empty path, :manpage:`fstat(2)`, :manpage:`fgetxattr(2)`,
-+:manpage:`fsetxattr(2)`, :manpage:`ioctl(2)` with ``FS_IOC_GETFLAGS`` or
-+``FS_IOC_SETFLAGS``, or ``file_getattr(2)`` and ``file_setattr(2)`` with
-+``AT_EMPTY_PATH``, are granted according to the rights available at
-+:manpage:`open(2)` time, not according to the rights of the calling thread.
-+Metadata accesses requested through a path (e.g. :manpage:`chmod(2)`,
-+:manpage:`stat(2)`) are always checked against the rights of the calling
-+thread.  ``O_PATH`` file descriptors are not opened through the open
-+permission checks: the metadata system calls that accept such descriptors
-+(e.g. :manpage:`fstat(2)`, and :manpage:`statx(2)`, :manpage:`fchmodat(2)`,
-+:manpage:`fchownat(2)` or :manpage:`utimensat(2)` with an empty path) are
-+checked against the rights of the calling thread as well, while the other file
-+descriptor based metadata system calls and the
-+``FS_IOC_GETFLAGS``/``FS_IOC_SETFLAGS`` ioctls reject ``O_PATH`` descriptors
-+with ``EBADF``.
-+
- Rights associated with file descriptors
- ---------------------------------------
- 
--When opening a file, the availability of the ``LANDLOCK_ACCESS_FS_TRUNCATE`` and
--``LANDLOCK_ACCESS_FS_IOCTL_DEV`` rights is associated with the newly created
--file descriptor and will be used for subsequent truncation and ioctl attempts
--using :manpage:`ftruncate(2)` and :manpage:`ioctl(2)`.  The behavior is similar
--to opening a file for reading or writing, where permissions are checked during
-+When opening a file, the availability of the ``LANDLOCK_ACCESS_FS_TRUNCATE``,
-+``LANDLOCK_ACCESS_FS_IOCTL_DEV``, ``LANDLOCK_ACCESS_FS_READ_METADATA`` and
-+``LANDLOCK_ACCESS_FS_WRITE_METADATA`` rights is associated with the newly
-+created file descriptor and will be used for subsequent truncation, ioctl
-+and metadata attempts using :manpage:`ftruncate(2)`, :manpage:`ioctl(2)` and
-+the file descriptor-based metadata system calls.  The behavior is similar to
-+opening a file for reading or writing, where permissions are checked during
- :manpage:`open(2)`, but not during the subsequent :manpage:`read(2)` and
- :manpage:`write(2)` calls.
- 
-@@ -1054,6 +1159,19 @@ fd-reference acquisition (:manpage:`open_tree(2)`, :manpage:`fsmount(2)`) with
- the new ``LANDLOCK_PERMISSION_NAMESPACE_USE`` permission flag and
- ``LANDLOCK_RULE_NAMESPACE`` rule type.
- 
-+File metadata (ABI < 13)
-+------------------------
-+
-+Starting with the Landlock ABI version 13, it is possible to restrict
-+file metadata access with the new ``LANDLOCK_ACCESS_FS_READ_METADATA``
-+and ``LANDLOCK_ACCESS_FS_WRITE_METADATA`` access rights, which control
-+reading file and directory metadata (e.g. with :manpage:`stat(2)` and
-+:manpage:`getxattr(2)`) and changing it (e.g. with :manpage:`chmod(2)`
-+and :manpage:`setxattr(2)`).  As with ``LANDLOCK_ACCESS_FS_TRUNCATE``,
-+these rights are tied to opened files: metadata accesses through an
-+already opened file descriptor are granted according to the rights
-+available at :manpage:`open(2)` time.
-+
- .. _kernel_support:
- 
- Kernel support
--- 
-2.18.0.huawei.25
+This is intended as a more flexible replacement for struct folio_queue as
+the latter can only point to whole folios and cannot point to partial pages
+that might be extracted from an ITER_IOVEC/ITER_UBUF for direct or
+unbuffered I/O purposes.
+
+These patches make a more or less straight swap between struct folio_queue
+and struct bvecq.  The change is not quite trivial as the folio_queue
+struct contains a folio_batch struct and is basically a list of whole
+folios only, whereas the new bvecq struct is a chain of bio_vec arrays.
+
+The patches also add a pair of gated memory pools for allocating bvecqs in
+writeback under low memory conditions.  One is for use by requests and the
+other by subrequests.  The two pools have different lifetime and typical
+allocation amount expectations and avoid deadlocking between the two
+levels.  To avoid overrunning pool capacity, access is controlled by
+semaphore for each pool.
+
+A further patchset will switch the netfslib unbuffered I/O code to using
+bvecqs and then the bvecqs will be passed down into the filesystem rather
+than passing an iterator.
+
+The primary reason behind making this change is so that bvecq chains can be
+used in the assembly of network filesystem messages.  Netfslib can furnish
+the filesystem with bvecq chains representing the data buffers that need to
+be read or written and then, for example, for a write RPC, the filesystem
+can add protocol headers and trailers onto the chain without the need to
+copy it and can also glue multiple buffers together to form compound
+operations and/or perform sparse operations.
+
+One option here is to add two more fields to the bvecq struct, one to
+increase the offset of the first bio_vec and one to decrease the length of
+the last, thereby allowing a bvecq struct to point at a slice of another
+bio_vec array without having to copy the array - but at the cost of adding
+one or two extra conditional ops when getting the offset or length of a
+segment.
+
+I have in-progress patch sets to rewrite the cifs transport[2] and the ceph
+and rbd transport[3] to make use of bvecq chains.  For the cifs transport,
+the idea is to extend the SMB message concept further up the stack, where
+the PDU-marshalling routines will create individual RPC request blobs that
+the transport can then automatically chain together when it is assembling
+a compound SMB request for transmission.
+
+With the ceph transport, the idea is to convert all the different data
+containers it has into just passing around bvecqs.  These can then be
+chained together in order to transmit them.
+
+This improves efficiency in the TCP stack as we no longer need to cork the
+TCP socket, call sendmsg() multiple times and then uncork; rather we can
+preassemble the message in a bvecq chain and just send the entire message
+in one shot with a single sendmsg() and reduce the number of places doing
+loops.  Using a single sendmsg got an improvement in nfsd performance[4].
+
+I also have some changes on the TCP receive side for the cifs transport
+(which is also likely applicable to the ceph TCP transport) whereby the
+receive buffers are 'spliced' out into a bvecq in the cifs I/O thread
+rather than being copied.  Using a bvecq chain here is advantageous as we
+don't know in advance how many segments we're going to have.  This allows
+us firstly to avoid copying data with the socket lock held (thus holding up
+sendmsg) and secondly to avoid copying data in the I/O thread (copying can
+be offloaded to the app thread).  The last time I benchmarked this, it
+appeared to get fio reading tests on cifs a 5% speedup.
+
+Unfortunately, this doesn't help AFS much as that uses a UDP transport, but
+it might also help 9P, at least with its TCP transport.
+
+The patches can also be found here:
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=netfs-next-3
+
+Thanks,
+David
+
+Changes
+=======
+ver #18)
+- Rebase on v7.4-rc3.
+- Fixed issues found by Sashiko[9]:
+  - Fixed the bvecq mempool handling:
+    - Changed the bvecq_alloc_*() functions to take a set of updateable
+      flags instead of a true/false writeback indicator.  This allows the
+      caller to be notified that an OOM occurred and to keep persistent
+      state.
+      - The allocation funcs set BVECQ_HIT_OOM if an out of memory
+        condition occurred, even if it is dealt with through a mempool.
+      - The alloc funcs set BVECQ_HOLD_POOL_SEM if they return holding a
+        count on the semaphore.
+      - Added a function to clean up the state (including releasing the
+        semaphore).
+    - Split the bvecq mempool so that there's one pool for request-level
+      and one for subrequest-level.  These allocations have different
+      characteristics and lifetimes and a process might deadlock against
+      itself if using a single pool for both.
+      - The req-level pool allows up to 50 procs to share a pool of 100.
+      - The subreq-level pool allows 2 procs to have enough bvecqs each on
+        average to track 16MiB worth of pages.
+    - Gate the pools with semaphores to control access to the pools,
+      thereby making sure that at least some reqs/subreqs can make progress
+      by having sufficient available.  The semaphore count must be
+      significantly less than the capacity of the pool.
+    - Added a flag to allow the caller to say that they are fine with a
+      buffer or chain allocation being shortened if OOM occurs.
+  - Made cifs use the subreq pool for its encryption buffer.  This really
+    needs to be restricted to just writeback and reconnect during
+    writeback, but that's not easy without restructuring the cifs transport
+    (I have patches for that).  Further, we really want to shorten the
+    subrequest - but cifs can't do that at the point it currently allocates
+    its enc buffer.
+  - Fixed kunit_bvecq release on abort as kunit_add_action_or_reset() just
+    returns an error on OOM rather than aborting.
+  - Fixed the 'can I revert?' bounds checking in kunit_bvecq.
+  - Made afs dir and symlink writeback check the inode validity after
+    taking the callback lock (cb_lock).
+- Fixed issues found by local review with claude-opus-5-5:
+  - Fixed some issues in the above changes for sashiko.
+  - Made the bvecq chain advance functions advance to the next occupied
+    slot in the next occupied bvecq before returning rather than leaving
+    the iterator on a non-terminal spent bvecq.
+  - Fixed the bvecq test to abort rather than fail and continue.
+  - Increased the subreq-level bvecq pool to handle 16MiB-worth of pages to
+    support CIFS_MAX_WSIZE.
+  - Recheck ->nr_slots and ->next before deleting spent bvecq.
+
+ver #17)
+- Fixed issues found by Sashiko[8]:
+  - Fix bvecq_alloc_buffer2() to set mem_type if zero slots requested.
+  - Fix folio leak in the kunit tests.
+  - Don't mark kunit functions as __init.
+  - Make subreqs pin the bvecq chain to avoid retry of a partially complete
+    subreq seeing released memory.
+  - Fix handling of concurrent writeback of a single-type object and afs
+    vnode status update.
+- Fixed issues found by local review with claude-opus-5-5:
+  - Pass len from netfs_create_write_req() to netfs_alloc_request().
+  - Added a patch to pass the request length in for unbuffered/DIO writes
+    and single-type object writeback to request creation, to set wreq->len.
+  - In netfs_writeback_single() set wreq->len to the specified length, not
+    padded buffer size.
+  - Added a fix patch to remove __init and __refdata marks from
+    kunit_iov_iter.c.
+  - Removed __refdata from kunit_bvecq.c too.
+  - Extended the bvecq chain pinning to the retry functions too.
+
+ver #16)
+- Rebase on v7.4-rc1.
+- Add docs for the bvecq tools.
+- Add some kunit tests for the bvecq iterator.
+- Fixed issues found by local review with claude-opus-5-5:
+  - Added missing linux/mempool.h inclusion.
+  - Fix bvecq_alloc_one() to check the rounded-up allocation size against
+    the pool allocation size, not the struct+array size which may have a
+    gap.
+  - Fix bvecq_alloc_one() to limit the max slots to USHRT_MAX to not
+    overrun the slot counters.
+  - Make bvec_kmap_partial()'s bvec pointer const.
+  - Added an iter_to_sg kunit test for bvecq.
+  - Added a patch to make afs symlink's use of ->directory_size
+    consistent.
+  - In netfs_writeback_single(), fix the value ->submit_extendable_to is
+    set to (though a future patch series will remove this).
+  - Split the afs dir bvecq patch into three:
+    - A patch to pass the content length to netfs_writeback_single(),
+      separately from the buffer size in the iov_iter.  The filesystem is
+      then responsible for providing zeroed padding.
+      - A check is added to make sure the buffer is not smaller than the
+        content.
+      - The API doc is updated.
+    - A patch to simplify netfs_writeback_single():
+      - No looking inside the iov_iter.
+      - Effectively do DIO rather than buffered I/O (pagecache not used).
+      - Pass a single op to the cache.
+      - Wait synchronously for op completion for now as the calling
+        filesystem should otherwise do a wait.
+      - Removed the bits to set up a write to the server since it should
+        only write to the cache.
+    - A patch to switch afs dir (and symlink) buffering to use bvecq
+      instead of folio_queue.
+  - Clear new pages as added and clear the tail if shrunk by a third party
+    for AFS directories.
+  - Clear the buffer tail before calling netfs_writeback_single() for AFS
+    symlinks.
+  - Fix netfs_limit_bvecq() to handle empty bvecqs and short chains.
+  - Added missing SPDX to new doc.
+  - Added new files to MAINTAINERS.
+
+ver #15)
+- Fix issues from Sashiko[7]:
+  - Don't need to set page counts after calling alloc_pages_bulk().
+  - Adjust netfs_writeback_single() to return 0 on success, not the amount
+    written.
+  - Remove a couple of unused constants.
+
+ver #14)
+- Fix issues from Sashiko[6]:
+  - In iter_bvecq_get_pages(), use folio_get() not get_pages.
+  - In netfs_read_set_unlock_at(), netfs_read_unlock_folios(),
+    netfs_pgpriv2_unlock_copied_folios() and
+    netfs_writeback_unlock_folios(), skip wholly unoccupied bvecqs.
+  - Remove some now-unused trace bits.
+
+ver #13)
+- Fix issues from Sashiko[5]:
+  - In iter_bvecq_get_pages(), need to add bv_offset when calling
+    want_pages_array().
+  - In iter_bvecq_get_pages(), make the getting of a ref on the page
+    dependent on the page being non-slab.
+  - In bvecq_alloc_one(), use mempool_alloc(), not
+     mempool_alloc_noreserve().
+  - In bvecq_expand_buffer(), don't add __GFP_NORETRY|__GFP_WARN for
+    order 0 allocations.
+  - Drop the netfs_bv_slot tracepoint as it's not used in these patches.
+  - In afs_do_read_single(), afs_dir_get_block() and afs_do_read_symlink(),
+    use mapping_gfp_mask() rather than GFP_KERNEL.
+  - In netfs_writeback_single(), set ->submitted so that
+    netfs_wait_for_write() doesn't then just return -EIO.
+  - In netfs_unlock_abandoned_read_pages(), reset ->first_tail_slot when
+    moving on to next node.
+  - Remove netfs_folioq_trace(s) trace info enum and string set as their
+    tracepoint got removed.
+
+ver #12)
+- Split from v11 of "netfs: Keep track of folios in a segmented bio_vec[]
+  chain"[1]
+
+[1] https://lore.kernel.org/r/20260902173350.3468672-1-dhowells@redhat.com/
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=cifs-experimental
+[3] https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=ceph-iter
+[4] https://lore.kernel.org/netdev/168979108540.1905271.9720708849149797793.stgit@morisot.1015granger.net/
+[5] https://sashiko.dev/#/patchset/20260929075913.2740968-1-dhowells%40redhat.com
+[6] https://sashiko.dev/#/patchset/20260929103412.2807494-1-dhowells%40redhat.com
+[7] https://sashiko.dev/#/patchset/20260930125247.3232130-1-dhowells%40redhat.com
+[8] https://sashiko.dev/#/patchset/20261107160823.1465553-1-dhowells%40redhat.com
+[9] https://sashiko.dev/#/patchset/20261111203034.2126314-1-dhowells%40redhat.com
+
+David Howells (17):
+  iov_iter: Fix kunit test to remove __init and __refdata marks
+  Add a function to kmap one page of a multipage bio_vec
+  iov_iter: Add a segmented queue of bio_vec[]
+  netfs: Add some tools for managing bvecq chains
+  iov_iter: Add an API document for the bvecq structure
+  iov_iter: Add a bvecq kunit test
+  afs: Fix an inconsistency in the symlink code
+  netfs: Explicitly pass tail padding to netfs_writeback_single()
+  netfs: Change netfs_writeback_single() to not look inside the iterator
+  netfs: Pass the write length to request creation where appropriate
+  afs: Use a bvecq to hold dir content rather than folioq
+  cifs: Use a bvecq for buffering instead of a folioq
+  smbdirect: Support ITER_BVECQ in smbdirect_map_sges_from_iter()
+  netfs: Switch folioq to bvecq
+  smbdirect: Remove support for ITER_FOLIOQ from
+    smbdirect_map_sges_from_iter()
+  iov_iter: Remove ITER_FOLIOQ
+  netfs: Remove folio_queue
+
+ Documentation/core-api/bvecq.rst            | 250 ++++++++
+ Documentation/core-api/folio_queue.rst      | 209 -------
+ Documentation/core-api/index.rst            |   2 +-
+ Documentation/filesystems/netfs_library.rst |  47 +-
+ MAINTAINERS                                 |   3 +
+ fs/afs/dir.c                                |  56 +-
+ fs/afs/dir_edit.c                           |  44 +-
+ fs/afs/dir_search.c                         |  33 +-
+ fs/afs/inode.c                              |   2 +-
+ fs/afs/internal.h                           |   6 +-
+ fs/afs/symlink.c                            |  64 ++-
+ fs/netfs/Makefile                           |   1 +
+ fs/netfs/buffered_read.c                    |  36 +-
+ fs/netfs/bvecq.c                            | 416 ++++++++++++++
+ fs/netfs/direct_write.c                     |   4 +-
+ fs/netfs/internal.h                         |  12 +-
+ fs/netfs/iterator.c                         |  42 +-
+ fs/netfs/main.c                             |  50 +-
+ fs/netfs/misc.c                             |  96 ----
+ fs/netfs/objects.c                          |   6 +-
+ fs/netfs/read_collect.c                     |  48 +-
+ fs/netfs/read_pgpriv2.c                     |  41 +-
+ fs/netfs/read_retry.c                       |  53 +-
+ fs/netfs/rolling_buffer.c                   | 193 ++-----
+ fs/netfs/stats.c                            |   8 +-
+ fs/netfs/write_collect.c                    |  39 +-
+ fs/netfs/write_issue.c                      | 221 +++----
+ fs/netfs/write_retry.c                      |  15 +-
+ fs/smb/client/cifsglob.h                    |   2 +-
+ fs/smb/client/smb2ops.c                     |  97 ++--
+ fs/smb/smbdirect/connection.c               | 135 +++--
+ include/linux/bvec.h                        |  18 +
+ include/linux/bvecq.h                       | 197 +++++++
+ include/linux/folio_queue.h                 | 282 ---------
+ include/linux/iov_iter.h                    |  94 +--
+ include/linux/netfs.h                       |  19 +-
+ include/linux/rolling_buffer.h              |  42 +-
+ include/linux/uio.h                         |  17 +-
+ include/trace/events/netfs.h                |  37 +-
+ kernel/bpf/btf.c                            |   2 -
+ lib/Kconfig.debug                           |  13 +
+ lib/iov_iter.c                              | 519 ++++++++++++-----
+ lib/scatterlist.c                           |  82 ++-
+ lib/tests/Makefile                          |   1 +
+ lib/tests/kunit_bvecq.c                     | 603 ++++++++++++++++++++
+ lib/tests/kunit_iov_iter.c                  | 208 +++----
+ 46 files changed, 2722 insertions(+), 1643 deletions(-)
+ create mode 100644 Documentation/core-api/bvecq.rst
+ delete mode 100644 Documentation/core-api/folio_queue.rst
+ create mode 100644 fs/netfs/bvecq.c
+ create mode 100644 include/linux/bvecq.h
+ delete mode 100644 include/linux/folio_queue.h
+ create mode 100644 lib/tests/kunit_bvecq.c
 
