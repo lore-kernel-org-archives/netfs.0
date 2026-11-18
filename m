@@ -1,58 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.226
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794993225;
-	b=cy6vbRrO+kEE3mg1dH2bc3UeUHIiWd8IWnaOYSMwfuGdG22u1sEwNwroEd5xpY5goV6M
-	 mNEt0xAqvIYm9YAn2RGqiU4u4V3h7A2I11sXJBoJ4KOsO8hs9t1vk6QGpy6INBHbv8vQU
-	 qNDqpuMq4s9/FmDJTSWfJF/7RfIzgaXmpHCdxaYui+8PzZyExfA4aviZVgA+lnklBT34z
-	 W2c5Oi2zcdtWEprPM33dExDVvCo35kA5WYIDhu6XO8yo0T1G5IdoD7LjLj4mWywyEDrJR
-	 wOW5isdT2pH3iN8WFzhBDVb7cL+GpUxErqd836UH8pkd0WGex/i9jGNHd+EDJR5sryQ==
+	t=1794993434;
+	b=DuOljkuICpGRohSi7aitP7JeO78KOVB/oDcyH++9Dxdio3w+cR01NBTgb7EOfmNR7Qk/
+	 HVgdoNDPqfQ8n5eCUuwklnTPRHZfKRDV5y+C3rXmDAifhMGkOJrMvlB9PUotpG9Fi1a0H
+	 YiS+xQdy1fffpmTpgBgX/+CQTWRR/AR2uakag8Ycm3tiFs8RMRm/11bShjnLq8vdCytkh
+	 ObJZOx0E7+CX+0Tgf9ClLMGYYBR/9WdFmlMduCoN8RwfVMtR7ICQHIm5qDYwuBpUmHytl
+	 /yHzqO0cK10/GD6F7/XVWNIc+49yyCB1YERUD86TTtl3A+LMAdEC+j4oUUyBBAUG8TA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794993225;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794993434;
 	h=DMARC-Filter:dkim-signature:Received:Received:Received:Message-ID:
 	 Date:MIME-Version:User-Agent:Subject:To:CC:References:
 	 Content-Language:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:X-Originating-IP:X-ClientProxiedBy;
-	bh=gqPBU5vSzctPXUMsg32k86Yb/Qp3EYKKyTavFdf5sH8=;
-	b=AXXdP7+OhCVqWCqIhmXLmDBQaMpspPDBOdzegCWpvXPdCRLGmDH7i7FEtG+rGnym+nsJ
-	 totnDK/Jjz7jJP+zaF9lph7KhBK6LMTWYit1DGCFPcB5Q5y/waXM9MCasv9t0htStW1Dh
-	 ekoblDVyf1FuG4EfWNOMCeHvYZRSryTV1tT4wovSHIXofMELga/oTrqkic2vnEMXrESgp
-	 QSKzrRfidj5rhpvsurlQs6kPWWeahkbajQhefdSrr0SmpbIpucHliSDydJVatgTsP5+A5
-	 hPR4fNHCm2X8ZnxyY8rH9vn+Ke34FhiT77K7Bja/oxu+KfnqhGY1eIvE2C8cI7k4F7g==
+	bh=xsIsDZiCZyB7+lKhnSB47LX6hbKq7VMg+O30s3v8xU0=;
+	b=blMxYa9a8CyzqmybZfDPZJG6xWRdMr4BMfNiYxKfvabExelg6NcZaQ/pmGNVpiLeNTex
+	 pxJSrd2zMj7ZF1M50jIqBUmT/gtIprVL/lCqZDkRrR0VDi7lHd5INHCPG+dB+S0mEJRsp
+	 +6qfVRVpL18spsROkPKyN6nToGvyr3Br1tBW1BQ8whljAHX46Yxf+tcFYDyy82Tb+PRc/
+	 yaR05sSWJXIb9AejVRM+XgCPOO+IBcnDf/GlnQNW8FD/UZ8oBNVfzFF545nY/n7Dawqt3
+	 jQ3oSqhGLai+pfcyjfIVMpj6Ah/PYs5WBRLngv4uV5lDrzZsnncwriFer89067q7zJQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=huawei.com;
 	spf=pass smtp.mailfrom=huawei.com;
-	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=u7vlY2Tx;
+	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=PV3E+oEf;
 	arc=none smtp.remote-ip=113.46.200.226
 Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0176A60A2616;
-	Wed, 18 Nov 2026 09:13:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0176A60A2616
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03ED8606A320;
+	Wed, 18 Nov 2026 09:17:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 03ED8606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=u7vlY2Tx
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=PV3E+oEf
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=gqPBU5vSzctPXUMsg32k86Yb/Qp3EYKKyTavFdf5sH8=;
-	b=u7vlY2TxckHQP+tYQthSmXBs8/AgddjDNh8bkjwDxaHhPAcGONyr849lvDagg0uq2tPODQr+O
-	RNkZ/GSkSnHrw23pVJBgD4eBpcXClBJwejVje/VjYL1bZHv0QSts4KMpbezyGFZ04qUx8679+NR
-	1cZfatNyiz6HsIFs9LF+vZQ=
-Received: from mail.maildlp.com (unknown [172.19.163.127])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4jTwr60sQjzKmVb;
-	Wed, 18 Nov 2026 17:13:26 +0800 (CST)
+	bh=xsIsDZiCZyB7+lKhnSB47LX6hbKq7VMg+O30s3v8xU0=;
+	b=PV3E+oEfe6GWTlN7IzcOZNtMuGokpGaMaE5HT+w5Vk98jOWnb53YzhdAAkTed93AvGp6D+ngZ
+	ftGk2P047j6/rbz8Ke0Kewk86yZLKYBKuM/FH/uksdfAvh6qdTvxfoyU41EsmNujsw5oLc+20hb
+	oGEWnwe8RZuneZEt42a2+8c=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4jTww76jtyzKm8G;
+	Wed, 18 Nov 2026 17:16:55 +0800 (CST)
 Received: from whupemk100010.china.huawei.com (unknown [7.152.184.41])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6D73B40561;
-	Wed, 18 Nov 2026 17:13:40 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 41D7540586;
+	Wed, 18 Nov 2026 17:17:10 +0800 (CST)
 Received: from [10.67.110.140] (10.67.110.140) by
  whupemk100010.china.huawei.com (7.152.184.41) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 18 Nov 2026 17:13:33 +0800
-Message-ID: <32b8d9c9-27d2-4da9-8618-ccfc44dee7a3@huawei.com>
-Date: Wed, 18 Nov 2026 17:13:31 +0800
+ 15.2.2562.45; Wed, 18 Nov 2026 17:17:02 +0800
+Message-ID: <61823b38-032d-4e4c-bcbb-82fe83c34ade@huawei.com>
+Date: Wed, 18 Nov 2026 17:17:01 +0800
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Post: <mailto:netfs@lists.linux.dev>
@@ -102,41 +102,23 @@ CC: <mic@digikod.net>, <gnoack@google.com>, <paul@paul-moore.com>,
 	<utilityemal77@gmail.com>, <lujialin4@huawei.com>
 References: <20261117150542.1169451-1-caixinchen1@huawei.com>
  <20261117150542.1169451-2-caixinchen1@huawei.com>
- <20261117183059.GP989762@ZenIV>
+ <20261117183059.GP989762@ZenIV> <20261117183440.GQ989762@ZenIV>
 Content-Language: en-US
 From: Cai Xinchen <caixinchen1@huawei.com>
-In-Reply-To: <20261117183059.GP989762@ZenIV>
+In-Reply-To: <20261117183440.GQ989762@ZenIV>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
  whupemk100010.china.huawei.com (7.152.184.41)
 
-On whether we want the mount references at all: they are not for NTFS.
-The path-based LSM hooks need them - Landlock's check walks the hierarchy
-up from the object with path->mnt->mnt_root and follow_up(), for every
-layer, and the idmap we pass has to be the one of the mount the path was
-checked in.  NTFS is only the reason for ia_path/notify_change_target():
-->setattr() has no path argument, so a change forwarded to the base inode
-would otherwise lose the mount.
+Yes.  ovl_do_notify_change() passes
+ovl_upper_mnt(ofs) together with the real upperdentry, so the sb matches,
+and the idmap handed down is ovl_upper_mnt_idmap(ofs), i.e. taken from
+that very mount.  It runs under with_ovl_creds(), like the other ovl_do_*
+forwards, so an LSM sees a genuine upper-layer path instead of a merged
+dentry whose mount we cannot name - which is the point of converting the
+metadata helpers.
 
-On 11/18/2026 2:30 AM, Al Viro wrote:
-> That needs a bit along the lines of "path MUST be consistent - don't combine
-> a dentry from one filesystem with mount of another".  All in-kernel callers
-> might have appropriate struct mount references on hand, but for out-of-tree
-> code that might be not true and we'd better be upfront about the headache
-> we are inflicting.
->
-> I'm not sure we really want to provide those mount references, TBH - it does
-> add a constraint not just on out-of-tree callers, but upon the future uses
-> in the kernel.  If NTFS is the only reason... ugh.
-
-ok, I will change in v5
-
-> BTW, why not something like
->
-> 		notify_change(&nop_mnt_idmap,
-> 			      &(struct path){.mnt = path.mnt, .dentry = dentry},
-> 			      &newattrs, NULL);
-> instead of that named local?  Same question for other places like that...
-
-
+On 11/18/2026 2:34 AM, Al Viro wrote:
+> Incidentally, will the mount reference you are supplying in case of overlayfs
+> upper layer be any good for LSM users?
