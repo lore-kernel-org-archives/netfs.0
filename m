@@ -1,55 +1,82 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794964523;
-	b=GAKgArS8QU0HjZJXs7hfP61AwA+aibQrdwbCnv8WOhoofPa5f3xzKxCcwEt27guhho+H
-	 Wd9Y0XcyRaMcGNQ+1NXKqvWtaprw1YAvk7qZjzM0riPBUNTPJkT4eQb3ZbOFz4vEhn1EW
-	 Gei5yUHuSpNYAqjRCJd9bwBpPRhBJ/YmRDRaM/KyIAU9EGLibVR7PCpE0B4YY613DoSTe
-	 xXCVWARuLfWLLOSE3v5LTsp8qBrF2lX2jIYFiIUhda1EQYq8ReJtkCIiHaY40ZM01fDPJ
-	 Jd5FGSl1JqG+hGnDwDPu/AwXhtqkJd13cay6Tcjotdc8LdIpiX52Q2aHZormujHahCg==
+	t=1794991916;
+	b=BAcA6bBNnhpuhaB8nQp5C2ZfxL04/0F//2yzKnmaRV0A8EcuexIp1ajQykEN24/SJ64m
+	 qbyBVZOKjCs/CkM/LgXAcbdfqguggfSOl/5NpmQtdmoFOdgLnZLxqHUpXnZxBPKpmzgNt
+	 sc0eh+hPVjrzTlmCT6/JXLrfkjOx9+oiQ4EGGKbg+7rj3BTRgQ9zhk89yWU82kYLFWNF0
+	 WkPRtJ11H1QGt8Lq5Xj6+wIkNc5aHn1mI/HbVRdEkLfYqwDABTfSTmZCqNZg03syEOoyg
+	 7YZaS8uHBaJGQYrRyLV2Uk+7ulSFJUrjulaWMnjm21U+ZMtLHr4+2MmOvoB0MqcP7KA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794964523;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=ei5zvsY36hyX76GY8L34lt7H4EbEz5X0q8+ZsGkzAPg=;
-	b=1vB88dyCNj2Oj8zfqQ52Kf4rtee1l/AaxdEuIDozyK2rxXwaDn8mDKMNq3DPNrfcviWN
-	 XiVTYpTBo+eJFmOC5D8qDCT1nZTpBOK2nIWPTfUw0M37ZmiJZjbjquqAW57cWME9/8RjM
-	 j8x2Xx/+z4rnvMfj5maXpgveg6zbPW2ym5lTWZxR1aKdk5RMgkMVxyPCuaTjnrSG10i8B
-	 cKI4VOZg3AUwbWLs+0vhyGk4FzpP6Uz+Y46JnXCfbXo8LTgQPd66Rp2QU/43JItSvoD/+
-	 XuqE2MxveAZOnl41WGEUxSMiBCzw6gnREPssuOflZGAZi+OeL8cNcN6lxC68AOPzIfQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794991916;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=JNjLV1RqoW47n1WZbcGqB7KkS7CtRm0tXFkupGF+cOc=;
+	b=cDSBW6hKU1kX1GaO7FT2PFRUv7PJmndjZ9lPRltkno5sd+pzbTmyN0YF6drGrpKNOCy1
+	 SoG+xJrT8hxd9ZqHFja6wsmRt7ZKTqOt/7tGOxZOYEWzstJMGMkpvO+dtgRRcYpQNSVfO
+	 /gCp3WgYrbfM18o8hIsF8OVx0zJb/DWx+i8kAI8amhDa64J787soL0VlSzzDzZCwUhVsa
+	 6oAcn/wWCFIStoy0KetCStk8RLq4sDDkTnaEnNDJeNeulU/tmd86/sMbERkfxdVek/Tb0
+	 mJ5xbsRXj1TQcxz1yK1AQiZpl8Ic2i7R62XfBfEnFsD2RSssPwO/3doRsO9CcWT0tdQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IAUFK3g3;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RsvXsDlx;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A17D606A31C
-	for <netfs@lists.linux.dev>; Wed, 18 Nov 2026 01:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9911606A31C;
+	Wed, 18 Nov 2026 08:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IAUFK3g3
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3403F1F000CD
-	for <netfs@lists.linux.dev>; Wed, 18 Nov 2026 01:15:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RsvXsDlx
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B8F1F000C4;
+	Wed, 18 Nov 2026 08:51:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794964523;
-	bh=ei5zvsY36hyX76GY8L34lt7H4EbEz5X0q8+ZsGkzAPg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=IAUFK3g3kUwyPLOyL0lZ8GhG7JirX/0ekKJQ8/N9G9dYZqITksKeDBbCkjHJ13bF6
-	 NUdjd7jzPzxLr932KhvDOXbX38zCVHXTWwYXBkD1zF+CYTZg1q6TpmBYBJnB4GX2pH
-	 syICDB7Tlg0O9SSgMHW7ndQqsKqh6l5mAOHs9vWWsLzALFEAiHx3JJYrK1QJoUMbZk
-	 9L6nagUKhHIRE4HTBXWxmZ1pnG4/Mx2c+M/AngHXDw4yskDBfv8HJRNZvNNsPM42c7
-	 3rEvNY50eu6donOmgb3ZQYUSS+olW062/c7LSPFz4tbCf0yWBEHlM6mPy64c7RIh6b
-	 5W1oiA/Qlr2Qg==
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c4d2b741ed9so51425866b.2
-        for <netfs@lists.linux.dev>; Tue, 17 Nov 2026 17:15:23 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErEPr0117/02Gd1rlBguMaPFOLB7FrhgbD2zCqtJTvh3FCK3ka987ZadxtOgpd3wlYCqx3dkUw==@lists.linux.dev
-X-Gm-Message-State: APuU4Z9sLzB1B+IPHt880m7dTvQFZfriLCHFtjZpVWPSQLgDx+wCVmcY
-	w822WJ/yj6ALZ/zxYTycKDKXmTyMkSz6jcSgi8gqAhscCxLymAdMQKz7ZIknAbfL917hTLkaNpS
-	QUHY3SBs5JlhCB7SgpqkznpInhkGivv8=
-X-Received: by 2002:a17:906:9f85:b0:c51:94f:f155 with SMTP id
- a640c23a62f3a-c510e1ee11dmr72201266b.19.1794964521719; Tue, 17 Nov 2026
- 17:15:21 -0800 (PST)
+	s=k20260515; t=1794991916;
+	bh=JNjLV1RqoW47n1WZbcGqB7KkS7CtRm0tXFkupGF+cOc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=RsvXsDlxdennVdRZIxtMAO9aTlSCgDU/aRN5nXveVTZaO8kYi5t/Rvtr1wiGCEzHY
+	 wP+UMH5gw4T4/2fTW2DI4qwJLAdO/5trCEHdMii87scJ3uqddgNDM1Mu5RIia93hGF
+	 Ln1RRmOUcu0iL91VGTmqYQUocfRz6a0kQj1ekzCQiO1Kij5+KjAGbHWQ5Di/UV62Ha
+	 AFc19FgOWt5HM+MKdo0fX+KnLQwogg86N+lTKzPrFvOseBVp7lm3DwPnqk6Mb4sLS/
+	 q/l1Oj/bKGcluhytkTpuajG1Lv845vosUAR4klQLitOlxelkTCEePyXqhQGZ6u5wiZ
+	 4vkK4MG8ZsTLA==
+Date: Wed, 18 Nov 2026 09:51:27 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Al Viro <viro@zeniv.linux.org.uk>, 
+	Cai Xinchen <caixinchen1@huawei.com>
+Cc: mic@digikod.net, gnoack@google.com, paul@paul-moore.com, jack@suse.cz, 
+	amir73il@gmail.com, andrii@kernel.org, apparmor@lists.ubuntu.com, ast@kernel.org, 
+	axboe@kernel.dk, bpf@vger.kernel.org, casey@schaufler-ca.com, cel@kernel.org, 
+	cem@kernel.org, chenxiaosong@chenxiaosong.com, code@tyhicks.com, corbet@lwn.net, 
+	Dai.Ngo@oracle.com, dakr@kernel.org, daniel@iogearbox.net, dhowells@redhat.com, 
+	dlemoal@kernel.org, dmitry.kasatkin@gmail.com, driver-core@lists.linux.dev, 
+	dsterba@suse.com, ecryptfs@vger.kernel.org, eddyz87@gmail.com, 
+	emil@etsalapatis.com, eric.snowberg@oracle.com, exfat@lists.linux.dev, 
+	georgia.garcia@canonical.com, gregkh@linuxfoundation.org, hch@lst.de, 
+	hirofumi@mail.parknet.co.jp, hyc.lee@gmail.com, ihor.solodrai@linux.dev, jlayton@kernel.org, 
+	jmorris@namei.org, johan@kernel.org, john.fastabend@gmail.com, 
+	john.johansen@canonical.com, jolsa@kernel.org, kpsingh@kernel.org, linkinjeon@kernel.org, 
+	linux-api@vger.kernel.org, linux-block@vger.kernel.org, linux-btrfs@vger.kernel.org, 
+	linux-cifs@vger.kernel.org, linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-nfs@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org, 
+	liubaolin12138@163.com, martin.lau@linux.dev, mason@kernel.org, 
+	mathieu.desnoyers@efficios.com, matt@bobrowski.net, memxor@gmail.com, mhiramat@kernel.org, 
+	miklos@szeredi.hu, neil@brown.name, netfs@lists.linux.dev, ntfs@lists.linux.dev, 
+	okorniev@redhat.com, omosnacek@gmail.com, penguin-kernel@i-love.sakura.ne.jp, 
+	rafael@kernel.org, rdunlap@infradead.org, roberto.sassu@huawei.com, 
+	rostedt@goodmis.org, selinux@vger.kernel.org, senozhatsky@chromium.org, 
+	serge@hallyn.com, sj1557.seo@samsung.com, skhan@linuxfoundation.org, 
+	song@kernel.org, stephen.smalley.work@gmail.com, takedakn@nttdata.co.jp, 
+	tom@talpey.com, yonghong.song@linux.dev, yuezhang.mo@sony.com, 
+	zohar@linux.ibm.com, utilityemal77@gmail.com, lujialin4@huawei.com
+Subject: Re: [PATCH -next -v4 02/17] LSM: pass struct path to the
+ inode_setsecctx hook
+Message-ID: <20261118-woher-duften-bejubeln-7a8a2099f89f@brauner>
+References: <20261117150542.1169451-1-caixinchen1@huawei.com>
+ <20261117150542.1169451-3-caixinchen1@huawei.com>
+ <20261117184342.GR989762@ZenIV>
+ <20261118001641.GA1669148@ZenIV>
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Post: <mailto:netfs@lists.linux.dev>
@@ -59,69 +86,176 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:netfs+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-References: <20261118002159.20576-1-ozgunkultekin@gmail.com>
-In-Reply-To: <20261118002159.20576-1-ozgunkultekin@gmail.com>
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Wed, 18 Nov 2026 10:15:09 +0900
-X-Gmail-Original-Message-ID: <CAKYAXd8z=5Q5Po5W5HBwDVGfn9DQsaQuom1x5=ssP=2BfJ6Ebw@mail.gmail.com>
-X-Gm-Features: AclHuK8N9K2bm-bGjGUVXTHQ06NTTFDxT6OkqVw5N5CTHIJ3Zt4tepcXuwV3MaY
-Message-ID: <CAKYAXd8z=5Q5Po5W5HBwDVGfn9DQsaQuom1x5=ssP=2BfJ6Ebw@mail.gmail.com>
-Subject: Re: [PATCH] smb: client: do not let the server grow a write subrequest
-To: ozgun kultekin <ozgunkultekin@gmail.com>
-Cc: Paulo Alcantara <pc@manguebit.org>, linux-cifs@vger.kernel.org, 
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>, Shyam Prasad N <sprasad@microsoft.com>, 
-	Tom Talpey <tom@talpey.com>, Bharath SM <bharathsm@microsoft.com>, 
-	David Howells <dhowells@redhat.com>, netfs@lists.linux.dev, 
-	samba-technical@lists.samba.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261118001641.GA1669148@ZenIV>
 
-On Wed, Nov 18, 2026 at 9:22=E2=80=AFAM ozgun kultekin <ozgunkultekin@gmail=
-.com> wrote:
+On Wed, Nov 18, 2026 at 12:16:41AM +0000, Al Viro wrote:
+> On Tue, Nov 17, 2026 at 06:43:42PM +0000, Al Viro wrote:
+> > > + * Hooks that take a struct path argument: the VFS only sanctions passing
+> > > + * the path to VFS helpers that take a struct path (e.g. notify_change());
+> > > + * it makes no guarantees with regard to path->mnt, whose layout and
+> > > + * implementation details are subject to change.  Implementations must
+> > > + * not rely on its properties.
+
+That comment is a garbled version of an earlier review. It meant that
+LSMs get no guarantees about struct vfsmount internals and don't get to
+poke at them. I'm not sure how this can be read as path->mnt being a
+random mount.
+
+> > If that kind of stuff actually does get passed to any existing hooks, we need
+> > to fix that ASAP.
+
+Of course there is one...
+
+  dent = lookup_one_unlocked(idmap, &QSTR_LEN(...),
+                             priv->dir_fp->filp->f_path.dentry);
+  [...].
+  rc = ksmbd_vfs_fill_dentry_attrs(priv->work, idmap, dent, &ksmbd_kstat);
+
+It passes only the bare dentry, and ksmbd_vfs_fill_dentry_attrs() then
+makes up a path from the share's root mount:
+
+  struct path path = {
+          .mnt = share_conf->vfs_path.mnt,   /* mount the share is exported from */
+          .dentry = dentry,                  /* entry inside the listed dir */
+  };
+  rc = vfs_getattr(&path, ...);
+
+since 5614c8c487f6 ("ksmbd: replace generic_fillattr with vfs_getattr").
+
+So a client that lists a directory on a submount below the share then
+that dentry belongs to another superblock. So security_inode_getattr()
+and ->getattr() get a mixed path.
+
+The third patch in this series fixes this. But we should make this a
+Fixes: patch really... Something like [1].
+
+> To elaborate a bit: correctness of quite a few places does depend upon the
+> following invaraint:
+> 	path->mnt->mnt_sb == path->dentry->d_sb		(1)
+> for all struct path pointers they might possibly run into.
 >
-> smb2_writev_callback() takes the byte count from the SMB2 WRITE
-> response, masks it with 0xFFFF if it is larger than the request (for
-> old OS/2 servers), and then copies it into wdata->subreq.len.  A server
-> can return a count that is still larger than the request after the
-> mask, for example 0x8002 for a 5-byte write or 0xFFFF for a 4 KiB
-> write, and the subrequest then covers data that was never sent.
->
-> netfs uses the subrequest length to decide how far the write collector
-> may advance.  With a grown subrequest the collector moves collected_to
-> past the data that was issued: netfs_writeback_unlock_folios() walks
-> folio_queue slots that were never filled, and
-> rolling_buffer_delete_spent() frees folio_queue segments that later
-> in-flight subrequests still use.  This is a use-after-free that a
-> malicious or broken server triggers from an ordinary write:
->
->   BUG: KASAN: slab-use-after-free in netfs_limit_iter+0xed4/0x1040
->   Read of size 1 at addr ff11000010561511 by task kworker/u8:4/63
->   Workqueue: events_unbound netfs_write_collection_worker
->    netfs_limit_iter+0xed4/0x1040
->    netfs_retry_writes+0x1410/0x1e90
->    netfs_write_collection+0x2647/0x3880
->    netfs_write_collection_worker+0x1cd/0x3e0
->   Allocated by task 141:
->    netfs_folioq_alloc+0x39a/0x470
->    rolling_buffer_init+0x29/0xc0
->    netfs_create_write_req+0x12f/0x840
->   Freed by task 42:
->    rolling_buffer_delete_spent+0xb1/0x220
->    netfs_write_collection+0x1f62/0x3880
->
-> Never change the subrequest length from the response.  If the count is
-> still larger than the request after the mask, fail the write with -EIO
-> and record it with a new write_overlarge trace point, like the read
-> path does with read_overlarge.  A short count still returns -ENOSPC as
-> before.
->
-> The folio_queue form of the use-after-free exists since
-> commit cd0277ed0c18 ("netfs: Use new folio_queue data type and
-> iterator instead of xarray iter").
->
-> Fixes: 3ee1a1fc3981 ("cifs: Cut over to using netfslib")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: ozgun kultekin <ozgunkultekin@gmail.com>
-Looks good.
-Reviewed-by: Namjae Jeon <linkinjeon@kernel.org>
-Thanks!
+> _IF_ you can guarantee that (1) is not violated, we have something to
+> talk about; otherwise, don't call your object struct path and don't
+> pass it to anything that expects to deal with struct path.
+
+Every struct path the series constructs:
+
+  - devtmpfs
+  - nfsd
+  - cachefiles
+  - ecryptfs
+  - overlayfs
+  - ksmbd
+
+doesn't have this bug.
+
+[1]:
+
+  --- a/fs/smb/server/smb2pdu.c
+  +++ b/fs/smb/server/smb2pdu.c
+  @@ -6375,13 +6375,14 @@ static int process_query_dir_entries(struct smb2_query_dir_private *priv)
+                          continue;
+                  }
+
+  +               path.mnt = priv->dir_fp->filp->f_path.mnt;
+  +               path.dentry = dent;
+  +
+                  if (test_share_config_flag(priv->work->tcon->share_conf,
+                                             KSMBD_SHARE_FLAG_HIDE_UNREADABLE)) {
+                          __le32 daccess = FILE_READ_DATA_LE | FILE_READ_EA_LE |
+                                  FILE_READ_ATTRIBUTES_LE;
+
+  -                       path.mnt = priv->dir_fp->filp->f_path.mnt;
+  -                       path.dentry = dent;
+                          rc = smb_check_perm_dacl(priv->work->conn, &path,
+                                                   &daccess, daccess,
+                                                   priv->work->sess->user->uid,
+  @@ -6397,7 +6398,7 @@ static int process_query_dir_entries(struct smb2_query_dir_private *priv)
+  @@ -6397,7 +6398,7 @@ static int process_query_dir_entries(struct smb2_query_dir_private *priv)
+                  if (priv->info_level != FILE_NAMES_INFORMATION) {
+                          rc = ksmbd_vfs_fill_dentry_attrs(priv->work,
+                                                           idmap,
+  -                                                        dent,
+  +                                                        &path,
+                                                           &ksmbd_kstat);
+                          if (rc) {
+                                  dput(dent);
+  --- a/fs/smb/server/smb_common.c
+  +++ b/fs/smb/server/smb_common.c
+  @@ -472,32 +472,36 @@ int ksmbd_populate_dot_dotdot_entries(struct ksmbd_work *work, int info_level,
+          for (i = 0; i < 2; i++) {
+                  struct kstat kstat;
+                  struct ksmbd_kstat ksmbd_kstat;
+  -               struct dentry *dentry;
+  +               struct path path = { .mnt = dir->filp->f_path.mnt };
+
+                  if (!dir->dot_dotdot[i]) { /* fill dot entry info */
+                          if (i == 0) {
+                                  d_info->name = ".";
+                                  d_info->name_len = 1;
+  -                               dentry = dget(dir->filp->f_path.dentry);
+  +                               path.dentry = dget(dir->filp->f_path.dentry);
+                          } else {
+                                  d_info->name = "..";
+                                  d_info->name_len = 2;
+  -                               dentry = dget_parent(dir->filp->f_path.dentry);
+  +                               /*
+  +                                * The parent never leaves the superblock, so
+  +                                * the directory's mount stays consistent with it.
+  +                                */
+  +                               path.dentry = dget_parent(dir->filp->f_path.dentry);
+                          }
+
+                          if (!match_pattern(d_info->name, d_info->name_len,
+                                             search_pattern)) {
+                                  dir->dot_dotdot[i] = 1;
+  -                               dput(dentry);
+  +                               dput(path.dentry);
+                                  continue;
+                          }
+
+                          ksmbd_kstat.kstat = &kstat;
+                          rc = ksmbd_vfs_fill_dentry_attrs(work,
+                                                           idmap,
+  -                                                        dentry,
+  +                                                        &path,
+                                                           &ksmbd_kstat);
+  -                       dput(dentry);
+  +                       dput(path.dentry);
+                          if (rc)
+                                  break;
+
+  --- a/fs/smb/server/vfs.c
+  +++ b/fs/smb/server/vfs.c
+  @@ -1897,18 +1897,14 @@
+
+   int ksmbd_vfs_fill_dentry_attrs(struct ksmbd_work *work,
+                                  const struct mnt_idmap *idmap,
+  -                               struct dentry *dentry,
+  +                               const struct path *path,
+                                  struct ksmbd_kstat *ksmbd_kstat)
+   {
+  -       struct ksmbd_share_config *share_conf = work->tcon->share_conf;
+  +       struct dentry *dentry = path->dentry;
+          u64 time;
+          int rc;
+  -       struct path path = {
+  -               .mnt = share_conf->vfs_path.mnt,
+  -               .dentry = dentry,
+  -       };
+
+  -       rc = vfs_getattr(&path, ksmbd_kstat->kstat,
+  +       rc = vfs_getattr(path, ksmbd_kstat->kstat,
+                           STATX_BASIC_STATS | STATX_BTIME,
+                           AT_STATX_SYNC_AS_STAT);
+          if (rc)
+  --- a/fs/smb/server/vfs.h
+  +++ b/fs/smb/server/vfs.h
+  @@ -154,7 +154,7 @@ void *ksmbd_vfs_init_kstat(char **p, struct ksmbd_kstat *ksmbd_kstat);
+   int ksmbd_vfs_fill_dentry_attrs(struct ksmbd_work *work,
+                                  const struct mnt_idmap *idmap,
+                                  const struct path *path,
+                                  struct ksmbd_kstat *ksmbd_kstat);
+
