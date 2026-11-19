@@ -1,72 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795088974;
-	b=5J0nMmFw6VSaABuJWijoMxZNvY7sngJX10kftKxOj8R7dflqJySKA9Up1sbdcGfzMVNo
-	 MuAJ3MtYspiZmscaTLDAdkd6Xe1eDl9sJfZNJfQfCJDy7dnZoozwtNzkY4no+/DCJFyPg
-	 aUYHsANPuXBDUtLlscakapZLVIE2aLmXyjAhJo7Vg+354sp/447lDGDVBRPjvuDAiYVKS
-	 KlVSBrfpunhJeB/jMjcVzFOf8Ukrg/9ayGkt7MI0b9ovl9EWAAX0wetW+mgrpnZErKKKk
-	 KVIEviL4E6QAQ0wHsUYjExTu0j4asj2IU7nQMxihkTAsx2ZJwPX9vk/or7ca1sDuvNg==
+	t=1795088992;
+	b=j/bYhybN201KJVQc1L8Fn/71Fdta+6JjU1kiNADML2o/Zie7NuXdRi2SnbCYm7GbaxzY
+	 fMCtnNIfUM/xeRujaCvKKwfhGXvabYRO9V9VrGeLHs1WrtizTR1+Ld0XR3aEtCshiJ+tj
+	 lTeWdYnCde2ztGASCZZ1KDdbiE4FqswvgOH1nWnBzVgtXa/kysFHEVWOj7cjpe5nVgIHL
+	 hiwH+J63UHQatxka21d2yb2T5nGNmfQ0BUhFztJiBzPBVjkX2iHCR1fzs1u8rve6tDHa9
+	 cFVPDDd1dtBs4+vf9ZDQczlGBIDWkN0wXIgADcwY6IuutxcK2RGO+U44nhk3pzh4SCg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795088974;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795088992;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:Received:Organization:In-Reply-To:
 	 References:To:Cc:Subject:MIME-Version:From:Date:Message-ID:
 	 X-Scanned-By:X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:
 	 Content-Type:Content-ID:Content-Transfer-Encoding;
-	bh=JaZEpwOL44RdJZQqfUjMFowgTZ5QMhG1R6ZLXGBR/tw=;
-	b=gZvgFlxa8BJ7MrLxoEwDcdPzfYkHn1Pjg1vk+mFsomvh4LFVcgyGnZ+bWoU2Gh2tnJJg
-	 2D5M0/ZrFO/xRcDvx18pCYdFse6JVA9WcEVASlLbXIZf3mv2pE+Q1QUSBoSHhLupchEiZ
-	 4KpafMdLhMy9KraCEV9ePp7C8cFWMm4Ri81NbAC+Jilhpr4svmz4CKBphImpa5frrq9j8
-	 yKRKrKWb8M3fLoHi9s5oNfXX75tPSwtlfypFmFJw1c7rwfFwv2ZSOTvNQLEAYa+DXieUI
-	 rapM7MwRh8FGBQ84h9vlf8gei1LXMKJZK2PcF1dt8DSoPOQAWgt8Q8XIG87piluBw7w==
+	bh=P1uN/SEgbAkVV9dKO+jCKjxyD1xLzFCMYsGORPFd330=;
+	b=nj5XzLMA+WhGL+kHLgaK46iensg2k0QzgACUTX7g+Lr+nIo2uNFyS4bHpBz6/6fcMa8C
+	 aM09iDBQDi1bs0PqRYBStIJoJmE9pKMi2xTJX9FHaQXimIS/91iLNiRB3ASKsotBNqn81
+	 lw9bQiijnTVQ1H7eDYd84Nt2bG43LFEfEkAe6LfQIke8kt7c/f4oODt5D8SEr9QgbahQ9
+	 8wc5WLKRpVt4mqiHFj4d6me8DU2e+oQPli3n4uA4pnPzepUe0jtd4dmuZGEK8t4E7b45I
+	 aL/PFdED6o1WiIHL/Dv5NKsHV7e8g2zqwxiSM3dpwKdlwv7fqIdIgXHBimOuT0RiYPw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Z3bBSO1q;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aJAkxi06;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A2B606A330
-	for <netfs@lists.linux.dev>; Thu, 19 Nov 2026 11:49:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 29A2B606A330
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22338606A33A
+	for <netfs@lists.linux.dev>; Thu, 19 Nov 2026 11:49:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 22338606A33A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Z3bBSO1q
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=aJAkxi06
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795088972;
+	s=mimecast20190719; t=1795088990;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JaZEpwOL44RdJZQqfUjMFowgTZ5QMhG1R6ZLXGBR/tw=;
-	b=Z3bBSO1q5/Sf7p+/zhAQHWi7VcjzX9j5K+H2WhvqfJyInhdM6Dt5QeILuFQ3XaINdrFicW
-	UwmutfLOq3t2BA0Ek2fcTVocKLxHuD2/JTmofqLqpt0SjVtQ7xH+6sfLIs/GCuITo5l6r0
-	qD1BjQMLk73YakUsSp2a4cjHvtfAe0s=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	bh=P1uN/SEgbAkVV9dKO+jCKjxyD1xLzFCMYsGORPFd330=;
+	b=aJAkxi06PdC6I5v2hNe9hNa1EO6kZUvt9hCy9KQZjwXTegdOa9ITbaSidQ+GTehlLSdX9t
+	BKavEDHMrMbi7lgmjzKdo5sQr+7ppl2CgrR0kR53Wg18JscwMQm8YyC2AAuwgsbc+D88ks
+	bL4G1aptbZZSiIao7VHknCa7V3Ta3B0=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-194-stBv0V2IPZSPIYz6hREm5Q-1; Thu,
- 19 Nov 2026 06:49:28 -0500
-X-MC-Unique: stBv0V2IPZSPIYz6hREm5Q-1
-X-Mimecast-MFC-AGG-ID: stBv0V2IPZSPIYz6hREm5Q_1795088966
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-597-tJa0fbcpOc2FEqPbTXJloQ-1; Thu,
+ 19 Nov 2026 06:49:47 -0500
+X-MC-Unique: tJa0fbcpOc2FEqPbTXJloQ-1
+X-Mimecast-MFC-AGG-ID: tJa0fbcpOc2FEqPbTXJloQ_1795088984
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E4FCC1955DCC;
-	Thu, 19 Nov 2026 11:49:25 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A5DBA19560AA;
+	Thu, 19 Nov 2026 11:49:43 +0000 (UTC)
 Received: from dhowells-thinkpadp1gen8.rmtgb.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D70A21801971;
-	Thu, 19 Nov 2026 11:49:20 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1C098195B3C6;
+	Thu, 19 Nov 2026 11:49:38 +0000 (UTC)
 Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
 	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
 	Kingdom.
 	Registered in England and Wales under Company Registration No. 3798903
-In-Reply-To: <20261119083851.3306418-5-dhowells@redhat.com>
-References: <20261119083851.3306418-5-dhowells@redhat.com> <20261119083851.3306418-1-dhowells@redhat.com>
+In-Reply-To: <20261119083851.3306418-15-dhowells@redhat.com>
+References: <20261119083851.3306418-15-dhowells@redhat.com> <20261119083851.3306418-1-dhowells@redhat.com>
 To: Christian Brauner <christian@brauner.io>
 Cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.org>,
     Matthew Wilcox <willy@infradead.org>,
@@ -79,8 +79,9 @@ Cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.org>,
     linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
     linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
     v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org, Christoph Hellwig <hch@infradead.org>
-Subject: Re: [PATCH v19 04/17] netfs: Add some tools for managing bvecq chains
+    linux-kernel@vger.kernel.org, Shyam Prasad N <sprasad@microsoft.com>,
+    Tom Talpey <tom@talpey.com>, Christoph Hellwig <hch@infradead.org>
+Subject: Re: [PATCH v19 14/17] netfs: Switch folioq to bvecq
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Post: <mailto:netfs@lists.linux.dev>
@@ -91,139 +92,47 @@ List-Owner: <mailto:netfs+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
 From: David Howells <dhowells@redhat.com>
-Date: Thu, 19 Nov 2026 11:49:19 +0000
-Message-ID: <3331436.1795088959@dhowells-thinkpadp1gen8.rmtgb.csb>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: OrPXdxHJSfdFPHJi-y9-zFgJAW3c0GZgupGA_oEDSnQ_1795088966
+Date: Thu, 19 Nov 2026 11:49:38 +0000
+Message-ID: <3331469.1795088978@dhowells-thinkpadp1gen8.rmtgb.csb>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-MFC-PROC-ID: Q4UkL_NGqOAKI2YFxkzmXCAhK400_4KQ-Wd6iDGL3is_1795088984
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3330734.1795088718.1@dhowells-thinkpadp1gen8.rmtgb.csb>
+Content-ID: <3330894.1795088857.1@dhowells-thinkpadp1gen8.rmtgb.csb>
 Content-Transfer-Encoding: quoted-printable
 
 Hi Christian,
 
-If you pull this patch, can you apply the attached diff to it to fix some
-issues that Sashiko brought up[1]?
-
-- In bvecq_alloc_buffer2(), fix OOM discard where the requested number of
-  pre-slots fills up a entire bvecq.
-
-- In bvecq_alloc_buffer2(), add comment on why we want to exit the buffer
-  alloc loop immediately.
-
-- In bvecq_put(), clear the prev pointer of the next bvecq if it points
-  back to the one being released.
-
-- Fix bvecq_append() kdoc.
-
-- Change %flags to @flags in function kdoc when referring to func arg.
+If you apply this patch, can you apply the attached change to it to fix a
+potential NULL deref spotted by Sashiko[1]?
 
 Thanks,
 David
-
+   =20
 [1] https://sashiko.dev/#/patchset/20261119083851.3306418-1-dhowells%40redh=
 at.com
 ---
-diff --git a/fs/netfs/bvecq.c b/fs/netfs/bvecq.c
-index b140cd47a1fa..1b2ad42e6d50 100644
---- a/fs/netfs/bvecq.c
-+++ b/fs/netfs/bvecq.c
-@@ -61,7 +61,7 @@ EXPORT_SYMBOL(bvecq_dump);
-  * that at least some progress can be made.
-  *
-  * Return: The node pointer or NULL on allocation failure.  BVECQ_HIT_OOM =
-is
-- * set in *flags if an allocation failure occurs.
-+ * set in *@flags if an allocation failure occurs.
-  */
- struct bvecq *bvecq_alloc_one(size_t nr_slots, gfp_t gfp, unsigned int *fl=
-ags)
- {
-@@ -136,10 +136,10 @@ EXPORT_SYMBOL(bvecq_alloc_one);
-  *
-  * Allocate a chain of bvecq nodes providing at least the requested cumula=
-tive
-  * number of slots.  Each node is a maximum of 4KiB in size.  If
-- * %BVECQ_SHORT_OKAY is set in *%flags, then the chain may be shortened on=
- OOM.
-+ * %BVECQ_SHORT_OKAY is set in *@flags, then the chain may be shortened on=
- OOM.
-  *
-  * Return: The first node pointer or NULL on allocation failure.  BVECQ_HI=
-T_OOM
-- * is set in *flags if an allocation failure occurs.
-+ * is set in *@flags if an allocation failure occurs.
-  */
- struct bvecq *bvecq_alloc_chain(size_t nr_slots, gfp_t gfp, unsigned int *=
-flags)
- {
-@@ -191,7 +191,7 @@ EXPORT_SYMBOL(bvecq_alloc_chain);
-  * refcounts set to 1 and can be passed to MSG_SPLICE_PAGES.
-  *
-  * Return: The first node pointer or NULL on allocation failure.  BVECQ_HI=
-T_OOM
-- * is set in *flags if a bvecq chain allocation failure occurs (though if
-+ * is set in *@flags if a bvecq chain allocation failure occurs (though if
-  * %BVECQ_SHORT_OKAY is set, the func may return early but will have at le=
-ast
-  * one bvecq in the allocation).
-  */
-@@ -200,6 +200,7 @@ struct bvecq *bvecq_alloc_buffer2(size_t size, unsigned=
- int pre_slots, gfp_t gfp
- {
- =09struct bvecq *head =3D NULL, *tail =3D NULL;
- =09size_t count =3D pre_slots + DIV_ROUND_UP(size, PAGE_SIZE);
-+=09bool got_page =3D false;
+diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
+index 852b2cb73435..d229e797ef23 100644
+--- a/fs/netfs/buffered_read.c
++++ b/fs/netfs/buffered_read.c
+@@ -277,14 +277,15 @@ static void netfs_read_to_pagecache(struct netfs_io_r=
+equest *rreq)
+ =09=09.cached_to[1]=09=3D ULLONG_MAX,
+ =09};
+ =09struct fscache_occupancy *occ =3D &_occ;
+-=09struct bvecq *mark_bq =3D rreq->buffer.tail, *mark_pin;
++=09struct bvecq *mark_bq =3D rreq->buffer.tail, *mark_pin =3D NULL;
+ =09unsigned int mark_offset =3D 0;
+ =09ssize_t size =3D rreq->len;
+ =09uoff_t start =3D rreq->start;
+ =09int ret =3D 0, mark_slot =3D 0;
 =20
- =09_enter("%zx,%zx,%u", size, count, pre_slots);
+ =09/* Pin the bvecq whilst we mark folios for copying to the cache. */
+-=09mark_pin =3D bvecq_get(mark_bq);
++=09if (mark_bq)
++=09=09mark_pin =3D bvecq_get(mark_bq);
 =20
-@@ -258,7 +259,12 @@ struct bvecq *bvecq_alloc_buffer2(size_t size, unsigne=
-d int pre_slots, gfp_t gfp
-=20
- =09=09bvecq_filled_to(tail, slot);
- =09=09count -=3D got;
-+=09=09got_page =3D true;
-=20
-+=09=09/* TODO: If we got an OOM trying to allocate a bvecq, we should
-+=09=09 * probably stop allocating pages unless/until we have an
-+=09=09 * emergency pool of those also.
-+=09=09 */
- =09=09if (unlikely(*flags & BVECQ_HIT_OOM) && (*flags & BVECQ_SHORT_OKAY))
- =09=09=09break;
- =09} while (count > 0);
-@@ -273,7 +279,9 @@ struct bvecq *bvecq_alloc_buffer2(size_t size, unsigned=
- int pre_slots, gfp_t gfp
- =09=09bvecq_put(tail);
- =09}
- oom:
--=09if (!head || (tail =3D=3D head && head->nr_slots =3D=3D pre_slots))
-+=09if (!head)
-+=09=09goto out;
-+=09if (!got_page && size > 0)
- =09=09goto discard; /* Allocated no pages */
- =09if (*flags & BVECQ_SHORT_OKAY)
- =09=09goto out;
-@@ -328,6 +336,8 @@ void bvecq_put(struct bvecq *bq)
- =09=09for (int slot =3D 0; slot < bq->nr_slots; slot++)
- =09=09=09bvecq_free_slot(bq, slot);
- =09=09next =3D bq->next;
-+=09=09if (next && next->prev =3D=3D bq)
-+=09=09=09next->prev =3D NULL;
- =09=09netfs_stat_d(&netfs_n_bvecq);
-=20
- =09=09if (bq->from_pool !=3D BVECQ_USE_NO_POOL)
-diff --git a/include/linux/bvecq.h b/include/linux/bvecq.h
-index f670a031ac44..da2385c91e9a 100644
---- a/include/linux/bvecq.h
-+++ b/include/linux/bvecq.h
-@@ -162,7 +162,7 @@ static inline bool bvecq_acquire_slot(const struct bvec=
-q *bvecq, unsigned int sl
- }
-=20
- /**
-- * bvecq_append - Get the next bvecq with appropriate barrier
-+ * bvecq_append - Attach new bvecq to chain with appropriate barrier
-  * @to: The bvecq to append to
-  * @add: The bvecq to append
-  *
+ =09do {
+ =09=09int (*prepare_read)(struct netfs_io_subrequest *subreq) =3D NULL;
 
