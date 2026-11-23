@@ -1,54 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.200
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795401528;
-	b=ls39vZCWrPZmPwOS4eNfJWCODyFWMgHMAVhmYYikrttb3W5ZBs3uaExSz2l0lbUAHEKG
-	 m2FFaXUhF1DegpPxxO6sDDuQkuKXsGXCPPLtGz6noRG1ITksuf3RmCJTNzdPViIzFvT3+
-	 09PbCOEqmANQHhDVLw1JWGSWsq+lOqxSQnfWUgIaQ3rh9dIExW2AUTXRxOaZZ4A7M0Jmf
-	 QJ0dwb+EWP5N2j7jDlumc5vg5yUyZz1inKLrFyNRp7SDKLynZclrFXQ0czB3rWhx+bkGl
-	 k4had3VlKEIDTv09uBZghm4Sz0FWIQww3k6mHWp4ewSNfXZYtlFQzOgp3UNZ9S7VuQA==
+	t=1795432499;
+	b=Be4tuSko+A8ohIWQvRAaMwL1yXD5G3RuvrYfLJCWYyNuw72RoLWM7Nd8F0zdAs2JUKZ1
+	 do+sTPbg3fuexaj5bpqttxmkQa2fvaS+PtefJSoGS+jL9XmPc9ghbdAhFw94N1sfgaRMV
+	 0QHnh+e+ylT1C3jyUvmhBg4KO6yK1wt0Po7vTbo+/4PXIujtozfIFmX4cpsgD/ksI4tkf
+	 8utHmW3AOtGuEiZ4aBAmiP6ct/ptIAADbDwWKMf8hPETRG9i7d0X9vA/9we49hiHvp4W8
+	 N+HHtA+ylEzMWKgZtwldV5xVXmnnBV9wk3zEv34Urk2PQ7PfNz3iQMCH8Z6bt/v2JOw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795401528;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:MIME-Version:X-Received:Date:In-Reply-To:
-	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
-	 Subject:From:To:Content-Type;
-	bh=r+NOcmmbW7rtw5ts41xsWNc/iGPBCitC+rKmnfKq7Cs=;
-	b=odtYoDcnj2sWbXeJdOr5M6DJx+Lx/jgt9Oufob4nfyVike5JVxm225tewPqDXxJxG+G0
-	 00s05/qti/dC94Za0/KuMyhj9v84XH0LdFHbzZyKKBMwGZi7m4V2UWa7xWibNaWcVaGd5
-	 1s3W9aYhsE+SDjE85ztZqLYNec3KlSm9seUsWCc58pN3PaixvyAUF24XwOlW8bblfRJO6
-	 1qfRH6RZByiP3AUjlK2BLUDbY20VZRzN3v0TnoCm5Gy5eJzuLDkS9fxF+H4PB5Z8o2biR
-	 Rd/FT8bG6INl95sqOFezsjloGWPOEJ6C3oypYDcl9UffifM5yo1WYbkWRJjbRJmtfCQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795432499;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=kvxCAFGhBWC5zf+uvhs+QtIakQF9t3AdFIsHU9D4+O4=;
+	b=UQmM4u5ShJt2tiNNd9+Er6qQwiRmAFczkXTA1tn8MdFEWxcmAtP1WZaUkdyZrpkWSX3m
+	 TXqPNzmgHQL8yeJut2nKjh+rYwSy5w/CFC05Lmmmek7yGFbFcZM8oTqpy9rI/Q3Gg6NpJ
+	 bV1h6szrI7XZySauQbJU7GCUN8H/k+SJSdBG98ln5WcLt98kcDgASrBeAy2h20X1mp++q
+	 nuntuseG9EdJo3tnYjpkpm1vy+C0h6LV/vIi9B9NLC+Rhst0FDEqJpF4E+pPK/Y4YiSuX
+	 DNv5zH4f/cUb1r0zEbonZFaqzphyaiGrD3o3n+oVHsNdxfDHEWRAxtRZ4wnVlkgp32w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=fail header.from=syzkaller.appspotmail.com;
-	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	arc=none smtp.remote-ip=209.85.167.200
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Wwt3EFtT;
+	arc=none smtp.remote-ip=209.85.215.169
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E55B606A31A
-	for <netfs@lists.linux.dev>; Mon, 23 Nov 2026 02:38:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5E55B606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-4cbf700ddccso2138340b6e.0
-        for <netfs@lists.linux.dev>; Sun, 22 Nov 2026 18:38:48 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C56606A321
+	for <netfs@lists.linux.dev>; Mon, 23 Nov 2026 11:14:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 23C56606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Wwt3EFtT
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-cde7e8abf9cso724733a12.0
+        for <netfs@lists.linux.dev>; Mon, 23 Nov 2026 03:14:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795432498; x=1796037298; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=kvxCAFGhBWC5zf+uvhs+QtIakQF9t3AdFIsHU9D4+O4=;
+        b=Wwt3EFtTz+K5rjuHJn2QmgfwPYqS03YYUmnNsmk4h40XkkHpJplyDaFMPpmStuc1Qx
+         VHRX5NaXbhT00LZuZH+hQuq81eaF3MkwSRdyXxM3U1NtsnJuK6p4Crn3+FZ53FSRjdVF
+         XWJr11paAQRpnHIEXnT9DnliNH3m5L361y8CVIq9m4oZ58myYsvkWy8ghElLdkkA5zl0
+         DARp4txB/CDw/YpyMhA+Yll8xGOqF6Z3h6hsAKLUabPDbwzbkXotURZGvtP9iBT+4JBh
+         2XLGKD+kYGMdOG2CIevoJTKXzMC2ghJVJADrdZsDEKJ/UB2bC/wl6xdtEZauwL2w7FA1
+         UcuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795401527; x=1796006327;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=r+NOcmmbW7rtw5ts41xsWNc/iGPBCitC+rKmnfKq7Cs=;
-        b=vRwctEyUIcEbMtyLk2lL29mjv1aBt1aJeInGfsaEp0DG8ytW351GxgarLw5WCmfcCk
-         YxpTHfaUlZn5OWDA6x6ib1SyoEL7UHMYca+FBYS8461Ukx4DHdOmFYy9A6MNo0BajPOX
-         e/bx0eCcL72gbsxfkC1pIemI7sKFhx0dGY1+EQzxlSmcDRbdYaCL1zAxGkJF4FDSqoyA
-         +g/WERWUUAlCpPuEba9dHv2dZXbL45MBzMaUMGwosOEgw52y/p/uxYrCiwS9qbD5/bxv
-         uaYIvs8XxNX1D7euTQGoHjEtjUnOOm9P0nViQM7wG7ZjI3lEhC4t5IpymkiOD3BKn8yE
-         qBPw==
-X-Forwarded-Encrypted: i=1; AL+hErFftJiSNT5zASQLWMZMuzJSNbJsEmRPi92xtbifJ6Ix4jr+mAor187/n0As2IourDAAW0CC1g==@lists.linux.dev
-X-Gm-Message-State: APuU4Z+kRkK/Wg0TX/MjbJbd0C0nR7s3x58Ix1jl7RmyF/rmqtmVuBn5
-	c/agjPEXj0IlX0WpIKH6L7mw2vPpOLeaWN3UBoast0EPsNONbfS6PUOPpmNaFyZt9jNCA4V3iY3
-	JmgJkZYLbXHxnE2+zmCTy8ZU+d1rSnw762V2Rbag0J0/5DTmK9z54IPdZ0Kg=
+        d=1e100.net; s=20260707; t=1795432498; x=1796037298;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=kvxCAFGhBWC5zf+uvhs+QtIakQF9t3AdFIsHU9D4+O4=;
+        b=Nk656gO1werRIG/4n+rpZbjKDpnH3NwC7b8SSWrA6E/UTZdiZXcQrCOdJMKYH6qgjl
+         U0R33qieJAZstWgO+al46lT+v8f4WUX93GWnaSG9PMFVEWt/zuVquaalAzl4deV+G123
+         WrgdUPYSBTdSPr+/XnZFJtSzDjWvrB/RGC7QESkvzaSVMh98Hq557H7fFAYK4bDK/a2O
+         z4mQ/+B9BicOR2gzAv4eJgn7041YVOwDGr9UsNgmVbpiAgwNoC1ChYqIbC9He4kgnDJV
+         3X1erlp4Oo+arpdF27fBRrwS0YXu3Hpi8QFRbdiVmoIHRSyQLYpHUiX0+iWFo8cLfIsx
+         +Kgw==
+X-Forwarded-Encrypted: i=1; AL+hErFNpEyUQwnO79HRdMr7cLy0IsxcPKz7yBjsRMgkEu8an9puZ4VpSdMsltzXMNuijc4fesm1jA==@lists.linux.dev
+X-Gm-Message-State: APuU4Z8E93kh+secHzNAVJCo8g9KhQ6/MfLPgrNJBB/t13zcOuXJ5k75
+	doHl/oo+7XWksonqf87V71+t2z2BVuGtUoyqKcXH784W3qCKY6RazSTj
+X-Gm-Gg: AZFdTZfph+DN9H8krQCl35HCqiKOVUB+Sz9q4+LnDeLArcHkDndIR8Qic73m+PgQjRj
+	cN2omBB9IB6YchlBwv/yMO4jqZ6bE+jV7fAEz1JSMZ12YJ6i8xifGB86FF10UgUmKhHiYBWFXrT
+	+8gnZqES3tjyksCCZJ2dHSJXFEX8WFzjU71Wokhw0vmYK6sgA7lzuObTbshdohvX2R57yzm7bDq
+	cc/0Zr3ibxRcElvPYPzfLD2A8R3AkFZh2xE1u2m6tYfjijFPjZrQlgZGh3YGOOpAKIScraPRJEq
+	GFU5DCaW8qHy5/Oju57zkVH0yMSYvZ55/kdAqbzAalOL1BQuHfVYgT0J3hVRLSa9NIHJZxHvXTX
+	JPGke0GTjlbKg2q/dv75fZr2yaNivyYcNCaK6qH1atLGQshQIerewZNckKdYB9gNeJZxxG0L6UW
+	cnqm3UZZvziptFzn3WJCNhTXbGWQh6AXNbeaIbFgTdQKRIn//Qs9OLpqdhTAHU9rNpDMHNuFsrb
+	FjWDyv0xGZhbL8q3mbMCjSMJy/2i9+kn7eezHcurM3fARRVkRxboenyHCISb+scy0QweyNeT2ZW
+	OqduIB8iFX66+7yB2XS/TGnMdJDBqg==
+X-Received: by 2002:a17:90b:3d4d:b0:3a4:fe48:d410 with SMTP id 98e67ed59e1d1-3b41c92cfe2mr10003902a91.30.1795432498380;
+        Mon, 23 Nov 2026 03:14:58 -0800 (PST)
+Received: from thangnn-ASUS.. ([2a09:bac5:d452:16c8::245:e])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b41ad8ef99sm18070874a91.12.2026.11.23.03.14.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Nov 2026 03:14:58 -0800 (PST)
+From: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
+To: Mimi Zohar <zohar@linux.ibm.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>
+Cc: Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+	Eric Snowberg <eric.snowberg@oracle.com>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	linux-integrity@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	netfs@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	syzbot+deb8af81d91415fabac1@syzkaller.appspotmail.com
+Subject: [PATCH] ima: key iint mutex lockdep class per filesystem type
+Date: Mon, 23 Nov 2026 18:14:52 +0700
+Message-ID: <20261123111452.237422-1-ngocthang2710.1999@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netfs@lists.linux.dev
 List-Id: <netfs.lists.linux.dev>
 List-Post: <mailto:netfs@lists.linux.dev>
@@ -58,242 +107,93 @@ List-Unsubscribe: <mailto:netfs+unsubscribe@lists.linux.dev>
 List-Owner: <mailto:netfs+owner@lists.linux.dev>
 Precedence: list
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:244e:b0:568:c71:5338 with SMTP id
- 5614622812f47-57a0a10954bmr9734535b6e.18.1795401527348; Sun, 22 Nov 2026
- 18:38:47 -0800 (PST)
-Date: Sun, 22 Nov 2026 18:38:47 -0800
-In-Reply-To: <6afc5031.8f566acc.2517be.0001.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6b03a737.44b41460.34b83f.0025.GAE@google.com>
-Subject: Re: [syzbot] [netfs?] possible deadlock in vfs_iocb_iter_write
-From: syzbot <syzbot+deb8af81d91415fabac1@syzkaller.appspotmail.com>
-To: dhowells@redhat.com, dmitry.kasatkin@gmail.com, dmitry.kasatkin@huawei.com, 
-	linux-kernel@vger.kernel.org, netfs@lists.linux.dev, 
-	syzkaller-bugs@googlegroups.com, zohar@linux.vnet.ibm.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-syzbot has found a reproducer for the following issue on:
+syzbot reports a circular locking dependency between the iint mutex,
+a 9p inode's i_rwsem and the sb_writers of the cachefiles backing fs:
 
-HEAD commit:    4843f6873f7c Merge tag 'sysctl-7.04-fixes-rc4' of git://gi..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=11ee66bd580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=3cc6a7ee2d24d208
-dashboard link: https://syzkaller.appspot.com/bug?extid=deb8af81d91415fabac1
-compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1118446d580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17c512bc580000
-
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/98fce4d0b21b/non_bootable_disk-4843f687.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/86db8b334894/vmlinux-4843f687.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/94ea4dad441a/bzImage-4843f687.xz
-mounted in repro #1: https://storage.googleapis.com/syzbot-assets/b2622425ced2/mount_0.gz
-  fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=13c512bc580000)
-mounted in repro #2: https://storage.googleapis.com/syzbot-assets/0089353ceb53/mount_8.gz
-  fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=16ee66bd580000)
-
-The issue was bisected by AI to:
-
-commit 0d73a55208e94fc9fb6deaeea61438cd3280d4c0
-Author: Dmitry Kasatkin <dmitry.kasatkin@gmail.com>
-Date:   Tue Dec 5 19:06:34 2017 +0000
-
-    ima: re-introduce own integrity cache lock
-
-AI reasoning:   https://syzkaller.appspot.com/ai_job?id=1dffa081-8679-4b43-b77c-809761df2cb7
-
-AI-generated root cause summary:
-In `security/integrity/ima/ima_iint.c`, `ima_iint_lockdep_annotate()` assigns
-`iint->mutex` to a static lockdep class array
-`ima_iint_mutex_key[IMA_MAX_NESTING]` indexed solely by
-`inode->i_sb->s_stack_depth`. When a network filesystem using netfs/fscache
-(such as 9p) caches data on a local backing filesystem (such as XFS via
-cachefiles), both filesystems have `s_stack_depth == 0`, causing their
-`iint->mutex` instances to share the same lockdep key `ima_iint_mutex_key[0]`.
-This collapses distinct locking tiers into one class, causing lockdep to flag a
-false circular locking dependency among `sb_writers` (acquired during
-`do_open(O_TRUNC)`), `ima_iint_mutex_key[0]`, and `inode->i_rwsem` (acquired
-during `netfs_buffered_read_iter()` when IMA measures a file).
-
-full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=deb8af81d91415fabac1
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+deb8af81d91415fabac1@syzkaller.appspotmail.com
-
-The cause commit was identified by AI and may be wrong.
-If you agree with it, please also add:
-Fixes: 0d73a55208e9 ("ima: re-introduce own integrity cache lock")
-
-XFS (loop0): Ending clean mount
-netfs: Cache "CacheFiles" added (type cachefiles)
-CacheFiles: File cache on CacheFiles registered
-======================================================
-WARNING: possible circular locking dependency detected
-syzkaller #0 Not tainted
-------------------------------------------------------
-syz.0.18/5600 is trying to acquire lock:
-ffff888014340478 (sb_writers#12){.+.+}-{0:0}, at: kiocb_start_write include/linux/fs.h:2799 [inline]
-ffff888014340478 (sb_writers#12){.+.+}-{0:0}, at: vfs_iocb_iter_write+0x1cb/0x5e0 fs/read_write.c:929
-
-but task is already holding lock:
-ffff88804381b620 (&sb->s_type->i_mutex_key#25){++++}-{4:4}, at: inode_lock_killable include/linux/fs.h:1032 [inline]
-ffff88804381b620 (&sb->s_type->i_mutex_key#25){++++}-{4:4}, at: do_truncate+0x18f/0x250 fs/open.c:63
-
-which lock already depends on the new lock.
-
-
-the existing dependency chain (in reverse order) is:
-
--> #2 (&sb->s_type->i_mutex_key#25){++++}-{4:4}:
-       down_read_interruptible+0x4b/0x3b0 kernel/locking/rwsem.c:1584
-       netfs_start_io_read+0x25/0x180 fs/netfs/locking.c:67
-       netfs_buffered_read_iter+0xd6/0x160 fs/netfs/buffered_read.c:940
-       __kernel_read+0x4ca/0x960 fs/read_write.c:512
-       integrity_kernel_read+0x89/0xd0 security/integrity/iint.c:28
-       ima_calc_file_hash_tfm security/integrity/ima/ima_crypto.c:222 [inline]
-       ima_calc_file_hash+0x451/0x890 security/integrity/ima/ima_crypto.c:280
-       ima_collect_measurement+0x51b/0xa00 security/integrity/ima/ima_api.c:300
-       process_measurement+0x1272/0x1c10 security/integrity/ima/ima_main.c:425
-       ima_file_check+0xdc/0x130 security/integrity/ima/ima_main.c:686
-       security_file_post_open+0xb3/0x260 security/security.c:2777
-       do_open fs/namei.c:4853 [inline]
-       path_openat+0x1748/0x20f0 fs/namei.c:5016
-       do_file_open+0x23e/0x4a0 fs/namei.c:5045
-       do_sys_openat2+0x115/0x200 fs/open.c:1443
-       do_sys_open fs/open.c:1449 [inline]
-       __do_sys_openat fs/open.c:1465 [inline]
-       __se_sys_openat fs/open.c:1460 [inline]
-       __x64_sys_openat+0x138/0x170 fs/open.c:1460
-       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
-       do_syscall_64+0x171/0x540 arch/x86/entry/syscall_64.c:89
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
--> #1 (&ima_iint_mutex_key[depth]){+.+.}-{4:4}:
-       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
-       __mutex_lock+0x197/0x15a0 kernel/locking/mutex.c:821
-       process_measurement+0x7d0/0x1c10 security/integrity/ima/ima_main.c:319
-       ima_file_check+0xdc/0x130 security/integrity/ima/ima_main.c:686
-       security_file_post_open+0xb3/0x260 security/security.c:2777
-       do_open fs/namei.c:4853 [inline]
-       path_openat+0x1748/0x20f0 fs/namei.c:5016
-       do_file_open+0x23e/0x4a0 fs/namei.c:5045
-       do_sys_openat2+0x115/0x200 fs/open.c:1443
-       do_sys_open fs/open.c:1449 [inline]
-       __do_sys_openat fs/open.c:1465 [inline]
-       __se_sys_openat fs/open.c:1460 [inline]
-       __x64_sys_openat+0x138/0x170 fs/open.c:1460
-       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
-       do_syscall_64+0x171/0x540 arch/x86/entry/syscall_64.c:89
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
--> #0 (sb_writers#12){.+.+}-{0:0}:
-       check_prev_add kernel/locking/lockdep.c:3209 [inline]
-       check_prevs_add kernel/locking/lockdep.c:3328 [inline]
-       validate_chain kernel/locking/lockdep.c:3952 [inline]
-       __lock_acquire+0x164c/0x2de0 kernel/locking/lockdep.c:5288
-       lock_acquire+0x115/0x350 kernel/locking/lockdep.c:5942
-       percpu_down_read_internal include/linux/percpu-rwsem.h:53 [inline]
-       percpu_down_read_freezable include/linux/percpu-rwsem.h:83 [inline]
-       __sb_start_write include/linux/fs/super.h:19 [inline]
-       sb_start_write+0x48/0x1c0 include/linux/fs/super.h:125
-       kiocb_start_write include/linux/fs.h:2799 [inline]
-       vfs_iocb_iter_write+0x1cb/0x5e0 fs/read_write.c:929
-       __cachefiles_write+0x6c9/0xbd0 fs/cachefiles/io.c:355
-       netfs_issue_write fs/netfs/write_issue.c:290 [inline]
-       netfs_advance_write+0x328/0x4b0 fs/netfs/write_issue.c:331
-       netfs_write_folio fs/netfs/write_issue.c:510 [inline]
-       netfs_writepages+0x12d3/0x22b0 fs/netfs/write_issue.c:600
-       do_writepages+0x338/0x560 mm/page-writeback.c:2562
-       filemap_writeback mm/filemap.c:386 [inline]
-       filemap_fdatawrite_range mm/filemap.c:411 [inline]
-       filemap_fdatawrite+0x1e9/0x2f0 mm/filemap.c:417
-       v9fs_vfs_setattr_dotl+0x4dc/0xab0 fs/9p/vfs_inode_dotl.c:585
-       notify_change+0xbba/0xea0 fs/attr.c:556
-       do_truncate+0x1c2/0x250 fs/open.c:68
-       handle_truncate fs/namei.c:4306 [inline]
-       do_open fs/namei.c:4855 [inline]
-       path_openat+0x18a6/0x20f0 fs/namei.c:5016
-       do_file_open+0x23e/0x4a0 fs/namei.c:5045
-       do_sys_openat2+0x115/0x200 fs/open.c:1443
-       do_sys_open fs/open.c:1449 [inline]
-       __do_sys_openat fs/open.c:1465 [inline]
-       __se_sys_openat fs/open.c:1460 [inline]
-       __x64_sys_openat+0x138/0x170 fs/open.c:1460
-       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
-       do_syscall_64+0x171/0x540 arch/x86/entry/syscall_64.c:89
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-other info that might help us debug this:
-
-Chain exists of:
   sb_writers#12 --> &ima_iint_mutex_key[depth] --> &sb->s_type->i_mutex_key#25
 
- Possible unsafe locking scenario:
+The three edges are:
 
-       CPU0                    CPU1
-       ----                    ----
-  lock(&sb->s_type->i_mutex_key#25);
-                               lock(&ima_iint_mutex_key[depth]);
-                               lock(&sb->s_type->i_mutex_key#25);
-  rlock(sb_writers#12);
+  backing fs O_TRUNC open:  sb_writers(backing) -> iint(backing inode)
+  9p open + IMA hash:       iint(9p inode)      -> i_rwsem(9p inode)
+  9p truncate/writeback:    i_rwsem(9p inode)   -> sb_writers(backing)
 
- *** DEADLOCK ***
+The last one is inherent to netfs: it writes to its cachefiles backing
+file under its own inode lock. The cycle only closes because the iint
+mutex is keyed by s_stack_depth alone, so the 9p and backing fs iints,
+both at depth 0, share one lockdep class. They are different inodes
+and nothing waits on a netfs iint while holding the backing fs's
+sb_writers, so this is a false positive.
 
-locks held by syz.0.18/5600: 2, on CPU#0:
- #0: ffff888043d40478 (sb_writers#13){.+.+}-{0:0}, at: mnt_want_write+0x41/0x90 fs/namespace.c:531
- #1: ffff88804381b620 (&sb->s_type->i_mutex_key#25){++++}-{4:4}, at: inode_lock_killable include/linux/fs.h:1032 [inline]
- #1: ffff88804381b620 (&sb->s_type->i_mutex_key#25){++++}-{4:4}, at: do_truncate+0x18f/0x250 fs/open.c:63
+Key the iint mutex per filesystem type as well as depth, as is done for
+i_rwsem with s_type->i_mutex_key. The overlayfs case covered by the
+depth annotation is unchanged.
 
-stack backtrace:
-CPU: 0 UID: 0 PID: 5600 Comm: syz.0.18 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- print_circular_bug+0x2e2/0x300 kernel/locking/lockdep.c:2087
- check_noncircular+0x12f/0x150 kernel/locking/lockdep.c:2219
- check_prev_add kernel/locking/lockdep.c:3209 [inline]
- check_prevs_add kernel/locking/lockdep.c:3328 [inline]
- validate_chain kernel/locking/lockdep.c:3952 [inline]
- __lock_acquire+0x164c/0x2de0 kernel/locking/lockdep.c:5288
- lock_acquire+0x115/0x350 kernel/locking/lockdep.c:5942
- percpu_down_read_internal include/linux/percpu-rwsem.h:53 [inline]
- percpu_down_read_freezable include/linux/percpu-rwsem.h:83 [inline]
- __sb_start_write include/linux/fs/super.h:19 [inline]
- sb_start_write+0x48/0x1c0 include/linux/fs/super.h:125
- kiocb_start_write include/linux/fs.h:2799 [inline]
- vfs_iocb_iter_write+0x1cb/0x5e0 fs/read_write.c:929
- __cachefiles_write+0x6c9/0xbd0 fs/cachefiles/io.c:355
- netfs_issue_write fs/netfs/write_issue.c:290 [inline]
- netfs_advance_write+0x328/0x4b0 fs/netfs/write_issue.c:331
- netfs_write_folio fs/netfs/write_issue.c:510 [inline]
- netfs_writepages+0x12d3/0x22b0 fs/netfs/write_issue.c:600
- do_writepages+0x338/0x560 mm/page-writeback.c:2562
- filemap_writeback mm/filemap.c:386 [inline]
- filemap_fdatawrite_range mm/filemap.c:411 [inline]
- filemap_fdatawrite+0x1e9/0x2f0 mm/filemap.c:417
- v9fs_vfs_setattr_dotl+0x4dc/0xab0 fs/9p/vfs_inode_dotl.c:585
- notify_change+0xbba/0xea0 fs/attr.c:556
- do_truncate+0x1c2/0x250 fs/open.c:68
- handle_truncate fs/namei.c:4306 [inline]
- do_open fs/namei.c:4855 [inline]
- path_openat+0x18a6/0x20f0 fs/namei.c:5016
- do_file_open+0x23e/0x4a0 fs/namei.c:5045
- do_sys_openat2+0x115/0x200 fs/open.c:1443
- do_sys_open fs/open.c:1449 [inline]
- __do_sys_openat fs/open.c:1465 [inline]
- __se_sys_openat fs/open.c:1460 [inline]
- __x64_sys_openat+0x138/0x170 fs/open.c:1460
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x171/0x540 arch/x86/entry/syscall_64.c:89
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f7db21a9559
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f7db17fe028 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
-RAX: ffffffffffffffda RBX: 00007f7db2425fa0 RCX: 00007f7db21a9559
-RDX: 0000000000000300 RSI: 0000200000009b80 RDI: 0000000000000005
-RBP: 00007f7db2238136 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f7db2426038 R14: 00007f7db2425fa0 R15: 00007fff21afb1f8
- </TASK>
+Fixes: e044374a8a0a ("ima: annotate iint mutex to avoid lockdep false positive warnings")
+Reported-by: syzbot+deb8af81d91415fabac1@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=deb8af81d91415fabac1
+Signed-off-by: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
+---
+Tested in QEMU on v7.4-rc4 (syzbot config, ima_policy=tcb): cachefiles
+bound on an ext4 disk, 9p over virtio with cache=fscache, then 50 rounds
+of write + O_RDONLY|O_TRUNC open on 9p and on the backing fs, followed by
+20 IMA-measured O_TRUNC opens through an overlayfs on the backing fs.
+
+  unpatched: "possible circular locking dependency detected", same chain
+  patched:   no lockdep report, debug_locks still 1; the syzbot C repro
+             also ran 90s with no report
+
+ include/linux/fs.h                |  3 +++
+ security/integrity/ima/ima_iint.c | 11 +++++++----
+ 2 files changed, 10 insertions(+), 4 deletions(-)
+
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 5b3a100aba77b..dab32eea21fc7 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -2325,6 +2325,9 @@ struct file_system_type {
+ 	struct lock_class_key i_mutex_dir_key;
+ 
+ 	struct lock_class_key d_lookup_key;
++#ifdef CONFIG_IMA
++	struct lock_class_key ima_iint_key[FILESYSTEM_MAX_STACK_DEPTH + 1];
++#endif
+ };
+ 
+ #define MODULE_ALIAS_FS(NAME) MODULE_ALIAS("fs-" NAME)
+diff --git a/security/integrity/ima/ima_iint.c b/security/integrity/ima/ima_iint.c
+index 00b249101f98d..bb964847af149 100644
+--- a/security/integrity/ima/ima_iint.c
++++ b/security/integrity/ima/ima_iint.c
+@@ -39,19 +39,22 @@ struct ima_iint_cache *ima_iint_find(struct inode *inode)
+  * files both on overlayfs and on underlying fs, we need to annotate the iint
+  * mutex to avoid lockdep false positives related to IMA + overlayfs.
+  * See ovl_lockdep_annotate_inode_mutex_key() for more details.
++ *
++ * Depth alone is not enough: a netfs inode writes to its cachefiles backing
++ * fs under its own i_rwsem, and both are at depth 0. So, like i_rwsem, key
++ * the mutex per filesystem type too.
+  */
+ static inline void ima_iint_lockdep_annotate(struct ima_iint_cache *iint,
+ 					     struct inode *inode)
+ {
+ #ifdef CONFIG_LOCKDEP
+-	static struct lock_class_key ima_iint_mutex_key[IMA_MAX_NESTING];
+-
+-	int depth = inode->i_sb->s_stack_depth;
++	struct super_block *sb = inode->i_sb;
++	int depth = sb->s_stack_depth;
+ 
+ 	if (WARN_ON_ONCE(depth < 0 || depth >= IMA_MAX_NESTING))
+ 		depth = 0;
+ 
+-	lockdep_set_class(&iint->mutex, &ima_iint_mutex_key[depth]);
++	lockdep_set_class(&iint->mutex, &sb->s_type->ima_iint_key[depth]);
+ #endif
+ }
+ 
+-- 
+2.43.0
+
